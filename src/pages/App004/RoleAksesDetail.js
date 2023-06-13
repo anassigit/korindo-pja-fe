@@ -31,10 +31,8 @@ import {
 
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useSelector, useDispatch } from "react-redux"
-import { getPlant } from "../../store/lov/actions"
 import { getRoAksesUserData, getRoAksesPlantData, deleteRoAksesUser, deleteRoAksesPlant } from "../../store/app004/actions"
 
-import RoleAksesPlantAdd from "./RoleAksesPlantAdd";
 import RoleAksesUserAdd from "./RoleAksesUserAdd";
 
 const RoleAksesDetail = (props) => {
@@ -452,17 +450,6 @@ const RoleAksesDetail = (props) => {
                     </button>
                 </div>
             </Container>
-
-            <RoleAksesPlantAdd
-                app004p05Page={app004p05Page}
-                setApp004p05Page={setApp004p05Page}
-                setApp004setMsg={props.setApp004setMsg}
-                setApp004p04Page={props.setApp004p04Page}
-                app004p01RoAksesId={props.app004p01RoAksesId}
-                setApp004p01Page={props.setApp004p01Page}
-                app004p04TabelRoAksesPlantReq={app004p04TabelRoAksesPlantReq}
-                appDetailPage={props.appDetailPage}
-            />
 
             <RoleAksesUserAdd
                 app004p06Page={app004p06Page}
