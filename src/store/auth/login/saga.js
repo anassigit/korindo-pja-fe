@@ -12,12 +12,12 @@ function* loginUser({ payload: { user, history } }) {
       if(response.status == 1){
         localStorage.setItem("authUser", response.data.KOR_TOKEN);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        const res = yield call(getMenu)
+        // const res = yield call(getMenu)
        
         
-        if(res.status == 1){
-          localStorage.setItem("menu", JSON.stringify(res.data.menu));
-        }
+        // if(res.status == 1){
+        //   localStorage.setItem("menu", JSON.stringify(res.data.menu));
+        // }
         history.push("/dashboard");
         yield put(loginSuccess(response));
       }else{

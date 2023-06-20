@@ -18,28 +18,28 @@ const SidebarContent = props => {
   const menu = JSON.parse(localStorage.getItem("menu"))
 
   const ref = useRef();
-  
+
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
     const pathName = props.location.pathname
     new MetisMenu("#side-menu")
-      let matchingMenuItem = null
-      const ul = document.getElementById("side-menu")
-      const items = ul.getElementsByTagName("a")
-     
-      for (let i = 0; i < items.length; ++i) {
-        if (pathName === items[i].pathname) {
-          matchingMenuItem = items[i]
-          break
-        }
+    let matchingMenuItem = null
+    const ul = document.getElementById("side-menu")
+    const items = ul.getElementsByTagName("a")
+
+    for (let i = 0; i < items.length; ++i) {
+      if (pathName === items[i].pathname) {
+        matchingMenuItem = items[i]
+        break
       }
-      
-      if (matchingMenuItem) {
-        activateParentDropdown(matchingMenuItem)
-      }
+    }
+
+    if (matchingMenuItem) {
+      activateParentDropdown(matchingMenuItem)
+    }
   }, [props.location.pathname])
 
-  
+
   useEffect(() => {
     ref.current.recalculate()
   })
@@ -94,62 +94,70 @@ const SidebarContent = props => {
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
-        <div id="sidebar-menu" style={{marginTop : "40px"}}>
-        
-        <ul className="metismenu list-unstyled" id="side-menu">
-        <li className="menu-title">{props.t("Menu")} </li>
-          <li>
+        <div id="sidebar-menu" style={{ marginTop: "40px" }}>
+
+          <ul className="metismenu list-unstyled" id="side-menu">
+            <li className="menu-title">{props.t("Menu")} </li>
+            <li>
               <Link to="/dashboard" className="">
-                <i className="bx bx-home-circle"></i>
-                <span>{props.t("Dashboards")}</span>
+                <i className="bx bx-list-ul"></i>
+                <span>{props.t("Instructions List")}</span>
               </Link>
-          </li> 
+              <Link to="/dashboard" className="">
+                <i className="bx bx-folder-open"></i>
+                <span>{props.t("File Management")}</span>
+              </Link>
+              <Link to="/dashboard" className="">
+                <i className="bx bx-cog"></i>
+                <span>{props.t("Setting")}</span>
+              </Link>
+            </li>
 
-          <li className="menu-title">{props.t("Modul")} </li>
+            {/* <li className="menu-title">{props.t("Modul")} </li> */}
 
-          {menu.map((item, key) => 
-                item.sub.length == 0 ? 
-                  <li key={item.menuid}>
-                    <Link to={item.path} className="">
-                      <i className={props.t(item.icon)}></i>
-                      <span>{props.t(item.title)}</span>
-                    </Link>
-                  </li> 
+            {/* {menu.map((item, key) =>
+              item.sub.length == 0 ?
+                <li key={item.menuid}>
+                  <Link to={item.path} className="">
+                    <i className={props.t(item.icon)}></i>
+                    <span>{props.t(item.title)}</span>
+                  </Link>
+                </li>
                 :
-                  <li key={item.menuid}>
-                      <Link to={item.path} className="has-arrow">
-                        <i className={props.t(item.icon)}></i>
-                        <span>{props.t(item.title)}</span>
-                      </Link>
-                      
-                      <ul key={item.menuid} className="sub-menu">
-                        {item.sub.map((item2) => 
-                          item2.sub.length == 0 ? 
-                            
-                            <li  key={item2.menuid}>
-                              <Link to={item2.path}>{props.t(item2.title)}</Link>
-                            </li>
-                          :
-                          
-                          <li key={item2.menuid}>
-                            <Link to={item2.path} className="has-arrow">
-                              <span>{props.t(item2.title)}</span>
-                            </Link>
-                            <ul key={item.menuid} className="sub-menu">
-                              {item2.sub.map((item3) => 
-                                <li  key={item3.menuid}>
-                                  <Link to={item3.path}>{props.t(item3.title)}</Link>
-                                </li>
-                              )}
-                            </ul>
-                          </li>
-                        )}
-                      </ul>
-                  </li>
-                
-          )}                        
-            
-        </ul>
+                <li key={item.menuid}>
+                  <Link to={item.path} className="has-arrow">
+                    <i className={props.t(item.icon)}></i>
+                    <span>{props.t(item.title)}</span>
+                  </Link>
+
+                  <ul key={item.menuid} className="sub-menu">
+                    {item.sub.map((item2) =>
+                      item2.sub.length == 0 ?
+
+                        <li key={item2.menuid}>
+                          <Link to={item2.path}>{props.t(item2.title)}</Link>
+                        </li>
+                        :
+
+                        <li key={item2.menuid}>
+                          <Link to={item2.path} className="has-arrow">
+                            <span>{props.t(item2.title)}</span>
+                          </Link>
+                          <ul key={item.menuid} className="sub-menu">
+                            {item2.sub.map((item3) =>
+                              <li key={item3.menuid}>
+                                <Link to={item3.path}>{props.t(item3.title)}</Link>
+                              </li>
+                            )}
+                          </ul>
+                        </li>
+                    )}
+                  </ul>
+                </li>
+
+            )} */}
+
+          </ul>
         </div>
       </SimpleBar>
     </React.Fragment>

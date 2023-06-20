@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver';
 //apply base url for axios
 var API_URL = "http://localhost:9010/pja";
 if(process.env.REACT_APP_APIKEY === "development"){
-  API_URL = "http://192.168.0.29:8080/pja";
+  API_URL = "http://192.168.0.29:9010/pja";
 }else if(process.env.REACT_APP_APIKEY === "production"){
   API_URL = "http://10.10.20.94:9003/pja";
 }

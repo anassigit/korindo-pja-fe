@@ -29,11 +29,11 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      nik: "20202567" || '',
-      password: "1234" || '',
+      nik: '',
+      password: '',
     },
     validationSchema: Yup.object({
-      nik: Yup.string().required("Please Enter Your Nik"),
+      nik: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
@@ -65,17 +65,17 @@ const Login = props => {
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
               <Card className="overflow-hidden">
-                <div className="bg-primary bg-soft">
+                <div className="bg-success text-white">
                   <Row>
-                    <Col xs={7}>
+                    <Col xs={12}>
                       <div className="text-primary p-4">
-                        <h5 className="text-primary">Selamat Datang Kembali !</h5>
-                        <p>Login untuk melanjutkan.</p>
+                        <h2 className="text-primary text-center text-white" >PROJECT A</h2>
+                        {/* <p>Login untuk melanjutkan.</p> */}
                       </div>
                     </Col>
-                    <Col className="col-5 align-self-end">
+                    {/* <Col className="col-5 align-self-end">
                       <img src={profile} alt="" className="img-fluid" />
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
                 <CardBody className="pt-0">
@@ -105,11 +105,11 @@ const Login = props => {
                       {error ? <Alert color="danger">{error}</Alert> : null}
 
                       <div className="mb-3">
-                        <Label className="form-label">Nik</Label>
+                        {/* <Label className="form-label">Email</Label> */}
                         <Input
                           name="nik"
                           className="form-control"
-                          placeholder="Enter Nik"
+                          placeholder="Enter Email"
                           type="text"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
@@ -124,7 +124,7 @@ const Login = props => {
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Password</Label>
+                        {/* <Label className="form-label">Password</Label> */}
                         <Input
                           name="password"
                           value={validation.values.password || ""}
@@ -155,12 +155,12 @@ const Login = props => {
                         </label>
                       </div> */}
 
-                      <div className="mt-3 d-grid">
+                      <div className="mt-2 d-grid">
                         <button
-                          className="btn btn-primary btn-block"
+                          className="btn btn-success btn-block"
                           type="submit"
                         >
-                          Log In
+                          Login
                         </button>
                       </div>
 
@@ -204,17 +204,17 @@ const Login = props => {
                         </ul>
                       </div> */}
 
-                      {/* <div className="mt-4 text-center">
+                      <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
                           <i className="mdi mdi-lock me-1" />
                           Forgot your password?
                         </Link>
-                      </div>  */}
+                      </div>
                     </Form>
                   </div>
                 </CardBody>
-              
-                <div className="mt-5 text-center">
+
+                <div className="mt-3 text-center">
                   {/* <p>
                     Don&#39;t have an account ?{" "}
                     <Link to="/register" className="fw-medium text-primary">
@@ -223,7 +223,7 @@ const Login = props => {
                     </Link>{" "}
                   </p> */}
                   <p>
-                    ©Korindo {new Date().getFullYear()}. 
+                    ©Korindo {new Date().getFullYear()}.
                   </p>
                 </div>
               </Card>
