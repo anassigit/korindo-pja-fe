@@ -13,8 +13,8 @@ import logoKorindo2 from "../../assets/images/logotitle.png";
 const Sidebar = props => {
   return (
     <React.Fragment>
-      <div style={{boxShadow: "0 0 10px rgb(0 0 0 / 75%)"}} className="vertical-menu">
-        <div style={{borderRight: "2px solid #c5c5c5"}} className="navbar-brand-box">
+      <div  className="vertical-menu">
+        <div style={{borderRight: "2px solid #D9D1D1"}} className="navbar-brand-box">
           <Link to="/" className="logo logo-dark">
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
@@ -34,7 +34,7 @@ const Sidebar = props => {
           </Link>
         </div>
         
-        <div style={{borderRight: "2px solid #c5c5c5"}} data-simplebar className="h-100">
+        <div style={{borderRight: "2px solid #D9D1D1"}} data-simplebar className="h-100">
           {props.type !== "condensed" ? <SidebarContent/> : <SidebarContent/>}
         </div>
         <div className="sidebar-background"></div>
