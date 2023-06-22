@@ -39,7 +39,7 @@ const ProfileMenu = props => {
         <DropdownToggle
           className="btn header-item "
           id="page-header-user-dropdown"
-          style={{borderLeft : "2px solid rgb(243 103 4)"}}
+          // style={{borderLeft : "2px solid rgb(243 103 4)"}}
           tag="button"
         >
           <img
@@ -47,7 +47,7 @@ const ProfileMenu = props => {
             src={user1}
             alt="Header Avatar"
           />
-          <span className="d-none d-xl-inline-block ms-2 me-1">{username}</span>
+          <span className="d-none d-xl-inline-block ms-2 me-1">{username} TEST </span>
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block"/>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">

@@ -97,18 +97,18 @@ const SidebarContent = props => {
         <div id="sidebar-menu" style={{ marginTop: "40px" }}>
 
           <ul className="metismenu list-unstyled" id="side-menu">
-            <li className="menu-title">{props.t("Menu")} </li>
+            {/* <li className="menu-title">{props.t("Menu")} </li> */}
             <li>
               <Link to="/dashboard" className="">
-                <i className="bx bx-list-ul"></i>
+                <i className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
               </Link>
               <Link to="/dashboard" className="">
-                <i className="bx bx-folder-open"></i>
+                <i className="fas fa-folder-open"></i>
                 <span>{props.t("File Management")}</span>
               </Link>
               <Link to="/dashboard" className="">
-                <i className="bx bx-cog"></i>
+                <i className="fas fa-cog"></i>
                 <span>{props.t("Setting")}</span>
               </Link>
             </li>

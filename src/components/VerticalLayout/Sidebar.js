@@ -32,13 +32,17 @@ const Sidebar = props => {
               <img src={logoKorindo} alt="" height="30" />
             </span>
           </Link>
+
+          
         </div>
         
         <div style={{borderRight: "2px solid #D9D1D1"}} data-simplebar className="h-100">
           {props.type !== "condensed" ? <SidebarContent/> : <SidebarContent/>}
         </div>
+        
         <div className="sidebar-background"></div>
       </div>
+      
     </React.Fragment>
   )
 }

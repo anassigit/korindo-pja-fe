@@ -8,6 +8,7 @@ import { Form, Label, Input, Alert, FormFeedback } from "reactstrap";
 
  import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
+
 // actions
 import { reloginUser } from "../../store/actions";
 
@@ -24,6 +25,7 @@ import {
   toggleLeftmenu,
   changeSidebarType,
 } from "../../store/actions";
+
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -107,7 +109,7 @@ const Header = props => {
               className="btn btn-sm px-3 font-size-16 header-item "
               id="vertical-menu-btn"
             >
-              <i className="bx bx-customize fa-lg" />
+              <i className="fas fa-bars" style={{color:"#7BAE40"}}/>
             </button>
 
             {/* <form id="reloginForm" className="form-horizontal" style={{display: "none", marginTop: '300px', marginLeft: '500px'}}> */}
@@ -295,6 +297,11 @@ const Header = props => {
               </DropdownMenu>
             </Dropdown> */}
 
+            <select className="selectpicker" data-width="fit">
+                <option data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
+              <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
+            </select>
+
             <div className="dropdown d-none d-lg-inline-block ms-2">
               <button
                 type="button"
@@ -304,12 +311,12 @@ const Header = props => {
                 className="btn header-item noti-icon "
                 data-toggle="reload"
               >
-                <i className="bx bx-sync" />
+                <i className="bx bx-sync" style={{color:"#7BAE40"}} />
               </button>
             </div>
 
 
-            <div className="dropdown d-none d-lg-inline-block ms-1">
+            {/* <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"
                 onClick={() => {
@@ -320,7 +327,7 @@ const Header = props => {
               >
                 <i className="bx bx-fullscreen" />
               </button>
-            </div>
+            </div> */}
 
             {/* <NotificationDropdown /> */}
             <ProfileMenu />
