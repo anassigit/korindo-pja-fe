@@ -68,7 +68,7 @@
 }
 
 #sidebar-menu {
-  padding: 10px 0 30px 0;
+  padding: 50px 0 30px 0;
 
   .mm-active {
     > .has-arrow {
@@ -96,14 +96,14 @@
         padding: 0.625rem 1.5rem;
         color: $sidebar-menu-item-color;
         position: relative;
-        font-size: 13px;
+        font-size: 17px;
         transition: all 0.4s;
 
         i {
           display: inline-block;
           min-width: 1.75rem;
           padding-bottom: 0.125em;
-          font-size: 1.25rem;
+          font-size: 1rem;
           line-height: 1.40625rem;
           vertical-align: middle;
           color: $sidebar-menu-item-icon-color;
@@ -269,7 +269,7 @@
           white-space: nowrap;
 
           > a {
-            padding: 15px 20px;
+            padding: 15px 15px;
             min-height: 55px;
             transition: none;
 
@@ -707,13 +707,13 @@ body[data-sidebar="colored"] {
   &.vertical-collpsed {
     .vertical-menu {
       .navbar-brand-box {
-        background-color: $primary;
+        background-color: #fff;
       }
       #sidebar-menu {
         > ul {
           > li {
             &:hover > a {
-              background-color: lighten($primary, 2%);
+              background-color: lighten(#fff, 2%);
             }
           }
         }
