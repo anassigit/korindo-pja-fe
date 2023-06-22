@@ -594,16 +594,16 @@ body[data-sidebar="greatwhale"] {
   }
 
   .mm-active {
-    color: $white !important;
+    color: #8C8C8C !important;
     > a {
-      color: $white !important;
+      color: #8C8C8C !important;
       i {
-        color: $white !important;
+        color: #8C8C8C !important;
       }
     }
     > i,
     .active {
-      color: $white !important;
+      color: #3F4031 !important; 
     }
   }
 
@@ -701,7 +701,7 @@ body[data-sidebar="greatwhale"] {
 }
 body[data-sidebar="colored"] {
   .vertical-menu {
-    background-color: $primary;
+    background-color: #fff;
   }
 
   &.vertical-collpsed {
