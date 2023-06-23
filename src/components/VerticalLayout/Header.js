@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 
 // Reactstrap
-import { Form, Label, Input, Alert, FormFeedback } from "reactstrap";
+import { Form, Label, Input, Alert, FormFeedback, DropdownMenu, DropdownToggle, Dropdown } from "reactstrap";
 
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
@@ -26,7 +26,13 @@ import {
   changeSidebarType,
 } from "../../store/actions";
 
+import languages from '../../common/languages';
 
+import us from '../../assets/images/flags/us.jpg'
+import id from '../../assets/images/flags/indonesia.png'
+import kr from '../../assets/images/flags/south-korea.png'
+
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 const Header = props => {
@@ -95,6 +101,12 @@ const Header = props => {
     dispatch(reloginUser(values, props.history));
   };
 
+  const [selectedLanguage, setSelectedLanguage] = useState(false);
+
+  const handleLanguageChange = (e) => {
+    setSelectedLanguage(e.target.value);
+  };
+  // const intl = getIntlInstance(selectedLanguage);
 
 
   return (
@@ -299,12 +311,30 @@ const Header = props => {
               </DropdownMenu>
             </Dropdown> */}
 
-            <select className="selectpicker" data-width="fit">
-              <option data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
-              <option data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
-            </select>
+            <Dropdown
+              isOpen={selectedLanguage}
+              toggle={() => {
+                setSelectedLanguage(!selectedLanguage);
+              }}
+              className="d-inline-block"
+            >
+              <DropdownToggle
+                className="btn header-item noti-icon "
+                tag="button"
+              >
+                <img src={us} height="16" />
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-end">
+                <Link to="/" className="dropdown-item"><img src={us} height="16" className="me-2" />
+                  <span className="align-middle">English</span></Link>
+                <Link to="/" className="dropdown-item"><img src={kr} height="16" className="me-2" />
+                  <span className="align-middle">Korea</span></Link>
+                <Link to="/" className="dropdown-item"><img src={id} height="16" className="me-2" />
+                  <span className="align-middle">Indonesia</span></Link>
+              </DropdownMenu>
+            </Dropdown>
 
-            <div className="dropdown d-none d-lg-inline-block ms-2">
+            {/* <div className="dropdown d-none d-lg-inline-block ms-1" >
               <button
                 type="button"
                 onClick={() => {
@@ -313,11 +343,10 @@ const Header = props => {
                 className="btn header-item noti-icon "
                 data-toggle="reload"
               >
-                <i className="bx bx-sync" style={{ color: "#7BAE40" }} />
+                <i className="fas fa-sync" style={{ color: "#7BAE40"  }} />
               </button>
-            </div>
-
-
+            </div> */}
+          
             {/* <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"
