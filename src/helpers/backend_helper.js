@@ -11,7 +11,7 @@ export const getDataImage = req => getWithXls("/app001/get-file-image", req)
 
 export const getDataPdf = req => getWithPdf("/app001/get-file-image", req)
 
-export const login = req => postLogin("/app001/login", req)
+export const login = req => postLogin("/Member/login", req)
 
 export const getUser = req => post("/app001/get-user", req)
 

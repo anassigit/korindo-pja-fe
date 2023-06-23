@@ -28,7 +28,7 @@ import {
 
 import languages from '../../common/languages';
 
-import us from '../../assets/images/flags/us.jpg'
+import us from '../../assets/images/flags/united-states-of-america.png'
 import id from '../../assets/images/flags/indonesia.png'
 import kr from '../../assets/images/flags/south-korea.png'
 
@@ -323,6 +323,7 @@ const Header = props => {
                 tag="button"
               >
                 <img src={us} height="16" />
+                <span>{selectedLanguage}</span>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-end">
                 <Link to="/" className="dropdown-item"><img src={us} height="16" className="me-2" />
