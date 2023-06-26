@@ -54,7 +54,7 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
-        },
+        },   
         {
             dataField: "title",
             text: "Instructions",
@@ -201,8 +201,7 @@ const Instructions = () => {
                                                 </Col>
                                             </Row>
                                             <Row>
-                                         
-                                                <TableCustom className="rounded-top"
+                                                <TableCustom 
                                                     keyField={"no"}
                                                     columns={appInstructionsp01Tabel}
                                                     redukResponse={appInstructionsData}

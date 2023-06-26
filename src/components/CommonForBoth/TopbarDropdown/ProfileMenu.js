@@ -25,7 +25,7 @@ const ProfileMenu = props => {
   useEffect(() => {
     if (localStorage.getItem("user")) {
         const u = JSON.parse(localStorage.getItem("user"))
-        setusername(u.userFisrtNm)
+        setusername(u.name)
     }
   }, [props.success])
 
@@ -52,7 +52,7 @@ const ProfileMenu = props => {
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block"/>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <Link to="/app007" className="dropdown-item">
+          <Link to="/AppUserProfile" className="dropdown-item">
             <i className="bx bx-lock-open font-size-16 align-middle me-1"/>
             <span>{props.t("Change User Data")}</span>
           </Link>

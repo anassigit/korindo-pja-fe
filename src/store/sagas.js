@@ -10,6 +10,7 @@ import ComboSaga from "./combo/saga"
 import RoleSaga from "./app003/saga"
 import RoleAksesSaga from "./app004/saga"
 import instructionsSaga from "./appInstructions/saga"
+import userProfileSaga from "./appUserProfile/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -22,5 +23,6 @@ export default function* rootSaga() {
     fork(ComboSaga),
     fork(ReportJasperSaga),
     fork(instructionsSaga),
+    fork(userProfileSaga),
   ])
 }
