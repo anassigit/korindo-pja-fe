@@ -9,6 +9,7 @@ export * from "./app002/actions"
 export * from "./app003/actions"
 export * from "./app004/actions"
 export * from "./app008/actions"
+export * from "./appInstructions/actions"
 
 
 

@@ -84,3 +84,13 @@ export const editMuser = req => post("/rest/app008/edit", req)
 export const saveMuser = req => post("/rest/app008/save", req)
 
 export const deleteMuser = req => post("/rest/app008/delete", req)
+
+
+//appInstructions
+export const getInstructions = req => post("instructionRest/get-list", req)
+
+export const saveInstructions = req => post("/rest/app008/save", req)
+
+export const editInstructions = req => post("/rest/app008/edit", req)
+
+export const deleteInstructions = req => post("/rest/app008/delete", req)

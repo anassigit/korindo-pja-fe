@@ -12,6 +12,7 @@ import Menu from "../pages/App002/Menu"
 import Role from "../pages/App003/Role"
 import RoleAkses from "../pages/App004/RoleAkses"
 import User from "../pages/App008/User"
+import Instructions from "../pages/AppInstructions/Instructions"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -19,6 +20,7 @@ const authProtectedRoutes = [
   { path: "/app003", component: Role },
   { path: "/app004", component: RoleAkses },
   { path: "/app008", component: User },
+  { path: "/AppInstructions", component: Instructions },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

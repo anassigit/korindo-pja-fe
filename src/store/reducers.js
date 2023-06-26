@@ -12,6 +12,7 @@ import MenuReduce from "./app002/reducer"
 import RoleReducer from "./app003/reducer"
 import RoleAksesReducer from "./app004/reducer"
 import MUserReducer from "./app008/reducer"
+import instructionsReducer from "./appInstructions/reducer"
 
 const rootReducer = combineReducers({
   Layout,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   ComboReducer,
   ReportJasper,
   MUserReducer,
+  instructionsReducer,
 })
 
 export default rootReducer
