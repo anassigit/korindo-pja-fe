@@ -12,12 +12,13 @@ import {
     Container,
     UncontrolledTooltip,
     CardHeader,
+    Input,
 } from "reactstrap";
 import { getInstructionsData, resetMessage } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
 //import { ReactSession } from 'react-client-session';
-// import JarakTanamAdd from "./JarakTanamAdd";
-// import JarakTanamEdit from "./JarakTanamEdit";
+ import AddInstructions from "./AddInstructions";
+ import EditInstructions from "./EditInstructions";
 
 const Instructions = () => {
 
@@ -25,17 +26,18 @@ const Instructions = () => {
     const [appInstructionsp01Page, setAppInstructionsp01Page] = useState(true)
     // const [app052p02Page, setApp052p02Page] = useState(false)
     // const [app052p03Page, setApp052p03Page] = useState(false)
-     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
+    const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
     // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
     // const [app052p03Data, setApp052p03Data] = useState()
+    const [selected, setSelected] = useState("");
 
     useEffect(() => {
         dispatch(resetMessage());
     }, [dispatch])
 
     //let plantCd = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).plantCd : "";
- 
-    const [appInstructionsp01TabelSearch, setAppInstructionsp01TabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: { any: "" } });
+
+    const [appInstructionsp01TabelSearch, setAppInstructionsp01TabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: { any: "", status: selected } });
 
     const appInstructionsData = useSelector(state => {
         return state.instructionsReducer.respGetInstructions;
@@ -54,7 +56,7 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
-        },   
+        },
         {
             dataField: "title",
             text: "Instructions",
@@ -147,6 +149,18 @@ const Instructions = () => {
     //     setApp052setMsg(app052p04Message);
     // }, [app052p04Message])
 
+    const handleChange = event => {
+        // setApp045p01MsgPlant("");
+        setAppInstructionsp01TabelSearch({
+            page: 1, limit: appInstructionsp01TabelSearch.limit, offset: 0,
+            sort: appInstructionsp01TabelSearch.sort, order: appInstructionsp01TabelSearch.order, search: { any: appInstructionsp01TabelSearch.search.any, status: event.target.value }
+        })
+        setAppInstructionssetMsg("")
+        console.log(event.target.value);
+        // console.log('dropdown: ', selected);
+        setSelected(event.target.value);
+    };
+
     return (
         <RootPageCustom msgStateGet={appInstructionsMsg} msgStateSet={setAppInstructionsMsg}
             componentJsx={
@@ -163,45 +177,80 @@ const Instructions = () => {
 
                         <Row>
                             <Col>
-                                <Card>
-                                    {/* <CardHeader>
-                                        <i className="bx bx-list-check font-size-18 align-middle me-2"></i>Instructions
-                                    </CardHeader> */}
-                                    <CardBody>
-                                        <React.Fragment>
-                                            <Row className="mb-2">
-                                                <Col sm="8">
-                                                    <div className="input-group">
-                                                        <label className="col-sm-1" style={{ marginTop: "8px" }}>Search : </label>
-                                                        <div className="col-sm-3">
+                                <Row className="mb-2">
+                                    <Col sm="12">
+                                        <div className="form-group m-0">
+                                            <div className="input-group">
+                                                <Col md="4">
+                                                    <Row className="mb-1 col-sm-10">
+                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>Search : </label>
+                                                        <div className="col-sm-7">
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 value={appInstructionsp01TabelSearch.any}
-                                                                onChange={e => { setAppInstructionsp01TabelSearch({
-                                                                    page: appInstructionsp01TabelSearch.page, limit: appInstructionsp01TabelSearch.limit, offset: appInstructionsp01TabelSearch.offset,
-                                                                    sort: appInstructionsp01TabelSearch.sort, order: appInstructionsp01TabelSearch.order, search: { any: e.target.value }
-                                                                }) }}
+                                                                onChange={e => {
+                                                                    setAppInstructionsp01TabelSearch({
+                                                                        page: appInstructionsp01TabelSearch.page, limit: appInstructionsp01TabelSearch.limit, offset: appInstructionsp01TabelSearch.offset,
+                                                                        sort: appInstructionsp01TabelSearch.sort, order: appInstructionsp01TabelSearch.order, search: { any: e.target.value }
+                                                                    })
+                                                                }}
                                                             />
                                                         </div>
-                                                    </div>
+                                                    </Row>
+                                                </Col>
+
+                                                <Col md="4" style={{ marginLeft: "-0px" }}>
+                                                    <Row className="mb-1 col-sm-10">
+                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                            Status :{" "}
+                                                        </label>
+                                                        <div className="col-sm-7">
+                                                        <Input
+                                                type="select"
+                                                name="statusApprove"
+                                                onChange={handleChange}
+                                                // onSelect={""}
+                                                value={selected}
+                                            >
+                                                <option id="" value={""}>Semua</option>
+                                                <option id="NS" value={"1"}>Not Started</option>
+                                                <option id="IP" value={"2"}>In Progress</option>
+                                                <option id="CP" value={"3"}>Completed</option>
+                                                <option id="RJ" value={"4"}>Rejected</option>
+
+                                            </Input>
+                                                        </div>
+                                                    </Row>
                                                 </Col>
 
                                                 <Col sm="12">
-                                                    <div className="text-sm-end">
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-primary "
-                                                            // onClick={() => { app052p01PreAdd() }}
-                                                        >
-                                                            <i className="bx bx-plus font-size-16 align-middle me-2"></i>{" "}
-                                                            New Instructions
-                                                        </button>
-                                                    </div>
-                                                </Col>
-                                            </Row>
+                                        <div className="text-sm-end">
+                                            <button
+                                                type="button"
+                                                className="btn btn-primary "
+                                            // onClick={() => { app052p01PreAdd() }}
+                                            >
+                                                <i className="bx bx-plus font-size-16 align-middle me-2"></i>{" "}
+                                                New Instructions
+                                            </button>
+                                        </div>
+                                    </Col>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Card>
+                                    {/* <CardHeader>
+                                        <i className="bx bx-list-check font-size-18 align-middle me-2"></i>Instructions
+                                    </CardHeader> */}
+
+                                    <CardBody>
+                                        <React.Fragment>
+
                                             <Row>
-                                                <TableCustom 
+                                                <TableCustom
                                                     keyField={"no"}
                                                     columns={appInstructionsp01Tabel}
                                                     redukResponse={appInstructionsData}
@@ -211,7 +260,7 @@ const Instructions = () => {
                                                     searchGet={appInstructionsp01TabelSearch}
                                                     redukCall={getInstructionsData}
                                                 />
-                                           
+
                                             </Row>
                                         </React.Fragment>
                                     </CardBody>
@@ -220,14 +269,14 @@ const Instructions = () => {
                         </Row>
                     </Container>
 
-                    {/* <JarakTanamAdd
+                     {/* <AddInstructions
                         app052p02Page={app052p02Page}
                         setApp052p02Page={setApp052p02Page}
                         setApp052setMsg={setApp052setMsg}
                         setApp052p01Page={setApp052p01Page}
                         app052p01TabelSearch={app052p01TabelSearch}/>
 
-                     <JarakTanamEdit
+                      <EditInstructions
                         app052p03Page={app052p03Page}
                         setApp052p03Page={setApp052p03Page}
                         setApp052setMsg={setApp052setMsg}

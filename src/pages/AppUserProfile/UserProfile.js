@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux"
 // import Lovv2 from "../../common/Lovv2";
 // import { getPlant, getPosition, getWilayah } from "../../store/lov/actions"
 // import { getCombo } from "../../store/combo/actions"
-import { ReactSession  } from 'react-client-session';
+// import { ReactSession  } from 'react-client-session';
 
 
 const UserProfile = () => {
@@ -47,14 +47,14 @@ const UserProfile = () => {
   }
 
   const [appUserProfilep01Spinner, setAppUserProfilep01Spinner] = useState(false);
-  const u = JSON.parse(ReactSession.get("user"))
+//   const u = JSON.parse(ReactSession.get("user"))
 
   const appUserProfilep01ValidInput = useFormik({
     enableReinitialize: true,
 
     initialValues: {
-    //   userId: u != null ? u.userId : '',
-      hp: u != null ? u.hp : ''
+    //   id: u != null ? u.id : '',
+    //   hp: u != null ? u.hp : ''
     //   userLastNm: u != null ? u.userLastNm : '',
     //   password: '',
     //   rePassword: '',
@@ -68,10 +68,10 @@ const UserProfile = () => {
     },
 
     validationSchema: Yup.object().shape({
-    //   userId: Yup.string()
+    //   id: Yup.string()
     //     .required("Wajib diisi"),
-      hp: Yup.string()
-        .required("Wajib diisi")
+    //   hp: Yup.string()
+    //     .required("Wajib diisi")
     //   userLastNm: Yup.string()
     //     .required("Wajib diisi"),
     //   plantNm: Yup.string()
@@ -96,20 +96,20 @@ const UserProfile = () => {
   });
 
 
-  useEffect(() => {
-    if (appUserProfilep01Message.status == "1") {
-      setAppUserProfilep01Page(true);
-      const u = JSON.parse(ReactSession.get("user"))
-      u.name = appUserProfilep01ValidInput.values.name
-      u.pName = appUserProfilep01ValidInput.values.pName
-      u.gName = appUserProfilep01ValidInput.values.gName
-      u.hp = appUserProfilep01ValidInput.values.hp
-      u.id = appUserProfilep01ValidInput.values.id
-      ReactSession.set("user", JSON.stringify(u))
-    }
-    setAppUserProfilesetMsg(appUserProfilep01Message)
-    setAppUserProfilep01Spinner(false);
-  }, [appUserProfilep01Message])
+//   useEffect(() => {
+//     if (appUserProfilep01Message.status == "1") {
+//       setAppUserProfilep01Page(true);
+//       const u = JSON.parse(ReactSession.get("user"))
+//       u.name = appUserProfilep01ValidInput.values.name
+//       u.pName = appUserProfilep01ValidInput.values.pName
+//       u.gName = appUserProfilep01ValidInput.values.gName
+//       u.hp = appUserProfilep01ValidInput.values.hp
+//       u.id = appUserProfilep01ValidInput.values.id
+//       ReactSession.set("user", JSON.stringify(u))
+//     }
+//     setAppUserProfilesetMsg(appUserProfilep01Message)
+//     setAppUserProfilep01Spinner(false);
+//   }, [appUserProfilep01Message])
 
 //   const [appUserProfilep01SearchLovPlant, setAppUserProfilep01SearchLovPlant] = useState(u != null ? u.plantNm : '')
 
@@ -221,10 +221,11 @@ const UserProfile = () => {
                       <Row>
                         <Col md="5">
                           <div className="mb-3 col-sm-10">
-                          <Label>Name<span style={{ color: "red" }}>* </span></Label>
+                          <Label>Name</Label>
                             <Input
                               name="name"
                               type="text"
+                              disabled
                               maxLength={50}
                               onChange={appUserProfilep01ValidInput.handleChange}
                               value={appUserProfilep01ValidInput.values.name || ""}
@@ -238,7 +239,7 @@ const UserProfile = () => {
                           </div>
 
                           <div className="mb-3 col-sm-10">
-                            <Label>Position<span style={{ color: "red" }}>* </span></Label>
+                            <Label>Position</Label>
                             <Input
                               name="pName"
                               type="text"
@@ -255,7 +256,7 @@ const UserProfile = () => {
                           </div>
 
                           <div className="mb-3 col-sm-10">
-                            <Label>Group<span style={{ color: "red" }}>* </span></Label>
+                            <Label>Group</Label>
                             <Input
                               name="gName"
                               type="text"
@@ -294,7 +295,7 @@ const UserProfile = () => {
                           </div>
 
                           <div className="mb-3 col-sm-10">
-                            <Label>ID<span style={{ color: "red" }}>* </span></Label>
+                            <Label>ID</Label>
                             <Input
                               name="id"
                               type="text"

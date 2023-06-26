@@ -87,7 +87,7 @@ export const deleteMuser = req => post("/rest/app008/delete", req)
 
 
 //appUserProfile
-export const getUserProfile = req => post("MemberRest/SelectMyInfo", req)
+export const getUserProfile = req => post("MemberRest/UpdateMyInfo", req)
 
 export const saveUserProfile = req => post("/rest/app008/save", req)
 
@@ -98,7 +98,7 @@ export const deleteUserProfile = req => post("/rest/app008/delete", req)
 
 
 //appInstructions
-export const getInstructions = req => post("instructionRest/get-list", req)
+export const getInstructions = req => post("InstructionRest/GetInstructionList", req)
 
 export const saveInstructions = req => post("/rest/app008/save", req)
 

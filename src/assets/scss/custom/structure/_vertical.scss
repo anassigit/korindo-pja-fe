@@ -615,9 +615,11 @@ body[data-sidebar="greatwhale"] {
         }
 
         a {
-          color: rgba($white, 0.6);
+          // color: rgba($white, 0.6);
+          color: #8C8C8C ;
           i {
-            color: rgba($white, 0.6);
+            // color: rgba($white, 0.6);
+            color: #8C8C8C ;
           }
           &.waves-effect {
             .waves-ripple {
@@ -626,10 +628,12 @@ body[data-sidebar="greatwhale"] {
           }
 
           &:hover {
-            color: $white;
+            // color: $white;
+            color: #545a6d;
 
             i {
-              color: $white;
+              // color: $white;
+              color: #545a6d;
             }
           }
         }
