@@ -63,12 +63,10 @@ const UserProfile = () => {
 
     validationSchema: Yup.object().shape({
 
-      name: Yup.string()
-        .required("Wajib diisi"),
+
       hp: Yup.string()
-        .required("Wajib diisi"),
-      id: Yup.string()
-        .required("Wajib diisi"),
+        .required("Wajib diisi")
+
 
     }),
 
