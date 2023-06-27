@@ -25,7 +25,7 @@ const ProfileMenu = props => {
   useEffect(() => {
     if (localStorage.getItem("user")) {
         const u = JSON.parse(localStorage.getItem("user"))
-        setusername(u.name)
+        setusername(u.data[0].name)
     }
   }, [props.success])
 

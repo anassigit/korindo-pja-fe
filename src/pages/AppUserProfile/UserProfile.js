@@ -25,6 +25,9 @@ import { editUserProfile, resetMessage } from "../../store/appUserProfile/action
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession  } from 'react-client-session';
 import { isNull } from "lodash";
+import { color } from "echarts";
+import { useNavigate } from 'react-router-dom';
+
 
 
 const UserProfile = () => {
@@ -50,11 +53,11 @@ const UserProfile = () => {
     enableReinitialize: true,
 
     initialValues: {
-      name: u != null ? u.name : '',
-      pName: u != null ? u.pName : '',
-      gName: u != null ? u.gName : '',
-      hp: u != null ? u.hp : '',
-      id: u != null ? u.id : '',
+      name: u != null ? u.data[0].name : '',
+      pName: u != null ? u.data[0].pName : '',
+      gName: u != null ? u.data[0].gName : '',
+      hp: u != null ? u.data[0].hp : '',
+      id: u != null ? u.data[0].id : '',
 
     },
 
@@ -96,6 +99,7 @@ const UserProfile = () => {
     setAppUserProfileSpinner(false);
   }, [appUserProfileMessage])
 
+  const changePass = () => navigate('/changePassword');
 
   return (
     <React.Fragment>
@@ -220,10 +224,9 @@ const UserProfile = () => {
 
                           <div className="mb-3 col-sm-8">
                             <Label>Password</Label>
-                            <Button type="submit" color="primary" className="ms-5">
-                            {" "}
+                            <Button type="button" onClick={changePass} className="ms-5" style={{background: "#7BAE40"}}>
                             Change Password
-                      </Button>
+                          </Button>
                           </div>
                           <span style={{ fontStyle: "italic" }}> * Please click button Change Password for change the password.</span>
                         </Col>

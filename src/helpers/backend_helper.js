@@ -4,7 +4,7 @@ import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf 
 //combo
 export const getCombo = req => post("/app001/get-dtlsetting-combo", req)
 
-//app001
+//Login
 export const getData = req => post("/app001/get-all", req)
 
 export const getDataImage = req => getWithXls("/app001/get-file-image", req)

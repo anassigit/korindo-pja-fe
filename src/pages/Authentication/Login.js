@@ -205,7 +205,7 @@ const Login = props => {
                       </div> */}
 
                       <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-muted">
+                        <Link to="/changePassword" className="text-muted">
                           <i className="mdi mdi-lock me-1" />
                           Forgot your password?
                         </Link>

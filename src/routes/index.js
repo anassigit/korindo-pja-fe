@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom"
 // Authentication related pages
 import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
+import ChangePassword from "../pages/Authentication/ChangePassword"
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
@@ -26,12 +27,13 @@ const authProtectedRoutes = [
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
-  { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
+  { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> },
 ]
 
 const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
+  { path: "/changePassword", component: ChangePassword },
 ]
 
 export { publicRoutes, authProtectedRoutes }
