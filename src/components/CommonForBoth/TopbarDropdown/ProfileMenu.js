@@ -54,7 +54,7 @@ const ProfileMenu = props => {
         <DropdownMenu className="dropdown-menu-end">
           <Link to="/AppUserProfile" className="dropdown-item">
             <i className="bx bx-lock-open font-size-16 align-middle me-1"/>
-            <span>{props.t("Change User Data")}</span>
+            <span>{props.t("Profile")}</span>
           </Link>
           <div className="dropdown-divider"/>
           <Link to="/logout" className="dropdown-item">

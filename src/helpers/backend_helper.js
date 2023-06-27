@@ -87,14 +87,7 @@ export const deleteMuser = req => post("/rest/app008/delete", req)
 
 
 //appUserProfile
-export const getUserProfile = req => post("MemberRest/UpdateMyInfo", req)
-
-export const saveUserProfile = req => post("/rest/app008/save", req)
-
-export const editUserProfile = req => post("/rest/app008/edit", req)
-
-export const deleteUserProfile = req => post("/rest/app008/delete", req)
-
+export const editUserProfile = req => post("MemberRest/UpdateMyInfo", req)
 
 
 //appInstructions
