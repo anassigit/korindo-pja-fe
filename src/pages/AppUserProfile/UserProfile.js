@@ -24,6 +24,7 @@ import {
 import { editUserProfile, resetMessage } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession  } from 'react-client-session';
+import { isNull } from "lodash";
 
 
 const UserProfile = () => {
@@ -42,21 +43,29 @@ const UserProfile = () => {
   }
 
   const [appUserProfileSpinner, setAppUserProfileSpinner] = useState(false);
-  const u = JSON.parse(ReactSession.get("user") || null)
+
+  const u = JSON.parse(localStorage.getItem("user") || null) 
 
   const appUserProfilepValidInput = useFormik({
     enableReinitialize: true,
 
     initialValues: {
-
-      hp: u != null ? u.hp : ''
+      name: u != null ? u.name : '',
+      pName: u != null ? u.pName : '',
+      gName: u != null ? u.gName : '',
+      hp: u != null ? u.hp : '',
+      id: u != null ? u.id : '',
 
     },
 
     validationSchema: Yup.object().shape({
 
+      name: Yup.string()
+        .required("Wajib diisi"),
       hp: Yup.string()
-        .required("Wajib diisi")
+        .required("Wajib diisi"),
+      id: Yup.string()
+        .required("Wajib diisi"),
 
     }),
 
@@ -75,13 +84,13 @@ const UserProfile = () => {
   useEffect(() => {
     if (appUserProfileMessage.status == "1") {
       setUserProfilePage(true);
-      const u = JSON.parse(ReactSession.get("user"))
+      const u = JSON.parse(localStorage.getItem("user"))
       u.name = appUserProfilepValidInput.values.name
       u.pName = appUserProfilepValidInput.values.pName
       u.gName = appUserProfilepValidInput.values.gName
       u.hp = appUserProfilepValidInput.values.hp
       u.id = appUserProfilepValidInput.values.id
-      ReactSession.set("user", JSON.stringify(u))
+      localStorage.getItem("user", JSON.stringify(u))
     }
     setAppUserProfilesetMsg(appUserProfileMessage)
     setAppUserProfileSpinner(false);

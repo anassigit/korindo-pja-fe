@@ -32,7 +32,7 @@ import {
 } from "reactstrap";
 
 import Lovv2 from "../../common/Lovv2";
-import { getmuserData, editMuser, resetMessage, saveMuser, deleteMuser, getrolecomboData } from "../../store/app008/actions"
+import { getUserProfilData, editUserProfile, resetMessage, saveUserProfile, deleteUserProfile } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
 
 
@@ -87,8 +87,8 @@ const User = () => {
     return state.MUserReducer.respGetrolecombo;
   });
 
-  const app008p01UserData = useSelector(state => {
-    return state.MUserReducer.respGetmuser;
+  const userData = useSelector(state => {
+    return state.userProfileReducer.respGetUserProfile;
   });
 
   useEffect(() => {
@@ -106,20 +106,20 @@ const User = () => {
   const app008p01TabelUserColumns = [
 
     {
-      dataField: "userId",
+      dataField: "name",
       text: "ID User",
       sort: true,
       headerStyle: { textAlign: 'center' },
     },
     {
-      dataField: "userFisrtNm",
-      text: "Nama Depan",
+      dataField: "pName",
+      text: "Posisi",
       sort: true,
       headerStyle: { textAlign: 'center' },
     },
     {
-      dataField: "userLastNm",
-      text: "Nama Belakang",
+      dataField: "gName",
+      text: "Nama",
       sort: true,
       headerStyle: { textAlign: 'center' },
     },
@@ -165,12 +165,7 @@ const User = () => {
       sort: true,
       headerStyle: { textAlign: 'center' },
     },
-    {
-      dataField: "ltsRole",
-      text: "Role",
-      sort: false,
-      hidden: true,
-    },
+   
 
     {
       dataField: "action",
@@ -281,7 +276,7 @@ const User = () => {
     setApp008p02Page(true)
   }
 
-  const app008p01PreEdit = (app008p01UserData) => {
+  const userProfilep01PreEdit = (app008p01UserData) => {
     setApp008setMsg("")
     app008p03ValidInput.setFieldValue("userId", app008p01UserData.userId)
     app008p03ValidInput.setFieldValue("userFisrtNm", app008p01UserData.userFisrtNm)
