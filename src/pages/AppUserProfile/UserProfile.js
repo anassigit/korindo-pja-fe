@@ -240,7 +240,6 @@ const UserProfile = () => {
                         </Col>
                       </Row>
                       <Button type="submit" color="primary" className="ms-1">
-                        <i className="bx bxs-save align-middle me-2"></i>{" "}
                         SAVE
                       </Button>
                       <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />
