@@ -3,15 +3,15 @@ import {
     EDIT_USER_PROFILE,
     MSGEDIT,
     RESET_MESSAGE,
-    SAVE_USER_PASSWORD,
-    MSGADD
+    UPDATE_USER_PASSWORD,
+    MSGUPPASSWORD
 
 } from "./actionTypes"
 
 const INIT_STATE = {
 
     msgEdit: "",
-    msgAdd: "",
+    msgUpdatePassword: "",
 }
 
 const userProfileReducer = (state = INIT_STATE, action) => {
@@ -21,10 +21,10 @@ const userProfileReducer = (state = INIT_STATE, action) => {
         ...state,
         msgEdit: action.payload,
       }
-      case MSGADD:
+      case MSGUPPASSWORD:
       return {
         ...state,
-        msgAdd: action.payload,
+        msgUpdatePassword: action.payload,
       }
     case RESET_MESSAGE :
         return {
@@ -35,7 +35,7 @@ const userProfileReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
       }
-      case SAVE_USER_PASSWORD:
+      case UPDATE_USER_PASSWORD:
       return {
         ...state,
       }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react"
 import MetaTags from 'react-meta-tags';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import RootPageCustom from '../../common/RootPageCustom';
 import { useFormik, } from "formik";
 import * as Yup from "yup";
 import '../../config';
@@ -34,7 +35,7 @@ const UserProfile = () => {
   const [userProfilePage, setUserProfilePage] = useState(true)
   const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
   const [userProfilePassword, setUserProfilePassword] = useState(false)
-  const [id, setId] = useState("")
+  //const [id, setId] = useState("")
   const [userProfilePageData, setUserProfilePageData] = useState()
 
   useEffect(() => {
@@ -72,8 +73,8 @@ const UserProfile = () => {
     }),
 
     onSubmit: (values) => {
-      setAppUserProfileSpinner(true);
       setAppUserProfileMsg("")
+      setAppUserProfileSpinner(true);
       dispatch(editUserProfile(values));
     }
   });
@@ -102,30 +103,34 @@ const UserProfile = () => {
     setUserProfilePage(false)
     setUserProfilePageData(userProfilePageData)
     setUserProfilePassword(true)
+    setAppUserProfileMsg("")
     // setId(userProfilePageData.id)
+    // console.log("wow",userProfilePageData )
   }
+
 
   return (
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Project A</title>
+          <title>Korindo App</title>
         </MetaTags>
 
         {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
           {typeof appUserProfileMsg == 'string' ? appUserProfileMsg : appUserProfileMsg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null}
 
         <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
+          {/* <Breadcrumbs title="Forms" breadcrumbItem="Ubah User" /> */}
 
           <Row>
             <Col lg={12}>
               <Card>
-                <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>Change Profile Info</CardHeader>
+                <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>Change profile</CardHeader>
                 <CardBody>
                   <Form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      appUserProfilepValidInput.handleSubmit();
+                      app007p01ValidInput.handleSubmit();
                       return false;
                     }}>
                     <FormGroup className="mb-0">
@@ -239,8 +244,7 @@ const UserProfile = () => {
                         SAVE
                       </Button>
                       <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />
-                    </FormGroup>
-
+                      </FormGroup>
                   </Form>
 
                 </CardBody>
@@ -254,14 +258,9 @@ const UserProfile = () => {
           setUserProfilePassword={setUserProfilePassword}
           setUserProfilePage={setUserProfilePage}
           setAppUserProfileMsg={setAppUserProfileMsg}
-          id={id}
-          userProfilePageData={userProfilePageData}
-        // app052p01TabelSearch={app052p01TabelSearch}
         />
-
       </div>
     </React.Fragment>
   );
 };
-
 export default UserProfile

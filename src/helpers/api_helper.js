@@ -41,6 +41,15 @@ export async function getWithParam(url, data, config ={responseType: 'blob'}) {
   })
 }
 
+export async function postWithParam(url, data ,config ={}
+) {
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
+  return await axiosApi.post(url+"?"+$.param(data), { ...config })
+  .then(function (response) {
+    return responseError(response);
+  })
+}
+
 export async function post(url, data, config = {}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
   return axiosApi

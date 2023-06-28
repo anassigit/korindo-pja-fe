@@ -1,5 +1,5 @@
 
-import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf } from "./api_helper"
+import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf,postWithParam } from "./api_helper"
 
 //combo
 export const getCombo = req => post("/app001/get-dtlsetting-combo", req)
@@ -89,7 +89,7 @@ export const deleteMuser = req => post("/rest/app008/delete", req)
 //appUserProfile
 export const editUserProfile = req => post("MemberRest/UpdateMyInfo", req)
 
-export const updateUserPassword = req => post("MemberRest/UpdatePassword", req)
+export const updateUserPassword = req => postWithParam("MemberRest/UpdatePassword", req)
 
 
 //appInstructions

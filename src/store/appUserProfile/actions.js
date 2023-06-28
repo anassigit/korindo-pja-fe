@@ -3,8 +3,8 @@ import {
     EDIT_USER_PROFILE,
     MSGEDIT,
     RESET_MESSAGE,
-    SAVE_USER_PASSWORD,
-    MSGADD
+    UPDATE_USER_PASSWORD,
+    MSGUPPASSWORD
 
 } from "./actionTypes"
 
@@ -14,8 +14,8 @@ import {
     payload: resp,
   })
 
-  export const msgAdd = resp => ({
-    type: MSGADD,
+  export const msgUpdatePassword = resp => ({
+    type: MSGUPPASSWORD,
     payload: resp,
   })
 
@@ -29,8 +29,8 @@ import {
     payload: req,
   })
 
-  export const saveUserPassword = (req) => ({
-    type: SAVE_USER_PASSWORD,
+  export const updateUserPassword = (req) => ({
+    type: UPDATE_USER_PASSWORD,
     payload: req,
   })
 
