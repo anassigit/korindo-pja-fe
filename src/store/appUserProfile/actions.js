@@ -2,13 +2,20 @@ import {
 
     EDIT_USER_PROFILE,
     MSGEDIT,
-    RESET_MESSAGE
+    RESET_MESSAGE,
+    SAVE_USER_PASSWORD,
+    MSGADD
 
 } from "./actionTypes"
 
 
   export const msgEdit = resp => ({
     type: MSGEDIT,
+    payload: resp,
+  })
+
+  export const msgAdd = resp => ({
+    type: MSGADD,
     payload: resp,
   })
 
@@ -21,3 +28,9 @@ import {
     type: EDIT_USER_PROFILE,
     payload: req,
   })
+
+  export const saveUserPassword = (req) => ({
+    type: SAVE_USER_PASSWORD,
+    payload: req,
+  })
+

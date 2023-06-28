@@ -23,10 +23,8 @@ import {
 
 import { editUserProfile, resetMessage } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
-import { ReactSession  } from 'react-client-session';
-import { isNull } from "lodash";
-import { color } from "echarts";
-import { useNavigate } from 'react-router-dom';
+import { ReactSession } from 'react-client-session';
+import ChangePassword from "pages/Authentication/ChangePassword";
 
 
 
@@ -34,7 +32,10 @@ const UserProfile = () => {
 
   const dispatch = useDispatch();
   const [userProfilePage, setUserProfilePage] = useState(true)
-  const [appUserProfileMsg, setAppUserProfilesetMsg] = useState("")
+  const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
+  const [userProfilePassword, setUserProfilePassword] = useState(false)
+  const [id, setId] = useState("")
+  const [userProfilePageData, setUserProfilePageData] = useState()
 
   useEffect(() => {
     dispatch(resetMessage());
@@ -42,12 +43,12 @@ const UserProfile = () => {
 
 
   const appUserProfileCloseAllert = () => {
-    setAppUserProfilesetMsg("")
+    setAppUserProfileMsg("")
   }
 
   const [appUserProfileSpinner, setAppUserProfileSpinner] = useState(false);
 
-  const u = JSON.parse(localStorage.getItem("user") || null) 
+  const u = JSON.parse(localStorage.getItem("user") || null)
 
   const appUserProfilepValidInput = useFormik({
     enableReinitialize: true,
@@ -72,7 +73,7 @@ const UserProfile = () => {
 
     onSubmit: (values) => {
       setAppUserProfileSpinner(true);
-      setAppUserProfilesetMsg("")
+      setAppUserProfileMsg("")
       dispatch(editUserProfile(values));
     }
   });
@@ -93,11 +94,16 @@ const UserProfile = () => {
       u.id = appUserProfilepValidInput.values.id
       localStorage.getItem("user", JSON.stringify(u))
     }
-    setAppUserProfilesetMsg(appUserProfileMessage)
+    setAppUserProfileMsg(appUserProfileMessage)
     setAppUserProfileSpinner(false);
   }, [appUserProfileMessage])
 
-  const changePass = () => navigate('/changePassword');
+  const ChangePassPage = () => {
+    setUserProfilePage(false)
+    setUserProfilePageData(userProfilePageData)
+    setUserProfilePassword(true)
+    // setId(userProfilePageData.id)
+  }
 
   return (
     <React.Fragment>
@@ -110,7 +116,6 @@ const UserProfile = () => {
           {typeof appUserProfileMsg == 'string' ? appUserProfileMsg : appUserProfileMsg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null}
 
         <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
-          {/* <Breadcrumbs title="Forms" breadcrumbItem="Change User Profile" /> */}
 
           <Row>
             <Col lg={12}>
@@ -127,7 +132,7 @@ const UserProfile = () => {
                       <Row>
                         <Col md="5">
                           <div className="mb-3 col-sm-10">
-                          <Label>Name</Label>
+                            <Label>Name</Label>
                             <Input
                               name="name"
                               type="text"
@@ -179,13 +184,13 @@ const UserProfile = () => {
                               <FormFeedback type="invalid">{appUserProfilepValidInput.errors.gName}</FormFeedback>
                             ) : null}
                           </div>
-                          
+
                         </Col>
 
 
                         <Col md="5">
 
-                        <div className="mb-3 col-sm-8">
+                          <div className="mb-3 col-sm-8">
                             <Label>HP<span style={{ color: "red" }}>* </span></Label>
                             <Input
                               name="hp"
@@ -222,9 +227,9 @@ const UserProfile = () => {
 
                           <div className="mb-3 col-sm-8">
                             <Label>Password</Label>
-                            <Button type="button" onClick={changePass} className="ms-5" style={{background: "#7BAE40"}}>
-                            Change Password
-                          </Button>
+                            <Button onClick={() => { ChangePassPage() }} className="ms-5" style={{ background: "#7BAE40" }}>
+                              Change Password
+                            </Button>
                           </div>
                           <span style={{ fontStyle: "italic" }}> * Please click button Change Password for change the password.</span>
                         </Col>
@@ -243,6 +248,16 @@ const UserProfile = () => {
             </Col>
           </Row>
         </Container>
+
+        <ChangePassword
+          userProfilePassword={userProfilePassword}
+          setUserProfilePassword={setUserProfilePassword}
+          setUserProfilePage={setUserProfilePage}
+          setAppUserProfileMsg={setAppUserProfileMsg}
+          id={id}
+          userProfilePageData={userProfilePageData}
+        // app052p01TabelSearch={app052p01TabelSearch}
+        />
 
       </div>
     </React.Fragment>

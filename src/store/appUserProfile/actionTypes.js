@@ -1,3 +1,5 @@
 export const EDIT_USER_PROFILE = "EDIT_USER_PROFILE"
 export const MSGEDIT = "MSGEDIT"
+export const MSGADD = "MSGADD"
 export const RESET_MESSAGE = "RESET_MESSAGE"
+export const SAVE_USER_PASSWORD = "SAVE_USER_PASSWORD"
