@@ -186,7 +186,7 @@ useEffect(() => {
                   </div>
 
                   <Button  color="primary" className="ms-1" onClick={() => { updatePass() }}>
-                    <i className="bx bxs-save align-middle me-2"></i>{" "}
+                   
                     Simpan
                     <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                   </Button>&nbsp;
@@ -196,7 +196,7 @@ useEffect(() => {
                     className="btn btn-danger "
                     onClick={() => { props.setUserProfilePage(true); props.setUserProfilePassword(false); props.setAppUserProfileMsg("") }}
                   >
-                    <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
+                   
                     Kembali
                   </Button>
                 </FormGroup>

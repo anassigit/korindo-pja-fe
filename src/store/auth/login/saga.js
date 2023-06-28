@@ -18,7 +18,7 @@ function* loginUser({ payload: { user, history } }) {
         // if(res.status == 1){
         //   localStorage.setItem("menu", JSON.stringify(res.data.menu));
         // }
-        history.push("/dashboard");
+        history.push("/");
         yield put(loginSuccess(response));
       }else{
         yield put(apiError(response.listmessage))
