@@ -4,7 +4,8 @@ import {
     MSGEDIT,
     RESET_MESSAGE,
     UPDATE_USER_PASSWORD,
-    MSGUPPASSWORD
+    MSGUPPASSWORD,
+    EMAIL_FORGOT_PASSWORD
 
 } from "./actionTypes"
 
@@ -31,6 +32,11 @@ import {
 
   export const updateUserPassword = (req) => ({
     type: UPDATE_USER_PASSWORD,
+    payload: req,
+  })
+
+  export const emailForgotPassword = (req) => ({
+    type: EMAIL_FORGOT_PASSWORD,
     payload: req,
   })
 

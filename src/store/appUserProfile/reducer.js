@@ -4,7 +4,8 @@ import {
     MSGEDIT,
     RESET_MESSAGE,
     UPDATE_USER_PASSWORD,
-    MSGUPPASSWORD
+    MSGUPPASSWORD,
+    EMAIL_FORGOT_PASSWORD
 
 } from "./actionTypes"
 
@@ -36,6 +37,10 @@ const userProfileReducer = (state = INIT_STATE, action) => {
         ...state,
       }
       case UPDATE_USER_PASSWORD:
+      return {
+        ...state,
+      }
+      case EMAIL_FORGOT_PASSWORD:
       return {
         ...state,
       }
