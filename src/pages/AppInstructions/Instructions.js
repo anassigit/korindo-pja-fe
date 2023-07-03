@@ -53,7 +53,7 @@ const Instructions = () => {
 
     const appInstructionsp01Tabel = [
         {
-            dataField: "no",
+            dataField: "num",
             text: "No.",
             sort: true,
             align: "left",
@@ -67,19 +67,19 @@ const Instructions = () => {
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "managerList",
-            text: "Owner/ Manager",
+            dataField: "ownerList",
+            text: "Owner",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
-        // {
-        //     dataField: "managerList",
-        //     text: "Manager",
-        //     sort: true,
-        //     align: "left",
-        //     headerStyle: { textAlign: 'center' },
-        // },
+        {
+            dataField: "managerList",
+            text: "Manager",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
         {
             dataField: "instDate",
             text: "Instruction Date",
@@ -90,6 +90,20 @@ const Instructions = () => {
         {
             dataField: "status",
             text: "Status",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "reply_count",
+            text: "Replies",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "notice_count",
+            text: "Notices",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },

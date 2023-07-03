@@ -83,8 +83,8 @@ const AddInstructions = (props) => {
 
 
     return (
-        <Container style={{ display: props.setAppAddInstructions ? 'block' : 'none' }} fluid={true}>
-            <Breadcrumbs title="Forms" breadcrumbItem="Master Rumus Tegakan" pageNow={props.setAppAddInstructions} pageBefore={props.setAppInstructionsPage} message={props.setAppInstructionsMsg} />
+        <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
+            {/* <Breadcrumbs title="Forms" breadcrumbItem="Master Rumus Tegakan" pageNow={props.setAppAddInstructions} pageBefore={props.setAppInstructionsPage} message={props.setAppInstructionsMsg} /> */}
 
             <Row>
                 <Col lg={12}>

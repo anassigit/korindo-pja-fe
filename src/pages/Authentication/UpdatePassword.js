@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { updateUserPassword } from "../../store/appUserProfile/actions"
+import { updateForgotPassword } from "../../store/appUserProfile/actions"
 
 import { useHistory } from "react-router-dom";
 
@@ -27,6 +27,7 @@ const UpdatePassword = props => {
   const dispatch = useDispatch();
   let history = useHistory();
   const [updatePasswordSpinner, setUpdatePasswordSpinner] = useState(false);
+  const [state={notLoaded:true}, setState] = useState(null);
 
 //   useEffect(() => {
 //     const search = localStorage.getItem("authUser")
@@ -57,26 +58,56 @@ const UpdatePassword = props => {
         newpassword: Yup.string().required("Please Enter Your New Password"),
         newPassword: Yup.string().required("Please Re-Enter Your New Password"),
     }),
-    // onSubmit: (values) => {
-    //     setChangePasswordSpinner(true);
-    //   dispatch(updateUserPassword(values));
-    // }
+    onSubmit: (values) => {
+      setUpdatePasswordSpinner(true);
+      dispatch(updateForgotPassword(values));
+    }
   });
 
-  const updatePass = async () => {
-    try {
+  // useEffect(() => {
+  //   const search = localStorage.getItem("id");
+  //   const params = new URLSearchParams(search);
+  //   const cn = params.get('cn');
+  //   //const cnn = params.get('cnn');
+  //   //const adsptah = params.get('adsptah');
+  //   //const userlang = params.get('userlang');
+  //   //alert("Datanya : "+atob(cn) +","+atob(cnn)+","+ atob( decodeURIComponent(adsptah) )+","+atob(userlang));
+  //   //alert( Buffer.from(adsptah, 'base64').toString('ascii'))
+  //   callLogin({id: Buffer.from(cn, 'base64').toString('ascii'), password: ''})
+  // }, [])
+
+//   useEffect(() => {
+//     const updateForgotPassword = async () =>{
+//         const data = await axios.post('/MemberRest/UpdateForgotPassword')
+//         setState(data)
+//     }
+
+//     updateForgotPassword()
+// },[]);
+
+// if(!state){
+//     return <FalseyComponent />
+// }
+// if(state.notLoaded){
+//     //return some loading component(s) (or nothing to avoid flicker)
+//     return <LoadingComponent /> // -or- return <div/>
+// }
+// return <TruthyComponent />
+// }
+
+const updatePass = async () => {
+  try {
+    // debugger
+      var map = {
+          "newPassword": userProfilePasswordValidation.values.newPassword
+      };
+      // console.log('map : ', map)
       // debugger
-        var map = {
-            "newPassword": validation.values.newPassword
-        };
-        // console.log('map : ', map)
-        // debugger
-        await dispatch(updateUserPassword(map));
-        setUpdatePasswordSpinner(true);
-        //props.setAppUserProfileMsg("")
-    } catch (error) {
-        console.log(error)
-    }
+      await dispatch(updateForgotPassword(map));
+      // props.setAppUserProfileMsg("")
+  } catch (error) {
+      console.log(error)
+  }
 };
 
   const { error } = useSelector(state => ({
@@ -198,7 +229,7 @@ const UpdatePassword = props => {
                   </div>
 
                   <div className="mt-2 d-grid">
-                  <Button  color="primary" className="ms-1" onClick={() => { updatePass() }}>
+                  <Button color="primary" className="ms-1" onClick={() => { updatePass() }}>
                    
                    Change
                    <Spinner style={{ display: updatePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
