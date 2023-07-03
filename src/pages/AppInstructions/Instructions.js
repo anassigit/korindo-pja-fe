@@ -23,13 +23,14 @@ import { useSelector, useDispatch } from "react-redux"
 const Instructions = () => {
 
     const dispatch = useDispatch();
-    const [appInstructionsp01Page, setAppInstructionsp01Page] = useState(true)
-    // const [app052p02Page, setApp052p02Page] = useState(false)
+    const [appInstructionsPage, setAppInstructionsPage] = useState(true)
+    const [appAddInstructions, setAppAddInstructions] = useState(false)
     // const [app052p03Page, setApp052p03Page] = useState(false)
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
     // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
     // const [app052p03Data, setApp052p03Data] = useState()
     const [selected, setSelected] = useState("");
+
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -37,7 +38,8 @@ const Instructions = () => {
 
     //let plantCd = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).plantCd : "";
 
-    const [appInstructionsp01TabelSearch, setAppInstructionsp01TabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: { any: "", status: selected } });
+    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: { 
+        any: "", status: selected } });
 
     const appInstructionsData = useSelector(state => {
         return state.instructionsReducer.respGetInstructions;
@@ -65,12 +67,19 @@ const Instructions = () => {
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "memberId",
-            text: "owner/manager",
+            dataField: "managerList",
+            text: "Owner/ Manager",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
+        // {
+        //     dataField: "managerList",
+        //     text: "Manager",
+        //     sort: true,
+        //     align: "left",
+        //     headerStyle: { textAlign: 'center' },
+        // },
         {
             dataField: "instDate",
             text: "Instruction Date",
@@ -109,11 +118,11 @@ const Instructions = () => {
         // },
     ]
 
-    // const app052p01PreAdd = () => {
-    //     setApp052setMsg("")
-    //     setApp052p01Page(false)
-    //     setApp052p02Page(true)
-    // }
+    const appInstructionsPreAdd = () => {
+        setAppInstructionsMsg("")
+        setAppInstructionsPage(false)
+        setAppAddInstructions(true)
+    }
 
     // const app052p01PreEdit = (app052p01JarakTanamData) => {
     //     setApp052setMsg("")
@@ -151,15 +160,16 @@ const Instructions = () => {
 
     const handleChange = event => {
         // setApp045p01MsgPlant("");
-        setAppInstructionsp01TabelSearch({
-            page: 1, limit: appInstructionsp01TabelSearch.limit, offset: 0,
-            sort: appInstructionsp01TabelSearch.sort, order: appInstructionsp01TabelSearch.order, search: { any: appInstructionsp01TabelSearch.search.any, status: event.target.value }
+        setAppInstructionsTabelSearch({
+            page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: appInstructionsTabelSearch.search.any, status: event.target.value }
         })
         setAppInstructionssetMsg("")
         console.log(event.target.value);
         // console.log('dropdown: ', selected);
         setSelected(event.target.value);
     };
+
 
     return (
         <RootPageCustom msgStateGet={appInstructionsMsg} msgStateSet={setAppInstructionsMsg}
@@ -172,7 +182,7 @@ const Instructions = () => {
                         onCloseClick={() => setApp052DeleteModal(false)}
                     /> */}
 
-                    <Container style={{ display: appInstructionsp01Page ? 'block' : 'none' }} fluid={true}>
+                    <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true}>
                         {/* <Breadcrumbs title="Forms" breadcrumbItem="Master Jarak Tanam" /> */}
 
                         <Row>
@@ -188,11 +198,11 @@ const Instructions = () => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                value={appInstructionsp01TabelSearch.any}
+                                                                value={appInstructionsTabelSearch.any}
                                                                 onChange={e => {
-                                                                    setAppInstructionsp01TabelSearch({
-                                                                        page: appInstructionsp01TabelSearch.page, limit: appInstructionsp01TabelSearch.limit, offset: appInstructionsp01TabelSearch.offset,
-                                                                        sort: appInstructionsp01TabelSearch.sort, order: appInstructionsp01TabelSearch.order, search: { any: e.target.value }
+                                                                    setAppInstructionsTabelSearch({
+                                                                        page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
+                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: e.target.value }
                                                                     })
                                                                 }}
                                                             />
@@ -229,7 +239,7 @@ const Instructions = () => {
                                             <button
                                                 type="button"
                                                 className="btn btn-primary "
-                                            // onClick={() => { app052p01PreAdd() }}
+                                            onClick={() => { appInstructionsPreAdd() }}
                                             >
                                                 <i className="bx bx-plus font-size-16 align-middle me-2"></i>{" "}
                                                 New Instructions
@@ -256,8 +266,8 @@ const Instructions = () => {
                                                     redukResponse={appInstructionsData}
                                                     appdata={appInstructionsData.data != null ? appInstructionsData.data.instructions : []}
                                                     appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.instructionsTotal : 0}
-                                                    searchSet={setAppInstructionsp01TabelSearch}
-                                                    searchGet={appInstructionsp01TabelSearch}
+                                                    searchSet={setAppInstructionsTabelSearch}
+                                                    searchGet={appInstructionsTabelSearch}
                                                     redukCall={getInstructionsData}
                                                 />
 
@@ -269,14 +279,14 @@ const Instructions = () => {
                         </Row>
                     </Container>
 
-                     {/* <AddInstructions
-                        app052p02Page={app052p02Page}
-                        setApp052p02Page={setApp052p02Page}
-                        setApp052setMsg={setApp052setMsg}
-                        setApp052p01Page={setApp052p01Page}
-                        app052p01TabelSearch={app052p01TabelSearch}/>
+                     <AddInstructions
+                        appAddInstructions={appAddInstructions}
+                        setAppAddInstructions={setAppAddInstructions}
+                        setAppInstructionsMsg={setAppInstructionsMsg}
+                        setAppInstructionsPage={setAppInstructionsPage}
+                        appInstructionsTabelSearch={appInstructionsTabelSearch}/>
 
-                      <EditInstructions
+                      {/* <EditInstructions
                         app052p03Page={app052p03Page}
                         setApp052p03Page={setApp052p03Page}
                         setApp052setMsg={setApp052setMsg}

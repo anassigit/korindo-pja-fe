@@ -4,8 +4,8 @@ import { Redirect } from "react-router-dom"
 // Authentication related pages
 import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
-import UpdatePassword from "../pages/Authentication/UpdatePassword"
 import EmailVerPassword from "../pages/Authentication/EmailVerPassword"
+import UpdatePassword from "../pages/Authentication/UpdatePassword"
 
 
 // Dashboard
@@ -37,8 +37,8 @@ const authProtectedRoutes = [
 const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
-  { path: "/updatePassword", component: UpdatePassword },
   { path: "/emailPassword", component: EmailVerPassword },
+  { path: "/updatePassword", component: UpdatePassword },
 
 ]
 

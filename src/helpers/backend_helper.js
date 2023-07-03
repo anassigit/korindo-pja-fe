@@ -15,6 +15,8 @@ export const login = req => postLogin("/MemberRest/login", req)
 
 export const emailForgotPassword = req => post("/MemberRest/ForgotPassword", req)
 
+export const updateForgotPassword = req => post("/MemberRest/UpdateForgotPassword", req)
+
 export const getUser = req => post("/app001/get-user", req)
 
 export const getReportJasper = req => post("/app001/generate-report-jasper", req)
