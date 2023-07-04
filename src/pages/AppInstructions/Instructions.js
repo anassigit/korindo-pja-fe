@@ -51,58 +51,60 @@ const Instructions = () => {
         }
     }, [appInstructionsData])
 
+    const owma = [""]
+
     const appInstructionsp01Tabel = [
         {
-            dataField: "num",
+            dataField: "insId",
             text: "No.",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "title",
+            dataField: "insTitle",
             text: "Instructions",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
+        // {
+        //     dataField: "ownerList",
+        //     text: "Owner",
+        //     sort: true,
+        //     align: "left",
+        //     headerStyle: { textAlign: 'center' },
+        // },
+        // {
+        //     dataField: "managerList",
+        //     text: "Manager",
+        //     sort: true,
+        //     align: "left",
+        //     headerStyle: { textAlign: 'center' },
+        // },
         {
-            dataField: "ownerList",
-            text: "Owner",
-            sort: true,
-            align: "left",
-            headerStyle: { textAlign: 'center' },
-        },
-        {
-            dataField: "managerList",
-            text: "Manager",
-            sort: true,
-            align: "left",
-            headerStyle: { textAlign: 'center' },
-        },
-        {
-            dataField: "instDate",
+            dataField: "insDate",
             text: "Instruction Date",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "status",
+            dataField: "insStatus",
             text: "Status",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "reply_count",
+            dataField: "insReplies",
             text: "Replies",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "notice_count",
+            dataField: "insUsers",
             text: "Notices",
             sort: true,
             align: "left",
@@ -275,11 +277,11 @@ const Instructions = () => {
 
                                             <Row>
                                                 <TableCustom
-                                                    keyField={"no"}
+                                                    keyField={"insId"}
                                                     columns={appInstructionsp01Tabel}
                                                     redukResponse={appInstructionsData}
-                                                    appdata={appInstructionsData.data != null ? appInstructionsData.data.instructions : []}
-                                                    appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.instructionsTotal : 0}
+                                                    appdata={appInstructionsData.data != null ? appInstructionsData.data.ins : []}
+                                                    appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.insTotal : 0}
                                                     searchSet={setAppInstructionsTabelSearch}
                                                     searchGet={appInstructionsTabelSearch}
                                                     redukCall={getInstructionsData}
