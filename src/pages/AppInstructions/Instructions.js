@@ -36,10 +36,8 @@ const Instructions = () => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    //let plantCd = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).plantCd : "";
-
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: { 
-        any: "", status: selected } });
+        any: "", statusId: selected } });
 
     const appInstructionsData = useSelector(state => {
         return state.instructionsReducer.respGetInstructions;
@@ -110,6 +108,14 @@ const Instructions = () => {
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
+        {
+            dataField: "statusId",
+            text: "ID status",
+            sort: true,
+            align: "left",
+            hidden: true,
+            headerStyle: { textAlign: 'center' },
+        },
         // {
         //     dataField: "action",
         //     isDummyField: true,
@@ -178,9 +184,9 @@ const Instructions = () => {
         // setApp045p01MsgPlant("");
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: appInstructionsTabelSearch.search.any, status: event.target.value }
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: appInstructionsTabelSearch.search.any, statusId: event.target.value }
         })
-        setAppInstructionssetMsg("")
+        setAppInstructionsMsg("")
         console.log(event.target.value);
         // console.log('dropdown: ', selected);
         setSelected(event.target.value);
@@ -234,16 +240,17 @@ const Instructions = () => {
                                                         <div className="col-sm-7">
                                                         <Input
                                                 type="select"
-                                                name="statusApprove"
+                                                name="statusId"
                                                 onChange={handleChange}
-                                                // onSelect={""}
+                                                //onSelect={""}
                                                 value={selected}
                                             >
-                                                <option id="" value={""}>Semua</option>
-                                                <option id="NS" value={"1"}>Not Started</option>
-                                                <option id="IP" value={"2"}>In Progress</option>
-                                                <option id="CP" value={"3"}>Completed</option>
-                                                <option id="RJ" value={"4"}>Rejected</option>
+                                                <option id="" value={""}>All</option>
+                                                <option id="1" value={"1"}>Not Started</option>
+                                                <option id="2" value={"2"}>In Process</option>
+                                                <option id="3" value={"3"}>Action Completed</option>
+                                                <option id="4" value={"4"}>Rejected</option>
+                                                <option id="5" value={"5"}>Completed</option>
 
                                             </Input>
                                                         </div>

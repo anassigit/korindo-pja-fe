@@ -55,11 +55,11 @@ const UserProfile = () => {
     enableReinitialize: true,
 
     initialValues: {
-      name: u != null ? u.data[0].name : '',
-      pName: u != null ? u.data[0].pName : '',
-      gName: u != null ? u.data[0].gName : '',
-      hp: u != null ? u.data[0].hp : '',
-      id: u != null ? u.data[0].id : '',
+      name: u != null ? u.name : '',
+      pName: u != null ? u.pName : '',
+      gName: u != null ? u.gName : '',
+      hp: u != null ? u.hp : '',
+      id: u != null ? u.id : '',
 
     },
 

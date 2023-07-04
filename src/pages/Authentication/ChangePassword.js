@@ -49,7 +49,7 @@ const ChangePassword = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      id: u != null ? u.data[0].id : '',
+      id: u != null ? u.id : '',
       currentPassword: '',
       newPassword: '',
       Password: '',
