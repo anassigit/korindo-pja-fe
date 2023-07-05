@@ -25,7 +25,7 @@ import { getInstructionsData, saveInstructions } from "../../store/appInstructio
 import { useSelector, useDispatch } from "react-redux"
 import { formatRpAfterInput, replaceAll } from '../../common/Regex'
 import { getCombo } from "../../store/combo/actions"
-import { ReactSession } from 'react-client-session';
+// import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 
 const AddInstructions = (props) => {
@@ -130,7 +130,7 @@ const AddInstructions = (props) => {
                                                     type="date"
                                                     onChange={(e) => app032p02OnChangeStartDate(e.target.value)}
                                                     //  onChange={addInstructionsValidInput.handleChange}
-                                                    //value={addInstructionsValidInput.values.validFrom}
+                                                    //  value={addInstructionsValidInput.values.validFrom}
                                                     value={addInstructionsStartDate}
                                                     invalid={
                                                         addInstructionsValidInput.touched.validFrom && addInstructionsValidInput.errors.validFrom ? true : false
@@ -178,7 +178,7 @@ const AddInstructions = (props) => {
                                                     }
                                                     invalid={
                                                         addInstructionsValidInput.touched.keterangan &&
-                                                        addInstructionsValidInput.errors.keterangan
+                                                            addInstructionsValidInput.errors.keterangan
                                                             ? true
                                                             : false
                                                     }
@@ -196,52 +196,50 @@ const AddInstructions = (props) => {
                                         <Col md="6">
                                             <div className="mb-3 col-sm-6">
                                                 <Label> Choose Owner <span style={{ color: "red" }}>* </span></Label>
-                                                <Input
-                                                    name="title"
-                                                    type="text"
-                                                    onChange={addInstructionsValidInput.handleChange}
-                                                    value={addInstructionsValidInput.values.title || ""}
-                                                    invalid={
-                                                        addInstructionsValidInput.touched.title && addInstructionsValidInput.errors.title ? true : false
+                                                {/* <Select
+                                                    value={selectedMulti2}
+                                                    isMulti={true}
+                                                    onChange={(e) => {
+                                                        handleMulti2(e);
+                                                    }}
+                                                    options={
+                                                        app008p01UserRole.data != null ? app008p01UserRole.data.options : null
                                                     }
-                                                />
-                                                {addInstructionsValidInput.touched.title && addInstructionsValidInput.errors.title ? (
-                                                    <FormFeedback type="invalid">{addInstructionsValidInput.errors.title}</FormFeedback>
-                                                ) : null}
+                                                    className="select2-selection"
+                                                /> */}
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
                                                 <label>Choose Manager <span style={{ color: "red" }}>* </span></label>
-                                                <Input
-                                                    name="title"
-                                                    type="text"
-                                                    onChange={addInstructionsValidInput.handleChange}
-                                                    value={addInstructionsValidInput.values.title || ""}
-                                                    invalid={
-                                                        addInstructionsValidInput.touched.title && addInstructionsValidInput.errors.title ? true : false
+                                                {/* <Select
+                                                    value={selectedMulti2}
+                                                    isMulti={true}
+                                                    onChange={(e) => {
+                                                        handleMulti2(e);
+                                                    }}
+                                                    options={
+                                                        app008p01UserRole.data != null ? app008p01UserRole.data.options : null
                                                     }
-                                                />
-                                                {addInstructionsValidInput.touched.title && addInstructionsValidInput.errors.title ? (
-                                                    <FormFeedback type="invalid">{addInstructionsValidInput.errors.title}</FormFeedback>
-                                                ) : null}
+                                                    className="select2-selection"
+                                                /> */}
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
                                                 <Label className="col-sm-5" style={{ marginTop: "15px" }}>Attach File <span style={{ color: "red" }}>* </span></Label>
                                                 <div className="input-group">
-                                            <Input
-                                                id="idFileUpload"
-                                                name="_file1"
-                                                type="file"
-                                                accept="json/*"
-                                                onChange={(e) => addInstructionsValidInput.setFieldValue("_file1", e.target.files[0])}
-                                                invalid={
-                                                    addInstructionsValidInput.touched._file1 && addInstructionsValidInput.errors._file1 ? true : false
-                                                }
-                                            />
-                                            <Button outline type="button" color="danger" onClick={() => { addInstructionsValidInput.setFieldValue("_file1", ""); document.getElementById('idFileUpload').value = null; }}>
-                                                <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
-                                            </Button>
+                                                    <Input
+                                                        id="idFileUpload"
+                                                        name="_file1"
+                                                        type="file"
+                                                        accept="json/*"
+                                                        onChange={(e) => addInstructionsValidInput.setFieldValue("_file1", e.target.files[0])}
+                                                        invalid={
+                                                            addInstructionsValidInput.touched._file1 && addInstructionsValidInput.errors._file1 ? true : false
+                                                        }
+                                                    />
+                                                    <Button outline type="button" color="danger" onClick={() => { addInstructionsValidInput.setFieldValue("_file1", ""); document.getElementById('idFileUpload').value = null; }}>
+                                                        <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
+                                                    </Button>
                                                 </div>
                                             </div>
 
