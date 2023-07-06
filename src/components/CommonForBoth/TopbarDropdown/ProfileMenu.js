@@ -15,6 +15,7 @@ import { withRouter, Link } from "react-router-dom"
 
 // users
 import user1 from "../../../assets/images/users/circle-user.png"
+import { ReactSession } from 'react-client-session';
 
 const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
@@ -23,8 +24,8 @@ const ProfileMenu = props => {
   const [username, setusername] = useState("Admin")
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-        const u = JSON.parse(localStorage.getItem("user"))
+    if (ReactSession.get("user")) {
+        const u = JSON.parse(ReactSession.get("user"))
         setusername(u.name)
     }
   }, [props.success])

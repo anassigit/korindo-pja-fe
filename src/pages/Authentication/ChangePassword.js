@@ -22,7 +22,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import { updateUserPassword, editUserProfile } from "../../store/appUserProfile/actions"
-
+import { useHistory } from "react-router-dom";
 
 
 const ChangePassword = (props) => {
@@ -31,19 +31,20 @@ const ChangePassword = (props) => {
   const [changePasswordSpinner, setChangePasswordSpinner] = useState(false);
   const [id, setId] = useState("")
   const [changePasswordMsg, setChangePasswordMsg] = useState("")
+  const history = useHistory();
 
   useEffect(() => {
     if (props.userProfilePassword) {
-
+debugger
       userProfilePasswordValidation.resetForm()
-      const u = JSON.parse(localStorage.getItem("user"))
+      const u = JSON.parse(ReactSession.get("user"))
       u.id = userProfilePasswordValidation.values.id
-      localStorage.getItem("user", JSON.stringify(u))
+      ReactSession.get("user", JSON.stringify(u))
    
     }
   }, [props.userProfilePassword])
 
-  const u = JSON.parse(localStorage.getItem("user") || null)
+  const u = JSON.parse(ReactSession.get("user") || null)
 
   const userProfilePasswordValidation = useFormik({
     enableReinitialize: true,
@@ -55,17 +56,17 @@ const ChangePassword = (props) => {
       Password: '',
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Please Enter Your Current Password"),
+      // id: Yup.string().required("Please Enter Your Current Password"),
       currentPassword: Yup.string().required("Please Enter Your Current Password"),
       newpassword: Yup.string().required("Please Enter Your New Password"),
       newPassword: Yup.string().required("Please Re-Enter Your New Password"),
     }),
 
-    onSubmit: (values) => {
-      setChangePasswordSpinner(true);
-      props.setAppUserProfileMsg("")
-      dispatch(updateUserPassword(values));
-    }
+    // onSubmit: (values) => {
+    //   setChangePasswordSpinner(true);
+    //   props.setAppUserProfileMsg("")
+    //   dispatch(updateUserPassword(values));
+    // }
   });
 
   // const changePasswordMsg = useSelector(state => ({
@@ -83,8 +84,11 @@ const ChangePassword = (props) => {
         };
         // console.log('map : ', map)
         // debugger
+        setChangePasswordSpinner(true);
         await dispatch(updateUserPassword(map));
-        props.setAppUserProfileMsg("")
+        history.push("/login");
+        props.setUserProfilePassword(false);
+        return "Please Re-Login."
     } catch (error) {
         console.log(error)
     }
@@ -101,7 +105,6 @@ useEffect(() => {
 
   return (
     <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid={true} >
-      {/* <Breadcrumbs title="Forms" breadcrumbItem="Master Jarak Tanam" pageNow={props.setApp052p02Page} pageBefore={props.setApp052p01Page} message={props.setApp052setMsg}/> */}
 
       <Row>
         <Col lg={12}>

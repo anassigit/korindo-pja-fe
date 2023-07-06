@@ -17,6 +17,7 @@ import { useFormik } from "formik";
 import { updateForgotPassword } from "../../store/appUserProfile/actions"
 
 import { useHistory } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 
 // import images
 import profile from "assets/images/profile-img.png";
@@ -29,82 +30,40 @@ const UpdatePassword = props => {
   const [updatePasswordSpinner, setUpdatePasswordSpinner] = useState(false);
   const [state={notLoaded:true}, setState] = useState(null);
 
-//   useEffect(() => {
-//     const search = localStorage.getItem("authUser")
-//     const params = new URLSearchParams(search);
-//     const cn = params.get('cn');
-//     //const cnn = params.get('cnn');
-//     //const adsptah = params.get('adsptah');
-//     //const userlang = params.get('userlang');
-//     //alert("Datanya : "+atob(cn) +","+atob(cnn)+","+ atob( decodeURIComponent(adsptah) )+","+atob(userlang));
-//     //alert( Buffer.from(adsptah, 'base64').toString('ascii'))
-//     callLogin({id: Buffer.from(cn, 'base64').toString('ascii'), password: ''})
-//   }, [])
-
-  const u = JSON.parse(localStorage.getItem("user"))
-
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-        id: u != null ? u.id : '',
+        
         newpassword: '',
         newPassword: '',
 
     },
     validationSchema: Yup.object({
-        id: Yup.string().required("Please Enter Your Current Password"),
+        
         newpassword: Yup.string().required("Please Enter Your New Password"),
         newPassword: Yup.string().required("Please Re-Enter Your New Password"),
     }),
-    onSubmit: (values) => {
-      setUpdatePasswordSpinner(true);
-      dispatch(updateForgotPassword(values));
-    }
+   
   });
-
-  // useEffect(() => {
-  //   const search = localStorage.getItem("id");
-  //   const params = new URLSearchParams(search);
-  //   const cn = params.get('cn');
-  //   //const cnn = params.get('cnn');
-  //   //const adsptah = params.get('adsptah');
-  //   //const userlang = params.get('userlang');
-  //   //alert("Datanya : "+atob(cn) +","+atob(cnn)+","+ atob( decodeURIComponent(adsptah) )+","+atob(userlang));
-  //   //alert( Buffer.from(adsptah, 'base64').toString('ascii'))
-  //   callLogin({id: Buffer.from(cn, 'base64').toString('ascii'), password: ''})
-  // }, [])
-
-//   useEffect(() => {
-//     const updateForgotPassword = async () =>{
-//         const data = await axios.post('/MemberRest/UpdateForgotPassword')
-//         setState(data)
-//     }
-
-//     updateForgotPassword()
-// },[]);
-
-// if(!state){
-//     return <FalseyComponent />
-// }
-// if(state.notLoaded){
-//     //return some loading component(s) (or nothing to avoid flicker)
-//     return <LoadingComponent /> // -or- return <div/>
-// }
-// return <TruthyComponent />
-// }
 
 const updatePass = async () => {
   try {
-    // debugger
+    const queryParameters = new URLSearchParams(window.location.search)
+  const type = queryParameters.get("KOR_TOKEN")
+    debugger
+    ReactSession.set("authUser", type);
       var map = {
-          "newPassword": userProfilePasswordValidation.values.newPassword
+          "newPassword": validation.values.newPassword
+
       };
       // console.log('map : ', map)
-      // debugger
+      debugger
+      setUpdatePasswordSpinner(true);
       await dispatch(updateForgotPassword(map));
       // props.setAppUserProfileMsg("")
+      history.push("/login");
   } catch (error) {
       console.log(error)
   }

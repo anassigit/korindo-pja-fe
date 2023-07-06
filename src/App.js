@@ -16,8 +16,10 @@ import NonAuthLayout from "./components/NonAuthLayout"
 
 // Import scss
 import "./assets/scss/theme.scss"
+import { ReactSession } from 'react-client-session';
 
 const App = props => {
+  ReactSession.setStoreType("localStorage");
 
   function getLayout() {
   

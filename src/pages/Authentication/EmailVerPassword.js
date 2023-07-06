@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
 import React, { useState, useEffect } from "react";
 
-import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
+import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Spinner } from "reactstrap";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -26,20 +26,21 @@ import logo from "assets/images/logotitle.png";
 const EmailVerPassword = props => {
   const dispatch = useDispatch();
   let history = useHistory();
+  const [emailPasswordSpinner, setEmailPasswordSpinner] = useState(false);
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      id: '',
+      id: ''
     },
     validationSchema: Yup.object({
-        id: Yup.string().required("Please Enter Your Current Password"),
+        id: Yup.string().required("Please Enter Your Email"),
     }),
-    onSubmit: (values) => {
-      dispatch(emailForgotPassword(values));
-    }
+    // onSubmit: (values) => {
+    //   dispatch(emailForgotPassword(values));
+    // }
   });
 
   const { error } = useSelector(state => ({
@@ -51,7 +52,21 @@ const EmailVerPassword = props => {
 //     dispatch(loginUser(values, props.history));
 //   };
 
-
+const sendEmail = async () => {
+  try {
+    debugger
+      var map = {
+          "id":  validation.values.id
+      };
+       console.log('map : ', map)
+      debugger
+      setEmailPasswordSpinner("true");
+      await dispatch(emailForgotPassword(map));
+      history.push("/login");
+  } catch (error) {
+      console.log(error)
+  }
+};
 
   return (
     <React.Fragment>
@@ -82,11 +97,11 @@ const EmailVerPassword = props => {
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
+                      // onSubmit={(e) => {
+                      //   e.preventDefault();
+                      //   validation.handleSubmit();
+                      //   return false;
+                      // }}
                     >
                       {error ? <Alert color="danger">{error}</Alert> : null}
 
@@ -112,9 +127,11 @@ const EmailVerPassword = props => {
                       <div className="mt-2 d-grid">
                         <button
                           className="btn btn-success btn-block"
-                          type="submit"
+                         onClick={() => { sendEmail() }}
+                         
                         >
                           Send to Email
+                          <Spinner style={{ display: emailPasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                         </button>
                       </div>
                       <div className="mt-2 d-grid">

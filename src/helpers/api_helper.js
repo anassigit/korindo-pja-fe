@@ -1,5 +1,6 @@
 import axios from "axios";
 import { saveAs } from 'file-saver';
+import { ReactSession } from 'react-client-session';
 
 //apply base url for axios
 var API_URL = "http://localhost:9010/pja";
@@ -26,7 +27,7 @@ export async function postLogin(url, data, config = {}) {
 }
 
 export async function get(url, data, config ={}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   return await axiosApi.get(url, data, { ...config })
   .then(function (response) {
     return responseError(response);
@@ -34,7 +35,7 @@ export async function get(url, data, config ={}) {
 }
 
 export async function getWithParam(url, data, config ={responseType: 'blob'}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   return await axiosApi.get(url+"?"+$.param(data), { ...config })
   .then(function (response) {
     return responseError(response);
@@ -43,7 +44,7 @@ export async function getWithParam(url, data, config ={responseType: 'blob'}) {
 
 export async function postWithParam(url, data ,config ={}
 ) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   return await axiosApi.post(url+"?"+$.param(data), { ...config })
   .then(function (response) {
     return responseError(response);
@@ -51,7 +52,7 @@ export async function postWithParam(url, data ,config ={}
 }
 
 export async function post(url, data, config = {}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   return axiosApi
     .post(url, { ...data }, { ...config },)
     .then(function (response) {
@@ -86,8 +87,8 @@ function responseError(response){
 }
 
 export async function getWithXls(url, data, config ={responseType: 'blob'}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
-  let token = localStorage.getItem("authUser"); 
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  let token = ReactSession.get("authUser"); 
   return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
     response => {
@@ -109,8 +110,8 @@ export async function getWithXls(url, data, config ={responseType: 'blob'}) {
 }
 
 export async function getWithPdf(url, data, config ={responseType: 'blob'}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
-  let token = localStorage.getItem("authUser"); 
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  let token = ReactSession.get("authUser"); 
   return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
     response => {
@@ -128,7 +129,7 @@ export async function getWithPdf(url, data, config ={responseType: 'blob'}) {
 }
 
 export async function postUpload(url, data, config ={}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   
   return axiosApi
     .post(url, data, { ...config },)

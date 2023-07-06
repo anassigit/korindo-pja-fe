@@ -49,15 +49,15 @@ const UserProfile = () => {
 
   const [appUserProfileSpinner, setAppUserProfileSpinner] = useState(false);
 
-  const u = JSON.parse(localStorage.getItem("user") || null)
+  const u = JSON.parse(ReactSession.get("user") || null)
 
   const appUserProfilepValidInput = useFormik({
     enableReinitialize: true,
 
     initialValues: {
       name: u != null ? u.name : '',
-      pName: u != null ? u.pName : '',
-      gName: u != null ? u.gName : '',
+      pname: u != null ? u.pname : '',
+      gname: u != null ? u.gname : '',
       hp: u != null ? u.hp : '',
       id: u != null ? u.id : '',
 
@@ -72,12 +72,30 @@ const UserProfile = () => {
 
     }),
 
-    onSubmit: (values) => {
-      setAppUserProfileMsg("")
-      setAppUserProfileSpinner(true);
-      dispatch(editUserProfile(values));
-    }
+    // onSubmit: (values) => {
+    //   debugger
+    //   setAppUserProfileSpinner(true);
+    //   setAppUserProfileMsg("")
+    //   dispatch(editUserProfile(values));
+    // }
   });
+
+  const updateHp = async () => {
+    try {
+        debugger
+        var map = {
+            "hp":  appUserProfilepValidInput.values.hp
+        };
+        // console.log('map : ', map)
+         debugger
+        setAppUserProfileSpinner(true);
+        setAppUserProfileMsg("")
+        await dispatch(editUserProfile(map));
+
+    } catch (error) {
+        console.log(error)
+    }
+};
 
   const appUserProfileMessage = useSelector(state => {
     return state.userProfileReducer.msgEdit;
@@ -87,13 +105,13 @@ const UserProfile = () => {
   useEffect(() => {
     if (appUserProfileMessage.status == "1") {
       setUserProfilePage(true);
-      const u = JSON.parse(localStorage.getItem("user"))
+      const u = JSON.parse(ReactSession.get("user"))
       u.name = appUserProfilepValidInput.values.name
-      u.pName = appUserProfilepValidInput.values.pName
-      u.gName = appUserProfilepValidInput.values.gName
+      u.pname = appUserProfilepValidInput.values.pname
+      u.gname = appUserProfilepValidInput.values.gname
       u.hp = appUserProfilepValidInput.values.hp
       u.id = appUserProfilepValidInput.values.id
-      localStorage.getItem("user", JSON.stringify(u))
+      ReactSession.get("user", JSON.stringify(u))
     }
     setAppUserProfileMsg(appUserProfileMessage)
     setAppUserProfileSpinner(false);
@@ -108,12 +126,11 @@ const UserProfile = () => {
     // console.log("wow",userProfilePageData )
   }
 
-
   return (
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Korindo App</title>
+          <title>Project A</title>
         </MetaTags>
 
         {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
@@ -130,7 +147,7 @@ const UserProfile = () => {
                   <Form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      app007p01ValidInput.handleSubmit();
+                      appUserProfilepValidInput.handleSubmit();
                       return false;
                     }}>
                     <FormGroup className="mb-0">
@@ -157,36 +174,36 @@ const UserProfile = () => {
                           <div className="mb-3 col-sm-10">
                             <Label>Position</Label>
                             <Input
-                              name="pName"
+                              name="pname"
                               type="text"
                               maxLength={50}
                               disabled
                               onChange={appUserProfilepValidInput.handleChange}
-                              value={appUserProfilepValidInput.values.pName || ""}
+                              value={appUserProfilepValidInput.values.pname || ""}
                               invalid={
-                                appUserProfilepValidInput.touched.pName && appUserProfilepValidInput.errors.pName ? true : false
+                                appUserProfilepValidInput.touched.pname && appUserProfilepValidInput.errors.pname ? true : false
                               }
                             />
-                            {appUserProfilepValidInput.touched.pName && appUserProfilepValidInput.errors.pName ? (
-                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.pName}</FormFeedback>
+                            {appUserProfilepValidInput.touched.pname && appUserProfilepValidInput.errors.pname ? (
+                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.pname}</FormFeedback>
                             ) : null}
                           </div>
 
                           <div className="mb-3 col-sm-10">
                             <Label>Group</Label>
                             <Input
-                              name="gName"
+                              name="gname"
                               type="text"
                               maxLength={50}
                               disabled
                               onChange={appUserProfilepValidInput.handleChange}
-                              value={appUserProfilepValidInput.values.gName || ""}
+                              value={appUserProfilepValidInput.values.gname || ""}
                               invalid={
-                                appUserProfilepValidInput.touched.gName && appUserProfilepValidInput.errors.gName ? true : false
+                                appUserProfilepValidInput.touched.gname && appUserProfilepValidInput.errors.gname ? true : false
                               }
                             />
-                            {appUserProfilepValidInput.touched.gName && appUserProfilepValidInput.errors.gName ? (
-                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.gName}</FormFeedback>
+                            {appUserProfilepValidInput.touched.gname && appUserProfilepValidInput.errors.gname ? (
+                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.gname}</FormFeedback>
                             ) : null}
                           </div>
 
@@ -239,7 +256,7 @@ const UserProfile = () => {
                           <span style={{ fontStyle: "italic" }}> * Please click button Change Password for change the password.</span>
                         </Col>
                       </Row>
-                      <Button type="submit" color="primary" className="ms-1">
+                      <Button color="primary" className="ms-1" onClick={() => { updateHp() }}>
                         SAVE
                       </Button>
                       <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />

@@ -13,9 +13,9 @@ export const getDataPdf = req => getWithPdf("/app001/get-file-image", req)
 
 export const login = req => postLogin("/MemberRest/login", req)
 
-export const emailForgotPassword = req => post("/MemberRest/ForgotPassword", req)
+export const emailForgotPassword = req => postWithParam("/MemberRest/ForgotPassword", req)
 
-export const updateForgotPassword = req => post("/MemberRest/UpdateForgotPassword", req)
+export const updateForgotPassword = req => postWithParam("/MemberRest/UpdateForgotPassword", req)
 
 export const getUser = req => post("/app001/get-user", req)
 
@@ -91,11 +91,11 @@ export const deleteMuser = req => post("/rest/app008/delete", req)
 
 
 //appUserProfile
-export const editUserProfile = req => post("MemberRest/UpdateMyInfo", req)
+export const editUserProfile = req => postWithParam("MemberRest/UpdateMyInfo", req)
 
 export const updateUserPassword = req => postWithParam("MemberRest/UpdatePassword", req)
 
-export const updateForgetPassword = req => post("MemberRest/UpdateForgotPassword", req)
+export const updateForgetPassword = req => postWithParam("MemberRest/ForgotPassword", req)
 
 
 //appInstructions

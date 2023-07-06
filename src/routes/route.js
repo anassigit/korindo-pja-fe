@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
+import { ReactSession } from 'react-client-session';
 
 const Authmiddleware = ({
   component: Component,
@@ -11,7 +12,7 @@ const Authmiddleware = ({
   <Route
     {...rest}
     render={props => {
-      if (isAuthProtected && !localStorage.getItem("authUser")) {
+      if (isAuthProtected && !ReactSession.get("authUser")) {
         return (
           <Redirect
             to={{ pathname: "/login", state: { from: props.location } }}
