@@ -5,7 +5,8 @@ import {
   MSG_COMBO_SATUAN,
   MSG_COMBO_SATUAN_MATERIAL,
   MSG_COMBO_TYPE,
-  MSG_COMBO_JENIS_APPROVAL
+  MSG_COMBO_JENIS_APPROVAL,
+  MSG_COMBO_USER_LIST
 
 } from "./actionTypes"
 
@@ -42,5 +43,10 @@ export const msgComboType = (resp) => ({
 
 export const msgComboJenisApproval = (resp) => ({
   type: MSG_COMBO_JENIS_APPROVAL,
+  payload: resp,
+})
+
+export const msgUserList = (resp) => ({
+  type: MSG_COMBO_USER_LIST,
   payload: resp,
 })

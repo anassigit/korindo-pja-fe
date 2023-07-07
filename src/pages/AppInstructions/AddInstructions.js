@@ -18,17 +18,18 @@ import {
     Spinner,
     FormGroup,
     CardHeader,
+
 } from "reactstrap";
 
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import { getInstructionsData, saveInstructions } from "../../store/appInstructions/actions";
+import { getInstructionsData, saveInstructions, getUserList } from "../../store/appInstructions/actions";
 import { useSelector, useDispatch } from "react-redux"
 import { formatRpAfterInput, replaceAll } from '../../common/Regex'
 import { getCombo } from "../../store/combo/actions"
 // import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 import images from "assets/images";
-// import shortid from "https://cdn.skypack.dev/shortid@2.2.16";
+import Select from "react-select";
 
 import shortid from "shortid";
 
@@ -41,9 +42,20 @@ const AddInstructions = (props) => {
     const [addInstructionsStartDate, setAddInstructionsStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
     let status = 1;
 
-    //p02
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
     const [addInstructionsSpinner, setAddInstructionsSpinner] = useState(false);
+    const [selectedMulti, setselectedMulti] = useState(null);
+
+    const addInstructionsUserList = useSelector(state => {
+        console.log(state.instructionsReducer.respGetUserList.data);
+        return state.instructionsReducer.respGetUserList;
+    });
+
+    useEffect(() => {
+        setAddInstructionsFirstRenderDone(true);
+        // dispatch(getCombo({ "name": "combo-user-list" }))
+        dispatch(getUserList({}))
+    }, [])
 
     useEffect(() => {
         if (props.appAddInstructions) {
@@ -89,9 +101,9 @@ const AddInstructions = (props) => {
                 for (let index = 0; index < selectedfile.length; index++) {
                     debugger
                     let a = selectedfile[index];
-                   
-                    bodyForm.append('file'+ index, selectedfile[index].fileori);
-                    
+
+                    bodyForm.append('file' + index, selectedfile[index].fileori);
+
                 }
             }
             debugger
@@ -161,7 +173,7 @@ const AddInstructions = (props) => {
                             filename: e.target.files[i].name,
                             filetype: e.target.files[i].type,
                             fileimage: reader.result,
-                            fileori : file
+                            fileori: file
                             //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
                             //filesize: filesizes(e.target.files[i].size)
                         }
@@ -215,6 +227,9 @@ const AddInstructions = (props) => {
         }
     }
 
+    function handleMulti(s) {
+        setselectedMulti(s);
+    }
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
@@ -331,17 +346,20 @@ const AddInstructions = (props) => {
                                         <Col md="6">
                                             <div className="mb-3 col-sm-6">
                                                 <Label> Choose Owner <span style={{ color: "red" }}>* </span></Label>
-                                                {/* <Select
-                                                    value={selectedMulti2}
+                                                <label className="control-label">
+                                                    Role <span style={{ color: "red" }}>* </span>
+                                                </label>
+                                                <Select
+                                                    value={selectedMulti}
                                                     isMulti={true}
                                                     onChange={(e) => {
-                                                        handleMulti2(e);
+                                                        handleMulti(e);
                                                     }}
                                                     options={
-                                                        app008p01UserRole.data != null ? app008p01UserRole.data.options : null
+                                                        addInstructionsUserList.data != null ? addInstructionsUserList.data.options : null
                                                     }
                                                     className="select2-selection"
-                                                /> */}
+                                                />
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
@@ -386,7 +404,7 @@ const AddInstructions = (props) => {
                                                                             <div className="file-actions">
                                                                                 <button type="button" className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
                                                                             </div>
-                                                                            <p/>
+                                                                            <p />
                                                                         </div>
                                                                     </div>
                                                                 )

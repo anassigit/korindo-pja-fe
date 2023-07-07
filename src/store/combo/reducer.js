@@ -5,7 +5,8 @@ import {
   MSG_COMBO_SATUAN,
   MSG_COMBO_SATUAN_MATERIAL,
   MSG_COMBO_TYPE,
-  MSG_COMBO_JENIS_APPROVAL
+  MSG_COMBO_JENIS_APPROVAL,
+  MSG_COMBO_USER_LIST
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -14,7 +15,8 @@ const INIT_STATE = {
   respSatuan: {},
   respSatuanMaterial: {},
   respType: {},
-  respJenisApproval: {}
+  respJenisApproval: {},
+  respUserList: {}
 }
 
 const getComboData = (state = INIT_STATE, action) => {
@@ -53,6 +55,11 @@ const getComboData = (state = INIT_STATE, action) => {
       return {
         ...state,
         respJenisApproval: action.payload,
+      }
+      case MSG_COMBO_USER_LIST:
+      return {
+        ...state,
+        respUserList: action.payload,
       }
     default:
       return state

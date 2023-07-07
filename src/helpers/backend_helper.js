@@ -106,3 +106,5 @@ export const saveInstructions = req => postUpload("/InstructionRest/InsertInstru
 export const editInstructions = req => post("/rest/app008/edit", req)
 
 export const deleteInstructions = req => post("/rest/app008/delete", req)
+
+export const getUserList = req => post("/InstructionRest/SelectInfo", req)

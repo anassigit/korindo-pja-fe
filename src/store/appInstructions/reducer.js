@@ -8,7 +8,9 @@ import {
     MSGADD,
     MSGEDIT,
     MSGDELETE,
-    RESET_MESSAGE
+    RESET_MESSAGE,
+    GET_USER_LIST,
+    RESP_GET_USER_LIST
 
 } from "./actionTypes"
 
@@ -17,6 +19,7 @@ const INIT_STATE = {
     msgAdd: "",
     msgEdit: "",
     msgDelete: "",
+    respGetUserList: {},
 }
 
 const instructionsReducer = (state = INIT_STATE, action) => {
@@ -64,6 +67,15 @@ const instructionsReducer = (state = INIT_STATE, action) => {
       case DELETE_INSTRUCTIONS:
         return {
           ...state,
+      }
+      case GET_USER_LIST:
+        return {
+          ...state,
+      }
+      case RESP_GET_USER_LIST:
+        return {
+          ...state,
+          respGetUserList: action.payload,
       }
       default:
         return state

@@ -8,7 +8,9 @@ import {
     MSGADD,
     MSGEDIT,
     MSGDELETE,
-    RESET_MESSAGE
+    RESET_MESSAGE,
+    GET_USER_LIST,
+    RESP_GET_USER_LIST
 
 } from "./actionTypes"
 
@@ -55,4 +57,14 @@ export const getInstructionsData = (req) => ({
   export const deleteInstructions = (req) => ({
     type: DELETE_INSTRUCTIONS,
     payload: req,
+  })
+
+  export const getUserList = (req) => ({
+    type: GET_USER_LIST,
+    payload: req,
+  })
+
+  export const respGetUserList = resp => ({
+    type: RESP_GET_USER_LIST,
+    payload: resp,
   })
