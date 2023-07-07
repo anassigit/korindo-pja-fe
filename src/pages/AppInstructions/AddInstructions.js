@@ -27,6 +27,11 @@ import { formatRpAfterInput, replaceAll } from '../../common/Regex'
 import { getCombo } from "../../store/combo/actions"
 // import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
+import images from "assets/images";
+// import shortid from "https://cdn.skypack.dev/shortid@2.2.16";
+
+import shortid from "shortid";
+
 
 const AddInstructions = (props) => {
 
@@ -34,7 +39,7 @@ const AddInstructions = (props) => {
 
     const currentDate = new Date()
     const [addInstructionsStartDate, setAddInstructionsStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
-let status = 1;
+    let status = 1;
 
     //p02
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
@@ -62,29 +67,34 @@ let status = 1;
             status: '',
             desciption: '',
             // user: '',
-            _file: '',
+            // _file: '',
         },
 
         validationSchema: Yup.object().shape({
-            // title: Yup.string().required("Wajib diisi"),
-            // insDate: Yup.string().required("Wajib diisi"),
-            // status: Yup.string().required("Wajib diisi"),
-            // desciption: Yup.string().required("Wajib diisi"),
+            title: Yup.string().required("Wajib diisi"),
+            desciption: Yup.string().required("Wajib diisi"),
             // user: Yup.string().required("Wajib diisi"),
         }),
 
         onSubmit: (val) => {
 
             var bodyForm = new FormData();
-debugger
+            debugger
             bodyForm.append('title', val.title);
             bodyForm.append('insDate', val.insDate);
             bodyForm.append('status', val.status);
             bodyForm.append('desciption', val.desciption);
-            // bodyForm.append('user', val.user);
-            bodyForm.append('file', val._file);   
-            
-debugger
+            if (selectedfile.length > 0) {
+
+                for (let index = 0; index < selectedfile.length; index++) {
+                    debugger
+                    let a = selectedfile[index];
+                   
+                    bodyForm.append('file'+ index, selectedfile[index].fileori);
+                    
+                }
+            }
+            debugger
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
@@ -104,7 +114,7 @@ debugger
         //     dispatch(saveInstructions(values));
         // }
     });
-   
+
     const appAddInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgAdd;
     });
@@ -118,6 +128,92 @@ debugger
         props.setAppInstructionsMsg(appAddInstructionsMessage)
         setAddInstructionsSpinner(false);
     }, [appAddInstructionsMessage])
+
+
+    ///
+
+    const [selectedfile, SetSelectedFile] = useState([]);
+    const [Files, SetFiles] = useState([]);
+
+
+    const filesizes = (bytes, decimals = 2) => {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    const InputChange = (e) => {
+        // --For Multiple File Input
+        let images = [];
+        for (let i = 0; i < e.target.files.length; i++) {
+            images.push((e.target.files[i]));
+            let reader = new FileReader();
+            let file = e.target.files[i];
+            reader.onloadend = () => {
+                SetSelectedFile((preValue) => {
+                    return [
+                        ...preValue,
+                        {
+                            id: shortid.generate(),
+                            filename: e.target.files[i].name,
+                            filetype: e.target.files[i].type,
+                            fileimage: reader.result,
+                            fileori : file
+                            //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
+                            //filesize: filesizes(e.target.files[i].size)
+                        }
+                    ]
+                });
+            }
+            if (e.target.files[i]) {
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+
+    const DeleteSelectFile = (id) => {
+        if (window.confirm("Are you sure you want to delete this Image?")) {
+            const result = selectedfile.filter((data) => data.id !== id);
+            SetSelectedFile(result);
+        } else {
+            // alert('No');
+        }
+
+    }
+
+    const FileUploadSubmit = async (e) => {
+        e.preventDefault();
+
+        // form reset on submit 
+        e.target.reset();
+        if (selectedfile.length > 0) {
+            for (let index = 0; index < selectedfile.length; index++) {
+                SetFiles((preValue) => {
+                    return [
+                        ...preValue,
+                        selectedfile[index]
+                    ]
+                })
+            }
+            SetSelectedFile([]);
+        } else {
+            alert('Please select file')
+        }
+    }
+
+
+    const DeleteFile = async (id) => {
+        if (window.confirm("Are you sure you want to delete this file?")) {
+            const result = Files.filter((data) => data.id !== id);
+            SetFiles(result);
+        } else {
+            // alert('No');
+        }
+    }
 
 
     return (
@@ -135,7 +231,7 @@ debugger
                                     addInstructionsValidInput.handleSubmit();
                                     return false;
                                 }}
-                                >
+                            >
 
                                 <FormGroup className="mb-0">
 
@@ -187,14 +283,14 @@ debugger
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     onBlur={addInstructionsValidInput.handleBlur}
                                                     // fieldValue={1}
-                                                    value={ "Not Started"}
+                                                    value={"Not Started"}
                                                     invalid={
                                                         addInstructionsValidInput.touched.status && addInstructionsValidInput.errors.status ? true : false
                                                     }
                                                 >
                                                     <option></option>
 
-                                        <option id="1">Not Started</option>
+                                                    <option id="1">Not Started</option>
 
 
                                                 </Input>
@@ -264,9 +360,71 @@ debugger
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
-                                                <Label className="col-sm-5" style={{ marginTop: "15px" }}>Attach File <span style={{ color: "red" }}>* </span></Label>
-                                                <div className="input-group">
-                                                <Input
+                                                <label>Upload Files <span style={{ color: "red" }}>* </span></label>
+
+                                                <Form onSubmit={FileUploadSubmit}>
+                                                    <div className="kb-file-upload">
+                                                        <div className="file-upload-box">
+                                                            <input type="file" id="fileupload" className="file-upload-input" onChange={InputChange} multiple />
+                                                        </div>
+                                                    </div>
+                                                    <div className="kb-attach-box mb-3">
+                                                        {
+                                                            selectedfile.map((data, index) => {
+                                                                const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                return (
+                                                                    <div className="file-atc-box" key={id}>
+                                                                        {
+                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx)$/i) ?
+                                                                                <div className="file-image"> <img src={fileimage} alt="" /></div> :
+                                                                                <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                        }
+                                                                        <div className="file-detail">
+                                                                            <span>{filename}</span>
+                                                                            {/* <p></p> */}
+                                                                            {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
+                                                                            <div className="file-actions">
+                                                                                <button type="button" className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
+                                                                            </div>
+                                                                            <p/>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
+                                                    {/* <div className="kb-buttons-box">
+                                                        <button type="submit" className="btn btn-primary form-submit">Upload</button>
+                                                    </div> */}
+                                                </Form>
+                                                {Files.length > 0 ?
+                                                    <div className="kb-attach-box">
+                                                        <hr />
+                                                        {
+                                                            Files.map((data, index) => {
+                                                                const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                return (
+                                                                    <div className="file-atc-box" key={index}>
+                                                                        {
+                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx)$/i) ?
+                                                                                <div className="file-image"> <img src={fileimage} alt="" /></div> :
+                                                                                <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                        }
+                                                                        <div className="file-detail">
+                                                                            <h6>{filename}</h6>
+                                                                            <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p>
+                                                                            <div className="file-actions">
+                                                                                <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button>
+                                                                                <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
+                                                    : ''}
+                                                {/* <Input
                                                             id="idFileUpload"
                                                             name="_file"
                                                             type="file"
@@ -278,8 +436,9 @@ debugger
                                                         />
                                                         <Button outline type="button" color="danger" onClick={() => { addInstructionsValidInput.setFieldValue("_file", ""); document.getElementById('idFileUpload').value = null; }}>
                                                             <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
-                                                        </Button>
-                                                </div>
+                                                        </Button> */}
+                                                {/* </div> */}
+
                                             </div>
 
 
