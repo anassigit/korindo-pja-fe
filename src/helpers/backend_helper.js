@@ -101,7 +101,7 @@ export const updateForgetPassword = req => postWithParam("MemberRest/ForgotPassw
 //appInstructions
 export const getInstructions = req => post("InstructionRest/SelectInstructionList", req)
 
-export const saveInstructions = req => postWithParam("/InstructionRest/InsertInstruction", req)
+export const saveInstructions = req => postUpload("/InstructionRest/InsertInstruction", req)
 
 export const editInstructions = req => post("/rest/app008/edit", req)
 

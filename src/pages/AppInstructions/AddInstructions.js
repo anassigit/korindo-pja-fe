@@ -34,7 +34,7 @@ const AddInstructions = (props) => {
 
     const currentDate = new Date()
     const [addInstructionsStartDate, setAddInstructionsStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
-    const [addInstructionsEndDate, setAddInstructionsEndDate] = useState(format(new Date('9999-12-31'), 'yyyy-MM-dd'))
+let status = 1;
 
     //p02
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
@@ -43,30 +43,68 @@ const AddInstructions = (props) => {
     useEffect(() => {
         if (props.appAddInstructions) {
             addInstructionsValidInput.resetForm()
+            addInstructionsValidInput.setFieldValue("status", status)
             setAddInstructionsStartDate(format(currentDate, 'yyyy-MM-dd'))
-            setAddInstructionsEndDate(format(new Date('9999-12-31'), 'yyyy-MM-dd'))
+
         }
     }, [props.appAddInstructions])
+
+    const insert = async (val) => {
+        await dispatch(saveInstructions(val));
+    };
 
     const addInstructionsValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
-            jarakTanamId: '',
-            jarakTanamName: '',
+            title: '',
+            insDate: '',
+            status: '',
+            desciption: '',
+            // user: '',
+            _file: '',
         },
 
         validationSchema: Yup.object().shape({
-            jarakTanamName: Yup.string().required("Wajib diisi"),
+            // title: Yup.string().required("Wajib diisi"),
+            // insDate: Yup.string().required("Wajib diisi"),
+            // status: Yup.string().required("Wajib diisi"),
+            // desciption: Yup.string().required("Wajib diisi"),
+            // user: Yup.string().required("Wajib diisi"),
         }),
 
-        onSubmit: (values) => {
-            setAddInstructionsSpinner(true);
-            props.setAppInstructionsMsg("")
-            dispatch(saveInstructions(values));
-        }
-    });
+        onSubmit: (val) => {
 
+            var bodyForm = new FormData();
+debugger
+            bodyForm.append('title', val.title);
+            bodyForm.append('insDate', val.insDate);
+            bodyForm.append('status', val.status);
+            bodyForm.append('desciption', val.desciption);
+            // bodyForm.append('user', val.user);
+            bodyForm.append('file', val._file);   
+            
+debugger
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            setAddInstructionsSpinner(true);
+            props.setAppInstructionsPage(true);
+            props.setAppAddInstructions(false);
+            insert(bodyForm, config);
+            props.setAppInstructionsMsg(appAddInstructionsMessage);
+
+        }
+        // onSubmit: (values) => {
+        //     velues.ownerList = selectedMulti;
+        //     setAddInstructionsSpinner(true);
+        //     props.setAppInstructionsMsg("")
+        //     dispatch(saveInstructions(values));
+        // }
+    });
+   
     const appAddInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgAdd;
     });
@@ -96,7 +134,8 @@ const AddInstructions = (props) => {
                                     e.preventDefault();
                                     addInstructionsValidInput.handleSubmit();
                                     return false;
-                                }}>
+                                }}
+                                >
 
                                 <FormGroup className="mb-0">
 
@@ -126,18 +165,16 @@ const AddInstructions = (props) => {
                                                 </Label>
 
                                                 <Input
-                                                    name="validFrom"
+                                                    name="insDate"
                                                     type="date"
-                                                    onChange={(e) => app032p02OnChangeStartDate(e.target.value)}
-                                                    //  onChange={addInstructionsValidInput.handleChange}
-                                                    //  value={addInstructionsValidInput.values.validFrom}
-                                                    value={addInstructionsStartDate}
+                                                    onChange={addInstructionsValidInput.handleChange}
+                                                    value={addInstructionsValidInput.values.insDate || addInstructionsStartDate}
                                                     invalid={
-                                                        addInstructionsValidInput.touched.validFrom && addInstructionsValidInput.errors.validFrom ? true : false
+                                                        addInstructionsValidInput.touched.insDate && addInstructionsValidInput.errors.insDate ? true : false
                                                     }
                                                 />
-                                                {addInstructionsValidInput.touched.validFrom && addInstructionsValidInput.errors.validFrom ? (
-                                                    <FormFeedback type="invalid"> {addInstructionsValidInput.errors.validFrom} </FormFeedback>
+                                                {addInstructionsValidInput.touched.insDate && addInstructionsValidInput.errors.insDate ? (
+                                                    <FormFeedback type="invalid"> {addInstructionsValidInput.errors.insDate} </FormFeedback>
                                                 ) : null}
                                             </div>
 
@@ -145,48 +182,50 @@ const AddInstructions = (props) => {
                                                 <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
-                                                    name="kategoryId"
+                                                    name="status"
+                                                    disabled
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     onBlur={addInstructionsValidInput.handleBlur}
-                                                    value={addInstructionsValidInput.values.kategoryId || ""}
+                                                    // fieldValue={1}
+                                                    value={ "Not Started"}
                                                     invalid={
-                                                        addInstructionsValidInput.touched.kategoryId && addInstructionsValidInput.errors.kategoryId ? true : false
+                                                        addInstructionsValidInput.touched.status && addInstructionsValidInput.errors.status ? true : false
                                                     }
                                                 >
                                                     <option></option>
-                                                    {/* {
-                                                        app032SelectedKategori.dtlsetting?.map((value, key) =>
-                                                            <option key={key} value={value.id}>{value.desc}</option>)
-                                                    } */}
+
+                                        <option id="1">Not Started</option>
+
+
                                                 </Input>
-                                                {addInstructionsValidInput.touched.kategoryId && addInstructionsValidInput.errors.kategoryId ? (
-                                                    <FormFeedback type="invalid">{addInstructionsValidInput.errors.kategoryId}</FormFeedback>
+                                                {addInstructionsValidInput.touched.status && addInstructionsValidInput.errors.status ? (
+                                                    <FormFeedback type="invalid">{addInstructionsValidInput.errors.status}</FormFeedback>
                                                 ) : null}
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
                                                 <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
-                                                    name="keterangan"
+                                                    name="desciption"
                                                     type="textarea"
                                                     rows="5"
                                                     maxLength={50}
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     value={
-                                                        addInstructionsValidInput.values.keterangan ||
+                                                        addInstructionsValidInput.values.desciption ||
                                                         ""
                                                     }
                                                     invalid={
-                                                        addInstructionsValidInput.touched.keterangan &&
-                                                            addInstructionsValidInput.errors.keterangan
+                                                        addInstructionsValidInput.touched.desciption &&
+                                                            addInstructionsValidInput.errors.desciption
                                                             ? true
                                                             : false
                                                     }
                                                 />
-                                                {addInstructionsValidInput.touched.keterangan &&
-                                                    addInstructionsValidInput.errors.keterangan ? (
+                                                {addInstructionsValidInput.touched.desciption &&
+                                                    addInstructionsValidInput.errors.desciption ? (
                                                     <FormFeedback type="invalid">
-                                                        {addInstructionsValidInput.errors.keterangan}
+                                                        {addInstructionsValidInput.errors.desciption}
                                                     </FormFeedback>
                                                 ) : null}
                                             </div>
@@ -227,19 +266,19 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <Label className="col-sm-5" style={{ marginTop: "15px" }}>Attach File <span style={{ color: "red" }}>* </span></Label>
                                                 <div className="input-group">
-                                                    <Input
-                                                        id="idFileUpload"
-                                                        name="_file1"
-                                                        type="file"
-                                                        accept="json/*"
-                                                        onChange={(e) => addInstructionsValidInput.setFieldValue("_file1", e.target.files[0])}
-                                                        invalid={
-                                                            addInstructionsValidInput.touched._file1 && addInstructionsValidInput.errors._file1 ? true : false
-                                                        }
-                                                    />
-                                                    <Button outline type="button" color="danger" onClick={() => { addInstructionsValidInput.setFieldValue("_file1", ""); document.getElementById('idFileUpload').value = null; }}>
-                                                        <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
-                                                    </Button>
+                                                <Input
+                                                            id="idFileUpload"
+                                                            name="_file"
+                                                            type="file"
+                                                            // accept="xlsx/*"
+                                                            onChange={(e) => addInstructionsValidInput.setFieldValue("_file", e.target.files[0])}
+                                                            invalid={
+                                                                addInstructionsValidInput.touched._file && addInstructionsValidInput.errors._file ? true : false
+                                                            }
+                                                        />
+                                                        <Button outline type="button" color="danger" onClick={() => { addInstructionsValidInput.setFieldValue("_file", ""); document.getElementById('idFileUpload').value = null; }}>
+                                                            <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
+                                                        </Button>
                                                 </div>
                                             </div>
 
@@ -250,10 +289,10 @@ const AddInstructions = (props) => {
 
                                     <br></br>
 
-                                    <Button type="submit" color="primary" className="ms-1">
+                                    <Button color="primary" className="ms-1" type="submit">
                                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                                         Simpan
-                                        <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+                                        {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
                                     </Button>&nbsp;
 
                                     <Button

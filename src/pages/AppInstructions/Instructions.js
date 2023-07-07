@@ -36,7 +36,7 @@ const Instructions = () => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: { 
+    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "insId", order: "desc", search: { 
         any: "", statusId: selected } });
 
     const appInstructionsData = useSelector(state => {
