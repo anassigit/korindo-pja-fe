@@ -46,16 +46,12 @@ const AddInstructions = (props) => {
     const [addInstructionsSpinner, setAddInstructionsSpinner] = useState(false);
     const [selectedMulti, setselectedMulti] = useState(null);
 
-    const addInstructionsUserList = useSelector(state => {
-        console.log(state.instructionsReducer.respGetUserList.data);
-        return state.instructionsReducer.respGetUserList;
-    });
-
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
-        // dispatch(getCombo({ "name": "combo-user-list" }))
         dispatch(getUserList({}))
     }, [])
+
+    
 
     useEffect(() => {
         if (props.appAddInstructions) {
@@ -65,6 +61,11 @@ const AddInstructions = (props) => {
 
         }
     }, [props.appAddInstructions])
+
+    const addInstructionsUserList = useSelector(state => {
+        console.log(state.instructionsReducer.respGetUserList.data);
+        return state.instructionsReducer.respGetUserList;
+    });
 
     const insert = async (val) => {
         await dispatch(saveInstructions(val));
@@ -188,7 +189,7 @@ const AddInstructions = (props) => {
 
 
     const DeleteSelectFile = (id) => {
-        if (window.confirm("Are you sure you want to delete this Image?")) {
+        if (window.confirm("Are you sure you want to delete this file?")) {
             const result = selectedfile.filter((data) => data.id !== id);
             SetSelectedFile(result);
         } else {
@@ -364,17 +365,17 @@ const AddInstructions = (props) => {
 
                                             <div className="mb-3 col-sm-6">
                                                 <label>Choose Manager <span style={{ color: "red" }}>* </span></label>
-                                                {/* <Select
-                                                    value={selectedMulti2}
+                                                <Select
+                                                    value={selectedMulti}
                                                     isMulti={true}
                                                     onChange={(e) => {
-                                                        handleMulti2(e);
+                                                        handleMulti(e);
                                                     }}
                                                     options={
-                                                        app008p01UserRole.data != null ? app008p01UserRole.data.options : null
+                                                        addInstructionsUserList.data != null ? addInstructionsUserList.data.options : null
                                                     }
                                                     className="select2-selection"
-                                                /> */}
+                                                />
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
@@ -393,7 +394,7 @@ const AddInstructions = (props) => {
                                                                 return (
                                                                     <div className="file-atc-box" key={id}>
                                                                         {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx)$/i) ?
+                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
                                                                                 <div className="file-image"> <img src={fileimage} alt="" /></div> :
                                                                                 <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                         }
@@ -424,7 +425,7 @@ const AddInstructions = (props) => {
                                                                 return (
                                                                     <div className="file-atc-box" key={index}>
                                                                         {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx)$/i) ?
+                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
                                                                                 <div className="file-image"> <img src={fileimage} alt="" /></div> :
                                                                                 <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                         }

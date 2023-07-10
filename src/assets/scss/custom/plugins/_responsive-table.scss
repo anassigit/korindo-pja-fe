@@ -16,10 +16,10 @@
       color: $light;
       border: 1px solid $secondary;
       &.btn-primary {
-          background-color: $primary;
-          border-color: $primary;
+          background-color: #7BAE40;
+          border-color: #7BAE40;
           color: $white;
-          box-shadow: 0 0 0 2px rgba($primary, .5);
+          box-shadow: 0 0 0 2px rgba(#7BAE40, .5);
       }
   }
     &.pull-right {
