@@ -45,13 +45,15 @@ const AddInstructions = (props) => {
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
     const [addInstructionsSpinner, setAddInstructionsSpinner] = useState(false);
     const [selectedMulti, setselectedMulti] = useState(null);
+    const [selectedMulti2, setselectedMulti2] = useState(null);
+
+    const [optionOwner, setOptionOwner] = useState([]);
+    const [optionManager, setOptionManager] = useState([]);
 
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
         dispatch(getUserList({}))
     }, [])
-
-    
 
     useEffect(() => {
         if (props.appAddInstructions) {
@@ -62,8 +64,30 @@ const AddInstructions = (props) => {
         }
     }, [props.appAddInstructions])
 
+    useEffect(() => {
+        if(addInstructionsUserList.data !== undefined){
+
+            addInstructionsUserList.data.ownerList.map((data) => {
+                const newObj = {
+                    value: data.id,
+                    label: data.name,
+                };
+                setOptionOwner((option) => [...option, newObj]);
+            });
+
+            addInstructionsUserList.data.managerList.map((data) => {
+                const newObj = {
+                    value: data.id,
+                    label: data.name,
+                };
+                setOptionManager((option) => [...option, newObj]);
+            });
+            
+        }
+    }, [])
+
     const addInstructionsUserList = useSelector(state => {
-        console.log(state.instructionsReducer.respGetUserList.data);
+        // console.log(state.instructionsReducer.respGetUserList.data);
         return state.instructionsReducer.respGetUserList;
     });
 
@@ -79,14 +103,14 @@ const AddInstructions = (props) => {
             insDate: '',
             status: '',
             desciption: '',
-            // user: '',
+            user: '',
             // _file: '',
         },
 
         validationSchema: Yup.object().shape({
             title: Yup.string().required("Wajib diisi"),
             desciption: Yup.string().required("Wajib diisi"),
-            // user: Yup.string().required("Wajib diisi"),
+            user: Yup.string().required("Wajib diisi"),
         }),
 
         onSubmit: (val) => {
@@ -97,6 +121,7 @@ const AddInstructions = (props) => {
             bodyForm.append('insDate', val.insDate);
             bodyForm.append('status', val.status);
             bodyForm.append('desciption', val.desciption);
+            bodyForm.append('user', val.user);
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -231,6 +256,9 @@ const AddInstructions = (props) => {
     function handleMulti(s) {
         setselectedMulti(s);
     }
+    function handleMulti2(s) {
+        setselectedMulti2(s);
+    }
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
@@ -347,18 +375,13 @@ const AddInstructions = (props) => {
                                         <Col md="6">
                                             <div className="mb-3 col-sm-6">
                                                 <Label> Choose Owner <span style={{ color: "red" }}>* </span></Label>
-                                                <label className="control-label">
-                                                    Role <span style={{ color: "red" }}>* </span>
-                                                </label>
                                                 <Select
                                                     value={selectedMulti}
                                                     isMulti={true}
                                                     onChange={(e) => {
                                                         handleMulti(e);
                                                     }}
-                                                    options={
-                                                        addInstructionsUserList.data != null ? addInstructionsUserList.data.options : null
-                                                    }
+                                                    options={optionOwner}
                                                     className="select2-selection"
                                                 />
                                             </div>
@@ -366,14 +389,12 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <label>Choose Manager <span style={{ color: "red" }}>* </span></label>
                                                 <Select
-                                                    value={selectedMulti}
+                                                    value={selectedMulti2}
                                                     isMulti={true}
                                                     onChange={(e) => {
-                                                        handleMulti(e);
+                                                        handleMulti2(e);
                                                     }}
-                                                    options={
-                                                        addInstructionsUserList.data != null ? addInstructionsUserList.data.options : null
-                                                    }
+                                                    options={optionManager}
                                                     className="select2-selection"
                                                 />
                                             </div>

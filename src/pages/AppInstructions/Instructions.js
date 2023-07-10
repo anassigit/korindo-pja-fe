@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-//import DeleteModal from "../../common/DeleteModal";
 import '../../config';
 import RootPageCustom from '../../common/RootPageCustom';
 import TableCustom from '../../common/TableCustom';
@@ -25,10 +24,10 @@ const Instructions = () => {
     const dispatch = useDispatch();
     const [appInstructionsPage, setAppInstructionsPage] = useState(true)
     const [appAddInstructions, setAppAddInstructions] = useState(false)
-    // const [app052p03Page, setApp052p03Page] = useState(false)
+    const [appEditInstructions, setEditInstructions] = useState(false)
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
     // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
-    // const [app052p03Data, setApp052p03Data] = useState()
+    const [instructionsData, setInstructionsData] = useState()
     const [selected, setSelected] = useState("");
 
 
@@ -146,12 +145,12 @@ const Instructions = () => {
         setAppAddInstructions(true)
     }
 
-    // const app052p01PreEdit = (app052p01JarakTanamData) => {
-    //     setApp052setMsg("")
-    //     setApp052p03Data(app052p01JarakTanamData)
-    //     setApp052p01Page(false)
-    //     setApp052p03Page(true)
-    // }
+    const appInstructionsPreEdit = (appInstructionsData) => {
+        setAppInstructionsMsg("")
+        setInstructionsData(appInstructionsData)
+        setAppInstructionsPage(false)
+        setEditInstructions(true)
+    }
 
     // const [app052p01JarakTanamDelete, setApp052p01JarakTanamDelete] = useState(null);
 
@@ -309,13 +308,13 @@ const Instructions = () => {
                         setAppInstructionsPage={setAppInstructionsPage}
                         appInstructionsTabelSearch={appInstructionsTabelSearch}/>
 
-                      {/* <EditInstructions
-                        app052p03Page={app052p03Page}
-                        setApp052p03Page={setApp052p03Page}
-                        setApp052setMsg={setApp052setMsg}
-                        setApp052p01Page={setApp052p01Page}
-                        app052p03Data={app052p03Data}
-                        app052p01TabelSearch={app052p01TabelSearch}  />   */}
+                      <EditInstructions
+                        appEditInstructions={appEditInstructions}
+                        setEditInstructions={setEditInstructions}
+                        setAppInstructionsMsg={setAppInstructionsMsg}
+                        setAppInstructionsPage={setAppInstructionsPage}
+                        instructionsData={instructionsData}
+                        appInstructionsTabelSearch={appInstructionsTabelSearch}  />  
 
                 </>
             }
