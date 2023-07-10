@@ -61,30 +61,31 @@ const AddInstructions = (props) => {
             addInstructionsValidInput.setFieldValue("status", status)
             setAddInstructionsStartDate(format(currentDate, 'yyyy-MM-dd'))
 
+            if(addInstructionsUserList.data !== undefined){
+
+                addInstructionsUserList.data.ownerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+                        color: data.bgcolor,
+    
+                    };
+                    setOptionOwner((option) => [...option, newObj]);
+                });
+    
+                addInstructionsUserList.data.managerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+                        color: data.bgcolor,
+                    };
+                    setOptionManager((option) => [...option, newObj]);
+                });
+                
+            }
+
         }
     }, [props.appAddInstructions])
-
-    useEffect(() => {
-        if(addInstructionsUserList.data !== undefined){
-
-            addInstructionsUserList.data.ownerList.map((data) => {
-                const newObj = {
-                    value: data.id,
-                    label: data.name,
-                };
-                setOptionOwner((option) => [...option, newObj]);
-            });
-
-            addInstructionsUserList.data.managerList.map((data) => {
-                const newObj = {
-                    value: data.id,
-                    label: data.name,
-                };
-                setOptionManager((option) => [...option, newObj]);
-            });
-            
-        }
-    }, [])
 
     const addInstructionsUserList = useSelector(state => {
         // console.log(state.instructionsReducer.respGetUserList.data);
@@ -103,14 +104,13 @@ const AddInstructions = (props) => {
             insDate: '',
             status: '',
             desciption: '',
-            user: '',
+            // user: '',
             // _file: '',
         },
 
         validationSchema: Yup.object().shape({
             title: Yup.string().required("Wajib diisi"),
             desciption: Yup.string().required("Wajib diisi"),
-            user: Yup.string().required("Wajib diisi"),
         }),
 
         onSubmit: (val) => {
@@ -121,7 +121,22 @@ const AddInstructions = (props) => {
             bodyForm.append('insDate', val.insDate);
             bodyForm.append('status', val.status);
             bodyForm.append('desciption', val.desciption);
-            bodyForm.append('user', val.user);
+            // val.user = selectedMulti;
+            // bodyForm.append('user', val.user);
+            // var newStateArray = [];
+
+            selectedMulti.map((data, index) => {
+
+                bodyForm.append('user', data.value);
+
+            })
+            selectedMulti2.map((data, index) => {
+
+                bodyForm.append('user', data.value);
+
+            })
+
+            // bodyForm.append('user', newStateArray);
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -167,9 +182,6 @@ const AddInstructions = (props) => {
         setAddInstructionsSpinner(false);
     }, [appAddInstructionsMessage])
 
-
-    ///
-
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
 
@@ -184,7 +196,6 @@ const AddInstructions = (props) => {
     }
 
     const InputChange = (e) => {
-        // --For Multiple File Input
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {
             images.push((e.target.files[i]));
@@ -225,8 +236,6 @@ const AddInstructions = (props) => {
 
     const FileUploadSubmit = async (e) => {
         e.preventDefault();
-
-        // form reset on submit 
         e.target.reset();
         if (selectedfile.length > 0) {
             for (let index = 0; index < selectedfile.length; index++) {
@@ -254,16 +263,16 @@ const AddInstructions = (props) => {
     }
 
     function handleMulti(s) {
+        debugger
         setselectedMulti(s);
     }
     function handleMulti2(s) {
+        debugger
         setselectedMulti2(s);
     }
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
-            {/* <Breadcrumbs title="Forms" breadcrumbItem="Master Rumus Tegakan" pageNow={props.setAppAddInstructions} pageBefore={props.setAppInstructionsPage} message={props.setAppInstructionsMsg} /> */}
-
             <Row>
                 <Col lg={12}>
                     <Card>
@@ -376,6 +385,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <Label> Choose Owner <span style={{ color: "red" }}>* </span></Label>
                                                 <Select
+                                                id="user"
                                                     value={selectedMulti}
                                                     isMulti={true}
                                                     onChange={(e) => {
@@ -389,6 +399,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <label>Choose Manager <span style={{ color: "red" }}>* </span></label>
                                                 <Select
+                                                id="user"
                                                     value={selectedMulti2}
                                                     isMulti={true}
                                                     onChange={(e) => {
