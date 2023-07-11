@@ -39,13 +39,34 @@ const EditInstructions = (props) => {
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
 
+    const getDetailInstructionData = useSelector(state => {
+        //console.log("detail", state.instructionsReducer.respGetDetailInstruction);
+        return state.instructionsReducer.respGetDetailInstruction;
+      })
+
+
+    // const editInstructionsUserList = useSelector(state => {
+    //     // console.log(state.instructionsReducer.respGetUserList.data);
+    //     return state.instructionsReducer.respGetUserList;
+    // });
+
     useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
         dispatch(getUserList({}))
+
     }, [])
 
     useEffect(() => {
         if (props.appEditInstructions){
+            debugger
+
+            dispatch(getDetailInstruction(
+
+                { 
+                "num": props.instructionsData.insId
+                }
+                ));
+
             //console.log(props.instructionsData)
             editInstructionsValidInput.setFieldValue("insId", props.instructionsData?.insId)
             editInstructionsValidInput.setFieldValue("insTitle", props.instructionsData?.insTitle)
@@ -53,51 +74,40 @@ const EditInstructions = (props) => {
             editInstructionsValidInput.setFieldValue("insStatus", props.instructionsData?.insStatus)
             editInstructionsValidInput.setFieldValue("descriptions", props.instructionsData?.descriptions)
             setStartDate(format(currentDate, 'yyyy-MM-dd'))
-            setselectedMulti(getDetailInstructionData.data)
-            console.log("selectmanager", getDetailInstructionData.data)
+            debugger
 
-            dispatch(getDetailInstruction(
-                {
-                "num": props.instructionsData.insId
-                }
-                ));
+            setselectedMulti(getDetailInstructionData?.data?.instruction?.ownerList)
+            setselectedMulti2(getDetailInstructionData?.data?.instruction?.managerList)
+            debugger
 
-            if(getDetailInstructionData.data !== undefined){
+            console.log("getOwner", getDetailInstructionData?.data?.instruction?.ownerList)
+            console.log("getManager", getDetailInstructionData?.data?.instruction?.managerList)
+
+
+            if(getDetailInstructionData?.data !== undefined){
  
-                getDetailInstructionData.data.ownerList.map((data) => {
+                getDetailInstructionData?.data?.ownerList.map((ownerList) => {
                     const newObj = {
-                        value: data.id,
-                        label: data.name,
+                        value: ownerList.id,
+                        label: ownerList.name,
                     };
+                    debugger
                     setOptionOwner((option) => [...option, newObj]);
                 });
      
-                getDetailInstructionData.data.managerList.map((data) => {
+                getDetailInstructionData?.data?.managerList.map((managerList) => {
                     const newObj = {
-                        value: data.id,
-                        label: data.name,
+                        value: managerList.id,
+                        label: managerList.name,
                     };
+                    debugger
                     setOptionManager((option) => [...option, newObj]);
                 });
      
             }
+
         }
     }, [props.appEditInstructions])
-
-    const getDetailInstructionData = useSelector(state => {
-        //console.log("detail", state.instructionsReducer.respGetDetailInstruction);
-        return state.instructionsReducer.respGetDetailInstruction;
-      })
-
-
-    const editInstructionsUserList = useSelector(state => {
-        // console.log(state.instructionsReducer.respGetUserList.data);
-        return state.instructionsReducer.respGetUserList;
-    });
-
-    useEffect(() => {
-       
-    }, [])
 
     const insert = async (val) => {
         await dispatch(editInstructions(val));
