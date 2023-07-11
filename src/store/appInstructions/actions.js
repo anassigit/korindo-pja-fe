@@ -10,7 +10,9 @@ import {
     MSGDELETE,
     RESET_MESSAGE,
     GET_USER_LIST,
-    RESP_GET_USER_LIST
+    RESP_GET_USER_LIST,
+    GET_DETAIL_INSTRUCTION,
+    RESP_GET_DETAIL_INSTRUCTION
 
 } from "./actionTypes"
 
@@ -66,5 +68,15 @@ export const getInstructionsData = (req) => ({
 
   export const respGetUserList = resp => ({
     type: RESP_GET_USER_LIST,
+    payload: resp,
+  })
+
+  export const getDetailInstruction = (req) => ({
+    type: GET_DETAIL_INSTRUCTION,
+    payload: req,
+  })
+  
+  export const respGetDetailInstruction = resp => ({
+    type: RESP_GET_DETAIL_INSTRUCTION,
     payload: resp,
   })

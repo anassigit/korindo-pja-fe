@@ -39,6 +39,7 @@ const Instructions = () => {
         any: "", statusId: selected } });
 
     const appInstructionsData = useSelector(state => {
+        //console.log(state.instructionsReducer.respGetInstructions);
         return state.instructionsReducer.respGetInstructions;
     });
 
@@ -47,8 +48,6 @@ const Instructions = () => {
             setAppInstructionsMsg(appInstructionsData)
         }
     }, [appInstructionsData])
-
-    const owma = [""]
 
     const appInstructionsp01Tabel = [
         {
@@ -64,6 +63,21 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, appInstructionsData) => (
+                <>
+                    <div style={{ justifyContent: 'left' }} className="d-flex gap-3">
+
+                        <button style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
+                            type="button"
+                            className="btn btn-primary "
+                            onClick={() => appInstructionsPreEdit(appInstructionsData)}
+                        >
+                            <a title="Instructions" style={{ color: "#495057" }}>{appInstructionsData.insTitle}</a>
+                        </button>
+
+                    </div>
+                </>
+            ),
         },
         {
             dataField: "ownerId",

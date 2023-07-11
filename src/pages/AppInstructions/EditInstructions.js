@@ -20,11 +20,11 @@ import {
     FormGroup,
     CardHeader,
 } from "reactstrap";
-import { getInstructionsData, editInstructions, getUserList } from "../../store/appInstructions/actions"
+import { getInstructionsData, editInstructions, getUserList, getDetailInstruction } from "../../store/appInstructions/actions"
 import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 import Select from "react-select";
-
+import shortid from "shortid";
 
 const EditInstructions = (props) => {
 
@@ -46,41 +46,58 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         if (props.appEditInstructions){
-            console.log(props.instructionsData)
-            editInstructionsValidInput.setFieldValue("num", props.instructionsData?.num)
-            editInstructionsValidInput.setFieldValue("title", props.instructionsData?.title)
+            //console.log(props.instructionsData)
+            editInstructionsValidInput.setFieldValue("insId", props.instructionsData?.insId)
+            editInstructionsValidInput.setFieldValue("insTitle", props.instructionsData?.insTitle)
             editInstructionsValidInput.setFieldValue("insDate", props.instructionsData?.insDate)
-            editInstructionsValidInput.setFieldValue("status", props.instructionsData?.status)
+            editInstructionsValidInput.setFieldValue("insStatus", props.instructionsData?.insStatus)
+            editInstructionsValidInput.setFieldValue("descriptions", props.instructionsData?.descriptions)
             setStartDate(format(currentDate, 'yyyy-MM-dd'))
+            setselectedMulti(getDetailInstructionData.data)
+            console.log("selectmanager", getDetailInstructionData.data)
+
+            dispatch(getDetailInstruction(
+                {
+                "num": props.instructionsData.insId
+                }
+                ));
+
+            if(getDetailInstructionData.data !== undefined){
+ 
+                getDetailInstructionData.data.ownerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+                    };
+                    setOptionOwner((option) => [...option, newObj]);
+                });
+     
+                getDetailInstructionData.data.managerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+                    };
+                    setOptionManager((option) => [...option, newObj]);
+                });
+     
+            }
         }
     }, [props.appEditInstructions])
 
-    useEffect(() => {
-        if(editInstructionsUserList.data !== undefined){
- 
-            editInstructionsUserList.data.ownerList.map((data) => {
-                const newObj = {
-                    value: data.id,
-                    label: data.name,
-                };
-                setOptionOwner((option) => [...option, newObj]);
-            });
- 
-            editInstructionsUserList.data.managerList.map((data) => {
-                const newObj = {
-                    value: data.id,
-                    label: data.name,
-                };
-                setOptionManager((option) => [...option, newObj]);
-            });
- 
-        }
-    }, [])
+    const getDetailInstructionData = useSelector(state => {
+        //console.log("detail", state.instructionsReducer.respGetDetailInstruction);
+        return state.instructionsReducer.respGetDetailInstruction;
+      })
+
 
     const editInstructionsUserList = useSelector(state => {
         // console.log(state.instructionsReducer.respGetUserList.data);
         return state.instructionsReducer.respGetUserList;
     });
+
+    useEffect(() => {
+       
+    }, [])
 
     const insert = async (val) => {
         await dispatch(editInstructions(val));
@@ -267,20 +284,35 @@ const EditInstructions = (props) => {
  
                                     <Row>
                                         <Col md="6">
+                                        <div className="mb-3 col-sm-6">
+                                                <Label>Instruction ID</Label>
+                                                <Input
+                                                    name="insId"
+                                                    type="text"
+                                                    onChange={editInstructionsValidInput.handleChange}
+                                                    value={editInstructionsValidInput.values.insId || ""}
+                                                    invalid={
+                                                        editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? true : false
+                                                    }
+                                                />
+                                                {editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? (
+                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.insId}</FormFeedback>
+                                                ) : null}
+                                            </div>
  
                                             <div className="mb-3 col-sm-6">
                                                 <Label>Title</Label>
                                                 <Input
-                                                    name="title"
+                                                    name="insTitle"
                                                     type="text"
                                                     onChange={editInstructionsValidInput.handleChange}
-                                                    value={editInstructionsValidInput.values.title || ""}
+                                                    value={editInstructionsValidInput.values.insTitle || ""}
                                                     invalid={
-                                                        editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? true : false
+                                                        editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? true : false
                                                     }
                                                 />
-                                                {editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? (
-                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.title}</FormFeedback>
+                                                {editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? (
+                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.insTitle}</FormFeedback>
                                                 ) : null}
                                             </div>
  
@@ -308,13 +340,13 @@ const EditInstructions = (props) => {
                                                 <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
-                                                    name="status"
+                                                    name="insStatus"
                                                     onChange={editInstructionsValidInput.handleChange}
                                                     onBlur={editInstructionsValidInput.handleBlur}
                                                     // fieldValue={1}
                                                     value={"Not Started"}
                                                     invalid={
-                                                        editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
+                                                        editInstructionsValidInput.touched.insStatus && editInstructionsValidInput.errors.insStatus ? true : false
                                                     }
                                                 >
                                                     <option></option>
@@ -331,26 +363,26 @@ const EditInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
-                                                    name="desciption"
+                                                    name="descriptions"
                                                     type="textarea"
                                                     rows="5"
                                                     maxLength={50}
                                                     onChange={editInstructionsValidInput.handleChange}
                                                     value={
-                                                        editInstructionsValidInput.values.desciption ||
+                                                        editInstructionsValidInput.values.descriptions ||
                                                         ""
                                                     }
                                                     invalid={
-                                                        editInstructionsValidInput.touched.desciption &&
-                                                            editInstructionsValidInput.errors.desciption
+                                                        editInstructionsValidInput.touched.descriptions &&
+                                                            editInstructionsValidInput.errors.descriptions
                                                             ? true
                                                             : false
                                                     }
                                                 />
-                                                {editInstructionsValidInput.touched.desciption &&
-                                                    editInstructionsValidInput.errors.desciption ? (
+                                                {editInstructionsValidInput.touched.descriptions &&
+                                                    editInstructionsValidInput.errors.descriptions ? (
                                                     <FormFeedback type="invalid">
-                                                        {editInstructionsValidInput.errors.desciption}
+                                                        {editInstructionsValidInput.errors.descriptions}
                                                     </FormFeedback>
                                                 ) : null}
                                             </div>
@@ -366,7 +398,8 @@ const EditInstructions = (props) => {
                                                     onChange={(e) => {
                                                         handleMulti(e);
                                                     }}
-                                                    options={optionOwner}
+                                                    options={optionOwner
+                                                    }
                                                     className="select2-selection"
                                                 />
                                             </div>
@@ -374,12 +407,13 @@ const EditInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <label>Choose Manager <span style={{ color: "red" }}>* </span></label>
                                                 <Select
-                                                    value={selectedMulti}
+                                                    value={selectedMulti2}
                                                     isMulti={true}
                                                     onChange={(e) => {
                                                         handleMulti2(e);
                                                     }}
-                                                    options={optionManager}
+                                                    options={optionManager
+                                                    }
                                                     className="select2-selection"
                                                 />
                                             </div>
@@ -390,7 +424,7 @@ const EditInstructions = (props) => {
                                                 <Form onSubmit={FileUploadSubmit}>
                                                     <div className="kb-file-upload">
                                                         <div className="file-upload-box">
-                                                            <input type="file" id="fileupload2" className="file-upload-input" onChange={InputChange} multiple />
+                                                            <input type="file" id="fileupload2" className="file-upload-input" onChange={InputChange} name="removeFile" multiple />
                                                         </div>
                                                     </div>
                                                     <div className="kb-attach-box mb-3">
