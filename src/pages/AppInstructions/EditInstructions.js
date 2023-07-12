@@ -39,30 +39,19 @@ const EditInstructions = (props) => {
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
 
-    const getDetailInstructionData = useSelector(state => {
-        //console.log("detail", state.instructionsReducer.respGetDetailInstruction);
-        return state.instructionsReducer.respGetDetailInstruction;
-      })
-
-
-    // const editInstructionsUserList = useSelector(state => {
-    //     // console.log(state.instructionsReducer.respGetUserList.data);
-    //     return state.instructionsReducer.respGetUserList;
-    // });
+    const [optionOwner0, setOptionOwner0] = useState([]);
+    const [optionManager0, setOptionManager0] = useState([]);
 
     useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
         dispatch(getUserList({}))
+        dispatch(getDetailInstruction({}))
 
     }, [])
 
     useEffect(() => {
         if (props.appEditInstructions){
-            debugger
-
-            dispatch(getDetailInstruction(
-
-                { 
+            dispatch(getDetailInstruction({ 
                 "num": props.instructionsData.insId
                 }
                 ));
@@ -75,39 +64,76 @@ const EditInstructions = (props) => {
             editInstructionsValidInput.setFieldValue("descriptions", props.instructionsData?.descriptions)
             setStartDate(format(currentDate, 'yyyy-MM-dd'))
             debugger
-
-            setselectedMulti(getDetailInstructionData?.data?.instruction?.ownerList)
-            setselectedMulti2(getDetailInstructionData?.data?.instruction?.managerList)
-            debugger
-
-            console.log("getOwner", getDetailInstructionData?.data?.instruction?.ownerList)
-            console.log("getManager", getDetailInstructionData?.data?.instruction?.managerList)
-
-
-            if(getDetailInstructionData?.data !== undefined){
+            setselectedMulti(optionOwner0)
+            setselectedMulti2(optionManager0)
+            // setselectedMulti(getDetailInstructionData?.data?.instruction?.ownerList)
+            // setselectedMulti2(getDetailInstructionData?.data?.instruction?.managerList)
+            if(getDetailInstructionData?.data?.instruction !== undefined){
  
-                getDetailInstructionData?.data?.ownerList.map((ownerList) => {
+                getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                     const newObj = {
                         value: ownerList.id,
                         label: ownerList.name,
                     };
                     debugger
-                    setOptionOwner((option) => [...option, newObj]);
+                    setOptionOwner0((option) => [...option, newObj]);
                 });
      
-                getDetailInstructionData?.data?.managerList.map((managerList) => {
+                getDetailInstructionData?.data?.instruction?.managerList.map((managerList) => {
                     const newObj = {
                         value: managerList.id,
                         label: managerList.name,
                     };
                     debugger
-                    setOptionManager((option) => [...option, newObj]);
+                    setOptionManager0((option) => [...option, newObj]);
                 });
      
             }
 
+            debugger
+
+            console.log("getOwnerSelected", getDetailInstructionData?.data?.instruction?.ownerList)
+            console.log("getManagerSelected", getDetailInstructionData?.data?.instruction?.managerList)
+
+            // console.log("getOwner", getDetailInstructionData?.data?.ownerList)
+            // console.log("getManager", getDetailInstructionData?.data?.managerList)
+
+            if(getDetailInstructionData?.data !== undefined){
+
+                getDetailInstructionData?.data?.ownerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+    
+                    };
+                    setOptionOwner((option) => [...option, newObj]);
+                });
+    
+                getDetailInstructionData?.data?.managerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+
+                    };
+                    setOptionManager((option) => [...option, newObj]);
+                });
+                
+            }
+
+
         }
     }, [props.appEditInstructions])
+
+    const getDetailInstructionData = useSelector(state => {
+        //console.log("detail", state.instructionsReducer.respGetDetailInstruction);
+        return state.instructionsReducer.respGetDetailInstruction;
+      })
+
+
+    const editInstructionsUserList = useSelector(state => {
+        // console.log(state.instructionsReducer.respGetUserList.data);
+        return state.instructionsReducer.respGetUserList;
+    });
 
     const insert = async (val) => {
         await dispatch(editInstructions(val));
@@ -130,37 +156,37 @@ const EditInstructions = (props) => {
             status: Yup.string().required("Wajib diisi"),
         }),
 
-        onSubmit: (val) => {
+        // onSubmit: (val) => {
  
-            var bodyForm = new FormData();
-            debugger
-            bodyForm.append('title', val.title);
-            bodyForm.append('insDate', val.insDate);
-            bodyForm.append('status', val.status);
-            bodyForm.append('desciption', val.desciption);
-            if (selectedfile.length > 0) {
+        //     var bodyForm = new FormData();
+        //     debugger
+        //     bodyForm.append('title', val.title);
+        //     bodyForm.append('insDate', val.insDate);
+        //     bodyForm.append('status', val.status);
+        //     bodyForm.append('desciption', val.desciption);
+        //     if (selectedfile.length > 0) {
  
-                for (let index = 0; index < selectedfile.length; index++) {
-                    debugger
-                    let a = selectedfile[index];
+        //         for (let index = 0; index < selectedfile.length; index++) {
+        //             debugger
+        //             let a = selectedfile[index];
  
-                    bodyForm.append('file' + index, selectedfile[index].fileori);
+        //             bodyForm.append('file' + index, selectedfile[index].fileori);
  
-                }
-            }
-            debugger
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            setAddInstructionsSpinner(true);
-            props.setAppInstructionsPage(true);
-            props.setEditInstructions(false);
-            insert(bodyForm, config);
-            props.setAppInstructionsMsg(appAddInstructionsMessage);
+        //         }
+        //     }
+        //     debugger
+        //     const config = {
+        //         headers: {
+        //             'content-type': 'multipart/form-data'
+        //         }
+        //     }
+        //     setAddInstructionsSpinner(true);
+        //     props.setAppInstructionsPage(true);
+        //     props.setEditInstructions(false);
+        //     insert(bodyForm, config);
+        //     props.setAppInstructionsMsg(appAddInstructionsMessage);
  
-        }
+        // }
 
         // onSubmit: (values) => {
         //     setEditInstructionsSpinner(true);
@@ -173,15 +199,15 @@ const EditInstructions = (props) => {
         return state.instructionsReducer.msgEdit;
     });
 
-    useEffect(() => {
-        if (editInstructionsMessage.status == "1") {
-            props.setAppInstructionsPage(true);
-            props.setEditInstructions(false);
-            dispatch(getInstructionsData(props.appInstructionsTabelSearch))
-        }
-        props.setAppInstructionsMsg(editInstructionsMessage)
-        setEditInstructionsSpinner(false);
-    }, [editInstructionsMessage])
+    // useEffect(() => {
+    //     if (editInstructionsMessage.status == "1") {
+    //         props.setAppInstructionsPage(true);
+    //         props.setEditInstructions(false);
+    //         dispatch(getInstructionsData(props.appInstructionsTabelSearch))
+    //     }
+    //     props.setAppInstructionsMsg(editInstructionsMessage)
+    //     setEditInstructionsSpinner(false);
+    // }, [editInstructionsMessage])
 
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
