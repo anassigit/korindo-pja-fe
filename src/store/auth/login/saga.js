@@ -11,7 +11,7 @@ function* loginUser({ payload: { user, history } }) {
   try {
       const response = yield call(login, user);
       if(response.status == 1){
-        debugger
+
         ReactSession.set("authUser", response.data.KOR_TOKEN);
         ReactSession.set("user", JSON.stringify(response.data.user));
         // const res = yield call(getMenu)

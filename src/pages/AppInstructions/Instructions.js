@@ -16,8 +16,9 @@ import {
 import { getInstructionsData, resetMessage } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
 //import { ReactSession } from 'react-client-session';
- import AddInstructions from "./AddInstructions";
- import EditInstructions from "./EditInstructions";
+import AddInstructions from "./AddInstructions";
+import EditInstructions from "./EditInstructions";
+import DetailInstructions from "./DetailInstructions";
 
 const Instructions = () => {
 
@@ -25,6 +26,7 @@ const Instructions = () => {
     const [appInstructionsPage, setAppInstructionsPage] = useState(true)
     const [appAddInstructions, setAppAddInstructions] = useState(false)
     const [appEditInstructions, setEditInstructions] = useState(false)
+    const [appDetailInstructions, setAppDetailInstructions] = useState(true)
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
     // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
     const [instructionsData, setInstructionsData] = useState()
@@ -35,8 +37,11 @@ const Instructions = () => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "insId", order: "desc", search: { 
-        any: "", statusId: selected } });
+    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
+        page: 1, limit: 10, offset: 0, sort: "insId", order: "desc", search: {
+            any: "", statusId: selected
+        }
+    });
 
     const appInstructionsData = useSelector(state => {
         //console.log(state.instructionsReducer.respGetInstructions);
@@ -70,7 +75,7 @@ const Instructions = () => {
                         <button style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
                             type="button"
                             className="btn btn-primary "
-                            onClick={() => appInstructionsPreEdit(appInstructionsData)}
+                            onClick={() => appInstructionsPreEdit(appInstructionsData) }
                         >
                             <a title="Instructions" style={{ color: "#495057" }}>{appInstructionsData.insTitle}</a>
                         </button>
@@ -164,6 +169,7 @@ const Instructions = () => {
         setInstructionsData(appInstructionsData)
         setAppInstructionsPage(false)
         setEditInstructions(true)
+        // setAppDetailInstructions(true)
     }
 
     // const [app052p01JarakTanamDelete, setApp052p01JarakTanamDelete] = useState(null);
@@ -251,37 +257,37 @@ const Instructions = () => {
                                                             Status :{" "}
                                                         </label>
                                                         <div className="col-sm-7">
-                                                        <Input
-                                                type="select"
-                                                name="statusId"
-                                                onChange={handleChange}
-                                                //onSelect={""}
-                                                value={selected}
-                                            >
-                                                <option id="" value={""}>All</option>
-                                                <option id="1" value={"1"}>Not Started</option>
-                                                <option id="2" value={"2"}>In Process</option>
-                                                <option id="3" value={"3"}>Action Completed</option>
-                                                <option id="4" value={"4"}>Rejected</option>
-                                                <option id="5" value={"5"}>Completed</option>
+                                                            <Input
+                                                                type="select"
+                                                                name="statusId"
+                                                                onChange={handleChange}
+                                                                //onSelect={""}
+                                                                value={selected}
+                                                            >
+                                                                <option id="" value={""}>All</option>
+                                                                <option id="1" value={"1"}>Not Started</option>
+                                                                <option id="2" value={"2"}>In Process</option>
+                                                                <option id="3" value={"3"}>Action Completed</option>
+                                                                <option id="4" value={"4"}>Rejected</option>
+                                                                <option id="5" value={"5"}>Completed</option>
 
-                                            </Input>
+                                                            </Input>
                                                         </div>
                                                     </Row>
                                                 </Col>
 
                                                 <Col sm="12">
-                                        <div className="text-sm-end">
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary "
-                                            onClick={() => { appInstructionsPreAdd() }}
-                                            >
-                                                <i className="bx bx-plus font-size-16 align-middle me-2"></i>{" "}
-                                                New Instructions
-                                            </button>
-                                        </div>
-                                    </Col>
+                                                    <div className="text-sm-end">
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary "
+                                                            onClick={() => { appInstructionsPreAdd() }}
+                                                        >
+                                                            <i className="bx bx-plus font-size-16 align-middle me-2"></i>{" "}
+                                                            New Instructions
+                                                        </button>
+                                                    </div>
+                                                </Col>
                                             </div>
                                         </div>
                                     </Col>
@@ -315,20 +321,28 @@ const Instructions = () => {
                         </Row>
                     </Container>
 
-                     <AddInstructions
+                    <AddInstructions
                         appAddInstructions={appAddInstructions}
                         setAppAddInstructions={setAppAddInstructions}
                         setAppInstructionsMsg={setAppInstructionsMsg}
                         setAppInstructionsPage={setAppInstructionsPage}
-                        appInstructionsTabelSearch={appInstructionsTabelSearch}/>
+                        appInstructionsTabelSearch={appInstructionsTabelSearch} />
 
-                      <EditInstructions
+                    <EditInstructions
                         appEditInstructions={appEditInstructions}
                         setEditInstructions={setEditInstructions}
                         setAppInstructionsMsg={setAppInstructionsMsg}
                         setAppInstructionsPage={setAppInstructionsPage}
                         instructionsData={instructionsData}
-                        appInstructionsTabelSearch={appInstructionsTabelSearch}  />  
+                        appInstructionsTabelSearch={appInstructionsTabelSearch} />
+
+                    {/* <DetailInstructions
+                        appDetailInstructions={appDetailInstructions}
+                        setAppDetailInstructions={setAppDetailInstructions}
+                        setAppInstructionsMsg={setAppInstructionsMsg}
+                        setAppInstructionsPage={setAppInstructionsPage}
+                        instructionsData={instructionsData}
+                        appInstructionsTabelSearch={appInstructionsTabelSearch} /> */}
 
                 </>
             }

@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all} from "redux-saga/effects"
 
-import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION } from "./actionTypes"
+import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION } from "./actionTypes"
 
 import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction } from "./actions"
 
-import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction } from "helpers/backend_helper"
+import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions } from "helpers/backend_helper"
 
 function* fetchGetInstructions({ payload: req }) {
     try {
@@ -78,6 +78,16 @@ function* fetchGetInstructions({ payload: req }) {
   }
 }
 
+function* fetchSaveDescriptions({ payload: req }) {
+  try {
+    const response = yield call(saveDescriptions, req)
+    yield put(msgAdd(response))
+  } catch (error) {
+    console.log(error);
+    yield put(msgAdd({"status" : 0, "message" : "Error Get Data"}))
+  }
+}
+
   function* instructionsSaga() {
     
     yield takeEvery(GET_INSTRUCTIONS, fetchGetInstructions)
@@ -86,6 +96,7 @@ function* fetchGetInstructions({ payload: req }) {
     yield takeEvery(DELETE_INSTRUCTIONS, fetchDeleteInstructions)
     yield takeEvery(GET_USER_LIST, fetchGetUserList)
     yield takeEvery(GET_DETAIL_INSTRUCTION, fetchGetDetailInstruction)
+    yield takeEvery(SAVE_DESCRIPTION, fetchSaveDescriptions)
   
   }
 

@@ -1,10 +1,12 @@
 
+
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux"
+import TableCustom from '../../common/TableCustom';
 import {
     Row,
     Col,
@@ -20,19 +22,18 @@ import {
     FormGroup,
     CardHeader,
 } from "reactstrap";
-import { getInstructionsData, editInstructions, getUserList, getDetailInstruction, saveDescription } from "../../store/appInstructions/actions"
+import { getInstructionsData, editInstructions, getUserList, getDetailInstruction } from "../../store/appInstructions/actions"
 import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 import Select from "react-select";
 import shortid from "shortid";
 
-const EditInstructions = (props) => {
-
+const DetailInstructions = (props) => {
     const dispatch = useDispatch();
     const currentDate = new Date()
     const [startDate, setStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
-    const [editInstructionsSpinner, setEditInstructionsSpinner] = useState(false);
-    const [editInstructionsFirstRenderDone, setEditInstructionsFirstRenderDone] = useState(false);
+    const [detailInstructionsSpinner, setDetailInstructionsSpinner] = useState(false);
+    const [detailInstructionsFirstRenderDone, setDetailInstructionsFirstRenderDone] = useState(false);
     const [selectedMulti, setselectedMulti] = useState(null);
     const [selectedMulti2, setselectedMulti2] = useState(null);
 
@@ -42,20 +43,17 @@ const EditInstructions = (props) => {
     const [optionOwner0, setOptionOwner0] = useState([]);
     const [optionManager0, setOptionManager0] = useState([]);
 
-    const [statusList, setStatusList] = useState([]);
-
-    const [updTitle, setUpdTitle] = useState([]);
-
-    const [selectedfile2, SetSelectedFile2] = useState([]);
-    const [Files2, SetFiles2] = useState([]);
-    const [isiFile, setIsiFile] = useState([]);
+    const [selectedfile, SetSelectedFile] = useState([]);
+    const [Files, SetFiles] = useState([]);
 
     const getDetailInstructionData = useSelector(state => {
         //console.log("detail", state.instructionsReducer.respGetDetailInstruction);
         return state.instructionsReducer.respGetDetailInstruction;
     })
 
+
     useEffect(() => {
+        
         if (getDetailInstructionData.status == "1") {
             
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
@@ -75,42 +73,6 @@ const EditInstructions = (props) => {
             });
 
         }
-
-        if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1" ) {
-
-            getDetailInstructionData?.data?.ownerList.map((data) => {
-                const newObj = {
-                    value: data.id,
-                    label: data.name,
-    
-                };
-                setOptionOwner((option) => [...option, newObj]);
-            });
-    
-            getDetailInstructionData?.data?.managerList.map((data) => {
-                const newObj = {
-                    value: data.id,
-                    label: data.name,
-    
-                };
-                setOptionManager((option) => [...option, newObj]);
-            });
-    
-        }
-
-        if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1" ) {
-
-            getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
-                const newObj = {
-                    no: attachFileList.no,
-                    name: attachFileList.name,
-    
-                };
-                SetSelectedFile2((option) => [...option, newObj]);
-            });
-
-        }
-
     }, [getDetailInstructionData])
 
     useEffect(() => {
@@ -121,128 +83,85 @@ const EditInstructions = (props) => {
     }, [optionOwner0, optionManager0])
 
     useEffect(() => {
-        if (Files2 != null && Files2 != null) {
-            SetSelectedFile2(Files2)
-            console.log("files", Files2)
-
-        }
-    }, [Files2])
-
-    useEffect(() => {
-        setEditInstructionsFirstRenderDone(true);
+        setDetailInstructionsFirstRenderDone(true);
         dispatch(getUserList({}))
         dispatch(getDetailInstruction({}))
 
     }, [])
 
     useEffect(() => {
-        if (props.appEditInstructions) {
-            dispatch(getDetailInstruction({
-                "num": props.instructionsData.insId
-            }
-            ));
-            editInstructionsValidInput.setFieldValue("insId", props.instructionsData?.insId)
-            editInstructionsValidInput.setFieldValue("insTitle", props.instructionsData?.insTitle)
-            editInstructionsValidInput.setFieldValue("insDate", props.instructionsData?.insDate)
-            editInstructionsValidInput.setFieldValue("statusId", props.instructionsData?.statusId)
-            editInstructionsValidInput.setFieldValue("descriptions", props.instructionsData?.descriptions)
+        if (props.appDetailInstructions) {
+
+            // dispatch(getDetailInstruction({
+            //     "insId": props.instructionsData.insId
+            // }
+            // ));
+    
+
+            detailInstructionsValidInput.setFieldValue("insId", props.instructionsData?.insId)
+            detailInstructionsValidInput.setFieldValue("insTitle", props.instructionsData?.insTitle)
+            detailInstructionsValidInput.setFieldValue("insDate", props.instructionsData?.insDate)
+            detailInstructionsValidInput.setFieldValue("insStatus", props.instructionsData?.insStatus)
+            detailInstructionsValidInput.setFieldValue("descriptions", props.instructionsData?.descriptions)
 
             setStartDate(format(currentDate, 'yyyy-MM-dd'))
+
+            if (getDetailInstructionData?.data !== undefined) {
+
+                getDetailInstructionData?.data?.ownerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+
+                    };
+                    setOptionOwner((option) => [...option, newObj]);
+                });
+
+                getDetailInstructionData?.data?.managerList.map((data) => {
+                    const newObj = {
+                        value: data.id,
+                        label: data.name,
+
+                    };
+                    setOptionManager((option) => [...option, newObj]);
+                });
+
+            }
+
 
         } else {
             dispatch(getDetailInstruction({}))
         }
-    }, [props.appEditInstructions])
+    }, [props.appDetailInstructions])
 
-    const editInstructionsUserList = useSelector(state => {
-        // console.log(state.instructionsReducer.respGetUserList.data);
-        return state.instructionsReducer.respGetUserList;
-    });
 
-    const insert = async (values) => {
-        await dispatch(editInstructions(values));
+    const insert = async (val) => {
+        await dispatch(editInstructions(val));
     };
 
-    const insert2 = async (val) => {
-        await dispatch(saveDescription(val));
-    };
-
-    const editInstructionsValidInput = useFormik({
+    const detailInstructionsValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
-            insId: '',
+            num: '',
             title: '',
             insDate: '',
-            statusId: '',
-            descriptions: '',
-
+            status: '',
         },
 
         validationSchema: Yup.object().shape({
-            insId: Yup.string().required("Wajib diisi"),
+            num: Yup.string().required("Wajib diisi"),
             title: Yup.string().required("Wajib diisi"),
             insDate: Yup.string().required("Wajib diisi"),
-            statusId: Yup.string().required("Wajib diisi"),
-            descriptions: Yup.string().required("Wajib diisi"),
-
+            status: Yup.string().required("Wajib diisi"),
         }),
 
-        onSubmit: (val) => {
 
-            var bodyForm = new FormData();
-            debugger
-            bodyForm.append('insId', val.insId);
-            bodyForm.append('description', val.descriptions);
-
-            // selectedMulti.map((data, index) => {
-
-            //     bodyForm.append('addUser', data.value);
-
-            // })
-            // selectedMulti2.map((data, index) => {
-
-            //     bodyForm.append('addUser', data.value);
-
-            // })
-
-            // if (selectedfile.length > 0) {
-
-            //     for (let index = 0; index < selectedfile.length; index++) {
-            //         debugger
-            //         let a = selectedfile[index];
-
-            //         bodyForm.append('file' + index, selectedfile[index].fileori);
-
-            //     }
-            // }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            setEditInstructionsSpinner(true);
-            // props.setAppInstructionsPage(true);
-            props.setEditInstructions(true);
-            insert2(bodyForm, config);
-            //props.setAppInstructionsMsg(appAddInstructionsMessage);
-
-        }
-
-        // onSubmit: (values) => {
-        //     setEditInstructionsSpinner(true);
-        //     props.setAppInstructionsMsg("")
-        //     dispatch(editInstructions(values));
-        // }
     });
 
-    const editInstructionsMessage = useSelector(state => {
-        return state.instructionsReducer.msgEdit;
-    });
-
-    const [selectedfile, SetSelectedFile] = useState([]);
-    const [Files, SetFiles] = useState([]);
+    // const editInstructionsMessage = useSelector(state => {
+    //     return state.instructionsReducer.msgEdit;
+    // });
 
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';
@@ -254,6 +173,7 @@ const EditInstructions = (props) => {
     }
 
     const InputChange = (e) => {
+        // --For Multiple File Input
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {
             images.push((e.target.files[i]));
@@ -273,8 +193,7 @@ const EditInstructions = (props) => {
                             //filesize: filesizes(e.target.files[i].size)
                         }
                     ]
-                }) 
-
+                });
             }
             if (e.target.files[i]) {
                 reader.readAsDataURL(file);
@@ -311,7 +230,6 @@ const EditInstructions = (props) => {
         } else {
             alert('Please select file')
         }
-
     }
 
 
@@ -332,73 +250,18 @@ const EditInstructions = (props) => {
         setselectedMulti2(s);
     }
 
-    function handleAutoSaveTitle (values) {
-
-        var bodyForm = new FormData();
-    //   debugger
-        bodyForm.append('num', editInstructionsValidInput.values.insId );
-        bodyForm.append('title', editInstructionsValidInput.values.insTitle);
-
-        
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-        insert(bodyForm, config);
-            // dispatch(editInstructions(values));
-        
-    }
-
-    function handleAutoSaveDate (values) {
-
-        var bodyForm = new FormData();
-    //   debugger
-        bodyForm.append('num', editInstructionsValidInput.values.insId );
-        bodyForm.append('insDate', editInstructionsValidInput.values.insDate);
-
-        
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-        insert(bodyForm, config);
-            // dispatch(editInstructions(values));
-        
-    }
-
-    function handleAutoSaveStatus (values) {
-
-        var bodyForm = new FormData();
-      debugger
-        bodyForm.append('num', editInstructionsValidInput.values.insId );
-        bodyForm.append('status', editInstructionsValidInput.values.statusId);
-        
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-        insert(bodyForm, config);
-            // dispatch(editInstructions(values));
-        
-    }
-    
-    
-
     return (
-        <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: props.appDetailInstructions ? 'block' : 'none' }} fluid={true}>
 
             <Row>
                 <Col lg={12}>
                     <Card>
-                        <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
+                        <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
                         <CardBody>
                             <Form
                                 onSubmit={(e) => {
                                     e.preventDefault();
-                                    editInstructionsValidInput.handleSubmit();
+                                    detailInstructionsValidInput.handleSubmit();
                                     return false;
                                 }}
                             >
@@ -412,14 +275,14 @@ const EditInstructions = (props) => {
                                                 <Input
                                                     name="insId"
                                                     type="text"
-                                                    onChange={editInstructionsValidInput.handleChange}
-                                                    value={editInstructionsValidInput.values.insId || ""}
+                                                    onChange={detailInstructionsValidInput.handleChange}
+                                                    value={detailInstructionsValidInput.values.insId || ""}
                                                     invalid={
-                                                        editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? true : false
+                                                        detailInstructionsValidInput.touched.insId && detailInstructionsValidInput.errors.insId ? true : false
                                                     }
                                                 />
-                                                {editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? (
-                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.insId}</FormFeedback>
+                                                {detailInstructionsValidInput.touched.insId && detailInstructionsValidInput.errors.insId ? (
+                                                    <FormFeedback type="invalid">{detailInstructionsValidInput.errors.insId}</FormFeedback>
                                                 ) : null}
                                             </div>
 
@@ -428,18 +291,14 @@ const EditInstructions = (props) => {
                                                 <Input
                                                     name="insTitle"
                                                     type="text"
-                                                    // onChange={(editInstructionsValidInput.handleChange) => {
-                                                    //     handleUpdTitle
-                                                    // }}
-                                                    onChange={editInstructionsValidInput.handleChange}
-                                                    onBlur={handleAutoSaveTitle}
-                                                    value={editInstructionsValidInput.values.insTitle || ""}
+                                                    onChange={detailInstructionsValidInput.handleChange}
+                                                    value={detailInstructionsValidInput.values.insTitle || ""}
                                                     invalid={
-                                                        editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? true : false
+                                                        detailInstructionsValidInput.touched.insTitle && detailInstructionsValidInput.errors.insTitle ? true : false
                                                     }
                                                 />
-                                                {editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? (
-                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.insTitle}</FormFeedback>
+                                                {detailInstructionsValidInput.touched.insTitle && detailInstructionsValidInput.errors.insTitle ? (
+                                                    <FormFeedback type="invalid">{detailInstructionsValidInput.errors.insTitle}</FormFeedback>
                                                 ) : null}
                                             </div>
 
@@ -452,15 +311,14 @@ const EditInstructions = (props) => {
                                                 <Input
                                                     name="insDate"
                                                     type="date"
-                                                    onChange={editInstructionsValidInput.handleChange}
-                                                    onBlur={handleAutoSaveDate}
-                                                    value={editInstructionsValidInput.values.insDate || startDate}
+                                                    onChange={detailInstructionsValidInput.handleChange}
+                                                    value={detailInstructionsValidInput.values.insDate || startDate}
                                                     invalid={
-                                                        editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
+                                                        detailInstructionsValidInput.touched.insDate && detailInstructionsValidInput.errors.insDate ? true : false
                                                     }
                                                 />
-                                                {editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? (
-                                                    <FormFeedback type="invalid"> {editInstructionsValidInput.errors.insDate} </FormFeedback>
+                                                {detailInstructionsValidInput.touched.insDate && detailInstructionsValidInput.errors.insDate ? (
+                                                    <FormFeedback type="invalid"> {detailInstructionsValidInput.errors.insDate} </FormFeedback>
                                                 ) : null}
                                             </div>
 
@@ -468,34 +326,23 @@ const EditInstructions = (props) => {
                                                 <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
-                                                    name="statusId"
-                                                    onChange={editInstructionsValidInput.handleChange}
-                                                    // onBlur={editInstructionsValidInput.handleBlur}
-                                                    onBlur={() => { 
-                                                        editInstructionsValidInput.handleBlur; 
-                                                        handleAutoSaveStatus();
-                                                    }}
-                                                    // onBlur={handleAutoSaveStatus}
+                                                    name="insStatus"
+                                                    onChange={detailInstructionsValidInput.handleChange}
+                                                    onBlur={detailInstructionsValidInput.handleBlur}
                                                     // fieldValue={1}
-                                                    value={editInstructionsValidInput.values.statusId || ""}
+                                                    value={"Not Started"}
                                                     invalid={
-                                                        editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? true : false
+                                                        detailInstructionsValidInput.touched.insStatus && detailInstructionsValidInput.errors.insStatus ? true : false
                                                     }
                                                 >
-                                                    <option no="" value={""}></option>
-                                                    <option value={"1"}>Not Start</option>
-                                                    <option value={"2"}>In Progress</option>
-                                                    <option value={"3"}>Action Completed</option>
-                                                    <option value={"4"}>Rejection</option>
-                                                    <option value={"5"}>Complete</option>
-                                                    {/* {
-                                                    selectStatus.dtlsetting?.map((value, key) =>
-                                                    <option key={key} value={value.no}>{value.name}</option>)
-                                                    } */}
+                                                    <option></option>
+
+                                                    <option id="1">Not Started</option>
+
 
                                                 </Input>
-                                                {editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? (
-                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.statusId}</FormFeedback>
+                                                {detailInstructionsValidInput.touched.status && detailInstructionsValidInput.errors.status ? (
+                                                    <FormFeedback type="invalid">{detailInstructionsValidInput.errors.status}</FormFeedback>
                                                 ) : null}
                                             </div>
 
@@ -506,22 +353,22 @@ const EditInstructions = (props) => {
                                                     type="textarea"
                                                     rows="5"
                                                     maxLength={50}
-                                                    onChange={editInstructionsValidInput.handleChange}
+                                                    onChange={detailInstructionsValidInput.handleChange}
                                                     value={
-                                                        editInstructionsValidInput.values.descriptions ||
+                                                        detailInstructionsValidInput.values.descriptions ||
                                                         ""
                                                     }
                                                     invalid={
-                                                        editInstructionsValidInput.touched.descriptions &&
-                                                            editInstructionsValidInput.errors.descriptions
+                                                        detailInstructionsValidInput.touched.descriptions &&
+                                                            detailInstructionsValidInput.errors.descriptions
                                                             ? true
                                                             : false
                                                     }
                                                 />
-                                                {editInstructionsValidInput.touched.descriptions &&
-                                                    editInstructionsValidInput.errors.descriptions ? (
+                                                {detailInstructionsValidInput.touched.descriptions &&
+                                                    detailInstructionsValidInput.errors.descriptions ? (
                                                     <FormFeedback type="invalid">
-                                                        {editInstructionsValidInput.errors.descriptions}
+                                                        {detailInstructionsValidInput.errors.descriptions}
                                                     </FormFeedback>
                                                 ) : null}
                                             </div>
@@ -558,81 +405,19 @@ const EditInstructions = (props) => {
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
-                                                <label>Attached Files <span style={{ color: "red" }}>* </span></label>
+                                                <label>Upload Files <span style={{ color: "red" }}>* </span></label>
 
-                                                <Form onSubmit={FileUploadSubmit}>
-                                                    <div className="kb-file-upload">
-                                                        <div className="file-upload-box">
-                                                            <input type="file" id="fileupload2" className="file-upload-input" onChange={InputChange} name="removeFile" multiple />
-                                                        </div>
-                                                    </div>
-                                                    <div className="kb-attach-box mb-3">
-                                                        {
-                                                            selectedfile.map((data, index) => {
-                                                                const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                return (
-                                                                    <div className="file-atc-box" key={id}>
-                                                                        {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                <div className="file-image"><i className="far fa-file-alt"></i></div>
-                                                                        }
-                                                                        <div className="file-detail">
-                                                                            <span>{filename}</span>
-                                                                            {/* <p></p> */}
-                                                                            {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
-                                                                            <div className="file-actions">
-                                                                                <button type="button" className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
-                                                                            </div>
-                                                                            <p />
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                    {/* <div className="kb-buttons-box">
-                                                        <button type="submit" className="btn btn-primary form-submit">Upload</button>
-                                                    </div> */}
-                                                </Form>
-                                                {Files.length > 0 ?
-                                                    <div className="kb-attach-box">
-                                                        <hr />
-                                                        {
-                                                            Files.map((data, index) => {
-                                                                const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                return (
-                                                                    <div className="file-atc-box" key={index}>
-                                                                        {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                <div className="file-image"><i className="far fa-file-alt"></i></div>
-                                                                        }
-                                                                        <div className="file-detail">
-                                                                            <h6>{filename}</h6>
-                                                                            <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p>
-                                                                            <div className="file-actions">
-                                                                                <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button>
-                                                                                <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                    : ''}
                                                 {/* <Input
                                                             id="idFileUpload"
                                                             name="_file"
                                                             type="file"
                                                             // accept="xlsx/*"
-                                                            onChange={(e) => editInstructionsValidInput.setFieldValue("_file", e.target.files[0])}
+                                                            onChange={(e) => detailInstructionsValidInput.setFieldValue("_file", e.target.files[0])}
                                                             invalid={
-                                                                editInstructionsValidInput.touched._file && editInstructionsValidInput.errors._file ? true : false
+                                                                detailInstructionsValidInput.touched._file && detailInstructionsValidInput.errors._file ? true : false
                                                             }
                                                         />
-                                                        <Button outline type="button" color="danger" onClick={() => { editInstructionsValidInput.setFieldValue("_file", ""); document.getElementById('idFileUpload').value = null; }}>
+                                                        <Button outline type="button" color="danger" onClick={() => { detailInstructionsValidInput.setFieldValue("_file", ""); document.getElementById('idFileUpload').value = null; }}>
                                                             <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
                                                         </Button> */}
                                                 {/* </div> */}
@@ -646,20 +431,19 @@ const EditInstructions = (props) => {
 
                                     <br></br>
 
-                                    <Button color="primary" className="ms-1" type="submit">
-                                        {/* <i className="bx bxs-save align-middle me-2"></i>{" "} */}
-                                        Save
+                                    {/* <Button color="primary" className="ms-1" type="submit">
+                                        <i className="bx bxs-save align-middle me-2"></i>{" "}
+                                        Simpan */}
                                         {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
-                                    </Button>&nbsp;
+                                    {/* </Button>&nbsp; */}
 
                                     {/* <Button
                                         type="button"
                                         className="btn btn-danger "
-                                        onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([])}}
+                                        onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg("") }}
                                     >
                                         <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                         Kembali
-                        
                                     </Button> */}
                                 </FormGroup>
 
@@ -689,14 +473,14 @@ const EditInstructions = (props) => {
                                                                 name="permasalahan"
                                                                 type="textarea"
                                                                 disabled
-                                                                onChange={editInstructionsValidInput.handleChange}
-                                                                value={editInstructionsValidInput.values.permasalahan || ""}
+                                                                onChange={detailInstructionsValidInput.handleChange}
+                                                                value={detailInstructionsValidInput.values.permasalahan || ""}
                                                                 invalid={
-                                                                    editInstructionsValidInput.touched.permasalahan && editInstructionsValidInput.errors.permasalahan ? true : false
+                                                                    detailInstructionsValidInput.touched.permasalahan && detailInstructionsValidInput.errors.permasalahan ? true : false
                                                                 }
                                                             />
-                                                            {editInstructionsValidInput.touched.permasalahan && editInstructionsValidInput.errors.permasalahan ? (
-                                                                <FormFeedback type="invalid">{editInstructionsValidInput.errors.permasalahan}</FormFeedback>
+                                                            {detailInstructionsValidInput.touched.permasalahan && detailInstructionsValidInput.errors.permasalahan ? (
+                                                                <FormFeedback type="invalid">{detailInstructionsValidInput.errors.permasalahan}</FormFeedback>
                                                             ) : null}
                                                         </div>
                                                     </div>
@@ -713,14 +497,14 @@ const EditInstructions = (props) => {
                                                                 name="spkNo"
                                                                 type="text"
                                                                 disabled
-                                                                onChange={editInstructionsValidInput.handleChange}
-                                                                value={editInstructionsValidInput.values.spkNo || ""}
+                                                                onChange={detailInstructionsValidInput.handleChange}
+                                                                value={detailInstructionsValidInput.values.spkNo || ""}
                                                                 invalid={
-                                                                    editInstructionsValidInput.touched.spkNo && editInstructionsValidInput.errors.spkNo ? true : false
+                                                                    detailInstructionsValidInput.touched.spkNo && detailInstructionsValidInput.errors.spkNo ? true : false
                                                                 }
                                                             />
-                                                            {editInstructionsValidInput.touched.spkNo && editInstructionsValidInput.errors.spkNo ? (
-                                                                <FormFeedback type="invalid">{editInstructionsValidInput.errors.spkNo}</FormFeedback>
+                                                            {detailInstructionsValidInput.touched.spkNo && detailInstructionsValidInput.errors.spkNo ? (
+                                                                <FormFeedback type="invalid">{detailInstructionsValidInput.errors.spkNo}</FormFeedback>
                                                             ) : null}
                                                         </div>
                                                     </div>
@@ -735,7 +519,7 @@ const EditInstructions = (props) => {
                                                 <Button
                                                     type="button"
                                                     className="btn btn-primary "
-                                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg("") }}
+                                                    onClick={() => { props.setAppInstructionsPage(true); props.setAppDetailInstructions(false); props.setAppInstructionsMsg("") }}
                                                 >
                                                     {/* <i className="bx bx-arrow-back align-middle me-2"></i>{" "} */}
                                                     Reply
@@ -802,7 +586,7 @@ const EditInstructions = (props) => {
                                                 <Button
                                                     type="button"
                                                     className="btn btn-danger "
-                                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); window.location.reload();}}
+                                                    onClick={() => { props.setAppInstructionsPage(true); props.setAppDetailInstructions(false); props.setAppInstructionsMsg("") }}
                                                 >
                                                     <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                                     Kembali
@@ -819,18 +603,23 @@ const EditInstructions = (props) => {
                     </Card>
                 </Col>
             </Row>
+
         </Container>
+
+
 
     );
 
 
 }
-EditInstructions.propTypes = {
-    appEditInstructions: PropTypes.any,
-    setEditInstructions: PropTypes.any,
+
+DetailInstructions.propTypes = {
+    appDetailInstructions: PropTypes.any,
+    setAppDetailInstructions: PropTypes.any,
     setAppInstructionsMsg: PropTypes.any,
     setAppInstructionsPage: PropTypes.any,
     instructionsData: PropTypes.any,
     appInstructionsTabelSearch: PropTypes.any,
 }
-export default EditInstructions
+
+export default DetailInstructions

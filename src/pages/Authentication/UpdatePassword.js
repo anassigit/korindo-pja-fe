@@ -52,14 +52,14 @@ const updatePass = async () => {
   try {
     const queryParameters = new URLSearchParams(window.location.search)
   const type = queryParameters.get("KOR_TOKEN")
-    debugger
+
     ReactSession.set("authUser", type);
       var map = {
           "newPassword": validation.values.newPassword
 
       };
       // console.log('map : ', map)
-      debugger
+
       setUpdatePasswordSpinner(true);
       await dispatch(updateForgotPassword(map));
       // props.setAppUserProfileMsg("")

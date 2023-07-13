@@ -116,7 +116,7 @@ const AddInstructions = (props) => {
         onSubmit: (val) => {
 
             var bodyForm = new FormData();
-            debugger
+
             bodyForm.append('title', val.title);
             bodyForm.append('insDate', val.insDate);
             bodyForm.append('status', val.status);
@@ -140,14 +140,14 @@ const AddInstructions = (props) => {
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
-                    debugger
+
                     let a = selectedfile[index];
 
                     bodyForm.append('file' + index, selectedfile[index].fileori);
 
                 }
             }
-            debugger
+
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
@@ -263,11 +263,11 @@ const AddInstructions = (props) => {
     }
 
     function handleMulti(s) {
-        debugger
+
         setselectedMulti(s);
     }
     function handleMulti2(s) {
-        debugger
+
         setselectedMulti2(s);
     }
 
@@ -508,7 +508,9 @@ const AddInstructions = (props) => {
                                     <Button
                                         type="button"
                                         className="btn btn-danger "
-                                        onClick={() => { props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("") }}
+                                        onClick={() => { props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("") 
+                                            window.location.reload();
+                                          }}
                                     >
                                         <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                         Kembali

@@ -54,12 +54,12 @@ const EmailVerPassword = props => {
 
 const sendEmail = async () => {
   try {
-    debugger
+
       var map = {
           "id":  validation.values.id
       };
        console.log('map : ', map)
-      debugger
+
       setEmailPasswordSpinner("true");
       await dispatch(emailForgotPassword(map));
       history.push("/login");

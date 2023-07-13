@@ -13,7 +13,7 @@ const TableCustom = props => {
             props.searchSet({ page: 1, limit: sizePerPage, offset: 0, sort: sortField, order: sortOrder, search: props.searchGet.search });
         }
         if (type === "pagination") {
-            props.searchSet({ page: page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: sortField, order: sortOrder, search: props.searchGet.search });
+            props.searchSet({ page: page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search });
         }
     };
 
@@ -29,6 +29,7 @@ const TableCustom = props => {
 
     return (
         <BootstrapTable
+            ref={props.refTable}
             wrapperClasses="table-responsive"
             keyField={props.keyField}
             rowClasses="text-nowrap"
@@ -56,6 +57,7 @@ const TableCustom = props => {
 }
 
 TableCustom.propTypes = {
+    refTable: PropTypes.object,
     keyField: PropTypes.string,
     columns: PropTypes.any,
     redukResponse : PropTypes.any,

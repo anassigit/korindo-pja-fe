@@ -82,12 +82,12 @@ const UserProfile = () => {
 
   const updateHp = async () => {
     try {
-        debugger
+
         var map = {
             "hp":  appUserProfilepValidInput.values.hp
         };
         // console.log('map : ', map)
-         debugger
+
         setAppUserProfileSpinner(true);
         setAppUserProfileMsg("")
         await dispatch(editUserProfile(map));

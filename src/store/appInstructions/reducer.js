@@ -12,7 +12,8 @@ import {
     GET_USER_LIST,
     RESP_GET_USER_LIST,
     GET_DETAIL_INSTRUCTION,
-    RESP_GET_DETAIL_INSTRUCTION
+    RESP_GET_DETAIL_INSTRUCTION,
+    SAVE_DESCRIPTION
 
 } from "./actionTypes"
 
@@ -88,6 +89,10 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         return {
           ...state,
           respGetDetailInstruction: action.payload,
+        }
+        case SAVE_DESCRIPTION:
+        return {
+          ...state,
         }
       default:
         return state
