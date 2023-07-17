@@ -13,7 +13,8 @@ import {
     RESP_GET_USER_LIST,
     GET_DETAIL_INSTRUCTION,
     RESP_GET_DETAIL_INSTRUCTION,
-    SAVE_DESCRIPTION
+    SAVE_DESCRIPTION,
+    SAVE_REPLY
 
 } from "./actionTypes"
 
@@ -84,5 +85,10 @@ export const getInstructionsData = (req) => ({
 
   export const saveDescription = (req) => ({
     type: SAVE_DESCRIPTION,
+    payload: req,
+  })
+
+  export const saveReply = (req) => ({
+    type: SAVE_REPLY,
     payload: req,
   })

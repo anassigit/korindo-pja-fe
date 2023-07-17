@@ -99,16 +99,18 @@ export const updateForgetPassword = req => postWithParam("MemberRest/ForgotPassw
 
 
 //appInstructions
-export const getInstructions = req => post("InstructionRest/SelectInstructionList", req)
+export const getInstructions = req => post("rest/InstructionRest/SelectInstructionList", req)
 
-export const saveInstructions = req => postUpload("/InstructionRest/InsertInstruction", req)
+export const saveInstructions = req => postUpload("rest/InstructionRest/InsertInstruction", req)
 
-export const getDetailInstruction = req => postWithParam("/InstructionRest/SelectInstruction", req)
+export const getDetailInstruction = req => postWithParam("rest/InstructionRest/SelectInstruction", req)
 
-export const editInstructions = req => postUpload("/InstructionRest/UpdateInstruction", req)
+export const editInstructions = req => postUpload("rest/InstructionRest/UpdateInstruction", req)
 
-export const saveDescriptions = req => postUpload("/InstructionRest/UpdateDescription", req)
+export const saveDescriptions = req => postUpload("rest/InstructionRest/UpdateDescription", req)
+
+export const saveReply = req => postUpload("rest/InstructionRest/InsertReply", req)
 
 export const deleteInstructions = req => post("/rest/app008/delete", req)
 
-export const getUserList = req => post("/InstructionRest/SelectInfo", req)
+export const getUserList = req => post("rest/InstructionRest/SelectInfo", req)

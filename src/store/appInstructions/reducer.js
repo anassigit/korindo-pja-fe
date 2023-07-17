@@ -13,7 +13,8 @@ import {
     RESP_GET_USER_LIST,
     GET_DETAIL_INSTRUCTION,
     RESP_GET_DETAIL_INSTRUCTION,
-    SAVE_DESCRIPTION
+    SAVE_DESCRIPTION,
+    SAVE_REPLY
 
 } from "./actionTypes"
 
@@ -94,6 +95,10 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         return {
           ...state,
         }
+        case SAVE_REPLY:
+          return {
+            ...state,
+          }
       default:
         return state
     }
