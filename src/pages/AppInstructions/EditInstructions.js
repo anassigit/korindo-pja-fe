@@ -31,6 +31,7 @@ import Select from "react-select";
 import shortid from "shortid";
 import { indexOf } from "lodash";
 import moment from "moment";
+// import ContentEditable from 'react-contenteditable'
 
 const EditInstructions = (props) => {
 
@@ -54,8 +55,8 @@ const EditInstructions = (props) => {
     const [logTable, setLogTable] = useState([]);
 
     const getDetailInstructionData = useSelector(state => {
-        console.log("detail", state.instructionsReducer.respGetDetailInstruction);
-        console.log("array1", replyTabelListData);
+        // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
+        // console.log("array1", replyTabelListData);
         return state.instructionsReducer.respGetDetailInstruction;
     })
 
@@ -69,7 +70,8 @@ const EditInstructions = (props) => {
     }
 
     useEffect(() => {
-        if (getDetailInstructionData.status == "1") {
+
+        if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
 
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                 const newObj = {
@@ -86,10 +88,6 @@ const EditInstructions = (props) => {
                 };
                 setOptionManager0((option) => [...option, newObj]);
             });
-
-        }
-
-        if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
 
             getDetailInstructionData?.data?.ownerList.map((data) => {
                 const newObj = {
@@ -109,28 +107,12 @@ const EditInstructions = (props) => {
                 setOptionManager((option) => [...option, newObj]);
             });
 
-        }
-
-        if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
-
-            getDetailInstructionData?.data?.managerList.map((data) => {
-                const newObj = {
-                    value: data.id,
-                    label: data.name,
-
-                };
-                setOptionManager((option) => [...option, newObj]);
-            });
-
-        }
-
-        if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
-
             setReplyTabelListData(getDetailInstructionData?.data?.instruction?.replyList);
 
             setAttchedFilesTables(getDetailInstructionData?.data?.instruction?.attachFileList?.attachFileList);
             
             setLogTable(getDetailInstructionData?.data?.instruction?.logList)
+
         }
 
 
@@ -169,11 +151,6 @@ const EditInstructions = (props) => {
             dispatch(getDetailInstruction({}))
         }
     }, [props.appEditInstructions])
-
-    const editInstructionsUserList = useSelector(state => {
-        // console.log(state.instructionsReducer.respGetUserList.data);
-        return state.instructionsReducer.respGetUserList;
-    });
 
     const insert = async (values) => {
         debugger
@@ -336,18 +313,50 @@ const EditInstructions = (props) => {
     }
 
     function handleMulti(s) {
+        debugger
 
+        var id1 = "";
         if (selectedMulti.length < s.length) {
+
+            console.log('1 : ' + s.value)
+
+          
+
+            console.log(' id : ', id1)
+
+        var jml = 0;
+
+        jml = s.length
+        
 
             var bodyForm = new FormData();
             debugger
             bodyForm.append('num', editInstructionsValidInput.values.insId);
 
-            selectedMulti.map((data, index) => {
+            debugger
+            console.log(selectedMulti)
 
-                bodyForm.append('addUser', data.value);
+            if (jml > 1) {
+                for (let i = 0; i < s.length; i++) {
+                    if(i == s.length - 1){
+                        debugger
+                        id1 = s[s.length - 1].value
+                        //console.log('2 :' + s[s.length - 1].value)
+                        bodyForm.append('addUser', id1);
+                    }
+                }
+                //jml = s.length -1
+            }else{
+                s.map((data, index) => {
+                    bodyForm.append('addUser', data.value);
+                })
+            }
+    
+                //             s.map((data, index) => {
+                // //console.log(data)
+                //                 bodyForm.append('addUser', data.value);
 
-            })
+                //             })
             // selectedMulti2.map((data, index) => {
 
             //     bodyForm.append('addUser', data.value);
@@ -359,6 +368,7 @@ const EditInstructions = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }
+            console.log(bodyForm);
             insert(bodyForm, config);
 
         } else {
@@ -367,16 +377,26 @@ const EditInstructions = (props) => {
             debugger
             bodyForm.append('num', editInstructionsValidInput.values.insId);
 
-            selectedMulti.map((data, index) => {
 
-                bodyForm.append('removeUser', data.value);
+            var jml = 0;
 
-            })
-            // selectedMulti2.map((data, index) => {
+            jml = s.length
 
-            //     bodyForm.append('removeUser', data.value);
-
-            // })
+            if (jml > 1) {
+                for (let i = 0; i < s.length; i++) {
+                    if(i == s.length - 1){
+                        debugger
+                        id1 = s[s.length - 1].value
+                        //console.log('2 :' + s[s.length - 1].value)
+                        bodyForm.append('removeUser', id1);
+                    }
+                }
+                
+            }else{
+                s.map((data, index) => {
+                    bodyForm.append('removeUser', data.value);
+                })
+            }
 
             const config = {
                 headers: {
@@ -394,28 +414,47 @@ const EditInstructions = (props) => {
 
     function handleMulti2(s) {
 
+        var id2 = "";
         if (selectedMulti2.length < s.length) {
+
+            console.log('1 : ' + s.value)
+
+            console.log(' id : ', id2)
+
+        var jml2 = 0;
+
+        jml2 = s.length
+        
 
             var bodyForm = new FormData();
             debugger
             bodyForm.append('num', editInstructionsValidInput.values.insId);
 
-            // selectedMulti.map((data, index) => {
+            debugger
+            console.log(selectedMulti)
 
-            //     bodyForm.append('addUser', data.value);
-
-            // })
-            selectedMulti2.map((data, index) => {
-
-                bodyForm.append('addUser', data.value);
-
-            })
+            if (jml2 > 1) {
+                for (let i = 0; i < s.length; i++) {
+                    if(i == s.length - 1){
+                        debugger
+                        id2 = s[s.length - 1].value
+                        //console.log('2 :' + s[s.length - 1].value)
+                        bodyForm.append('addUser', id2);
+                    }
+                }
+                //jml = s.length -1
+            }else{
+                s.map((data, index) => {
+                    bodyForm.append('addUser', data.value);
+                })
+            }
 
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
             }
+            console.log(bodyForm);
             insert(bodyForm, config);
 
         } else {
@@ -424,16 +463,26 @@ const EditInstructions = (props) => {
             debugger
             bodyForm.append('num', editInstructionsValidInput.values.insId);
 
-            // selectedMulti.map((data, index) => {
 
-            //     bodyForm.append('removeUser', data.value);
+            var jml2 = 0;
 
-            // })
-            selectedMulti2.map((data, index) => {
+            jml2 = s.length
 
-                bodyForm.append('removeUser', data.value);
-
-            })
+            if (jml2 > 1) {
+                for (let i = 0; i < s.length; i++) {
+                    if(i == s.length - 1){
+                        debugger
+                        id2 = s[s.length - 1].value
+                        //console.log('2 :' + s[s.length - 1].value)
+                        bodyForm.append('removeUser', id2);
+                    }
+                }
+                
+            }else{
+                s.map((data, index) => {
+                    bodyForm.append('removeUser', data.value);
+                })
+            }
 
             const config = {
                 headers: {
@@ -445,6 +494,8 @@ const EditInstructions = (props) => {
         }
 
         setselectedMulti2(s);
+
+
     }
 
     function handleAutoSaveTitle(values) {
@@ -656,7 +707,43 @@ const EditInstructions = (props) => {
 
     // -- replies list -- //
 
+function handleAutoSaveContentTable (values) {
 
+           var bodyForm = new FormData();
+
+        bodyForm.append('instruction_num', editInstructionsValidInput.values.insId);
+        bodyForm.append('content', editInstructionsValidInput.values.content);
+
+        if (selectedfileR.length > 0) {
+
+            for (let index = 0; index < selectedfileR.length; index++) {
+
+                let a = selectedfileR[index];
+
+                bodyForm.append('file' + index, selectedfileR[index].fileori);
+
+            }
+        }
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+
+        }
+        insert(bodyForm, config);
+
+}
+
+// const onChangeInput = (e, reply_num) => {
+//     const { name, value } = e.target
+
+//     const editData = replyTabelListData.map((item) =>
+//       item.reply_num === reply_num && name ? { ...item, [name]: value } : item
+//     )
+
+//     setReplyTabelListData(editData)
+//   }
 
     // -- end replies list -- //
 
@@ -1401,18 +1488,19 @@ const EditInstructions = (props) => {
                                                                     <tbody id="replyTabelList">
 
                                                                         {
-                                                                            //  (replyTabelListData.length > 0 && replyTabelListData.map((row, i) =>
-                                                                            //  <>
-                                                                            //    <tr key={i}>
-                                                                            //    <td style={{ textAlign: "center" }}>{row.attachFileList.length > 0 ? row.attachFileList[0].name : 'tidak'}</td>
-                                                                            //     </tr>
-                                                                            //     </>
-                                                                            //  ))   
                                                                             (replyTabelListData.length > 0 && replyTabelListData.map((row, replies) =>
                                                                                 <>
                                                                                     <tr key={replies}>
-                                                                                        <td className="tg-0lax" >{row.name}</td>
-                                                                                        <td className="tg-0lax" >{row.content}</td>
+                                                                                        <td className="tg-0lax" >
+                                                                                          
+                                                                                            {row.name}
+                                                                                           
+                                                                                            </td>
+                                                                                        <td className="tg-0lax" >
+                                                                                       
+                                                                                           {row.content}
+
+                                                                                            </td>
                                                                                         <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
                                                                                         <td className="tg-0lax" >
                                                                                             {
@@ -1457,7 +1545,7 @@ const EditInstructions = (props) => {
 
                                                         <CardBody>
                                                             <Row>
-
+                                                            
                                                                 <table className="tg"
                                                                     style={{ marginTop: "10px" }}
                                                                 >
@@ -1482,7 +1570,7 @@ const EditInstructions = (props) => {
                                                                         }
                                                                     </tbody>
                                                                 </table>
-
+                                                            
                                                             </Row>
                                                         </CardBody>
                                                     </Card>
