@@ -140,19 +140,50 @@ export async function postUpload(url, data, config ={}) {
 
 
 export async function postDownload(url, data, config ={responseType: 'blob'}) {
+  debugger
+  console.log(data)
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   let token = ReactSession.get("authUser"); 
   return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   //return await axiosApi.post(url, { ...data }, { ...config },)
   .then(
     response => {
+      debugger
       if (response.status == 200) {
+        debugger
         console.log(response.headers)
+        let filename = response.headers['content-disposition'].split("filename=")[1];
+        // let abcd = filename.
+        console.log(filename)
         let url = window.URL.createObjectURL(new Blob([response.data]));   
-        saveAs(url, data.file_name);
+        console.log(url)
+        saveAs(url, filename);
       } else {
          return responseError(response);
       }
       
   })
 }
+
+// export async function postDownload(url, getFiles, config ={responseType: 'blob'}) {
+//   debugger
+//   console.log(getFiles)
+//   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+//   let token = ReactSession.get("authUser"); 
+//   return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(getFiles), { ...config })
+//   // return await axiosApi.post(url, { ...data }, { ...config },)
+//   .then(
+//     response => {
+//       debugger
+//       if (response.status == 200) {
+//         debugger
+//         console.log(response.headers)
+//         let url = window.URL.createObjectURL(new Blob([response.getFiles]));   
+//         console.log(url)
+//         saveAs(url, getFiles.filename);
+//       } else {
+//          return responseError(response);
+//       }
+      
+//   })
+// }

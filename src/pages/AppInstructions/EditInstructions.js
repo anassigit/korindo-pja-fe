@@ -55,6 +55,9 @@ const EditInstructions = (props) => {
     const [attchedFilesTables, setAttchedFilesTables] = useState([]);
     const [logTable, setLogTable] = useState([]);
 
+    const [getSelectedFiles, setGetSelectedFiles] = useState([]);
+    const [getFiles, setGetFiles] = useState([]);
+
     const getDetailInstructionData = useSelector(state => {
         // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
         // console.log("array1", replyTabelListData);
@@ -64,11 +67,6 @@ const EditInstructions = (props) => {
     useEffect(() => {
         dispatch(resetMessage());
     }, [dispatch])
-
-    const downloadFiles = async (file_num) => {
-        debugger
-        await dispatch(downloadFile(file_num));
-    };
 
 
     const editInstructionCloseAllert = () => {
@@ -120,7 +118,7 @@ const EditInstructions = (props) => {
 
             setLogTable(getDetailInstructionData?.data?.instruction?.logList)
 
-            //setGetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
+            // setGetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
 
             getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
                 const newObj = {
@@ -135,9 +133,8 @@ const EditInstructions = (props) => {
                 SetFiles((option) => [...option, newObj]);
             });
 
-
         }
-        console.log("file_num", getFiles)
+        console.log("getFiles", getDetailInstructionData?.data?.instruction?.attachFileList)
 
     }, [getDetailInstructionData])
 
@@ -148,6 +145,12 @@ const EditInstructions = (props) => {
             setselectedMulti2(optionManager0)
         }
     }, [optionOwner0, optionManager0])
+
+    // useEffect(() => {
+    //     if (getFiles != null && getFiles != null) {
+    //         setGetFiles(getFiles)
+    //     }
+    // }, [getFiles])
 
     useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
@@ -563,8 +566,7 @@ insert(bodyForm, config);
 
     }
 
-    const [getSelectedFiles, setGetSelectedFiles] = useState([]);
-    const [getFiles, setGetFiles] = useState([]);
+
 
 
     // const InputChangeR = (e) => {
@@ -606,6 +608,25 @@ insert(bodyForm, config);
     //     }
 
     // }
+
+    const downloadFiles = async (e) => {
+
+        debugger
+        try {
+          var indexed_array = {
+            "file_num": e,
+          };
+          await dispatch(downloadFile(indexed_array));
+        } catch (error) {
+          console.log(error)
+        }
+      };
+
+        // const downloadFiles = async (file_num) => {
+        // debugger
+        // await dispatch(downloadFile(file_num));
+        // };
+    
 
     const FileUploadSubmitD = async (e) => {
         e.preventDefault();
@@ -1423,9 +1444,9 @@ insert(bodyForm, config);
                                                                                         </td>
                                                                                         <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
                                                                                         <td className="tg-0lax" >
-                                                                                            {
+                                                                                            {/* {
                                                                                                 console.log("attach file list", getDetailInstructionData?.data?.instruction?.replyList[replies]?.attachFileList)
-                                                                                            }
+                                                                                            } */}
                                                                                             {
                                                                                                 row.attachFileList.length > 0 ? row.attachFileList[0].name : ''
                                                                                             }
