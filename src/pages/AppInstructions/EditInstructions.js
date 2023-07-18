@@ -117,10 +117,13 @@ const EditInstructions = (props) => {
 
             getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
                 const newObj = {
-                    id: attachFileList.id,
+                    file_num: attachFileList.id,
                     filename: attachFileList.name,
                 };
+
                 setGetFiles((option) => [...option, newObj]);
+
+                SetFiles((option) => [...option, newObj]);
             });
 
         }
@@ -768,9 +771,7 @@ const EditInstructions = (props) => {
                                                         <Input
                                                             name="insTitle"
                                                             type="text"
-                                                            // onChange={(editInstructionsValidInput.handleChange) => {
-                                                            //     handleUpdTitle
-                                                            // }}
+
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             onBlur={handleAutoSaveTitle}
                                                             value={editInstructionsValidInput.values.insTitle || ""}
@@ -943,6 +944,7 @@ const EditInstructions = (props) => {
                                                         {Files.length > 0 ?
                                                             <div className="kb-attach-box">
                                                                 <hr />
+                                                                <h6>Recent files uploaded</h6>
                                                                 {
                                                                     Files.map((data, index) => {
                                                                         const { id, filename, filetype, fileimage, datetime, filesize } = data;
@@ -955,9 +957,9 @@ const EditInstructions = (props) => {
                                                                                 }
                                                                                 <div className="file-detail">
                                                                                     <h6>{filename}</h6>
-                                                                                    <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p>
+                                                                                    {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
-                                                                                        <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button>
+                                                                                        <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button><></>
                                                                                         <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
                                                                                     </div>
                                                                                 </div>
@@ -982,15 +984,6 @@ const EditInstructions = (props) => {
                                                 {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
                                             </Button>&nbsp;
 
-                                            {/* <Button
-                                        type="button"
-                                        className="btn btn-danger "
-                                        onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([])}}
-                                    >
-                                        <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                        Kembali
-                        
-                                    </Button> */}
                                         </FormGroup>
 
                                     </Form>
@@ -1162,7 +1155,6 @@ const EditInstructions = (props) => {
                                                         </Form>
                                                         {getFiles.length > 0 ?
                                                             <div className="kb-attach-box">
-                                                                <hr />
                                                                 {
                                                                     getFiles.map((data, index) => {
                                                                         const { id, filename, filetype, fileimage, datetime, filesize } = data;
@@ -1175,7 +1167,7 @@ const EditInstructions = (props) => {
                                                                                 }
                                                                                 <div className="file-detail">
                                                                                     <h6>{filename}</h6>
-                                                                                    <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p>
+                                                                                   
                                                                                     <div className="file-actions">
                                                                                         {/* <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button> */}
                                                                                         <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
@@ -1194,14 +1186,6 @@ const EditInstructions = (props) => {
 
                                                 </Col>
                                             </Row>
-
-                                            <br></br>
-
-                                            <Button color="primary" className="ms-1" type="submit">
-                                                {/* <i className="bx bxs-save align-middle me-2"></i>{" "} */}
-                                                Save
-                                                {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
-                                            </Button>&nbsp;
 
                                         </FormGroup>
 
@@ -1287,7 +1271,7 @@ const EditInstructions = (props) => {
                                                         <button type="submit" className="btn btn-primary form-submit">Upload</button>
                                                     </div> */}
                                                                         </Form>
-                                                                        {Files.length > 0 ?
+                                                                        {/* {Files.length > 0 ?
                                                                             <div className="kb-attach-box">
                                                                                 <hr />
                                                                                 {
@@ -1313,7 +1297,7 @@ const EditInstructions = (props) => {
                                                                                     })
                                                                                 }
                                                                             </div>
-                                                                            : ''}
+                                                                            : ''} */}
                                                                         {/* <Input
                                                             id="idFileUpload"
                                                             name="_file"

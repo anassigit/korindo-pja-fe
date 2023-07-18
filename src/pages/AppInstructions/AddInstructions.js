@@ -103,7 +103,7 @@ const AddInstructions = (props) => {
             title: '',
             insDate: '',
             status: '',
-            // desciption: '',
+            description: '',
             // user: '',
             // _file: '',
         },
@@ -120,7 +120,7 @@ const AddInstructions = (props) => {
             bodyForm.append('title', val.title);
             bodyForm.append('insDate', val.insDate);
             bodyForm.append('status', val.status);
-            bodyForm.append('desciption', val.desciption);
+            bodyForm.append('description', val.description);
             // val.user = selectedMulti;
             // bodyForm.append('user', val.user);
             // var newStateArray = [];
@@ -160,12 +160,6 @@ const AddInstructions = (props) => {
             props.setAppInstructionsMsg(appAddInstructionsMessage);
 
         }
-        // onSubmit: (values) => {
-        //     velues.ownerList = selectedMulti;
-        //     setAddInstructionsSpinner(true);
-        //     props.setAppInstructionsMsg("")
-        //     dispatch(saveInstructions(values));
-        // }
     });
 
     const appAddInstructionsMessage = useSelector(state => {
@@ -185,16 +179,6 @@ const AddInstructions = (props) => {
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
 
-
-    // const filesizes = (bytes, decimals = 2) => {
-    //     if (bytes === 0) return '0 Bytes';
-    //     const k = 1024;
-    //     const dm = decimals < 0 ? 0 : decimals;
-    //     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    //     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    //     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    // }
-
     const InputChange = (e) => {
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {
@@ -211,8 +195,6 @@ const AddInstructions = (props) => {
                             filetype: e.target.files[i].type,
                             fileimage: reader.result,
                             fileori: file
-                            //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
-                            //filesize: filesizes(e.target.files[i].size)
                         }
                     ]
                 });
@@ -355,26 +337,26 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
                                                 <Input
-                                                    name="desciption"
+                                                    name="description"
                                                     type="textarea"
                                                     rows="5"
                                                     maxLength={50}
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     value={
-                                                        addInstructionsValidInput.values.desciption ||
+                                                        addInstructionsValidInput.values.description ||
                                                         ""
                                                     }
                                                     invalid={
-                                                        addInstructionsValidInput.touched.desciption &&
-                                                            addInstructionsValidInput.errors.desciption
+                                                        addInstructionsValidInput.touched.description &&
+                                                            addInstructionsValidInput.errors.description
                                                             ? true
                                                             : false
                                                     }
                                                 />
-                                                {addInstructionsValidInput.touched.desciption &&
-                                                    addInstructionsValidInput.errors.desciption ? (
+                                                {addInstructionsValidInput.touched.description &&
+                                                    addInstructionsValidInput.errors.description ? (
                                                     <FormFeedback type="invalid">
-                                                        {addInstructionsValidInput.errors.desciption}
+                                                        {addInstructionsValidInput.errors.description}
                                                     </FormFeedback>
                                                 ) : null}
                                             </div>
