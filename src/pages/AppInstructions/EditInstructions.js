@@ -65,9 +65,12 @@ const EditInstructions = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const downloadFiles = async () => {
-        await dispatch(downloadFile());
+    const downloadFiles = async (file_num) => {
+        debugger
+        await dispatch(downloadFile(file_num));
     };
+
+
     const editInstructionCloseAllert = () => {
         setEditInstructionMsg("")
     }
@@ -103,6 +106,7 @@ const EditInstructions = (props) => {
 
             getDetailInstructionData?.data?.managerList.map((data) => {
                 const newObj = {
+
                     value: data.id,
                     label: data.name,
 
@@ -120,8 +124,10 @@ const EditInstructions = (props) => {
 
             getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
                 const newObj = {
-                    file_num: attachFileList.id,
+
+                    file_num: attachFileList.no,
                     filename: attachFileList.name,
+
                 };
 
                 setGetFiles((option) => [...option, newObj]);
@@ -131,7 +137,7 @@ const EditInstructions = (props) => {
 
 
         }
-        //console.log(getDetailInstructionData?.data?.instruction?.attachFileList)
+        console.log("file_num", getFiles)
 
     }, [getDetailInstructionData])
 
@@ -199,17 +205,6 @@ const EditInstructions = (props) => {
             bodyForm.append('num', val.insId);
             bodyForm.append('description', val.descriptions);
 
-            // if (selectedfile.length > 0) {
-
-            //     for (let index = 0; index < selectedfile.length; index++) {
-            //         debugger
-            //         let a = selectedfile[index];
-
-            //         bodyForm.append('file' + index, selectedfile[index].fileori);
-
-            //     }
-            // }
-
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
@@ -228,21 +223,16 @@ const EditInstructions = (props) => {
     const editInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgEdit;
     });
-
-    const insertFilesUpload = async () => {
-        await dispatch(editInstructions(e));
-    };
-
     
-    const handleUploadFile = async () => {
-
-            debugger
+    function handleUploadFile  (values)  {
 
         var bodyForm = new FormData();
 
+        bodyForm.append('num', editInstructionsValidInput.values.insId);
+
+
         if (selectedfile.length > 0) {
 
-            debugger
 
             for (let index = 0; index < selectedfile.length; index++) {
 
@@ -258,8 +248,8 @@ const EditInstructions = (props) => {
                 'content-type': 'multipart/form-data'
             }
         }
-debugger
-insertFilesUpload(bodyForm, config);
+
+insert(bodyForm, config);
     };
 
     const [selectedfile, SetSelectedFile] = useState([]);
@@ -996,7 +986,7 @@ insertFilesUpload(bodyForm, config);
                                                                                     <h6>{filename}</h6>
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
-                                                                                        <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button><></>
+                                                                                        <button className="file-action-btn" onClick={() => DeleteFile(file_num)}>Delete</button><></>
                                                                                         <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
                                                                                 </div>
