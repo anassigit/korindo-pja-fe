@@ -1,5 +1,5 @@
 
-import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf,postWithParam } from "./api_helper"
+import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf,postWithParam, postDownload } from "./api_helper"
 
 //combo
 export const getCombo = req => post("/app001/get-dtlsetting-combo", req)
@@ -110,6 +110,10 @@ export const editInstructions = req => postUpload("rest/InstructionRest/UpdateIn
 export const saveDescriptions = req => postUpload("rest/InstructionRest/UpdateDescription", req)
 
 export const saveReply = req => postUpload("rest/InstructionRest/InsertReply", req)
+
+export const downloadFiles = req => postDownload("rest/InstructionRest/FileDownload", req)
+
+//export const downloadFile = req => getWithXls("/rest/app031/donwload-template", req)
 
 export const deleteInstructions = req => post("/rest/app008/delete", req)
 

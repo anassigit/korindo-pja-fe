@@ -137,3 +137,22 @@ export async function postUpload(url, data, config ={}) {
       return responseError(response);
     })
 }
+
+
+export async function postDownload(url, data, config ={responseType: 'blob'}) {
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  let token = ReactSession.get("authUser"); 
+  return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
+  //return await axiosApi.post(url, { ...data }, { ...config },)
+  .then(
+    response => {
+      if (response.status == 200) {
+        console.log(response.headers)
+        let url = window.URL.createObjectURL(new Blob([response.data]));   
+        saveAs(url, data.file_name);
+      } else {
+         return responseError(response);
+      }
+      
+  })
+}

@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all} from "redux-saga/effects"
 
-import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY } from "./actionTypes"
+import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES } from "./actionTypes"
 
-import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction } from "./actions"
+import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction, msgDownload } from "./actions"
 
-import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions, saveReply } from "helpers/backend_helper"
+import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions, saveReply, downloadFiles } from "helpers/backend_helper"
 
 function* fetchGetInstructions({ payload: req }) {
     try {
@@ -98,6 +98,14 @@ function* fetchSaveReply({ payload: req }) {
   }
 }
 
+function* fetchDownloadfiles({ payload: req }) {
+  try {
+    yield call(downloadFiles, req)
+  } catch (error) {
+    yield put(msgDownload({"status" : 0, "message" : "Error Download Data"}))
+  }
+}
+
   function* instructionsSaga() {
     
     yield takeEvery(GET_INSTRUCTIONS, fetchGetInstructions)
@@ -108,6 +116,7 @@ function* fetchSaveReply({ payload: req }) {
     yield takeEvery(GET_DETAIL_INSTRUCTION, fetchGetDetailInstruction)
     yield takeEvery(SAVE_DESCRIPTION, fetchSaveDescriptions)
     yield takeEvery(SAVE_REPLY, fetchSaveReply)
+    yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
   
   }
 

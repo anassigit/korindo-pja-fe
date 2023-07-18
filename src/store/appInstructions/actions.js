@@ -14,7 +14,9 @@ import {
     GET_DETAIL_INSTRUCTION,
     RESP_GET_DETAIL_INSTRUCTION,
     SAVE_DESCRIPTION,
-    SAVE_REPLY
+    SAVE_REPLY,
+    DOWNLOAD_FILES,
+    MSGDOWNLOAD
 
 } from "./actionTypes"
 
@@ -90,5 +92,15 @@ export const getInstructionsData = (req) => ({
 
   export const saveReply = (req) => ({
     type: SAVE_REPLY,
+    payload: req,
+  })
+
+  export const downloadFile = (req) => ({
+    type: DOWNLOAD_FILES,
+    payload: req,
+  })
+
+  export const msgDownload = (req) => ({
+    type: MSGDOWNLOAD,
     payload: req,
   })

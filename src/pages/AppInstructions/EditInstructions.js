@@ -24,13 +24,14 @@ import {
     Collapse,
     UncontrolledAlert
 } from "reactstrap";
-import { getInstructionsData, editInstructions, getUserList, getDetailInstruction, saveDescription, saveReply, resetMessage } from "../../store/appInstructions/actions"
+import { getInstructionsData, editInstructions, getUserList, getDetailInstruction, saveDescription, saveReply, resetMessage, downloadFile } from "../../store/appInstructions/actions"
 import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 import Select from "react-select";
 import shortid from "shortid";
 import { indexOf } from "lodash";
 import moment from "moment";
+import e from "cors";
 // import ContentEditable from 'react-contenteditable'
 
 const EditInstructions = (props) => {
@@ -64,7 +65,9 @@ const EditInstructions = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-
+    const downloadFiles = async () => {
+        await dispatch(downloadFile());
+    };
     const editInstructionCloseAllert = () => {
         setEditInstructionMsg("")
     }
@@ -110,7 +113,7 @@ const EditInstructions = (props) => {
             setReplyTabelListData(getDetailInstructionData?.data?.instruction?.replyList);
 
             setAttchedFilesTables(getDetailInstructionData?.data?.instruction?.attachFileList?.attachFileList);
-            
+
             setLogTable(getDetailInstructionData?.data?.instruction?.logList)
 
             //setGetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
@@ -125,6 +128,7 @@ const EditInstructions = (props) => {
 
                 SetFiles((option) => [...option, newObj]);
             });
+
 
         }
         //console.log(getDetailInstructionData?.data?.instruction?.attachFileList)
@@ -225,6 +229,39 @@ const EditInstructions = (props) => {
         return state.instructionsReducer.msgEdit;
     });
 
+    const insertFilesUpload = async () => {
+        await dispatch(editInstructions(e));
+    };
+
+    
+    const handleUploadFile = async () => {
+
+            debugger
+
+        var bodyForm = new FormData();
+
+        if (selectedfile.length > 0) {
+
+            debugger
+
+            for (let index = 0; index < selectedfile.length; index++) {
+
+                let a = selectedfile[index];
+
+                bodyForm.append('file' + index, selectedfile[index].fileori);
+
+            }
+        }
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+debugger
+insertFilesUpload(bodyForm, config);
+    };
+
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
 
@@ -316,14 +353,14 @@ const EditInstructions = (props) => {
 
             console.log('1 : ' + s.value)
 
-          
+
 
             console.log(' id : ', id1)
 
-        var jml = 0;
+            var jml = 0;
 
-        jml = s.length
-        
+            jml = s.length
+
 
             var bodyForm = new FormData();
             debugger
@@ -334,7 +371,7 @@ const EditInstructions = (props) => {
 
             if (jml > 1) {
                 for (let i = 0; i < s.length; i++) {
-                    if(i == s.length - 1){
+                    if (i == s.length - 1) {
                         debugger
                         id1 = s[s.length - 1].value
                         //console.log('2 :' + s[s.length - 1].value)
@@ -342,7 +379,7 @@ const EditInstructions = (props) => {
                     }
                 }
                 //jml = s.length -1
-            }else{
+            } else {
                 s.map((data, index) => {
                     bodyForm.append('addUser', data.value);
                 })
@@ -369,15 +406,15 @@ const EditInstructions = (props) => {
 
             if (jml > 1) {
                 for (let i = 0; i < s.length; i++) {
-                    if(i == s.length - 1){
+                    if (i == s.length - 1) {
                         debugger
                         id1 = s[s.length - 1].value
                         //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('removeUser', id1);
                     }
                 }
-                
-            }else{
+
+            } else {
                 s.map((data, index) => {
                     bodyForm.append('removeUser', data.value);
                 })
@@ -406,10 +443,10 @@ const EditInstructions = (props) => {
 
             console.log(' id : ', id2)
 
-        var jml2 = 0;
+            var jml2 = 0;
 
-        jml2 = s.length
-        
+            jml2 = s.length
+
 
             var bodyForm = new FormData();
             debugger
@@ -420,7 +457,7 @@ const EditInstructions = (props) => {
 
             if (jml2 > 1) {
                 for (let i = 0; i < s.length; i++) {
-                    if(i == s.length - 1){
+                    if (i == s.length - 1) {
                         debugger
                         id2 = s[s.length - 1].value
                         //console.log('2 :' + s[s.length - 1].value)
@@ -428,7 +465,7 @@ const EditInstructions = (props) => {
                     }
                 }
                 //jml = s.length -1
-            }else{
+            } else {
                 s.map((data, index) => {
                     bodyForm.append('addUser', data.value);
                 })
@@ -455,15 +492,15 @@ const EditInstructions = (props) => {
 
             if (jml2 > 1) {
                 for (let i = 0; i < s.length; i++) {
-                    if(i == s.length - 1){
+                    if (i == s.length - 1) {
                         debugger
                         id2 = s[s.length - 1].value
                         //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('removeUser', id2);
                     }
                 }
-                
-            }else{
+
+            } else {
                 s.map((data, index) => {
                     bodyForm.append('removeUser', data.value);
                 })
@@ -611,7 +648,7 @@ const EditInstructions = (props) => {
     //     }
     // }
 
-    
+
     // -- Replies area -- //
 
 
@@ -724,7 +761,7 @@ const EditInstructions = (props) => {
 
     };
 
-    
+
     return (
         <React.Fragment>
             <div className="page-content">
@@ -937,9 +974,9 @@ const EditInstructions = (props) => {
                                                                     })
                                                                 }
                                                             </div>
-                                                            {/* <div className="kb-buttons-box">
-                                                        <button type="submit" className="btn btn-primary form-submit">Upload</button>
-                                                    </div> */}
+                                                            <div className="kb-buttons-box">
+                                                        <button onClick={() => handleUploadFile()} className="btn btn-primary form-submit">Upload</button>
+                                                    </div>
                                                         </Form>
                                                         {Files.length > 0 ?
                                                             <div className="kb-attach-box">
@@ -947,7 +984,7 @@ const EditInstructions = (props) => {
                                                                 <h6>Recent files uploaded</h6>
                                                                 {
                                                                     Files.map((data, index) => {
-                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                        const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
                                                                         return (
                                                                             <div className="file-atc-box" key={index}>
                                                                                 {
@@ -960,7 +997,7 @@ const EditInstructions = (props) => {
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
                                                                                         <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button><></>
-                                                                                        <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
+                                                                                        <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -1157,7 +1194,7 @@ const EditInstructions = (props) => {
                                                             <div className="kb-attach-box">
                                                                 {
                                                                     getFiles.map((data, index) => {
-                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                        const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
                                                                         return (
                                                                             <div className="file-atc-box" key={index}>
                                                                                 {
@@ -1167,10 +1204,10 @@ const EditInstructions = (props) => {
                                                                                 }
                                                                                 <div className="file-detail">
                                                                                     <h6>{filename}</h6>
-                                                                                   
+
                                                                                     <div className="file-actions">
                                                                                         {/* <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button> */}
-                                                                                        <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
+                                                                                        <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -1379,21 +1416,26 @@ const EditInstructions = (props) => {
                                                                     <tbody id="replyTabelList">
 
                                                                         {
+
                                                                             (replyTabelListData.length > 0 && replyTabelListData.map((row, replies) =>
+
                                                                                 <>
                                                                                     <tr key={replies}>
                                                                                         <td className="tg-0lax" >
-                                                                                          
-                                                                                            {row.name}
-                                                                                           
-                                                                                            </td>
-                                                                                        <td className="tg-0lax" >
-                                                                                       
-                                                                                           {row.content}
 
-                                                                                            </td>
+                                                                                            {row.name}
+
+                                                                                        </td>
+                                                                                        <td className="tg-0lax" >
+
+                                                                                            {row.content}
+
+                                                                                        </td>
                                                                                         <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
                                                                                         <td className="tg-0lax" >
+                                                                                            {
+                                                                                                console.log("attach file list", getDetailInstructionData?.data?.instruction?.replyList[replies]?.attachFileList)
+                                                                                            }
                                                                                             {
                                                                                                 row.attachFileList.length > 0 ? row.attachFileList[0].name : ''
                                                                                             }
@@ -1436,7 +1478,7 @@ const EditInstructions = (props) => {
 
                                                         <CardBody>
                                                             <Row>
-                                                            
+
                                                                 <table className="tg"
                                                                     style={{ marginTop: "10px" }}
                                                                 >
@@ -1450,7 +1492,7 @@ const EditInstructions = (props) => {
                                                                     <tbody id="logTabelList">
 
                                                                         {
-                                                                             (logTable.length > 0 && logTable.map((row, logs) =>
+                                                                            (logTable.length > 0 && logTable.map((row, logs) =>
                                                                                 <>
                                                                                     <tr key={logs}>
                                                                                         <td className="tg-0lax" >{row.content}</td>
@@ -1461,7 +1503,7 @@ const EditInstructions = (props) => {
                                                                         }
                                                                     </tbody>
                                                                 </table>
-                                                            
+
                                                             </Row>
                                                         </CardBody>
                                                     </Card>
@@ -1479,24 +1521,24 @@ const EditInstructions = (props) => {
                     </Row>
 
                     <Row className="mb-2">
-                                        <Col md="12">
-                                            <div className="text-sm-end" >
+                        <Col md="12">
+                            <div className="text-sm-end" >
 
-                                                <Button
-                                                    type="button"
-                                                    className="btn btn-danger "
-                                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); window.location.reload(); }}
-                                                >
-                                                    <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                                    Kembali
-                                                </Button>
+                                <Button
+                                    type="button"
+                                    className="btn btn-danger "
+                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); window.location.reload(); }}
+                                >
+                                    <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
+                                    Kembali
+                                </Button>
 
-                                            </div>
-                                        </Col>
-                                    </Row>
+                            </div>
+                        </Col>
+                    </Row>
                 </Container>
             </div>
-        </React.Fragment>
+        </React.Fragment >
     );
 
 
