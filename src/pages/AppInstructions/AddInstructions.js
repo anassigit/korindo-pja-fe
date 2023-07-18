@@ -103,14 +103,14 @@ const AddInstructions = (props) => {
             title: '',
             insDate: '',
             status: '',
-            desciption: '',
+            // desciption: '',
             // user: '',
             // _file: '',
         },
 
         validationSchema: Yup.object().shape({
             title: Yup.string().required("Wajib diisi"),
-            desciption: Yup.string().required("Wajib diisi"),
+            // desciption: Yup.string().required("Wajib diisi"),
         }),
 
         onSubmit: (val) => {
@@ -292,7 +292,7 @@ const AddInstructions = (props) => {
                                         <Col md="6">
 
                                             <div className="mb-3 col-sm-6">
-                                                <Label>Title</Label>
+                                                <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     name="title"
                                                     type="text"
@@ -353,7 +353,7 @@ const AddInstructions = (props) => {
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
-                                                <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions <span style={{ color: "red" }}>* </span></Label>
+                                                <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
                                                 <Input
                                                     name="desciption"
                                                     type="textarea"
@@ -383,7 +383,7 @@ const AddInstructions = (props) => {
 
                                         <Col md="6">
                                             <div className="mb-3 col-sm-6">
-                                                <Label> Choose Owner <span style={{ color: "red" }}>* </span></Label>
+                                                <Label> Choose Owner </Label>
                                                 <Select
                                                 id="user"
                                                     value={selectedMulti}
@@ -397,7 +397,7 @@ const AddInstructions = (props) => {
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
-                                                <label>Choose Manager <span style={{ color: "red" }}>* </span></label>
+                                                <label>Choose Manager </label>
                                                 <Select
                                                 id="user"
                                                     value={selectedMulti2}
@@ -411,7 +411,7 @@ const AddInstructions = (props) => {
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
-                                                <label>Upload Files <span style={{ color: "red" }}>* </span></label>
+                                                <label>Upload Files </label>
 
                                                 <Form onSubmit={FileUploadSubmit}>
                                                     <div className="kb-file-upload">

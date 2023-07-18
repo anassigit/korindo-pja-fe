@@ -113,8 +113,18 @@ const EditInstructions = (props) => {
             
             setLogTable(getDetailInstructionData?.data?.instruction?.logList)
 
-        }
+            //setGetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
 
+            getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
+                const newObj = {
+                    id: attachFileList.id,
+                    filename: attachFileList.name,
+                };
+                setGetFiles((option) => [...option, newObj]);
+            });
+
+        }
+        //console.log(getDetailInstructionData?.data?.instruction?.attachFileList)
 
     }, [getDetailInstructionData])
 
@@ -128,7 +138,6 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
-        dispatch(getUserList({}))
         dispatch(getDetailInstruction({}))
 
     }, [])
@@ -183,17 +192,6 @@ const EditInstructions = (props) => {
             bodyForm.append('num', val.insId);
             bodyForm.append('description', val.descriptions);
 
-            // selectedMulti.map((data, index) => {
-
-            //     bodyForm.append('addUser', data.value);
-
-            // })
-            // selectedMulti2.map((data, index) => {
-
-            //     bodyForm.append('addUser', data.value);
-
-            // })
-
             // if (selectedfile.length > 0) {
 
             //     for (let index = 0; index < selectedfile.length; index++) {
@@ -218,11 +216,6 @@ const EditInstructions = (props) => {
 
         }
 
-        // onSubmit: (values) => {
-        //     setEditInstructionsSpinner(true);
-        //     props.setAppInstructionsMsg("")
-        //     dispatch(editInstructions(values));
-        // }
     });
 
     const editInstructionsMessage = useSelector(state => {
@@ -351,17 +344,6 @@ const EditInstructions = (props) => {
                     bodyForm.append('addUser', data.value);
                 })
             }
-    
-                //             s.map((data, index) => {
-                // //console.log(data)
-                //                 bodyForm.append('addUser', data.value);
-
-                //             })
-            // selectedMulti2.map((data, index) => {
-
-            //     bodyForm.append('addUser', data.value);
-
-            // })
 
             const config = {
                 headers: {
@@ -551,49 +533,88 @@ const EditInstructions = (props) => {
 
     }
 
-    // function handleAutoSaveUsers(values) {
+    const [getSelectedFiles, setGetSelectedFiles] = useState([]);
+    const [getFiles, setGetFiles] = useState([]);
 
-    //     var bodyForm = new FormData();
-    //     debugger
-    //     bodyForm.append('num', editInstructionsValidInput.values.insId);
 
-    //     selectedMulti.map((data, index) => {
+    // const InputChangeR = (e) => {
+    //     let images = [];
+    //     for (let i = 0; i < e.target.files.length; i++) {
+    //         images.push((e.target.files[i]));
+    //         let reader = new FileReader();
+    //         let file = e.target.files[i];
+    //         reader.onloadend = () => {
+    //             SetSelectedFileR((preValue) => {
+    //                 return [
+    //                     ...preValue,
+    //                     {
+    //                         id: shortid.generate(),
+    //                         filename: e.target.files[i].name,
+    //                         filetype: e.target.files[i].type,
+    //                         fileimage: reader.result,
+    //                         fileori: file
+    //                         //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
+    //                         //filesize: filesizes(e.target.files[i].size)
+    //                     }
+    //                 ]
+    //             })
 
-    //         bodyForm.append('addUser', data.value);
-
-    //     })
-    //     selectedMulti2.map((data, index) => {
-
-    //         bodyForm.append('addUser', data.value);
-
-    //     })
-
-    //     const config = {
-    //         headers: {
-    //             'content-type': 'multipart/form-data'
+    //         }
+    //         if (e.target.files[i]) {
+    //             reader.readAsDataURL(file);
     //         }
     //     }
-    //     insert(bodyForm, config);
-    //     // dispatch(editInstructions(values));
+    // }
+
+
+    // const DeleteSelectFileR = (id) => {
+    //     if (window.confirm("Are you sure you want to delete this file?")) {
+    //         const result = selectedfileR.filter((data) => data.id !== id);
+    //         SetSelectedFileR(result);
+    //     } else {
+    //         // alert('No');
+    //     }
 
     // }
 
-    // -- Replies area -- //
+    const FileUploadSubmitD = async (e) => {
+        e.preventDefault();
 
-    // insert reply //
+        // form reset on submit 
+        e.target.reset();
+        if (getSelectedFiles.length > 0) {
+            for (let index = 0; index < getSelectedFiles.length; index++) {
+                setGetFiles((preValue) => {
+                    return [
+                        ...preValue,
+                        getSelectedFiles[index]
+                    ]
+                })
+            }
+            setGetSelectedFiles([]);
+        } else {
+            setGetSelectedFiles("kosong")
+        }
+
+    }
+
+
+    // const DeleteFileR = async (id) => {
+    //     if (window.confirm("Are you sure you want to delete this file?")) {
+    //         const result = Files.filter((data) => data.id !== id);
+    //         SetFilesR(result);
+    //     } else {
+    //         // alert('No');
+    //     }
+    // }
+
+    
+    // -- Replies area -- //
 
 
     const [selectedfileR, SetSelectedFileR] = useState([]);
     const [FilesR, SetFilesR] = useState([]);
 
-    const filesizesR = (bytes, decimals = 2) => {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const dm = decimals < 0 ? 0 : decimals;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    }
 
     const InputChangeR = (e) => {
         let images = [];
@@ -623,7 +644,6 @@ const EditInstructions = (props) => {
             }
         }
     }
-
 
     const DeleteSelectFileR = (id) => {
         if (window.confirm("Are you sure you want to delete this file?")) {
@@ -655,7 +675,6 @@ const EditInstructions = (props) => {
         }
 
     }
-
 
     const DeleteFileR = async (id) => {
         if (window.confirm("Are you sure you want to delete this file?")) {
@@ -700,53 +719,9 @@ const EditInstructions = (props) => {
         setEditInstructionMsg("")
         //window.location.reload();
 
-
     };
 
-    // -- end replies area --//
-
-    // -- replies list -- //
-
-function handleAutoSaveContentTable (values) {
-
-           var bodyForm = new FormData();
-
-        bodyForm.append('instruction_num', editInstructionsValidInput.values.insId);
-        bodyForm.append('content', editInstructionsValidInput.values.content);
-
-        if (selectedfileR.length > 0) {
-
-            for (let index = 0; index < selectedfileR.length; index++) {
-
-                let a = selectedfileR[index];
-
-                bodyForm.append('file' + index, selectedfileR[index].fileori);
-
-            }
-        }
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-
-        }
-        insert(bodyForm, config);
-
-}
-
-// const onChangeInput = (e, reply_num) => {
-//     const { name, value } = e.target
-
-//     const editData = replyTabelListData.map((item) =>
-//       item.reply_num === reply_num && name ? { ...item, [name]: value } : item
-//     )
-
-//     setReplyTabelListData(editData)
-//   }
-
-    // -- end replies list -- //
-
+    
     return (
         <React.Fragment>
             <div className="page-content">
@@ -992,21 +967,6 @@ function handleAutoSaveContentTable (values) {
                                                                 }
                                                             </div>
                                                             : ''}
-                                                        {/* <Input
-                                                            id="idFileUpload"
-                                                            name="_file"
-                                                            type="file"
-                                                            // accept="xlsx/*"
-                                                            onChange={(e) => editInstructionsValidInput.setFieldValue("_file", e.target.files[0])}
-                                                            invalid={
-                                                                editInstructionsValidInput.touched._file && editInstructionsValidInput.errors._file ? true : false
-                                                            }
-                                                        />
-                                                        <Button outline type="button" color="danger" onClick={() => { editInstructionsValidInput.setFieldValue("_file", ""); document.getElementById('idFileUpload').value = null; }}>
-                                                            <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
-                                                        </Button> */}
-                                                        {/* </div> */}
-
                                                     </div>
 
 
@@ -1080,9 +1040,6 @@ function handleAutoSaveContentTable (values) {
                                                             disabled
                                                             name="insTitle"
                                                             type="text"
-                                                            // onChange={(editInstructionsValidInput.handleChange) => {
-                                                            //     handleUpdTitle
-                                                            // }}
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             onBlur={handleAutoSaveTitle}
                                                             value={editInstructionsValidInput.values.insTitle || ""}
@@ -1124,13 +1081,10 @@ function handleAutoSaveContentTable (values) {
                                                             type="select"
                                                             name="statusId"
                                                             onChange={editInstructionsValidInput.handleChange}
-                                                            // onBlur={editInstructionsValidInput.handleBlur}
                                                             onBlur={() => {
                                                                 editInstructionsValidInput.handleBlur;
                                                                 handleAutoSaveStatus();
                                                             }}
-                                                            // onBlur={handleAutoSaveStatus}
-                                                            // fieldValue={1}
                                                             value={editInstructionsValidInput.values.statusId || ""}
                                                             invalid={
                                                                 editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? true : false
@@ -1142,10 +1096,6 @@ function handleAutoSaveContentTable (values) {
                                                             <option value={"3"}>Action Completed</option>
                                                             <option value={"4"}>Rejection</option>
                                                             <option value={"5"}>Complete</option>
-                                                            {/* {
-                                                    selectStatus.dtlsetting?.map((value, key) =>
-                                                    <option key={key} value={value.no}>{value.name}</option>)
-                                                    } */}
 
                                                         </Input>
                                                         {editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? (
@@ -1190,11 +1140,6 @@ function handleAutoSaveContentTable (values) {
                                                             isDisabled={true}
                                                             value={selectedMulti}
                                                             isMulti={true}
-                                                            // onChange={(e) => {
-                                                            //     handleMulti(e);
-                                                            // }}
-                                                            // options={optionOwner
-                                                            // }
                                                             className="select2-selection"
                                                         />
                                                     </div>
@@ -1205,12 +1150,6 @@ function handleAutoSaveContentTable (values) {
                                                             isDisabled={true}
                                                             value={selectedMulti2}
                                                             isMulti={true}
-                                                            // onChange={(e) => {
-                                                            //     handleMulti2(e);
-                                                            // }}
-                                                            // options={optionManager
-                                                            // }
-
                                                             className="select2-selection"
                                                         />
                                                     </div>
@@ -1219,50 +1158,18 @@ function handleAutoSaveContentTable (values) {
                                                         <label>Attached Files </label>
 
                                                         <Form onSubmit={FileUploadSubmit}>
-                                                            <div className="kb-file-upload">
-                                                                <div className="file-upload-box">
-                                                                    {/* <input type="file" id="fileupload2" className="file-upload-input" onChange={InputChange} name="removeFile" multiple /> */}
-                                                                </div>
-                                                            </div>
-                                                            <div className="kb-attach-box mb-3">
-                                                                {
-                                                                    selectedfile.map((data, index) => {
-                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                        return (
-                                                                            <div className="file-atc-box" key={id}>
-                                                                                {
-                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                        <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                        <div className="file-image"><i className="far fa-file-alt"></i></div>
-                                                                                }
-                                                                                <div className="file-detail">
-                                                                                    <span>{filename}</span>
-                                                                                    {/* <p></p> */}
-                                                                                    {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
-                                                                                    <div className="file-actions">
-                                                                                        <button type="button" className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
-                                                                                    </div>
-                                                                                    <p />
-                                                                                </div>
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </div>
-                                                            {/* <div className="kb-buttons-box">
-                                                        <button type="submit" className="btn btn-primary form-submit">Upload</button>
-                                                    </div> */}
+
                                                         </Form>
-                                                        {Files.length > 0 ?
+                                                        {getFiles.length > 0 ?
                                                             <div className="kb-attach-box">
                                                                 <hr />
                                                                 {
-                                                                    Files.map((data, index) => {
+                                                                    getFiles.map((data, index) => {
                                                                         const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                         return (
                                                                             <div className="file-atc-box" key={index}>
                                                                                 {
-                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                                    filename ?
                                                                                         <div className="file-image"> <img src={fileimage} alt="" /></div> :
                                                                                         <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                                 }
@@ -1270,7 +1177,7 @@ function handleAutoSaveContentTable (values) {
                                                                                     <h6>{filename}</h6>
                                                                                     <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p>
                                                                                     <div className="file-actions">
-                                                                                        <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button>
+                                                                                        {/* <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button> */}
                                                                                         <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
                                                                                     </div>
                                                                                 </div>
