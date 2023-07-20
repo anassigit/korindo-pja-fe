@@ -75,7 +75,7 @@ const Instructions = () => {
                         <button style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
                             type="button"
                             className="btn btn-primary "
-                            onClick={() => appInstructionsPreEdit(appInstructionsData) }
+                            onClick={() => appInstructionsPreEdit(appInstructionsData)}
                         >
                             <a title="Instructions" style={{ color: "#495057" }}>{appInstructionsData.insTitle}</a>
                         </button>
@@ -293,30 +293,21 @@ const Instructions = () => {
                                     </Col>
                                 </Row>
 
-                                <Card>
-                                    {/* <CardHeader>
-                                        <i className="bx bx-list-check font-size-18 align-middle me-2"></i>Instructions
-                                    </CardHeader> */}
+                                <React.Fragment>
+                                    <Row>
+                                        <TableCustom
+                                            keyField={"insId"}
+                                            columns={appInstructionsp01Tabel}
+                                            redukResponse={appInstructionsData}
+                                            appdata={appInstructionsData.data != null ? appInstructionsData.data.ins : []}
+                                            appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.insTotal : 0}
+                                            searchSet={setAppInstructionsTabelSearch}
+                                            searchGet={appInstructionsTabelSearch}
+                                            redukCall={getInstructionsData}
+                                        />
 
-                                    <CardBody>
-                                        <React.Fragment>
-
-                                            <Row>
-                                                <TableCustom
-                                                    keyField={"insId"}
-                                                    columns={appInstructionsp01Tabel}
-                                                    redukResponse={appInstructionsData}
-                                                    appdata={appInstructionsData.data != null ? appInstructionsData.data.ins : []}
-                                                    appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.insTotal : 0}
-                                                    searchSet={setAppInstructionsTabelSearch}
-                                                    searchGet={appInstructionsTabelSearch}
-                                                    redukCall={getInstructionsData}
-                                                />
-
-                                            </Row>
-                                        </React.Fragment>
-                                    </CardBody>
-                                </Card>
+                                    </Row>
+                                </React.Fragment>
                             </Col>
                         </Row>
                     </Container>

@@ -108,7 +108,7 @@ const SidebarContent = props => {
                 <i className="fas fa-folder-open"></i>
                 <span>{props.t("File Management")}</span>
               </Link>
-              <Link to="/" className="">
+              <Link to="/AppSetting" className="">
                 <i className="fas fa-cog"></i>
                 <span>{props.t("Setting")}</span>
               </Link>

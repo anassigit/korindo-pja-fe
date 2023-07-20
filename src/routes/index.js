@@ -18,6 +18,7 @@ import User from "../pages/App008/User"
 import Instructions from "../pages/AppInstructions/Instructions"
 import UserProfile from "../pages/AppUserProfile/UserProfile"
 import ChangePassword from "../pages/Authentication/ChangePassword"
+import Setting from "pages/AppSetting/Setting"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -26,6 +27,7 @@ const authProtectedRoutes = [
   { path: "/app004", component: RoleAkses },
   { path: "/app008", component: User },
   { path: "/AppInstructions", component: Instructions },
+  { path: "/AppSetting", component: Setting },
   { path: "/AppUserProfile", component: UserProfile },
   { path: "/changePassword", component: ChangePassword },
 
