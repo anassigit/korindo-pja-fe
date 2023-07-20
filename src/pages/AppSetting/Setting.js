@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Button,
     Card,
@@ -12,17 +12,90 @@ import {
 } from "reactstrap";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
+import { getMembersData, resetMessage } from "store/appSetting/actions";
+import TableCustom2 from "common/TableCustom2";
 
 
 const Setting = () => {
 
     const dispatch = useDispatch();
-    const [appSettingMsg, setappSettingMsg] = useState("")
-    const [appInstructionsPage, setAppInstructionsPage] = useState(true)
+    const [appSettingMsg, setAppSettingMsg] = useState("")
+    const [appMembersPage, setAppMembersPage] = useState(true)
 
     const [radioValue1, setRadioValue1] = useState(null);
     const [radioValue2, setRadioValue2] = useState(null);
     const [radioValue3, setRadioValue3] = useState(null);
+
+    const [appMembersTabelSearch, setAppMembersTabelSearch] = useState({
+        page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
+            any: "", langType: "eng"
+        }
+    });
+
+    useEffect(() => {
+        dispatch(resetMessage());
+        dispatch(getMembersData({ langType: "eng" }));
+    }, [dispatch])
+
+    const appMembersData = useSelector(state => {
+        return state.settingReducer.respGetMembers;
+    });
+
+    const appMembersp01Tabel = [
+        {
+            dataField: "name",
+            text: "Name",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "id",
+            text: "Email",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "hp",
+            text: "HP",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "rname",
+            text: "Rank",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "pname",
+            text: "Permission",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "bgcolor",
+            text: "Background Color",
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+    ]
+
+    useEffect(() => {
+        if (appMembersData.status == "0") {
+            setAppSettingMsg(appMembersData)
+        }
+    }, [appMembersData])
+
+
+    useEffect(() => {
+        dispatch(getMembersData({ langType: "eng" }));
+    }, [appMembersTabelSearch])
 
     const handleRadioChange1 = (event) => {
         setRadioValue1(event.target.value);
@@ -37,10 +110,10 @@ const Setting = () => {
     };
 
     return (
-        <RootPageCustom msgStateGet={appSettingMsg} msgStateSet={setappSettingMsg}
+        <RootPageCustom msgStateGet={appSettingMsg} msgStateSet={setAppSettingMsg}
             componentJsx={
                 <>
-                    <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true}>
+                    <Container style={{ display: appMembersPage ? 'block' : 'none' }} fluid={true}>
 
                         <Row>
                             <Col>
@@ -65,7 +138,7 @@ const Setting = () => {
                                                                 checked={radioValue1 === "0"}
                                                                 onChange={handleRadioChange1}
                                                             />
-                                                            <span> </span>Show Your Own Instructions
+                                                            <span> </span>Show Your Own Members
                                                         </label>
                                                         <label>
                                                             <Input
@@ -75,7 +148,7 @@ const Setting = () => {
                                                                 checked={radioValue1 === "1"}
                                                                 onChange={handleRadioChange1}
                                                             />
-                                                            <span> </span>Show All Instructions
+                                                            <span> </span>Show All Members
                                                         </label>
                                                     </Row>
                                                 </Col>
@@ -154,21 +227,30 @@ const Setting = () => {
                                         </React.Fragment>
                                     </CardBody>
                                 </Card>
-                                
+
                                 <Card>
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                                        <strong>General Settings</strong>
+                                        <strong>Members</strong>
                                     </CardHeader>
 
                                     <CardBody>
                                         <React.Fragment>
                                             <Row className="mb-2">
-                                               
+                                                <TableCustom2
+                                                    keyField={"id"}
+                                                    columns={appMembersp01Tabel}
+                                                    redukResponse={appMembersData}
+                                                    appdata={appMembersData?.data?.memberList != null ? appMembersData?.data?.memberList : []}
+                                                    appdataTotal={appMembersData?.data?.memberList?.length != null ? appMembersData?.data?.memberList?.length : 0}
+                                                    searchSet={setAppMembersTabelSearch}
+                                                    searchGet={appMembersTabelSearch}
+                                                    redukCall={getMembersData}
+                                                />
                                             </Row>
                                         </React.Fragment>
                                     </CardBody>
                                 </Card>
-                                
+
                                 <Card>
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                                         <strong>General Settings</strong>
@@ -177,7 +259,7 @@ const Setting = () => {
                                     <CardBody>
                                         <React.Fragment>
                                             <Row className="mb-2">
-                                                
+
                                             </Row>
                                         </React.Fragment>
                                     </CardBody>

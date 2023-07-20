@@ -118,3 +118,13 @@ export const downloadFiles = req => postDownload("rest/InstructionRest/FileDownl
 export const deleteInstructions = req => post("/rest/app008/delete", req)
 
 export const getUserList = req => post("rest/InstructionRest/SelectInfo", req)
+
+//appSetting
+
+export const getMembers = req => postWithParam("/rest/SettingRest/SelectSetting", req)
+
+export const saveMembers = req => postWithParam("/rest/SettingRest/InsertMember", req)
+
+export const updateMembers = req => postWithParam("/rest/SettingRest/UpdateMember", req)
+
+export const deleteMembers = req => postWithParam("/rest/SettingRest/DeleteMember", req)

@@ -14,6 +14,7 @@ import RoleAksesReducer from "./app004/reducer"
 import MUserReducer from "./app008/reducer"
 import instructionsReducer from "./appInstructions/reducer"
 import userProfileReducer from "./appUserProfile/reducer"
+import settingReducer from "./appSetting/reducer"
 
 const rootReducer = combineReducers({
   Layout,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   MUserReducer,
   instructionsReducer,
   userProfileReducer,
+  settingReducer,
 })
 
 export default rootReducer
