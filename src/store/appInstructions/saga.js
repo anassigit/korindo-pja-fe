@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all} from "redux-saga/effects"
 
-import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES } from "./actionTypes"
+import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY } from "./actionTypes"
 
-import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction, msgDownload } from "./actions"
+import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction, msgDownload, msgDeleteReply } from "./actions"
 
-import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions, saveReply, downloadFiles } from "helpers/backend_helper"
+import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply } from "helpers/backend_helper"
 
 function* fetchGetInstructions({ payload: req }) {
     try {
@@ -106,6 +106,16 @@ function* fetchDownloadfiles({ payload: req }) {
   }
 }
 
+function* fetchDeleteReply({ payload: req }) {
+  try {
+    const response = yield call(deleteReply, req)
+    yield put(msgDeleteReply(response))
+  } catch (error) {
+    console.log(error);
+    yield put(msgDeleteReply({"status" : 0, "data" : "Error Delete Data"}))
+  }
+}
+
   function* instructionsSaga() {
     
     yield takeEvery(GET_INSTRUCTIONS, fetchGetInstructions)
@@ -117,6 +127,7 @@ function* fetchDownloadfiles({ payload: req }) {
     yield takeEvery(SAVE_DESCRIPTION, fetchSaveDescriptions)
     yield takeEvery(SAVE_REPLY, fetchSaveReply)
     yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
+    yield takeEvery(DELETE_REPLY, fetchDeleteReply)
   
   }
 

@@ -20,12 +20,13 @@ import {
     CardHeader,
     UncontrolledAlert
 } from "reactstrap";
-import { getInstructionsData, editInstructions, getUserList, getDetailInstruction, saveDescription, saveReply, resetMessage, downloadFile } from "../../store/appInstructions/actions"
+import { editInstructions, getDetailInstruction, saveDescription, saveReply, resetMessage, downloadFile, deleteReply } from "../../store/appInstructions/actions"
 import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 import Select from "react-select";
 import shortid from "shortid";
 import moment from "moment";
+import { values } from "lodash";
 
 
 const EditInstructions = (props) => {
@@ -36,32 +37,22 @@ const EditInstructions = (props) => {
     const [startDate, setStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
     const [editInstructionsSpinner, setEditInstructionsSpinner] = useState(false);
     const [editInstructionsFirstRenderDone, setEditInstructionsFirstRenderDone] = useState(false);
-
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
-
     const [selectedMulti, setselectedMulti] = useState(null);
     const [selectedMulti2, setselectedMulti2] = useState(null);
-
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
-
     const [optionOwner0, setOptionOwner0] = useState([]);
     const [optionManager0, setOptionManager0] = useState([]);
-
     const [replyTabelListData, setReplyTabelListData] = useState([]);
     const [attchedFilesTables, setAttchedFilesTables] = useState([]);
     const [logTable, setLogTable] = useState([]);
-
-    //detail form files attached//
     const [getSelectedFiles, setGetSelectedFiles] = useState([]);
     const [getFiles, setGetFiles] = useState([]);
-    //end detail form//
-
-    //edit form files attach//
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
     const [Files2, SetFiles2] = useState([]);
-    //end edit form//
+    const [replyNum, setReplyNum] = useState('');
 
     const getDetailInstructionData = useSelector(state => {
         // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
@@ -140,8 +131,16 @@ const EditInstructions = (props) => {
                 SetFiles2((option) => [...option, newObj]);
             });
 
+            getDetailInstructionData?.data?.instruction?.replyList.map((replyList) => {
+
+const rply = {
+    reply_num: replyList.no
+}
+setReplyNum((option) => [...option, rply])
+            })
         }
-        // console.log("replies", getDetailInstructionData?.data?.instruction?.replyList);
+        console.log("replyNum", getDetailInstructionData?.data?.instruction?.replyList);
+        console.log("replyNum2", replyNum);
 
     }, [getDetailInstructionData], []);
 
@@ -159,11 +158,6 @@ const EditInstructions = (props) => {
         }
     }, [Files2], [])
 
-    // useEffect(() => {
-    //     if (getFiles != null && getFiles != null) {
-    //         setGetFiles(getFiles)
-    //     }
-    // }, [getFiles])
 
     useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
@@ -239,8 +233,8 @@ const EditInstructions = (props) => {
     const editInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgEdit;
     });
-    
-    function handleUploadFile  (values)  {
+
+    function handleUploadFile(values) {
 
         var bodyForm = new FormData();
 
@@ -265,7 +259,7 @@ const EditInstructions = (props) => {
             }
         }
 
-insert(bodyForm, config);
+        insert(bodyForm, config);
     };
 
 
@@ -338,90 +332,40 @@ insert(bodyForm, config);
 
     }
 
-// -- delete file attachded EDIT -- //
+    // -- delete file attachded EDIT -- //
 
-const deleteFiles = async (values) => {
-    debugger
-    await dispatch(editInstructions(values));
-};
+    const deleteFiles = async (values) => {
+        debugger
+        await dispatch(editInstructions(values));
+    };
 
-// const deleteFiles = async (indexed_array) => {
-//     debugger
-//     await dispatch(editInstructions(indexed_array));
-// };
+    function DeleteFileAttached(Files2) {
+        debugger
+        console.log(Files2);
+        var id9 = "";
+        // if (Files.length > Files2.length){
+        var bodyForm = new FormData();
+        bodyForm.append('num', editInstructionsValidInput.values.insId);
 
-// const DeleteFileAttached = async () => {
-//     try {
-//         var bodyForm = new FormData();
-//       var indexed_array = {
-//         "num": editInstructionsValidInput.values.insId,
-//         "file_num": Files.file_num,
-//         "filename": Files.filename,
-//       };
+        var jml9 = 0;
+        jml9 = Files2.length
 
-//       const config = {
-//         headers: {
-//             'content-type': 'multipart/form-data'
-//         }
-//     }
-//     deleteFiles(bodyForm, config);
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   };
-
-// var bodyForm = new FormData();
-// debugger
-// bodyForm.append('num', editInstructionsValidInput.values.insId);
-
-
-// var jml = 0;
-
-// jml = s.length
-
-// if (jml > 1) {
-//     for (let i = 0; i < s.length; i++) {
-//         if (i == s.length - 1) {
-//             debugger
-//             id1 = s[s.length - 1].value
-//             //console.log('2 :' + s[s.length - 1].value)
-//             bodyForm.append('removeUser', id1);
-//         }
-//     }
-
-// } else {
-//     s.map((data, index) => {
-//         bodyForm.append('removeUser', data.value);
-//     })
-// }
-
-function DeleteFileAttached  (Files2)  {
-    debugger
-    console.log(Files2);
-    var id9 = "";
-    // if (Files.length > Files2.length){
-    var bodyForm = new FormData();
-    bodyForm.append('num', editInstructionsValidInput.values.insId);
-
-    var jml9 = 0;
-    jml9 = Files2.length
-
-    debugger
-    if (jml9 > 1) {
-        for (let i = 0; i < Files2.length; i++) {
-            if (i == Files2.length - 1) {
-                debugger
-                id9 = Files2[Files2.length - 1].file_num
-                console.log('2 :' + Files2[Files.length - 1].file_num)
-                bodyForm.append('removeFile', id9);
+        debugger
+        if (jml9 > 1) {
+            for (let i = 0; i < Files2.length; i++) {
+                if (i == Files2.length - 1) {
+                    debugger
+                    id9 = Files2[Files2.length - 1].file_num
+                    console.log('2 :' + Files2[Files.length - 1].file_num)
+                    bodyForm.append('removeFile', id9);
+                }
             }
-        }
 
-    } else {
-        Files2.map((data, index) => {
-            bodyForm.append('removeFile', data.file_num);
-        })
-    }
+        } else {
+            Files2.map((data, index) => {
+                bodyForm.append('removeFile', data.file_num);
+            })
+        }
 
         const config = {
             headers: {
@@ -430,22 +374,12 @@ function DeleteFileAttached  (Files2)  {
         }
         console.log(bodyForm);
 
-    deleteFiles(bodyForm, config);
-    // }
+        deleteFiles(bodyForm, config);
+        // }
 
-};
+    };
 
-
-    // const DeleteFile = async (id) => {
-    //     if (window.confirm("Are you sure you want to delete this file?")) {
-    //         const result = Files.filter((data) => data.id !== id);
-    //         SetFiles(result);
-    //     } else {
-    //         // alert('No');
-    //     }
-    // }
-
-// -- end -- //
+    // -- end -- //
     function handleMulti(s) {
         debugger
 
@@ -674,67 +608,18 @@ function DeleteFileAttached  (Files2)  {
 
     }
 
-
-
-
-    // const InputChangeR = (e) => {
-    //     let images = [];
-    //     for (let i = 0; i < e.target.files.length; i++) {
-    //         images.push((e.target.files[i]));
-    //         let reader = new FileReader();
-    //         let file = e.target.files[i];
-    //         reader.onloadend = () => {
-    //             SetSelectedFileR((preValue) => {
-    //                 return [
-    //                     ...preValue,
-    //                     {
-    //                         id: shortid.generate(),
-    //                         filename: e.target.files[i].name,
-    //                         filetype: e.target.files[i].type,
-    //                         fileimage: reader.result,
-    //                         fileori: file
-    //                         //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
-    //                         //filesize: filesizes(e.target.files[i].size)
-    //                     }
-    //                 ]
-    //             })
-
-    //         }
-    //         if (e.target.files[i]) {
-    //             reader.readAsDataURL(file);
-    //         }
-    //     }
-    // }
-
-
-    // const DeleteSelectFileR = (id) => {
-    //     if (window.confirm("Are you sure you want to delete this file?")) {
-    //         const result = selectedfileR.filter((data) => data.id !== id);
-    //         SetSelectedFileR(result);
-    //     } else {
-    //         // alert('No');
-    //     }
-
-    // }
-
     const downloadFiles = async (e) => {
 
         debugger
         try {
-          var indexed_array = {
-            "file_num": e,
-          };
-          await dispatch(downloadFile(indexed_array));
+            var indexed_array = {
+                "file_num": e,
+            };
+            await dispatch(downloadFile(indexed_array));
         } catch (error) {
-          console.log(error)
+            console.log(error)
         }
-      };
-
-        // const downloadFiles = async (file_num) => {
-        // debugger
-        // await dispatch(downloadFile(file_num));
-        // };
-    
+    };
 
     const FileUploadSubmitD = async (e) => {
         e.preventDefault();
@@ -756,16 +641,6 @@ function DeleteFileAttached  (Files2)  {
         }
 
     }
-
-
-    // const DeleteFileR = async (id) => {
-    //     if (window.confirm("Are you sure you want to delete this file?")) {
-    //         const result = Files.filter((data) => data.id !== id);
-    //         SetFilesR(result);
-    //     } else {
-    //         // alert('No');
-    //     }
-    // }
 
 
     // -- Replies area -- //
@@ -880,6 +755,35 @@ function DeleteFileAttached  (Files2)  {
 
     };
 
+// Reply tables functions //
+
+const replyDelete = async () => {
+debugger
+    try {
+debugger
+        var map = {
+            "reply_num":  replyNum[0].no
+        };
+        console.log('map : ', map)
+
+        setEditInstructionsSpinner(true);
+        setEditInstructionMsg("")
+        await dispatch(deleteReply(map));
+
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+// const replyDelete = (app032p01RumusTegakanData) => {
+//     setApp032setMsg("")
+//     setApp032p01RumusTegakanDelete(app032p01RumusTegakanData);
+//     setApp032DeleteModal(true)
+// }
+
+
+
+// end function //
 
     return (
         <React.Fragment>
@@ -889,7 +793,7 @@ function DeleteFileAttached  (Files2)  {
 
                 <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null  || getDetailInstructionData?.data?.instruction?.memberId != memberId  ? 'none' : 'flex' }}>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || getDetailInstructionData?.data?.instruction?.memberId != memberId ? 'none' : 'flex' }}>
                         <Col lg={12}>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
@@ -1080,7 +984,7 @@ function DeleteFileAttached  (Files2)  {
                                                                                         <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                                 }
                                                                                 <div className="file-detail">
-                                                                                    <span>{filename}</span>
+                                                                                    <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
                                                                                     {/* <p></p> */}
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
@@ -1094,8 +998,8 @@ function DeleteFileAttached  (Files2)  {
                                                                 }
                                                             </div>
                                                             <div className="kb-buttons-box">
-                                                        <button onClick={() => handleUploadFile()} className="btn btn-primary form-submit">Upload</button>
-                                                    </div>
+                                                                <button onClick={() => handleUploadFile()} className="btn btn-primary form-submit">Upload</button>
+                                                            </div>
                                                         </Form>
                                                         {Files.length > 0 ?
                                                             <div className="kb-attach-box">
@@ -1112,7 +1016,7 @@ function DeleteFileAttached  (Files2)  {
                                                                                         <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                                 }
                                                                                 <div className="file-detail">
-                                                                                <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
+                                                                                    <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
                                                                                         <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(Files2)}>Delete</a>
@@ -1127,8 +1031,6 @@ function DeleteFileAttached  (Files2)  {
                                                             </div>
                                                             : ''}
                                                     </div>
-
-
 
                                                 </Col>
                                             </Row>
@@ -1150,7 +1052,7 @@ function DeleteFileAttached  (Files2)  {
                         </Col>
                     </Row>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null ? 'none' : 'flex' }}>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || getDetailInstructionData?.data?.instruction?.memberId == memberId ? 'none' : 'flex' }}>
                         <Col lg={12}>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
@@ -1318,12 +1220,12 @@ function DeleteFileAttached  (Files2)  {
                                                                         return (
                                                                             <div className="file-atc-box" key={index}>
                                                                                 {
-                                                                                    filename ?
+                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
                                                                                         <div className="file-image"> <img src={fileimage} alt="" /></div> :
                                                                                         <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                                 }
                                                                                 <div className="file-detail">
-                                                                                    <h6>{filename}</h6>
+                                                                                    <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
 
                                                                                     <div className="file-actions">
                                                                                         {/* <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button> */}
@@ -1336,10 +1238,7 @@ function DeleteFileAttached  (Files2)  {
                                                                 }
                                                             </div>
                                                             : ''}
-
                                                     </div>
-
-
 
                                                 </Col>
                                             </Row>
@@ -1405,13 +1304,15 @@ function DeleteFileAttached  (Files2)  {
                                                                                         const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                                         return (
                                                                                             <div className="file-atc-box" key={id}>
+                                                                                                
                                                                                                 {
                                                                                                     filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                        <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                                        <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                                                        <div className="file-image"> <img src={fileimage} alt="" /></div>
+                                                                                                         :
+                                                                                                        <div className="file-image"><i className="fas fa-file-alt"/></div>
                                                                                                 }
                                                                                                 <div className="file-detail">
-                                                                                                    <span>{filename}</span>
+                                                                                                    <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
                                                                                                     {/* <p></p> */}
                                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
                                                                                                     <div className="file-actions">
@@ -1424,51 +1325,8 @@ function DeleteFileAttached  (Files2)  {
                                                                                     })
                                                                                 }
                                                                             </div>
-                                                                            {/* <div className="kb-buttons-box">
-                                                        <button type="submit" className="btn btn-primary form-submit">Upload</button>
-                                                    </div> */}
+
                                                                         </Form>
-                                                                        {/* {Files.length > 0 ?
-                                                                            <div className="kb-attach-box">
-                                                                                <hr />
-                                                                                {
-                                                                                    Files.map((data, index) => {
-                                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                                        return (
-                                                                                            <div className="file-atc-box" key={index}>
-                                                                                                {
-                                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                        <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                                        <div className="file-image"><i className="far fa-file-alt"></i></div>
-                                                                                                }
-                                                                                                <div className="file-detail">
-                                                                                                    <h6>{filename}</h6>
-                                                                                                    <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p>
-                                                                                                    <div className="file-actions">
-                                                                                                        <button className="file-action-btn" onClick={() => DeleteFileR(id)}>Delete</button>
-                                                                                                        <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </div>
-                                                                            : ''} */}
-                                                                        {/* <Input
-                                                            id="idFileUpload"
-                                                            name="_file"
-                                                            type="file"
-                                                            // accept="xlsx/*"
-                                                            onChange={(e) => editInstructionsValidInput.setFieldValue("_file", e.target.files[0])}
-                                                            invalid={
-                                                                editInstructionsValidInput.touched._file && editInstructionsValidInput.errors._file ? true : false
-                                                            }
-                                                        />
-                                                        <Button outline type="button" color="danger" onClick={() => { editInstructionsValidInput.setFieldValue("_file", ""); document.getElementById('idFileUpload').value = null; }}>
-                                                            <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
-                                                        </Button> */}
-                                                                        {/* </div> */}
 
                                                                     </div>
                                                                 </div>
@@ -1480,8 +1338,8 @@ function DeleteFileAttached  (Files2)  {
 
                                                                 <Button
                                                                     type="button"
-                                                                    
-                                                                    color="primary" 
+
+                                                                    color="primary"
                                                                     className="ms-1"
                                                                     onClick={() => { insertReplyAndFiles() }}
                                                                 >
@@ -1493,22 +1351,6 @@ function DeleteFileAttached  (Files2)  {
                                                         </Col>
                                                     </Row>
                                                 </div>
-
-                                                {/* <Row className="mb-2">
-                                            <Col md="12">
-                                                <div className="text-sm-end" >
-
-                                                    <Button
-                                                        type="button"
-                                                        className="btn btn-primary "
-                                                        onClick={() => { insertReplyAndFiles() }}
-                                                    >
-                                                        Reply
-                                                    </Button>
-
-                                                </div>
-                                            </Col>
-                                        </Row> */}
 
                                             </div>
                                             <br />
@@ -1532,6 +1374,7 @@ function DeleteFileAttached  (Files2)  {
                                                                             <th className="tg-0lax">Reply</th>
                                                                             <th className="tg-0lax">Time</th>
                                                                             <th className="tg-0lax">Attached Files</th>
+                                                                            <th className="tg-0lax"></th>
 
                                                                         </tr>
                                                                     </thead>
@@ -1539,36 +1382,31 @@ function DeleteFileAttached  (Files2)  {
 
                                                                         {
 
-                                                                                replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, replies) =>
+                                                                            replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, replies) =>
 
                                                                                 <>
-                                                                                    <tr key={replies}>
+                                                                                    <tr key={row.no} style={{ verticalAlign: "text-top" }}>
                                                                                         <td className="tg-0lax" >
 
                                                                                             {row.name}
-
+                                                                                           
                                                                                         </td>
                                                                                         <td className="tg-0lax" >
 
                                                                                             {row.content}
-
+                                                                                            <p/>
+                                                                                            {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(replyNum) }}>Delete</a> : ''}
                                                                                         </td>
                                                                                         <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                        <td className="tg-0lax" >
-                                                                                            {/* {
-                                                                                                console.log("attach file list", getDetailInstructionData?.data?.instruction?.replyList[replies]?.attachFileList)
-                                                                                            } */}
-                                                                                            {
-                                                                                                row.attachFileList.length > 0 ? row.attachFileList[0].name : ''
-                                                                                            }
-                                                                                        </td>
-                                                                                        <td className="tg-0lax" >{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td>
+                                                                                        <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}&nbsp;({row.attachFileList.length})</td>
+                                                                                        <td className="tg-0lax" align="left"> {row.delete ? <i className="fas fa-file-download" onClick={() => { replyDelete(row.no) }} />: ''}</td>
+                                                                                        {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                     </tr>
                                                                                 </>
                                                                             )
                                                                         }
                                                                     </tbody>
-                                                                </table> 
+                                                                </table>
 
                                                             </Row>
                                                         </CardBody>
@@ -1584,7 +1422,7 @@ function DeleteFileAttached  (Files2)  {
                         </Col>
                     </Row>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null  ? 'none' : 'flex' }}>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null ? 'none' : 'flex' }}>
 
                         <Col lg={12}>
                             <Card>

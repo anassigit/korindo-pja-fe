@@ -113,6 +113,8 @@ export const saveReply = req => postUpload("rest/InstructionRest/InsertReply", r
 
 export const downloadFiles = req => postDownload("rest/InstructionRest/FileDownload", req)
 
+export const deleteReply = req => postWithParam("rest/InstructionRest/DeleteReply", req)
+
 //export const downloadFile = req => getWithXls("/rest/app031/donwload-template", req)
 
 export const deleteInstructions = req => post("/rest/app008/delete", req)

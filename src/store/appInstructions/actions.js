@@ -16,7 +16,9 @@ import {
     SAVE_DESCRIPTION,
     SAVE_REPLY,
     DOWNLOAD_FILES,
-    MSGDOWNLOAD
+    MSGDOWNLOAD,
+    DELETE_REPLY,
+    MSGDELETEREPLY
 
 } from "./actionTypes"
 
@@ -102,5 +104,15 @@ export const getInstructionsData = (req) => ({
 
   export const msgDownload = (req) => ({
     type: MSGDOWNLOAD,
+    payload: req,
+  })
+
+  export const deleteReply = (req) => ({
+    type: DELETE_REPLY,
+    payload: req,
+  })
+
+  export const msgDeleteReply = (req) => ({
+    type: MSGDELETEREPLY,
     payload: req,
   })

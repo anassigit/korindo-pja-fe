@@ -16,7 +16,9 @@ import {
     SAVE_DESCRIPTION,
     SAVE_REPLY,
     MSGDOWNLOAD,
-    DOWNLOAD_FILES
+    DOWNLOAD_FILES,
+    DELETE_REPLY,
+    MSGDELETEREPLY
 
 } from "./actionTypes"
 
@@ -28,6 +30,7 @@ const INIT_STATE = {
     respGetUserList: {},
     respGetDetailInstruction: {},
     msgDownload: "",
+    msgDeleteReply: "",
 }
 
 const instructionsReducer = (state = INIT_STATE, action) => {
@@ -63,6 +66,7 @@ const instructionsReducer = (state = INIT_STATE, action) => {
              msgAdd: "",
              msgEdit: "",
              msgDelete: "",
+             msgDeleteReply: "",
           }
       case SAVE_INSTRUCTIONS:
         return {
@@ -110,6 +114,16 @@ const instructionsReducer = (state = INIT_STATE, action) => {
       case DOWNLOAD_FILES:
         return {
           ...state,
+        }
+        case DELETE_REPLY:
+          return {
+            ...state,
+          }
+
+        case MSGDELETEREPLY:
+          return {
+            ...state,
+            msgDeleteReply: action.payload,
         }
       default:
         return state
