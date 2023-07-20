@@ -63,6 +63,7 @@ const EditInstructions = (props) => {
     //edit form files attach//
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
+    const [Files2, SetFiles2] = useState([]);
     //end edit form//
 
     const getDetailInstructionData = useSelector(state => {
@@ -137,11 +138,13 @@ const EditInstructions = (props) => {
 
                 setGetFiles((option) => [...option, newObj]);
 
-                SetFiles((option) => [...option, newObj]);
+                // SetFiles((option) => [...option, newObj]);
+
+                SetFiles2((option) => [...option, newObj]);
             });
 
         }
-        console.log("Files", Files);
+        console.log("Files", Files2);
 
     }, [getDetailInstructionData], []);
 
@@ -152,6 +155,12 @@ const EditInstructions = (props) => {
             setselectedMulti2(optionManager0)
         }
     }, [optionOwner0, optionManager0], [])
+
+    useEffect(() => {
+        if (Files2 != null && Files2 != undefined) {
+            SetFiles(Files2)
+        }
+    }, [Files2], [])
 
     // useEffect(() => {
     //     if (getFiles != null && getFiles != null) {
@@ -339,19 +348,83 @@ const deleteFiles = async (values) => {
     await dispatch(editInstructions(values));
 };
 
-function DeleteFileAttached  (values)  {
+// const deleteFiles = async (indexed_array) => {
+//     debugger
+//     await dispatch(editInstructions(indexed_array));
+// };
+
+// const DeleteFileAttached = async () => {
+//     try {
+//         var bodyForm = new FormData();
+//       var indexed_array = {
+//         "num": editInstructionsValidInput.values.insId,
+//         "file_num": Files.file_num,
+//         "filename": Files.filename,
+//       };
+
+//       const config = {
+//         headers: {
+//             'content-type': 'multipart/form-data'
+//         }
+//     }
+//     deleteFiles(bodyForm, config);
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   };
+
+// var bodyForm = new FormData();
+// debugger
+// bodyForm.append('num', editInstructionsValidInput.values.insId);
 
 
-        var bodyForm = new FormData();
-        debugger
-        bodyForm.append('num', editInstructionsValidInput.values.insId);
+// var jml = 0;
 
-        debugger
-        console.log(Files)
+// jml = s.length
 
-            Files.map((data, index) => {
-                bodyForm.append('removeFile', data.value);
-            })
+// if (jml > 1) {
+//     for (let i = 0; i < s.length; i++) {
+//         if (i == s.length - 1) {
+//             debugger
+//             id1 = s[s.length - 1].value
+//             //console.log('2 :' + s[s.length - 1].value)
+//             bodyForm.append('removeUser', id1);
+//         }
+//     }
+
+// } else {
+//     s.map((data, index) => {
+//         bodyForm.append('removeUser', data.value);
+//     })
+// }
+
+function DeleteFileAttached  (Files2)  {
+    debugger
+    console.log(Files2);
+    var id9 = "";
+    // if (Files.length > Files2.length){
+    var bodyForm = new FormData();
+    bodyForm.append('num', editInstructionsValidInput.values.insId);
+
+    var jml9 = 0;
+    jml9 = Files2.length
+
+    debugger
+    if (jml9 > 1) {
+        for (let i = 0; i < Files2.length; i++) {
+            if (i == Files2.length - 1) {
+                debugger
+                id9 = Files2[Files2.length - 1].file_num
+                console.log('2 :' + Files2[Files.length - 1].file_num)
+                bodyForm.append('removeFile', id9);
+            }
+        }
+
+    } else {
+        Files2.map((data, index) => {
+            bodyForm.append('removeFile', data.file_num);
+        })
+    }
 
         const config = {
             headers: {
@@ -361,6 +434,7 @@ function DeleteFileAttached  (values)  {
         console.log(bodyForm);
 
     deleteFiles(bodyForm, config);
+    // }
 
 };
 
@@ -1044,7 +1118,7 @@ function DeleteFileAttached  (values)  {
                                                                                     <h6>{filename}</h6>
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
-                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached()}>Delete</a>
+                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(Files2)}>Delete</a>
                                                                                         <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
                                                                                 </div>
@@ -1408,7 +1482,9 @@ function DeleteFileAttached  (values)  {
 
                                                                 <Button
                                                                     type="button"
-                                                                    className="btn btn-primary "
+                                                                    
+                                                                    color="primary" 
+                                                                    className="ms-1"
                                                                     onClick={() => { insertReplyAndFiles() }}
                                                                 >
                                                                     {/* <i className="bx bx-arrow-back align-middle me-2"></i>{" "} */}
