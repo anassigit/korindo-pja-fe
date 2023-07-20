@@ -32,6 +32,7 @@ import shortid from "shortid";
 import { indexOf, values } from "lodash";
 import moment from "moment";
 import e from "cors";
+import { TRUE } from "node-sass";
 // import ContentEditable from 'react-contenteditable'
 
 const EditInstructions = (props) => {
@@ -1152,7 +1153,7 @@ function DeleteFileAttached  (Files2)  {
                         </Col>
                     </Row>
 
-                    <Row hidden="true">
+                    <Row hidden={true}>
                         <Col lg={12}>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
