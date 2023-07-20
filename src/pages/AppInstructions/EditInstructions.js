@@ -1,11 +1,9 @@
 
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux"
-import TableCustom from '../../common/TableCustom';
 import {
     Row,
     Col,
@@ -20,8 +18,6 @@ import {
     Spinner,
     FormGroup,
     CardHeader,
-    UncontrolledTooltip,
-    Collapse,
     UncontrolledAlert
 } from "reactstrap";
 import { getInstructionsData, editInstructions, getUserList, getDetailInstruction, saveDescription, saveReply, resetMessage, downloadFile } from "../../store/appInstructions/actions"
@@ -29,11 +25,8 @@ import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 import Select from "react-select";
 import shortid from "shortid";
-import { indexOf, values } from "lodash";
 import moment from "moment";
-import e from "cors";
-import { TRUE } from "node-sass";
-// import ContentEditable from 'react-contenteditable'
+
 
 const EditInstructions = (props) => {
 
@@ -145,7 +138,7 @@ const EditInstructions = (props) => {
             });
 
         }
-        console.log("Files", Files2);
+        console.log("replies", getDetailInstructionData?.data?.instruction?.replyList);
 
     }, [getDetailInstructionData], []);
 
@@ -1571,7 +1564,7 @@ function DeleteFileAttached  (Files2)  {
                                                                             ))
                                                                         }
                                                                     </tbody>
-                                                                </table>
+                                                                </table> 
 
                                                             </Row>
                                                         </CardBody>
