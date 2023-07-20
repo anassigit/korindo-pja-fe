@@ -53,9 +53,9 @@ const DetailInstructions = (props) => {
 
 
     useEffect(() => {
-        
+
         if (getDetailInstructionData.status == "1") {
-            
+
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                 const newObj = {
                     value: ownerList.id,
@@ -96,7 +96,7 @@ const DetailInstructions = (props) => {
             //     "insId": props.instructionsData.insId
             // }
             // ));
-    
+
 
             detailInstructionsValidInput.setFieldValue("insId", props.instructionsData?.insId)
             detailInstructionsValidInput.setFieldValue("insTitle", props.instructionsData?.insTitle)
@@ -256,7 +256,7 @@ const DetailInstructions = (props) => {
             <Row>
                 <Col lg={12}>
                     <Card>
-                        <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
+                        <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
                         <CardBody>
                             <Form
                                 onSubmit={(e) => {
@@ -434,7 +434,7 @@ const DetailInstructions = (props) => {
                                     {/* <Button color="primary" className="ms-1" type="submit">
                                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                                         Simpan */}
-                                        {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
+                                    {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
                                     {/* </Button>&nbsp; */}
 
                                     {/* <Button
@@ -457,7 +457,7 @@ const DetailInstructions = (props) => {
             <Row>
                 <Col lg={12}>
                     <Card>
-                        <CardHeader><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Reply</CardHeader>
+                        <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Reply</CardHeader>
 
                         <CardBody>
                             <React.Fragment>
@@ -493,7 +493,7 @@ const DetailInstructions = (props) => {
                                                     <div className="input-group">
                                                         <label className="col-sm-3" style={{ marginTop: "8px" }}>Attach File </label>
                                                         <div className="col-sm-8">
-                                                        <Input
+                                                            <Input
                                                                 name="spkNo"
                                                                 type="text"
                                                                 disabled
@@ -513,28 +513,28 @@ const DetailInstructions = (props) => {
                                         </div>
 
                                         <Row className="mb-2">
-                                        <Col md="12">
-                                            <div className="text-sm-end" >
+                                            <Col md="12">
+                                                <div className="text-sm-end" >
 
-                                                <Button
-                                                    type="button"
-                                                    className="btn btn-primary "
-                                                    onClick={() => { props.setAppInstructionsPage(true); props.setAppDetailInstructions(false); props.setAppInstructionsMsg("") }}
-                                                >
-                                                    {/* <i className="bx bx-arrow-back align-middle me-2"></i>{" "} */}
-                                                    Reply
-                                                </Button>
+                                                    <Button
+                                                        type="button"
+                                                        className="btn btn-primary "
+                                                        onClick={() => { props.setAppInstructionsPage(true); props.setAppDetailInstructions(false); props.setAppInstructionsMsg("") }}
+                                                    >
+                                                        {/* <i className="bx bx-arrow-back align-middle me-2"></i>{" "} */}
+                                                        Reply
+                                                    </Button>
 
-                                            </div>
-                                        </Col>
-                                    </Row>
+                                                </div>
+                                            </Col>
+                                        </Row>
 
                                     </div>
 
                                     <Row style={{ marginTop: "30px" }}>
                                         <Col md="12">
                                             <Card>
-                                                {/* <CardHeader><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Aspek Penilaian</CardHeader> */}
+                                                {/* <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Aspek Penilaian</CardHeader> */}
                                                 <CardBody>
                                                     <Row>
                                                         <div>
@@ -558,7 +558,7 @@ const DetailInstructions = (props) => {
                                     <Row style={{ marginTop: "10px" }}>
                                         <Col lg={12}>
                                             <Card>
-                                                <CardHeader><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Logs </CardHeader>
+                                                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Logs </CardHeader>
                                                 <CardBody>
                                                     <Row>
                                                         <div>

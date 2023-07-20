@@ -258,7 +258,7 @@ const AddInstructions = (props) => {
             <Row>
                 <Col lg={12}>
                     <Card>
-                        <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Add Instructions</CardHeader>
+                        <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Add Instructions</CardHeader>
                         <CardBody>
                             <Form
                                 onSubmit={(e) => {

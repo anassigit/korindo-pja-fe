@@ -821,7 +821,7 @@ function DeleteFileAttached  (values)  {
                     <Row>
                         <Col lg={12}>
                             <Card>
-                                <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
+                                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
                                 <CardBody>
                                     <Form
                                         onSubmit={(e) => {
@@ -1081,7 +1081,7 @@ function DeleteFileAttached  (values)  {
                     <Row hidden="true">
                         <Col lg={12}>
                             <Card>
-                                <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
+                                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
                                 <CardBody>
                                     <Form
                                         onSubmit={(e) => {
@@ -1284,7 +1284,7 @@ function DeleteFileAttached  (values)  {
                     <Row>
                         <Col lg={12}>
                             <Card>
-                                <CardHeader><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Reply</CardHeader>
+                                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Reply</CardHeader>
 
                                 <CardBody>
                                     <React.Fragment>
@@ -1514,7 +1514,7 @@ function DeleteFileAttached  (values)  {
 
                         <Col lg={12}>
                             <Card>
-                                <CardHeader><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Logs</CardHeader>
+                                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Logs</CardHeader>
 
                                 <CardBody>
                                     <React.Fragment>
