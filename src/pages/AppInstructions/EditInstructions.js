@@ -36,6 +36,9 @@ const EditInstructions = (props) => {
     const [startDate, setStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
     const [editInstructionsSpinner, setEditInstructionsSpinner] = useState(false);
     const [editInstructionsFirstRenderDone, setEditInstructionsFirstRenderDone] = useState(false);
+
+    let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
+
     const [selectedMulti, setselectedMulti] = useState(null);
     const [selectedMulti2, setselectedMulti2] = useState(null);
 
@@ -138,7 +141,7 @@ const EditInstructions = (props) => {
             });
 
         }
-        console.log("replies", getDetailInstructionData?.data?.instruction?.replyList);
+        // console.log("replies", getDetailInstructionData?.data?.instruction?.replyList);
 
     }, [getDetailInstructionData], []);
 
@@ -886,7 +889,7 @@ function DeleteFileAttached  (Files2)  {
 
                 <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
-                    <Row>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null  || getDetailInstructionData?.data?.instruction?.memberId != memberId  ? 'none' : 'flex' }}>
                         <Col lg={12}>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
@@ -1109,10 +1112,11 @@ function DeleteFileAttached  (Files2)  {
                                                                                         <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                                 }
                                                                                 <div className="file-detail">
-                                                                                    <h6>{filename}</h6>
+                                                                                <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
                                                                                         <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(Files2)}>Delete</a>
+                                                                                        &nbsp;&nbsp;&nbsp;
                                                                                         <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
                                                                                 </div>
@@ -1146,10 +1150,10 @@ function DeleteFileAttached  (Files2)  {
                         </Col>
                     </Row>
 
-                    <Row hidden={true}>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null ? 'none' : 'flex' }}>
                         <Col lg={12}>
                             <Card>
-                                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
+                                <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
                                 <CardBody>
                                     <Form
                                         onSubmit={(e) => {
@@ -1535,7 +1539,7 @@ function DeleteFileAttached  (Files2)  {
 
                                                                         {
 
-                                                                            (replyTabelListData.length > 0 && replyTabelListData.map((row, replies) =>
+                                                                                replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, replies) =>
 
                                                                                 <>
                                                                                     <tr key={replies}>
@@ -1561,7 +1565,7 @@ function DeleteFileAttached  (Files2)  {
                                                                                         <td className="tg-0lax" >{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td>
                                                                                     </tr>
                                                                                 </>
-                                                                            ))
+                                                                            )
                                                                         }
                                                                     </tbody>
                                                                 </table> 
@@ -1580,7 +1584,7 @@ function DeleteFileAttached  (Files2)  {
                         </Col>
                     </Row>
 
-                    <Row>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null  ? 'none' : 'flex' }}>
 
                         <Col lg={12}>
                             <Card>
@@ -1610,14 +1614,14 @@ function DeleteFileAttached  (Files2)  {
                                                                     <tbody id="logTabelList">
 
                                                                         {
-                                                                            (logTable.length > 0 && logTable.map((row, logs) =>
+                                                                            logTable != null && logTable.length > 0 && logTable.map((row, logs) =>
                                                                                 <>
                                                                                     <tr key={logs}>
                                                                                         <td className="tg-0lax" >{row.content}</td>
                                                                                         <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
                                                                                     </tr>
                                                                                 </>
-                                                                            ))
+                                                                            )
                                                                         }
                                                                     </tbody>
                                                                 </table>
