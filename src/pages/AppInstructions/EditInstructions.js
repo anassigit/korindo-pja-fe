@@ -29,7 +29,7 @@ import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
 import Select from "react-select";
 import shortid from "shortid";
-import { indexOf } from "lodash";
+import { indexOf, values } from "lodash";
 import moment from "moment";
 import e from "cors";
 // import ContentEditable from 'react-contenteditable'
@@ -55,8 +55,15 @@ const EditInstructions = (props) => {
     const [attchedFilesTables, setAttchedFilesTables] = useState([]);
     const [logTable, setLogTable] = useState([]);
 
+    //detail form files attached//
     const [getSelectedFiles, setGetSelectedFiles] = useState([]);
     const [getFiles, setGetFiles] = useState([]);
+    //end detail form//
+
+    //edit form files attach//
+    const [selectedfile, SetSelectedFile] = useState([]);
+    const [Files, SetFiles] = useState([]);
+    //end edit form//
 
     const getDetailInstructionData = useSelector(state => {
         // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
@@ -118,7 +125,7 @@ const EditInstructions = (props) => {
 
             setLogTable(getDetailInstructionData?.data?.instruction?.logList)
 
-            // setGetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
+            //SetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
 
             getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
                 const newObj = {
@@ -134,9 +141,9 @@ const EditInstructions = (props) => {
             });
 
         }
-        console.log("getFiles", getDetailInstructionData?.data?.instruction?.attachFileList)
+        console.log("Files", Files);
 
-    }, [getDetailInstructionData])
+    }, [getDetailInstructionData], []);
 
 
     useEffect(() => {
@@ -144,7 +151,7 @@ const EditInstructions = (props) => {
             setselectedMulti(optionOwner0)
             setselectedMulti2(optionManager0)
         }
-    }, [optionOwner0, optionManager0])
+    }, [optionOwner0, optionManager0], [])
 
     // useEffect(() => {
     //     if (getFiles != null && getFiles != null) {
@@ -255,8 +262,6 @@ const EditInstructions = (props) => {
 insert(bodyForm, config);
     };
 
-    const [selectedfile, SetSelectedFile] = useState([]);
-    const [Files, SetFiles] = useState([]);
 
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';
@@ -270,7 +275,7 @@ insert(bodyForm, config);
     const InputChange = (e) => {
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {
-            images.push((e.target.files[i]));
+            //images.push((e.target.files[i]));
             let reader = new FileReader();
             let file = e.target.files[i];
             reader.onloadend = () => {
@@ -295,7 +300,6 @@ insert(bodyForm, config);
             }
         }
     }
-
 
     const DeleteSelectFile = (id) => {
         if (window.confirm("Are you sure you want to delete this file?")) {
@@ -328,16 +332,49 @@ insert(bodyForm, config);
 
     }
 
+// -- delete file attachded EDIT -- //
 
-    const DeleteFile = async (id) => {
-        if (window.confirm("Are you sure you want to delete this file?")) {
-            const result = Files.filter((data) => data.id !== id);
-            SetFiles(result);
-        } else {
-            // alert('No');
+const deleteFiles = async (values) => {
+    debugger
+    await dispatch(editInstructions(values));
+};
+
+function DeleteFileAttached  (values)  {
+
+
+        var bodyForm = new FormData();
+        debugger
+        bodyForm.append('num', editInstructionsValidInput.values.insId);
+
+        debugger
+        console.log(Files)
+
+            Files.map((data, index) => {
+                bodyForm.append('removeFile', data.value);
+            })
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
         }
-    }
+        console.log(bodyForm);
 
+    deleteFiles(bodyForm, config);
+
+};
+
+
+    // const DeleteFile = async (id) => {
+    //     if (window.confirm("Are you sure you want to delete this file?")) {
+    //         const result = Files.filter((data) => data.id !== id);
+    //         SetFiles(result);
+    //     } else {
+    //         // alert('No');
+    //     }
+    // }
+
+// -- end -- //
     function handleMulti(s) {
         debugger
 
@@ -1007,7 +1044,7 @@ insert(bodyForm, config);
                                                                                     <h6>{filename}</h6>
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
-                                                                                        <button className="file-action-btn" onClick={() => DeleteFile(file_num)}>Delete</button><></>
+                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached()}>Delete</a>
                                                                                         <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
                                                                                 </div>
@@ -1041,7 +1078,7 @@ insert(bodyForm, config);
                         </Col>
                     </Row>
 
-                    <Row>
+                    <Row hidden="true">
                         <Col lg={12}>
                             <Card>
                                 <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
