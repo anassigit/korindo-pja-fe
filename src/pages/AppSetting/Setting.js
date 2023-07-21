@@ -172,7 +172,6 @@ const Setting = () => {
             componentJsx={
                 <>
                     <Container style={{ display: appSettingPage ? 'block' : 'none' }} fluid={true}>
-
                         <Row>
                             <Col>
                                 <Card>
