@@ -1,7 +1,5 @@
 import {
 
-  GET_MEMBERS,
-  RESP_GET_MEMBERS,
   SAVE_MEMBERS,
   EDIT_MEMBERS,
   DELETE_MEMBERS,
@@ -9,11 +7,16 @@ import {
   MSGEDIT,
   MSGDELETE,
   RESET_MESSAGE,
+  EDIT_GENERAL_SETTING,
+  GET_GENERAL_SETTING,
+  RESP_GET_GENERAL_SETTING,
+  GET_SETTING,
+  RESP_GET_SETTING,
 
 } from "./actionTypes"
 
 const INIT_STATE = {
-  respGetMembers: {},
+  respGetSetting: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -23,15 +26,19 @@ const INIT_STATE = {
 const settingReducer = (state = INIT_STATE, action) => {
 
   switch (action.type) {
-    case GET_MEMBERS:
+
+    /* GET ALL SETTING */
+
+    case GET_SETTING:
       return {
         ...state,
       }
-    case RESP_GET_MEMBERS:
+    case RESP_GET_SETTING:
       return {
         ...state,
-        respGetMembers: action.payload,
+        respGetSetting: action.payload,
       }
+
     case MSGADD:
       return {
         ...state,
@@ -63,6 +70,13 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
       }
     case DELETE_MEMBERS:
+      return {
+        ...state,
+      }
+
+    /* GENERAL SETTING */
+
+    case EDIT_GENERAL_SETTING:
       return {
         ...state,
       }

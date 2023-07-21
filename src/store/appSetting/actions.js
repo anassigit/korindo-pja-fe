@@ -1,7 +1,7 @@
 import {
 
-  GET_MEMBERS,
-  RESP_GET_MEMBERS,
+  GET_SETTING,
+  RESP_GET_SETTING,
   SAVE_MEMBERS,
   EDIT_MEMBERS,
   DELETE_MEMBERS,
@@ -9,17 +9,23 @@ import {
   MSGEDIT,
   MSGDELETE,
   RESET_MESSAGE,
+  EDIT_GENERAL_SETTING,
+  GET_GENERAL_SETTING,
+  RESP_GET_GENERAL_SETTING,
 } from "./actionTypes"
 
-export const getMembersData = (req) => ({
-  type: GET_MEMBERS,
+/* GET ALL SETTING */
+
+export const getSettingData = (req) => ({
+  type: GET_SETTING,
   payload: req,
 })
 
-export const respGetMembers = resp => ({
-  type: RESP_GET_MEMBERS,
+export const respGetSetting = resp => ({
+  type: RESP_GET_SETTING,
   payload: resp,
 })
+
 
 export const msgAdd = resp => ({
   type: MSGADD,
@@ -56,3 +62,10 @@ export const deleteMembers = (req) => ({
   payload: req,
 })
 
+
+/* GENERAL SETTINGS */
+
+export const editGeneralSetting = (req) => ({
+  type: EDIT_GENERAL_SETTING,
+  payload: req,
+})

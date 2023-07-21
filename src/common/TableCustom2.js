@@ -33,7 +33,7 @@ const TableCustom2 = props => {
 
         <BootstrapTable
             ref={props.refTable}
-            wrapperClasses="table-responsive"
+            wrapperClasses="table-responsive table-secondary"
             keyField={props.keyField}
             rowClasses="text-nowrap"
             remote={{ filter: true, pagination: true, sort: true, cellEdit: true }}

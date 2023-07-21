@@ -123,10 +123,14 @@ export const getUserList = req => post("rest/InstructionRest/SelectInfo", req)
 
 //appSetting
 
-export const getMembers = req => postWithParam("/rest/SettingRest/SelectSetting", req)
+export const getSetting = req => postWithParam("/rest/SettingRest/SelectSetting", req)
 
 export const saveMembers = req => postWithParam("/rest/SettingRest/InsertMember", req)
 
 export const updateMembers = req => postWithParam("/rest/SettingRest/UpdateMember", req)
 
 export const deleteMembers = req => postWithParam("/rest/SettingRest/DeleteMember", req)
+
+/* GENERAL SETTING */
+
+export const updateGeneralSetting = req => postWithParam("/rest/SettingRest/UpdateSetting", req)

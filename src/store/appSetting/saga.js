@@ -1,22 +1,22 @@
 import { call, put, takeEvery, all} from "redux-saga/effects"
 
-import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS } from "./actionTypes"
+import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING } from "./actionTypes"
 
-import { respGetMembers, msgAdd, msgEdit, msgDelete } from "./actions"
+import { msgAdd, msgEdit, msgDelete, respGetSetting } from "./actions"
 
-import { deleteMembers, getMembers, saveMembers, updateMembers } from "helpers/backend_helper"
+import { deleteMembers, getSetting, saveMembers, updateGeneralSetting, updateMembers } from "helpers/backend_helper"
 
-function* fetchGetMembers({ payload: req }) {
+function* fetchGetAllSetting({ payload: req }) {
     try {
-      const response = yield call(getMembers, req)
+      const response = yield call(getSetting, req)
       if(response.status == 1){
-        yield put(respGetMembers(response))
+        yield put(respGetSetting(response))
       }else{
-        yield put(respGetMembers(response))
+        yield put(respGetSetting(response))
       }
     } catch (error) {
       console.log(error);
-      yield put(respGetMembers({"status" : 0, "message" : "Error Get Data"}))
+      yield put(respGetSetting({"status" : 0, "message" : "Error Get Data"}))
     }
   }
 
@@ -50,12 +50,25 @@ function* fetchGetMembers({ payload: req }) {
     }
   }
 
+  /* GENERAL SETTING */
+
+  function* fetchEditGeneralSetting({ payload: req }) {
+    try {
+      const response = yield call(updateGeneralSetting, req)
+      yield put(msgEdit(response))
+    } catch (error) {
+      console.log(error);
+      yield put(msgEdit({"status" : 0, "message" : "Error Get Data"}))
+    }
+  }
+
   function* settingSaga() {
     
-    yield takeEvery(GET_MEMBERS, fetchGetMembers)
+    yield takeEvery(GET_SETTING, fetchGetAllSetting)
     yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
     yield takeEvery(EDIT_MEMBERS, fetchEditMembers)
     yield takeEvery(DELETE_MEMBERS, fetchDeleteMembers)
+    yield takeEvery(EDIT_GENERAL_SETTING, fetchEditGeneralSetting)
   }
 
   export default settingSaga

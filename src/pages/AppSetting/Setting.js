@@ -8,23 +8,23 @@ import {
     Col,
     Container,
     Input,
-    Row
+    Row,
+    UncontrolledTooltip
 } from "reactstrap";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { getMembersData, resetMessage } from "store/appSetting/actions";
+import { getSettingData, resetMessage } from "store/appSetting/actions";
 import TableCustom2 from "common/TableCustom2";
+import { updateGeneralSetting } from "helpers/backend_helper";
 
 
 const Setting = () => {
 
     const dispatch = useDispatch();
     const [appSettingMsg, setAppSettingMsg] = useState("")
-    const [appMembersPage, setAppMembersPage] = useState(true)
+    const [appSettingPage, setAppSettingPage] = useState(true)
 
-    const [radioValue1, setRadioValue1] = useState(null);
-    const [radioValue2, setRadioValue2] = useState(null);
-    const [radioValue3, setRadioValue3] = useState(null);
+    const [generalSettingObj, setGeneralSettingObj] = useState({ langType: "eng", instructionDisplay: "", notification: "", notification2: "" })
 
     const [appMembersTabelSearch, setAppMembersTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
@@ -34,12 +34,18 @@ const Setting = () => {
 
     useEffect(() => {
         dispatch(resetMessage());
-        dispatch(getMembersData({ langType: "eng" }));
+        dispatch(getSettingData(generalSettingObj));
     }, [dispatch])
 
-    const appMembersData = useSelector(state => {
-        return state.settingReducer.respGetMembers;
+    const appSettingData = useSelector(state => {
+        return state.settingReducer.respGetSetting;
     });
+
+    const [radioValue1, setRadioValue1] = useState("")
+    const [radioValue2, setRadioValue2] = useState("")
+    const [radioValue3, setRadioValue3] = useState("")
+
+    const [generalSetting, setGeneralSetting] = useState([radioValue1, radioValue2, radioValue3])
 
     const appMembersp01Tabel = [
         {
@@ -84,36 +90,88 @@ const Setting = () => {
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
+        {
+            dataField: "edit",
+            isDummyField: true,
+            text: "Edit",
+            headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, data) => (
+                <>
+                    <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+                        <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app008p01PreEdit(data)} />
+                        <UncontrolledTooltip placement="top" target="edittooltip">
+                            Ubah
+                        </UncontrolledTooltip>
+                    </div>
+                </>
+            ),
+        },
+        {
+            dataField: "delete",
+            isDummyField: true,
+            text: "Delete",
+            headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, data) => (
+                <>
+                    <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+                        <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app008p01Delete(data)} />
+                        <UncontrolledTooltip placement="top" target="deletetooltip">
+                            Hapus
+                        </UncontrolledTooltip>
+                    </div>
+                </>
+            ),
+        },
     ]
 
     useEffect(() => {
-        if (appMembersData.status == "0") {
-            setAppSettingMsg(appMembersData)
-        }
-    }, [appMembersData])
-
-
-    useEffect(() => {
-        dispatch(getMembersData({ langType: "eng" }));
+        dispatch(getSettingData({ langType: "eng", instructionDisplay: "", notification: "", notification2: "" }));
     }, [appMembersTabelSearch])
 
     const handleRadioChange1 = (event) => {
-        setRadioValue1(event.target.value);
+        setRadioValue1(event.target.value)
+        setGeneralSetting([event.target.value, radioValue2, radioValue3])
     };
 
     const handleRadioChange2 = (event) => {
-        setRadioValue2(event.target.value);
+        setRadioValue2(event.target.value)
+        setGeneralSetting([radioValue1, event.target.value, radioValue3])
     };
 
     const handleRadioChange3 = (event) => {
-        setRadioValue3(event.target.value);
+        setRadioValue3(event.target.value)
+        setGeneralSetting([radioValue1, radioValue2, event.target.value])
     };
+
+    const handleSaveGeneral = () => {
+        console.log(generalSetting)
+        dispatch(updateGeneralSetting({ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3 }))
+    }
+
+    const appSettingPreEdit = (e) => {
+        null
+    }
+
+    useEffect(() => {
+        if (appSettingData?.data?.setting && Array.isArray(appSettingData.data.setting)) {
+            appSettingData.data.setting.forEach((setting) => {
+                if (setting.id === "ins_display_setting") {
+                    setRadioValue1(setting.value.toString())
+                } else if (setting.id === "ins_notice_setting") {
+                    setRadioValue2(setting.value.toString())
+                } else if (setting.id === "ins_notice2_setting") {
+                    setRadioValue3(setting.value.toString())
+                }
+            });
+        }
+        setGeneralSetting([radioValue1, radioValue2, radioValue3])
+    }, [appSettingData])
 
     return (
         <RootPageCustom msgStateGet={appSettingMsg} msgStateSet={setAppSettingMsg}
             componentJsx={
                 <>
-                    <Container style={{ display: appMembersPage ? 'block' : 'none' }} fluid={true}>
+                    <Container style={{ display: appSettingPage ? 'block' : 'none' }} fluid={true}>
 
                         <Row>
                             <Col>
@@ -138,7 +196,7 @@ const Setting = () => {
                                                                 checked={radioValue1 === "0"}
                                                                 onChange={handleRadioChange1}
                                                             />
-                                                            <span> </span>Show Your Own Members
+                                                            <span> </span>Show Your Own Instruction
                                                         </label>
                                                         <label>
                                                             <Input
@@ -148,7 +206,7 @@ const Setting = () => {
                                                                 checked={radioValue1 === "1"}
                                                                 onChange={handleRadioChange1}
                                                             />
-                                                            <span> </span>Show All Members
+                                                            <span> </span>Show All Instruction
                                                         </label>
                                                     </Row>
                                                 </Col>
@@ -220,13 +278,26 @@ const Setting = () => {
                                             <Row className="mb-2">
                                                 <Col className="d-flex justify-content-end">
                                                     <div className="col-12 col-lg-2">
-                                                        <button className="btn btn-primary w-100">Apply</button>
+                                                        <button
+                                                            className="btn btn-primary w-100"
+                                                            onClick={handleSaveGeneral}
+                                                        >
+                                                            Apply
+                                                        </button>
                                                     </div>
                                                 </Col>
                                             </Row>
                                         </React.Fragment>
                                     </CardBody>
                                 </Card>
+
+                                <Row className="my-3 mt-5">
+                                    <Col className="d-flex justify-content-end">
+                                        <div className="col-12 col-lg-2">
+                                            <button className="btn btn-primary w-100">Add Member</button>
+                                        </div>
+                                    </Col>
+                                </Row>
 
                                 <Card>
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
@@ -239,12 +310,12 @@ const Setting = () => {
                                                 <TableCustom2
                                                     keyField={"id"}
                                                     columns={appMembersp01Tabel}
-                                                    redukResponse={appMembersData}
-                                                    appdata={appMembersData?.data?.memberList != null ? appMembersData?.data?.memberList : []}
-                                                    appdataTotal={appMembersData?.data?.memberList?.length != null ? appMembersData?.data?.memberList?.length : 0}
+                                                    redukResponse={appSettingData}
+                                                    appdata={appSettingData?.data?.memberList != null ? appSettingData?.data?.memberList : []}
+                                                    appdataTotal={appSettingData?.data?.memberList?.length != null ? appSettingData?.data?.memberList?.length : 0}
                                                     searchSet={setAppMembersTabelSearch}
                                                     searchGet={appMembersTabelSearch}
-                                                    redukCall={getMembersData}
+                                                    redukCall={getSettingData}
                                                 />
                                             </Row>
                                         </React.Fragment>
