@@ -57,6 +57,7 @@ const EditInstructions = (props) => {
     const [Files, SetFiles] = useState([]);
     const [Files2, SetFiles2] = useState([]);
     const [replyNum, setReplyNum] = useState([]);
+    const [editInstruction, setEditInstruction] = useState(false)
 
     const getDetailInstructionData = useSelector(state => {
         // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
@@ -85,6 +86,7 @@ const EditInstructions = (props) => {
                 const newObj = {
                     value: ownerList.id,
                     label: ownerList.name,
+
                 };
                 setOptionOwner0((option) => [...option, newObj]);
             });
@@ -158,6 +160,7 @@ const EditInstructions = (props) => {
         if (optionOwner0 != null && optionManager0 != null) {
             setselectedMulti(optionOwner0)
             setselectedMulti2(optionManager0)
+            return;
         }
     }, [optionOwner0, optionManager0], [])
 
@@ -170,6 +173,7 @@ const EditInstructions = (props) => {
     useEffect(() => {
         if (replyNum != null && replyNum != undefined) {
             setReplyNum(replyNum)
+            
         }
     }, [replyNum], [])
 
@@ -235,10 +239,12 @@ const EditInstructions = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }
-            setEditInstructionsSpinner(true);
+            //setEditInstructionsSpinner(true);
             // props.setAppInstructionsPage(true);
-            props.setEditInstructions(true);
+            //props.setEditInstructions(true);
+            alert('Add description success.')
             insert2(bodyForm, config);
+            window.location.reload();
             //props.setAppInstructionsMsg(appAddInstructionsMessage);
 
         }
@@ -274,9 +280,10 @@ const EditInstructions = (props) => {
             }
         }
 
+        alert ('Upload data success.');
         insert(bodyForm, config);
+        setEditInstruction(true);
     };
-
 
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';
@@ -364,8 +371,9 @@ const EditInstructions = (props) => {
             }
         }
         console.log(bodyForm);
-
+alert('Delete success.')
         deleteFiles(bodyForm, config);
+        window.location.reload();
     };
 
     // const replyDelete = async (row) => {
@@ -432,14 +440,13 @@ const EditInstructions = (props) => {
 
     // -- end -- //
     function handleMulti(s) {
+
         debugger
 
         var id1 = "";
         if (selectedMulti.length < s.length) {
 
             console.log('1 : ' + s.value)
-
-
 
             console.log(' id : ', id1)
 
@@ -786,9 +793,12 @@ const EditInstructions = (props) => {
             }
         }
 
-
+        
+        // setEditInstructionsSpinner(true);
+        // console.log(msgSaveReply)
+        alert('Add reply success.')
         insert3(bodyForm, config);
-        //window.location.reload();
+        window.location.reload();
         
 
     };
@@ -817,6 +827,17 @@ const EditInstructions = (props) => {
 
 
     // end function //
+
+    useEffect(() => {
+        if (msgSaveReply.status == "1") {
+            // setApp015p02LovWilayah('')
+            // props.setApp015p01Page(true);
+            // props.setApp015p02Page(false);
+            // dispatch(getVendorData(props.app015p01TabelSearch))
+        }
+        setEditInstructionMsg(msgSaveReply)
+        setEditInstructionsSpinner(false);
+    }, [msgSaveReply])
 
     return (
         <React.Fragment>
@@ -1524,7 +1545,7 @@ const EditInstructions = (props) => {
                                 <Button
                                     type="button"
                                     className="btn btn-danger "
-                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); window.location.reload(); }}
+                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); }}
                                 >
                                     <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                     Kembali
