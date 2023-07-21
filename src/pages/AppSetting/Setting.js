@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { getSettingData, resetMessage } from "store/appSetting/actions";
+import { editGeneralSetting, getSettingData, resetMessage } from "store/appSetting/actions";
 import TableCustom2 from "common/TableCustom2";
 import { updateGeneralSetting } from "helpers/backend_helper";
 
@@ -145,7 +145,7 @@ const Setting = () => {
 
     const handleSaveGeneral = () => {
         console.log(generalSetting)
-        dispatch(updateGeneralSetting({ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3 }))
+        dispatch(editGeneralSetting({ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3 }))
     }
 
     const appSettingPreEdit = (e) => {
