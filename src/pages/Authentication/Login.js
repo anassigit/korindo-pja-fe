@@ -38,7 +38,7 @@ const Login = props => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      debugger
+
       dispatch(loginUser(values, props.history));
     }
   });

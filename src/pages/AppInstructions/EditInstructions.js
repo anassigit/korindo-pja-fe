@@ -167,13 +167,14 @@ const EditInstructions = (props) => {
     useEffect(() => {
         if (Files2 != null && Files2 != undefined) {
             SetFiles(Files2)
+            return;
         }
     }, [Files2], [])
 
     useEffect(() => {
         if (replyNum != null && replyNum != undefined) {
             setReplyNum(replyNum)
-            
+            return;
         }
     }, [replyNum], [])
 
@@ -204,7 +205,7 @@ const EditInstructions = (props) => {
     }, [props.appEditInstructions])
 
     const insert = async (values) => {
-        debugger
+
         await dispatch(editInstructions(values));
     };
 
@@ -230,7 +231,7 @@ const EditInstructions = (props) => {
         onSubmit: (val) => {
 
             var bodyForm = new FormData();
-            debugger
+  
             bodyForm.append('num', val.insId);
             bodyForm.append('description', val.descriptions);
 
@@ -270,7 +271,7 @@ const EditInstructions = (props) => {
                 let a = selectedfile[index];
 
                 bodyForm.append('file' + index, selectedfile[index].fileori);
-
+                break;
             }
         }
 
@@ -312,7 +313,9 @@ const EditInstructions = (props) => {
                             fileori: file
                             //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
                             //filesize: filesizes(e.target.files[i].size)
+                            
                         }
+                        
                     ]
                 })
 
@@ -345,9 +348,12 @@ const EditInstructions = (props) => {
                         ...preValue,
                         selectedfile[index]
                     ]
+                    
                 })
+                break;
             }
             SetSelectedFile([]);
+            
         } else {
             alert('Please select file')
         }
@@ -357,7 +363,7 @@ const EditInstructions = (props) => {
     // -- delete file attachded EDIT -- //
 
     const deleteFiles = async (values) => {
-        debugger
+
         await dispatch(editInstructions(values));
     };
 
@@ -470,8 +476,10 @@ alert('Delete success.')
                         //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('addUser', id1);
                     }
+                    break;
                 }
                 //jml = s.length -1
+                
             } else {
                 s.map((data, index) => {
                     bodyForm.append('addUser', data.value);
@@ -505,6 +513,7 @@ alert('Delete success.')
                         //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('removeUser', id1);
                     }
+                    break;
                 }
 
             } else {
@@ -556,6 +565,7 @@ alert('Delete success.')
                         //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('addUser', id2);
                     }
+                    break;
                 }
                 //jml = s.length -1
             } else {
@@ -591,6 +601,7 @@ alert('Delete success.')
                         //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('removeUser', id2);
                     }
+                    break;
                 }
 
             } else {
@@ -679,6 +690,7 @@ alert('Delete success.')
                         getSelectedFiles[index]
                     ]
                 })
+                break;
             }
             setGetSelectedFiles([]);
         } else {
@@ -721,6 +733,7 @@ alert('Delete success.')
             if (e.target.files[i]) {
                 reader.readAsDataURL(file);
             }
+            break;
         }
     }
 
@@ -747,6 +760,7 @@ alert('Delete success.')
                         selectedfileR[index]
                     ]
                 })
+                break;
             }
             SetSelectedFileR([]);
         } else {
@@ -783,8 +797,9 @@ alert('Delete success.')
                 let a = selectedfileR[index];
 
                 bodyForm.append('file' + index, selectedfileR[index].fileori);
-
+                break;
             }
+            
         }
 
         const config = {
@@ -841,9 +856,9 @@ alert('Delete success.')
 
     return (
         <React.Fragment>
-            <div className="page-content">
-                {editInstructionMsg !== "" ? <UncontrolledAlert toggle={editInstructionCloseAllert} color={editInstructionMsg.status == "1" ? "success" : "danger"}>
-                    {typeof editInstructionMsg == 'string' ? editInstructionMsg : editInstructionMsg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null}
+            
+                {/* {editInstructionMsg !== "" ? <UncontrolledAlert toggle={editInstructionCloseAllert} color={editInstructionMsg.status == "1" ? "success" : "danger"}>
+                    {typeof editInstructionMsg == 'string' ? editInstructionMsg : editInstructionMsg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null} */}
 
                 <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
@@ -1545,7 +1560,7 @@ alert('Delete success.')
                                 <Button
                                     type="button"
                                     className="btn btn-danger "
-                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); }}
+                                    onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                 >
                                     <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                     Kembali
@@ -1555,7 +1570,7 @@ alert('Delete success.')
                         </Col>
                     </Row>
                 </Container>
-            </div>
+            
         </React.Fragment >
     );
 
