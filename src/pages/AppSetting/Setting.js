@@ -13,9 +13,10 @@ import {
 } from "reactstrap";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { editGeneralSetting, getSettingData, resetMessage } from "store/appSetting/actions";
+import { editGeneralSetting, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
 import TableCustom2 from "common/TableCustom2";
 import { updateGeneralSetting } from "helpers/backend_helper";
+import MsgModal from "components/Common/MsgModal";
 
 
 const Setting = () => {
@@ -23,6 +24,16 @@ const Setting = () => {
     const dispatch = useDispatch();
     const [appSettingMsg, setAppSettingMsg] = useState("")
     const [appSettingPage, setAppSettingPage] = useState(true)
+
+    /* MODALS */
+    const [generalMsgModal, setGeneralMsgModal] = useState(false)
+    const [generalContentModal, setGeneralContentModal] = useState("")
+
+    const toggleMsgModal = () => {
+        setGeneralMsgModal(!generalMsgModal)
+    }
+
+    /* ENDS OF MODAL */
 
     const [generalSettingObj, setGeneralSettingObj] = useState({ langType: "eng", instructionDisplay: "", notification: "", notification2: "" })
 
@@ -144,8 +155,13 @@ const Setting = () => {
     };
 
     const handleSaveGeneral = () => {
-        console.log(generalSetting)
-        dispatch(editGeneralSetting({ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3 }))
+        dispatch(editGeneralSetting({ ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3 }))
+        if(appSettingData.message != "Fail") {
+            setGeneralContentModal("Update Success")
+        } else {
+            setGeneralContentModal("Update Failed")
+        }
+        toggleMsgModal()
     }
 
     const appSettingPreEdit = (e) => {
@@ -289,7 +305,11 @@ const Setting = () => {
                                         </React.Fragment>
                                     </CardBody>
                                 </Card>
-
+                                <MsgModal
+                                    modal={generalMsgModal}
+                                    toggle={toggleMsgModal}
+                                    message={generalContentModal}
+                                />
                                 <Row className="my-3 mt-5">
                                     <Col className="d-flex justify-content-end">
                                         <div className="col-12 col-lg-2">
