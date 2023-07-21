@@ -15,6 +15,7 @@ import {
     RESP_GET_DETAIL_INSTRUCTION,
     SAVE_DESCRIPTION,
     SAVE_REPLY,
+    MSGADDREPLY,
     MSGDOWNLOAD,
     DOWNLOAD_FILES,
     DELETE_REPLY,
@@ -31,6 +32,7 @@ const INIT_STATE = {
     respGetDetailInstruction: {},
     msgDownload: "",
     msgDeleteReply: "",
+    msgAddReply: "",
 }
 
 const instructionsReducer = (state = INIT_STATE, action) => {
@@ -66,6 +68,7 @@ const instructionsReducer = (state = INIT_STATE, action) => {
              msgAdd: "",
              msgEdit: "",
              msgDelete: "",
+             msgAddReply: "",
              msgDeleteReply: "",
           }
       case SAVE_INSTRUCTIONS:
@@ -105,6 +108,11 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         case SAVE_REPLY:
           return {
             ...state,
+          }
+        case MSGADDREPLY:
+          return {
+              ...state,
+            msgAddReply: action.payload,
           }
         case MSGDOWNLOAD:
           return {

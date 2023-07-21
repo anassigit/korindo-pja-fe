@@ -72,12 +72,11 @@ const UserProfile = () => {
 
     }),
 
-    // onSubmit: (values) => {
-    //   debugger
-    //   setAppUserProfileSpinner(true);
-    //   setAppUserProfileMsg("")
-    //   dispatch(editUserProfile(values));
-    // }
+
+  });
+
+  const appUserProfileMessage = useSelector(state => {
+    return state.userProfileReducer.msgEdit;
   });
 
   const updateHp = async () => {
@@ -89,18 +88,13 @@ const UserProfile = () => {
         // console.log('map : ', map)
 
         setAppUserProfileSpinner(true);
-        setAppUserProfileMsg("")
         await dispatch(editUserProfile(map));
+        setAppUserProfileMsg(appUserProfileMessage)
 
     } catch (error) {
         console.log(error)
     }
 };
-
-  const appUserProfileMessage = useSelector(state => {
-    return state.userProfileReducer.msgEdit;
-  });
-
 
   useEffect(() => {
     if (appUserProfileMessage.status == "1") {

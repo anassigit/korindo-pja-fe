@@ -15,6 +15,7 @@ import {
     RESP_GET_DETAIL_INSTRUCTION,
     SAVE_DESCRIPTION,
     SAVE_REPLY,
+    MSGADDREPLY,
     DOWNLOAD_FILES,
     MSGDOWNLOAD,
     DELETE_REPLY,
@@ -95,6 +96,11 @@ export const getInstructionsData = (req) => ({
   export const saveReply = (req) => ({
     type: SAVE_REPLY,
     payload: req,
+  })
+
+  export const msgAddReply = resp => ({
+    type: MSGADDREPLY,
+    payload: resp,
   })
 
   export const downloadFile = (req) => ({

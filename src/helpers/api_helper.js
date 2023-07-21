@@ -20,9 +20,10 @@ axiosApi.interceptors.response.use(
 );
 
 export async function postLogin(url, data, config = {}) {
+  debugger
   axiosApi.defaults.headers.common["Authorization"] = 'Basic ' + btoa(data.nik + ':' + data.password);
   return axiosApi
-    .post(url, { ...data }, { ...config })
+    .post(url+"?"+$.param(data), { ...config })
     .then(response => response.data);
 }
 

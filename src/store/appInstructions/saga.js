@@ -2,7 +2,7 @@ import { call, put, takeEvery, all} from "redux-saga/effects"
 
 import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY } from "./actionTypes"
 
-import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction, msgDownload, msgDeleteReply } from "./actions"
+import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply } from "./actions"
 
 import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply } from "helpers/backend_helper"
 
@@ -91,10 +91,10 @@ function* fetchSaveDescriptions({ payload: req }) {
 function* fetchSaveReply({ payload: req }) {
   try {
     const response = yield call(saveReply, req)
-    yield put(msgAdd(response))
+    yield put(msgAddReply(response))
   } catch (error) {
     console.log(error);
-    yield put(msgAdd({"status" : 0, "message" : "Error Get Data"}))
+    yield put(msgAddReply({"status" : 0, "message" : "Error Get Data"}))
   }
 }
 

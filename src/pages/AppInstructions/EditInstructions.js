@@ -26,7 +26,10 @@ import { format } from 'date-fns';
 import Select from "react-select";
 import shortid from "shortid";
 import moment from "moment";
-import { values } from "lodash";
+// import { values } from "lodash";
+// import { arrayRemove, arrayRemoveAll } from "redux-form";
+
+import axios from "axios";
 
 
 const EditInstructions = (props) => {
@@ -38,6 +41,7 @@ const EditInstructions = (props) => {
     const [editInstructionsSpinner, setEditInstructionsSpinner] = useState(false);
     const [editInstructionsFirstRenderDone, setEditInstructionsFirstRenderDone] = useState(false);
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
+    let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
     const [selectedMulti, setselectedMulti] = useState(null);
     const [selectedMulti2, setselectedMulti2] = useState(null);
     const [optionOwner, setOptionOwner] = useState([]);
@@ -52,7 +56,7 @@ const EditInstructions = (props) => {
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
     const [Files2, SetFiles2] = useState([]);
-    const [replyNum, setReplyNum] = useState('');
+    const [replyNum, setReplyNum] = useState([]);
 
     const getDetailInstructionData = useSelector(state => {
         // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
@@ -68,6 +72,10 @@ const EditInstructions = (props) => {
     const editInstructionCloseAllert = () => {
         setEditInstructionMsg("")
     }
+
+    const msgSaveReply = useSelector(state => {
+        return state.instructionsReducer.msgAddReply;
+    });
 
     useEffect(() => {
 
@@ -132,15 +140,16 @@ const EditInstructions = (props) => {
             });
 
             getDetailInstructionData?.data?.instruction?.replyList.map((replyList) => {
+                const objRply = {
 
-const rply = {
-    reply_num: replyList.no
-}
-setReplyNum((option) => [...option, rply])
+                    reply_num: replyList.no
+                };
+
+                setReplyNum((option) => [...option, objRply])
             })
+
         }
-        console.log("replyNum", getDetailInstructionData?.data?.instruction?.replyList);
-        console.log("replyNum2", replyNum);
+
 
     }, [getDetailInstructionData], []);
 
@@ -157,6 +166,12 @@ setReplyNum((option) => [...option, rply])
             SetFiles(Files2)
         }
     }, [Files2], [])
+
+    useEffect(() => {
+        if (replyNum != null && replyNum != undefined) {
+            setReplyNum(replyNum)
+        }
+    }, [replyNum], [])
 
 
     useEffect(() => {
@@ -339,34 +354,10 @@ setReplyNum((option) => [...option, rply])
         await dispatch(editInstructions(values));
     };
 
-    function DeleteFileAttached(Files2) {
-        debugger
-        console.log(Files2);
-        var id9 = "";
-        // if (Files.length > Files2.length){
+    function DeleteFileAttached(file_num) {
         var bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.insId);
-
-        var jml9 = 0;
-        jml9 = Files2.length
-
-        debugger
-        if (jml9 > 1) {
-            for (let i = 0; i < Files2.length; i++) {
-                if (i == Files2.length - 1) {
-                    debugger
-                    id9 = Files2[Files2.length - 1].file_num
-                    console.log('2 :' + Files2[Files.length - 1].file_num)
-                    bodyForm.append('removeFile', id9);
-                }
-            }
-
-        } else {
-            Files2.map((data, index) => {
-                bodyForm.append('removeFile', data.file_num);
-            })
-        }
-
+        bodyForm.append('removeFile', file_num);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -375,9 +366,69 @@ setReplyNum((option) => [...option, rply])
         console.log(bodyForm);
 
         deleteFiles(bodyForm, config);
-        // }
-
     };
+
+    // const replyDelete = async (row) => {
+    //     debugger
+    //     console.log(row);
+    //     try {
+    //         debugger
+    //         var map = {
+    //             "reply_num": row.no
+    //         };
+    //         console.log('map', map);
+
+    //         setEditInstructionsSpinner(true);
+    //         setEditInstructionMsg("")
+
+    //         await dispatch(deleteReply(map));
+
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // };
+
+    // const downloadFiles = (url, filename) => {
+    //     axios.post(url, {
+    //       responseType: 'blob',
+    //     })
+    //     .then((res) => {
+    //         downloadFile(res.data, filename)
+    //     })
+    //   }
+
+    // const downloadFiles = (file_num) => {
+	// 	fetch('http://localhost:8080/employees/download')
+	// 		.then(response => {
+	// 			response.blob().then(blob => {
+	// 				let url = window.URL.createObjectURL(blob);
+	// 				let a = document.createElement('a');
+	// 				a.href = url;
+	// 				a.download = 'employees.json';
+	// 				a.click();
+	// 			});
+	// 			//window.location.href = response.url;
+	// 	});
+	// }
+
+    // const downloadFiles = async (file_num) => {
+    //     debugger
+    //     console.log(file_num);
+
+    //     try {
+    //     var map = {
+    //         'file_num': file_num
+    //     };
+    //     console.log('map', map);
+
+
+    //     // setEditInstructionsSpinner(true);
+    //     // setEditInstructionMsg("")
+    //     await dispatch(downloadFile(map));
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // };
 
     // -- end -- //
     function handleMulti(s) {
@@ -608,19 +659,6 @@ setReplyNum((option) => [...option, rply])
 
     }
 
-    const downloadFiles = async (e) => {
-
-        debugger
-        try {
-            var indexed_array = {
-                "file_num": e,
-            };
-            await dispatch(downloadFile(indexed_array));
-        } catch (error) {
-            console.log(error)
-        }
-    };
-
     const FileUploadSubmitD = async (e) => {
         e.preventDefault();
 
@@ -719,8 +757,8 @@ setReplyNum((option) => [...option, rply])
         }
     }
 
-
     const insert3 = async (values) => {
+
         await dispatch(saveReply(values));
     };
 
@@ -748,42 +786,37 @@ setReplyNum((option) => [...option, rply])
             }
         }
 
-        setEditInstructionsSpinner(true);
+
         insert3(bodyForm, config);
-        setEditInstructionMsg("")
         //window.location.reload();
+        
 
     };
 
-// Reply tables functions //
+    // Reply tables functions //
 
-const replyDelete = async () => {
-debugger
-    try {
-debugger
-        var map = {
-            "reply_num":  replyNum[0].no
-        };
-        console.log('map : ', map)
+    const replyDelete = async (row) => {
+        debugger
+        console.log(row);
+        try {
+            debugger
+            var map = {
+                "reply_num": row.no
+            };
+            console.log('map', map);
 
-        setEditInstructionsSpinner(true);
-        setEditInstructionMsg("")
-        await dispatch(deleteReply(map));
+            setEditInstructionsSpinner(true);
+            setEditInstructionMsg("")
 
-    } catch (error) {
-        console.log(error)
-    }
-};
+            await dispatch(deleteReply(map));
 
-// const replyDelete = (app032p01RumusTegakanData) => {
-//     setApp032setMsg("")
-//     setApp032p01RumusTegakanDelete(app032p01RumusTegakanData);
-//     setApp032DeleteModal(true)
-// }
+        } catch (error) {
+            console.log(error)
+        }
+    };
 
 
-
-// end function //
+    // end function //
 
     return (
         <React.Fragment>
@@ -1019,7 +1052,7 @@ debugger
                                                                                     <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
-                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(Files2)}>Delete</a>
+                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(file_num)}>Delete</a>
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
@@ -1304,12 +1337,12 @@ debugger
                                                                                         const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                                         return (
                                                                                             <div className="file-atc-box" key={id}>
-                                                                                                
+
                                                                                                 {
                                                                                                     filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
                                                                                                         <div className="file-image"> <img src={fileimage} alt="" /></div>
-                                                                                                         :
-                                                                                                        <div className="file-image"><i className="fas fa-file-alt"/></div>
+                                                                                                        :
+                                                                                                        <div className="file-image"><i className="fas fa-file-alt" /></div>
                                                                                                 }
                                                                                                 <div className="file-detail">
                                                                                                     <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
@@ -1382,27 +1415,31 @@ debugger
 
                                                                         {
 
-                                                                            replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, replies) =>
+                                                                            replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, reply_num) =>
+
 
                                                                                 <>
                                                                                     <tr key={row.no} style={{ verticalAlign: "text-top" }}>
                                                                                         <td className="tg-0lax" >
 
-                                                                                            {row.name}
-                                                                                           
+                                                                                        {row.name}
+
                                                                                         </td>
                                                                                         <td className="tg-0lax" >
 
+                                                                                      
                                                                                             {row.content}
-                                                                                            <p/>
-                                                                                            {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(replyNum) }}>Delete</a> : ''}
+
+                                                                                            <p />
+                                                                                            {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
                                                                                         </td>
                                                                                         <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
                                                                                         <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}&nbsp;({row.attachFileList.length})</td>
-                                                                                        <td className="tg-0lax" align="left"> {row.delete ? <i className="fas fa-file-download" onClick={() => { replyDelete(row.no) }} />: ''}</td>
+                                                                                        <td className="tg-0lax" align="left"> {row.delete ? <i className="fas fa-file-download" onClick={() => { replyDelete(row.no) }} /> : ''}</td>
                                                                                         {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                     </tr>
                                                                                 </>
+
                                                                             )
                                                                         }
                                                                     </tbody>
@@ -1422,7 +1459,7 @@ debugger
                         </Col>
                     </Row>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null ? 'none' : 'flex' }}>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || pId !== 'admin' ? 'none' : 'flex' }}>
 
                         <Col lg={12}>
                             <Card>

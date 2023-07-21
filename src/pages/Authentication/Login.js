@@ -31,12 +31,14 @@ const Login = props => {
     initialValues: {
       nik: '',
       password: '',
+      langType: 'ENG',
     },
     validationSchema: Yup.object({
       nik: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
+      debugger
       dispatch(loginUser(values, props.history));
     }
   });

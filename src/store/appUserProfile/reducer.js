@@ -24,6 +24,11 @@ const userProfileReducer = (state = INIT_STATE, action) => {
         ...state,
         msgEdit: action.payload,
       }
+      case MSGEDIT:
+        return {
+          ...state,
+          msgEdit: action.payload,
+        }
       case MSGUPPASSWORD:
       return {
         ...state,

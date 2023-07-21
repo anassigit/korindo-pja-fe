@@ -111,7 +111,7 @@ export const saveDescriptions = req => postUpload("rest/InstructionRest/UpdateDe
 
 export const saveReply = req => postUpload("rest/InstructionRest/InsertReply", req)
 
-export const downloadFiles = req => postDownload("rest/InstructionRest/FileDownload", req)
+export const downloadFiles = req => postWithParam("rest/InstructionRest/FileDownload", req)
 
 export const deleteReply = req => postWithParam("rest/InstructionRest/DeleteReply", req)
 
