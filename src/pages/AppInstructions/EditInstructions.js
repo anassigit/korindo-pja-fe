@@ -891,6 +891,7 @@ alert('Delete success.')
                                                     <div className="mb-3 col-sm-6">
                                                         <Label>Instruction ID</Label>
                                                         <Input
+                                                        hidden
                                                             name="insId"
                                                             type="text"
                                                             onChange={editInstructionsValidInput.handleChange}
@@ -905,7 +906,7 @@ alert('Delete success.')
                                                     </div>
 
                                                     <div className="mb-3 col-sm-6">
-                                                        <Label>Title</Label>
+                                                        <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                         <Input
                                                             name="insTitle"
                                                             type="text"
