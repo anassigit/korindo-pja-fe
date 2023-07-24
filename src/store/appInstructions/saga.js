@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all} from "redux-saga/effects"
 
-import { GET_INSTRUCTIONS, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY } from "./actionTypes"
+import { GET_INSTRUCTIONS, GET_INSTRUCTIONS2, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_USER_LIST, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY } from "./actionTypes"
 
-import { respGetInstructions, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply } from "./actions"
+import { respGetInstructions, respGetInstructions2, msgAdd, msgEdit, msgDelete, respGetUserList, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply } from "./actions"
 
-import { getInstructions, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply } from "helpers/backend_helper"
+import { getInstructions, getInstructions2, saveInstructions, editInstructions, deleteInstructions, getUserList, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply } from "helpers/backend_helper"
 
 function* fetchGetInstructions({ payload: req }) {
     try {
@@ -19,6 +19,21 @@ function* fetchGetInstructions({ payload: req }) {
       yield put(respGetInstructions({"status" : 0, "message" : "Error Get Data"}))
     }
   }
+
+  function* fetchGetInstructions2({ payload: req }) {
+    try {
+      const response = yield call(getInstructions2, req)
+      if(response.status == 1){
+        yield put(respGetInstructions2(response))
+      }else{
+        yield put(respGetInstructions2(response))
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(respGetInstructions2({"status" : 0, "message" : "Error Get Data"}))
+    }
+  }
+
 
   function* fetchSaveInstructions({ payload: req }) {
     try {
@@ -119,6 +134,7 @@ function* fetchDeleteReply({ payload: req }) {
   function* instructionsSaga() {
     
     yield takeEvery(GET_INSTRUCTIONS, fetchGetInstructions)
+    yield takeEvery(GET_INSTRUCTIONS2, fetchGetInstructions2)
     yield takeEvery(SAVE_INSTRUCTIONS, fetchSaveInstructions)
     yield takeEvery(EDIT_INSTRUCTIONS, fetchEditInstructions)
     yield takeEvery(DELETE_INSTRUCTIONS, fetchDeleteInstructions)

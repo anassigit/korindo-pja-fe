@@ -2,6 +2,8 @@ import {
 
     GET_INSTRUCTIONS,
     RESP_GET_INSTRUCTIONS,
+    GET_INSTRUCTIONS2,
+    RESP_GET_INSTRUCTIONS2,
     SAVE_INSTRUCTIONS,
     EDIT_INSTRUCTIONS,
     DELETE_INSTRUCTIONS,
@@ -25,6 +27,7 @@ import {
 
 const INIT_STATE = {
     respGetInstructions: {},
+    respGetInstructions2: {},
     msgAdd: "",
     msgEdit: "",
     msgDelete: "",
@@ -46,6 +49,15 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         return {
           ...state,
           respGetInstructions: action.payload,
+        }
+        case GET_INSTRUCTIONS2:
+        return {
+          ...state,
+        }
+      case RESP_GET_INSTRUCTIONS2:
+        return {
+          ...state,
+          respGetInstructions2: action.payload,
         }
         case MSGADD:
         return {
@@ -133,6 +145,7 @@ const instructionsReducer = (state = INIT_STATE, action) => {
             ...state,
             msgDeleteReply: action.payload,
         }
+        
       default:
         return state
     }

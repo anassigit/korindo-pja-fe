@@ -13,7 +13,7 @@ import {
     CardHeader,
     Input,
 } from "reactstrap";
-import { getInstructionsData, resetMessage } from "../../store/appInstructions/actions"
+import { getInstructionsData, getInstructionsData2, resetMessage } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
 //import { ReactSession } from 'react-client-session';
 import AddInstructions from "./AddInstructions";
@@ -28,10 +28,12 @@ const Instructions = () => {
     const [appEditInstructions, setEditInstructions] = useState(false)
     const [appDetailInstructions, setAppDetailInstructions] = useState(true)
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
+    const [appInstructionsMsg2, setAppInstructionsMsg2] = useState("")
     // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
     const [instructionsData, setInstructionsData] = useState()
     const [selected, setSelected] = useState("");
-
+    const [getData, setGetData] = useState([]);
+    const [getData2, setGetData2] = useState([]);
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -44,15 +46,52 @@ const Instructions = () => {
     });
 
     const appInstructionsData = useSelector(state => {
-        //console.log(state.instructionsReducer.respGetInstructions);
+        // console.log("data1",state.instructionsReducer.respGetInstructions);
+
+        // let dt1 = []
+        // dt1.push(state.instructionsReducer.respGetInstructions)
+        
         return state.instructionsReducer.respGetInstructions;
     });
 
+    // useEffect(() =>{
+    // if(appInstructionsData.status == "1"){
+    //     setGetData(appInstructionsData?.data?.ins)
+    // }
+    // }, [appInstructionsData])
+
+    // const getData1 = () => {
+    //     let data1 = []
+    //     data1.push(appInstructionsData)
+    //     console.log("data1", data1)
+    //     let dataDtl1 = []
+    //     data1.map( vin =>
+    //         dataDtl1.push({
+    //             insId: vin.data.ins[0].insId,
+    //         })           
+    //         )
+    //     console.log("dataDtl1", dataDtl1)
+            
+    // }
+
+
+    const appInstructionsData2 = useSelector(state => {
+        //console.log("data2",state.instructionsReducer.respGetInstructions2);
+
+        let dt2 = []
+        dt2.push(state.instructionsReducer.respGetInstructions2)
+        console.log("dt2", dt2)
+        return state.instructionsReducer.respGetInstructions2;
+
+    });
+
+
     useEffect(() => {
-        if (appInstructionsData.status == "0") {
+        if (appInstructionsData.status == "0" || appInstructionsData2.status == "0"  ) {
             setAppInstructionsMsg(appInstructionsData)
+            setAppInstructionsMsg2(appInstructionsData2)
         }
-    }, [appInstructionsData])
+    }, [appInstructionsData], [appInstructionsData2])
 
     const appInstructionsp01Tabel = [
         {

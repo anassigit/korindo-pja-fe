@@ -2,6 +2,8 @@ import {
 
     GET_INSTRUCTIONS,
     RESP_GET_INSTRUCTIONS,
+    GET_INSTRUCTIONS2,
+    RESP_GET_INSTRUCTIONS2,
     SAVE_INSTRUCTIONS,
     EDIT_INSTRUCTIONS,
     DELETE_INSTRUCTIONS,
@@ -30,6 +32,16 @@ export const getInstructionsData = (req) => ({
   
   export const respGetInstructions = resp => ({
     type: RESP_GET_INSTRUCTIONS,
+    payload: resp,
+  })
+
+  export const getInstructionsData2 = (req) => ({
+    type: GET_INSTRUCTIONS2,
+    payload: req,
+  })
+  
+  export const respGetInstructions2 = resp => ({
+    type: RESP_GET_INSTRUCTIONS2,
     payload: resp,
   })
   

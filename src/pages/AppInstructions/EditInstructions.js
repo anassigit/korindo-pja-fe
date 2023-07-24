@@ -151,8 +151,17 @@ const EditInstructions = (props) => {
                 setReplyNum((option) => [...option, objRply])
             })
 
+            getDetailInstructionData?.data?.statusList.map((statusList) => {
+                const objList= {
+                    
+                    idList: statusList.no,
+                    nameList: statusList.name,
+                    colorList: statusList.bgColor,
+                };
 
-            setStatusList(getDetailInstructionData?.data?.statusList);
+                setStatusList((option) => [...option, objList]);
+            });
+          
 
         }
 
@@ -1480,8 +1489,8 @@ alert('Delete success.')
                                                                                             {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
                                                                                         </td>
                                                                                         <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                        <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}&nbsp;({row.attachFileList.length})</td>
-                                                                                        <td className="tg-0lax" align="left"> {row.delete ? <i className="fas fa-file-download" onClick={() => { replyDelete(row.no) }} /> : ''}</td>
+                                                                                        <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
+                                                                                        <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList.length !==  null ? <i className="fas fa-file-download" onClick={() => { xxx() }} /> : null}</td>
                                                                                         {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                     </tr>
                                                                                 </>

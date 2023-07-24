@@ -87,9 +87,11 @@ const UserProfile = () => {
         };
         // console.log('map : ', map)
 
-        setAppUserProfileSpinner(true);
+        //setAppUserProfileSpinner(true);
+        alert ("Change success")
         await dispatch(editUserProfile(map));
-        setAppUserProfileMsg(appUserProfileMessage)
+        window.location.reload();
+
 
     } catch (error) {
         console.log(error)
@@ -109,7 +111,7 @@ const UserProfile = () => {
     }
     setAppUserProfileMsg(appUserProfileMessage)
     setAppUserProfileSpinner(false);
-  }, [appUserProfileMessage])
+  }, [appUserProfileMessage],[])
 
   const ChangePassPage = () => {
     setUserProfilePage(false)

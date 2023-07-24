@@ -30,8 +30,10 @@ import { getCombo } from "../../store/combo/actions"
 import { format } from 'date-fns';
 import images from "assets/images";
 import Select from "react-select";
-
+import Chroma from "chroma-js";
 import shortid from "shortid";
+import { color } from "echarts";
+
 
 
 const AddInstructions = (props) => {
@@ -67,7 +69,7 @@ const AddInstructions = (props) => {
                     const newObj = {
                         value: data.id,
                         label: data.name,
-                        color: data.bgcolor,
+                        backgroundColor: data.bgcolor,
     
                     };
                     setOptionOwner((option) => [...option, newObj]);
@@ -77,7 +79,7 @@ const AddInstructions = (props) => {
                     const newObj = {
                         value: data.id,
                         label: data.name,
-                        color: data.bgcolor,
+                        backgroundColor: data.bgcolor,
                     };
                     setOptionManager((option) => [...option, newObj]);
                 });
@@ -247,11 +249,19 @@ const AddInstructions = (props) => {
     function handleMulti(s) {
 
         setselectedMulti(s);
+
+        // setselectedMulti: (styles, { data }) => ({
+        //     ...styles,
+        //     color: data.bgcolor,
+        //   })
+        
+          
     }
     function handleMulti2(s) {
 
         setselectedMulti2(s);
     }
+  
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
@@ -367,7 +377,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <Label> Choose Owner </Label>
                                                 <Select
-                                                id="user"
+                                                //id="user"
                                                     value={selectedMulti}
                                                     isMulti={true}
                                                     onChange={(e) => {
@@ -381,7 +391,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-6">
                                                 <label>Choose Manager </label>
                                                 <Select
-                                                id="user"
+                                                //id="user"
                                                     value={selectedMulti2}
                                                     isMulti={true}
                                                     onChange={(e) => {
@@ -389,6 +399,7 @@ const AddInstructions = (props) => {
                                                     }}
                                                     options={optionManager}
                                                     className="select2-selection"
+                                                    
                                                 />
                                             </div>
 
