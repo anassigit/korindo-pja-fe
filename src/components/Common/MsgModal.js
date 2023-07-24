@@ -8,7 +8,7 @@ const MsgModal = ({ modal, toggle, message }) => {
             <ModalHeader toggle={toggle}>Message</ModalHeader>
             <ModalBody>{message}</ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={toggle}>
+                <Button color="danger" onClick={toggle}>
                     Close
                 </Button>
             </ModalFooter>
