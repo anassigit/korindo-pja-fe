@@ -58,6 +58,7 @@ const EditInstructions = (props) => {
     const [Files2, SetFiles2] = useState([]);
     const [replyNum, setReplyNum] = useState([]);
     const [editInstruction, setEditInstruction] = useState(false)
+    const [statusList, setStatusList] = useState([]);
 
     const getDetailInstructionData = useSelector(state => {
         // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
@@ -150,6 +151,9 @@ const EditInstructions = (props) => {
                 setReplyNum((option) => [...option, objRply])
             })
 
+
+            setStatusList(getDetailInstructionData?.data?.statusList);
+
         }
 
 
@@ -212,6 +216,11 @@ const EditInstructions = (props) => {
     const insert2 = async (val) => {
         await dispatch(saveDescription(val));
     };
+
+    const downloadFiles = async file_num => {
+        var ix = { file_num: file_num }
+        await dispatch(downloadFile(ix))
+      }
 
     const editInstructionsValidInput = useFormik({
         enableReinitialize: true,
@@ -952,16 +961,16 @@ alert('Delete success.')
                                                                 editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? true : false
                                                             }
                                                         >
-                                                            <option no="" value={""}></option>
+                                                            {/* <option no="" value={""}></option>
                                                             <option value={"1"}>Not Start</option>
                                                             <option value={"2"}>In Progress</option>
                                                             <option value={"3"}>Action Completed</option>
                                                             <option value={"4"}>Rejection</option>
-                                                            <option value={"5"}>Complete</option>
-                                                            {/* {
-                                                    selectStatus.dtlsetting?.map((value, key) =>
-                                                    <option key={key} value={value.no}>{value.name}</option>)
-                                                    } */}
+                                                            <option value={"5"}>Complete</option> */}
+                                                            {
+                                                    statusList.map((value, key) =>
+                                                    <option key={key} value={value.no} >{value.name}</option>)
+                                                    }
 
                                                         </Input>
                                                         {editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? (
@@ -970,7 +979,7 @@ alert('Delete success.')
                                                     </div>
 
                                                     <div className="mb-3 col-sm-6">
-                                                        <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions <span style={{ color: "red" }}>* </span></Label>
+                                                        <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
                                                         <Input
                                                             name="descriptions"
                                                             type="textarea"
@@ -1000,7 +1009,7 @@ alert('Delete success.')
 
                                                 <Col md="6">
                                                     <div className="mb-3 col-sm-6">
-                                                        <Label> Choose Owner <span style={{ color: "red" }}>* </span></Label>
+                                                        <Label> Choose Owner </Label>
                                                         <Select
 
                                                             value={selectedMulti}
@@ -1017,7 +1026,7 @@ alert('Delete success.')
                                                     </div>
 
                                                     <div className="mb-3 col-sm-6">
-                                                        <label>Choose Manager <span style={{ color: "red" }}>* </span></label>
+                                                        <label>Choose Manager </label>
                                                         <Select
                                                             value={selectedMulti2}
                                                             isMulti={true}
@@ -1033,7 +1042,7 @@ alert('Delete success.')
                                                     </div>
 
                                                     <div className="mb-3 col-sm-6">
-                                                        <label>Attached Files <span style={{ color: "red" }}>* </span></label>
+                                                        <label>Attached Files </label>
 
                                                         <Form onSubmit={FileUploadSubmit}>
                                                             <div className="kb-file-upload">

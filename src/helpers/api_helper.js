@@ -20,7 +20,7 @@ axiosApi.interceptors.response.use(
 );
 
 export async function postLogin(url, data, config = {}) {
-  debugger
+
   axiosApi.defaults.headers.common["Authorization"] = 'Basic ' + btoa(data.nik + ':' + data.password);
   return axiosApi
     .post(url+"?"+$.param(data), { ...config })
@@ -188,3 +188,62 @@ export async function postDownload(url, data, config ={responseType: 'blob'}) {
       
 //   })
 // }
+
+
+export async function postDownloadXlsx(
+  url,
+  data,
+  config = {
+    responseType: "blob",
+  }
+) {
+  debugger
+  console.log(data)
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get("authUser")
+  let token = ReactSession.get("authUser")
+
+  return await axiosApi
+    .post(
+      url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data),
+      { ...config }
+    )
+    .then(response => {
+      debugger
+      if (response.status == 200) {
+        debugger
+        let res = response.data.data.download
+        console.log(res)
+        const contentType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"
+        const blob = String64toBlob(res, contentType)
+        const url = URL.createObjectURL(blob)
+
+        saveAs(url, data.filename)
+      } else {
+        return responseError(response)
+      }
+    })
+}
+
+
+
+const String64toBlob = (data, contentType = "", sliceSize = 512) => {
+  debugger
+  const byteCharacters = atob(data)
+  const byteArrays = []
+
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize)
+
+    const byteNumbers = new Array(slice.length)
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i)
+    }
+
+    const byteArray = new Uint8Array(byteNumbers)
+    byteArrays.push(byteArray)
+  }
+
+  const blob = new Blob(byteArrays, { type: contentType })
+  return blob
+}
