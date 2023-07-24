@@ -30,7 +30,7 @@ import { getCombo } from "../../store/combo/actions"
 import { format } from 'date-fns';
 import images from "assets/images";
 import Select from "react-select";
-import Chroma from "chroma-js";
+// import Chroma from "chroma-js";
 import shortid from "shortid";
 import { color } from "echarts";
 
