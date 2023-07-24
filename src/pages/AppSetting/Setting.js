@@ -504,10 +504,13 @@ const Setting = () => {
                                                 <i className="fas fa-plus font-size-14  me-2"></i> Add Group Mapping
                                             </button>
                                         </div>
+                                        <div className="col-12 col-lg-3">
+                                            
+                                        </div>
                                     </Col>
                                 </Row>
 
-                                <Card>
+                                <Card className="w-75">
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                                         <strong>Group Mapping</strong>
                                     </CardHeader>
@@ -546,7 +549,38 @@ const Setting = () => {
                                                                             }}
                                                                             rowSpan="2"
                                                                         >
-                                                                            Name (Email)
+                                                                            Name
+                                                                            <span
+                                                                                style={{
+                                                                                    display: sortFilter.find(({ sort, key }) => sort === "default" && key === 0) ? 'block' : 'none'
+                                                                                }}
+                                                                                className="order">
+                                                                                <span className="dropdown">
+                                                                                    <span className="caret"></span>
+                                                                                </span>
+                                                                                <span className="dropup">
+                                                                                    <span className="caret"></span>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span
+                                                                                style={{
+                                                                                    display: sortFilter.find(({ sort, key }) => sort !== "default" && key === 0) ? 'block' : 'none'
+                                                                                }} >
+                                                                                <span className={sortFilter.find(({ sort, key }) => sort === "asc" && key === 0) ? 'react-bootstrap-table-sort-order dropup' : 'react-bootstrap-table-sort-order'}>
+                                                                                    <span className="caret"></span>
+                                                                                </span>
+                                                                            </span>
+                                                                        </th>
+                                                                        <th
+                                                                            className="sortable"
+                                                                            onClick={() => requestSort("memberName", 0)}
+                                                                            style={{
+                                                                                textAlign: "center",
+                                                                                verticalAlign: "middle",
+                                                                            }}
+                                                                            rowSpan="2"
+                                                                        >
+                                                                            Email
                                                                             <span
                                                                                 style={{
                                                                                     display: sortFilter.find(({ sort, key }) => sort === "default" && key === 0) ? 'block' : 'none'
@@ -636,10 +670,13 @@ const Setting = () => {
                                                                         appSettingData?.data?.relationList.filter((item) => item.groupName === num.name).map(
                                                                             (row, i) => (
                                                                                 <>
-                                                                                    <tr className="text-nowrap" key={row.num}>
-                                                                                        <td style={{ textAlign: "left" }}>
-                                                                                            {row.memberName}
-                                                                                        </td>
+                                                                                <tr className="text-nowrap" key={row.num}>
+                                                                                    <td style={{ textAlign: "left" }}>
+                                                                                        {row.memberName}
+                                                                                    </td>
+                                                                                    <td style={{ textAlign: "left" }}>
+                                                                                        {row.memberId}
+                                                                                    </td>
                                                                                         <td>
                                                                                             <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                                                                                                 <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app008p01PreEdit(data)} />
