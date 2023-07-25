@@ -41,16 +41,11 @@ const Instructions = () => {
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
-            any: "", langType: "eng", statusId: selected
+            any: "", langType: "kor", statusId: selected
         }
     });
 
     const appInstructionsData = useSelector(state => {
-        console.log("data1",state.instructionsReducer.respGetInstructions);
-
-        // let dt1 = []
-        // dt1.push(state.instructionsReducer.respGetInstructions)
-        
         return state.instructionsReducer.respGetInstructions;
     });
 
@@ -71,23 +66,23 @@ const Instructions = () => {
     //         })           
     //         )
     //     console.log("dataDtl1", dataDtl1)
-            
+
     // }
 
 
     // const appInstructionsData2 = useSelector(state => {
-        //console.log("data2",state.instructionsReducer.respGetInstructions2);
+    //console.log("data2",state.instructionsReducer.respGetInstructions2);
 
-        // let dt2 = []
-        // dt2.push(state.instructionsReducer.respGetInstructions2)
-        // console.log("dt2", dt2)
-        // return state.instructionsReducer.respGetInstructions2;
+    // let dt2 = []
+    // dt2.push(state.instructionsReducer.respGetInstructions2)
+    // console.log("dt2", dt2)
+    // return state.instructionsReducer.respGetInstructions2;
 
     // });
 
 
     useEffect(() => {
-        if (appInstructionsData.status == "0" ) {
+        if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
             // setAppInstructionsMsg2(appInstructionsData2)
         }
@@ -124,18 +119,49 @@ const Instructions = () => {
             ),
         },
         {
-            dataField: "ownerListTemp",
+            dataField: "ownerList",
             text: "Owner",
-            sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, appInstructionsData) => {
+                let ownerElements = "";
+                if (cellContent.length > 1) {
+                    ownerElements = cellContent.map((owner, index) => (
+                        <span className="mx-1" key={index}>
+                            <span className="rounded-circle" style={{ backgroundColor: owner.bgColor, color: "white", width: "25px", height: "25px", display: "inline-block", textAlign: "center", lineHeight: "25px" }}>
+                                {owner.name.charAt(0).toUpperCase()}
+                            </span>
+                        </span>
+                    ))
+                } else {
+                    ownerElements = cellContent.map((owner, index) => (
+                        <span className="mx-1 px-2 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white" }}>
+                            {owner.name}
+                        </span>
+                    ))
+                }
+
+                return (
+                    <>
+                        <div>{ownerElements}</div>
+                    </>
+                );
+            },
         },
         {
-            dataField: "managerListTemp",
+            dataField: "managerList",
             text: "Manager",
-            sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, appInstructionsData) => {
+                return (
+                    <>
+                        <span>{cellContent.map((data, index) => {
+                            return index === 0 ? data.name : `, ${data.name}`;
+                        })}</span>
+                    </>
+                )
+            },
         },
         {
             dataField: "insDate",
@@ -250,7 +276,6 @@ const Instructions = () => {
         setSelected(event.target.value);
     };
 
-
     return (
         <RootPageCustom msgStateGet={appInstructionsMsg} msgStateSet={setAppInstructionsMsg}
             componentJsx={
@@ -262,7 +287,7 @@ const Instructions = () => {
                         onCloseClick={() => setApp052DeleteModal(false)}
                     /> */}
 
-                    <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true}>
+                    <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
                         {/* <Breadcrumbs title="Forms" breadcrumbItem="Master Jarak Tanam" /> */}
 
                         <Row>

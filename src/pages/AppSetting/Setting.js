@@ -44,7 +44,7 @@ const Setting = () => {
     const toggleMsgModal = () => {
         setGeneralMsgModal(!generalMsgModal)
     }
-    
+
     const [addMemberModal, setAddMemberModal] = useState(false)
 
     const toggleAddMemberModal = () => {
@@ -526,7 +526,7 @@ const Setting = () => {
                                                         <h2><strong>{num.name}</strong></h2>
                                                     </Row>
                                                     <Row>
-                                                        {/* <TableCustom2
+                                                        <TableCustom2
                                                             keyField={"num"}
                                                             columns={appGroupp01Tabel}
                                                             redukResponse={appSettingData}
@@ -535,213 +535,8 @@ const Setting = () => {
                                                             searchSet={setAppMembersTabelSearch}
                                                             searchGet={appMembersTabelSearch}
                                                             redukCall={getSettingData}
-                                                        /> */}
-
-                                                        {/************************************ testing manual Table ************************************/}
-
-                                                        <div className="react-bootstrap-table table-responsive table-secondary">
-                                                            <Table className="table table-striped table-hover table-bordered table-condensed table align-middle table-nowrap">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th
-                                                                            className="sortable"
-                                                                            onClick={() => requestSort("memberName", 0)}
-                                                                            style={{
-                                                                                textAlign: "center",
-                                                                                verticalAlign: "middle",
-                                                                            }}
-                                                                            rowSpan="2"
-                                                                        >
-                                                                            Name
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort === "default" && key === 0) ? 'block' : 'none'
-                                                                                }}
-                                                                                className="order">
-                                                                                <span className="dropdown">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                                <span className="dropup">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort !== "default" && key === 0) ? 'block' : 'none'
-                                                                                }} >
-                                                                                <span className={sortFilter.find(({ sort, key }) => sort === "asc" && key === 0) ? 'react-bootstrap-table-sort-order dropup' : 'react-bootstrap-table-sort-order'}>
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                        </th>
-                                                                        <th
-                                                                            className="sortable"
-                                                                            onClick={() => requestSort("memberName", 0)}
-                                                                            style={{
-                                                                                textAlign: "center",
-                                                                                verticalAlign: "middle",
-                                                                            }}
-                                                                            rowSpan="2"
-                                                                        >
-                                                                            Email
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort === "default" && key === 0) ? 'block' : 'none'
-                                                                                }}
-                                                                                className="order">
-                                                                                <span className="dropdown">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                                <span className="dropup">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort !== "default" && key === 0) ? 'block' : 'none'
-                                                                                }} >
-                                                                                <span className={sortFilter.find(({ sort, key }) => sort === "asc" && key === 0) ? 'react-bootstrap-table-sort-order dropup' : 'react-bootstrap-table-sort-order'}>
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                        </th>
-                                                                        <th
-                                                                            style={{
-                                                                                textAlign: "center",
-                                                                            }}
-                                                                        >
-                                                                            Edit
-
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort === "default" && key === 13) ? 'block' : 'none'
-                                                                                }}
-                                                                                className="order"
-                                                                            >
-                                                                                <span className="dropdown">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                                <span className="dropup">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort !== "default" && key === 13) ? 'block' : 'none'
-                                                                                }}
-                                                                            >
-                                                                                <span className={sortFilter.find(({ sort, key }) => sort === "asc" && key === 13) ? 'react-bootstrap-table-sort-order dropup' : 'react-bootstrap-table-sort-order'}>
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                        </th>
-                                                                        <th
-                                                                            style={{
-                                                                                textAlign: "center",
-                                                                            }}
-                                                                        >
-                                                                            Delete
-
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort === "default" && key === 13) ? 'block' : 'none'
-                                                                                }}
-                                                                                className="order"
-                                                                            >
-                                                                                <span className="dropdown">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                                <span className="dropup">
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                            <span
-                                                                                style={{
-                                                                                    display: sortFilter.find(({ sort, key }) => sort !== "default" && key === 13) ? 'block' : 'none'
-                                                                                }}
-                                                                            >
-                                                                                <span className={sortFilter.find(({ sort, key }) => sort === "asc" && key === 13) ? 'react-bootstrap-table-sort-order dropup' : 'react-bootstrap-table-sort-order'}>
-                                                                                    <span className="caret"></span>
-                                                                                </span>
-                                                                            </span>
-                                                                        </th>
-                                                                    </tr>
-                                                                </thead>
-
-                                                                <tbody>
-                                                                    {appSettingData?.data?.relationList.filter((item) => item.groupName === num.name).length > 0 &&
-                                                                        appSettingData?.data?.relationList.filter((item) => item.groupName === num.name).map(
-                                                                            (row, i) => (
-                                                                                <>
-                                                                                <tr className="text-nowrap" key={row.num}>
-                                                                                    <td style={{ textAlign: "left" }}>
-                                                                                        {row.memberName}
-                                                                                    </td>
-                                                                                    <td style={{ textAlign: "left" }}>
-                                                                                        {row.memberId}
-                                                                                    </td>
-                                                                                        <td>
-                                                                                            <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                                                                                                <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app008p01PreEdit(data)} />
-                                                                                                <UncontrolledTooltip placement="top" target="edittooltip">
-                                                                                                    Ubah
-                                                                                                </UncontrolledTooltip>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                                                                                                <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app008p01Delete(data)} />
-                                                                                                <UncontrolledTooltip placement="top" target="deletetooltip">
-                                                                                                    Hapus
-                                                                                                </UncontrolledTooltip>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </>
-                                                                            )
-                                                                        )}
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>
-                                                        <div className="row react-bootstrap-table-pagination mb-3" >
-                                                            <div className="col-4">
-                                                                <div className="pagination justify-content-start ">
-                                                                    <Input
-                                                                        style={{ width: 60 }}
-                                                                        type="select"
-                                                                        name="pagingSize"
-                                                                        onChange={pagingSizeChange}
-                                                                        value={sizePaging}
-                                                                    >
-                                                                        <option id="10" value="10" defaultChecked>
-                                                                            10
-                                                                        </option>
-                                                                        <option id="20" value="20">
-                                                                            20
-                                                                        </option>
-                                                                        <option id="30" value="30">
-                                                                            30
-                                                                        </option>
-                                                                    </Input>
-                                                                    <div className="pagination justify-content-start align-items-center">
-                                                                        &nbsp;&nbsp; Showing rows {labelPagingFrom} to{" "}
-                                                                        {labelPagingTo} of {totalCount}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-8">
-                                                                <div className="pagination justify-content-end">
-                                                                    <Pagination
-                                                                        activePage={activePage}
-                                                                        itemsCountPerPage={sizePaging}
-                                                                        totalItemsCount={totalCount}
-                                                                        onChange={handlePageChange}
-                                                                        itemClass="page-item"
-                                                                        linkClass="page-link"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        />
+                                                       
                                                     </Row>
                                                 </React.Fragment>
                                             ))}
