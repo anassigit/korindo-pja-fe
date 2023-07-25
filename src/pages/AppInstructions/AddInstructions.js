@@ -28,9 +28,9 @@ import { formatRpAfterInput, replaceAll } from '../../common/Regex'
 import { getCombo } from "../../store/combo/actions"
 // import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
-import images from "assets/images";
-import Select from "react-select";
+import  Select, {components}   from "react-select";
 import shortid from "shortid";
+
 
 
 const AddInstructions = (props) => {
@@ -63,22 +63,22 @@ const AddInstructions = (props) => {
             if(addInstructionsUserList.data !== undefined){
 
                 addInstructionsUserList.data.ownerList.map((data) => {
-                    const newObj = {
+                    const newOwner = {
                         value: data.id,
                         label: data.name,
-                        bgColor: data.bgcolor,
+                        bgColor: data.bgColor,
     
                     };
-                    setOptionOwner((option) => [...option, newObj]);
+                    setOptionOwner((option) => [...option, newOwner]);
                 });
     
                 addInstructionsUserList.data.managerList.map((data) => {
-                    const newObj = {
+                    const newManager = {
                         value: data.id,
                         label: data.name,
-                        bgColor: data.bgcolor,
+                        bgColor: data.bgColor,
                     };
-                    setOptionManager((option) => [...option, newObj]);
+                    setOptionManager((option) => [...option, newManager]);
                 });
                 
             }
@@ -87,7 +87,7 @@ const AddInstructions = (props) => {
     }, [props.appAddInstructions])
 
     const addInstructionsUserList = useSelector(state => {
-        // console.log(state.instructionsReducer.respGetUserList.data);
+
         return state.instructionsReducer.respGetUserList;
     });
 
@@ -103,13 +103,11 @@ const AddInstructions = (props) => {
             insDate: '',
             status: '',
             description: '',
-            // user: '',
-            // _file: '',
         },
 
         validationSchema: Yup.object().shape({
             title: Yup.string().required("Wajib diisi"),
-            // desciption: Yup.string().required("Wajib diisi"),
+
         }),
 
         onSubmit: (val) => {
@@ -120,9 +118,6 @@ const AddInstructions = (props) => {
             bodyForm.append('insDate', val.insDate);
             bodyForm.append('status', val.status);
             bodyForm.append('description', val.description);
-            // val.user = selectedMulti;
-            // bodyForm.append('user', val.user);
-            // var newStateArray = [];
 
             selectedMulti.map((data, index) => {
 
@@ -135,7 +130,6 @@ const AddInstructions = (props) => {
 
             })
 
-            // bodyForm.append('user', newStateArray);
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -245,78 +239,159 @@ const AddInstructions = (props) => {
     function handleMulti(s) {
 
         setselectedMulti(s);
-
-        // setselectedMulti: (styles, { data }) => ({
-        //     ...styles,
-        //     color: data.bgcolor,
-        //   })
-        
           
     }
     function handleMulti2(s) {
 
         setselectedMulti2(s);
-    }
-  
-    const colourStyles = {
-        // control: (styles) => ({ ...styles, backgroundColor: 'white' }),
-        // option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-        //   const color = data.bgColor;
-        //   return {
-        //     ...styles,
-        //     backgroundColor: isDisabled
-        //       ? undefined
-        //       : isSelected
-        //       ? data.bgColor
-        //       : isFocused
-        //       ? color
-        //       : undefined,
-        //     color: isDisabled
-        //       ? '#ccc'
-        //       : isSelected
-        //       ? chroma.contrast(color, 'white') > 2
-        //         ? 'white'
-        //         : 'black'
-        //       : data.bgColor,
-        //     cursor: isDisabled ? 'not-allowed' : 'default',
-      
-        //     ':active': {
-        //       ...styles[':active'],
-        //       backgroundColor: !isDisabled
-        //         ? isSelected
-        //           ? data.bgColor
-        //           : color
-        //         : undefined,
-        //     },
-        //   };
-        // },
-        multiValue: (styles, { bgColor }) => {
-            debugger
-          //const color = bgColor;
+    } 
+
+    const DropdownIndicator = (props) => {
+        return (
+          <components.DropdownIndicator {...props}>
+            <i className="mdi mdi-plus-thick" />
+          </components.DropdownIndicator>
+        );
+      };
+          
+    
+
+
+    const colourStyles  = {
+        control:  (baseStyles, state) => ({
+            ...baseStyles,
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isSelected ? 'white' : 'white',
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isDisabled ? 'white' : 'white',
+            border: 0,
+            boxShadow: 'none' 
+          }),
+        //   placeholder: (baseStyles, state) => ({
+            
+        //         ...defaultStyles,
+        //         color: '#ffffff',
+        //     }),
+
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+        const color = data.bgColor;
           return {
             ...styles,
-            bgColor: bgColor,
+            backgroundColor: isDisabled
+              ? undefined
+              : isSelected
+              ? data.color
+              : isFocused
+              ? '#e6e6e6'
+              : undefined,
+            color: isDisabled
+              ? '#ccc'
+              : isSelected
+              ? 'white'
+                ? 'white'
+                : 'black'
+              : data.color,
+            cursor: isDisabled ? 'not-allowed' : 'default',
+      
+            ':active': {
+              ...styles[':active'],
+              backgroundColor: !isDisabled
+                ? isSelected
+                  ? data.color
+                  : color
+                : undefined,
+            },
           };
         },
-        multiValueLabel: (styles, { bgColor }) => ({
+
+        multiValue: (styles, { data }) => {
+        const color = data.bgColor;
+          return {
+            ...styles,
+            backgroundColor: color
+          };
+        },
+
+        multiValueLabel: (styles, { data }) => ({
           ...styles,
-          color: bgColor,
+          color: 'white',
         }),
-        multiValueRemove: (styles, { bgColor }) => ({
+
+        multiValueRemove: (styles, { data }) => ({
           ...styles,
-          color: bgColor,
+          color: data.bgColor,
           ':hover': {
-            bgColor: bgColor,
+            backgroundColor: data.bgColor,
             color: 'white',
           },
         }),
       };
 
-    // const colourStyles = {
-    //     option: (base, value) => {
-    //         return (shouldBeShown(value) ? { ...base } : { display: 'none'});
-    //     }
-    // };
+      const colourStyles2  = {
+        control:  (baseStyles, state) => ({
+            ...baseStyles,
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isSelected ? 'white' : 'white',
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isDisabled ? 'white' : 'white',
+            border: 0,
+            boxShadow: 'none' 
+          }),
+
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+        const color = data.bgColor;
+          return {
+            ...styles,
+            backgroundColor: isDisabled
+              ? undefined
+              : isSelected
+              ? data.color
+              : isFocused
+              ? '#e6e6e6'
+              : undefined,
+            color: isDisabled
+              ? '#ccc'
+              : isSelected
+              ? 'white'
+                ? 'white'
+                : 'black'
+              : data.color,
+            cursor: isDisabled ? 'not-allowed' : 'default',
+      
+            ':active': {
+              ...styles[':active'],
+              backgroundColor: !isDisabled
+                ? isSelected
+                  ? data.color
+                  : color
+                : undefined,
+            },
+          };
+        },
+
+        multiValue: (styles, { data }) => {
+        const color = data.bgColor;
+          return {
+            ...styles,
+            backgroundColor: '#579DFF'
+          };
+        },
+
+        multiValueLabel: (styles, { data }) => ({
+          ...styles,
+          color: 'white',
+        }),
+
+        multiValueRemove: (styles, { data }) => ({
+          ...styles,
+          color: '#579DFF',
+          ':hover': {
+            backgroundColor: data.bgColor,
+            color: 'white',
+          },
+        }),
+      };
+
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
@@ -430,7 +505,7 @@ const AddInstructions = (props) => {
 
                                         <Col md="6">
                                             <div className="mb-3 col-sm-6">
-                                                <Label> Choose Owner </Label>
+                                                <Label> Choose Owners </Label>
                                                 <Select
                                                 //id="user"
                                                     value={selectedMulti}
@@ -441,11 +516,13 @@ const AddInstructions = (props) => {
                                                     options={optionOwner}
                                                     className="select2-selection"
                                                     styles={colourStyles}
+                                                    components={{ DropdownIndicator }}
+                                                    placeholder={'Select or type...'}
                                                 />
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
-                                                <label>Choose Manager </label>
+                                                <label>Choose Managers </label>
                                                 <Select
                                                 //id="user"
                                                     value={selectedMulti2}
@@ -455,12 +532,14 @@ const AddInstructions = (props) => {
                                                     }}
                                                     options={optionManager}
                                                     className="select2-selection"
-                                                    
+                                                    styles={colourStyles2}
+                                                    components={{ DropdownIndicator }}
+                                                    placeholder={'Select or type...'}
                                                 />
                                             </div>
 
                                             <div className="mb-3 col-sm-6">
-                                                <label>Upload Files </label>
+                                                <label>Upload Attach Files </label>
 
                                                 <Form onSubmit={FileUploadSubmit}>
                                                     <div className="kb-file-upload">
