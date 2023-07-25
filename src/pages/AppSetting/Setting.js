@@ -498,14 +498,11 @@ const Setting = () => {
                                 </Card>
 
                                 <Row className="my-3 mt-5">
-                                    <Col className="d-flex justify-content-end">
+                                    <Col className="col-9 d-flex justify-content-end">
                                         <div className="col-12 col-lg-2">
                                             <button className="btn btn-primary w-100">
                                                 <i className="fas fa-plus font-size-14  me-2"></i> Add Group Mapping
                                             </button>
-                                        </div>
-                                        <div className="col-12 col-lg-3">
-                                            
                                         </div>
                                     </Col>
                                 </Row>
