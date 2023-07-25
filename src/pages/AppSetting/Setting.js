@@ -498,16 +498,16 @@ const Setting = () => {
                                 </Card>
 
                                 <Row className="my-3 mt-5">
-                                    <Col className="col-9 d-flex justify-content-end">
-                                        <div className="col-12 col-lg-2">
+                                    <Col className="col-lg-9 d-flex justify-content-end">
+                                        <div className="col-12 col-lg-3">
                                             <button className="btn btn-primary w-100">
-                                                <i className="fas fa-plus font-size-14  me-2"></i> Add Group Mapping
+                                                <i className="fas fa-plus font-size-14"></i> Add Group Mapping
                                             </button>
                                         </div>
                                     </Col>
                                 </Row>
 
-                                <Card className="w-75">
+                                <Card className="col-lg-9">
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                                         <strong>Group Mapping</strong>
                                     </CardHeader>
