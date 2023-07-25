@@ -880,7 +880,7 @@ alert('Delete success.')
 
                 <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || getDetailInstructionData?.data?.instruction?.memberId != memberId ? 'none' : 'flex' }}>
+                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || getDetailInstructionData?.data?.instruction?.memberId != memberId ? 'none' : 'block' }}>
                         <Col lg={12}>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>

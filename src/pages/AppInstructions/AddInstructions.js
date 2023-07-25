@@ -255,8 +255,6 @@ const AddInstructions = (props) => {
         );
       };
           
-    
-
 
     const colourStyles  = {
         control:  (baseStyles, state) => ({
@@ -576,11 +574,12 @@ const AddInstructions = (props) => {
                                                                                 <div className="file-image"></div>
                                                                         }
                                                                         <div className="file-detail">
-                                                                        <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                            <div className="file-actions">
+                                                                        <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>&nbsp;&nbsp;
+                                                                        <a href={fileimage} onClick={() => DeleteSelectFile(id)}><i className="far fa-trash-alt" /></a>
+                                                                            {/* <div className="file-actions">
                                                                                 <button className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
-                                                                            </div>
-                                                                            <p />
+                                                                            </div> */}
+                                                                            
                                                                         </div>
                                                                     </div>
                                                                 )
@@ -608,7 +607,7 @@ const AddInstructions = (props) => {
                                                                         <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
                                                                             {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                             <div className="file-actions">
-                                                                                <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button>
+                                                                                <a href={fileimage} className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</a>
                                                                                 <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
                                                                             </div>
                                                                         </div>
@@ -618,21 +617,6 @@ const AddInstructions = (props) => {
                                                         }
                                                     </div>
                                                     : ''}
-                                                {/* <Input
-                                                            id="idFileUpload"
-                                                            name="_file"
-                                                            type="file"
-                                                            // accept="xlsx/*"
-                                                            onChange={(e) => addInstructionsValidInput.setFieldValue("_file", e.target.files[0])}
-                                                            invalid={
-                                                                addInstructionsValidInput.touched._file && addInstructionsValidInput.errors._file ? true : false
-                                                            }
-                                                        />
-                                                        <Button outline type="button" color="danger" onClick={() => { addInstructionsValidInput.setFieldValue("_file", ""); document.getElementById('idFileUpload').value = null; }}>
-                                                            <i className="mdi mdi-close-thick font-size-13 align-middle"></i>{" "}
-                                                        </Button> */}
-                                                {/* </div> */}
-
                                             </div>
 
 
