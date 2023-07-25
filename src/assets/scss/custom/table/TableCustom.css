@@ -37,3 +37,10 @@
     background-color: white !important;
     color: #495057;
 }
+
+.text-nowrap .custom-owner-column,
+.text-nowrap .custom-manager-column {
+  width: 250px;
+  white-space: normal;
+  word-wrap: break-word;
+}

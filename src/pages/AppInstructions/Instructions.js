@@ -19,6 +19,7 @@ import { useSelector, useDispatch } from "react-redux"
 import AddInstructions from "./AddInstructions";
 import EditInstructions from "./EditInstructions";
 import DetailInstructions from "./DetailInstructions";
+import "../../assets/scss/custom/table/TableCustom.css"
 
 const Instructions = () => {
 
@@ -123,6 +124,7 @@ const Instructions = () => {
             text: "Owner",
             align: "center",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-owner-column",
             formatter: (cellContent, appInstructionsData) => {
                 let ownerElements = "";
                 if (cellContent.length > 1) {
@@ -153,12 +155,13 @@ const Instructions = () => {
             text: "Manager",
             align: "left",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-manager-column",
             formatter: (cellContent, appInstructionsData) => {
                 return (
                     <>
-                        <span>{cellContent.map((data, index) => {
+                        {cellContent.map((data, index) => {
                             return index === 0 ? data.name : `, ${data.name}`;
-                        })}</span>
+                        })}
                     </>
                 )
             },
@@ -167,35 +170,35 @@ const Instructions = () => {
             dataField: "insDate",
             text: "Instruction Date",
             sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "status",
             text: "Status",
             sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "reply_count",
             text: "Replies",
             sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "notice_count",
             text: "Notices",
             sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "statusId",
             text: "ID status",
             sort: true,
-            align: "left",
+            align: "center",
             hidden: true,
             headerStyle: { textAlign: 'center' },
         },
