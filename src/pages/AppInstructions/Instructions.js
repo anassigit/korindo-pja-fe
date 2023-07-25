@@ -128,14 +128,14 @@ const Instructions = () => {
                 if (cellContent.length > 1) {
                     ownerElements = cellContent.map((owner, index) => (
                         <span className="mx-1" key={index}>
-                            <span className="rounded-circle" style={{ backgroundColor: owner.bgColor, color: "white", width: "25px", height: "25px", display: "inline-block", textAlign: "center", lineHeight: "25px" }}>
+                            <span className="rounded-circle" style={{ backgroundColor: owner.bgColor, color: "white", width: "35px", height: "35px", display: "inline-block", textAlign: "center", justifyContent: "center", lineHeight: "35px" }}>
                                 {owner.name.charAt(0).toUpperCase()}
                             </span>
                         </span>
                     ))
                 } else {
                     ownerElements = cellContent.map((owner, index) => (
-                        <span className="mx-1 px-2 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white" }}>
+                        <span className="px-2 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white" }}>
                             {owner.name}
                         </span>
                     ))
