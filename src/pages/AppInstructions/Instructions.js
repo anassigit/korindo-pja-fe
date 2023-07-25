@@ -95,14 +95,14 @@ const Instructions = () => {
 
     const appInstructionsp01Tabel = [
         {
-            dataField: "insId",
+            dataField: "num",
             text: "No.",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "insTitle",
+            dataField: "title",
             text: "Instructions",
             sort: true,
             align: "left",
@@ -116,7 +116,7 @@ const Instructions = () => {
                             className="btn btn-primary "
                             onClick={() => appInstructionsPreEdit(appInstructionsData)}
                         >
-                            <a title="Instructions" style={{ color: "#495057" }}>{appInstructionsData.insTitle}</a>
+                            <a title="Instructions" style={{ color: "#495057" }}>{appInstructionsData.title}</a>
                         </button>
 
                     </div>
@@ -124,14 +124,14 @@ const Instructions = () => {
             ),
         },
         {
-            dataField: "ownerId",
+            dataField: "ownerListTemp",
             text: "Owner",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "managerId",
+            dataField: "managerListTemp",
             text: "Manager",
             sort: true,
             align: "left",
@@ -145,7 +145,7 @@ const Instructions = () => {
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "insStatus",
+            dataField: "status",
             text: "Status",
             sort: true,
             align: "left",
