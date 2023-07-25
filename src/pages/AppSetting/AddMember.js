@@ -47,6 +47,18 @@ const AddMember = (props) => {
         }
     });
 
+    const rankOptions = [
+        { value: '1', label: 'Rank 1' },
+        { value: '2', label: 'Rank 2' },
+        // Add the rest of the rank options up to 13
+    ];
+
+    const permissionOptions = [
+        { value: '1', label: 'Permission 1' },
+        { value: '2', label: 'Permission 2' },
+        { value: '3', label: 'Permission 3' },
+    ];
+
     const [addMemberMsgModal, setAddMemberMsgModal] = useState(false)
     const [addmemberContentModal, setAddMemberContentModal] = useState("")
 
@@ -100,13 +112,38 @@ const AddMember = (props) => {
                             <Label>HP</Label>
                             <Input type="text" name="hp" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.hp} />
                         </div>
+
                         <div className="mb-3 mx-3">
                             <Label>Rank</Label>
-                            <Input type="text" name="rank_id" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.rank_id} />
+                            <Input
+                                type="select"
+                                name="rank_id"
+                                onChange={addMemberValidInput.handleChange}
+                                value={addMemberValidInput.values.rank_id}
+                            >
+                                <option value="">Select Rank</option>
+                                {rankOptions.map((rank) => (
+                                    <option key={rank.value} value={rank.value}>
+                                        {rank.label}
+                                    </option>
+                                ))}
+                            </Input>
                         </div>
                         <div className="mb-3 mx-3">
                             <Label>Permission</Label>
-                            <Input type="text" name="permission_id" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.permission_id} />
+                            <Input
+                                type="select"
+                                name="permission_id"
+                                onChange={addMemberValidInput.handleChange}
+                                value={addMemberValidInput.values.permission_id}
+                            >
+                                <option value="">Select Permission</option>
+                                {permissionOptions.map((permission) => (
+                                    <option key={permission.value} value={permission.value}>
+                                        {permission.label}
+                                    </option>
+                                ))}
+                            </Input>
                         </div>
 
                         <div className="mb-3 mx-3">

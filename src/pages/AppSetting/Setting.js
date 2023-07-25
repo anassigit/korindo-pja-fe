@@ -504,7 +504,7 @@ const Setting = () => {
                                 </Card>
 
                                 <Row className="my-3 mt-5">
-                                    <Col className="col-lg-9 d-flex justify-content-end">
+                                    <Col className="col-xl-9 d-flex justify-content-end">
                                         <div className="col-12 col-lg-3">
                                             <button className="btn btn-primary w-100">
                                                 <i className="fas fa-plus font-size-14"></i> Add Group Mapping
@@ -513,7 +513,7 @@ const Setting = () => {
                                     </Col>
                                 </Row>
 
-                                <Card className="col-lg-9">
+                                <Card className="col-xl-9">
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                                         <strong>Group Mapping</strong>
                                     </CardHeader>
