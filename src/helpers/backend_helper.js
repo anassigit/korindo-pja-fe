@@ -127,7 +127,7 @@ export const getUserList = req => post("rest/InstructionRest/SelectInfo", req)
 
 //appSetting
 
-export const getSetting = req => postWithParam("/rest/SettingRest/SelectSetting", req)
+export const getSetting = req => post("/rest/SettingRest/SelectSetting", req)
 
 export const saveMembers = req => postWithParam("/rest/SettingRest/InsertMember", req)
 

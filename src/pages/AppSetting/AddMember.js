@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { useDispatch } from 'react-redux'; // Import the useDispatch hook from react-redux
+import { useDispatch, useSelector } from 'react-redux';
+import { saveMembers } from 'store/actions';
+import MsgModal from 'components/Common/MsgModal';
+import { resetMessage } from 'store/appSetting/actions';
 
-const AddMember = ({ modal, toggle }) => {
-    const dispatch = useDispatch(); // Access the dispatch function
+const AddMember = (props) => {
+    const dispatch = useDispatch();
+    const [addMemberSpinner, setAddMemberSpinner] = useState(false)
+
+    const addMemberMsg = useSelector(state => {
+        return state.settingReducer.msgAdd;
+    });
+
+    useEffect(() => {
+        dispatch(resetMessage());
+    }, [dispatch])
 
     const addMemberValidInput = useFormik({
         enableReinitialize: true,
@@ -22,41 +34,73 @@ const AddMember = ({ modal, toggle }) => {
         },
 
         validationSchema: Yup.object().shape({
-            id: Yup.string().required("Wajib diisi"),
-            name: Yup.string().required("Wajib diisi"),
+            id: Yup.string()
+                .email("Email must be a valid email address")
+                .required("Email is required"),
+            name: Yup.string().required("Name is required"),
         }),
 
         onSubmit: (value) => {
-            console.log("clicked")
-            console.log(value)
-            // dispatch(savePosition(value)); // Dispatch the action with the form values
+            setAddMemberSpinner(true)
+            dispatch(saveMembers(value));
+            toggleMsgModal()
         }
     });
 
+    const [addMemberMsgModal, setAddMemberMsgModal] = useState(false)
+    const [addmemberContentModal, setAddMemberContentModal] = useState("")
+
+    const toggleMsgModal = () => {
+        setAddMemberMsgModal(!addMemberMsgModal)
+        if (addmemberContentModal === "Sukses") {
+            props.toggle()
+        }
+    }
+
+    useEffect(() => {
+        if (addMemberMsg) {
+            setAddMemberContentModal(addMemberMsg.message);
+            dispatch(resetMessage());
+        }
+        setAddMemberSpinner(false)
+    }, [addMemberMsg]);
+
     return (
-        <Modal isOpen={modal} toggle={toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle}>
+            <MsgModal
+                modal={addMemberMsgModal}
+                toggle={toggleMsgModal}
+                message={addmemberContentModal}
+            />
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 addMemberValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={toggle}>Add New Member</ModalHeader>
+                <ModalHeader toggle={props.toggle}>Add New Member</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
+
                         <div className="mb-3 mx-3">
                             <Label>Name <span style={{ color: "red" }}>*</span></Label>
                             <Input type="text" name="name" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.name} />
+                            {addMemberValidInput.errors.name && addMemberValidInput.touched.name && (
+                                <div style={{ color: 'red' }}>{addMemberValidInput.errors.name}</div>
+                            )}
                         </div>
 
-                        <div className="mb-3 mx-3"> 
+                        <div className="mb-3 mx-3">
                             <Label>Email <span style={{ color: "red" }}>*</span></Label>
                             <Input type="email" name="id" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.id} />
+                            {addMemberValidInput.errors.id && addMemberValidInput.touched.id && (
+                                <div style={{ color: 'red' }}>{addMemberValidInput.errors.id}</div>
+                            )}
                         </div>
+
                         <div className="mb-3 mx-3">
                             <Label>HP</Label>
                             <Input type="text" name="hp" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.hp} />
                         </div>
-
-                        <div className="mb-3 mx-3"> 
+                        <div className="mb-3 mx-3">
                             <Label>Rank</Label>
                             <Input type="text" name="rank_id" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.rank_id} />
                         </div>
@@ -65,20 +109,19 @@ const AddMember = ({ modal, toggle }) => {
                             <Input type="text" name="permission_id" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.permission_id} />
                         </div>
 
-                        <div className="mb-3 mx-3"> 
+                        <div className="mb-3 mx-3">
                             <Label>Background Color</Label>
                             <Input type="text" name="bgcolor" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.bgcolor} />
                         </div>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color="primary">
+                    <Button type="submit" color={addMemberSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                         Simpan
-                        {/* You can add the spinner here if needed */}
-                        {/* <Spinner style={{ display: app009p02Spinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
+                        <Spinner style={{ display: addMemberSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
-                    <Button color="danger" onClick={toggle}>
+                    <Button color="danger" onClick={props.toggle}>
                         Close
                     </Button>
                 </ModalFooter>

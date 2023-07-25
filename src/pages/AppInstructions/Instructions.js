@@ -41,7 +41,7 @@ const Instructions = () => {
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "insId", order: "desc", search: {
-            any: "", statusId: selected
+            any: "", langType: "eng", statusId: selected
         }
     });
 

@@ -23,9 +23,15 @@ import TableCustom2 from "common/TableCustom2";
 import { updateGeneralSetting } from "helpers/backend_helper";
 import MsgModal from "components/Common/MsgModal";
 import AddMember from "./AddMember";
+import { ReactSession } from 'react-client-session';
 
 
 const Setting = () => {
+
+    let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
+    let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
+
+    console.log("JSON.parse(ReactSession.get('user')):", ReactSession.get("user") ? JSON.parse(ReactSession.get("user")) : "");
 
     const dispatch = useDispatch();
     const [appSettingMsg, setAppSettingMsg] = useState("")
@@ -51,13 +57,13 @@ const Setting = () => {
 
     const [appMembersTabelSearch, setAppMembersTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
-            any: "", langType: "eng"
+            any: "", langType: "idr"
         }
     });
 
     useEffect(() => {
         dispatch(resetMessage());
-        dispatch(getSettingData(generalSettingObj));
+        dispatch(getSettingData(appMembersTabelSearch));
     }, [dispatch])
 
     const appSettingData = useSelector(state => {
@@ -190,7 +196,7 @@ const Setting = () => {
     ]
 
     useEffect(() => {
-        dispatch(getSettingData({ langType: "eng", instructionDisplay: "", notification: "", notification2: "", limit: 100 }));
+        dispatch(getSettingData(appMembersTabelSearch));
     }, [appMembersTabelSearch])
 
     const handleRadioChange1 = (event) => {
