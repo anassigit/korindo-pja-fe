@@ -30,10 +30,7 @@ import { getCombo } from "../../store/combo/actions"
 import { format } from 'date-fns';
 import images from "assets/images";
 import Select from "react-select";
-// import Chroma from "chroma-js";
 import shortid from "shortid";
-import { color } from "echarts";
-
 
 
 const AddInstructions = (props) => {
@@ -69,7 +66,7 @@ const AddInstructions = (props) => {
                     const newObj = {
                         value: data.id,
                         label: data.name,
-                        backgroundColor: data.bgcolor,
+                        bgColor: data.bgcolor,
     
                     };
                     setOptionOwner((option) => [...option, newObj]);
@@ -79,7 +76,7 @@ const AddInstructions = (props) => {
                     const newObj = {
                         value: data.id,
                         label: data.name,
-                        backgroundColor: data.bgcolor,
+                        bgColor: data.bgcolor,
                     };
                     setOptionManager((option) => [...option, newObj]);
                 });
@@ -261,6 +258,65 @@ const AddInstructions = (props) => {
         setselectedMulti2(s);
     }
   
+    const colourStyles = {
+        // control: (styles) => ({ ...styles, backgroundColor: 'white' }),
+        // option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+        //   const color = data.bgColor;
+        //   return {
+        //     ...styles,
+        //     backgroundColor: isDisabled
+        //       ? undefined
+        //       : isSelected
+        //       ? data.bgColor
+        //       : isFocused
+        //       ? color
+        //       : undefined,
+        //     color: isDisabled
+        //       ? '#ccc'
+        //       : isSelected
+        //       ? chroma.contrast(color, 'white') > 2
+        //         ? 'white'
+        //         : 'black'
+        //       : data.bgColor,
+        //     cursor: isDisabled ? 'not-allowed' : 'default',
+      
+        //     ':active': {
+        //       ...styles[':active'],
+        //       backgroundColor: !isDisabled
+        //         ? isSelected
+        //           ? data.bgColor
+        //           : color
+        //         : undefined,
+        //     },
+        //   };
+        // },
+        multiValue: (styles, { bgColor }) => {
+            debugger
+          //const color = bgColor;
+          return {
+            ...styles,
+            bgColor: bgColor,
+          };
+        },
+        multiValueLabel: (styles, { bgColor }) => ({
+          ...styles,
+          color: bgColor,
+        }),
+        multiValueRemove: (styles, { bgColor }) => ({
+          ...styles,
+          color: bgColor,
+          ':hover': {
+            bgColor: bgColor,
+            color: 'white',
+          },
+        }),
+      };
+
+    // const colourStyles = {
+    //     option: (base, value) => {
+    //         return (shouldBeShown(value) ? { ...base } : { display: 'none'});
+    //     }
+    // };
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
@@ -384,6 +440,7 @@ const AddInstructions = (props) => {
                                                     }}
                                                     options={optionOwner}
                                                     className="select2-selection"
+                                                    styles={colourStyles}
                                                 />
                                             </div>
 

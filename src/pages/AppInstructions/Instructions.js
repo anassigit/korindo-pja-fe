@@ -46,7 +46,7 @@ const Instructions = () => {
     });
 
     const appInstructionsData = useSelector(state => {
-        // console.log("data1",state.instructionsReducer.respGetInstructions);
+        console.log("data1",state.instructionsReducer.respGetInstructions);
 
         // let dt1 = []
         // dt1.push(state.instructionsReducer.respGetInstructions)
@@ -75,23 +75,23 @@ const Instructions = () => {
     // }
 
 
-    const appInstructionsData2 = useSelector(state => {
+    // const appInstructionsData2 = useSelector(state => {
         //console.log("data2",state.instructionsReducer.respGetInstructions2);
 
-        let dt2 = []
-        dt2.push(state.instructionsReducer.respGetInstructions2)
-        console.log("dt2", dt2)
-        return state.instructionsReducer.respGetInstructions2;
+        // let dt2 = []
+        // dt2.push(state.instructionsReducer.respGetInstructions2)
+        // console.log("dt2", dt2)
+        // return state.instructionsReducer.respGetInstructions2;
 
-    });
+    // });
 
 
     useEffect(() => {
-        if (appInstructionsData.status == "0" || appInstructionsData2.status == "0"  ) {
+        if (appInstructionsData.status == "0" ) {
             setAppInstructionsMsg(appInstructionsData)
-            setAppInstructionsMsg2(appInstructionsData2)
+            // setAppInstructionsMsg2(appInstructionsData2)
         }
-    }, [appInstructionsData], [appInstructionsData2])
+    }, [appInstructionsData])
 
     const appInstructionsp01Tabel = [
         {
@@ -152,14 +152,14 @@ const Instructions = () => {
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "insReplies",
+            dataField: "reply_count",
             text: "Replies",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "insUsers",
+            dataField: "notice_count",
             text: "Notices",
             sort: true,
             align: "left",
@@ -338,8 +338,8 @@ const Instructions = () => {
                                             keyField={"insId"}
                                             columns={appInstructionsp01Tabel}
                                             redukResponse={appInstructionsData}
-                                            appdata={appInstructionsData.data != null ? appInstructionsData.data.ins : []}
-                                            appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.insTotal : 0}
+                                            appdata={appInstructionsData.data != null ? appInstructionsData.data.instructions : []}
+                                            appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.totalCount : 0}
                                             searchSet={setAppInstructionsTabelSearch}
                                             searchGet={appInstructionsTabelSearch}
                                             redukCall={getInstructionsData}
