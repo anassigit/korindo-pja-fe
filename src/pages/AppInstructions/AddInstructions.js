@@ -49,6 +49,7 @@ const AddInstructions = (props) => {
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
 
+
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
         dispatch(getUserList({}))
@@ -542,11 +543,27 @@ const AddInstructions = (props) => {
                                                 <label>Upload Attach Files </label>
 
                                                 <Form onSubmit={FileUploadSubmit}>
-                                                    <div className="kb-file-upload">
-                                                        <div className="file-upload-box">
-                                                            <input type="file" id="fileupload" className="file-upload-input" onChange={InputChange} multiple />
+                                                <div className="kb-file-upload">
+                                                    <div className="file-upload-box">
+                                                            
+                                                            <label
+                                                                htmlFor="idFileUpload"
+                                                                className="btn btn-primary"
+                                                            >
+                                                             <i className="mdi mdi-paperclip" /> Upload files
+                                                            </label>
+                                                                                    
+                                                            <input 
+                                                            type="file" 
+                                                            onChange={InputChange} 
+                                                            multiple
+                                                            id="idFileUpload" 
+                                                            className="file-upload-input"
+                                                            style={{ display: 'none' }}
+                                                            />
+                                                   
                                                         </div>
-                                                    </div>
+                                                        </div>
                                                     <div className="kb-attach-box mb-3">
                                                         {
                                                             selectedfile.map((data, index) => {
@@ -556,14 +573,12 @@ const AddInstructions = (props) => {
                                                                         {
                                                                             filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
                                                                                 <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                                <div className="file-image"></div>
                                                                         }
                                                                         <div className="file-detail">
-                                                                            <span>{filename}</span>
-                                                                            {/* <p></p> */}
-                                                                            {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
+                                                                        <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
                                                                             <div className="file-actions">
-                                                                                <button type="button" className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
+                                                                                <button className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
                                                                             </div>
                                                                             <p />
                                                                         </div>
@@ -587,11 +602,11 @@ const AddInstructions = (props) => {
                                                                         {
                                                                             filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
                                                                                 <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                                <div className="file-image"></div>
                                                                         }
                                                                         <div className="file-detail">
-                                                                            <h6>{filename}</h6>
-                                                                            <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p>
+                                                                        <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
+                                                                            {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                             <div className="file-actions">
                                                                                 <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button>
                                                                                 <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
