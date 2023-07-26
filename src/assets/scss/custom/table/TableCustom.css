@@ -43,9 +43,10 @@
 }
 
 .text-nowrap .custom-manager-column {
-    width: 200px;
-    white-space: normal;
-    word-wrap: break-word;
+    width: 200px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
 .custom-title-column {

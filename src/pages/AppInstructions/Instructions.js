@@ -138,7 +138,7 @@ const Instructions = () => {
                     ))
                 } else {
                     ownerElements = cellContent.map((owner, index) => (
-                        <span className="px-2 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white" }}>
+                        <span className="px-2 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white", fontSize: "1rem" }}>
                             {owner.name}
                         </span>
                     ))
@@ -160,9 +160,11 @@ const Instructions = () => {
             formatter: (cellContent, appInstructionsData) => {
                 return (
                     <>
-                        {cellContent.map((data, index) => {
-                            return index === 0 ? data.name : `, ${data.name}`;
-                        })}
+                        <div style={{ width: "220px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="d-flex gap-3">
+                            {cellContent.map((data, index) => {
+                                return index === 0 ? data.name : `, ${data.name}`;
+                            })}
+                        </div>
                     </>
                 )
             },
