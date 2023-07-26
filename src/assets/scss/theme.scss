@@ -382,11 +382,12 @@ span.flatpickr-weekday {
 
 //add rivan
 .table > thead {
-  vertical-align: bottom;
+  vertical-align: middle;
   background-color: #7BAE40;
   color: white;
   position: sticky;
   top: 0;
+  height: 50px;
 }
 
 .card-header { 
