@@ -33,7 +33,7 @@ const Instructions = () => {
     // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
     const [instructionsData, setInstructionsData] = useState()
     const [selected, setSelected] = useState("");
-    const [getData, setGetData] = useState([]);
+    const [getData, setGetData] = useState([]); 
     const [getData2, setGetData2] = useState([]);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const Instructions = () => {
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
-            any: "", langType: "kor", statusId: selected
+            any: "", langType: "kor", status: selected
         }
     });
 
@@ -202,13 +202,13 @@ const Instructions = () => {
             classes: "custom-notices-column",
         },
         {
-            dataField: "statusId",
+            dataField: "status",
             text: "ID status",
             sort: true,
             align: "center",
             hidden: true,
             headerStyle: { textAlign: 'center' },
-            classes: "custom-statusid-column",
+            classes: "custom-status-column",
         },
         // {
         //     dataField: "action",
@@ -279,7 +279,7 @@ const Instructions = () => {
         // setApp045p01MsgPlant("");
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: appInstructionsTabelSearch.search.any, statusId: event.target.value }
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: appInstructionsTabelSearch.search.any, status: event.target.value }
         })
         setAppInstructionsMsg("")
         console.log(event.target.value);
@@ -334,7 +334,7 @@ const Instructions = () => {
                                                         <div className="col-sm-7">
                                                             <Input
                                                                 type="select"
-                                                                name="statusId"
+                                                                name="status"
                                                                 onChange={handleChange}
                                                                 //onSelect={""}
                                                                 value={selected}
