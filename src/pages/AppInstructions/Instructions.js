@@ -42,7 +42,7 @@ const Instructions = () => {
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
-            any: "", langType: "kor", status: selected
+            search: "", langType: "kor", status: selected
         }
     });
 
@@ -104,11 +104,10 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
-            classes: "custom-title-column",
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <button
-                        style={{ width:"600px", backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
+                        style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
                         type="button"
                         className="btn btn-primary "
                         onClick={() => appInstructionsPreEdit(appInstructionsData)}
@@ -123,7 +122,7 @@ const Instructions = () => {
             text: "Owner",
             align: "center",
             headerStyle: { textAlign: 'center' },
-            classes: "custom-owner-column",
+            style: { width: "180px"},
             formatter: (cellContent, appInstructionsData) => {
                 let ownerElements = "";
                 if (cellContent.length > 1) {
@@ -154,7 +153,7 @@ const Instructions = () => {
             text: "Manager",
             align: "left",
             headerStyle: { textAlign: 'center' },
-            classes: "custom-manager-column",
+            style: { width: "180px"},
             formatter: (cellContent, appInstructionsData) => {
                 return (
                     <>
@@ -277,7 +276,7 @@ const Instructions = () => {
         // setApp045p01MsgPlant("");
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: appInstructionsTabelSearch.search.any, status: event.target.value }
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, status: event.target.value }
         })
         setAppInstructionsMsg("")
         console.log(event.target.value);
@@ -312,11 +311,11 @@ const Instructions = () => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                value={appInstructionsTabelSearch.any}
+                                                                value={appInstructionsTabelSearch.search.search}
                                                                 onChange={e => {
                                                                     setAppInstructionsTabelSearch({
                                                                         page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
-                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { any: e.target.value }
+                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, status: appInstructionsTabelSearch.search.status }
                                                                     })
                                                                 }}
                                                             />

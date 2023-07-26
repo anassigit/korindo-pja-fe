@@ -38,7 +38,7 @@
     color: #495057;
 }
 
-.text-nowrap .custom-owner-column {
+/* .text-nowrap .custom-owner-column {
     width: 180px !important;
 }
 
@@ -47,7 +47,7 @@
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-}
+} */
 
 .custom-title-column {
     width: 20px !important;
