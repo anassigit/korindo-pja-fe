@@ -575,7 +575,7 @@ const AddInstructions = (props) => {
                                                                         }
                                                                         <div className="file-detail">
                                                                         <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>&nbsp;&nbsp;
-                                                                        <a href={fileimage} onClick={() => DeleteSelectFile(id)}><i className="far fa-trash-alt" /></a>
+                                                                        <i onClick={() => DeleteSelectFile(id)}><i className="far fa-trash-alt" /></i>
                                                                             {/* <div className="file-actions">
                                                                                 <button className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
                                                                             </div> */}
@@ -586,37 +586,7 @@ const AddInstructions = (props) => {
                                                             })
                                                         }
                                                     </div>
-                                                    {/* <div className="kb-buttons-box">
-                                                        <button type="submit" className="btn btn-primary form-submit">Upload</button>
-                                                    </div> */}
                                                 </Form>
-                                                {Files.length > 0 ?
-                                                    <div className="kb-attach-box">
-                                                        <hr />
-                                                        {
-                                                            Files.map((data, index) => {
-                                                                const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                return (
-                                                                    <div className="file-atc-box" key={index}>
-                                                                        {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                <div className="file-image"></div>
-                                                                        }
-                                                                        <div className="file-detail">
-                                                                        <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                            {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
-                                                                            <div className="file-actions">
-                                                                                <a href={fileimage} className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</a>
-                                                                                <a href={fileimage} className="file-action-btn" download={filename}>Download</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                    : ''}
                                             </div>
 
 
