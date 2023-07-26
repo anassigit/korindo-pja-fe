@@ -107,7 +107,7 @@ const Instructions = () => {
             classes: "custom-title-column",
             formatter: (cellContent, appInstructionsData) => (
                 <>
-                    <div style={{ width: "500px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="d-flex gap-3">
+                    <div style={{ width: "550px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="d-flex gap-3">
                         <button
                             style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
                             type="button"
