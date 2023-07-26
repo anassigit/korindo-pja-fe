@@ -46,7 +46,7 @@
 }
 
 .custom-title-column {
-    width: 500px;
+    width: 500px !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
