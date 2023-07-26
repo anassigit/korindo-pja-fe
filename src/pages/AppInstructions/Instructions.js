@@ -33,7 +33,7 @@ const Instructions = () => {
     // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
     const [instructionsData, setInstructionsData] = useState()
     const [selected, setSelected] = useState("");
-    const [getData, setGetData] = useState([]); 
+    const [getData, setGetData] = useState([]);
     const [getData2, setGetData2] = useState([]);
 
     useEffect(() => {
@@ -107,16 +107,14 @@ const Instructions = () => {
             classes: "custom-title-column",
             formatter: (cellContent, appInstructionsData) => (
                 <>
-                    <div style={{ width: "550px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="d-flex gap-3">
-                        <button
-                            style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
-                            type="button"
-                            className="btn btn-primary "
-                            onClick={() => appInstructionsPreEdit(appInstructionsData)}
-                        >
-                            <a title="Instructions" style={{ color: "#495057" }}>{appInstructionsData.title}</a>
-                        </button>
-                    </div>
+                    <button
+                        style={{ width:"600px", backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
+                        type="button"
+                        className="btn btn-primary "
+                        onClick={() => appInstructionsPreEdit(appInstructionsData)}
+                    >
+                        <a title="Instructions" style={{ textAlign: "left", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "#495057" }} className="d-block">{appInstructionsData.title}</a>
+                    </button>
                 </>
             ),
         },
@@ -138,7 +136,7 @@ const Instructions = () => {
                     ))
                 } else {
                     ownerElements = cellContent.map((owner, index) => (
-                        <span className="px-2 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white", fontSize: "1rem" }}>
+                        <span className="px-3 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white" }}>
                             {owner.name}
                         </span>
                     ))
@@ -160,7 +158,7 @@ const Instructions = () => {
             formatter: (cellContent, appInstructionsData) => {
                 return (
                     <>
-                        <div style={{ width: "220px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="d-flex gap-3">
+                        <div style={{ width: "180px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="d-block">
                             {cellContent.map((data, index) => {
                                 return index === 0 ? data.name : `, ${data.name}`;
                             })}

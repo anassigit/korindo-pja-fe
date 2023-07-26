@@ -38,22 +38,19 @@
     color: #495057;
 }
 
-.text-nowrap .custom-owner-column{
-    width: 200px;
+.text-nowrap .custom-owner-column {
+    width: 180px !important;
 }
 
 .text-nowrap .custom-manager-column {
-    width: 200px !important;
+    width: 180px !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
 
 .custom-title-column {
-    width: 500px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    width: 20px !important;
 }
 
 .text-nowrap .custom-num-column,
@@ -61,6 +58,6 @@
 .text-nowrap .custom-status-column,
 .text-nowrap .custom-replies-column,
 .text-nowrap .custom-notices-column,
-.text-nowrap .custom-statusid-column{
+.text-nowrap .custom-statusid-column {
     width: 20px !important;
 }

@@ -319,7 +319,12 @@ const AddInstructions = (props) => {
         multiValueLabel: (styles, { data }) => ({
           ...styles,
           color: 'white',
-          fontSize: '1rem'
+          fontSize: '13px',
+          paddingLeft:'12px',
+          paddingRight:'12px',
+          paddingTop:'7.5px',
+          paddingBottom:'7.5px',
+          borderRadius: '0.25rem',
         }),
 
         multiValueRemove: (styles, { data }) => ({
@@ -386,7 +391,12 @@ const AddInstructions = (props) => {
         multiValueLabel: (styles, { data }) => ({
           ...styles,
           color: 'white',
-          fontSize: '1rem'
+          fontSize: '13px',
+          paddingLeft:'12px',
+          paddingRight:'12px',
+          paddingTop:'7.5px',
+          paddingBottom:'7.5px',
+          borderRadius: '4px',
         }),
 
         multiValueRemove: (styles, { data }) => ({
