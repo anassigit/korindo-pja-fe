@@ -185,7 +185,6 @@ const EditInstructions = (props) => {
         editInstructionsValidInput.setFieldValue("title", props.instructionsData?.title)
         editInstructionsValidInput.setFieldValue("insDate", props.instructionsData?.insDate)
         editInstructionsValidInput.setFieldValue("status", props.instructionsData?.status)
-        debugger
         console.log(getDetailInstructionData)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
 

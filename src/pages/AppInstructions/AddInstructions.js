@@ -43,8 +43,8 @@ const AddInstructions = (props) => {
 
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
     const [addInstructionsSpinner, setAddInstructionsSpinner] = useState(false);
-    const [selectedMulti, setselectedMulti] = useState(null);
-    const [selectedMulti2, setselectedMulti2] = useState(null);
+    const [selectedMulti, setselectedMulti] = useState("");
+    const [selectedMulti2, setselectedMulti2] = useState("");
 
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
@@ -108,6 +108,8 @@ const AddInstructions = (props) => {
 
         validationSchema: Yup.object().shape({
             title: Yup.string().required("Wajib diisi"),
+            insDate: Yup.string().required("Wajib diisi"),
+            status: Yup.string().required("Wajib diisi"),
 
         }),
 
@@ -120,6 +122,7 @@ const AddInstructions = (props) => {
             bodyForm.append('status', val.status);
             bodyForm.append('description', val.description);
 
+            
             selectedMulti.map((data, index) => {
 
                 bodyForm.append('user', data.value);
@@ -130,7 +133,7 @@ const AddInstructions = (props) => {
                 bodyForm.append('user', data.value);
 
             })
-
+       
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -318,7 +321,7 @@ const AddInstructions = (props) => {
 
         multiValueRemove: (styles, { data }) => ({
           ...styles,
-          color: data.bgColor,
+          color: 'white',
           ':hover': {
             backgroundColor: data.bgColor,
             color: 'white',
@@ -383,7 +386,7 @@ const AddInstructions = (props) => {
 
         multiValueRemove: (styles, { data }) => ({
           ...styles,
-          color: '#579DFF',
+          color: 'white',
           ':hover': {
             backgroundColor: data.bgColor,
             color: 'white',
