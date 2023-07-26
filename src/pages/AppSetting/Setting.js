@@ -53,11 +53,9 @@ const Setting = () => {
 
     /* ENDS OF MODAL */
 
-    const [generalSettingObj, setGeneralSettingObj] = useState({ langType: "eng", instructionDisplay: "", notification: "", notification2: "", limit: 100 })
-
     const [appMembersTabelSearch, setAppMembersTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
-            any: "", langType: "idr"
+            any: "", langType: "kor"
         }
     });
 
@@ -195,10 +193,6 @@ const Setting = () => {
         },
     ]
 
-    useEffect(() => {
-        dispatch(getSettingData(appMembersTabelSearch));
-    }, [appMembersTabelSearch])
-
     const handleRadioChange1 = (event) => {
         setRadioValue1(event.target.value)
         setGeneralSetting([event.target.value, radioValue2, radioValue3])
@@ -242,94 +236,6 @@ const Setting = () => {
         }
         setGeneralSetting([radioValue1, radioValue2, radioValue3])
     }, [appSettingData])
-
-
-    /* manual table functions */
-
-    const [activePage, setactivePage] = useState(1)
-    const [totalCount, settotalCount] = useState(0)
-    const [sizePaging, setSizePaging] = useState(10)
-    const [labelPagingFrom, setlabelPagingFrom] = useState(0)
-    const [labelPagingTo, setlabelPagingTo] = useState(0)
-    const [sortTempBefore, setSortTempBefore] = useState([])
-    const [sortTempAfter, setSortTempAfter] = useState([])
-    const jmlColumn = 13
-    const [sortFilter, setSortFilter] = useState([])
-
-
-    const handlePageChange = pageNumber => {
-        let pSize = parseInt(sizePaging)
-        setactivePage(pageNumber)
-        var temp1 = parseInt(pSize) * parseInt(pageNumber) - pSize
-
-        setApp044p01TabelSearch({
-            page: app044p01TabelSearch.page,
-            limit: pSize,
-            offset: temp1,
-            sort: app044p01TabelSearch.sort,
-            order: app044p01TabelSearch.order,
-            search: {
-                any: app044p01TabelSearch.search.any,
-                plantCd: app044p01SearchLovPlant,
-                petakCd: app044p01SearchLovPetak,
-                wilayahCd: app044p01SearchLovWilayah,
-                vendorCd: app044p01SearchLovVendor,
-                startDate: app0044p01SearchStartDate,
-                endDate: app0044p01SearchEndDate,
-                status: selected,
-            },
-        })
-        console.log(
-            "app044p01LaporanPerVendorData : ",
-            app044p01LaporanPerVendorData.data
-        )
-        setApp044setMsg("")
-    }
-
-    const pagingSizeChange = e => {
-        setactivePage(1)
-        setApp044p01TabelSearch({
-            page: app044p01TabelSearch.page,
-            limit: e.target.value,
-            offset: 0,
-            sort: app044p01TabelSearch.sort,
-            order: app044p01TabelSearch.order,
-            search: {
-                any: app044p01TabelSearch.search.any,
-                plantCd: app044p01SearchLovPlant,
-                petakCd: app044p01SearchLovPetak,
-                wilayahCd: app044p01SearchLovWilayah,
-                vendorCd: app044p01SearchLovVendor,
-                startDate: app0044p01SearchStartDate,
-                endDate: app0044p01SearchEndDate,
-                status: selected,
-            },
-        })
-        setApp044setMsg("")
-        setSizePaging(e.target.value)
-    }
-
-    const requestSort = (field, index) => {
-
-        var temp0 = sortFilter.filter(obj => obj.key == index);
-        var temp1 = sortFilter.filter(obj => obj.key != index);
-        var temp3 = []
-        var sort = "asc"
-        if (temp0.length > 0) {
-            if (temp0[0].key === index && temp0[0].sort === "asc") {
-                sort = "desc"
-            }
-        }
-        temp3.push({
-            key: index,
-            sort: sort,
-            field: field
-        })
-        setSortTempAfter(temp3)
-        setSortTempBefore(temp1)
-    }
-
-    /* END */
 
     const [tempState, setTempState] = useState([]);
 

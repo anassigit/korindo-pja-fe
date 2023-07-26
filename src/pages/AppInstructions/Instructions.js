@@ -94,7 +94,7 @@ const Instructions = () => {
             dataField: "num",
             text: "No.",
             sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-num-column",
         },
