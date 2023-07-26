@@ -40,7 +40,7 @@
 
 .text-nowrap .custom-owner-column,
 .text-nowrap .custom-manager-column {
-    width: 150px;
+    width: 200px;
     white-space: normal;
     word-wrap: break-word;
 }
