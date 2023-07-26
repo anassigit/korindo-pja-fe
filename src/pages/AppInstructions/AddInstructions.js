@@ -30,6 +30,7 @@ import { getCombo } from "../../store/combo/actions"
 import { format } from 'date-fns';
 import  Select, {components}   from "react-select";
 import shortid from "shortid";
+import { size } from "lodash";
 
 
 
@@ -267,7 +268,7 @@ const AddInstructions = (props) => {
             borderColor: state.isFocused ? 'white' : 'white',
             borderColor: state.isDisabled ? 'white' : 'white',
             border: 0,
-            boxShadow: 'none' 
+            boxShadow: 'none',
           }),
         //   placeholder: (baseStyles, state) => ({
             
@@ -310,13 +311,15 @@ const AddInstructions = (props) => {
         const color = data.bgColor;
           return {
             ...styles,
-            backgroundColor: color
+            backgroundColor: color,
+            
           };
         },
 
         multiValueLabel: (styles, { data }) => ({
           ...styles,
           color: 'white',
+          fontSize: '1rem'
         }),
 
         multiValueRemove: (styles, { data }) => ({
@@ -337,7 +340,8 @@ const AddInstructions = (props) => {
             borderColor: state.isFocused ? 'white' : 'white',
             borderColor: state.isDisabled ? 'white' : 'white',
             border: 0,
-            boxShadow: 'none' 
+            boxShadow: 'none',
+           
           }),
 
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
@@ -359,7 +363,6 @@ const AddInstructions = (props) => {
                 : 'black'
               : data.color,
             cursor: isDisabled ? 'not-allowed' : 'default',
-      
             ':active': {
               ...styles[':active'],
               backgroundColor: !isDisabled
@@ -375,13 +378,15 @@ const AddInstructions = (props) => {
         const color = data.bgColor;
           return {
             ...styles,
-            backgroundColor: '#579DFF'
+            backgroundColor: '#579DFF',
+           
           };
         },
 
         multiValueLabel: (styles, { data }) => ({
           ...styles,
           color: 'white',
+          fontSize: '1rem'
         }),
 
         multiValueRemove: (styles, { data }) => ({
@@ -415,7 +420,7 @@ const AddInstructions = (props) => {
                                     <Row>
                                         <Col md="6">
 
-                                            <div className="mb-3 col-sm-6">
+                                            <div className="mb-3 col-sm-8">
                                                 <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     name="title"
@@ -431,7 +436,7 @@ const AddInstructions = (props) => {
                                                 ) : null}
                                             </div>
 
-                                            <div className="mb-3 col-sm-6">
+                                            <div className="mb-3 col-sm-8">
                                                 <Label>
                                                     Instruction Date{" "}
                                                     <span style={{ color: "red" }}>* </span>
@@ -451,7 +456,7 @@ const AddInstructions = (props) => {
                                                 ) : null}
                                             </div>
 
-                                            <div className="mb-3 col-sm-6">
+                                            <div className="mb-3 col-sm-8">
                                                 <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
@@ -476,7 +481,7 @@ const AddInstructions = (props) => {
                                                 ) : null}
                                             </div>
 
-                                            <div className="mb-3 col-sm-6">
+                                            <div className="mb-3 col-sm-8">
                                                 <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
                                                 <Input
                                                     name="description"
@@ -506,7 +511,7 @@ const AddInstructions = (props) => {
                                         </Col>
 
                                         <Col md="6">
-                                            <div className="mb-3 col-sm-6">
+                                            <div className="mb-3 col-sm-8">
                                                 <Label> Choose Owners </Label>
                                                 <Select
                                                 //id="user"
@@ -524,7 +529,7 @@ const AddInstructions = (props) => {
                                                 />
                                             </div>
 
-                                            <div className="mb-3 col-sm-6">
+                                            <div className="mb-3 col-sm-8">
                                                 <label>Choose Managers </label>
                                                 <Select
                                                 //id="user"
@@ -542,7 +547,7 @@ const AddInstructions = (props) => {
                                                 />
                                             </div>
 
-                                            <div className="mb-3 col-sm-6">
+                                            <div className="mb-3 col-sm-8">
                                                 <label>Upload Attach Files </label>
 
                                                 <Form onSubmit={FileUploadSubmit}>
@@ -567,6 +572,7 @@ const AddInstructions = (props) => {
                                                    
                                                         </div>
                                                         </div>
+                                                        &nbsp;
                                                     <div className="kb-attach-box mb-3">
                                                         {
                                                             selectedfile.map((data, index) => {
@@ -575,7 +581,7 @@ const AddInstructions = (props) => {
                                                                     <div className="file-atc-box" key={id}>
                                                                         {
                                                                             filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                <div className="file-image"> <img src={fileimage} alt="" /></div> :
+                                                                                <div className="file-image"></div> :
                                                                                 <div className="file-image"></div>
                                                                         }
                                                                         <div className="file-detail">
