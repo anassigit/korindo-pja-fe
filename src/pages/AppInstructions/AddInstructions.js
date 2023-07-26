@@ -43,8 +43,8 @@ const AddInstructions = (props) => {
 
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
     const [addInstructionsSpinner, setAddInstructionsSpinner] = useState(false);
-    const [selectedMulti, setselectedMulti] = useState("");
-    const [selectedMulti2, setselectedMulti2] = useState("");
+    const [selectedMulti, setselectedMulti] = useState([]);
+    const [selectedMulti2, setselectedMulti2] = useState([]);
 
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
@@ -520,6 +520,7 @@ const AddInstructions = (props) => {
                                                     styles={colourStyles}
                                                     components={{ DropdownIndicator }}
                                                     placeholder={'Select or type...'}
+                                                    
                                                 />
                                             </div>
 
@@ -537,6 +538,7 @@ const AddInstructions = (props) => {
                                                     styles={colourStyles2}
                                                     components={{ DropdownIndicator }}
                                                     placeholder={'Select or type...'}
+                                                    
                                                 />
                                             </div>
 
