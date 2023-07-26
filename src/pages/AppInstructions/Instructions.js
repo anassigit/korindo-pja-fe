@@ -96,6 +96,7 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-num-column",
         },
         {
             dataField: "title",
@@ -103,18 +104,18 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-title-column",
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <div style={{ justifyContent: 'left' }} className="d-flex gap-3">
-
-                        <button style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
+                        <button
+                            style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
                             type="button"
                             className="btn btn-primary "
                             onClick={() => appInstructionsPreEdit(appInstructionsData)}
                         >
                             <a title="Instructions" style={{ color: "#495057" }}>{appInstructionsData.title}</a>
                         </button>
-
                     </div>
                 </>
             ),
@@ -172,6 +173,7 @@ const Instructions = () => {
             sort: true,
             align: "center",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-insdate-column",
         },
         {
             dataField: "status",
@@ -179,6 +181,7 @@ const Instructions = () => {
             sort: true,
             align: "center",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-status-column",
         },
         {
             dataField: "reply_count",
@@ -186,6 +189,7 @@ const Instructions = () => {
             sort: true,
             align: "center",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-replies-column",
         },
         {
             dataField: "notice_count",
@@ -193,6 +197,7 @@ const Instructions = () => {
             sort: true,
             align: "center",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-notices-column",
         },
         {
             dataField: "statusId",
@@ -201,6 +206,7 @@ const Instructions = () => {
             align: "center",
             hidden: true,
             headerStyle: { textAlign: 'center' },
+            classes: "custom-statusid-column",
         },
         // {
         //     dataField: "action",
@@ -372,7 +378,6 @@ const Instructions = () => {
                                             searchGet={appInstructionsTabelSearch}
                                             redukCall={getInstructionsData}
                                         />
-
                                     </Row>
                                 </React.Fragment>
                             </Col>

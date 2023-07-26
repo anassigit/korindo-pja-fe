@@ -28,19 +28,35 @@
     border-radius: 0;
 }
 
-.react-bootstrap-table-pagination{
+.react-bootstrap-table-pagination {
     padding-left: 1.5%;
     padding-right: 1.5%;
 }
 
-.table-secondary th{
+.table-secondary th {
     background-color: white !important;
     color: #495057;
 }
 
 .text-nowrap .custom-owner-column,
 .text-nowrap .custom-manager-column {
-  width: 250px;
-  white-space: normal;
-  word-wrap: break-word;
+    width: 150px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.custom-title-column {
+    width: 500px;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.text-nowrap .custom-num-column,
+.text-nowrap .custom-insdate-column,
+.text-nowrap .custom-status-column,
+.text-nowrap .custom-replies-column,
+.text-nowrap .custom-notices-column,
+.text-nowrap .custom-statusid-column{
+    width: 20px !important;
 }
