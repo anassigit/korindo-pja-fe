@@ -61,7 +61,7 @@ const EditInstructions = (props) => {
     const [statusList, setStatusList] = useState([]);
 
     const getDetailInstructionData = useSelector(state => {
-        // console.log("detail", state.instructionsReducer.respGetDetailInstruction);
+        console.log("detail00000", state.instructionsReducer.respGetDetailInstruction);
         // console.log("array1", replyTabelListData);
         return state.instructionsReducer.respGetDetailInstruction;
     })
@@ -194,27 +194,27 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
-        dispatch(getDetailInstruction({}))
-
+        dispatch(getDetailInstruction({
+            langType: "kor"
+        }))
     }, [])
 
     useEffect(() => {
         if (props.appEditInstructions) {
-            dispatch(getDetailInstruction({
-                "num": props.instructionsData.insId
-            }
-            ));
-            editInstructionsValidInput.setFieldValue("insId", props.instructionsData?.insId)
-            editInstructionsValidInput.setFieldValue("insTitle", props.instructionsData?.insTitle)
+            debugger
+            console.log("props",props.instructionsData)
+            editInstructionsValidInput.setFieldValue("no", props.instructionsData?.num)
+            editInstructionsValidInput.setFieldValue("title", props.instructionsData?.title)
             editInstructionsValidInput.setFieldValue("insDate", props.instructionsData?.insDate)
-            editInstructionsValidInput.setFieldValue("statusId", props.instructionsData?.statusId)
-            editInstructionsValidInput.setFieldValue("descriptions", props.instructionsData?.descriptions)
+            editInstructionsValidInput.setFieldValue("status", props.instructionsData?.status)
+            editInstructionsValidInput.setFieldValue("description", props.instructionsData?.description)
 
             setStartDate(format(currentDate, 'yyyy-MM-dd'))
 
-        } else {
-            dispatch(getDetailInstruction({}))
-        }
+        } 
+        // else {
+        //     dispatch(getDetailInstruction({}))
+        // }
     }, [props.appEditInstructions])
 
     const insert = async (values) => {
@@ -235,8 +235,11 @@ const EditInstructions = (props) => {
         enableReinitialize: true,
 
         initialValues: {
-            insId: '',
-            descriptions: '',
+            no: '',
+            title: '',
+            insDate: '',
+            status: '',
+            description: '',
 
         },
 
@@ -880,7 +883,7 @@ alert('Delete success.')
 
                 <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || getDetailInstructionData?.data?.instruction?.memberId != memberId ? 'none' : 'block' }}>
+                    <Row>
                         <Col lg={12}>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
@@ -900,35 +903,34 @@ alert('Delete success.')
                                                     <div className="mb-3 col-sm-6">
                                                         <Label>Instruction ID</Label>
                                                         <Input
-                                                        hidden
-                                                            name="insId"
+                                                            name="no"
                                                             type="text"
                                                             onChange={editInstructionsValidInput.handleChange}
-                                                            value={editInstructionsValidInput.values.insId || ""}
+                                                            value={editInstructionsValidInput.values.no || ""}
                                                             invalid={
-                                                                editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? true : false
+                                                                editInstructionsValidInput.touched.no && editInstructionsValidInput.errors.no ? true : false
                                                             }
                                                         />
-                                                        {editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? (
-                                                            <FormFeedback type="invalid">{editInstructionsValidInput.errors.insId}</FormFeedback>
+                                                        {editInstructionsValidInput.touched.no && editInstructionsValidInput.errors.no ? (
+                                                            <FormFeedback type="invalid">{editInstructionsValidInput.errors.no}</FormFeedback>
                                                         ) : null}
                                                     </div>
 
                                                     <div className="mb-3 col-sm-6">
                                                         <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                         <Input
-                                                            name="insTitle"
+                                                            name="title"
                                                             type="text"
 
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             onBlur={handleAutoSaveTitle}
-                                                            value={editInstructionsValidInput.values.insTitle || ""}
+                                                            value={editInstructionsValidInput.values.title || ""}
                                                             invalid={
-                                                                editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? true : false
+                                                                editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? true : false
                                                             }
                                                         />
-                                                        {editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? (
-                                                            <FormFeedback type="invalid">{editInstructionsValidInput.errors.insTitle}</FormFeedback>
+                                                        {editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? (
+                                                            <FormFeedback type="invalid">{editInstructionsValidInput.errors.title}</FormFeedback>
                                                         ) : null}
                                                     </div>
 
@@ -957,7 +959,7 @@ alert('Delete success.')
                                                         <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                         <Input
                                                             type="select"
-                                                            name="statusId"
+                                                            name="status"
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             // onBlur={editInstructionsValidInput.handleBlur}
                                                             onBlur={() => {
@@ -966,9 +968,9 @@ alert('Delete success.')
                                                             }}
                                                             // onBlur={handleAutoSaveStatus}
                                                             // fieldValue={1}
-                                                            value={editInstructionsValidInput.values.statusId || ""}
+                                                            value={editInstructionsValidInput.values.status || ""}
                                                             invalid={
-                                                                editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? true : false
+                                                                editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
                                                             }
                                                         >
                                                             {/* <option no="" value={""}></option>
@@ -991,26 +993,26 @@ alert('Delete success.')
                                                     <div className="mb-3 col-sm-6">
                                                         <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
                                                         <Input
-                                                            name="descriptions"
+                                                            name="description"
                                                             type="textarea"
                                                             rows="5"
                                                             maxLength={50}
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             value={
-                                                                editInstructionsValidInput.values.descriptions ||
+                                                                editInstructionsValidInput.values.description ||
                                                                 ""
                                                             }
                                                             invalid={
-                                                                editInstructionsValidInput.touched.descriptions &&
-                                                                    editInstructionsValidInput.errors.descriptions
+                                                                editInstructionsValidInput.touched.description &&
+                                                                    editInstructionsValidInput.errors.description
                                                                     ? true
                                                                     : false
                                                             }
                                                         />
-                                                        {editInstructionsValidInput.touched.descriptions &&
-                                                            editInstructionsValidInput.errors.descriptions ? (
+                                                        {editInstructionsValidInput.touched.description &&
+                                                            editInstructionsValidInput.errors.description ? (
                                                             <FormFeedback type="invalid">
-                                                                {editInstructionsValidInput.errors.descriptions}
+                                                                {editInstructionsValidInput.errors.description}
                                                             </FormFeedback>
                                                         ) : null}
                                                     </div>
@@ -1076,7 +1078,7 @@ alert('Delete success.')
                                                                                     {/* <p></p> */}
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
-                                                                                        <button type="button" className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
+                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteSelectFile(id)}><i className="far fa-trash-alt" /></a>
                                                                                     </div>
                                                                                     <p />
                                                                                 </div>
@@ -1107,7 +1109,7 @@ alert('Delete success.')
                                                                                     <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
                                                                                     {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
                                                                                     <div className="file-actions">
-                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(file_num)}>Delete</a>
+                                                                                        <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(file_num)}><i className="far fa-trash-alt" /></a>
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
                                                                                     </div>
@@ -1140,7 +1142,7 @@ alert('Delete success.')
                         </Col>
                     </Row>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || getDetailInstructionData?.data?.instruction?.memberId == memberId ? 'none' : 'flex' }}>
+                    <Row>
                         <Col lg={12}>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
@@ -1161,16 +1163,16 @@ alert('Delete success.')
                                                         <Label>Instruction ID</Label>
                                                         <Input
                                                             disabled
-                                                            name="insId"
+                                                            name="no"
                                                             type="text"
                                                             onChange={editInstructionsValidInput.handleChange}
-                                                            value={editInstructionsValidInput.values.insId || ""}
+                                                            value={editInstructionsValidInput.values.no || ""}
                                                             invalid={
-                                                                editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? true : false
+                                                                editInstructionsValidInput.touched.no && editInstructionsValidInput.errors.no ? true : false
                                                             }
                                                         />
-                                                        {editInstructionsValidInput.touched.insId && editInstructionsValidInput.errors.insId ? (
-                                                            <FormFeedback type="invalid">{editInstructionsValidInput.errors.insId}</FormFeedback>
+                                                        {editInstructionsValidInput.touched.no && editInstructionsValidInput.errors.no ? (
+                                                            <FormFeedback type="invalid">{editInstructionsValidInput.errors.no}</FormFeedback>
                                                         ) : null}
                                                     </div>
 
@@ -1514,7 +1516,7 @@ alert('Delete success.')
                         </Col>
                     </Row>
 
-                    <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == undefined || getDetailInstructionData?.data?.instruction?.edit == null || pId !== 'admin' ? 'none' : 'flex' }}>
+                    <Row>
 
                         <Col lg={12}>
                             <Card>

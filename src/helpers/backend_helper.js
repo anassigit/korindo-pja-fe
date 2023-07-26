@@ -105,7 +105,7 @@ export const getInstructions2 = req => post("rest/InstructionRest/SelectInstruct
 
 export const saveInstructions = req => postUpload("rest/InstructionRest/InsertInstruction", req)
 
-export const getDetailInstruction = req => postWithParam("rest/InstructionRest/SelectInstruction", req)
+export const getDetailInstruction = req => post("rest/InstructionRest/SelectInstruction", req)
 
 export const editInstructions = req => postUpload("rest/InstructionRest/UpdateInstruction", req)
 
