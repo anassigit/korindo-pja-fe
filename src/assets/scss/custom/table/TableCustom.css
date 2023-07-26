@@ -38,7 +38,10 @@
     color: #495057;
 }
 
-.text-nowrap .custom-owner-column,
+.text-nowrap .custom-owner-column{
+    width: 200px;
+}
+
 .text-nowrap .custom-manager-column {
     width: 200px;
     white-space: normal;
