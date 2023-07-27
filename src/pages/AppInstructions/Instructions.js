@@ -18,7 +18,6 @@ import { useSelector, useDispatch } from "react-redux"
 //import { ReactSession } from 'react-client-session';
 import AddInstructions from "./AddInstructions";
 import EditInstructions from "./EditInstructions";
-import DetailInstructions from "./DetailInstructions";
 import "../../assets/scss/custom/table/TableCustom.css"
 
 const Instructions = () => {
@@ -30,7 +29,6 @@ const Instructions = () => {
     const [appDetailInstructions, setAppDetailInstructions] = useState(true)
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
     const [appInstructionsMsg2, setAppInstructionsMsg2] = useState("")
-    // const [app052DeleteModal, setApp052DeleteModal] = useState(false);
     const [instructionsData, setInstructionsData] = useState()
     const [selected, setSelected] = useState("");
     const [getData, setGetData] = useState([]);
@@ -50,42 +48,10 @@ const Instructions = () => {
         return state.instructionsReducer.respGetInstructions;
     });
 
-    // useEffect(() =>{
-    // if(appInstructionsData.status == "1"){
-    //     setGetData(appInstructionsData?.data?.ins)
-    // }
-    // }, [appInstructionsData])
-
-    // const getData1 = () => {
-    //     let data1 = []
-    //     data1.push(appInstructionsData)
-    //     console.log("data1", data1)
-    //     let dataDtl1 = []
-    //     data1.map( vin =>
-    //         dataDtl1.push({
-    //             insId: vin.data.ins[0].insId,
-    //         })           
-    //         )
-    //     console.log("dataDtl1", dataDtl1)
-
-    // }
-
-
-    // const appInstructionsData2 = useSelector(state => {
-    //console.log("data2",state.instructionsReducer.respGetInstructions2);
-
-    // let dt2 = []
-    // dt2.push(state.instructionsReducer.respGetInstructions2)
-    // console.log("dt2", dt2)
-    // return state.instructionsReducer.respGetInstructions2;
-
-    // });
-
 
     useEffect(() => {
         if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
-            // setAppInstructionsMsg2(appInstructionsData2)
         }
     }, [appInstructionsData])
 
@@ -194,15 +160,10 @@ const Instructions = () => {
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                         
                         <span>
-                         
                         <div>
-                        <i className="mdi mdi-chat-processing-outline font-size-30  text-primary" id="repliesCount" />&nbsp;{appInstructionsData.reply_count}
+                        <i className="mdi mdi-chat-processing-outline text-primary" id="repliesCount" style={{fontSize: "25px"}}/>&nbsp;{appInstructionsData.reply_count}
                         </div>
                         </span>
-                    
-                        <UncontrolledTooltip placement="top" target="repliesCount">
-                            Replies
-                        </UncontrolledTooltip>
 
                     </div>
                 </>
@@ -220,15 +181,10 @@ const Instructions = () => {
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                         
                         <span>
-                         
                         <div>
-                        <i className="mdi mdi-bell font-size-30  text-primary" id="repliesCount" />&nbsp;{appInstructionsData.notice_count}
+                        <i className="mdi mdi-bell text-primary" id="repliesCount" style={{fontSize: "25px"}}/>&nbsp;{appInstructionsData.notice_count}
                         </div>
                         </span>
-                    
-                        <UncontrolledTooltip placement="top" target="repliesCount">
-                            Replies
-                        </UncontrolledTooltip>
 
                     </div>
                 </>
@@ -243,28 +199,6 @@ const Instructions = () => {
             headerStyle: { textAlign: 'center' },
             classes: "custom-status-column",
         },
-        // {
-        //     dataField: "action",
-        //     isDummyField: true,
-        //     text: "Aksi",
-        //     headerStyle: { textAlign: 'center' },
-        //     formatter: (cellContent, appInstructionsData) => (
-        //         <>
-        //             <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-        //                 <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app052p01PreEdit(appInstructionsData)} />
-        //                 <UncontrolledTooltip placement="top" target="edittooltip">
-        //                     Ubah
-        //                 </UncontrolledTooltip>
-
-        //                 <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app052p01Delete(appInstructionsData)} />
-        //                 <UncontrolledTooltip placement="top" target="deletetooltip">
-        //                     Hapus
-        //                 </UncontrolledTooltip>
-
-        //             </div>
-        //         </>
-        //     ),
-        // },
     ]
 
     const appInstructionsPreAdd = () => {
@@ -278,45 +212,16 @@ const Instructions = () => {
         setInstructionsData(appInstructionsData)
         setAppInstructionsPage(false)
         setEditInstructions(true)
-        // setAppDetailInstructions(true)
     }
 
-    // const [app052p01JarakTanamDelete, setApp052p01JarakTanamDelete] = useState(null);
-
-    // const app052p01Delete = (app052p01JarakTanamData) => {
-    //     setApp052setMsg("")
-    //     setApp052p01JarakTanamDelete(app052p01JarakTanamData);
-    //     setApp052DeleteModal(true)
-    // }
-
-    // const app052HandleDeleteJarakTanam = () => {
-    //     if (app052p01JarakTanamDelete.jarakTanamId) {
-    //         dispatch(deleteJarakTanam(app052p01JarakTanamDelete));
-    //         setApp052DeleteModal(false);
-    //         setApp052p01JarakTanamDelete(null)
-    //     }
-    // }
-
-    // const app052p04Message = useSelector(state => {
-    //     return state.JarakTanamReducer.msgDelete;
-    // });
-
-    // useEffect(() => {
-    //     if (app052p04Message.status == "1") {
-    //         dispatch(getJarakTanamData(app052p01TabelSearch))
-    //     }
-    //     setApp052setMsg(app052p04Message);
-    // }, [app052p04Message])
 
     const handleChange = event => {
-        // setApp045p01MsgPlant("");
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
             sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, status: event.target.value }
         })
         setAppInstructionsMsg("")
         console.log(event.target.value);
-        // console.log('dropdown: ', selected);
         setSelected(event.target.value);
     };
 
@@ -325,15 +230,7 @@ const Instructions = () => {
             componentJsx={
                 <>
 
-                    {/* <DeleteModal
-                        show={app052DeleteModal}
-                        onDeleteClick={app052HandleDeleteJarakTanam}
-                        onCloseClick={() => setApp052DeleteModal(false)}
-                    /> */}
-
                     <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
-                        {/* <Breadcrumbs title="Forms" breadcrumbItem="Master Jarak Tanam" /> */}
-
                         <Row>
                             <Col>
                                 <Row className="mb-2">
@@ -433,14 +330,6 @@ const Instructions = () => {
                         setAppInstructionsPage={setAppInstructionsPage}
                         instructionsData={instructionsData}
                         appInstructionsTabelSearch={appInstructionsTabelSearch} />
-
-                    {/* <DetailInstructions
-                        appDetailInstructions={appDetailInstructions}
-                        setAppDetailInstructions={setAppDetailInstructions}
-                        setAppInstructionsMsg={setAppInstructionsMsg}
-                        setAppInstructionsPage={setAppInstructionsPage}
-                        instructionsData={instructionsData}
-                        appInstructionsTabelSearch={appInstructionsTabelSearch} /> */}
 
                 </>
             }
