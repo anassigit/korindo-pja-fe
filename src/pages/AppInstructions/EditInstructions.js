@@ -1016,6 +1016,23 @@ const EditInstructions = (props) => {
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
     const inputRef = useRef(null)
 
+    useEffect(() => {
+        getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
+            const newObj = {
+
+                file_num: attachFileList.no,
+                filename: attachFileList.name,
+
+            };
+
+            setGetFiles((option) => [...option, newObj]);
+
+            // SetFiles((option) => [...option, newObj]);
+
+            SetFiles2((option) => [...option, newObj]);
+        });
+    }, [editInstructionsValidInput.values.no])
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
