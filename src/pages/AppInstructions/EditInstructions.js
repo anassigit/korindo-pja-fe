@@ -78,7 +78,6 @@ const EditInstructions = (props) => {
     });
 
     const getDetailInstructionData = useSelector(state => {
-        console.log("useSelector : ", state.instructionsReducer.respGetDetailInstruction)
         return state.instructionsReducer.respGetDetailInstruction;
     })
 
@@ -178,7 +177,6 @@ const EditInstructions = (props) => {
         editInstructionsValidInput.setFieldValue("title", props.instructionsData?.title)
         editInstructionsValidInput.setFieldValue("insDate", props.instructionsData?.insDate)
         editInstructionsValidInput.setFieldValue("status", props.instructionsData?.status)
-        console.log(getDetailInstructionData)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
 
         setStartDate(format(currentDate, 'yyyy-MM-dd'))
@@ -243,6 +241,7 @@ const EditInstructions = (props) => {
     };
 
     const downloadFiles = async file_num => {
+        debugger
         var ix = { file_num: file_num }
         await dispatch(downloadFile(ix))
     }
@@ -257,33 +256,30 @@ const EditInstructions = (props) => {
             status: '',
             description: '',
 
+            content: '',
+
         },
 
         validationSchema: Yup.object().shape({
             no: Yup.string().required("Wajib diisi"),
-            //descriptions: Yup.string().required("Wajib diisi"),
-
         }),
 
         onSubmit: (val) => {
 
+            debugger
             var bodyForm = new FormData();
 
-            bodyForm.append('num', val.insId);
-            bodyForm.append('description', val.descriptions);
+            bodyForm.append('num', val.no);
+            bodyForm.append('description', val.description);
 
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
             }
-            //setEditInstructionsSpinner(true);
-            // props.setAppInstructionsPage(true);
-            //props.setEditInstructions(true);
             alert('Add description success.')
             insert2(bodyForm, config);
             window.location.reload();
-            //props.setAppInstructionsMsg(appAddInstructionsMessage);
 
         }
 
@@ -297,7 +293,7 @@ const EditInstructions = (props) => {
 
         var bodyForm = new FormData();
 
-        bodyForm.append('num', editInstructionsValidInput.values.insId);
+        bodyForm.append('num', editInstructionsValidInput.values.no);
 
 
         if (selectedfile.length > 0) {
@@ -413,7 +409,6 @@ const EditInstructions = (props) => {
                 'content-type': 'multipart/form-data'
             }
         }
-        console.log(bodyForm);
         alert('Delete success.')
         deleteFiles(bodyForm, config);
         window.location.reload();
@@ -648,28 +643,19 @@ const EditInstructions = (props) => {
         var id1 = "";
         if (selectedMulti.length < s.length) {
 
-            console.log('1 : ' + s.value)
-
-            console.log(' id : ', id1)
-
             var jml = 0;
 
             jml = s.length
 
 
             var bodyForm = new FormData();
-            debugger
             bodyForm.append('num', editInstructionsValidInput.values.insId);
-
-            debugger
-            console.log(selectedMulti)
 
             if (jml > 1) {
                 for (let i = 0; i < s.length; i++) {
                     if (i == s.length - 1) {
                         debugger
                         id1 = s[s.length - 1].value
-                        //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('addUser', id1);
                     }
                     break;
@@ -737,28 +723,19 @@ const EditInstructions = (props) => {
         var id2 = "";
         if (selectedMulti2.length < s.length) {
 
-            console.log('1 : ' + s.value)
-
-            console.log(' id : ', id2)
-
             var jml2 = 0;
 
             jml2 = s.length
 
 
             var bodyForm = new FormData();
-            debugger
             bodyForm.append('num', editInstructionsValidInput.values.insId);
-
-            debugger
-            console.log(selectedMulti)
 
             if (jml2 > 1) {
                 for (let i = 0; i < s.length; i++) {
                     if (i == s.length - 1) {
                         debugger
                         id2 = s[s.length - 1].value
-                        //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('addUser', id2);
                     }
                     break;
@@ -775,7 +752,6 @@ const EditInstructions = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }
-            console.log(bodyForm);
             insert(bodyForm, config);
 
         } else {
@@ -794,7 +770,6 @@ const EditInstructions = (props) => {
                     if (i == s.length - 1) {
                         debugger
                         id2 = s[s.length - 1].value
-                        //console.log('2 :' + s[s.length - 1].value)
                         bodyForm.append('removeUser', id2);
                     }
                     break;
@@ -980,10 +955,9 @@ const EditInstructions = (props) => {
     };
 
     function insertReplyAndFiles(values) {
-
         var bodyForm = new FormData();
 
-        bodyForm.append('instruction_num', editInstructionsValidInput.values.insId);
+        bodyForm.append('instruction_num', editInstructionsValidInput.values.no);
         bodyForm.append('content', editInstructionsValidInput.values.content);
 
         if (selectedfileR.length > 0) {
@@ -1006,7 +980,6 @@ const EditInstructions = (props) => {
 
 
         // setEditInstructionsSpinner(true);
-        // console.log(msgSaveReply)
         alert('Add reply success.')
         insert3(bodyForm, config);
         window.location.reload();
@@ -1017,14 +990,11 @@ const EditInstructions = (props) => {
     // Reply tables functions //
 
     const replyDelete = async (row) => {
-        debugger
-        console.log(row);
         try {
             debugger
             var map = {
                 "reply_num": row.no
             };
-            console.log('map', map);
 
             setEditInstructionsSpinner(true);
             setEditInstructionMsg("")
@@ -1041,55 +1011,20 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         if (msgSaveReply.status == "1") {
+            // setApp015p02LovWilayah('')
+            // props.setApp015p01Page(true);
+            // props.setApp015p02Page(false);
+            // dispatch(getVendorData(props.app015p01TabelSearch))
         }
         setEditInstructionMsg(msgSaveReply)
         setEditInstructionsSpinner(false);
     }, [msgSaveReply])
 
+
     /*********************************** SIGIT MADE FROM HERE ***********************************/
 
     const [showDesc, setShowDesc] = useState(false)
     const inputRef = useRef(null)
-
-
-    /* Reply Yups */
-
-    const editInstructionsValidInputReply = useFormik({
-        enableReinitialize: true,
-
-        initialValues: {
-            instruction_num: '',
-            content: '',
-            file: '',
-        },
-
-        validationSchema: Yup.object().shape({
-            instruction_num: Yup.string().required("Instruction not yet selected..."),
-            content: Yup.string().required("Please fill reply field..."),
-        }),
-
-        onSubmit: (val) => {
-
-            debugger
-
-            var bodyForm = new FormData();
-
-            bodyForm.append('instruction_num', val.instruction_num);
-            bodyForm.append('content', val.content);
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            alert('Add description success.')
-            insert3(bodyForm, config);
-            window.location.reload();
-
-        }
-
-    });
-
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1118,7 +1053,7 @@ const EditInstructions = (props) => {
 
                                         <Row>
                                             <Col md="6">
-                                                <div className="mb-3 col-sm-8">
+                                                <div className="mb-3 col-sm-8" hidden>
                                                     <Label>Instruction ID</Label>
                                                     <Input
                                                         name="no"
@@ -1240,6 +1175,7 @@ const EditInstructions = (props) => {
                                                         ) : null}
                                                     </Col>
                                                 </div>
+
                                             </Col>
 
                                             <Col md="6">
@@ -1384,7 +1320,7 @@ const EditInstructions = (props) => {
 
                                         <Row>
                                             <Col md="6">
-                                                <div className="mb-3 col-sm-8">
+                                                <div className="mb-3 col-sm-8" hidden>
                                                     <Label>Instruction ID</Label>
                                                     <Input
                                                         disabled
@@ -1576,173 +1512,166 @@ const EditInstructions = (props) => {
 
                             <CardBody>
                                 <React.Fragment>
-                                    <Form
-                                        onSubmit={(e) => {
-                                            e.preventDefault();
-                                            editInstructionsValidInput.handleSubmit();
-                                            return false;
-                                        }}
-                                    >
-                                        <FormGroup className="mb-0">
-                                            <div className="row row-cols-2">
-                                                <div className="col">
-                                                    <Row className="mb-2">
-                                                        <Col sm="12">
-                                                            <div className="input-group">
-                                                                <div className="col-sm-8">
-                                                                    <label>Answer </label>
-                                                                    <Input
-                                                                        name="content"
-                                                                        type="textarea"
-                                                                        onChange={editInstructionsValidInputReply.handleChange}
-                                                                        style={{ color: "black" }}
-                                                                        placeholder="Type here..."
-                                                                        invalid={
-                                                                            editInstructionsValidInputReply.touched.content && editInstructionsValidInputReply.errors.content ? true : false
-                                                                        }
-                                                                    />
-                                                                    {editInstructionsValidInputReply.touched.content && editInstructionsValidInputReply.errors.content ? (
-                                                                        <FormFeedback type="invalid">{editInstructionsValidInputReply.errors.content}</FormFeedback>
-                                                                    ) : null}
-                                                                </div>
+                                    <FormGroup className="mb-0">
+                                        <div className="row row-cols-2">
+                                            <div className="col">
+                                                <Row className="mb-2">
+                                                    <Col sm="12">
+                                                        <div className="input-group">
+                                                            <div className="col-sm-8">
+                                                                <label>Answer </label>
+                                                                <Input
+                                                                    name="content"
+                                                                    type="textarea"
+                                                                    onChange={editInstructionsValidInput.handleChange}
+                                                                    style={{ color: "black" }}
+                                                                    placeholder="Type here..."
+                                                                    invalid={
+                                                                        editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? true : false
+                                                                    }
+                                                                />
+                                                                {editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? (
+                                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.content}</FormFeedback>
+                                                                ) : null}
                                                             </div>
-                                                        </Col>
-                                                    </Row>
-                                                </div>
-                                                <div className="col">
-                                                    <Row className="mb-2">
-                                                        <Col sm="12">
-                                                            <div className="input-group">
-                                                                <div className="col-sm-8">
-                                                                    <div className="mb-3 col-sm-6">
-                                                                        <label>Attached Files </label>
-
-                                                                        <Form onSubmit={FileUploadSubmitR}>
-                                                                            <div className="kb-file-upload">
-                                                                                <div className="file-upload-box">
-                                                                                    <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="kb-attach-box mb-3">
-                                                                                {
-                                                                                    selectedfileR.map((data, index) => {
-                                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                                        return (
-                                                                                            <div className="file-atc-box" key={id}>
-
-                                                                                                {
-                                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                        <div className="file-image"> <img src={fileimage} alt="" /></div>
-                                                                                                        :
-                                                                                                        <div className="file-image"><i className="fas fa-file-alt" /></div>
-                                                                                                }
-                                                                                                <div className="file-detail">
-                                                                                                    <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                                    {/* <p></p> */}
-                                                                                                    {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
-                                                                                                    <div className="file-actions">
-                                                                                                        <button type="button" className="form-control" onClick={() => DeleteSelectFileR(id)}>Delete</button>
-                                                                                                    </div>
-                                                                                                    <p />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </div>
-
-                                                                        </Form>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </Col>
-
-                                                        <Col md="12">
-                                                            <div className="text-sm-end" >
-
-                                                                <Button
-                                                                    type="submit"
-
-                                                                    color="primary"
-                                                                    className="ms-1"
-                                                                    onClick={() => { insertReplyAndFiles }}
-                                                                >
-                                                                    Reply
-                                                                </Button>
-
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                </div>
-
+                                                        </div>
+                                                    </Col>
+                                                </Row>
                                             </div>
-                                            <br />
-                                            <Row>
-                                                <hr />
-                                                <h6> Other Replies</h6>
-                                            </Row>
-                                            <Row style={{ marginTop: "30px" }}>
-                                                <Col md="12">
-                                                    <Card>
+                                            <div className="col">
+                                                <Row className="mb-2">
+                                                    <Col sm="12">
+                                                        <div className="input-group">
+                                                            <div className="col-sm-8">
+                                                                <div className="mb-3 col-sm-6">
+                                                                    <label>Attached Files </label>
 
-                                                        <CardBody>
-                                                            <Row>
+                                                                    <Form onSubmit={FileUploadSubmitR}>
+                                                                        <div className="kb-file-upload">
+                                                                            <div className="file-upload-box">
+                                                                                <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="kb-attach-box mb-3">
+                                                                            {
+                                                                                selectedfileR.map((data, index) => {
+                                                                                    const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                                    return (
+                                                                                        <div className="file-atc-box" key={id}>
 
-                                                                <table className="tg"
-                                                                    style={{ marginTop: "10px" }}
-                                                                >
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th className="tg-0lax">Name</th>
-                                                                            <th className="tg-0lax">Reply</th>
-                                                                            <th className="tg-0lax">Time</th>
-                                                                            <th className="tg-0lax">Attached Files</th>
-                                                                            <th className="tg-0lax"></th>
+                                                                                            {
+                                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                                                    <div className="file-image"> <img src={fileimage} alt="" /></div>
+                                                                                                    :
+                                                                                                    <div className="file-image"><i className="fas fa-file-alt" /></div>
+                                                                                            }
+                                                                                            <div className="file-detail">
+                                                                                                <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
+                                                                                                {/* <p></p> */}
+                                                                                                {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
+                                                                                                <div className="file-actions">
+                                                                                                    <button type="button" className="form-control" onClick={() => DeleteSelectFileR(id)}>Delete</button>
+                                                                                                </div>
+                                                                                                <p />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </div>
 
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody id="replyTabelList">
+                                                                    </Form>
 
-                                                                        {
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Col>
 
-                                                                            replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, reply_num) =>
+                                                    <Col md="12">
+                                                        <div className="text-sm-end" >
+
+                                                            <Button
+                                                                type="button"
+
+                                                                color="primary"
+                                                                className="ms-1"
+                                                                onClick={() => { insertReplyAndFiles() }}
+                                                            >
+                                                                Reply
+                                                            </Button>
+
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+
+                                        </div>
+                                        <br />
+                                        <Row>
+                                            <hr />
+                                            <h6> Other Replies</h6>
+                                        </Row>
+                                        <Row style={{ marginTop: "30px" }}>
+                                            <Col md="12">
+                                                <Card>
+
+                                                    <CardBody>
+                                                        <Row>
+
+                                                            <table className="tg"
+                                                                style={{ marginTop: "10px" }}
+                                                            >
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th className="tg-0lax">Name</th>
+                                                                        <th className="tg-0lax">Reply</th>
+                                                                        <th className="tg-0lax">Time</th>
+                                                                        <th className="tg-0lax">Attached Files</th>
+                                                                        <th className="tg-0lax"></th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="replyTabelList">
+
+                                                                    {
+
+                                                                        replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, reply_num) =>
 
 
-                                                                                <>
-                                                                                    <tr key={row.no} style={{ verticalAlign: "text-top" }}>
-                                                                                        <td className="tg-0lax" >
+                                                                            <>
+                                                                                <tr key={row.no} style={{ verticalAlign: "text-top" }}>
+                                                                                    <td className="tg-0lax" >
 
-                                                                                            {row.name}
+                                                                                        {row.name}
 
-                                                                                        </td>
-                                                                                        <td className="tg-0lax" >
+                                                                                    </td>
+                                                                                    <td className="tg-0lax" >
 
 
-                                                                                            {row.content}
+                                                                                        {row.content}
 
-                                                                                            <p />
-                                                                                            {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
-                                                                                        </td>
-                                                                                        <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                        <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
-                                                                                        <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList.length !== null ? <i className="fas fa-file-download" onClick={() => { xxx() }} /> : null}</td>
-                                                                                        {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
-                                                                                    </tr>
-                                                                                </>
+                                                                                        <p />
+                                                                                        {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
+                                                                                    </td>
+                                                                                    <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
+                                                                                    <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
+                                                                                    <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList.length !== null ? <i className="fas fa-file-download" onClick={() => { xxx() }} /> : null}</td>
+                                                                                    {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
+                                                                                </tr>
+                                                                            </>
 
-                                                                            )
-                                                                        }
-                                                                    </tbody>
-                                                                </table>
+                                                                        )
+                                                                    }
+                                                                </tbody>
+                                                            </table>
 
-                                                            </Row>
-                                                        </CardBody>
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </FormGroup>
-                                    </Form>
+                                                        </Row>
+                                                    </CardBody>
+                                                </Card>
+                                            </Col>
+                                        </Row>
+
+                                    </FormGroup>
                                 </React.Fragment>
                             </CardBody>
 
@@ -1762,39 +1691,34 @@ const EditInstructions = (props) => {
 
                                         <Row style={{ marginTop: "30px" }}>
                                             <Col md="12">
-                                                <Card>
+                                                <Row>
 
-                                                    <CardBody>
-                                                        <Row>
+                                                    <table className="tg"
+                                                        style={{ marginTop: "10px" }}
+                                                    >
+                                                        <thead>
+                                                            <tr>
+                                                                <th className="tg-0lax"></th>
+                                                                <th className="tg-0lax"></th>
 
-                                                            <table className="tg"
-                                                                style={{ marginTop: "10px" }}
-                                                            >
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th className="tg-0lax"></th>
-                                                                        <th className="tg-0lax"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="logTabelList">
 
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="logTabelList">
+                                                            {
+                                                                logTable != null && logTable.length > 0 && logTable.map((row, logs) =>
+                                                                    <>
+                                                                        <tr key={logs}>
+                                                                            <td className="tg-0lax" >{row.content}</td>
+                                                                            <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
+                                                                        </tr>
+                                                                    </>
+                                                                )
+                                                            }
+                                                        </tbody>
+                                                    </table>
 
-                                                                    {
-                                                                        logTable != null && logTable.length > 0 && logTable.map((row, logs) =>
-                                                                            <>
-                                                                                <tr key={logs}>
-                                                                                    <td className="tg-0lax" >{row.content}</td>
-                                                                                    <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                </tr>
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                </tbody>
-                                                            </table>
-
-                                                        </Row>
-                                                    </CardBody>
-                                                </Card>
+                                                </Row>
                                             </Col>
                                         </Row>
 
