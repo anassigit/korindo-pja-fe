@@ -26,8 +26,9 @@ import { getDetailInstruction } from "../../store/appInstructions/actions"
 import { format } from 'date-fns';
 import moment from "moment";
 import { ReactSession } from 'react-client-session';
-import Select from "react-select";
+import Select, {components} from "react-select";
 import shortid from "shortid";
+import VerticalLayout from "components/VerticalLayout";
 // import { values } from "lodash";
 // import { arrayRemove, arrayRemoveAll } from "redux-form";
 
@@ -43,8 +44,8 @@ const EditInstructions = (props) => {
     const [editInstructionsFirstRenderDone, setEditInstructionsFirstRenderDone] = useState(false);
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
     let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
-    const [selectedMulti, setselectedMulti] = useState(null);
-    const [selectedMulti2, setselectedMulti2] = useState(null);
+    const [selectedMulti, setselectedMulti] = useState([]);
+    const [selectedMulti2, setselectedMulti2] = useState([]);
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
     const [optionOwner0, setOptionOwner0] = useState([]);
@@ -84,14 +85,6 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
-
-            // getDetailInstructionData?.data?.instruction.map((instruction) =>{
-            //     const getInsId ={
-            //         insId: instruction.no
-            //     };
-            //     setInsId((option) => [...option, getInsId])
-            //     console.log(insId)
-            // });
 
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                 const newOwnerEdit = {
@@ -489,6 +482,165 @@ const EditInstructions = (props) => {
     // };
 
     // -- end -- //
+    
+
+    const DropdownIndicator = (props) => {
+        return (
+          <components.DropdownIndicator {...props}>
+            <i className="mdi mdi-plus-thick" />
+          </components.DropdownIndicator>
+        );
+      };
+
+    const colourStyles  = {
+        control:  (baseStyles, state) => ({
+            ...baseStyles,
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isSelected ? 'white' : 'white',
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isDisabled ? 'white' : 'white',
+            border: 0,
+            boxShadow: 'none',
+          }),
+        //   placeholder: (baseStyles, state) => ({
+            
+        //         ...defaultStyles,
+        //         color: '#ffffff',
+        //     }),
+
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+        const color = data.bgColor;
+          return {
+            ...styles,
+            backgroundColor: isDisabled
+              ? undefined
+              : isSelected
+              ? data.color
+              : isFocused
+              ? '#e6e6e6'
+              : undefined,
+            color: isDisabled
+              ? '#ccc'
+              : isSelected
+              ? 'white'
+                ? 'white'
+                : 'black'
+              : data.color,
+            cursor: isDisabled ? 'not-allowed' : 'default',
+      
+            ':active': {
+              ...styles[':active'],
+              backgroundColor: !isDisabled
+                ? isSelected
+                  ? data.color
+                  : color
+                : undefined,
+            },
+          };
+        },
+
+        multiValue: (styles, { data }) => {
+        const color = data.bgColor;
+          return {
+            ...styles,
+            backgroundColor: color,
+            
+          };
+        },
+
+        multiValueLabel: (styles, { data }) => ({
+          ...styles,
+          color: 'white',
+          fontSize: '13px',
+          paddingLeft:'12px',
+          paddingRight:'12px',
+          paddingTop:'7.5px',
+          paddingBottom:'7.5px',
+          borderRadius: '0.25rem',
+        }),
+
+        multiValueRemove: (styles, { data }) => ({
+          ...styles,
+          color: 'white',
+          ':hover': {
+            backgroundColor: data.bgColor,
+            color: 'white',
+          },
+        }),
+      };
+
+      const colourStyles2  = {
+        control:  (baseStyles, state) => ({
+            ...baseStyles,
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isSelected ? 'white' : 'white',
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isDisabled ? 'white' : 'white',
+            border: 0,
+            boxShadow: 'none',
+           
+          }),
+
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+        const color = data.bgColor;
+          return {
+            ...styles,
+            backgroundColor: isDisabled
+              ? undefined
+              : isSelected
+              ? data.color
+              : isFocused
+              ? '#e6e6e6'
+              : undefined,
+            color: isDisabled
+              ? '#ccc'
+              : isSelected
+              ? 'white'
+                ? 'white'
+                : 'black'
+              : data.color,
+            cursor: isDisabled ? 'not-allowed' : 'default',
+            ':active': {
+              ...styles[':active'],
+              backgroundColor: !isDisabled
+                ? isSelected
+                  ? data.color
+                  : color
+                : undefined,
+            },
+          };
+        },
+
+        multiValue: (styles, { data }) => {
+        const color = data.bgColor;
+          return {
+            ...styles,
+            backgroundColor: '#579DFF',
+           
+          };
+        },
+
+        multiValueLabel: (styles, { data }) => ({
+          ...styles,
+          color: 'white',
+          fontSize: '13px',
+          paddingLeft:'12px',
+          paddingRight:'12px',
+          paddingTop:'7.5px',
+          paddingBottom:'7.5px',
+          borderRadius: '4px',
+        }),
+
+        multiValueRemove: (styles, { data }) => ({
+          ...styles,
+          color: 'white',
+          ':hover': {
+            backgroundColor: data.bgColor,
+            color: 'white',
+          },
+        }),
+      };
+    
     function handleMulti(s) {
 
         debugger
@@ -923,7 +1075,7 @@ const EditInstructions = (props) => {
 
                                         <Row>
                                             <Col md="6">
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label>Instruction ID</Label>
                                                     <Input
                                                         name="no"
@@ -939,7 +1091,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                     <Input
                                                         name="title"
@@ -957,7 +1109,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label>
                                                         Instruction Date{" "}
                                                         <span style={{ color: "red" }}>* </span>
@@ -978,7 +1130,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                     <Input
                                                         type="select"
@@ -1013,7 +1165,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
                                                     <Input
                                                         name="description"
@@ -1043,7 +1195,7 @@ const EditInstructions = (props) => {
                                             </Col>
 
                                             <Col md="6">
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label> Choose Owner </Label>
                                                     <Select
 
@@ -1057,10 +1209,13 @@ const EditInstructions = (props) => {
                                                         options={optionOwner
                                                         }
                                                         className="select2-selection"
+                                                        styles={colourStyles}
+                                                        components={{ DropdownIndicator }}
+                                                         placeholder={'Select or type...'}
                                                     />
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <label>Choose Manager </label>
                                                     <Select
                                                         value={selectedMulti2}
@@ -1073,10 +1228,13 @@ const EditInstructions = (props) => {
                                                         }
 
                                                         className="select2-selection"
+                                                        styles={colourStyles2}
+                                                        components={{ DropdownIndicator }}
+                                                        placeholder={'Select or type...'}
                                                     />
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <label>Attached Files </label>
 
                                                     <Form onSubmit={FileUploadSubmit}>
@@ -1097,12 +1255,11 @@ const EditInstructions = (props) => {
                                                                                     <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                             }
                                                                             <div className="file-detail">
-                                                                                <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                {/* <p></p> */}
-                                                                                {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
-                                                                                <div className="file-actions">
-                                                                                    <a href={fileimage} className="file-action-btn" onClick={() => DeleteSelectFile(id)}><i className="far fa-trash-alt" /></a>
-                                                                                </div>
+                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>
+                                                                                &nbsp;&nbsp;&nbsp;
+
+                                                                                    <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteSelectFile(id)} />
+                                                                               
                                                                                 <p />
                                                                             </div>
                                                                         </div>
@@ -1129,13 +1286,12 @@ const EditInstructions = (props) => {
                                                                                     <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                             }
                                                                             <div className="file-detail">
-                                                                                <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
-                                                                                {/* <p><span>Size : {filesize}</span><span className="ml-3">Modified Time : {datetime}</span></p> */}
-                                                                                <div className="file-actions">
-                                                                                    <a href={fileimage} className="file-action-btn" onClick={() => DeleteFileAttached(file_num)}><i className="far fa-trash-alt" /></a>
+                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}}/>&nbsp;{filename}</span>
+                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteFileAttached(file_num)} />
                                                                                     &nbsp;&nbsp;&nbsp;
-                                                                                    <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
-                                                                                </div>
+                                                                               <i className="mdi mdi-download" style={{fontSize: "20px", verticalAlign: "middle"}} download={filename} onClick={() => downloadFiles(file_num)} />
+
                                                                             </div>
                                                                         </div>
                                                                     )
@@ -1182,7 +1338,7 @@ const EditInstructions = (props) => {
 
                                         <Row>
                                             <Col md="6">
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label>Instruction ID</Label>
                                                     <Input
                                                         disabled
@@ -1199,7 +1355,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label>Title</Label>
                                                     <Input
                                                         disabled
@@ -1217,7 +1373,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label>
                                                         Instruction Date{" "}
 
@@ -1239,7 +1395,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label> Status </Label>
                                                     <Input
                                                         disabled
@@ -1268,7 +1424,7 @@ const EditInstructions = (props) => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions</Label>
                                                     <Input
                                                         disabled
@@ -1299,27 +1455,33 @@ const EditInstructions = (props) => {
                                             </Col>
 
                                             <Col md="6">
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <Label> Choose Owner</Label>
                                                     <Select
                                                         isDisabled={true}
                                                         value={selectedMulti}
                                                         isMulti={true}
                                                         className="select2-selection"
+                                                        styles={colourStyles}
+                                                        components={{ DropdownIndicator }}
+                                                        placeholder={'No Owner Choosen'}
                                                     />
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <label>Choose Manager </label>
                                                     <Select
                                                         isDisabled={true}
                                                         value={selectedMulti2}
                                                         isMulti={true}
                                                         className="select2-selection"
+                                                        styles={colourStyles2}
+                                                        components={{ DropdownIndicator }}
+                                                        placeholder={'No manager choosen'}
                                                     />
                                                 </div>
 
-                                                <div className="mb-3 col-sm-6">
+                                                <div className="mb-3 col-sm-8">
                                                     <label>Attached Files </label>
 
                                                     <Form onSubmit={FileUploadSubmit}>
@@ -1334,16 +1496,12 @@ const EditInstructions = (props) => {
                                                                         <div className="file-atc-box" key={index}>
                                                                             {
                                                                                 filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                    <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                    <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                                    <div className="file-image"></div> :
+                                                                                    <div className="file-image"></div>
                                                                             }
                                                                             <div className="file-detail">
-                                                                                <h6><i className="fas fa-paperclip" />&nbsp;{filename}</h6>
-
-                                                                                <div className="file-actions">
-                                                                                    {/* <button className="file-action-btn" onClick={() => DeleteFile(id)}>Delete</button> */}
-                                                                                    <a href={fileimage} className="file-action-btn" download={filename} onClick={() => downloadFiles(file_num)}>Download</a>
-                                                                                </div>
+                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>&nbsp;&nbsp;
+                                                                                <i className="mdi mdi-download" style={{fontSize: "20px", verticalAlign: "middle"}} download={filename} onClick={() => downloadFiles(file_num)}></i>
                                                                             </div>
                                                                         </div>
                                                                     )
@@ -1425,12 +1583,9 @@ const EditInstructions = (props) => {
                                                                                                     <div className="file-image"><i className="fas fa-file-alt" /></div>
                                                                                             }
                                                                                             <div className="file-detail">
-                                                                                                <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                                {/* <p></p> */}
-                                                                                                {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
-                                                                                                <div className="file-actions">
-                                                                                                    <button type="button" className="file-action-btn" onClick={() => DeleteSelectFileR(id)}>Delete</button>
-                                                                                                </div>
+                                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>
+                                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                                <i className="mdi mdi-download" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteSelectFileR(id)} />
                                                                                                 <p />
                                                                                             </div>
                                                                                         </div>
