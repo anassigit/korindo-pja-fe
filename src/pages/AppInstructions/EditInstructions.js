@@ -29,6 +29,7 @@ import { ReactSession } from 'react-client-session';
 import Select, { components } from "react-select";
 import shortid from "shortid";
 import VerticalLayout from "components/VerticalLayout";
+import { saveDescriptions } from "helpers/backend_helper";
 // import { values } from "lodash";
 // import { arrayRemove, arrayRemoveAll } from "redux-form";
 
@@ -229,11 +230,6 @@ const EditInstructions = (props) => {
 
         await dispatch(editInstructions(values));
     };
-
-    const insert2 = async (val) => {
-        await dispatch(saveDescription(val));
-    };
-
     const downloadFiles = async file_num => {
         debugger
         var ix = { file_num: file_num }
@@ -663,7 +659,6 @@ const EditInstructions = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }
-            console.log(bodyForm);
             insert(bodyForm, config);
 
         } else {
@@ -1014,24 +1009,31 @@ const EditInstructions = (props) => {
 
     const [showDesc, setShowDesc] = useState(false)
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
-
-    /* Refs */
     const inputRef = useRef(null)
-    const getFilesRef = useRef([]);
 
     useEffect(() => {
-        if (getFilesRef.current.length === 0) {
-          getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
+        getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
             const newObj = {
-              file_num: attachFileList.no,
-              filename: attachFileList.name,
-            }
-            SetFiles2((option) => [...option, newObj]);
-          })
-          getFilesRef.current = SetFiles2
-        }
-      }, [editInstructionsValidInput.values.no]);
 
+                file_num: attachFileList.no,
+                filename: attachFileList.name,
+
+            };
+
+            setGetFiles((option) => [...option, newObj])
+
+            SetFiles2((option) => [...option, newObj])
+        });
+    }, [editInstructionsValidInput.values.no])
+
+    const handleSaveDesc = async (val) => {
+        try {
+          await dispatch(saveDescriptions({ "num": editInstructionsValidInput.values.no, "description": val }))
+        } catch (error) {
+          console.error("Error saving descriptions:", error)
+        }
+      }
+      
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1157,8 +1159,6 @@ const EditInstructions = (props) => {
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             value={editInstructionsValidInput.values.description || ""}
                                                             invalid={editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? true : false}
-                                                            onBlur={() => { setShowDesc(!showDesc) }}
-                                                            ref={inputRef}
                                                         />
                                                         {editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? (
                                                             <FormFeedback type="invalid">
@@ -1282,7 +1282,10 @@ const EditInstructions = (props) => {
 
                                         <br></br>
 
-                                        <Button hidden={!showDesc} color="primary" className="ms-1" type="button">
+                                        <Button hidden={!showDesc} color="primary" className="ms-1" type="button" onClick={() => {
+                                            setShowDesc(!showDesc)
+                                            handleSaveDesc(editInstructionsValidInput.values.description)
+                                        }}>
                                             Save
                                         </Button>&nbsp;
 
