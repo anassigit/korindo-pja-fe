@@ -1014,24 +1014,23 @@ const EditInstructions = (props) => {
 
     const [showDesc, setShowDesc] = useState(false)
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
+
+    /* Refs */
     const inputRef = useRef(null)
+    const getFilesRef = useRef([]);
 
     useEffect(() => {
-        getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
+        if (getFilesRef.current.length === 0) {
+          getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
             const newObj = {
-
-                file_num: attachFileList.no,
-                filename: attachFileList.name,
-
-            };
-
-            setGetFiles((option) => [...option, newObj]);
-
-            // SetFiles((option) => [...option, newObj]);
-
+              file_num: attachFileList.no,
+              filename: attachFileList.name,
+            }
             SetFiles2((option) => [...option, newObj]);
-        });
-    }, [editInstructionsValidInput.values.no])
+          })
+          getFilesRef.current = SetFiles2
+        }
+      }, [editInstructionsValidInput.values.no]);
 
     /*********************************** ENDS HERE ***********************************/
 
