@@ -11,6 +11,7 @@ import {
     Container,
     UncontrolledTooltip,
     CardHeader,
+    Badge,
     Input,
 } from "reactstrap";
 import { getInstructionsData, getInstructionsData2, resetMessage } from "../../store/appInstructions/actions"
@@ -40,7 +41,7 @@ const Instructions = () => {
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
-            search: "", langType: "kor", status: selected
+            search: "", langType: "eng", status: selected
         }
     });
 
@@ -76,9 +77,9 @@ const Instructions = () => {
                         style={{ width: "250px", backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
                         type="button"
                         className="btn btn-primary "
-                        onClick={() => appInstructionsPreEdit(appInstructionsData)}
+                        onClick={() => appInstructionsPreEdit(appInstructionsData) }
                     >
-                        <a title="Instructions" style={{ textAlign: "left", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "#495057" }} className="d-block">{appInstructionsData.title}</a>
+                        <a style={{ textAlign: "left", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "#495057" }} className="d-block">{appInstructionsData.title}</a>
                     </button>
                 </>
             ),
@@ -147,6 +148,29 @@ const Instructions = () => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-status-column",
+            // formatter: (cellContent, appInstructionsData) => {
+            //     if (cellContent.status == "1") {
+            //         return <Badge color="warning" className="me-1 bg-soft">
+            //             Not Started
+            //         </Badge>
+            //     } else if (cellContent.status == "2") {
+            //         return <Badge color="secondary" className="me-1">
+            //            In Proccess
+            //         </Badge>
+            //     } else if (cellContent.status == "3") {
+            //         return <Badge color="danger" className="me-1">
+            //             Action Completed
+            //         </Badge>
+            //     } else if (cellContent.status == "4") {
+            //         return <Badge color="success" className="me-1">
+            //             Rejected
+            //         </Badge>
+            //     } else {
+            //         return <Badge color="warning" className="me-1">
+            //             Completed
+            //         </Badge>
+            //     }
+            // },
         },
         {
             dataField: "reply_count",
@@ -161,7 +185,7 @@ const Instructions = () => {
                         
                         <span>
                         <div>
-                        <i className="mdi mdi-chat-processing-outline text-primary" id="repliesCount" style={{fontSize: "25px"}}/>&nbsp;{appInstructionsData.reply_count}
+                        <i className="bx bx-message-dots" id="repliesCount" style={{fontSize: "25px", verticalAlign: "middle"}}/>&nbsp;{appInstructionsData.reply_count}
                         </div>
                         </span>
 
@@ -182,22 +206,13 @@ const Instructions = () => {
                         
                         <span>
                         <div>
-                        <i className="mdi mdi-bell text-primary" id="repliesCount" style={{fontSize: "25px"}}/>&nbsp;{appInstructionsData.notice_count}
+                        <i className="bx bxs-bell" id="repliesCount" style={{fontSize: "25px", verticalAlign: "middle"}}/>&nbsp;{appInstructionsData.notice_count}
                         </div>
                         </span>
 
                     </div>
                 </>
             ),
-        },
-        {
-            dataField: "status",
-            text: "ID status",
-            sort: true,
-            align: "center",
-            hidden: true,
-            headerStyle: { textAlign: 'center' },
-            classes: "custom-status-column",
         },
     ]
 
@@ -224,6 +239,7 @@ const Instructions = () => {
         console.log(event.target.value);
         setSelected(event.target.value);
     };
+
 
     return (
         <RootPageCustom msgStateGet={appInstructionsMsg} msgStateSet={setAppInstructionsMsg}
@@ -309,7 +325,9 @@ const Instructions = () => {
                                             searchSet={setAppInstructionsTabelSearch}
                                             searchGet={appInstructionsTabelSearch}
                                             redukCall={getInstructionsData}
+                                            rowClick={() => appInstructionsPreEdit(appInstructionsData)}
                                         />
+                                        
                                     </Row>
                                 </React.Fragment>
                             </Col>
