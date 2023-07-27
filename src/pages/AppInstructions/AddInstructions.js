@@ -595,11 +595,8 @@ const AddInstructions = (props) => {
                                                                                 <div className="file-image"></div>
                                                                         }
                                                                         <div className="file-detail">
-                                                                        <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>&nbsp;&nbsp;
-                                                                        <i onClick={() => DeleteSelectFile(id)}><i className="far fa-trash-alt" /></i>
-                                                                            {/* <div className="file-actions">
-                                                                                <button className="file-action-btn" onClick={() => DeleteSelectFile(id)}>Delete</button>
-                                                                            </div> */}
+                                                                        <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>&nbsp;&nbsp;
+                                                                        <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteSelectFile(id)} />
                                                                             
                                                                         </div>
                                                                     </div>
