@@ -69,10 +69,6 @@ const EditInstructions = (props) => {
     }, [dispatch])
 
 
-    const editInstructionCloseAllert = () => {
-        setEditInstructionMsg("")
-    }
-
     const msgSaveReply = useSelector(state => {
         return state.instructionsReducer.msgAddReply;
     });
@@ -165,9 +161,7 @@ const EditInstructions = (props) => {
                 };
 
                 setStatusList((option) => [...option, objList]);
-            });
-
-            //setStatusList(getDetailInstructionData?.data?.statusList)
+            })
 
         }
 
@@ -264,13 +258,8 @@ const EditInstructions = (props) => {
             no: Yup.string().required("Wajib diisi"),
         }),
 
-        onChange: (val) => {
-            console.log("test Clicked with value : ", val)
-        },
-
         onSubmit: (val) => {
 
-            debugger
             var bodyForm = new FormData();
 
             bodyForm.append('num', val.no);
@@ -281,10 +270,8 @@ const EditInstructions = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }
-            alert('Add description success.')
             insert2(bodyForm, config);
-            window.location.reload();
-
+            alert('Add description success.')
         }
 
     });
@@ -406,7 +393,7 @@ const EditInstructions = (props) => {
 
     function DeleteFileAttached(file_num) {
         var bodyForm = new FormData();
-        bodyForm.append('num', editInstructionsValidInput.values.insId);
+        bodyForm.append('num', editInstructionsValidInput.values.no);
         bodyForm.append('removeFile', file_num);
         const config = {
             headers: {
@@ -653,7 +640,7 @@ const EditInstructions = (props) => {
 
 
             var bodyForm = new FormData();
-            bodyForm.append('num', editInstructionsValidInput.values.insId);
+            bodyForm.append('num', editInstructionsValidInput.values.no);
 
             if (jml > 1) {
                 for (let i = 0; i < s.length; i++) {
@@ -684,7 +671,7 @@ const EditInstructions = (props) => {
 
             var bodyForm = new FormData();
             debugger
-            bodyForm.append('num', editInstructionsValidInput.values.insId);
+            bodyForm.append('num', editInstructionsValidInput.values.no);
 
 
             var jml = 0;
@@ -733,7 +720,7 @@ const EditInstructions = (props) => {
 
 
             var bodyForm = new FormData();
-            bodyForm.append('num', editInstructionsValidInput.values.insId);
+            bodyForm.append('num', editInstructionsValidInput.values.no);
 
             if (jml2 > 1) {
                 for (let i = 0; i < s.length; i++) {
@@ -762,7 +749,7 @@ const EditInstructions = (props) => {
 
             var bodyForm = new FormData();
             debugger
-            bodyForm.append('num', editInstructionsValidInput.values.insId);
+            bodyForm.append('num', editInstructionsValidInput.values.no);
 
 
             var jml2 = 0;
@@ -803,8 +790,8 @@ const EditInstructions = (props) => {
 
         var bodyForm = new FormData();
 
-        bodyForm.append('num', editInstructionsValidInput.values.insId);
-        bodyForm.append('title', editInstructionsValidInput.values.insTitle);
+        bodyForm.append('num', editInstructionsValidInput.values.no);
+        bodyForm.append('title', editInstructionsValidInput.values.title);
 
 
         const config = {
@@ -821,7 +808,7 @@ const EditInstructions = (props) => {
 
         var bodyForm = new FormData();
 
-        bodyForm.append('num', editInstructionsValidInput.values.insId);
+        bodyForm.append('num', editInstructionsValidInput.values.no);
         bodyForm.append('insDate', editInstructionsValidInput.values.insDate);
 
 
@@ -839,8 +826,8 @@ const EditInstructions = (props) => {
 
         var bodyForm = new FormData();
 
-        bodyForm.append('num', editInstructionsValidInput.values.insId);
-        bodyForm.append('status', editInstructionsValidInput.values.statusId);
+        bodyForm.append('num', editInstructionsValidInput.values.no);
+        bodyForm.append('status', editInstructionsValidInput.values.status);
 
         const config = {
             headers: {
@@ -986,7 +973,6 @@ const EditInstructions = (props) => {
         // setEditInstructionsSpinner(true);
         alert('Add reply success.')
         insert3(bodyForm, config);
-        window.location.reload();
 
 
     };
@@ -1000,8 +986,8 @@ const EditInstructions = (props) => {
                 "reply_num": row.no
             };
 
-            setEditInstructionsSpinner(true);
-            setEditInstructionMsg("")
+            // setEditInstructionsSpinner(true);
+            // setEditInstructionMsg("")
 
             await dispatch(deleteReply(map));
 
@@ -1020,8 +1006,8 @@ const EditInstructions = (props) => {
             // props.setApp015p02Page(false);
             // dispatch(getVendorData(props.app015p01TabelSearch))
         }
-        setEditInstructionMsg(msgSaveReply)
-        setEditInstructionsSpinner(false);
+        // setEditInstructionMsg(msgSaveReply)
+        // setEditInstructionsSpinner(false);
     }, [msgSaveReply])
 
 
@@ -1029,14 +1015,6 @@ const EditInstructions = (props) => {
 
     const [showDesc, setShowDesc] = useState(false)
     const inputRef = useRef(null)
-
-    const handleInputEditChange = (event) => {
-
-        debugger
-        editInstructionsValidInput.handleChange(event);
-
-        editInstructionsValidInput.handleSubmit();
-    };
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1085,8 +1063,7 @@ const EditInstructions = (props) => {
                                                     <Input
                                                         name="title"
                                                         type="text"
-
-                                                        onChange={handleInputEditChange}
+                                                        onChange={editInstructionsValidInput.handleChange}
                                                         onBlur={handleAutoSaveTitle}
                                                         value={editInstructionsValidInput.values.title || ""}
                                                         invalid={
@@ -1122,38 +1099,27 @@ const EditInstructions = (props) => {
                                                 <div className="mb-3 col-sm-8">
                                                     <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                     <Input
-                                                        type="select"
                                                         name="status"
+                                                        type="select"
                                                         onChange={editInstructionsValidInput.handleChange}
-                                                        // onBlur={editInstructionsValidInput.handleBlur}
                                                         onBlur={() => {
-                                                            editInstructionsValidInput.handleBlur;
+                                                            editInstructionsValidInput.handleBlur('status');
                                                             handleAutoSaveStatus();
                                                         }}
-                                                        // onBlur={handleAutoSaveStatus}
-                                                        // fieldValue={1}
-                                                        value={editInstructionsValidInput.values.status || ""}
+                                                        value={editInstructionsValidInput.values.status}
                                                         invalid={
                                                             editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
                                                         }
                                                     >
-                                                        {/* <option no="" value={""}></option>
-                                                            <option value={"1"}>Not Start</option>
-                                                            <option value={"2"}>In Progress</option>
-                                                            <option value={"3"}>Action Completed</option>
-                                                            <option value={"4"}>Rejection</option>
-                                                            <option value={"5"}>Complete</option> */}
-                                                        {
-                                                            statusList.map((value, key) =>
-                                                                <option key={key} value={value.statusId} >{value.statusNm}</option>)
-                                                        }
-
+                                                        {statusList.map((value, key) => (
+                                                            <option key={key} value={value.statusNm}>{value.statusNm}</option>
+                                                        )
+                                                        )}
                                                     </Input>
-                                                    {editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? (
-                                                        <FormFeedback type="invalid">{editInstructionsValidInput.errors.statusId}</FormFeedback>
+                                                    {editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? (
+                                                        <FormFeedback type="invalid">{editInstructionsValidInput.errors.status}</FormFeedback>
                                                     ) : null}
                                                 </div>
-
                                                 <div className="mb-3 col-sm-8">
                                                     <Label className="col-sm-5" style={{ marginTop: "15px" }}>
                                                         Descriptions
@@ -1300,7 +1266,7 @@ const EditInstructions = (props) => {
 
                                         <br></br>
 
-                                        <Button hidden={!showDesc} color="primary" className="ms-1" type="submit">
+                                        <Button hidden={!showDesc} color="primary" className="ms-1" type="button">
                                             Save
                                         </Button>&nbsp;
 
@@ -1398,9 +1364,9 @@ const EditInstructions = (props) => {
                                                             editInstructionsValidInput.handleBlur;
                                                             handleAutoSaveStatus();
                                                         }}
-                                                        value={editInstructionsValidInput.values.statusId || ""}
+                                                        value={editInstructionsValidInput.values.status || ""}
                                                         invalid={
-                                                            editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? true : false
+                                                            editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
                                                         }
                                                     >
                                                         <option no="" value={""}></option>
