@@ -39,9 +39,8 @@ const AddInstructions = (props) => {
     const dispatch = useDispatch();
 
     const currentDate = new Date()
-    const [addInstructionsStartDate, setAddInstructionsStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
+    const [addInstructionsStartDate, setAddInstructionsStartDate] = useState(format(currentDate, 'yyyy-MM-dd'), (""))
     let status = 1;
-
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
     const [addInstructionsSpinner, setAddInstructionsSpinner] = useState(false);
     const [selectedMulti, setselectedMulti] = useState([]);
@@ -60,7 +59,8 @@ const AddInstructions = (props) => {
         if (props.appAddInstructions) {
             addInstructionsValidInput.resetForm()
             addInstructionsValidInput.setFieldValue("status", status)
-            setAddInstructionsStartDate(format(currentDate, 'yyyy-MM-dd'))
+            addInstructionsValidInput.setFieldValue("insDate", addInstructionsStartDate)
+            //setAddInstructionsStartDate(format(currentDate, 'yyyy-MM-dd'))
 
             if(addInstructionsUserList.data !== undefined){
 
