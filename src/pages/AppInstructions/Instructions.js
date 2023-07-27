@@ -72,7 +72,7 @@ const Instructions = () => {
             align: "left",
             headerStyle: { textAlign: 'center' },
             classes: "custom-title-column", 
-            style: { maxWidth: "300px", whiteSpace: "normal", verflow: "hidden", textOverflow: "ellipsis"},
+            style: { maxWidth: "500px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"},
             formatter: (cellContent, appInstructionsData) => (
                 <>
                 <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
