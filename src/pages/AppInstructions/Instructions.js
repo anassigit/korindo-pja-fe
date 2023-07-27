@@ -228,7 +228,7 @@ const Instructions = () => {
     const handleChange = event => {
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, status: event.target.value }
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value }
         })
         setAppInstructionsMsg("")
         console.log(event.target.value);
@@ -259,7 +259,7 @@ const Instructions = () => {
                                                                 onChange={e => {
                                                                     setAppInstructionsTabelSearch({
                                                                         page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
-                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, status: appInstructionsTabelSearch.search.status }
+                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status }
                                                                     })
                                                                 }}
                                                             />
@@ -277,7 +277,6 @@ const Instructions = () => {
                                                                 type="select"
                                                                 name="status"
                                                                 onChange={handleChange}
-                                                                //onSelect={""}
                                                                 value={selected}
                                                             >
                                                                 <option id="" value={""}>All</option>

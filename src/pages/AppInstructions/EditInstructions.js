@@ -401,8 +401,7 @@ const EditInstructions = (props) => {
             }
         }
         alert('Delete success.')
-        deleteFiles(bodyForm, config);
-        window.location.reload();
+        deleteFiles(bodyForm, config)
     };
 
     // const replyDelete = async (row) => {
@@ -1014,6 +1013,7 @@ const EditInstructions = (props) => {
     /*********************************** SIGIT MADE FROM HERE ***********************************/
 
     const [showDesc, setShowDesc] = useState(false)
+    const [isHiddenLogs, setIsHiddenLog] = useState(false)
     const inputRef = useRef(null)
 
     /*********************************** ENDS HERE ***********************************/
@@ -1659,13 +1659,16 @@ const EditInstructions = (props) => {
 
                     <Col lg={12}>
                         <Card>
-                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Logs</CardHeader>
+                            <a>
+                                <CardHeader onClick={() => setIsHiddenLog(!isHiddenLogs)} style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Logs
+                                </CardHeader>
+                            </a>
 
-                            <CardBody>
+                            <CardBody hidden={isHiddenLogs}>
                                 <React.Fragment>
                                     <FormGroup className="mb-0">
 
-                                        <Row style={{ marginTop: "30px" }}>
+                                        <Row>
                                             <Col md="12">
                                                 <Row>
 
