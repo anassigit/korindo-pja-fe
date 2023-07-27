@@ -107,7 +107,7 @@ const Instructions = () => {
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <button
-                        style={{ backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
+                        style={{ width: "250px", backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
                         type="button"
                         className="btn btn-primary "
                         onClick={() => appInstructionsPreEdit(appInstructionsData)}
@@ -189,6 +189,24 @@ const Instructions = () => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-replies-column",
+                        formatter: (cellContent, appInstructionsData) => (
+                <>
+                    <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+                        
+                        <span>
+                         
+                        <div>
+                        <i className="mdi mdi-chat-processing-outline font-size-30  text-primary" id="repliesCount" />&nbsp;{appInstructionsData.reply_count}
+                        </div>
+                        </span>
+                    
+                        <UncontrolledTooltip placement="top" target="repliesCount">
+                            Replies
+                        </UncontrolledTooltip>
+
+                    </div>
+                </>
+            ),
         },
         {
             dataField: "notice_count",
@@ -197,6 +215,24 @@ const Instructions = () => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-notices-column",
+            formatter: (cellContent, appInstructionsData) => (
+                <>
+                    <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+                        
+                        <span>
+                         
+                        <div>
+                        <i className="mdi mdi-bell font-size-30  text-primary" id="repliesCount" />&nbsp;{appInstructionsData.notice_count}
+                        </div>
+                        </span>
+                    
+                        <UncontrolledTooltip placement="top" target="repliesCount">
+                            Replies
+                        </UncontrolledTooltip>
+
+                    </div>
+                </>
+            ),
         },
         {
             dataField: "status",
