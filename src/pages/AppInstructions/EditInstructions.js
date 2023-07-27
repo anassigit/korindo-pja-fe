@@ -1101,7 +1101,7 @@ const EditInstructions = (props) => {
 
             <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
-                <Row>
+                <Row hidden={getDetailInstructionData?.data?.instruction?.memberId == memberId ? false : true}>
                     <Col lg={12}>
                         <Card>
                             <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
@@ -1364,7 +1364,7 @@ const EditInstructions = (props) => {
                     </Col>
                 </Row>
 
-                <Row>
+                <Row hidden={getDetailInstructionData?.data?.instruction?.memberId == memberId ? true : false}>
                     <Col lg={12}>
                         <Card>
                             <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
