@@ -1,7 +1,7 @@
 
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     Button,
@@ -26,7 +26,7 @@ import { getDetailInstruction } from "../../store/appInstructions/actions"
 import { format } from 'date-fns';
 import moment from "moment";
 import { ReactSession } from 'react-client-session';
-import Select, {components} from "react-select";
+import Select, { components } from "react-select";
 import shortid from "shortid";
 import VerticalLayout from "components/VerticalLayout";
 // import { values } from "lodash";
@@ -158,7 +158,7 @@ const EditInstructions = (props) => {
             })
 
             getDetailInstructionData?.data?.statusList.map((statusList) => {
-                const objList= {
+                const objList = {
 
                     statusId: statusList.no,
                     statusNm: statusList.name,
@@ -482,18 +482,18 @@ const EditInstructions = (props) => {
     // };
 
     // -- end -- //
-    
+
 
     const DropdownIndicator = (props) => {
         return (
-          <components.DropdownIndicator {...props}>
-            <i className="mdi mdi-plus-thick" />
-          </components.DropdownIndicator>
+            <components.DropdownIndicator {...props}>
+                <i className="mdi mdi-plus-thick" />
+            </components.DropdownIndicator>
         );
-      };
+    };
 
-    const colourStyles  = {
-        control:  (baseStyles, state) => ({
+    const colourStyles = {
+        control: (baseStyles, state) => ({
             ...baseStyles,
             borderColor: state.isFocused ? 'white' : 'white',
             borderColor: state.isSelected ? 'white' : 'white',
@@ -501,76 +501,76 @@ const EditInstructions = (props) => {
             borderColor: state.isDisabled ? 'white' : 'white',
             border: 0,
             boxShadow: 'none',
-          }),
+        }),
         //   placeholder: (baseStyles, state) => ({
-            
+
         //         ...defaultStyles,
         //         color: '#ffffff',
         //     }),
 
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: isDisabled
-              ? undefined
-              : isSelected
-              ? data.color
-              : isFocused
-              ? '#e6e6e6'
-              : undefined,
-            color: isDisabled
-              ? '#ccc'
-              : isSelected
-              ? 'white'
-                ? 'white'
-                : 'black'
-              : data.color,
-            cursor: isDisabled ? 'not-allowed' : 'default',
-      
-            ':active': {
-              ...styles[':active'],
-              backgroundColor: !isDisabled
-                ? isSelected
-                  ? data.color
-                  : color
-                : undefined,
-            },
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: isDisabled
+                    ? undefined
+                    : isSelected
+                        ? data.color
+                        : isFocused
+                            ? '#e6e6e6'
+                            : undefined,
+                color: isDisabled
+                    ? '#ccc'
+                    : isSelected
+                        ? 'white'
+                            ? 'white'
+                            : 'black'
+                        : data.color,
+                cursor: isDisabled ? 'not-allowed' : 'default',
+
+                ':active': {
+                    ...styles[':active'],
+                    backgroundColor: !isDisabled
+                        ? isSelected
+                            ? data.color
+                            : color
+                        : undefined,
+                },
+            };
         },
 
         multiValue: (styles, { data }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: color,
-            
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: color,
+
+            };
         },
 
         multiValueLabel: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          fontSize: '13px',
-          paddingLeft:'12px',
-          paddingRight:'12px',
-          paddingTop:'7.5px',
-          paddingBottom:'7.5px',
-          borderRadius: '0.25rem',
+            ...styles,
+            color: 'white',
+            fontSize: '13px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            paddingTop: '7.5px',
+            paddingBottom: '7.5px',
+            borderRadius: '0.25rem',
         }),
 
         multiValueRemove: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          ':hover': {
-            backgroundColor: data.bgColor,
+            ...styles,
             color: 'white',
-          },
+            ':hover': {
+                backgroundColor: data.bgColor,
+                color: 'white',
+            },
         }),
-      };
+    };
 
-      const colourStyles2  = {
-        control:  (baseStyles, state) => ({
+    const colourStyles2 = {
+        control: (baseStyles, state) => ({
             ...baseStyles,
             borderColor: state.isFocused ? 'white' : 'white',
             borderColor: state.isSelected ? 'white' : 'white',
@@ -578,69 +578,69 @@ const EditInstructions = (props) => {
             borderColor: state.isDisabled ? 'white' : 'white',
             border: 0,
             boxShadow: 'none',
-           
-          }),
+
+        }),
 
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: isDisabled
-              ? undefined
-              : isSelected
-              ? data.color
-              : isFocused
-              ? '#e6e6e6'
-              : undefined,
-            color: isDisabled
-              ? '#ccc'
-              : isSelected
-              ? 'white'
-                ? 'white'
-                : 'black'
-              : data.color,
-            cursor: isDisabled ? 'not-allowed' : 'default',
-            ':active': {
-              ...styles[':active'],
-              backgroundColor: !isDisabled
-                ? isSelected
-                  ? data.color
-                  : color
-                : undefined,
-            },
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: isDisabled
+                    ? undefined
+                    : isSelected
+                        ? data.color
+                        : isFocused
+                            ? '#e6e6e6'
+                            : undefined,
+                color: isDisabled
+                    ? '#ccc'
+                    : isSelected
+                        ? 'white'
+                            ? 'white'
+                            : 'black'
+                        : data.color,
+                cursor: isDisabled ? 'not-allowed' : 'default',
+                ':active': {
+                    ...styles[':active'],
+                    backgroundColor: !isDisabled
+                        ? isSelected
+                            ? data.color
+                            : color
+                        : undefined,
+                },
+            };
         },
 
         multiValue: (styles, { data }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: '#579DFF',
-           
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: '#579DFF',
+
+            };
         },
 
         multiValueLabel: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          fontSize: '13px',
-          paddingLeft:'12px',
-          paddingRight:'12px',
-          paddingTop:'7.5px',
-          paddingBottom:'7.5px',
-          borderRadius: '4px',
+            ...styles,
+            color: 'white',
+            fontSize: '13px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            paddingTop: '7.5px',
+            paddingBottom: '7.5px',
+            borderRadius: '4px',
         }),
 
         multiValueRemove: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          ':hover': {
-            backgroundColor: data.bgColor,
+            ...styles,
             color: 'white',
-          },
+            ':hover': {
+                backgroundColor: data.bgColor,
+                color: 'white',
+            },
         }),
-      };
-    
+    };
+
     function handleMulti(s) {
 
         debugger
@@ -1041,14 +1041,57 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         if (msgSaveReply.status == "1") {
-            // setApp015p02LovWilayah('')
-            // props.setApp015p01Page(true);
-            // props.setApp015p02Page(false);
-            // dispatch(getVendorData(props.app015p01TabelSearch))
         }
         setEditInstructionMsg(msgSaveReply)
         setEditInstructionsSpinner(false);
     }, [msgSaveReply])
+
+    /*********************************** SIGIT MADE FROM HERE ***********************************/
+
+    const [showDesc, setShowDesc] = useState(false)
+    const inputRef = useRef(null)
+
+
+    /* Reply Yups */
+
+    const editInstructionsValidInputReply = useFormik({
+        enableReinitialize: true,
+
+        initialValues: {
+            instruction_num: '',
+            content: '',
+            file: '',
+        },
+
+        validationSchema: Yup.object().shape({
+            instruction_num: Yup.string().required("Instruction not yet selected..."),
+            content: Yup.string().required("Please fill reply field..."),
+        }),
+
+        onSubmit: (val) => {
+
+            debugger
+
+            var bodyForm = new FormData();
+
+            bodyForm.append('instruction_num', val.instruction_num);
+            bodyForm.append('content', val.content);
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            alert('Add description success.')
+            insert3(bodyForm, config);
+            window.location.reload();
+
+        }
+
+    });
+
+
+    /*********************************** ENDS HERE ***********************************/
 
     return (
         <React.Fragment>
@@ -1211,7 +1254,7 @@ const EditInstructions = (props) => {
                                                         className="select2-selection"
                                                         styles={colourStyles}
                                                         components={{ DropdownIndicator }}
-                                                         placeholder={'Select or type...'}
+                                                        placeholder={'Select or type...'}
                                                     />
                                                 </div>
 
@@ -1255,11 +1298,11 @@ const EditInstructions = (props) => {
                                                                                     <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                             }
                                                                             <div className="file-detail">
-                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>
+                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
 
-                                                                                    <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteSelectFile(id)} />
-                                                                               
+                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteSelectFile(id)} />
+
                                                                                 <p />
                                                                             </div>
                                                                         </div>
@@ -1286,11 +1329,11 @@ const EditInstructions = (props) => {
                                                                                     <div className="file-image"><i className="far fa-file-alt"></i></div>
                                                                             }
                                                                             <div className="file-detail">
-                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}}/>&nbsp;{filename}</span>
+                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteFileAttached(file_num)} />
-                                                                                    &nbsp;&nbsp;&nbsp;
-                                                                               <i className="mdi mdi-download" style={{fontSize: "20px", verticalAlign: "middle"}} download={filename} onClick={() => downloadFiles(file_num)} />
+                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteFileAttached(file_num)} />
+                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} download={filename} onClick={() => downloadFiles(file_num)} />
 
                                                                             </div>
                                                                         </div>
@@ -1500,8 +1543,8 @@ const EditInstructions = (props) => {
                                                                                     <div className="file-image"></div>
                                                                             }
                                                                             <div className="file-detail">
-                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>&nbsp;&nbsp;
-                                                                                <i className="mdi mdi-download" style={{fontSize: "20px", verticalAlign: "middle"}} download={filename} onClick={() => downloadFiles(file_num)}></i>
+                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>&nbsp;&nbsp;
+                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
                                                                             </div>
                                                                         </div>
                                                                     )
@@ -1583,9 +1626,9 @@ const EditInstructions = (props) => {
                                                                                                     <div className="file-image"><i className="fas fa-file-alt" /></div>
                                                                                             }
                                                                                             <div className="file-detail">
-                                                                                                <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>
+                                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                                <i className="mdi mdi-download" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteSelectFileR(id)} />
+                                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteSelectFileR(id)} />
                                                                                                 <p />
                                                                                             </div>
                                                                                         </div>
