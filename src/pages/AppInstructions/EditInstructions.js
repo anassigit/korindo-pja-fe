@@ -264,6 +264,10 @@ const EditInstructions = (props) => {
             no: Yup.string().required("Wajib diisi"),
         }),
 
+        onChange: (val) => {
+            console.log("test Clicked with value : ", val)
+        },
+
         onSubmit: (val) => {
 
             debugger
@@ -1026,6 +1030,14 @@ const EditInstructions = (props) => {
     const [showDesc, setShowDesc] = useState(false)
     const inputRef = useRef(null)
 
+    const handleInputEditChange = (event) => {
+
+        debugger
+        editInstructionsValidInput.handleChange(event);
+
+        editInstructionsValidInput.handleSubmit();
+    };
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1058,7 +1070,6 @@ const EditInstructions = (props) => {
                                                     <Input
                                                         name="no"
                                                         type="text"
-                                                        onChange={editInstructionsValidInput.handleChange}
                                                         value={editInstructionsValidInput.values.no || ""}
                                                         invalid={
                                                             editInstructionsValidInput.touched.no && editInstructionsValidInput.errors.no ? true : false
@@ -1075,7 +1086,7 @@ const EditInstructions = (props) => {
                                                         name="title"
                                                         type="text"
 
-                                                        onChange={editInstructionsValidInput.handleChange}
+                                                        onChange={handleInputEditChange}
                                                         onBlur={handleAutoSaveTitle}
                                                         value={editInstructionsValidInput.values.title || ""}
                                                         invalid={

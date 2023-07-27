@@ -15,23 +15,23 @@ const Sidebar = props => {
     <React.Fragment>
       <div  className="vertical-menu">
         <div style={{borderRight: "2px solid #D9D1D1"}} className="navbar-brand-box">
-          <Link to="/" className="logo logo-dark">
+          <a href="/AppInstructions" className="logo logo-dark" onClick={ () => window.location.reload()}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
             </span>
             <span className="logo-lg">
               <img src={logoKorindo} alt="" height="30" />
             </span>
-          </Link>
+          </a>
 
-          <Link to="/" className="logo logo-light">
+          <a href="/AppInstructions" className="logo logo-light" onClick={ () => window.location.reload()}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
             </span>
             <span className="logo-lg">
               <img src={logoKorindo} alt="" height="30" />
             </span>
-          </Link>
+          </a>
 
           
         </div>
