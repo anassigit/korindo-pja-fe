@@ -71,16 +71,11 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
+            classes: "custom-title-column", 
+            style: { maxWidth: "300px", whiteSpace: "normal", verflow: "hidden", textOverflow: "ellipsis"},
             formatter: (cellContent, appInstructionsData) => (
                 <>
-                    <button
-                        style={{ width: "250px", backgroundColor: "transparent", borderColor: "transparent", boxShadow: "none" }}
-                        type="button"
-                        className="btn btn-primary "
-                        onClick={() => appInstructionsPreEdit(appInstructionsData) }
-                    >
-                        <a style={{ textAlign: "left", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "#495057" }} className="d-block">{appInstructionsData.title}</a>
-                    </button>
+                <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
                 </>
             ),
         },
