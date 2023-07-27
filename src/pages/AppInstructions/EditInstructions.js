@@ -1209,32 +1209,37 @@ const EditInstructions = (props) => {
                                                 </div>
 
                                                 <div className="mb-3 col-sm-8">
-                                                    <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
-                                                    <Input
-                                                        name="description"
-                                                        type="textarea"
-                                                        rows="5"
-                                                        maxLength={50}
-                                                        onChange={editInstructionsValidInput.handleChange}
-                                                        value={
-                                                            editInstructionsValidInput.values.description ||
-                                                            ""
-                                                        }
-                                                        invalid={
-                                                            editInstructionsValidInput.touched.description &&
-                                                                editInstructionsValidInput.errors.description
-                                                                ? true
-                                                                : false
-                                                        }
-                                                    />
-                                                    {editInstructionsValidInput.touched.description &&
-                                                        editInstructionsValidInput.errors.description ? (
-                                                        <FormFeedback type="invalid">
-                                                            {editInstructionsValidInput.errors.description}
-                                                        </FormFeedback>
-                                                    ) : null}
-                                                </div>
+                                                    <Label className="col-sm-5" style={{ marginTop: "15px" }}>
+                                                        Descriptions
+                                                    </Label>
 
+                                                    <Col hidden={showDesc} style={{ minHeight: "97.5px" }} onClick={() => {
+                                                        setShowDesc(!showDesc)
+                                                        inputRef.current.focus()
+                                                    }}>
+                                                        {editInstructionsValidInput.values.description || ""}
+                                                    </Col>
+
+                                                    <Col>
+                                                        <Input
+                                                            hidden={!showDesc}
+                                                            name="description"
+                                                            type="textarea"
+                                                            rows="5"
+                                                            maxLength={50}
+                                                            onChange={editInstructionsValidInput.handleChange}
+                                                            value={editInstructionsValidInput.values.description || ""}
+                                                            invalid={editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? true : false}
+                                                            onBlur={() => { setShowDesc(!showDesc) }}
+                                                            ref={inputRef}
+                                                        />
+                                                        {editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? (
+                                                            <FormFeedback type="invalid">
+                                                                {editInstructionsValidInput.errors.description}
+                                                            </FormFeedback>
+                                                        ) : null}
+                                                    </Col>
+                                                </div>
                                             </Col>
 
                                             <Col md="6">
@@ -1349,10 +1354,8 @@ const EditInstructions = (props) => {
 
                                         <br></br>
 
-                                        <Button color="primary" className="ms-1" type="submit">
-                                            {/* <i className="bx bxs-save align-middle me-2"></i>{" "} */}
+                                        <Button hidden={!showDesc} color="primary" className="ms-1" type="submit">
                                             Save
-                                            {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
                                         </Button>&nbsp;
 
                                     </FormGroup>
@@ -1573,163 +1576,173 @@ const EditInstructions = (props) => {
 
                             <CardBody>
                                 <React.Fragment>
-                                    <FormGroup className="mb-0">
-                                        <div className="row row-cols-2">
-                                            <div className="col">
-                                                <Row className="mb-2">
-                                                    <Col sm="12">
-                                                        <div className="input-group">
-                                                            <div className="col-sm-8">
-                                                                <label>Answer </label>
-                                                                <Input
-                                                                    name="content"
-                                                                    type="textarea"
-                                                                    onChange={editInstructionsValidInput.handleChange}
-                                                                    value={editInstructionsValidInput.values.content || ""}
-                                                                    invalid={
-                                                                        editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? true : false
-                                                                    }
-                                                                />
-                                                                {editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? (
-                                                                    <FormFeedback type="invalid">{editInstructionsValidInput.errors.content}</FormFeedback>
-                                                                ) : null}
-                                                            </div>
-                                                        </div>
-                                                    </Col>
-                                                </Row>
-                                            </div>
-                                            <div className="col">
-                                                <Row className="mb-2">
-                                                    <Col sm="12">
-                                                        <div className="input-group">
-                                                            <div className="col-sm-8">
-                                                                <div className="mb-3 col-sm-6">
-                                                                    <label>Attached Files </label>
-
-                                                                    <Form onSubmit={FileUploadSubmitR}>
-                                                                        <div className="kb-file-upload">
-                                                                            <div className="file-upload-box">
-                                                                                <input type="file" id="fileupload3" className="file-upload-input" onChange={InputChangeR} name="removeFile" multiple />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="kb-attach-box mb-3">
-                                                                            {
-                                                                                selectedfileR.map((data, index) => {
-                                                                                    const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                                    return (
-                                                                                        <div className="file-atc-box" key={id}>
-
-                                                                                            {
-                                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                    <div className="file-image"> <img src={fileimage} alt="" /></div>
-                                                                                                    :
-                                                                                                    <div className="file-image"><i className="fas fa-file-alt" /></div>
-                                                                                            }
-                                                                                            <div className="file-detail">
-                                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
-                                                                                                &nbsp;&nbsp;&nbsp;
-                                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteSelectFileR(id)} />
-                                                                                                <p />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    )
-                                                                                })
-                                                                            }
-                                                                        </div>
-
-                                                                    </Form>
-
+                                    <Form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            editInstructionsValidInput.handleSubmit();
+                                            return false;
+                                        }}
+                                    >
+                                        <FormGroup className="mb-0">
+                                            <div className="row row-cols-2">
+                                                <div className="col">
+                                                    <Row className="mb-2">
+                                                        <Col sm="12">
+                                                            <div className="input-group">
+                                                                <div className="col-sm-8">
+                                                                    <label>Answer </label>
+                                                                    <Input
+                                                                        name="content"
+                                                                        type="textarea"
+                                                                        onChange={editInstructionsValidInputReply.handleChange}
+                                                                        style={{ color: "black" }}
+                                                                        placeholder="Type here..."
+                                                                        invalid={
+                                                                            editInstructionsValidInputReply.touched.content && editInstructionsValidInputReply.errors.content ? true : false
+                                                                        }
+                                                                    />
+                                                                    {editInstructionsValidInputReply.touched.content && editInstructionsValidInputReply.errors.content ? (
+                                                                        <FormFeedback type="invalid">{editInstructionsValidInputReply.errors.content}</FormFeedback>
+                                                                    ) : null}
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </Col>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                                <div className="col">
+                                                    <Row className="mb-2">
+                                                        <Col sm="12">
+                                                            <div className="input-group">
+                                                                <div className="col-sm-8">
+                                                                    <div className="mb-3 col-sm-6">
+                                                                        <label>Attached Files </label>
 
-                                                    <Col md="12">
-                                                        <div className="text-sm-end" >
+                                                                        <Form onSubmit={FileUploadSubmitR}>
+                                                                            <div className="kb-file-upload">
+                                                                                <div className="file-upload-box">
+                                                                                    <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="kb-attach-box mb-3">
+                                                                                {
+                                                                                    selectedfileR.map((data, index) => {
+                                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                                        return (
+                                                                                            <div className="file-atc-box" key={id}>
 
-                                                            <Button
-                                                                type="button"
+                                                                                                {
+                                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                                                        <div className="file-image"> <img src={fileimage} alt="" /></div>
+                                                                                                        :
+                                                                                                        <div className="file-image"><i className="fas fa-file-alt" /></div>
+                                                                                                }
+                                                                                                <div className="file-detail">
+                                                                                                    <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
+                                                                                                    {/* <p></p> */}
+                                                                                                    {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
+                                                                                                    <div className="file-actions">
+                                                                                                        <button type="button" className="form-control" onClick={() => DeleteSelectFileR(id)}>Delete</button>
+                                                                                                    </div>
+                                                                                                    <p />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        )
+                                                                                    })
+                                                                                }
+                                                                            </div>
 
-                                                                color="primary"
-                                                                className="ms-1"
-                                                                onClick={() => { insertReplyAndFiles() }}
-                                                            >
-                                                                {/* <i className="bx bx-arrow-back align-middle me-2"></i>{" "} */}
-                                                                Reply
-                                                            </Button>
+                                                                        </Form>
 
-                                                        </div>
-                                                    </Col>
-                                                </Row>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </Col>
+
+                                                        <Col md="12">
+                                                            <div className="text-sm-end" >
+
+                                                                <Button
+                                                                    type="submit"
+
+                                                                    color="primary"
+                                                                    className="ms-1"
+                                                                    onClick={() => { insertReplyAndFiles }}
+                                                                >
+                                                                    Reply
+                                                                </Button>
+
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+
                                             </div>
+                                            <br />
+                                            <Row>
+                                                <hr />
+                                                <h6> Other Replies</h6>
+                                            </Row>
+                                            <Row style={{ marginTop: "30px" }}>
+                                                <Col md="12">
+                                                    <Card>
 
-                                        </div>
-                                        <br />
-                                        <Row>
-                                            <hr />
-                                            <h6> Other Replies</h6>
-                                        </Row>
-                                        <Row style={{ marginTop: "30px" }}>
-                                            <Col md="12">
-                                                <Card>
+                                                        <CardBody>
+                                                            <Row>
 
-                                                    <CardBody>
-                                                        <Row>
+                                                                <table className="tg"
+                                                                    style={{ marginTop: "10px" }}
+                                                                >
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th className="tg-0lax">Name</th>
+                                                                            <th className="tg-0lax">Reply</th>
+                                                                            <th className="tg-0lax">Time</th>
+                                                                            <th className="tg-0lax">Attached Files</th>
+                                                                            <th className="tg-0lax"></th>
 
-                                                            <table className="tg"
-                                                                style={{ marginTop: "10px" }}
-                                                            >
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th className="tg-0lax">Name</th>
-                                                                        <th className="tg-0lax">Reply</th>
-                                                                        <th className="tg-0lax">Time</th>
-                                                                        <th className="tg-0lax">Attached Files</th>
-                                                                        <th className="tg-0lax"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="replyTabelList">
 
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="replyTabelList">
+                                                                        {
 
-                                                                    {
-
-                                                                        replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, reply_num) =>
+                                                                            replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, reply_num) =>
 
 
-                                                                            <>
-                                                                                <tr key={row.no} style={{ verticalAlign: "text-top" }}>
-                                                                                    <td className="tg-0lax" >
+                                                                                <>
+                                                                                    <tr key={row.no} style={{ verticalAlign: "text-top" }}>
+                                                                                        <td className="tg-0lax" >
 
-                                                                                        {row.name}
+                                                                                            {row.name}
 
-                                                                                    </td>
-                                                                                    <td className="tg-0lax" >
+                                                                                        </td>
+                                                                                        <td className="tg-0lax" >
 
 
-                                                                                        {row.content}
+                                                                                            {row.content}
 
-                                                                                        <p />
-                                                                                        {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
-                                                                                    </td>
-                                                                                    <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                    <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
-                                                                                    <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList.length !== null ? <i className="fas fa-file-download" onClick={() => { xxx() }} /> : null}</td>
-                                                                                    {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
-                                                                                </tr>
-                                                                            </>
+                                                                                            <p />
+                                                                                            {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
+                                                                                        </td>
+                                                                                        <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
+                                                                                        <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
+                                                                                        <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList.length !== null ? <i className="fas fa-file-download" onClick={() => { xxx() }} /> : null}</td>
+                                                                                        {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
+                                                                                    </tr>
+                                                                                </>
 
-                                                                        )
-                                                                    }
-                                                                </tbody>
-                                                            </table>
+                                                                            )
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
 
-                                                        </Row>
-                                                    </CardBody>
-                                                </Card>
-                                            </Col>
-                                        </Row>
-
-                                    </FormGroup>
+                                                            </Row>
+                                                        </CardBody>
+                                                    </Card>
+                                                </Col>
+                                            </Row>
+                                        </FormGroup>
+                                    </Form>
                                 </React.Fragment>
                             </CardBody>
 
