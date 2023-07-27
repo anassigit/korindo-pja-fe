@@ -71,11 +71,11 @@ const Instructions = () => {
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
-            classes: "custom-title-column", 
-            style: { maxWidth: "500px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"},
+            classes: "custom-title-column",
+            style: { maxWidth: "550px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
             formatter: (cellContent, appInstructionsData) => (
                 <>
-                <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
+                    <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
                 </>
             ),
         },
@@ -84,7 +84,7 @@ const Instructions = () => {
             text: "Owner",
             align: "center",
             headerStyle: { textAlign: 'center' },
-            style: { width: "180px"},
+            style: { width: "150px" },
             formatter: (cellContent, appInstructionsData) => {
                 let ownerElements = "";
                 if (cellContent.length > 1) {
@@ -113,20 +113,19 @@ const Instructions = () => {
         {
             dataField: "managerList",
             text: "Manager",
+            sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
-            style: { width: "180px"},
-            formatter: (cellContent, appInstructionsData) => {
-                return (
-                    <>
-                        <div style={{ width: "180px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="d-block">
-                            {cellContent.map((data, index) => {
-                                return index === 0 ? data.name : `, ${data.name}`;
-                            })}
-                        </div>
-                    </>
-                )
-            },
+            style: { width: "150px", minWidth:"150px" ,maxWidth: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+            formatter: (cellContent, appInstructionsData) => (
+                <>
+                    <a>
+                        {cellContent.map((data, index) => {
+                            return index === 0 ? data.name : `, ${data.name}`;
+                        })}
+                    </a>
+                </>
+            ),
         },
         {
             dataField: "insDate",
@@ -142,6 +141,7 @@ const Instructions = () => {
             sort: true,
             align: "center",
             headerStyle: { textAlign: 'center' },
+            style: { minWidth: "180px" },
             classes: "custom-status-column",
             // formatter: (cellContent, appInstructionsData) => {
             //     if (cellContent.status == "1") {
@@ -174,14 +174,14 @@ const Instructions = () => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-replies-column",
-                        formatter: (cellContent, appInstructionsData) => (
+            formatter: (cellContent, appInstructionsData) => (
                 <>
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                        
+
                         <span>
-                        <div>
-                        <i className="bx bx-message-dots" id="repliesCount" style={{fontSize: "25px", verticalAlign: "middle"}}/>&nbsp;{appInstructionsData.reply_count}
-                        </div>
+                            <div>
+                                <i className="bx bx-message-dots" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.reply_count}
+                            </div>
                         </span>
 
                     </div>
@@ -198,11 +198,11 @@ const Instructions = () => {
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                        
+
                         <span>
-                        <div>
-                        <i className="bx bxs-bell" id="repliesCount" style={{fontSize: "25px", verticalAlign: "middle"}}/>&nbsp;{appInstructionsData.notice_count}
-                        </div>
+                            <div>
+                                <i className="bx bxs-bell" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.notice_count}
+                            </div>
                         </span>
 
                     </div>
@@ -322,7 +322,7 @@ const Instructions = () => {
                                             redukCall={getInstructionsData}
                                             rowClick={() => appInstructionsPreEdit(appInstructionsData)}
                                         />
-                                        
+
                                     </Row>
                                 </React.Fragment>
                             </Col>

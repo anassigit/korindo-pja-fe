@@ -49,10 +49,6 @@
     text-overflow: ellipsis !important;
 } */
 
-.custom-title-column {
-    width: 350px !important;
-} 
-
 .text-nowrap .custom-num-column,
 .text-nowrap .custom-insdate-column,
 .text-nowrap .custom-status-column,
