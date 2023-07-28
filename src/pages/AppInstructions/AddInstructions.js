@@ -603,7 +603,7 @@ const AddInstructions = (props) => {
                                                                         }
                                                                         <div className="file-detail">
                                                                         <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>&nbsp;&nbsp;
-                                                                        <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle"}} onClick={() => DeleteSelectFile(id)} />
+                                                                        <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle", cursor:"pointer"}} onClick={() => DeleteSelectFile(id)} />
                                                                             
                                                                         </div>
                                                                     </div>

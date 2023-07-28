@@ -1129,7 +1129,7 @@ const EditInstructions = (props) => {
                                                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
 
-                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteSelectFile(id)} />
+                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} onClick={() => DeleteSelectFile(id)} />
 
                                                                                 <p />
                                                                             </div>
@@ -1159,9 +1159,9 @@ const EditInstructions = (props) => {
                                                                             <div className="file-detail">
                                                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteFileAttached(file_num)} />
+                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} onClick={() => DeleteFileAttached(file_num)} />
                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} download={filename} onClick={() => downloadFiles(file_num)} />
+                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} download={filename} onClick={() => downloadFiles(file_num)} />
 
                                                                             </div>
                                                                         </div>
@@ -1374,7 +1374,7 @@ const EditInstructions = (props) => {
                                                                         <div className="file-detail">
                                                                             <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                             &nbsp;&nbsp;
-                                                                            <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
+                                                                            <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
                                                                         </div>
                                                                     </div>
                                                                 )
@@ -1459,7 +1459,7 @@ const EditInstructions = (props) => {
                                                                                             <div className="file-detail">
                                                                                                 <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
                                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteSelectFileR(id)} />
+                                                                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} onClick={() => DeleteSelectFileR(id)} />
                                                                                               
                                                                                                 <p />
                                                                                             </div>
@@ -1532,7 +1532,7 @@ const EditInstructions = (props) => {
                                                                                     </td>
                                                                                     <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
                                                                                     <td className="tg-0lax" style={{maxWidth: "100px", wordBreak: "break-word"}}>{row.attachFileList.length > 0 ? row.attachFileList[0].name + '    ' +  '(' + (row + row.attachFileList[0].length, 0) + ')' : ''}</td>
-                                                                                    <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : 'none'}</td>
+                                                                                    <td className="tg-0lax" align="left" style={{cursor:"pointer"}}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
                                                                             </>
