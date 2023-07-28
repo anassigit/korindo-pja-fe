@@ -84,7 +84,7 @@ const EditInstructions = (props) => {
 
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                 const newOwnerEdit = {
-                    value: ownerList.id,
+                    owIdGet: ownerList.id,
                     label: ownerList.name,
                     bgColor: ownerList.bgColor,
 
@@ -94,7 +94,7 @@ const EditInstructions = (props) => {
 
             getDetailInstructionData?.data?.instruction?.managerList.map((managerList) => {
                 const newManagerEdit = {
-                    value: managerList.id,
+                    mIdGet: managerList.id,
                     label: managerList.name,
 
                 };
@@ -103,7 +103,7 @@ const EditInstructions = (props) => {
 
             getDetailInstructionData?.data?.ownerList.map((data) => {
                 const newOwnerSet = {
-                    value: data.id,
+                    owIdList: data.id,
                     label: data.name,
                     bgColor: data.bgColor,
 
@@ -114,7 +114,7 @@ const EditInstructions = (props) => {
             getDetailInstructionData?.data?.managerList.map((data) => {
                 const newManagerSet = {
 
-                    value: data.id,
+                    mIdList: data.id,
                     label: data.name,
 
                 };
@@ -483,11 +483,6 @@ const EditInstructions = (props) => {
             border: 0,
             boxShadow: 'none',
         }),
-        //   placeholder: (baseStyles, state) => ({
-
-        //         ...defaultStyles,
-        //         color: '#ffffff',
-        //     }),
 
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
             const color = data.bgColor;
@@ -1011,20 +1006,20 @@ const EditInstructions = (props) => {
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
     const inputRef = useRef(null)
 
-    useEffect(() => {
-        getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
-            const newObj = {
+    // useEffect(() => {
+    //     getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
+    //         const newObj = {
 
-                file_num: attachFileList.no,
-                filename: attachFileList.name,
+    //             file_num: attachFileList.no,
+    //             filename: attachFileList.name,
 
-            };
+    //         };
 
-            setGetFiles((option) => [...option, newObj])
+    //         setGetFiles((option) => [...option, newObj])
 
-            SetFiles2((option) => [...option, newObj])
-        });
-    }, [editInstructionsValidInput.values.no])
+    //         SetFiles2((option) => [...option, newObj])
+    //     });
+    // }, [editInstructionsValidInput.values.no])
 
     const handleSaveDesc = async (val) => {
         try {
