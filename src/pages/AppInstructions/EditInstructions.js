@@ -86,7 +86,7 @@ const EditInstructions = (props) => {
             // get response label (yang sudah dipilih sebelumnya) -- Owner -- //
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                 const newOwnerEdit = {
-                    owIdGet: ownerList.id,
+                    value: ownerList.id,
                     label: ownerList.name,
                     bgColor: ownerList.bgColor,
 
@@ -97,7 +97,7 @@ const EditInstructions = (props) => {
             // get response label (yang sudah dipilih sebelumnya) -- Manager -- //
             getDetailInstructionData?.data?.instruction?.managerList.map((managerList) => {
                 const newManagerEdit = {
-                    mIdGet: managerList.id,
+                    value: managerList.id,
                     label: managerList.name,
 
                 };
@@ -107,7 +107,7 @@ const EditInstructions = (props) => {
             // get dropdown list data -- Owner -- //
             getDetailInstructionData?.data?.ownerList.map((data) => {
                 const newOwnerSet = {
-                    owIdList: data.id,
+                    value: data.id,
                     label: data.name,
                     bgColor: data.bgColor,
 
@@ -118,9 +118,8 @@ const EditInstructions = (props) => {
             // get dropdown list data -- Manager -- //
             getDetailInstructionData?.data?.managerList.map((data) => {
                 const newManagerSet = {
-
-                    mIdList: data.id,
-                    label: data.name,
+                    value: data.id,
+                    label: data.    name,
 
                 };
                 setOptionManager((option) => [...option, newManagerSet]);
@@ -1007,16 +1006,16 @@ const EditInstructions = (props) => {
     const [showDesc, setShowDesc] = useState(false)
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
 
-    const formattedOwnerOptions = optionOwner
-    .filter((option) => !selectedMulti.includes(option.owIdList))
-    .map((option) => ({
-      owIdList: option.owIdList,
-      label: option.label,
-      bgColor: option.bgColor,
-    }))  
+    // const formattedOwnerOptions = optionOwner
+    // .filter((option) => !selectedMulti.includes(option.owIdList))
+    // .map((option) => ({
+    //   owIdList: option.owIdList,
+    //   label: option.label,
+    //   bgColor: option.bgColor,
+    // }))  
 
     console.log("selectedMulti :", selectedMulti)
-    console.log("formattedOwnerOptions :", formattedOwnerOptions)
+    console.log("optionOwner :", optionOwner)
 
 
     const formattedManagerOptions = optionManager.map((option) => ({
@@ -1194,7 +1193,7 @@ const EditInstructions = (props) => {
                                                         onChange={(e) => {
                                                             handleMulti2(e);
                                                         }}
-                                                        options={formattedManagerOptions}
+                                                        options={optionManager}
 
                                                         className="select2-selection"
                                                         styles={colourStyles2}
