@@ -960,6 +960,7 @@ const EditInstructions = (props) => {
                                                 <div className="mb-3 col-sm-8" hidden>
                                                     <Label>Instruction ID</Label>
                                                     <Input
+                                                        
                                                         name="no"
                                                         type="text"
                                                         value={editInstructionsValidInput.values.no || ""}
@@ -975,6 +976,7 @@ const EditInstructions = (props) => {
                                                 <div className="mb-3 col-sm-8">
                                                     <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                     <Input
+                                                        maxLength={50}
                                                         name="title"
                                                         type="text"
                                                         onChange={editInstructionsValidInput.handleChange}
@@ -1051,7 +1053,7 @@ const EditInstructions = (props) => {
                                                             name="description"
                                                             type="textarea"
                                                             rows="5"
-                                                            maxLength={50}
+                                                            maxLength={100}
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             value={editInstructionsValidInput.values.description || ""}
                                                             invalid={editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? true : false}
@@ -1410,6 +1412,7 @@ const EditInstructions = (props) => {
                                                             <div className="col-sm-8">
                                                                 <label>Answer </label>
                                                                 <Input
+                                                                maxLength={100}
                                                                     name="content"
                                                                     type="textarea"
                                                                     onChange={editInstructionsValidInput.handleChange}
@@ -1430,8 +1433,6 @@ const EditInstructions = (props) => {
                                             <div className="col">
                                                 <Row className="mb-2">
                                                     <Col sm="12">
-                                                        
-                                                            
                                                                 <div className="mb-3 col-sm-8">
                                                                     <label>Attached Files </label>
 
@@ -1471,8 +1472,6 @@ const EditInstructions = (props) => {
                                                                     </Form>
 
                                                                 </div>
-                                                         
-                                                       
                                                     </Col>
 
                                                     <Col md="12">
@@ -1516,34 +1515,24 @@ const EditInstructions = (props) => {
                                                                         <th className="tg-0lax">Time</th>
                                                                         <th className="tg-0lax">Attached Files</th>
                                                                         <th className="tg-0lax"></th>
-
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="replyTabelList">
-
                                                                     {
-
                                                                         replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, reply_num) =>
-
-
                                                                             <>
                                                                                 <tr key={row.no} style={{ verticalAlign: "text-top" }}>
                                                                                     <td className="tg-0lax" >
-
                                                                                         {row.name}
-
                                                                                     </td>
-                                                                                    <td className="tg-0lax" >
-
-
+                                                                                    <td className="tg-0lax" style={{maxWidth: "200px", wordBreak: "break-word"}}>
                                                                                         {row.content}
-
                                                                                         <p />
                                                                                         {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
                                                                                     </td>
                                                                                     <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                    <td className="tg-0lax" >{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
-                                                                                    <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList.length !== null ? <i className="fas fa-file-download" onClick={() => { xxx() }} /> : null}</td>
+                                                                                    <td className="tg-0lax" style={{maxWidth: "100px", wordBreak: "break-word"}}>{row.attachFileList.length > 0 ? row.attachFileList[0].name + '    ' +  '(' + (row + row.attachFileList[0].length, 0) + ')' : ''}</td>
+                                                                                    <td className="tg-0lax" align="left"> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : 'none'}</td>
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
                                                                             </>

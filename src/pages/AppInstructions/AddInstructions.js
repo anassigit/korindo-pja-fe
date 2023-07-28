@@ -433,6 +433,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-8">
                                                 <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
+                                                    maxlength={50}
                                                     name="title"
                                                     type="text"
                                                     onChange={addInstructionsValidInput.handleChange}
@@ -497,7 +498,7 @@ const AddInstructions = (props) => {
                                                     name="description"
                                                     type="textarea"
                                                     rows="5"
-                                                    maxLength={50}
+                                                    maxLength={100}
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     value={
                                                         addInstructionsValidInput.values.description ||

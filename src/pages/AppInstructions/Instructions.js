@@ -73,7 +73,7 @@ const Instructions = () => {
             align: "left",
             headerStyle: { textAlign: 'center' },
             classes: "custom-title-column",
-            style: { maxWidth: "500px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+            style: { maxWidth: "100px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
@@ -115,7 +115,6 @@ const Instructions = () => {
         {
             dataField: "managerList",
             text: "Manager",
-            sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
             style: { width: "150px", minWidth:"150px" ,maxWidth: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
