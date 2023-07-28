@@ -940,10 +940,10 @@ const EditInstructions = (props) => {
 
             <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
-                <Row hidden={!getDetailInstructionData?.data?.instruction?.edit}>
+                <Row style={{  display: memberId == getDetailInstructionData?.data?.instruction?.memberId ? 'flex' : 'none'}}>
                     <Col lg={12}>
                         <Card>
-                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
+                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
                             <CardBody>
                                 <Form
                                     onSubmit={(e) => {
@@ -1192,10 +1192,10 @@ const EditInstructions = (props) => {
                     </Col>
                 </Row>
 
-                <Row hidden={getDetailInstructionData?.data?.instruction?.edit}>
+                <Row style={{ display: memberId !== getDetailInstructionData?.data?.instruction?.memberId ? 'flex' : 'none'}}>
                     <Col lg={12}>
                         <Card>
-                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
+                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="mdi mdi-file-document-box font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
                             <CardBody>
                                 <Form
                                     onSubmit={(e) => {
@@ -1215,7 +1215,6 @@ const EditInstructions = (props) => {
                                                         disabled
                                                         name="no"
                                                         type="text"
-                                                        onChange={editInstructionsValidInput.handleChange}
                                                         value={editInstructionsValidInput.values.no || ""}
                                                         invalid={
                                                             editInstructionsValidInput.touched.no && editInstructionsValidInput.errors.no ? true : false
@@ -1230,17 +1229,15 @@ const EditInstructions = (props) => {
                                                     <Label>Title</Label>
                                                     <Input
                                                         disabled
-                                                        name="insTitle"
+                                                        name="title"
                                                         type="text"
-                                                        onChange={editInstructionsValidInput.handleChange}
-                                                        onBlur={handleAutoSaveTitle}
-                                                        value={editInstructionsValidInput.values.insTitle || ""}
+                                                        value={editInstructionsValidInput.values.title || ""}
                                                         invalid={
-                                                            editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? true : false
+                                                            editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? true : false
                                                         }
                                                     />
-                                                    {editInstructionsValidInput.touched.insTitle && editInstructionsValidInput.errors.insTitle ? (
-                                                        <FormFeedback type="invalid">{editInstructionsValidInput.errors.insTitle}</FormFeedback>
+                                                    {editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? (
+                                                        <FormFeedback type="invalid">{editInstructionsValidInput.errors.title}</FormFeedback>
                                                     ) : null}
                                                 </div>
 
@@ -1254,8 +1251,6 @@ const EditInstructions = (props) => {
                                                         disabled
                                                         name="insDate"
                                                         type="date"
-                                                        onChange={editInstructionsValidInput.handleChange}
-                                                        onBlur={handleAutoSaveDate}
                                                         value={editInstructionsValidInput.values.insDate || startDate}
                                                         invalid={
                                                             editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
@@ -1271,28 +1266,19 @@ const EditInstructions = (props) => {
                                                     <Input
                                                         disabled
                                                         type="select"
-                                                        name="statusId"
-                                                        onChange={() => {
-                                                            editInstructionsValidInput.handleChange
-                                                            handleAutoSaveStatus()
-                                                        }}
-                                                        onBlur={() => {
-                                                        }}
+                                                        name="status"
                                                         value={editInstructionsValidInput.values.status || ""}
                                                         invalid={
                                                             editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
                                                         }
                                                     >
-                                                        <option no="" value={""}></option>
-                                                        <option value={"1"}>Not Start</option>
-                                                        <option value={"2"}>In Progress</option>
-                                                        <option value={"3"}>Action Completed</option>
-                                                        <option value={"4"}>Rejection</option>
-                                                        <option value={"5"}>Complete</option>
+                                                       {statusList.map((value, key) => (
+                                                            <option key={key} value={value.statusNm}>{value.statusNm}</option>
+                                                        ))}
 
                                                     </Input>
-                                                    {editInstructionsValidInput.touched.statusId && editInstructionsValidInput.errors.statusId ? (
-                                                        <FormFeedback type="invalid">{editInstructionsValidInput.errors.statusId}</FormFeedback>
+                                                    {editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? (
+                                                        <FormFeedback type="invalid">{editInstructionsValidInput.errors.status}</FormFeedback>
                                                     ) : null}
                                                 </div>
 
@@ -1304,7 +1290,6 @@ const EditInstructions = (props) => {
                                                         type="textarea"
                                                         rows="5"
                                                         maxLength={50}
-                                                        onChange={editInstructionsValidInput.handleChange}
                                                         value={
                                                             editInstructionsValidInput.values.description ||
                                                             ""
@@ -1399,7 +1384,7 @@ const EditInstructions = (props) => {
                 <Row>
                     <Col lg={12}>
                         <Card>
-                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Reply</CardHeader>
+                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-forum font-size-18 align-middle me-2"></i>Reply</CardHeader>
 
                             <CardBody>
                                 <React.Fragment>
@@ -1561,7 +1546,7 @@ const EditInstructions = (props) => {
                     <Col lg={12}>
                         <Card>
                             <a>
-                                <CardHeader onClick={() => setIsHiddenLog(!isHiddenLogs)} style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-list-check font-size-18 align-middle me-2"></i> Logs
+                                <CardHeader onClick={() => setIsHiddenLog(!isHiddenLogs)} style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-timer-sand font-size-18 align-middle me-2"></i>Logs
                                 </CardHeader>
                             </a>
 
