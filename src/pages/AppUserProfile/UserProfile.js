@@ -22,7 +22,7 @@ import {
   UncontrolledAlert,
 } from "reactstrap"
 
-import { editUserProfile, resetMessage } from "../../store/appUserProfile/actions"
+import { editUserProfile, resetMessage, msgEdit } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import ChangePassword from "pages/Authentication/ChangePassword";
@@ -65,41 +65,35 @@ const UserProfile = () => {
 
     validationSchema: Yup.object().shape({
 
-
       hp: Yup.string()
         .required("Wajib diisi")
 
-
     }),
 
-
   });
 
-  const appUserProfileMessage = useSelector(state => {
-    return state.userProfileReducer.msgEdit;
-  });
 
   const updateHp = async () => {
+    //e.preventDefault();
     try {
-
+debugger
         var map = {
             "hp":  appUserProfilepValidInput.values.hp
         };
-        // console.log('map : ', map)
-
-        //setAppUserProfileSpinner(true);
-        alert ("Change success")
+        
         await dispatch(editUserProfile(map));
-        window.location.reload();
-
 
     } catch (error) {
         console.log(error)
     }
 };
 
+const respMsg = useSelector(state => {
+  return state.userProfileReducer.msgEdit;
+});
+
   useEffect(() => {
-    if (appUserProfileMessage.status == "1") {
+    if (respMsg.status == "1") {
       setUserProfilePage(true);
       const u = JSON.parse(ReactSession.get("user"))
       u.name = appUserProfilepValidInput.values.name
@@ -109,9 +103,9 @@ const UserProfile = () => {
       u.id = appUserProfilepValidInput.values.id
       ReactSession.get("user", JSON.stringify(u))
     }
-    setAppUserProfileMsg(appUserProfileMessage)
+    setAppUserProfileMsg(respMsg)
     setAppUserProfileSpinner(false);
-  }, [appUserProfileMessage],[])
+  }, [respMsg])
 
   const ChangePassPage = () => {
     setUserProfilePage(false)
@@ -252,7 +246,7 @@ const UserProfile = () => {
                           <span style={{ fontStyle: "italic" }}> * Please click button Change Password for change the password.</span>
                         </Col>
                       </Row>
-                      <Button color="primary" className="ms-1" onClick={() => { updateHp() }}>
+                      <Button color="primary" className="ms-1" onClick={(e) => { updateHp() }}>
                         SAVE
                       </Button>
                       <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />

@@ -13,16 +13,16 @@
     background-color: $table-head-bg;
   }
 }
-
+// vin edit border table - default from: border: $table-border-width solid $table-border-color; => border: 0;
 .table-bordered {
   border: $table-border-width solid $table-border-color;
 
   th,
   td {
-    border: $table-border-width solid $table-border-color;
+    border: 0;
   }
 }
-
+// end edit
 
 .table-dark>:not(:last-child)>:last-child>*{
   border-bottom-color:  $table-dark-border-color;

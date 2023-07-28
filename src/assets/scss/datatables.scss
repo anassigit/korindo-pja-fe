@@ -94,6 +94,7 @@ div.dataTables_scrollFoot > .dataTables_scrollFootInner > table {
 }
 table.dataTable.table-sm > thead > tr > th {
   padding-right: 20px;
+
 }
 table.dataTable.table-sm .sorting:before,
 table.dataTable.table-sm .sorting_asc:before,
@@ -138,9 +139,12 @@ div.table-responsive
   > div[class^="col-"]:last-child {
   padding-right: 0;
 }
+// vin edit here -- add "height: 50px" (before: there's no 'height' option)
 tbody tr {
   cursor: pointer;
+  height: 50px;
 }
+// end edit
 .dropup > .caret {
   margin: 10px 0;
   color: #cccccc;

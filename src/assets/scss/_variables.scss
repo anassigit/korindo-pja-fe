@@ -765,11 +765,11 @@ $table-bg: null;
 $table-accent-bg: transparent;
 
 $table-th-font-weight: null;
-
+// vin edit $table-striped-bg: $white; (before: $gray-100) //
 $table-striped-color: $table-color;
 $table-striped-bg-factor: 0.05;
-$table-striped-bg: $gray-100;
-
+$table-striped-bg: $white;
+// end edit //
 $table-active-color: $table-color;
 $table-active-bg-factor: 0.1;
 $table-active-bg: $gray-100;
