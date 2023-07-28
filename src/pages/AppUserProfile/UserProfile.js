@@ -26,7 +26,7 @@ import { editUserProfile, resetMessage, msgEdit } from "../../store/appUserProfi
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import ChangePassword from "pages/Authentication/ChangePassword";
-
+import MsgModal from "components/Common/MsgModal";
 
 
 const UserProfile = () => {
@@ -37,6 +37,17 @@ const UserProfile = () => {
   const [userProfilePassword, setUserProfilePassword] = useState(false)
   //const [id, setId] = useState("")
   const [userProfilePageData, setUserProfilePageData] = useState()
+
+    const [generalMsgModal, setGeneralMsgModal] = useState(false)
+    const [generalContentModal, setGeneralContentModal] = useState("")
+
+const respMsg = useSelector(state => {
+  return state.userProfileReducer.msgEdit;
+});
+
+    const toggleMsgModal = () => {
+        setGeneralMsgModal(!generalMsgModal)
+    }
 
   useEffect(() => {
     dispatch(resetMessage());
@@ -74,7 +85,6 @@ const UserProfile = () => {
 
 
   const updateHp = async () => {
-    //e.preventDefault();
     try {
 debugger
         var map = {
@@ -82,15 +92,18 @@ debugger
         };
         
         await dispatch(editUserProfile(map));
+        if (respMsg.message != "Fail") {
+            setGeneralContentModal("Update HP success")
+        } else {
+            setGeneralContentModal("Update Failed")
+        }
+        toggleMsgModal()
 
     } catch (error) {
         console.log(error)
     }
 };
 
-const respMsg = useSelector(state => {
-  return state.userProfileReducer.msgEdit;
-});
 
   useEffect(() => {
     if (respMsg.status == "1") {
@@ -99,7 +112,8 @@ const respMsg = useSelector(state => {
       u.name = appUserProfilepValidInput.values.name
       u.pname = appUserProfilepValidInput.values.pname
       u.gname = appUserProfilepValidInput.values.gname
-      u.hp = appUserProfilepValidInput.values.hp
+      //u.hp = appUserProfilepValidInput.values.hp
+      sessionStorage.setItem(u.hp = appUserProfilepValidInput.values.hp);
       u.id = appUserProfilepValidInput.values.id
       ReactSession.get("user", JSON.stringify(u))
     }
@@ -117,15 +131,15 @@ const respMsg = useSelector(state => {
   }
 
   return (
-    <React.Fragment>
-      <div className="page-content">
-        <MetaTags>
-          <title>Project A</title>
-        </MetaTags>
-
-        {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
-          {typeof appUserProfileMsg == 'string' ? appUserProfileMsg : appUserProfileMsg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null}
-
+    <RootPageCustom msgStateGet={appUserProfileMsg} msgStateSet={setAppUserProfileMsg}
+            componentJsx={
+                <>
+                        <MsgModal
+                        modal={generalMsgModal}
+                        toggle={toggleMsgModal}
+                        message={generalContentModal}
+                    />
+      
         <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
           {/* <Breadcrumbs title="Forms" breadcrumbItem="Ubah User" /> */}
 
@@ -265,8 +279,10 @@ const respMsg = useSelector(state => {
           setUserProfilePage={setUserProfilePage}
           setAppUserProfileMsg={setAppUserProfileMsg}
         />
-      </div>
-    </React.Fragment>
+        </>
+      }
+/>
+ 
   );
 };
 export default UserProfile

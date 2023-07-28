@@ -21,6 +21,7 @@ import AddInstructions from "./AddInstructions";
 import EditInstructions from "./EditInstructions";
 import "../../assets/scss/custom/table/TableCustom.css"
 
+
 const Instructions = () => {
 
     const dispatch = useDispatch();
@@ -72,7 +73,7 @@ const Instructions = () => {
             align: "left",
             headerStyle: { textAlign: 'center' },
             classes: "custom-title-column",
-            style: { maxWidth: "550px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+            style: { maxWidth: "500px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
@@ -90,14 +91,15 @@ const Instructions = () => {
                 if (cellContent.length > 1) {
                     ownerElements = cellContent.map((owner, index) => (
                         <span className="mx-1" key={index}>
-                            <span className="rounded-circle" style={{ backgroundColor: owner.bgColor, color: "white", width: "35px", height: "35px", display: "inline-block", textAlign: "center", justifyContent: "center", lineHeight: "35px" }}>
+                            <span className="rounded-circle" style={{ backgroundColor: owner.bgColor, color: "white", width: "30px", height: "30px", display: "inline-block", textAlign: "center", justifyContent: "center", lineHeight: "30px" }}>
                                 {owner.name.charAt(0).toUpperCase()}
                             </span>
                         </span>
                     ))
+
                 } else {
                     ownerElements = cellContent.map((owner, index) => (
-                        <span className="px-3 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white" }}>
+                        <span className="px-3 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white", height: "30px" }}>
                             {owner.name}
                         </span>
                     ))
@@ -298,7 +300,7 @@ const Instructions = () => {
                                                             className="btn btn-primary "
                                                             onClick={() => { appInstructionsPreAdd() }}
                                                         >
-                                                            <i className="bx bx-plus font-size-16 align-middle me-2"></i>{" "}
+                                                            <i className="mdi mdi-plus" style={{verticalAlign: "middle"}}></i>{" "}
                                                             New Instructions
                                                         </button>
                                                     </div>
