@@ -319,7 +319,7 @@ const Instructions = () => {
                                             searchSet={setAppInstructionsTabelSearch}
                                             searchGet={appInstructionsTabelSearch}
                                             redukCall={getInstructionsData}
-                                            rowClick={() => appInstructionsPreEdit(appInstructionsData)}
+                                            //rowClick={() => appInstructionsPreEdit(appInstructionsData)}
                                         />
 
                                     </Row>

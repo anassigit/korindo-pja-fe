@@ -31,12 +31,14 @@
 .react-bootstrap-table-pagination {
     padding-left: 1.5%;
     padding-right: 1.5%;
+    position: relative;
 }
 
 .table-secondary th {
     background-color: white !important;
     color: #495057;
 }
+
 
 /* .text-nowrap .custom-owner-column {
     width: 180px !important;
