@@ -1106,10 +1106,12 @@ const EditInstructions = (props) => {
 
                                                     <Form onSubmit={FileUploadSubmit}>
                                                         <div className="kb-file-upload">
+                                                            
                                                             <div className="file-upload-box">
-                                                                <input type="file" id="fileupload2" className="file-upload-input" onChange={InputChange} name="removeFile" multiple />
+                                                                <input type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                                             </div>
                                                         </div>
+                                                        &nbsp;&nbsp;&nbsp;
                                                         <div className="kb-attach-box mb-3">
                                                             {
                                                                 selectedfile.map((data, index) => {
@@ -1118,8 +1120,8 @@ const EditInstructions = (props) => {
                                                                         <div className="file-atc-box" key={id}>
                                                                             {
                                                                                 filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                    <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                    <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                                    <div className="file-image"></div> :
+                                                                                    <div className="file-image"></div>
                                                                             }
                                                                             <div className="file-detail">
                                                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
@@ -1149,8 +1151,8 @@ const EditInstructions = (props) => {
                                                                         <div className="file-atc-box" key={index}>
                                                                             {
                                                                                 filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                    <div className="file-image"> <img src={fileimage} alt="" /></div> :
-                                                                                    <div className="file-image"><i className="far fa-file-alt"></i></div>
+                                                                                    <div className="file-image"></div> :
+                                                                                    <div className="file-image"></div>
                                                                             }
                                                                             <div className="file-detail">
                                                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
@@ -1167,7 +1169,6 @@ const EditInstructions = (props) => {
                                                         </div>
                                                         : ''}
                                                 </div>
-
                                             </Col>
                                         </Row>
 
@@ -1358,25 +1359,26 @@ const EditInstructions = (props) => {
                                                     </Form>
                                                     {getFiles.length > 0 ?
                                                         <div className="kb-attach-box">
-                                                            {
-                                                                getFiles.map((data, index) => {
-                                                                    const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
-                                                                    return (
-                                                                        <div className="file-atc-box" key={index}>
-                                                                            {
-                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                    <div className="file-image"></div> :
-                                                                                    <div className="file-image"></div>
-                                                                            }
-                                                                            <div className="file-detail">
-                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>&nbsp;&nbsp;
-                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
-                                                                            </div>
+                                                        {
+                                                            getFiles.map((data, index) => {
+                                                                const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
+                                                                return (
+                                                                    <div className="file-atc-box" key={index}>
+                                                                        {
+                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                                <div className="file-image"></div> :
+                                                                                <div className="file-image"></div>
+                                                                        }
+                                                                        <div className="file-detail">
+                                                                            <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
+                                                                            &nbsp;&nbsp;
+                                                                            <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
                                                                         </div>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
                                                         : ''}
                                                 </div>
 
@@ -1428,9 +1430,9 @@ const EditInstructions = (props) => {
                                             <div className="col">
                                                 <Row className="mb-2">
                                                     <Col sm="12">
-                                                        <div className="input-group">
-                                                            <div className="col-sm-8">
-                                                                <div className="mb-3 col-sm-6">
+                                                        
+                                                            
+                                                                <div className="mb-3 col-sm-8">
                                                                     <label>Attached Files </label>
 
                                                                     <Form onSubmit={FileUploadSubmitR}>
@@ -1439,6 +1441,7 @@ const EditInstructions = (props) => {
                                                                                 <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
                                                                             </div>
                                                                         </div>
+                                                                        &nbsp;&nbsp;&nbsp;
                                                                         <div className="kb-attach-box mb-3">
                                                                             {
                                                                                 selectedfileR.map((data, index) => {
@@ -1448,17 +1451,15 @@ const EditInstructions = (props) => {
 
                                                                                             {
                                                                                                 filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                    <div className="file-image"> <img src={fileimage} alt="" /></div>
+                                                                                                    <div className="file-image"></div>
                                                                                                     :
-                                                                                                    <div className="file-image"><i className="fas fa-file-alt" /></div>
+                                                                                                    <div className="file-image"></div>
                                                                                             }
                                                                                             <div className="file-detail">
                                                                                                 <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                                {/* <p></p> */}
-                                                                                                {/* <p><span>Size : {filesize}</span><span className="ml-2">Modified Time : {datetime}</span></p> */}
-                                                                                                <div className="file-actions">
-                                                                                                    <button type="button" className="form-control" onClick={() => DeleteSelectFileR(id)}>Delete</button>
-                                                                                                </div>
+                                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle" }} onClick={() => DeleteSelectFileR(id)} />
+                                                                                              
                                                                                                 <p />
                                                                                             </div>
                                                                                         </div>
@@ -1470,8 +1471,8 @@ const EditInstructions = (props) => {
                                                                     </Form>
 
                                                                 </div>
-                                                            </div>
-                                                        </div>
+                                                         
+                                                       
                                                     </Col>
 
                                                     <Col md="12">
