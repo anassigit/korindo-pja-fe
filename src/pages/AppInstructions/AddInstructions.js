@@ -562,7 +562,7 @@ const AddInstructions = (props) => {
 
                                                 <Form onSubmit={FileUploadSubmit}>
                                                 <div className="kb-file-upload">
-                                                    <div className="file-upload-box">
+                                                    {/* <div className="file-upload-box">
                                                             
                                                             <label
                                                                 htmlFor="idFileUpload"
@@ -580,7 +580,13 @@ const AddInstructions = (props) => {
                                                             style={{ display: 'none' }}
                                                             />
                                                    
-                                                        </div>
+                                                        </div> */}
+                                                         <div className="kb-file-upload">
+                                                                            <div className="file-upload-box">
+                                                                                <input type="file" id="fileupload3" className="form-control" onChange={InputChange}  name="removeFile" multiple />
+                                                                            </div>
+                                                                        </div>
+                                                                        &nbsp;&nbsp;&nbsp;
                                                         </div>
                                                         &nbsp;
                                                     <div className="kb-attach-box mb-3">
