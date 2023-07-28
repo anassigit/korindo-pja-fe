@@ -119,7 +119,7 @@ const EditInstructions = (props) => {
             getDetailInstructionData?.data?.managerList.map((data) => {
                 const newManagerSet = {
                     value: data.id,
-                    label: data.    name,
+                    label: data.name,
 
                 };
                 setOptionManager((option) => [...option, newManagerSet]);
@@ -305,6 +305,7 @@ const EditInstructions = (props) => {
             }
         }
 
+        debugger
         alert('Upload data success.');
         insert(bodyForm, config);
         setEditInstruction(true);
@@ -363,7 +364,7 @@ const EditInstructions = (props) => {
     const FileUploadSubmit = async (e) => {
         e.preventDefault();
 
-        // form reset on submit 
+
         e.target.reset();
         if (selectedfile.length > 0) {
             for (let index = 0; index < selectedfile.length; index++) {
@@ -618,159 +619,60 @@ const EditInstructions = (props) => {
     };
 
     function handleMulti(s) {
-
-        var id1 = "";
-        if (selectedMulti.length < s.length) {
-
-            var jml = 0;
-
-            jml = s.length
-
-
-            var bodyForm = new FormData();
-            bodyForm.append('num', editInstructionsValidInput.values.no);
-
-            if (jml > 1) {
-                for (let i = 0; i < s.length; i++) {
-                    if (i == s.length - 1) {
-                        id1 = s[s.length - 1].value
-                        bodyForm.append('addUser', id1);
-                    }
-                    break;
-                }
-                //jml = s.length -1
-
-            } else {
-                s.map((data, index) => {
-                    bodyForm.append('addUser', data.value);
-                })
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            insert(bodyForm, config);
-
-        } else {
-
-            var bodyForm = new FormData();
-            debugger
-            bodyForm.append('num', editInstructionsValidInput.values.no);
-
-
-            var jml = 0;
-
-            jml = s.length
-
-            if (jml > 1) {
-                for (let i = 0; i < s.length; i++) {
-                    if (i == s.length - 1) {
-                        debugger
-                        id1 = s[s.length - 1].value
-                        //console.log('2 :' + s[s.length - 1].value)
-                        bodyForm.append('removeUser', id1);
-                    }
-                    break;
-                }
-
-            } else {
-                s.map((data, index) => {
-                    bodyForm.append('removeUser', data.value);
-                })
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            insert(bodyForm, config);
-
-        }
-
+        const currentSelection = selectedMulti.map((item) => item.value);
+    
+        const addedValues = s.filter((item) => !currentSelection.includes(item.value));
+        const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
+    
+        const bodyForm = new FormData();
+        bodyForm.append('num', editInstructionsValidInput.values.no);
+    
+        addedValues.forEach((addedItem) => {
+            bodyForm.append('addUser', addedItem.value);
+        });
+    
+        deletedValues.forEach((deletedItem) => {
+            bodyForm.append('removeUser', deletedItem);
+        });
+    
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        };
+        
+        insert(bodyForm, config)
         setselectedMulti(s);
-
-
     }
-
+    
     function handleMulti2(s) {
-
-        var id2 = "";
-        if (selectedMulti2.length < s.length) {
-
-            var jml2 = 0;
-
-            jml2 = s.length
-
-
-            var bodyForm = new FormData();
-            bodyForm.append('num', editInstructionsValidInput.values.no);
-
-            if (jml2 > 1) {
-                for (let i = 0; i < s.length; i++) {
-                    if (i == s.length - 1) {
-                        debugger
-                        id2 = s[s.length - 1].value
-                        bodyForm.append('addUser', id2);
-                    }
-                    break;
-                }
-                //jml = s.length -1
-            } else {
-                s.map((data, index) => {
-                    bodyForm.append('addUser', data.value);
-                })
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            insert(bodyForm, config);
-
-        } else {
-
-            var bodyForm = new FormData();
-            debugger
-            bodyForm.append('num', editInstructionsValidInput.values.no);
-
-
-            var jml2 = 0;
-
-            jml2 = s.length
-
-            if (jml2 > 1) {
-                for (let i = 0; i < s.length; i++) {
-                    if (i == s.length - 1) {
-                        debugger
-                        id2 = s[s.length - 1].value
-                        bodyForm.append('removeUser', id2);
-                    }
-                    break;
-                }
-
-            } else {
-                s.map((data, index) => {
-                    bodyForm.append('removeUser', data.value);
-                })
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            insert(bodyForm, config);
-
-        }
-
+        const currentSelection = selectedMulti2.map((item) => item.value);
+    
+        const addedValues = s.filter((item) => !currentSelection.includes(item.value));
+        const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
+    
+        const bodyForm = new FormData();
+        bodyForm.append('num', editInstructionsValidInput.values.no);
+    
+        addedValues.forEach((addedItem) => {
+            bodyForm.append('addUser', addedItem.value);
+        });
+    
+        deletedValues.forEach((deletedItem) => {
+            bodyForm.append('removeUser', deletedItem);
+        });
+    
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        };
+    
+        insert(bodyForm, config);
+    
         setselectedMulti2(s);
-
-
     }
+    
 
     function handleAutoSaveTitle(values) {
 
