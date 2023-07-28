@@ -619,35 +619,82 @@ const EditInstructions = (props) => {
     };
 
     function handleMulti(s) {
-        var bodyForm = new FormData();
-        bodyForm.append('num', editInstructionsValidInput.values.no)
 
-        const selectedMultiValues = selectedMulti.map((selectedOption) => selectedOption.value);
-        const sValues = s.map((selectedOption) => selectedOption.value);
+        var id1 = "";
+        if (selectedMulti.length < s.length) {
 
-        const addUserValues = sValues.filter((value) => !selectedMultiValues.includes(value));
-        const removeUserValues = selectedMultiValues.filter((value) => !sValues.includes(value));
+            var jml = 0;
 
-        addUserValues.forEach((value) => {
-            bodyForm.append('addUser', value);
-        });
+            jml = s.length
 
-        removeUserValues.forEach((value) => {
-            bodyForm.append('removeUser', value);
-        });
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        };
+            var bodyForm = new FormData();
+            bodyForm.append('num', editInstructionsValidInput.values.no);
 
-        insert(bodyForm, config);
+            if (jml > 1) {
+                for (let i = 0; i < s.length; i++) {
+                    if (i == s.length - 1) {
+                        id1 = s[s.length - 1].value
+                        bodyForm.append('addUser', id1);
+                    }
+                    break;
+                }
+                //jml = s.length -1
+
+            } else {
+                s.map((data, index) => {
+                    bodyForm.append('addUser', data.value);
+                })
+            }
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            insert(bodyForm, config);
+
+        } else {
+
+            var bodyForm = new FormData();
+            debugger
+            bodyForm.append('num', editInstructionsValidInput.values.no);
+
+
+            var jml = 0;
+
+            jml = s.length
+
+            if (jml > 1) {
+                for (let i = 0; i < s.length; i++) {
+                    if (i == s.length - 1) {
+                        debugger
+                        id1 = s[s.length - 1].value
+                        //console.log('2 :' + s[s.length - 1].value)
+                        bodyForm.append('removeUser', id1);
+                    }
+                    break;
+                }
+
+            } else {
+                s.map((data, index) => {
+                    bodyForm.append('removeUser', data.value);
+                })
+            }
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            insert(bodyForm, config);
+
+        }
 
         setselectedMulti(s);
+
+
     }
-
-
 
     function handleMulti2(s) {
 
@@ -961,12 +1008,12 @@ const EditInstructions = (props) => {
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
 
     const formattedOwnerOptions = optionOwner
-        .filter((option) => !selectedMulti.some((selected) => selected.owIdList === option.owIdList))
-        .map((option) => ({
-            owIdList: option.owIdList,
-            label: option.label,
-            bgColor: option.bgColor,
-        }));
+    .filter((option) => !selectedMulti.includes(option.owIdList))
+    .map((option) => ({
+      owIdList: option.owIdList,
+      label: option.label,
+      bgColor: option.bgColor,
+    }))  
 
     console.log("selectedMulti :", selectedMulti)
     console.log("formattedOwnerOptions :", formattedOwnerOptions)
@@ -984,15 +1031,6 @@ const EditInstructions = (props) => {
             console.error("Error saving descriptions:", error)
         }
     }
-
-    useEffect(() => {
-        if (optionOwner0 != null) {
-            const selectedValues = optionOwner0.map((selectedItem) =>
-                optionOwner.find((optionItem) => optionItem.owIdList === selectedItem.owIdGet)
-            );
-            setselectedMulti(selectedValues);
-        }
-    }, [optionOwner0, optionOwner]);
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1139,7 +1177,7 @@ const EditInstructions = (props) => {
                                                         onChange={(e) => {
                                                             handleMulti(e);
                                                         }}
-                                                        options={formattedOwnerOptions}
+                                                        options={optionOwner}
                                                         className="select2-selection"
                                                         styles={colourStyles}
                                                         components={{ DropdownIndicator }}
