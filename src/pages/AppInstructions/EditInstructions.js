@@ -305,10 +305,7 @@ const EditInstructions = (props) => {
             }
         }
 
-        debugger
-        alert('Upload data success.');
         insert(bodyForm, config);
-        setEditInstruction(true);
     };
 
     const filesizes = (bytes, decimals = 2) => {
@@ -1138,7 +1135,7 @@ const EditInstructions = (props) => {
                                                             }
                                                         </div>
                                                         <div className="kb-buttons-box">
-                                                            <button onClick={() => handleUploadFile()} className="btn btn-primary form-submit">Upload</button>
+                                                            <a onClick={() => handleUploadFile()} className="btn btn-primary">Upload</a>
                                                         </div>
                                                     </Form>
                                                     {Files.length > 0 ?
