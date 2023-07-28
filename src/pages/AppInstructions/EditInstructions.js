@@ -82,6 +82,7 @@ const EditInstructions = (props) => {
 
         if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
 
+             // get response label (yang sudah dipilih sebelumnya) -- Owner -- //
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                 const newOwnerEdit = {
                     owIdGet: ownerList.id,
@@ -92,6 +93,7 @@ const EditInstructions = (props) => {
                 setOptionOwner0((option) => [...option, newOwnerEdit]);
             });
 
+            // get response label (yang sudah dipilih sebelumnya) -- Manager -- //
             getDetailInstructionData?.data?.instruction?.managerList.map((managerList) => {
                 const newManagerEdit = {
                     mIdGet: managerList.id,
@@ -101,6 +103,7 @@ const EditInstructions = (props) => {
                 setOptionManager0((option) => [...option, newManagerEdit]);
             });
 
+            // get dropdown list data -- Owner -- //
             getDetailInstructionData?.data?.ownerList.map((data) => {
                 const newOwnerSet = {
                     owIdList: data.id,
@@ -111,6 +114,7 @@ const EditInstructions = (props) => {
                 setOptionOwner((option) => [...option, newOwnerSet]);
             });
 
+            // get dropdown list data -- Manager -- //
             getDetailInstructionData?.data?.managerList.map((data) => {
                 const newManagerSet = {
 
