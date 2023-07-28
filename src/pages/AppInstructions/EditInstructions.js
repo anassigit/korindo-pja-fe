@@ -1416,8 +1416,8 @@ const EditInstructions = (props) => {
                                                                     name="content"
                                                                     type="textarea"
                                                                     onChange={editInstructionsValidInput.handleChange}
-                                                                    style={{ color: "black" }}
-                                                                    placeholder="Type here..."
+                                                                    //style={{ color: "black" }}
+                                                                    //placeholder={'Type here...'}
                                                                     invalid={
                                                                         editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? true : false
                                                                     }
