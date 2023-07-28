@@ -813,20 +813,24 @@ const EditInstructions = (props) => {
 
     function handleAutoSaveStatus(values) {
 
-        var bodyForm = new FormData();
+        const targetStatusNm = values.target.value
+        const targetStatus = statusList.find((status) => status.statusNm === targetStatusNm)
 
-        bodyForm.append('num', editInstructionsValidInput.values.no);
-        bodyForm.append('status', editInstructionsValidInput.values.status);
+        let statusId = null
+        statusId = targetStatus.statusId
+
+        var bodyForm = new FormData()
+        bodyForm.append('num', editInstructionsValidInput.values.no)
+        bodyForm.append('status', statusId)
 
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
-        }
-        insert(bodyForm, config);
-        // dispatch(editInstructions(values));
-
+        };
+        insert(bodyForm, config)
     }
+
 
     const FileUploadSubmitD = async (e) => {
         e.preventDefault();
@@ -1023,12 +1027,12 @@ const EditInstructions = (props) => {
 
     const handleSaveDesc = async (val) => {
         try {
-          await dispatch(saveDescriptions({ "num": editInstructionsValidInput.values.no, "description": val }))
+            await dispatch(saveDescriptions({ "num": editInstructionsValidInput.values.no, "description": val }))
         } catch (error) {
-          console.error("Error saving descriptions:", error)
+            console.error("Error saving descriptions:", error)
         }
-      }
-      
+    }
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1114,10 +1118,11 @@ const EditInstructions = (props) => {
                                                     <Input
                                                         name="status"
                                                         type="select"
-                                                        onChange={editInstructionsValidInput.handleChange}
+                                                        onChange={(e) => {
+                                                            editInstructionsValidInput.handleChange(e);
+                                                            handleAutoSaveStatus(e)
+                                                        }}
                                                         onBlur={() => {
-                                                            editInstructionsValidInput.handleBlur('status');
-                                                            handleAutoSaveStatus();
                                                         }}
                                                         value={editInstructionsValidInput.values.status}
                                                         invalid={
@@ -1126,8 +1131,7 @@ const EditInstructions = (props) => {
                                                     >
                                                         {statusList.map((value, key) => (
                                                             <option key={key} value={value.statusNm}>{value.statusNm}</option>
-                                                        )
-                                                        )}
+                                                        ))}
                                                     </Input>
                                                     {editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? (
                                                         <FormFeedback type="invalid">{editInstructionsValidInput.errors.status}</FormFeedback>
@@ -1373,10 +1377,11 @@ const EditInstructions = (props) => {
                                                         disabled
                                                         type="select"
                                                         name="statusId"
-                                                        onChange={editInstructionsValidInput.handleChange}
+                                                        onChange={() => {
+                                                            editInstructionsValidInput.handleChange
+                                                            handleAutoSaveStatus()
+                                                        }}
                                                         onBlur={() => {
-                                                            editInstructionsValidInput.handleBlur;
-                                                            handleAutoSaveStatus();
                                                         }}
                                                         value={editInstructionsValidInput.values.status || ""}
                                                         invalid={
