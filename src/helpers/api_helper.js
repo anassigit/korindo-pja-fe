@@ -21,7 +21,7 @@ axiosApi.interceptors.response.use(
 
 export async function postLogin(url, data, config = {}) {
 
-  axiosApi.defaults.headers.common["Authorization"] = 'Basic ' + btoa(data.nik + ':' + data.password);
+  axiosApi.defaults.headers.common["Authorization"] = 'Basic ' + btoa(data.id + ':' + data.pw);
   return axiosApi
     .post(url+"?"+$.param(data), { ...config })
     .then(response => response.data);

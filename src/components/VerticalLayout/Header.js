@@ -80,12 +80,12 @@ const Header = props => {
     enableReinitialize: true,
 
     initialValues: {
-      nik: "20202567" || '',
-      password: "" || '',
+      id: "" || '',
+      pw: "" || '',
     },
     validationSchema: Yup.object({
-      nik: Yup.string().required("Input NIK anda"),
-      password: Yup.string().required("Input Password"),
+      id: Yup.string().required("Enter your Email"),
+      pw: Yup.string().required("Enter your Password"),
     }),
     onSubmit: (values) => {
       dispatch(reloginUser(values, props.history));
@@ -142,39 +142,39 @@ const Header = props => {
                 <div className="modal-body">
                   {error ? <Alert color="danger">{error}</Alert> : null}
                   <div className="mb-3">
-                    <Label className="form-label">Nik</Label>
+                    <Label className="form-label">Email</Label>
                     <Input
-                      name="nik"
+                      name="id"
                       className="form-control"
-                      placeholder="Enter Nik"
+                      placeholder="Enter email"
                       type="text"
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
-                      value={validation.values.nik || ""}
+                      value={validation.values.id || ""}
                       invalid={
-                        validation.touched.nik && validation.errors.nik ? true : false
+                        validation.touched.id && validation.errors.id ? true : false
                       }
                     />
-                    {validation.touched.nik && validation.errors.nik ? (
-                      <FormFeedback type="invalid">{validation.errors.nik}</FormFeedback>
+                    {validation.touched.id && validation.errors.id ? (
+                      <FormFeedback type="invalid">{validation.errors.id}</FormFeedback>
                     ) : null}
                   </div>
 
                   <div className="mb-3">
                     <Label className="form-label">Password</Label>
                     <Input
-                      name="password"
-                      value={validation.values.password || ""}
+                      name="pw"
+                      value={validation.values.pw || ""}
                       type="password"
-                      placeholder="Enter Password"
+                      placeholder="Enter pw"
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                       invalid={
-                        validation.touched.password && validation.errors.password ? true : false
+                        validation.touched.pw && validation.errors.pw ? true : false
                       }
                     />
-                    {validation.touched.password && validation.errors.password ? (
-                      <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
+                    {validation.touched.pw && validation.errors.pw ? (
+                      <FormFeedback type="invalid">{validation.errors.pw}</FormFeedback>
                     ) : null}
                   </div>
                   <br />

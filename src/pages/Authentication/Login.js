@@ -29,13 +29,13 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      nik: '',
-      password: '',
+      id: '',
+      pw: '',
       langType: 'ENG',
     },
     validationSchema: Yup.object({
-      nik: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
+      id: Yup.string().required("Please Enter Your Email"),
+      pw: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
 
@@ -109,37 +109,37 @@ const Login = props => {
                       <div className="mb-3">
                         {/* <Label className="form-label">Email</Label> */}
                         <Input
-                          name="nik"
+                          name="id"
                           className="form-control"
                           placeholder="Enter Email"
                           type="text"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
-                          value={validation.values.nik || ""}
+                          value={validation.values.id || ""}
                           invalid={
-                            validation.touched.nik && validation.errors.nik ? true : false
+                            validation.touched.id && validation.errors.id ? true : false
                           }
                         />
-                        {validation.touched.nik && validation.errors.nik ? (
-                          <FormFeedback type="invalid">{validation.errors.nik}</FormFeedback>
+                        {validation.touched.id && validation.errors.id ? (
+                          <FormFeedback type="invalid">{validation.errors.id}</FormFeedback>
                         ) : null}
                       </div>
 
                       <div className="mb-3">
                         {/* <Label className="form-label">Password</Label> */}
                         <Input
-                          name="password"
-                          value={validation.values.password || ""}
+                          name="pw"
+                          value={validation.values.pw || ""}
                           type="password"
                           placeholder="Enter Password"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           invalid={
-                            validation.touched.password && validation.errors.password ? true : false
+                            validation.touched.pw && validation.errors.pw ? true : false
                           }
                         />
-                        {validation.touched.password && validation.errors.password ? (
-                          <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
+                        {validation.touched.pw && validation.errors.pw ? (
+                          <FormFeedback type="invalid">{validation.errors.pw}</FormFeedback>
                         ) : null}
                       </div>
 
