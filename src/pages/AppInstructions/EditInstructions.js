@@ -82,7 +82,8 @@ const EditInstructions = (props) => {
 
         if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
 
-             // get response label (yang sudah dipilih sebelumnya) -- Owner -- //
+
+            // get response label (yang sudah dipilih sebelumnya) -- Owner -- //
             getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
                 const newOwnerEdit = {
                     owIdGet: ownerList.id,
@@ -180,8 +181,8 @@ const EditInstructions = (props) => {
 
         setStartDate(format(currentDate, 'yyyy-MM-dd'))
 
-    }, [getDetailInstructionData]);
 
+    }, [getDetailInstructionData]);
 
     useEffect(() => {
         if (optionOwner0 != null && optionManager0 != null) {
@@ -480,10 +481,7 @@ const EditInstructions = (props) => {
     const colourStyles = {
         control: (baseStyles, state) => ({
             ...baseStyles,
-            borderColor: state.isFocused ? 'white' : 'white',
-            borderColor: state.isSelected ? 'white' : 'white',
-            borderColor: state.isFocused ? 'white' : 'white',
-            borderColor: state.isDisabled ? 'white' : 'white',
+            borderColor: state.isFocused || state.isSelected || state.isDisabled ? 'white' : 'white',
             border: 0,
             boxShadow: 'none',
         }),
@@ -576,10 +574,9 @@ const EditInstructions = (props) => {
                     ? '#ccc'
                     : isSelected
                         ? 'white'
-                            ? 'white'
-                            : 'black'
-                        : data.color,
+                        : 'black', // <-- Updated line here
                 cursor: isDisabled ? 'not-allowed' : 'default',
+
                 ':active': {
                     ...styles[':active'],
                     backgroundColor: !isDisabled
@@ -622,85 +619,35 @@ const EditInstructions = (props) => {
     };
 
     function handleMulti(s) {
+        var bodyForm = new FormData();
+        bodyForm.append('num', editInstructionsValidInput.values.no)
 
-        debugger
+        const selectedMultiValues = selectedMulti.map((selectedOption) => selectedOption.value);
+        const sValues = s.map((selectedOption) => selectedOption.value);
 
-        var id1 = "";
-        if (selectedMulti.length < s.length) {
+        const addUserValues = sValues.filter((value) => !selectedMultiValues.includes(value));
+        const removeUserValues = selectedMultiValues.filter((value) => !sValues.includes(value));
 
-            var jml = 0;
+        addUserValues.forEach((value) => {
+            bodyForm.append('addUser', value);
+        });
 
-            jml = s.length
+        removeUserValues.forEach((value) => {
+            bodyForm.append('removeUser', value);
+        });
 
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        };
 
-            var bodyForm = new FormData();
-            bodyForm.append('num', editInstructionsValidInput.values.no);
-
-            if (jml > 1) {
-                for (let i = 0; i < s.length; i++) {
-                    if (i == s.length - 1) {
-                        debugger
-                        id1 = s[s.length - 1].value
-                        bodyForm.append('addUser', id1);
-                    }
-                    break;
-                }
-                //jml = s.length -1
-
-            } else {
-                s.map((data, index) => {
-                    bodyForm.append('addUser', data.value);
-                })
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            insert(bodyForm, config);
-
-        } else {
-
-            var bodyForm = new FormData();
-            debugger
-            bodyForm.append('num', editInstructionsValidInput.values.no);
-
-
-            var jml = 0;
-
-            jml = s.length
-
-            if (jml > 1) {
-                for (let i = 0; i < s.length; i++) {
-                    if (i == s.length - 1) {
-                        debugger
-                        id1 = s[s.length - 1].value
-                        //console.log('2 :' + s[s.length - 1].value)
-                        bodyForm.append('removeUser', id1);
-                    }
-                    break;
-                }
-
-            } else {
-                s.map((data, index) => {
-                    bodyForm.append('removeUser', data.value);
-                })
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            insert(bodyForm, config);
-
-        }
+        insert(bodyForm, config);
 
         setselectedMulti(s);
-
-
     }
+
+
 
     function handleMulti2(s) {
 
@@ -1012,22 +959,23 @@ const EditInstructions = (props) => {
 
     const [showDesc, setShowDesc] = useState(false)
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
-    const inputRef = useRef(null)
 
-    // useEffect(() => {
-    //     getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
-    //         const newObj = {
+    const formattedOwnerOptions = optionOwner
+        .filter((option) => !selectedMulti.some((selected) => selected.owIdList === option.owIdList))
+        .map((option) => ({
+            owIdList: option.owIdList,
+            label: option.label,
+            bgColor: option.bgColor,
+        }));
 
-    //             file_num: attachFileList.no,
-    //             filename: attachFileList.name,
+    console.log("selectedMulti :", selectedMulti)
+    console.log("formattedOwnerOptions :", formattedOwnerOptions)
 
-    //         };
 
-    //         setGetFiles((option) => [...option, newObj])
-
-    //         SetFiles2((option) => [...option, newObj])
-    //     });
-    // }, [editInstructionsValidInput.values.no])
+    const formattedManagerOptions = optionManager.map((option) => ({
+        mIdList: option.mIdList,
+        label: option.label,
+    }))
 
     const handleSaveDesc = async (val) => {
         try {
@@ -1036,6 +984,15 @@ const EditInstructions = (props) => {
             console.error("Error saving descriptions:", error)
         }
     }
+
+    useEffect(() => {
+        if (optionOwner0 != null) {
+            const selectedValues = optionOwner0.map((selectedItem) =>
+                optionOwner.find((optionItem) => optionItem.owIdList === selectedItem.owIdGet)
+            );
+            setselectedMulti(selectedValues);
+        }
+    }, [optionOwner0, optionOwner]);
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1177,16 +1134,12 @@ const EditInstructions = (props) => {
                                                 <div className="mb-3 col-sm-8">
                                                     <Label> Choose Owner </Label>
                                                     <Select
-
                                                         value={selectedMulti}
                                                         isMulti={true}
-                                                        //onBlur={handleAutoSaveUsers}
                                                         onChange={(e) => {
                                                             handleMulti(e);
-
                                                         }}
-                                                        options={optionOwner
-                                                        }
+                                                        options={formattedOwnerOptions}
                                                         className="select2-selection"
                                                         styles={colourStyles}
                                                         components={{ DropdownIndicator }}
@@ -1203,8 +1156,7 @@ const EditInstructions = (props) => {
                                                         onChange={(e) => {
                                                             handleMulti2(e);
                                                         }}
-                                                        options={optionManager
-                                                        }
+                                                        options={formattedManagerOptions}
 
                                                         className="select2-selection"
                                                         styles={colourStyles2}
