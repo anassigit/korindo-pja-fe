@@ -82,7 +82,7 @@ const Login = props => {
                 </div>
                 <CardBody className="pt-0">
                   <div>
-                    <Link to="/" className="auth-logo-light">
+                    {/* <Link to="/" className="auth-logo-light">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
                           <img
@@ -93,7 +93,7 @@ const Login = props => {
                           />
                         </span>
                       </div>
-                    </Link>
+                    </Link> */}
                   </div>
                   <div className="p-2">
                     <Form
