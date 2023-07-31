@@ -897,8 +897,8 @@ const EditInstructions = (props) => {
     /*********************************** SIGIT MADE FROM HERE ***********************************/
 
     const [showDesc, setShowDesc] = useState(false)
-    const [isHiddenReply, setIsHiddenReply] = useState(false)
-    const [isHiddenLogs, setIsHiddenLog] = useState(false)
+    const [isHiddenReply, setIsHiddenReply] = useState(true)
+    const [isHiddenLogs, setIsHiddenLogs] = useState(true)
 
     const handleSaveDesc = async (val) => {
         try {
@@ -918,7 +918,7 @@ const EditInstructions = (props) => {
 
             <Container style={{ display: props.appEditInstructions ? 'block' : 'none' }} fluid={true}>
 
-                <Row style={{  display: memberId == getDetailInstructionData?.data?.instruction?.memberId ? 'flex' : 'none'}}>
+                <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit ? 'flex' : 'none' }}>
                     <Col lg={12}>
                         <Card>
                             <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
@@ -1170,7 +1170,7 @@ const EditInstructions = (props) => {
                     </Col>
                 </Row>
 
-                <Row style={{ display: memberId !== getDetailInstructionData?.data?.instruction?.memberId ? 'flex' : 'none'}}>
+                <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit ? 'none' : 'flex' }}>
                     <Col lg={12}>
                         <Card>
                             <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="mdi mdi-file-document-box font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
@@ -1250,7 +1250,7 @@ const EditInstructions = (props) => {
                                                             editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
                                                         }
                                                     >
-                                                       {statusList.map((value, key) => (
+                                                        {statusList.map((value, key) => (
                                                             <option key={key} value={value.statusNm}>{value.statusNm}</option>
                                                         ))}
 
@@ -1362,9 +1362,20 @@ const EditInstructions = (props) => {
                 <Row>
                     <Col lg={12}>
                         <Card>
-                            <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-forum font-size-18 align-middle me-2"></i>Reply</CardHeader>
+                            <a>
+                                <CardHeader onClick={() => setIsHiddenReply(!isHiddenReply)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "15px 15px 0 0" }}>
+                                    <span style={{ flex: "1", textAlign: "left" }}>
+                                        <i className="mdi mdi-timer-sand font-size-8 align-middle me-2"></i>Reply
+                                    </span>
+                                    {isHiddenReply ? (
+                                        <i className="bx bxs-down-arrow font-size-8 align-middle me-2"></i>
+                                    ) : (
+                                        <i className="bx bxs-up-arrow font-size-8 align-middle me-2"></i>
+                                    )}
+                                </CardHeader>
+                            </a>
 
-                            <CardBody>
+                            <CardBody hidden={isHiddenReply}>
                                 <React.Fragment>
                                     <FormGroup className="mb-0">
                                         <div className="row row-cols-2">
@@ -1524,7 +1535,15 @@ const EditInstructions = (props) => {
                     <Col lg={12}>
                         <Card>
                             <a>
-                                <CardHeader onClick={() => setIsHiddenLog(!isHiddenLogs)} style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-timer-sand font-size-18 align-middle me-2"></i>Logs
+                                <CardHeader onClick={() => setIsHiddenLogs(!isHiddenLogs)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "15px 15px 0 0" }}>
+                                    <span style={{ flex: "1", textAlign: "left" }}>
+                                        <i className="mdi mdi-timer-sand font-size-8 align-middle me-2"></i>Log
+                                    </span>
+                                    {isHiddenLogs ? (
+                                        <i className="bx bxs-down-arrow font-size-8 align-middle me-2"></i>
+                                    ) : (
+                                        <i className="bx bxs-up-arrow font-size-8 align-middle me-2"></i>
+                                    )}
                                 </CardHeader>
                             </a>
 
