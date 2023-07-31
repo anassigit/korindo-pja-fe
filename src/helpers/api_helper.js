@@ -131,7 +131,7 @@ export async function getWithPdf(url, data, config ={responseType: 'blob'}) {
 
 export async function postUpload(url, data, config ={}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
-  
+  debugger
   return axiosApi
     .post(url, data, { ...config },)
     .then(function (response) {

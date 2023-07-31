@@ -20,11 +20,13 @@ import { useSelector, useDispatch } from "react-redux"
 import AddInstructions from "./AddInstructions";
 import EditInstructions from "./EditInstructions";
 import "../../assets/scss/custom/table/TableCustom.css"
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 
 const Instructions = () => {
 
     const dispatch = useDispatch();
+    let history = useHistory()
     const [appInstructionsPage, setAppInstructionsPage] = useState(true)
     const [appAddInstructions, setAppAddInstructions] = useState(false)
     const [appEditInstructions, setEditInstructions] = useState(false)

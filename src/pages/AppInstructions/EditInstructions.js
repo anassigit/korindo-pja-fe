@@ -30,6 +30,7 @@ import Select, { components } from "react-select";
 import shortid from "shortid";
 import VerticalLayout from "components/VerticalLayout";
 import { saveDescriptions } from "helpers/backend_helper";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 // import { values } from "lodash";
 // import { arrayRemove, arrayRemoveAll } from "redux-form";
 
@@ -61,9 +62,7 @@ const EditInstructions = (props) => {
     const [Files2, SetFiles2] = useState([]);
     const [replyNum, setReplyNum] = useState([]);
     const [editInstruction, setEditInstruction] = useState(false)
-    const [statusList, setStatusList] = useState([]);
-
-
+    const [statusList, setStatusList] = useState([])
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -281,7 +280,6 @@ const EditInstructions = (props) => {
     });
 
     function handleUploadFile(values) {
-
         var bodyForm = new FormData();
 
         bodyForm.append('num', editInstructionsValidInput.values.no);
@@ -304,10 +302,9 @@ const EditInstructions = (props) => {
                 'content-type': 'multipart/form-data'
             }
         }
-
+        debugger
         insert(bodyForm, config);
-    };
-
+    }
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -361,7 +358,6 @@ const EditInstructions = (props) => {
     const FileUploadSubmit = async (e) => {
         e.preventDefault();
 
-
         e.target.reset();
         if (selectedfile.length > 0) {
             for (let index = 0; index < selectedfile.length; index++) {
@@ -381,8 +377,6 @@ const EditInstructions = (props) => {
         }
 
     }
-
-    // -- delete file attachded EDIT -- //
 
     const deleteFiles = async (values) => {
 
@@ -617,59 +611,59 @@ const EditInstructions = (props) => {
 
     function handleMulti(s) {
         const currentSelection = selectedMulti.map((item) => item.value);
-    
+
         const addedValues = s.filter((item) => !currentSelection.includes(item.value));
         const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
-    
+
         const bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.no);
-    
+
         addedValues.forEach((addedItem) => {
             bodyForm.append('addUser', addedItem.value);
         });
-    
+
         deletedValues.forEach((deletedItem) => {
             bodyForm.append('removeUser', deletedItem);
         });
-    
+
         const config = {
             headers: {
                 'content-type': 'multipart/form-data',
             },
         };
-        
+
         insert(bodyForm, config)
         setselectedMulti(s);
     }
-    
+
     function handleMulti2(s) {
         const currentSelection = selectedMulti2.map((item) => item.value);
-    
+
         const addedValues = s.filter((item) => !currentSelection.includes(item.value));
         const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
-    
+
         const bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.no);
-    
+
         addedValues.forEach((addedItem) => {
             bodyForm.append('addUser', addedItem.value);
         });
-    
+
         deletedValues.forEach((deletedItem) => {
             bodyForm.append('removeUser', deletedItem);
         });
-    
+
         const config = {
             headers: {
                 'content-type': 'multipart/form-data',
             },
         };
-    
+
         insert(bodyForm, config);
-    
+
         setselectedMulti2(s);
     }
-    
+
 
     function handleAutoSaveTitle(values) {
 
@@ -903,24 +897,8 @@ const EditInstructions = (props) => {
     /*********************************** SIGIT MADE FROM HERE ***********************************/
 
     const [showDesc, setShowDesc] = useState(false)
+    const [isHiddenReply, setIsHiddenReply] = useState(false)
     const [isHiddenLogs, setIsHiddenLog] = useState(false)
-
-    // const formattedOwnerOptions = optionOwner
-    // .filter((option) => !selectedMulti.includes(option.owIdList))
-    // .map((option) => ({
-    //   owIdList: option.owIdList,
-    //   label: option.label,
-    //   bgColor: option.bgColor,
-    // }))  
-
-    console.log("selectedMulti :", selectedMulti)
-    console.log("optionOwner :", optionOwner)
-
-
-    const formattedManagerOptions = optionManager.map((option) => ({
-        mIdList: option.mIdList,
-        label: option.label,
-    }))
 
     const handleSaveDesc = async (val) => {
         try {
@@ -960,7 +938,7 @@ const EditInstructions = (props) => {
                                                 <div className="mb-3 col-sm-8" hidden>
                                                     <Label>Instruction ID</Label>
                                                     <Input
-                                                        
+
                                                         name="no"
                                                         type="text"
                                                         value={editInstructionsValidInput.values.no || ""}
@@ -1108,7 +1086,7 @@ const EditInstructions = (props) => {
 
                                                     <Form onSubmit={FileUploadSubmit}>
                                                         <div className="kb-file-upload">
-                                                            
+
                                                             <div className="file-upload-box">
                                                                 <input type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                                             </div>
@@ -1129,7 +1107,7 @@ const EditInstructions = (props) => {
                                                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
 
-                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} onClick={() => DeleteSelectFile(id)} />
+                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
 
                                                                                 <p />
                                                                             </div>
@@ -1159,9 +1137,9 @@ const EditInstructions = (props) => {
                                                                             <div className="file-detail">
                                                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} onClick={() => DeleteFileAttached(file_num)} />
+                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(file_num)} />
                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} download={filename} onClick={() => downloadFiles(file_num)} />
+                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={filename} onClick={() => downloadFiles(file_num)} />
 
                                                                             </div>
                                                                         </div>
@@ -1346,26 +1324,26 @@ const EditInstructions = (props) => {
                                                     </Form>
                                                     {getFiles.length > 0 ?
                                                         <div className="kb-attach-box">
-                                                        {
-                                                            getFiles.map((data, index) => {
-                                                                const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
-                                                                return (
-                                                                    <div className="file-atc-box" key={index}>
-                                                                        {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                <div className="file-image"></div> :
-                                                                                <div className="file-image"></div>
-                                                                        }
-                                                                        <div className="file-detail">
-                                                                            <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
-                                                                            &nbsp;&nbsp;
-                                                                            <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
+                                                            {
+                                                                getFiles.map((data, index) => {
+                                                                    const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
+                                                                    return (
+                                                                        <div className="file-atc-box" key={index}>
+                                                                            {
+                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                                    <div className="file-image"></div> :
+                                                                                    <div className="file-image"></div>
+                                                                            }
+                                                                            <div className="file-detail">
+                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
+                                                                                &nbsp;&nbsp;
+                                                                                <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </div>
                                                         : ''}
                                                 </div>
 
@@ -1397,7 +1375,7 @@ const EditInstructions = (props) => {
                                                             <div className="col-sm-8">
                                                                 <label>Answer </label>
                                                                 <Input
-                                                                maxLength={100}
+                                                                    maxLength={100}
                                                                     name="content"
                                                                     type="textarea"
                                                                     onChange={editInstructionsValidInput.handleChange}
@@ -1418,45 +1396,45 @@ const EditInstructions = (props) => {
                                             <div className="col">
                                                 <Row className="mb-2">
                                                     <Col sm="12">
-                                                                <div className="mb-3 col-sm-8">
-                                                                    <label>Attached Files </label>
+                                                        <div className="mb-3 col-sm-8">
+                                                            <label>Attached Files </label>
 
-                                                                    <Form onSubmit={FileUploadSubmitR}>
-                                                                        <div className="kb-file-upload">
-                                                                            <div className="file-upload-box">
-                                                                                <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
-                                                                            </div>
-                                                                        </div>
-                                                                        &nbsp;&nbsp;&nbsp;
-                                                                        <div className="kb-attach-box mb-3">
-                                                                            {
-                                                                                selectedfileR.map((data, index) => {
-                                                                                    const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                                    return (
-                                                                                        <div className="file-atc-box" key={id}>
-
-                                                                                            {
-                                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                    <div className="file-image"></div>
-                                                                                                    :
-                                                                                                    <div className="file-image"></div>
-                                                                                            }
-                                                                                            <div className="file-detail">
-                                                                                                <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                                &nbsp;&nbsp;&nbsp;
-                                                                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor:"pointer" }} onClick={() => DeleteSelectFileR(id)} />
-                                                                                              
-                                                                                                <p />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    )
-                                                                                })
-                                                                            }
-                                                                        </div>
-
-                                                                    </Form>
-
+                                                            <Form onSubmit={FileUploadSubmitR}>
+                                                                <div className="kb-file-upload">
+                                                                    <div className="file-upload-box">
+                                                                        <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
+                                                                    </div>
                                                                 </div>
+                                                                &nbsp;&nbsp;&nbsp;
+                                                                <div className="kb-attach-box mb-3">
+                                                                    {
+                                                                        selectedfileR.map((data, index) => {
+                                                                            const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                            return (
+                                                                                <div className="file-atc-box" key={id}>
+
+                                                                                    {
+                                                                                        filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                                            <div className="file-image"></div>
+                                                                                            :
+                                                                                            <div className="file-image"></div>
+                                                                                    }
+                                                                                    <div className="file-detail">
+                                                                                        <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
+                                                                                        &nbsp;&nbsp;&nbsp;
+                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFileR(id)} />
+
+                                                                                        <p />
+                                                                                    </div>
+                                                                                </div>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </div>
+
+                                                            </Form>
+
+                                                        </div>
                                                     </Col>
 
                                                     <Col md="12">
@@ -1510,14 +1488,14 @@ const EditInstructions = (props) => {
                                                                                     <td className="tg-0lax" >
                                                                                         {row.name}
                                                                                     </td>
-                                                                                    <td className="tg-0lax" style={{maxWidth: "200px", wordBreak: "break-word"}}>
+                                                                                    <td className="tg-0lax" style={{ maxWidth: "200px", wordBreak: "break-word" }}>
                                                                                         {row.content}
                                                                                         <p />
                                                                                         {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
                                                                                     </td>
                                                                                     <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                    <td className="tg-0lax" style={{maxWidth: "100px", wordBreak: "break-word"}}>{row.attachFileList.length > 0 ? row.attachFileList[0].name + '    ' +  '(' + (row + row.attachFileList[0].length, 0) + ')' : ''}</td>
-                                                                                    <td className="tg-0lax" align="left" style={{cursor:"pointer"}}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
+                                                                                    <td className="tg-0lax" style={{ maxWidth: "100px", wordBreak: "break-word" }}>{row.attachFileList.length > 0 ? row.attachFileList[0].name + '    ' + '(' + (row + row.attachFileList[0].length, 0) + ')' : ''}</td>
+                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
                                                                             </>

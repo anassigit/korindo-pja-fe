@@ -31,8 +31,6 @@ const Setting = () => {
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
     let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
 
-    console.log("JSON.parse(ReactSession.get('user')):", ReactSession.get("user") ? JSON.parse(ReactSession.get("user")) : "");
-
     const dispatch = useDispatch();
     const [appSettingMsg, setAppSettingMsg] = useState("")
     const [appSettingPage, setAppSettingPage] = useState(true)
