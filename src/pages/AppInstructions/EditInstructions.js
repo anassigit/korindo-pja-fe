@@ -1044,6 +1044,15 @@ const EditInstructions = (props) => {
                                                     </Col>
                                                 </div>
 
+
+                                                <br></br>
+
+                                                <Button hidden={!showDesc} color="primary" className="ms-1" type="button" onClick={() => {
+                                                    setShowDesc(!showDesc)
+                                                    handleSaveDesc(editInstructionsValidInput.values.description)
+                                                }}>
+                                                    Save
+                                                </Button>&nbsp;
                                             </Col>
 
                                             <Col md="6">
@@ -1151,15 +1160,6 @@ const EditInstructions = (props) => {
                                                 </div>
                                             </Col>
                                         </Row>
-
-                                        <br></br>
-
-                                        <Button hidden={!showDesc} color="primary" className="ms-1" type="button" onClick={() => {
-                                            setShowDesc(!showDesc)
-                                            handleSaveDesc(editInstructionsValidInput.values.description)
-                                        }}>
-                                            Save
-                                        </Button>&nbsp;
 
                                     </FormGroup>
 
