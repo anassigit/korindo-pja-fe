@@ -498,7 +498,6 @@ const AddInstructions = (props) => {
                                                     name="description"
                                                     type="textarea"
                                                     rows="5"
-                                                    maxLength={100}
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     value={
                                                         addInstructionsValidInput.values.description ||

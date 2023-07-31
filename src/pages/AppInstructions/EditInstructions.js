@@ -31,6 +31,8 @@ import shortid from "shortid";
 import VerticalLayout from "components/VerticalLayout";
 import { saveDescriptions } from "helpers/backend_helper";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { preventDefault } from "@fullcalendar/core";
+import { reset } from "redux-form";
 // import { values } from "lodash";
 // import { arrayRemove, arrayRemoveAll } from "redux-form";
 
@@ -285,7 +287,7 @@ const EditInstructions = (props) => {
         await dispatch(editInstructions(values));
     };
 
-    function handleUploadFile(values) {
+    function handleUploadFile() {
 
         var bodyForm = new FormData();
 
@@ -294,27 +296,75 @@ const EditInstructions = (props) => {
 
         if (selectedfile.length > 0) {
 
+            var getFileNm = selectedfile[0].filename;
 
-            for (let index = 0; index < selectedfile.length; index++) {
+            getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
 
+                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i))  {
+                   
+
+                for (let index = 0; index < selectedfile.length; index++) {
                 let a = selectedfile[index];
 
                 bodyForm.append('file' + index, selectedfile[index].fileori);
 
                 console.log(a);
+                SetSelectedFile([]);
                 SetFiles([...Files, a ]);
-            }
-        }
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
             }
-        }
-
-        insertUploadFileEdit(bodyForm, config);
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+    
+            insertUploadFileEdit(bodyForm, config);
+            alert("Upload files success.")
+        
+    
+        }  else {
+        alert("Files type are not allowed to upload or not supported.");
+    }
+}
 
     }
+
+    function DeleteFileAttached(num_file) {
+
+        debugger
+    
+            const bodyForm = new FormData();
+            bodyForm.append('num', editInstructionsValidInput.values.no);
+
+            if (SetFiles.length > 0) {
+
+                for (let index = 0; index < SetFiles.length; index++) {
+
+                    let a = SetFiles[index];
+                    const result = SetFiles.filter((data) => data.num_file !== num_file);
+
+                    bodyForm.append('removeFile', num_file);
+                    console.log(a);
+                    SetFiles(result);
+
+                }
+
+            }
+    
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data',
+                },
+            };
+    
+            insert(bodyForm, config);
+            
+            deleteFiles(bodyForm, config)
+            alert('Delete success.')
+            
+    
+        };
 
 
     const filesizes = (bytes, decimals = 2) => {
@@ -396,86 +446,6 @@ const EditInstructions = (props) => {
         
     };
 
-    function DeleteFileAttached(file_num) {
-
-        var bodyForm = new FormData();
-        bodyForm.append('num', editInstructionsValidInput.values.no);
-        bodyForm.append('removeFile', file_num);
-
-        //console.log(a);
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-        
-        deleteFiles(bodyForm, config)
-        alert('Delete success.')
-        SetFiles([]);
-    };
-
-    // const replyDelete = async (row) => {
-    //     debugger
-    //     console.log(row);
-    //     try {
-    //         debugger
-    //         var map = {
-    //             "reply_num": row.no
-    //         };
-    //         console.log('map', map);
-
-    //         setEditInstructionsSpinner(true);
-    //         setEditInstructionMsg("")
-
-    //         await dispatch(deleteReply(map));
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // };
-
-    // const downloadFiles = (url, filename) => {
-    //     axios.post(url, {
-    //       responseType: 'blob',
-    //     })
-    //     .then((res) => {
-    //         downloadFile(res.data, filename)
-    //     })
-    //   }
-
-    // const downloadFiles = (file_num) => {
-    // 	fetch('http://localhost:8080/employees/download')
-    // 		.then(response => {
-    // 			response.blob().then(blob => {
-    // 				let url = window.URL.createObjectURL(blob);
-    // 				let a = document.createElement('a');
-    // 				a.href = url;
-    // 				a.download = 'employees.json';
-    // 				a.click();
-    // 			});
-    // 			//window.location.href = response.url;
-    // 	});
-    // }
-
-    // const downloadFiles = async (file_num) => {
-    //     debugger
-    //     console.log(file_num);
-
-    //     try {
-    //     var map = {
-    //         'file_num': file_num
-    //     };
-    //     console.log('map', map);
-
-
-    //     // setEditInstructionsSpinner(true);
-    //     // setEditInstructionMsg("")
-    //     await dispatch(downloadFile(map));
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // };
 
     // -- end -- //
 
@@ -731,6 +701,8 @@ const EditInstructions = (props) => {
         var bodyForm = new FormData()
         bodyForm.append('num', editInstructionsValidInput.values.no)
         bodyForm.append('status', statusId)
+
+        setStatusList([...statusList]);
 
         const config = {
             headers: {
@@ -1050,7 +1022,6 @@ const EditInstructions = (props) => {
                                                             name="description"
                                                             type="textarea"
                                                             rows="5"
-                                                            maxLength={100}
                                                             onChange={editInstructionsValidInput.handleChange}
                                                             value={editInstructionsValidInput.values.description || ""}
                                                             invalid={editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? true : false}
