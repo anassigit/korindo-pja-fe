@@ -233,6 +233,7 @@ const EditInstructions = (props) => {
 
         await dispatch(editInstructions(values));
     };
+
     const downloadFiles = async file_num => {
         debugger
         var ix = { file_num: file_num }
@@ -279,7 +280,13 @@ const EditInstructions = (props) => {
         return state.instructionsReducer.msgEdit;
     });
 
+    const insertUploadFileEdit = async (values) => {
+
+        await dispatch(editInstructions(values));
+    };
+
     function handleUploadFile(values) {
+
         var bodyForm = new FormData();
 
         bodyForm.append('num', editInstructionsValidInput.values.no);
@@ -293,7 +300,9 @@ const EditInstructions = (props) => {
                 let a = selectedfile[index];
 
                 bodyForm.append('file' + index, selectedfile[index].fileori);
-                break;
+
+                console.log(a);
+                SetFiles([...Files, a ]);
             }
         }
 
@@ -302,9 +311,12 @@ const EditInstructions = (props) => {
                 'content-type': 'multipart/form-data'
             }
         }
-        debugger
-        insert(bodyForm, config);
+        
+        insertUploadFileEdit(bodyForm, config);
+
     }
+
+
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -1499,14 +1511,14 @@ const EditInstructions = (props) => {
                                                                                     <td className="tg-0lax" >
                                                                                         {row.name}
                                                                                     </td>
-                                                                                    <td className="tg-0lax" style={{ maxWidth: "200px", wordBreak: "break-word" }}>
+                                                                                    <td className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
                                                                                         {row.content}
                                                                                         <p />
                                                                                         {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
                                                                                     </td>
                                                                                     <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                    <td className="tg-0lax" style={{ maxWidth: "100px", wordBreak: "break-word" }}>{row.attachFileList.length > 0 ? row.attachFileList[0].name + '    ' + '(' + (row + row.attachFileList[0].length, 0) + ')' : ''}</td>
-                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
+                                                                                    <td className="tg-0lax" style={{ maxWidth: "50px", textOverflow:"clip", whiteSpace: "nowrap", overflow:"hidden"  }}>{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
+                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer"}}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
                                                                             </>
