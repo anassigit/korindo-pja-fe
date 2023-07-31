@@ -1365,7 +1365,7 @@ const EditInstructions = (props) => {
                             <a>
                                 <CardHeader onClick={() => setIsHiddenReply(!isHiddenReply)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "15px 15px 0 0" }}>
                                     <span style={{ flex: "1", textAlign: "left" }}>
-                                        <i className="mdi mdi-timer-sand font-size-8 align-middle me-2"></i>Reply
+                                        <i className="mdi mdi-forum font-size-8 align-middle me-2"></i>Reply
                                     </span>
                                     {isHiddenReply ? (
                                         <i className="bx bxs-down-arrow font-size-8 align-middle me-2"></i>
