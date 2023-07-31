@@ -311,7 +311,7 @@ const EditInstructions = (props) => {
                 'content-type': 'multipart/form-data'
             }
         }
-        
+
         insertUploadFileEdit(bodyForm, config);
 
     }
@@ -393,19 +393,26 @@ const EditInstructions = (props) => {
     const deleteFiles = async (values) => {
 
         await dispatch(editInstructions(values));
+        
     };
 
     function DeleteFileAttached(file_num) {
+
         var bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.no);
         bodyForm.append('removeFile', file_num);
+
+        //console.log(a);
+
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
-        alert('Delete success.')
+        
         deleteFiles(bodyForm, config)
+        alert('Delete success.')
+        SetFiles([]);
     };
 
     // const replyDelete = async (row) => {
