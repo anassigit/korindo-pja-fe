@@ -887,7 +887,6 @@ const EditInstructions = (props) => {
 
     /*********************************** SIGIT MADE FROM HERE ***********************************/
 
-    const [showDesc, setShowDesc] = useState(false)
     const [isHiddenReply, setIsHiddenReply] = useState(true)
     const [isHiddenLogs, setIsHiddenLogs] = useState(true)
 
@@ -1010,15 +1009,8 @@ const EditInstructions = (props) => {
                                                         Descriptions
                                                     </Label>
 
-                                                    <Col hidden={showDesc} style={{ minHeight: "97.5px" }} onClick={() => {
-                                                        setShowDesc(!showDesc)
-                                                    }}>
-                                                        {editInstructionsValidInput.values.description || ""}
-                                                    </Col>
-
                                                     <Col>
                                                         <Input
-                                                            hidden={!showDesc}
                                                             name="description"
                                                             type="textarea"
                                                             rows="5"
@@ -1037,11 +1029,10 @@ const EditInstructions = (props) => {
 
                                                 <br></br>
 
-                                                <Button hidden={!showDesc} color="primary" className="ms-1" type="button" onClick={() => {
-                                                    setShowDesc(!showDesc)
+                                                <Button color="primary" className="ms-1" type="button" onClick={() => {
                                                     handleSaveDesc(editInstructionsValidInput.values.description)
                                                 }}>
-                                                    Save
+                                                    Update
                                                 </Button>&nbsp;
                                             </Col>
 
@@ -1115,9 +1106,9 @@ const EditInstructions = (props) => {
                                                                 })
                                                             }
                                                         </div>
-                                                        <div className="kb-buttons-box">
+                                                        {/* <div className="kb-buttons-box">
                                                             <a onClick={() => handleUploadFile()} className="btn btn-primary">Upload</a>
-                                                        </div>
+                                                        </div> */}
                                                     </Form>
                                                     {Files.length > 0 ?
                                                         <div className="kb-attach-box">
