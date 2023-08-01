@@ -827,6 +827,7 @@ const EditInstructions = (props) => {
 
         let num = editInstructionsValidInput.values.no
         num = num.toString()
+
         setTimeout(() => {
             dispatch(getDetailInstruction({
                 "search": {
@@ -1053,14 +1054,6 @@ const EditInstructions = (props) => {
                                                     </Col>
                                                 </div>
 
-
-                                                <br></br>
-
-                                                <Button color="primary" className="ms-1" type="button" onClick={() => {
-                                                    handleSaveDesc(editInstructionsValidInput.values.description)
-                                                }}>
-                                                    Update
-                                                </Button>&nbsp;
                                             </Col>
 
                                             <Col md="6">
@@ -1170,9 +1163,35 @@ const EditInstructions = (props) => {
                                             </Col>
                                         </Row>
 
+
                                     </FormGroup>
 
                                 </Form>
+
+                                <div className="text-sm-end" >
+
+                                    <Button color="primary" className="ms-1" type="button" onClick={() => {
+                                        handleSaveDesc(editInstructionsValidInput.values.description)
+                                    }}>
+                                        Update
+                                    </Button>&nbsp;
+
+                                    <Button color="danger" className="ms-1" type="button" onClick={() => {
+                                        handleSaveDesc(editInstructionsValidInput.values.description)
+                                    }}>
+                                        Delete
+                                    </Button>&nbsp;
+                                    <a href="/AppInstructions">
+                                        <Button
+                                            type="button"
+                                            className="btn btn-danger "
+                                            onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                        >
+                                            <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
+                                            Back
+                                        </Button>
+                                    </a>
+                                </div>
 
                             </CardBody>
                         </Card>
@@ -1363,6 +1382,20 @@ const EditInstructions = (props) => {
 
                                 </Form>
 
+                                <div className="text-sm-end" >
+
+                                    <a href="/AppInstructions">
+                                        <Button
+                                            type="button"
+                                            className="btn btn-danger "
+                                            onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                        >
+                                            <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
+                                            Back
+                                        </Button>
+                                    </a>
+                                </div>
+
                             </CardBody>
                         </Card>
                     </Col>
@@ -1401,7 +1434,7 @@ const EditInstructions = (props) => {
                                                                     onChange={editInstructionsValidInput.handleChange}
                                                                     //style={{ color: "black" }}
                                                                     //placeholder={'Type here...'}
-                                                                    value={ replyClicked == true ? '' : editInstructionsValidInput.values.content }
+                                                                    value={replyClicked == true ? '' : editInstructionsValidInput.values.content}
                                                                     invalid={
                                                                         editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? true : false
                                                                     }
@@ -1603,23 +1636,6 @@ const EditInstructions = (props) => {
                             </CardBody>
 
                         </Card>
-                    </Col>
-                </Row>
-
-                <Row className="mb-2">
-                    <Col md="12">
-                        <div className="text-sm-end" >
-
-                            <Button
-                                type="button"
-                                className="btn btn-danger "
-                                onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
-                            >
-                                <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                Kembali
-                            </Button>
-
-                        </div>
                     </Col>
                 </Row>
             </Container>

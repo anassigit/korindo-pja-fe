@@ -68,20 +68,36 @@ const Instructions = () => {
             headerStyle: { textAlign: 'center' },
             classes: "custom-num-column",
         },
+
         {
             dataField: "title",
             text: "Instructions",
             sort: true,
             align: "left",
-            headerStyle: { textAlign: 'center' },
+            headerStyle: { textAlign: "center" },
             classes: "custom-title-column",
             style: { maxWidth: "100px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-            formatter: (cellContent, appInstructionsData) => (
-                <>
-                    <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
-                </>
-            ),
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    debugger
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
         },
+        // {
+        //     dataField: "title",
+        //     text: "Instructions",
+        //     sort: true,
+        //     align: "left",
+        //     headerStyle: { textAlign: 'center' },
+        //     classes: "custom-title-column",
+        //     style: { maxWidth: "100px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+        //     formatter: (cellContent, appInstructionsData) => (
+        //         <>
+        //             <a onClick={() => appInstructionsPreEdit(appInstructionsData)} >{appInstructionsData.title}</a>
+        //         </>
+        //     ),
+        // },
         {
             dataField: "ownerList",
             text: "Owner",
@@ -119,7 +135,7 @@ const Instructions = () => {
             text: "Manager",
             align: "left",
             headerStyle: { textAlign: 'center' },
-            style: { width: "150px", minWidth:"150px" ,maxWidth: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+            style: { width: "150px", minWidth: "150px", maxWidth: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <a>
@@ -301,7 +317,7 @@ const Instructions = () => {
                                                             className="btn btn-primary "
                                                             onClick={() => { appInstructionsPreAdd() }}
                                                         >
-                                                            <i className="mdi mdi-plus" style={{verticalAlign: "middle"}}></i>{" "}
+                                                            <i className="mdi mdi-plus" style={{ verticalAlign: "middle" }}></i>{" "}
                                                             New Instructions
                                                         </button>
                                                     </div>
@@ -322,7 +338,7 @@ const Instructions = () => {
                                             searchSet={setAppInstructionsTabelSearch}
                                             searchGet={appInstructionsTabelSearch}
                                             redukCall={getInstructionsData}
-                                            //rowClick={() => appInstructionsPreEdit(appInstructionsData)}
+                                        //rowClick={() => appInstructionsPreEdit(appInstructionsData)}
                                         />
 
                                     </Row>
