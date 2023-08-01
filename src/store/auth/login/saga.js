@@ -8,6 +8,12 @@ import { ReactSession } from 'react-client-session';
 import { login, getMenu} from "helpers/backend_helper"
 import { useEffect } from "react";
 
+
+history.pushState(null, null, location.href);
+    window.onpopstate = function(event) {
+    history.go(1);
+  };
+  
 function* loginUser({ payload: { user, history } }) {
   try {
       const response = yield call(login, user);
@@ -52,11 +58,9 @@ function* reloginUser({ payload: { user, history } }) {
 
 function* logoutUser({ payload: { history } }) {
   try {
-    // ReactSession.set("authUser", "");
-    // ReactSession.set("user", "");
-    history.push(
-      "/login"
-    )
+    ReactSession.set("authUser", "");
+    ReactSession.set("user", "");
+    history.push("/login");
     yield put(apiError(""))
   } catch (error) {
     yield put(apiError(error))

@@ -467,7 +467,7 @@ const AddInstructions = (props) => {
                                                 ) : null}
                                             </div>
 
-                                            <div className="mb-3 col-sm-8">
+                                            <div className="mb-3 col-sm-8" style={{display: "none"}}>
                                                 <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
@@ -525,6 +525,7 @@ const AddInstructions = (props) => {
                                                 <Label> Choose Owners </Label>
                                                 <Select
                                                 //id="user"
+                                                    isOptionDisabled={() => selectedMulti.length >= 1}
                                                     value={selectedMulti}
                                                     isMulti={true}
                                                     onChange={(e) => {
