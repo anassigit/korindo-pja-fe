@@ -25,7 +25,6 @@ const Login = props => {
   const dispatch = useDispatch();
 
   const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
@@ -47,10 +46,6 @@ const Login = props => {
     error: state.Login.error,
   }));
 
-  // handleValidSubmit
-  const handleValidSubmit = (event, values) => {
-    dispatch(loginUser(values, props.history));
-  };
 
   return (
     <React.Fragment>
@@ -72,28 +67,12 @@ const Login = props => {
                     <Col xs={12}>
                       <div className="text-primary p-4">
                         <h2 className="text-primary text-center text-white" >PROJECT A</h2>
-                        {/* <p>Login untuk melanjutkan.</p> */}
                       </div>
                     </Col>
-                    {/* <Col className="col-5 align-self-end">
-                      <img src={profile} alt="" className="img-fluid" />
-                    </Col> */}
                   </Row>
                 </div>
                 <CardBody className="pt-0">
                   <div>
-                    {/* <Link to="/" className="auth-logo-light">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link> */}
                   </div>
                   <div className="p-2">
                     <Form
@@ -107,7 +86,6 @@ const Login = props => {
                       {error ? <Alert color="danger">{error}</Alert> : null}
 
                       <div className="mb-3">
-                        {/* <Label className="form-label">Email</Label> */}
                         <Input
                           name="id"
                           className="form-control"
@@ -126,7 +104,6 @@ const Login = props => {
                       </div>
 
                       <div className="mb-3">
-                        {/* <Label className="form-label">Password</Label> */}
                         <Input
                           name="pw"
                           value={validation.values.pw || ""}
@@ -143,20 +120,6 @@ const Login = props => {
                         ) : null}
                       </div>
 
-                      {/* <div className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id="customControlInline"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="customControlInline"
-                        >
-                          Remember me
-                        </label>
-                      </div> */}
-
                       <div className="mt-2 d-grid">
                         <button
                           className="btn btn-success btn-block"
@@ -165,46 +128,6 @@ const Login = props => {
                           Login
                         </button>
                       </div>
-
-                      {/* <div className="mt-4 text-center">
-                        <h5 className="font-size-14 mb-3">Sign in with</h5>
-
-                        <ul className="list-inline">
-                          <li className="list-inline-item">
-                            <FacebookLogin
-                              appId={facebook.APP_ID}
-                              autoLoad={false}
-                              callback={facebookResponse}
-                              render={renderProps => (
-                                <Link
-                                  to="#"
-                                  className="social-list-item bg-primary text-white border-primary"
-                                  onClick={renderProps.onClick}
-                                >
-                                  <i className="mdi mdi-facebook" />
-                                </Link>
-                              )}
-                            />
-                          </li>
-                        
-                          <li className="list-inline-item">
-                            <GoogleLogin
-                              clientId={google.CLIENT_ID}
-                              render={renderProps => (
-                                <Link
-                                  to="#"
-                                  className="social-list-item bg-danger text-white border-danger"
-                                  onClick={renderProps.onClick}
-                                >
-                                  <i className="mdi mdi-google" />
-                                </Link>
-                              )}
-                              onSuccess={googleResponse}
-                              onFailure={() => { }}
-                            />
-                          </li>
-                        </ul>
-                      </div> */}
 
                       <div className="mt-4 text-center">
                         <Link to="/emailPassword" className="text-muted">
@@ -217,13 +140,6 @@ const Login = props => {
                 </CardBody>
 
                 <div className="mt-3 text-center">
-                  {/* <p>
-                    Don&#39;t have an account ?{" "}
-                    <Link to="/register" className="fw-medium text-primary">
-                      {" "}
-                      Signup now{" "}
-                    </Link>{" "}
-                  </p> */}
                   <p>
                     ©Korindo {new Date().getFullYear()}.
                   </p>

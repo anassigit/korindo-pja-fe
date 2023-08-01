@@ -19,10 +19,14 @@ function* loginUser({ payload: { user, history } }) {
         // if(res.status == 1){
         //   ReactSession.set("menu", JSON.stringify(res.data.menu));
         // }
+        // router.push({
+        //   pathname: router.getCurrentLocation().pathname,
+        //   state: {overlay: true}
+        // })
         history.push("/");
         yield put(loginSuccess(response));
       }else{
-        yield put(apiError(response.listmessage))
+        yield put(apiError(response.message))
       }
   } catch (error) {
     yield put(apiError(error))
@@ -48,9 +52,11 @@ function* reloginUser({ payload: { user, history } }) {
 
 function* logoutUser({ payload: { history } }) {
   try {
-    ReactSession.set("authUser", "");
-    ReactSession.set("user", "");
-    history.push("/login")
+    // ReactSession.set("authUser", "");
+    // ReactSession.set("user", "");
+    history.push(
+      "/login"
+    )
     yield put(apiError(""))
   } catch (error) {
     yield put(apiError(error))

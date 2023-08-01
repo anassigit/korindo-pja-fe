@@ -19,7 +19,7 @@ import "./assets/scss/theme.scss"
 import { ReactSession } from 'react-client-session';
 
 const App = props => {
-  ReactSession.setStoreType("localStorage");
+  ReactSession.setStoreType("sessionStorage");
 
   function getLayout() {
   

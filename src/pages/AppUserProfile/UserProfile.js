@@ -87,10 +87,10 @@ const respMsg = useSelector(state => {
   const updateHp = async () => {
     try {
 debugger
+        
         var map = {
             "hp":  appUserProfilepValidInput.values.hp
         };
-        
         await dispatch(editUserProfile(map));
         if (respMsg.message != "Fail") {
             setGeneralContentModal("Update HP success")
@@ -112,8 +112,7 @@ debugger
       u.name = appUserProfilepValidInput.values.name
       u.pname = appUserProfilepValidInput.values.pname
       u.gname = appUserProfilepValidInput.values.gname
-      //u.hp = appUserProfilepValidInput.values.hp
-      sessionStorage.setItem(u.hp = appUserProfilepValidInput.values.hp);
+      u.hp = appUserProfilepValidInput.values.hp
       u.id = appUserProfilepValidInput.values.id
       ReactSession.get("user", JSON.stringify(u))
     }
