@@ -837,7 +837,7 @@ const EditInstructions = (props) => {
         }, 500)
     };
 
-
+    const [replyClicked, setReplyClicked] = useState(false)
 
     function insertReplyAndFiles(values) {
         var bodyForm = new FormData();
@@ -866,8 +866,8 @@ const EditInstructions = (props) => {
 
         // setEditInstructionsSpinner(true);
         alert('Add reply success.')
-        debugger
         insert3(bodyForm, config)
+        setReplyClicked(!replyClicked)
 
     };
 
@@ -1401,6 +1401,7 @@ const EditInstructions = (props) => {
                                                                     onChange={editInstructionsValidInput.handleChange}
                                                                     //style={{ color: "black" }}
                                                                     //placeholder={'Type here...'}
+                                                                    value={ replyClicked == true ? '' : editInstructionsValidInput.values.content }
                                                                     invalid={
                                                                         editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? true : false
                                                                     }
