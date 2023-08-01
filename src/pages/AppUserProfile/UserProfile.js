@@ -38,16 +38,9 @@ const UserProfile = () => {
   //const [id, setId] = useState("")
   const [userProfilePageData, setUserProfilePageData] = useState()
 
-    const [generalMsgModal, setGeneralMsgModal] = useState(false)
-    const [generalContentModal, setGeneralContentModal] = useState("")
-
 const respMsg = useSelector(state => {
   return state.userProfileReducer.msgEdit;
 });
-
-    const toggleMsgModal = () => {
-        setGeneralMsgModal(!generalMsgModal)
-    }
 
   useEffect(() => {
     dispatch(resetMessage());
@@ -66,6 +59,7 @@ const respMsg = useSelector(state => {
     enableReinitialize: true,
 
     initialValues: {
+
       name: u != null ? u.name : '',
       pname: u != null ? u.pname : '',
       gname: u != null ? u.gname : '',
@@ -76,8 +70,7 @@ const respMsg = useSelector(state => {
 
     validationSchema: Yup.object().shape({
 
-      hp: Yup.string()
-        .required("Wajib diisi")
+      hp: Yup.string().required("Please enter mobile phone number.")
 
     }),
 
@@ -92,15 +85,9 @@ debugger
             "hp":  appUserProfilepValidInput.values.hp
         };
         await dispatch(editUserProfile(map));
-        if (respMsg != "Fail") {
-            setGeneralContentModal("Update HP success")
-        } else {
-            setGeneralContentModal("Update Failed")
-        }
-        toggleMsgModal()
 
-    } catch (error) {
-        console.log(error)
+    } catch (message) {
+        console.log(message)
     }
 };
 
@@ -130,16 +117,14 @@ debugger
   }
 
   return (
-    <RootPageCustom msgStateGet={appUserProfileMsg} msgStateSet={setAppUserProfileMsg}
+    <RootPageCustom
             componentJsx={
                 <>
-                        <MsgModal
-                        modal={generalMsgModal}
-                        toggle={toggleMsgModal}
-                        message={generalContentModal}
-                    />
+                       
+          {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
+          {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null}
       
-        <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
           <Row>
             <Col lg={12}>
               <Card>
@@ -268,14 +253,14 @@ debugger
               </Card>
             </Col>
           </Row>
-        </Container>
+          </Container>
 
-        <ChangePassword
+          <ChangePassword
           userProfilePassword={userProfilePassword}
           setUserProfilePassword={setUserProfilePassword}
           setUserProfilePage={setUserProfilePage}
           setAppUserProfileMsg={setAppUserProfileMsg}
-        />
+          />
         </>
       }
 />
