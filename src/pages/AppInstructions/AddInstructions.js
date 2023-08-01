@@ -53,7 +53,7 @@ const AddInstructions = (props) => {
             addInstructionsValidInput.setFieldValue("status", status)
             addInstructionsValidInput.setFieldValue("insDate", addInstructionsStartDate)
 
-            if (getManagerList.data !== undefined) {
+            if (getOwnerList.data !== undefined) {
 
                 getOwnerList.data.ownerList.map((data) => {
                     const newOwner = {
@@ -64,6 +64,9 @@ const AddInstructions = (props) => {
                     };
                     setOptionOwner((option) => [...option, newOwner]);
                 });
+            }
+
+            if (getManagerList.data !== undefined) {
 
                 getManagerList.data.managerList.map((data) => {
                     const newManager = {
@@ -136,25 +139,35 @@ const AddInstructions = (props) => {
 
             if (selectedfile.length > 0) {
 
-                for (let index = 0; index < selectedfile.length; index++) {
+                var getFileNm = selectedfile[0].filename;
+
+                getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+
+                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
+
+                    for (let index = 0; index < selectedfile.length; index++) {
 
                     let a = selectedfile[index];
 
                     bodyForm.append('file' + index, selectedfile[index].fileori);
 
-                }
+                    }
             }
 
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
+                    const config = {
+                        headers: {
+                            'content-type': 'multipart/form-data'
+                        }
+                    }
+                    setAddInstructionsSpinner(true);
+                    props.setAppInstructionsPage(true);
+                    props.setAppAddInstructions(false);
+                    insert(bodyForm, config);
+                    props.setAppInstructionsMsg(appAddInstructionsMessage);
+                    
+                } else {
+                    alert("Files type are not allowed to upload or not supported.");
                 }
-            }
-            setAddInstructionsSpinner(true);
-            props.setAppInstructionsPage(true);
-            props.setAppAddInstructions(false);
-            insert(bodyForm, config);
-            props.setAppInstructionsMsg(appAddInstructionsMessage);
 
         }
     });
