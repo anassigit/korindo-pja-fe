@@ -126,6 +126,15 @@ const EditInstructions = (props) => {
                 setOptionManager((option) => [...option, newManagerSet]);
             });
 
+            debugger
+            console.log('dd ', getDetailInstructionData?.data?.instruction?.replyList)
+            // let t1 = []
+            // t1.push(getDetailInstructionData?.data?.instruction?.replyList)
+            // console.log('t1 ', t1)
+            ///t1.
+            // setReplyTabelListData(current => [...current, {
+            //     name: ""
+            //   }]);
             setReplyTabelListData(getDetailInstructionData?.data?.instruction?.replyList);
 
             setAttchedFilesTables(getDetailInstructionData?.data?.instruction?.attachFileList?.attachFileList);
@@ -183,7 +192,6 @@ const EditInstructions = (props) => {
 
 
     }, [getDetailInstructionData]);
-
     useEffect(() => {
         if (optionOwner0 != null && optionManager0 != null) {
             setselectedMulti(optionOwner0)
@@ -300,71 +308,71 @@ const EditInstructions = (props) => {
 
             getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
 
-                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i))  {
-                   
+            if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
+
 
                 for (let index = 0; index < selectedfile.length; index++) {
-                let a = selectedfile[index];
+                    let a = selectedfile[index];
 
-                bodyForm.append('file' + index, selectedfile[index].fileori);
+                    bodyForm.append('file' + index, selectedfile[index].fileori);
 
-                console.log(a);
-                SetSelectedFile([]);
-                SetFiles([...Files, a ]);
+                    console.log(a);
+                    SetSelectedFile([]);
+                    SetFiles([...Files, a]);
 
-            }
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
                 }
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+
+                insertUploadFileEdit(bodyForm, config);
+                alert("Upload files success.")
+
+
+            } else {
+                alert("Files type are not allowed to upload or not supported.");
             }
-    
-            insertUploadFileEdit(bodyForm, config);
-            alert("Upload files success.")
-        
-    
-        }  else {
-        alert("Files type are not allowed to upload or not supported.");
-    }
-}
+        }
 
     }
 
     function DeleteFileAttached(num_file) {
 
         debugger
-    
-            const bodyForm = new FormData();
-            bodyForm.append('num', editInstructionsValidInput.values.no);
 
-            if (SetFiles.length > 0) {
+        const bodyForm = new FormData();
+        bodyForm.append('num', editInstructionsValidInput.values.no);
 
-                for (let index = 0; index < SetFiles.length; index++) {
+        if (SetFiles.length > 0) {
 
-                    let a = SetFiles[index];
-                    const result = SetFiles.filter((data) => data.num_file !== num_file);
+            for (let index = 0; index < SetFiles.length; index++) {
 
-                    bodyForm.append('removeFile', num_file);
-                    console.log(a);
-                    SetFiles(result);
+                let a = SetFiles[index];
+                const result = SetFiles.filter((data) => data.num_file !== num_file);
 
-                }
+                bodyForm.append('removeFile', num_file);
+                console.log(a);
+                SetFiles(result);
 
             }
-    
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data',
-                },
-            };
-    
-            insert(bodyForm, config);
-            
-            deleteFiles(bodyForm, config)
-            alert('Delete success.')
-            
-    
+
+        }
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
         };
+
+        insert(bodyForm, config);
+
+        deleteFiles(bodyForm, config)
+        alert('Delete success.')
+
+
+    };
 
 
     const filesizes = (bytes, decimals = 2) => {
@@ -443,7 +451,7 @@ const EditInstructions = (props) => {
     const deleteFiles = async (values) => {
 
         await dispatch(editInstructions(values));
-        
+
     };
 
 
@@ -815,9 +823,21 @@ const EditInstructions = (props) => {
     }
 
     const insert3 = async (values) => {
-
         await dispatch(saveReply(values));
+
+        let num = editInstructionsValidInput.values.no
+        num = num.toString()
+        setTimeout(() => {
+            dispatch(getDetailInstruction({
+                "search": {
+                    "num": num,
+                    "langType": "eng"
+                }
+            }));
+        }, 500)
     };
+
+
 
     function insertReplyAndFiles(values) {
         var bodyForm = new FormData();
@@ -846,8 +866,8 @@ const EditInstructions = (props) => {
 
         // setEditInstructionsSpinner(true);
         alert('Add reply success.')
-        insert3(bodyForm, config);
-
+        debugger
+        insert3(bodyForm, config)
 
     };
 
@@ -897,6 +917,13 @@ const EditInstructions = (props) => {
             console.error("Error saving descriptions:", error)
         }
     }
+
+    useEffect(() => {
+        if (getDetailInstructionData?.data?.instruction?.replyList) {
+            setReplyTabelListData(getDetailInstructionData?.data?.instruction?.replyList);
+        }
+    }, [replyTabelListData])
+
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1040,6 +1067,7 @@ const EditInstructions = (props) => {
                                                 <div className="mb-3 col-sm-8">
                                                     <Label> Choose Owner </Label>
                                                     <Select
+                                                        isOptionDisabled={() => selectedMulti.length >= 1}
                                                         value={selectedMulti}
                                                         isMulti={true}
                                                         onChange={(e) => {
@@ -1474,8 +1502,9 @@ const EditInstructions = (props) => {
                                                                 </thead>
                                                                 <tbody id="replyTabelList">
                                                                     {
-                                                                        replyTabelListData != null && replyTabelListData.length > 0 && replyTabelListData.map((row, reply_num) =>
+                                                                        getDetailInstructionData?.data?.instruction?.replyList.length > 0 && getDetailInstructionData?.data?.instruction?.replyList.map((row, reply_num) =>
                                                                             <>
+                                                                                <tr style={{ height: "25px" }} ></tr>
                                                                                 <tr key={row.no} style={{ verticalAlign: "text-top" }}>
                                                                                     <td className="tg-0lax" >
                                                                                         {row.name}
@@ -1486,10 +1515,11 @@ const EditInstructions = (props) => {
                                                                                         {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
                                                                                     </td>
                                                                                     <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                    <td className="tg-0lax" style={{ maxWidth: "50px", textOverflow:"clip", whiteSpace: "nowrap", overflow:"hidden"  }}>{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
-                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer"}}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
+                                                                                    <td className="tg-0lax" style={{ maxWidth: "50px", textOverflow: "clip", whiteSpace: "nowrap", overflow: "hidden" }}>{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
+                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
+                                                                                <tr style={{ height: "25px" }} ></tr>
                                                                             </>
 
                                                                         )

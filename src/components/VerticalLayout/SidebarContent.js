@@ -100,18 +100,18 @@ const SidebarContent = props => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
-              <Link to="/AppInstructions" className="" onClick={ () => window.location.reload()}>
+              <a href="/AppInstructions" to="/AppInstructions" className="" onClick={() => window.location.reload()}>
                 <i className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
-              </Link>
-              <Link to="/" className="">
+              </a>
+              <a href="/" className="">
                 <i className="fas fa-folder-open"></i>
                 <span>{props.t("File Management")}</span>
-              </Link>
-              <Link to="/AppSetting" className="">
+              </a>
+              <a href="/AppSetting" className="">
                 <i className="fas fa-cog"></i>
                 <span>{props.t("Setting")}</span>
-              </Link>
+              </a>
             </li>
 
             {/* <li className="menu-title">{props.t("Modul")} </li>
