@@ -139,11 +139,6 @@ const AddInstructions = (props) => {
 
             if (selectedfile.length > 0) {
 
-                var getFileNm = selectedfile[0].filename;
-
-                getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
-
-                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
 
                     for (let index = 0; index < selectedfile.length; index++) {
 
@@ -165,9 +160,7 @@ const AddInstructions = (props) => {
                     insert(bodyForm, config);
                     props.setAppInstructionsMsg(appAddInstructionsMessage);
                     
-                } else {
-                    alert("Files type are not allowed to upload or not supported.");
-                }
+
 
         }
     });
@@ -190,11 +183,18 @@ const AddInstructions = (props) => {
     const [Files, SetFiles] = useState([]);
 
     const InputChange = (e) => {
+        debugger
+        
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {
             images.push((e.target.files[i]));
             let reader = new FileReader();
             let file = e.target.files[i];
+
+            let fileNm = e.target.files[i].name;
+            fileNm = fileNm.substring(fileNm.lastIndexOf('.') + 1);
+
+            if (fileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
             reader.onloadend = () => {
                 SetSelectedFile((preValue) => {
                     return [
@@ -212,7 +212,11 @@ const AddInstructions = (props) => {
             if (e.target.files[i]) {
                 reader.readAsDataURL(file);
             }
+        } else {
+            alert("Files type are not allowed to upload or not supported.");
         }
+        } 
+    
     }
 
 
@@ -589,7 +593,7 @@ const AddInstructions = (props) => {
                                                         </div> */}
                                                         <div className="kb-file-upload">
                                                             <div className="file-upload-box">
-                                                                <input type="file" id="fileupload3" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                                                <input type="file" id="fileuploadAdd" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                                             </div>
                                                         </div>
                                                         &nbsp;&nbsp;&nbsp;
@@ -618,8 +622,6 @@ const AddInstructions = (props) => {
                                                     </div>
                                                 </Form>
                                             </div>
-
-
 
                                         </Col>
                                     </Row>

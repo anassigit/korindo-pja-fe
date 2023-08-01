@@ -256,7 +256,7 @@ const Instructions = () => {
 
 
     return (
-        <RootPageCustom msgStateGet={appInstructionsMsg} msgStateSet={setAppInstructionsMsg}
+        <RootPageCustom msgStateGet={appInstructionsMsg.message} msgStateSet={setAppInstructionsMsg}
             componentJsx={
                 <>
 
