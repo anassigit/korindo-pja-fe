@@ -92,7 +92,7 @@ debugger
             "hp":  appUserProfilepValidInput.values.hp
         };
         await dispatch(editUserProfile(map));
-        if (respMsg.message != "Fail") {
+        if (respMsg != "Fail") {
             setGeneralContentModal("Update HP success")
         } else {
             setGeneralContentModal("Update Failed")
@@ -140,8 +140,6 @@ debugger
                     />
       
         <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
-          {/* <Breadcrumbs title="Forms" breadcrumbItem="Ubah User" /> */}
-
           <Row>
             <Col lg={12}>
               <Card>

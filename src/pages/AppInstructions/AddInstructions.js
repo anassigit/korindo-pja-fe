@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import Lovv2 from "../../common/Lovv2";
 import * as Yup from "yup";
 import '../../config';
 import PropTypes from "prop-types";
@@ -21,38 +20,31 @@ import {
 
 } from "reactstrap";
 
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-import { getInstructionsData, saveInstructions, getUserList } from "../../store/appInstructions/actions";
+import { getInstructionsData, getManager, getOwner, saveInstructions } from "../../store/appInstructions/actions";
 import { useSelector, useDispatch } from "react-redux"
-import { formatRpAfterInput, replaceAll } from '../../common/Regex'
-import { getCombo } from "../../store/combo/actions"
-// import { ReactSession } from 'react-client-session';
 import { format } from 'date-fns';
-import  Select, {components}   from "react-select";
+import Select, { components } from "react-select";
 import shortid from "shortid";
-import { size } from "lodash";
-
-
 
 const AddInstructions = (props) => {
 
     const dispatch = useDispatch();
 
+    let status = 1;
     const currentDate = new Date()
     const [addInstructionsStartDate, setAddInstructionsStartDate] = useState(format(currentDate, 'yyyy-MM-dd'), (""))
-    let status = 1;
     const [addInstructionsFirstRenderDone, setAddInstructionsFirstRenderDone] = useState(false);
     const [addInstructionsSpinner, setAddInstructionsSpinner] = useState(false);
     const [selectedMulti, setselectedMulti] = useState([]);
     const [selectedMulti2, setselectedMulti2] = useState([]);
-
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
 
 
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
-        dispatch(getUserList({}))
+        dispatch(getManager({}))
+        dispatch(getOwner({}))
     }, [])
 
     useEffect(() => {
@@ -60,37 +52,44 @@ const AddInstructions = (props) => {
             addInstructionsValidInput.resetForm()
             addInstructionsValidInput.setFieldValue("status", status)
             addInstructionsValidInput.setFieldValue("insDate", addInstructionsStartDate)
-            //setAddInstructionsStartDate(format(currentDate, 'yyyy-MM-dd'))
 
-            if(addInstructionsUserList.data !== undefined){
+            if (getManagerList.data !== undefined) {
 
-                addInstructionsUserList.data.ownerList.map((data) => {
+                getOwnerList.data.ownerList.map((data) => {
                     const newOwner = {
                         value: data.id,
                         label: data.name,
                         bgColor: data.bgColor,
-    
+
                     };
                     setOptionOwner((option) => [...option, newOwner]);
                 });
-    
-                addInstructionsUserList.data.managerList.map((data) => {
+
+                getManagerList.data.managerList.map((data) => {
                     const newManager = {
                         value: data.id,
                         label: data.name,
-                        bgColor: data.bgColor,
                     };
                     setOptionManager((option) => [...option, newManager]);
                 });
-                
+
             }
 
         }
     }, [props.appAddInstructions])
 
-    const addInstructionsUserList = useSelector(state => {
+    const getOwnerList = useSelector(state => {
 
-        return state.instructionsReducer.respGetUserList;
+        //console.log("owner", state.instructionsReducer.respGetOwner.data)
+
+        return state.instructionsReducer.respGetOwner;
+    });
+
+    const getManagerList = useSelector(state => {
+
+        //console.log("manager", state.instructionsReducer.respGetManager)
+
+        return state.instructionsReducer.respGetManager;
     });
 
     const insert = async (val) => {
@@ -123,7 +122,7 @@ const AddInstructions = (props) => {
             bodyForm.append('status', val.status);
             bodyForm.append('description', val.description);
 
-            
+
             selectedMulti.map((data, index) => {
 
                 bodyForm.append('user', data.value);
@@ -134,7 +133,7 @@ const AddInstructions = (props) => {
                 bodyForm.append('user', data.value);
 
             })
-       
+
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -244,24 +243,24 @@ const AddInstructions = (props) => {
     function handleMulti(s) {
 
         setselectedMulti(s);
-          
+
     }
     function handleMulti2(s) {
 
         setselectedMulti2(s);
-    } 
+    }
 
     const DropdownIndicator = (props) => {
         return (
-          <components.DropdownIndicator {...props}>
-            <i className="mdi mdi-plus-thick" />
-          </components.DropdownIndicator>
+            <components.DropdownIndicator {...props}>
+                <i className="mdi mdi-plus-thick" />
+            </components.DropdownIndicator>
         );
-      };
-          
+    };
 
-    const colourStyles  = {
-        control:  (baseStyles, state) => ({
+
+    const colourStyles = {
+        control: (baseStyles, state) => ({
             ...baseStyles,
             borderColor: state.isFocused ? 'white' : 'white',
             borderColor: state.isSelected ? 'white' : 'white',
@@ -269,76 +268,71 @@ const AddInstructions = (props) => {
             borderColor: state.isDisabled ? 'white' : 'white',
             border: 0,
             boxShadow: 'none',
-          }),
-        //   placeholder: (baseStyles, state) => ({
-            
-        //         ...defaultStyles,
-        //         color: '#ffffff',
-        //     }),
+        }),
 
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: isDisabled
-              ? undefined
-              : isSelected
-              ? data.color
-              : isFocused
-              ? '#e6e6e6'
-              : undefined,
-            color: isDisabled
-              ? '#ccc'
-              : isSelected
-              ? 'white'
-                ? 'white'
-                : 'black'
-              : data.color,
-            cursor: isDisabled ? 'not-allowed' : 'default',
-      
-            ':active': {
-              ...styles[':active'],
-              backgroundColor: !isDisabled
-                ? isSelected
-                  ? data.color
-                  : color
-                : undefined,
-            },
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: isDisabled
+                    ? undefined
+                    : isSelected
+                        ? data.color
+                        : isFocused
+                            ? '#e6e6e6'
+                            : undefined,
+                color: isDisabled
+                    ? '#ccc'
+                    : isSelected
+                        ? 'white'
+                            ? 'white'
+                            : 'black'
+                        : data.color,
+                cursor: isDisabled ? 'not-allowed' : 'default',
+
+                ':active': {
+                    ...styles[':active'],
+                    backgroundColor: !isDisabled
+                        ? isSelected
+                            ? data.color
+                            : color
+                        : undefined,
+                },
+            };
         },
 
         multiValue: (styles, { data }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: color,
-            
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: color,
+
+            };
         },
 
         multiValueLabel: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          fontSize: '13px',
-          paddingLeft:'12px',
-          paddingRight:'12px',
-          paddingTop:'7.5px',
-          paddingBottom:'7.5px',
-          borderRadius: '0.25rem',
+            ...styles,
+            color: 'white',
+            fontSize: '13px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            paddingTop: '7.5px',
+            paddingBottom: '7.5px',
+            borderRadius: '0.25rem',
         }),
 
         multiValueRemove: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          ':hover': {
-            backgroundColor: data.bgColor,
+            ...styles,
             color: 'white',
-          },
+            ':hover': {
+                backgroundColor: data.bgColor,
+                color: 'white',
+            },
         }),
-      };
+    };
 
-      const colourStyles2  = {
-        control:  (baseStyles, state) => ({
+    const colourStyles2 = {
+        control: (baseStyles, state) => ({
             ...baseStyles,
             borderColor: state.isFocused ? 'white' : 'white',
             borderColor: state.isSelected ? 'white' : 'white',
@@ -346,68 +340,68 @@ const AddInstructions = (props) => {
             borderColor: state.isDisabled ? 'white' : 'white',
             border: 0,
             boxShadow: 'none',
-           
-          }),
+
+        }),
 
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: isDisabled
-              ? undefined
-              : isSelected
-              ? data.color
-              : isFocused
-              ? '#e6e6e6'
-              : undefined,
-            color: isDisabled
-              ? '#ccc'
-              : isSelected
-              ? 'white'
-                ? 'white'
-                : 'black'
-              : data.color,
-            cursor: isDisabled ? 'not-allowed' : 'default',
-            ':active': {
-              ...styles[':active'],
-              backgroundColor: !isDisabled
-                ? isSelected
-                  ? data.color
-                  : color
-                : undefined,
-            },
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: isDisabled
+                    ? undefined
+                    : isSelected
+                        ? data.color
+                        : isFocused
+                            ? '#e6e6e6'
+                            : undefined,
+                color: isDisabled
+                    ? '#ccc'
+                    : isSelected
+                        ? 'white'
+                            ? 'white'
+                            : 'black'
+                        : data.color,
+                cursor: isDisabled ? 'not-allowed' : 'default',
+                ':active': {
+                    ...styles[':active'],
+                    backgroundColor: !isDisabled
+                        ? isSelected
+                            ? data.color
+                            : color
+                        : undefined,
+                },
+            };
         },
 
         multiValue: (styles, { data }) => {
-        const color = data.bgColor;
-          return {
-            ...styles,
-            backgroundColor: '#579DFF',
-           
-          };
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: '#579DFF',
+
+            };
         },
 
         multiValueLabel: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          fontSize: '13px',
-          paddingLeft:'12px',
-          paddingRight:'12px',
-          paddingTop:'7.5px',
-          paddingBottom:'7.5px',
-          borderRadius: '4px',
+            ...styles,
+            color: 'white',
+            fontSize: '13px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            paddingTop: '7.5px',
+            paddingBottom: '7.5px',
+            borderRadius: '4px',
         }),
 
         multiValueRemove: (styles, { data }) => ({
-          ...styles,
-          color: 'white',
-          ':hover': {
-            backgroundColor: data.bgColor,
+            ...styles,
             color: 'white',
-          },
+            ':hover': {
+                backgroundColor: data.bgColor,
+                color: 'white',
+            },
         }),
-      };
+    };
 
 
     return (
@@ -467,7 +461,7 @@ const AddInstructions = (props) => {
                                                 ) : null}
                                             </div>
 
-                                            <div className="mb-3 col-sm-8" style={{display: "none"}}>
+                                            <div className="mb-3 col-sm-8" style={{ display: "none" }}>
                                                 <Label> Status <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
@@ -475,7 +469,6 @@ const AddInstructions = (props) => {
                                                     disabled
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     onBlur={addInstructionsValidInput.handleBlur}
-                                                    // fieldValue={1}
                                                     value={"Not Started"}
                                                     invalid={
                                                         addInstructionsValidInput.touched.status && addInstructionsValidInput.errors.status ? true : false
@@ -524,7 +517,6 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-8">
                                                 <Label> Choose Owners </Label>
                                                 <Select
-                                                //id="user"
                                                     isOptionDisabled={() => selectedMulti.length >= 1}
                                                     value={selectedMulti}
                                                     isMulti={true}
@@ -536,14 +528,14 @@ const AddInstructions = (props) => {
                                                     styles={colourStyles}
                                                     components={{ DropdownIndicator }}
                                                     placeholder={'Select or type...'}
-                                                    
+
                                                 />
                                             </div>
 
                                             <div className="mb-3 col-sm-8">
                                                 <label>Choose Managers </label>
                                                 <Select
-                                                //id="user"
+                                                    //id="user"
                                                     value={selectedMulti2}
                                                     isMulti={true}
                                                     onChange={(e) => {
@@ -554,7 +546,7 @@ const AddInstructions = (props) => {
                                                     styles={colourStyles2}
                                                     components={{ DropdownIndicator }}
                                                     placeholder={'Select or type...'}
-                                                    
+
                                                 />
                                             </div>
 
@@ -562,8 +554,8 @@ const AddInstructions = (props) => {
                                                 <label>Upload Attach Files </label>
 
                                                 <Form onSubmit={FileUploadSubmit}>
-                                                <div className="kb-file-upload">
-                                                    {/* <div className="file-upload-box">
+                                                    <div className="kb-file-upload">
+                                                        {/* <div className="file-upload-box">
                                                             
                                                             <label
                                                                 htmlFor="idFileUpload"
@@ -582,14 +574,14 @@ const AddInstructions = (props) => {
                                                             />
                                                    
                                                         </div> */}
-                                                         <div className="kb-file-upload">
-                                                                            <div className="file-upload-box">
-                                                                                <input type="file" id="fileupload3" className="form-control" onChange={InputChange}  name="removeFile" multiple />
-                                                                            </div>
-                                                                        </div>
-                                                                        &nbsp;&nbsp;&nbsp;
+                                                        <div className="kb-file-upload">
+                                                            <div className="file-upload-box">
+                                                                <input type="file" id="fileupload3" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                                            </div>
                                                         </div>
-                                                        &nbsp;
+                                                        &nbsp;&nbsp;&nbsp;
+                                                    </div>
+                                                    &nbsp;
                                                     <div className="kb-attach-box mb-3">
                                                         {
                                                             selectedfile.map((data, index) => {
@@ -602,9 +594,9 @@ const AddInstructions = (props) => {
                                                                                 <div className="file-image"></div>
                                                                         }
                                                                         <div className="file-detail">
-                                                                        <span><i className="mdi mdi-paperclip" style={{fontSize: "20px", verticalAlign: "middle"}} />&nbsp;{filename}</span>&nbsp;&nbsp;
-                                                                        <i className="mdi mdi-close" style={{fontSize: "20px", verticalAlign: "middle", cursor:"pointer"}} onClick={() => DeleteSelectFile(id)} />
-                                                                            
+                                                                            <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>&nbsp;&nbsp;
+                                                                            <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
+
                                                                         </div>
                                                                     </div>
                                                                 )
@@ -624,15 +616,15 @@ const AddInstructions = (props) => {
                                     <Button color="primary" className="ms-1" type="submit">
                                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                                         Simpan
-                                        {/* <Spinner style={{ display: addInstructionsSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
                                     </Button>&nbsp;
 
                                     <Button
                                         type="button"
                                         className="btn btn-danger "
-                                        onClick={() => { props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("") 
+                                        onClick={() => {
+                                            props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("")
                                             window.location.reload();
-                                          }}
+                                        }}
                                     >
                                         <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                         Kembali

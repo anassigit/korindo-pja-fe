@@ -2,6 +2,13 @@ import {
 
     GET_INSTRUCTIONS,
     RESP_GET_INSTRUCTIONS,
+
+    GET_MANAGER,
+    RESP_GET_MANAGER,
+
+    GET_OWNER,
+    RESP_GET_OWNER,
+
     GET_INSTRUCTIONS2,
     RESP_GET_INSTRUCTIONS2,
     SAVE_INSTRUCTIONS,
@@ -11,8 +18,8 @@ import {
     MSGEDIT,
     MSGDELETE,
     RESET_MESSAGE,
-    GET_USER_LIST,
-    RESP_GET_USER_LIST,
+    // GET_USER_LIST,
+    // RESP_GET_USER_LIST,
     GET_DETAIL_INSTRUCTION,
     RESP_GET_DETAIL_INSTRUCTION,
     SAVE_DESCRIPTION,
@@ -27,11 +34,13 @@ import {
 
 const INIT_STATE = {
     respGetInstructions: {},
+    respGetManager: {},
+    respGetOwner: {},
     respGetInstructions2: {},
     msgAdd: "",
     msgEdit: "",
     msgDelete: "",
-    respGetUserList: {},
+    // respGetUserList: {},
     respGetDetailInstruction: {},
     msgDownload: "",
     msgDeleteReply: "",
@@ -50,6 +59,24 @@ const instructionsReducer = (state = INIT_STATE, action) => {
           ...state,
           respGetInstructions: action.payload,
         }
+        case GET_MANAGER:
+          return {
+            ...state,
+          }
+        case RESP_GET_MANAGER:
+          return {
+            ...state,
+            respGetManager: action.payload,
+          }
+          case GET_OWNER:
+            return {
+              ...state,
+            }
+          case RESP_GET_OWNER:
+            return {
+              ...state,
+              respGetOwner: action.payload,
+            }
         case GET_INSTRUCTIONS2:
         return {
           ...state,
@@ -95,15 +122,15 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         return {
           ...state,
       }
-      case GET_USER_LIST:
-        return {
-          ...state,
-      }
-      case RESP_GET_USER_LIST:
-        return {
-          ...state,
-          respGetUserList: action.payload,
-      }
+      // case GET_USER_LIST:
+      //   return {
+      //     ...state,
+      // }
+      // case RESP_GET_USER_LIST:
+      //   return {
+      //     ...state,
+      //     respGetUserList: action.payload,
+      // }
       case GET_DETAIL_INSTRUCTION:
         return {
           ...state,

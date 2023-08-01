@@ -2,6 +2,10 @@ import {
 
     GET_INSTRUCTIONS,
     RESP_GET_INSTRUCTIONS,
+    GET_MANAGER,
+    RESP_GET_MANAGER,
+    GET_OWNER,
+    RESP_GET_OWNER,
     GET_INSTRUCTIONS2,
     RESP_GET_INSTRUCTIONS2,
     SAVE_INSTRUCTIONS,
@@ -11,8 +15,8 @@ import {
     MSGEDIT,
     MSGDELETE,
     RESET_MESSAGE,
-    GET_USER_LIST,
-    RESP_GET_USER_LIST,
+    // GET_USER_LIST,
+    // RESP_GET_USER_LIST,
     GET_DETAIL_INSTRUCTION,
     RESP_GET_DETAIL_INSTRUCTION,
     SAVE_DESCRIPTION,
@@ -32,6 +36,26 @@ export const getInstructionsData = (req) => ({
   
   export const respGetInstructions = resp => ({
     type: RESP_GET_INSTRUCTIONS,
+    payload: resp,
+  })
+
+  export const getManager = (req) => ({
+    type: GET_MANAGER,
+    payload: req,
+  })
+
+  export const respGetManager = resp => ({
+    type: RESP_GET_MANAGER,
+    payload: resp,
+  })
+
+  export const getOwner = (req) => ({
+    type: GET_OWNER,
+    payload: req,
+  })
+
+  export const respGetOwner = resp => ({
+    type: RESP_GET_OWNER,
     payload: resp,
   })
 
@@ -80,15 +104,15 @@ export const getInstructionsData = (req) => ({
     payload: req,
   })
 
-  export const getUserList = (req) => ({
-    type: GET_USER_LIST,
-    payload: req,
-  })
+  // export const getUserList = (req) => ({
+  //   type: GET_USER_LIST,
+  //   payload: req,
+  // })
 
-  export const respGetUserList = resp => ({
-    type: RESP_GET_USER_LIST,
-    payload: resp,
-  })
+  // export const respGetUserList = resp => ({
+  //   type: RESP_GET_USER_LIST,
+  //   payload: resp,
+  // })
 
   export const getDetailInstruction = (req) => ({
     type: GET_DETAIL_INSTRUCTION,

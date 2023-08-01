@@ -101,6 +101,10 @@ export const updateForgetPassword = req => postWithParam("MemberRest/ForgotPassw
 //appInstructions
 export const getInstructions = req => post("rest/InstructionRest/SelectInstructionList", req)
 
+export const getManagerList = req => post("rest/InstructionRest/SelectManagerList", req)
+
+export const getOwnerList = req => post("rest/InstructionRest/SelectOwnerList", req)
+
 export const getInstructions2 = req => post("rest/InstructionRest/SelectInstructionList2", req)
 
 export const saveInstructions = req => postUpload("rest/InstructionRest/InsertInstruction", req)
@@ -123,7 +127,7 @@ export const deleteReply = req => postWithParam("rest/InstructionRest/DeleteRepl
 
 export const deleteInstructions = req => post("/rest/app008/delete", req)
 
-export const getUserList = req => post("rest/InstructionRest/SelectInfo", req)
+//export const getUserList = req => post("rest/InstructionRest/SelectInfo", req)
 
 //appSetting
 
