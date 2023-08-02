@@ -79,7 +79,6 @@ const Instructions = () => {
             style: { maxWidth: "100px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
             events: {
                 onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
-                    debugger
                     appInstructionsPreEdit(appInstructionsData);
                 },
             },

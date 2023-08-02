@@ -197,7 +197,7 @@ const EditInstructions = (props) => {
 
             }))
         }
-       
+
     }, [props.appEditInstructions])
 
     const insert = async (values) => {
@@ -910,17 +910,24 @@ const EditInstructions = (props) => {
         setReplyTabelListData(updatedReplyData);
     };
 
-    // useEffect(() => {
-    //     replyData.map(() => {
-    //         setReplyAttachment(
-    //             dispatch(getAttachmentData({
-    //                 search: {
-    //                     "instruction_num": num,
-    //                 }
-    //             }))
-    //         )
-    //     })
-    // }, [replyData])
+    useEffect(() => {
+        
+        if (replyData?.data?.replyList?.length > 0) {
+            
+            replyData?.data?.replyList.map((value) => {
+                debugger
+                console.log(value)
+                // setReplyAttachment(
+                //     dispatch(getAttachmentData({
+                //         search: {
+                //             "instruction_num": num,
+                //         }
+                //     }))
+                // )
+            })
+
+        }
+    }, [replyData])
 
     /*********************************** ENDS HERE ***********************************/
 
