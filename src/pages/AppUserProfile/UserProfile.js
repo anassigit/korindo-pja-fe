@@ -22,7 +22,7 @@ import {
   UncontrolledAlert,
 } from "reactstrap"
 
-import { editUserProfile, resetMessage, msgEdit } from "../../store/appUserProfile/actions"
+import { editUserProfile, resetMessage, msgEdit, getProfile } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import ChangePassword from "pages/Authentication/ChangePassword";
@@ -31,21 +31,29 @@ import MsgModal from "components/Common/MsgModal";
 
 const UserProfile = () => {
 
+  let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
   const dispatch = useDispatch();
   const [userProfilePage, setUserProfilePage] = useState(true)
   const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
   const [userProfilePassword, setUserProfilePassword] = useState(false)
-  //const [id, setId] = useState("")
   const [userProfilePageData, setUserProfilePageData] = useState()
 
-const respMsg = useSelector(state => {
-  return state.userProfileReducer.msgEdit;
-});
+
 
   useEffect(() => {
     dispatch(resetMessage());
-  }, [dispatch])
+    // dispatch(getProfile({
+    //   "search": {
+    //     "langType": "eng"
+    //   }
+    // }))
+  }, [])
 
+  const getDetailProfile = useSelector(state => {
+
+    console.log("profile", state.userProfileReducer.respGetProfile)
+    return state.userProfileReducer.respGetProfile;
+  })
 
   const appUserProfileCloseAllert = () => {
     setAppUserProfileMsg("")
@@ -53,18 +61,38 @@ const respMsg = useSelector(state => {
 
   const [appUserProfileSpinner, setAppUserProfileSpinner] = useState(false);
 
-  const u = JSON.parse(ReactSession.get("user") || null)
+  useEffect(() => {
+    debugger
+    if (userId == getDetailProfile?.data?.member?.id || getDetailProfile !== null) {
+      appUserProfilepValidInput.setFieldValue("name", getDetailProfile?.data?.member?.name)
+      appUserProfilepValidInput.setFieldValue("pname", getDetailProfile?.data?.member?.pname)
+      appUserProfilepValidInput.setFieldValue("gname", getDetailProfile?.data?.member?.gname)
+      appUserProfilepValidInput.setFieldValue("hp", getDetailProfile?.data?.member?.hp)
+      appUserProfilepValidInput.setFieldValue("id", getDetailProfile?.data?.member?.id)
+    }
+}, [getDetailProfile])
+
+useEffect(() => {
+  dispatch(getProfile({
+    "search": {
+      "langType": "eng"
+    }
+  }))
+}, [])
+
+
+  //const u = JSON.parse(ReactSession.get("user") || null)
 
   const appUserProfilepValidInput = useFormik({
     enableReinitialize: true,
 
     initialValues: {
 
-      name: u != null ? u.name : '',
-      pname: u != null ? u.pname : '',
-      gname: u != null ? u.gname : '',
-      hp: u != null ? u.hp : '',
-      id: u != null ? u.id : '',
+      name: '',
+      pname: '',
+      gname: '',
+      hp: '',
+      id: '',
 
     },
 
@@ -79,8 +107,7 @@ const respMsg = useSelector(state => {
 
   const updateHp = async () => {
     try {
-debugger
-        
+    debugger   
         var map = {
             "hp":  appUserProfilepValidInput.values.hp
         };
@@ -91,17 +118,14 @@ debugger
     }
 };
 
+const respMsg = useSelector(state => {
+  return state.userProfileReducer.msgEdit;
+});
+
 
   useEffect(() => {
     if (respMsg.status == "1") {
       setUserProfilePage(true);
-      const u = JSON.parse(ReactSession.get("user"))
-      u.name = appUserProfilepValidInput.values.name
-      u.pname = appUserProfilepValidInput.values.pname
-      u.gname = appUserProfilepValidInput.values.gname
-      u.hp = appUserProfilepValidInput.values.hp
-      u.id = appUserProfilepValidInput.values.id
-      ReactSession.get("user", JSON.stringify(u))
     }
     setAppUserProfileMsg(respMsg)
     setAppUserProfileSpinner(false);
@@ -145,7 +169,6 @@ debugger
                               name="name"
                               type="text"
                               disabled
-                              maxLength={50}
                               onChange={appUserProfilepValidInput.handleChange}
                               value={appUserProfilepValidInput.values.name || ""}
                               invalid={
@@ -162,7 +185,6 @@ debugger
                             <Input
                               name="pname"
                               type="text"
-                              maxLength={50}
                               disabled
                               onChange={appUserProfilepValidInput.handleChange}
                               value={appUserProfilepValidInput.values.pname || ""}
@@ -180,7 +202,6 @@ debugger
                             <Input
                               name="gname"
                               type="text"
-                              maxLength={50}
                               disabled
                               onChange={appUserProfilepValidInput.handleChange}
                               value={appUserProfilepValidInput.values.gname || ""}
@@ -202,8 +223,8 @@ debugger
                             <Label>HP<span style={{ color: "red" }}>* </span></Label>
                             <Input
                               name="hp"
-                              type="text"
-                              maxLength={50}
+                              type="number"
+                              maxLength={12}
                               onChange={appUserProfilepValidInput.handleChange}
                               value={appUserProfilepValidInput.values.hp || ""}
                               invalid={
@@ -220,7 +241,6 @@ debugger
                             <Input
                               name="id"
                               type="text"
-                              maxLength={50}
                               disabled
                               onChange={appUserProfilepValidInput.handleChange}
                               value={appUserProfilepValidInput.values.id || ""}
