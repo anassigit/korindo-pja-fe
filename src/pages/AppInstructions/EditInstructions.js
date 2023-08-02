@@ -20,7 +20,7 @@ import {
 import * as Yup from "yup";
 import { deleteReply, downloadFile, editInstructions, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
-import { getDetailInstruction } from "../../store/appInstructions/actions"
+import { getDetailInstruction, getReply } from "../../store/appInstructions/actions"
 
 
 import { format } from 'date-fns';
@@ -79,9 +79,16 @@ const EditInstructions = (props) => {
         return state.instructionsReducer.respGetDetailInstruction;
     })
 
+    const replyData = useSelector(state => {
+        return state.instructionsReducer.respGetReply;
+    })
+
+    const attachmentReplyData = useSelector(state => {
+        return state.instructionsReducer.respGetReply;
+    })
+
     useEffect(() => {
 
-        debugger
         // if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
 
 
@@ -227,6 +234,12 @@ const EditInstructions = (props) => {
         if (props.appEditInstructions) {
             let num = props.instructionsData?.num.toString()
             dispatch(getDetailInstruction({
+                search: {
+                    "num": num,
+                    "langType": "eng"
+                }
+            }))
+            dispatch(getReply({
                 search: {
                     "num": num,
                     "langType": "eng"
@@ -828,12 +841,14 @@ const EditInstructions = (props) => {
         num = num.toString()
 
         setTimeout(() => {
-            dispatch(getDetailInstruction({
-                "search": {
+            
+            dispatch(getReply({
+                search: {
                     "num": num,
                     "langType": "eng"
                 }
-            }));
+            }))
+            
             setReplyClicked(false)
             editInstructionsValidInput.setFieldValue("content", '')
         }, 500)
@@ -1552,8 +1567,8 @@ const EditInstructions = (props) => {
                                                                 </thead>
                                                                 <tbody id="replyTabelList">
                                                                     {
-                                                                        replyTabelListData.length > 0 &&
-                                                                        replyTabelListData.map((row, reply_num) => (
+                                                                        replyData?.data?.replyList?.length > 0 &&
+                                                                        replyData?.data?.replyList.map((row, reply_num) => (
                                                                             <>
                                                                                 <tr style={{ height: "25px" }}></tr>
                                                                                 <tr key={row.no} style={{ verticalAlign: "text-top" }}>
@@ -1593,7 +1608,7 @@ const EditInstructions = (props) => {
                                                                                             ? ""
                                                                                             : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
                                                                                     </td>
-                                                                                    <td
+                                                                                   {/*  <td
                                                                                         className="tg-0lax"
                                                                                         style={{
                                                                                             maxWidth: "50px",
@@ -1610,7 +1625,7 @@ const EditInstructions = (props) => {
                                                                                         ) : (
                                                                                             ""
                                                                                         )}
-                                                                                    </td>
+                                                                                    </td> */}
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
                                                                                 <tr style={{ height: "25px" }}></tr>

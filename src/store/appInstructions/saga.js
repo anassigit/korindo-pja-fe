@@ -2,9 +2,9 @@ import { call, put, takeEvery, all} from "redux-saga/effects"
 
 import { GET_INSTRUCTIONS, GET_MANAGER, GET_OWNER, GET_SELECTED_MANAGER, GET_INSTRUCTIONS2, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY } from "./actionTypes"
 
-import { respGetInstructions, respGetManager, respGetOwner, respGetSelectedManager, respGetInstructions2, msgAdd, msgEdit, msgDelete, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply } from "./actions"
+import { respGetInstructions, respGetManager, respGetOwner, respGetSelectedManager, respGetInstructions2, msgAdd, msgEdit, msgDelete, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply, respGetReply } from "./actions"
 
-import { getInstructions, getManagerList, getOwnerList, getSelectedManager, getInstructions2, saveInstructions, editInstructions, deleteInstructions, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply } from "helpers/backend_helper"
+import { getInstructions, getManagerList, getOwnerList, getSelectedManager, getInstructions2, saveInstructions, editInstructions, deleteInstructions, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply, getReply } from "helpers/backend_helper"
 
 function* fetchGetInstructions({ payload: req }) {
     try {
@@ -145,6 +145,22 @@ function* fetchSaveDescriptions({ payload: req }) {
   }
 }
 
+/************ REPLIES HERE ************/
+
+function* fetchGetReply({ payload: req }) {
+  try {
+    const response = yield call(getReply, req)
+    if(response.status == 1){
+      yield put(respGetReply(response))
+    }else{
+      yield put(respGetReply(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetReply({"status" : 0, "message" : "Error Get Data"}))
+  }
+}
+
 function* fetchSaveReply({ payload: req }) {
   try {
     const response = yield call(saveReply, req)
@@ -186,6 +202,7 @@ function* fetchDeleteReply({ payload: req }) {
     // yield takeEvery(GET_USER_LIST, fetchGetUserList)
     yield takeEvery(GET_DETAIL_INSTRUCTION, fetchGetDetailInstruction)
     yield takeEvery(SAVE_DESCRIPTION, fetchSaveDescriptions)
+    yield takeEvery(GET_REPLY, fetchGetReply)
     yield takeEvery(SAVE_REPLY, fetchSaveReply)
     yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
     yield takeEvery(DELETE_REPLY, fetchDeleteReply)

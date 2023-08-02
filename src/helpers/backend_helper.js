@@ -117,6 +117,8 @@ export const editInstructions = req => postUpload("rest/InstructionRest/UpdateIn
 
 export const saveDescriptions = req => postWithParam("rest/InstructionRest/UpdateDescription", req)
 
+export const getReply = req => post("rest/InstructionRest/SelectReplyList", req)
+
 export const saveReply = req => postUpload("rest/InstructionRest/InsertReply", req)
 
 // export const downloadFiles = req => postWithParam("rest/InstructionRest/FileDownload", req)
