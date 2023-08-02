@@ -1,12 +1,24 @@
 import { call, put, takeEvery, all} from "redux-saga/effects"
 
-import { EDIT_USER_PROFILE, UPDATE_USER_PASSWORD, EMAIL_FORGOT_PASSWORD, UPDATE_FORGOT_PASSWORD } from "./actionTypes"
+import { GET_PROFILE, EDIT_USER_PROFILE, UPDATE_USER_PASSWORD, EMAIL_FORGOT_PASSWORD, UPDATE_FORGOT_PASSWORD } from "./actionTypes"
 
-import {  msgEdit, msgUpdatePassword } from "./actions"
+import {  respGetProfile, msgEdit, msgUpdatePassword } from "./actions"
 
-import { editUserProfile, updateUserPassword, emailForgotPassword, updateForgotPassword } from "helpers/backend_helper"
+import { getProfile, editUserProfile, updateUserPassword, emailForgotPassword, updateForgotPassword } from "helpers/backend_helper"
 
-
+function* fetchGetProfile({ payload: req }) {
+  try {
+    const response = yield call(getProfile, req)
+    if (response.status == 1) {
+      yield put(respGetProfile(response))
+    } else {
+      yield put(respGetProfile(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetProfile({ "status": 0, "message": "Error Get Data" }))
+  }
+}
 
   function* fetchEditUserProfile({ payload: req }) {
     try {
@@ -50,6 +62,7 @@ import { editUserProfile, updateUserPassword, emailForgotPassword, updateForgotP
 
   function* userProfileSaga() {
     
+    yield takeEvery(GET_PROFILE, fetchGetProfile)
     yield takeEvery(EDIT_USER_PROFILE, fetchEditUserProfile)
     yield takeEvery(UPDATE_USER_PASSWORD, fetchUpdateUserPassword)
     yield takeEvery(EMAIL_FORGOT_PASSWORD, fetchEmailForgetPassword)

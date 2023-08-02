@@ -1,5 +1,7 @@
 import {
 
+    GET_PROFILE,
+    RESP_GET_PROFILE,
     EDIT_USER_PROFILE,
     MSGEDIT,
     RESET_MESSAGE,
@@ -12,13 +14,25 @@ import {
 
 const INIT_STATE = {
 
+    respGetProfile: {},
     msgEdit: "",
     msgUpdatePassword: "",
     msgForgotPassword: "",
 }
 
 const userProfileReducer = (state = INIT_STATE, action) => {
+
   switch (action.type) {
+
+    case GET_PROFILE:
+      return {
+        ...state,
+      }
+    case RESP_GET_PROFILE:
+      return {
+        ...state,
+        respGetProfile: action.payload,
+      }
     case MSGEDIT:
       return {
         ...state,

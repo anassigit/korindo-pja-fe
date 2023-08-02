@@ -1,3 +1,5 @@
+export const GET_PROFILE = "GET_PROFILE"
+export const RESP_GET_PROFILE = "RESP_GET_PROFILE"
 export const EDIT_USER_PROFILE = "EDIT_USER_PROFILE"
 export const MSGEDIT = "MSGEDIT"
 export const MSGUPPASSWORD = "MSGUPPASSWORD"

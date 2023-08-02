@@ -1,5 +1,7 @@
 import {
 
+    GET_PROFILE,
+    RESP_GET_PROFILE,
     EDIT_USER_PROFILE,
     MSGEDIT,
     RESET_MESSAGE,
@@ -10,6 +12,15 @@ import {
 
 } from "./actionTypes"
 
+  export const getProfile = (req) => ({
+    type: GET_PROFILE,
+    payload: req,
+  })
+
+  export const respGetProfile = resp => ({
+    type: RESP_GET_PROFILE,
+    payload: resp,
+  })
 
   export const msgEdit = resp => ({
     type: MSGEDIT,
