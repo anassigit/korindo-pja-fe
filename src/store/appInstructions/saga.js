@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all } from "redux-saga/effects"
 
-import { GET_INSTRUCTIONS, GET_MANAGER, GET_OWNER, GET_SELECTED_MANAGER, GET_INSTRUCTIONS2, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY, GET_REPLY, GET_ATTACHMENT } from "./actionTypes"
+import { GET_INSTRUCTIONS, GET_MANAGER, GET_OWNER, GET_SELECTED_MANAGER, GET_STATUS, GET_INSTRUCTIONS2, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY, GET_REPLY, GET_ATTACHMENT } from "./actionTypes"
 
-import { respGetInstructions, respGetManager, respGetOwner, respGetSelectedManager, respGetInstructions2, msgAdd, msgEdit, msgDelete, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply, respGetReply, respGetAttachment } from "./actions"
+import { respGetInstructions, respGetManager, respGetOwner, respGetSelectedManager, respGetStatus, respGetInstructions2, msgAdd, msgEdit, msgDelete, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply, respGetReply, respGetAttachment } from "./actions"
 
-import { getInstructions, getManagerList, getOwnerList, getSelectedManager, getInstructions2, saveInstructions, editInstructions, deleteInstructions, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply, getReply, getAttachment } from "helpers/backend_helper"
+import { getInstructions, getManagerList, getOwnerList, getSelectedManager, getStatusList, getInstructions2, saveInstructions, editInstructions, deleteInstructions, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply, getReply, getAttachment } from "helpers/backend_helper"
 
 function* fetchGetInstructions({ payload: req }) {
   try {
@@ -145,6 +145,20 @@ function* fetchSaveDescriptions({ payload: req }) {
   }
 }
 
+function* fetchGetStatus({ payload: req }) {
+  try {
+    const response = yield call(getStatus, req)
+    if (response.status == 1) {
+      yield put(respGetStatus(response))
+    } else {
+      yield put(respGetStatus(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetStatus({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
 /************ REPLIES HERE ************/
 
 function* fetchGetReply({ payload: req }) {
@@ -209,6 +223,7 @@ function* instructionsSaga() {
   yield takeEvery(GET_MANAGER, fetchGetManager)
   yield takeEvery(GET_OWNER, fetchGetOwner)
   yield takeEvery(GET_SELECTED_MANAGER, fetchGetSelectedManager)
+  yield takeEvery(GET_STATUS, fetchGetStatus)
   yield takeEvery(GET_INSTRUCTIONS2, fetchGetInstructions2)
   yield takeEvery(SAVE_INSTRUCTIONS, fetchSaveInstructions)
   yield takeEvery(EDIT_INSTRUCTIONS, fetchEditInstructions)

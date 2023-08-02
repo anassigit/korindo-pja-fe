@@ -8,6 +8,8 @@ import {
     RESP_GET_OWNER,
     GET_SELECTED_MANAGER,
     RESP_SELECTED_MANAGER,
+    GET_STATUS,
+    RESP_GET_STATUS,
     GET_INSTRUCTIONS2,
     RESP_GET_INSTRUCTIONS2,
     SAVE_INSTRUCTIONS,
@@ -62,6 +64,16 @@ export const getInstructionsData = (req) => ({
 
   export const respGetOwner = resp => ({
     type: RESP_GET_OWNER,
+    payload: resp,
+  })
+
+  export const getStatus = (req) => ({
+    type: GET_STATUS,
+    payload: req,
+  })
+
+  export const respGetStatus = resp => ({
+    type: RESP_GET_STATUS,
     payload: resp,
   })
 

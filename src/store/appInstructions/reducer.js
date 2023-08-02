@@ -12,6 +12,9 @@ import {
   GET_SELECTED_MANAGER,
   RESP_SELECTED_MANAGER,
 
+  GET_STATUS,
+  RESP_GET_STATUS,
+
   GET_INSTRUCTIONS2,
   RESP_GET_INSTRUCTIONS2,
   SAVE_INSTRUCTIONS,
@@ -43,6 +46,7 @@ const INIT_STATE = {
   respGetInstructions: {},
   respGetManager: {},
   respGetOwner: {},
+  respGetStatus: {},
   respGetSelectedManager: {},
   respGetInstructions2: {},
   respGetReply: {},
@@ -96,6 +100,15 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetSelectedManager: action.payload,
       }
+      case GET_STATUS:
+        return {
+          ...state,
+        }
+      case RESP_GET_STATUS:
+        return {
+          ...state,
+          respGetStatus: action.payload,
+        }
     case GET_INSTRUCTIONS2:
       return {
         ...state,
