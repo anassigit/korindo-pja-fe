@@ -52,6 +52,8 @@ const AddInstructions = (props) => {
             addInstructionsValidInput.resetForm()
             setOptionManager([]);
             setOptionOwner([]);
+            setselectedMulti([]);
+            setselectedMulti2([]);
             addInstructionsValidInput.setFieldValue("status", status)
             addInstructionsValidInput.setFieldValue("insDate", addInstructionsStartDate)
 

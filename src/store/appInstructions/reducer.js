@@ -9,6 +9,9 @@ import {
     GET_OWNER,
     RESP_GET_OWNER,
 
+    GET_SELECTED_MANAGER,
+    RESP_SELECTED_MANAGER,
+
     GET_INSTRUCTIONS2,
     RESP_GET_INSTRUCTIONS2,
     SAVE_INSTRUCTIONS,
@@ -36,6 +39,7 @@ const INIT_STATE = {
     respGetInstructions: {},
     respGetManager: {},
     respGetOwner: {},
+    respGetSelectedManager: {},
     respGetInstructions2: {},
     msgAdd: "",
     msgEdit: "",
@@ -77,6 +81,15 @@ const instructionsReducer = (state = INIT_STATE, action) => {
               ...state,
               respGetOwner: action.payload,
             }
+            case GET_SELECTED_MANAGER:
+              return {
+                ...state,
+              }
+            case RESP_SELECTED_MANAGER:
+              return {
+                ...state,
+                respGetSelectedManager: action.payload,
+              }
         case GET_INSTRUCTIONS2:
         return {
           ...state,

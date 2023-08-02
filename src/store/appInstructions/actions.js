@@ -6,6 +6,8 @@ import {
     RESP_GET_MANAGER,
     GET_OWNER,
     RESP_GET_OWNER,
+    GET_SELECTED_MANAGER,
+    RESP_SELECTED_MANAGER,
     GET_INSTRUCTIONS2,
     RESP_GET_INSTRUCTIONS2,
     SAVE_INSTRUCTIONS,
@@ -56,6 +58,16 @@ export const getInstructionsData = (req) => ({
 
   export const respGetOwner = resp => ({
     type: RESP_GET_OWNER,
+    payload: resp,
+  })
+
+  export const getSelectedManager = (req) => ({
+    type: GET_SELECTED_MANAGER,
+    payload: req,
+  })
+
+  export const respGetSelectedManager = resp => ({
+    type: RESP_SELECTED_MANAGER,
     payload: resp,
   })
 
