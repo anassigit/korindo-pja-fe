@@ -91,6 +91,9 @@ export const deleteMuser = req => post("/rest/app008/delete", req)
 
 
 //appUserProfile
+
+export const getProfile = req => post("MemberRest/SelectMyInfo", req)
+
 export const editUserProfile = req => postWithParam("MemberRest/UpdateMyInfo", req)
 
 export const updateUserPassword = req => postWithParam("MemberRest/UpdatePassword", req)
