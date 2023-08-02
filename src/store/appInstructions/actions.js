@@ -29,7 +29,9 @@ import {
     DELETE_REPLY,
     MSGDELETEREPLY,
     GET_REPLY,
-    RESP_GET_REPLY
+    RESP_GET_REPLY,
+    GET_ATTACHMENT,
+    RESP_GET_ATTACHMENT
 
 } from "./actionTypes"
 
@@ -143,16 +145,6 @@ export const getInstructionsData = (req) => ({
     payload: req,
   })
 
-  export const saveReply = (req) => ({
-    type: SAVE_REPLY,
-    payload: req,
-  })
-
-  export const msgAddReply = resp => ({
-    type: MSGADDREPLY,
-    payload: resp,
-  })
-
   export const downloadFile = (req) => ({
     type: DOWNLOAD_FILES,
     payload: req,
@@ -174,6 +166,16 @@ export const getInstructionsData = (req) => ({
     type: RESP_GET_REPLY,
     payload: resp,
   })
+  
+  export const saveReply = (req) => ({
+    type: SAVE_REPLY,
+    payload: req,
+  })
+
+  export const msgAddReply = resp => ({
+    type: MSGADDREPLY,
+    payload: resp,
+  })
 
   export const deleteReply = (req) => ({
     type: DELETE_REPLY,
@@ -184,3 +186,17 @@ export const getInstructionsData = (req) => ({
     type: MSGDELETEREPLY,
     payload: req,
   })
+
+  /*** REPLIES HERE ***/
+
+  
+  export const getAttachmentData = (req) => ({
+    type: GET_ATTACHMENT,
+    payload: req,
+  })
+
+  export const respGetAttachment = resp => ({
+    type: RESP_GET_ATTACHMENT,
+    payload: resp,
+  })
+  

@@ -33,7 +33,9 @@ import {
   DELETE_REPLY,
   MSGDELETEREPLY,
   GET_REPLY,
-  RESP_GET_REPLY
+  RESP_GET_REPLY,
+  GET_ATTACHMENT,
+  RESP_GET_ATTACHMENT
 
 } from "./actionTypes"
 
@@ -43,6 +45,8 @@ const INIT_STATE = {
   respGetOwner: {},
   respGetSelectedManager: {},
   respGetInstructions2: {},
+  respGetReply: {},
+  respGetAttachment: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -198,6 +202,18 @@ const instructionsReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         msgDeleteReply: action.payload,
+      }
+
+    /**** REPLIES ****/
+
+    case GET_ATTACHMENT:
+      return {
+        ...state,
+      }
+    case RESP_GET_ATTACHMENT:
+      return {
+        ...state,
+        respGetAttachment: action.payload,
       }
 
     default:

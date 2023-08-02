@@ -18,9 +18,9 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, getAttachmentData, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
-import { getDetailInstruction, getReply } from "../../store/appInstructions/actions"
+import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
 
 import { format } from 'date-fns';
@@ -66,10 +66,17 @@ const EditInstructions = (props) => {
     const [editInstruction, setEditInstruction] = useState(false)
     const [statusList, setStatusList] = useState([])
 
-    useEffect(() => {
-        dispatch(resetMessage());
-    }, [dispatch])
+    const [ownerObj1, setOwnerObj1] = useState([])
+    const [ownerObj2, setOwnerObj2] = useState([])
 
+    useEffect(() => {
+        setEditInstructionsFirstRenderDone(true);
+        dispatch(resetMessage());
+    }, [])
+
+    const selectedManager = useSelector(state => {
+        return state.instructionsReducer.respGetSelectedManager;
+    })
 
     const msgSaveReply = useSelector(state => {
         return state.instructionsReducer.msgAddReply;
@@ -84,107 +91,51 @@ const EditInstructions = (props) => {
     })
 
     const attachmentReplyData = useSelector(state => {
-        return state.instructionsReducer.respGetReply;
+        return state.instructionsReducer.respGetAttachment;
     })
 
     useEffect(() => {
 
-        // if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
+        let ownerObj1 = []
+        let ownerObj2 = []
+        ownerObj1.push(getDetailInstructionData?.data?.instruction?.owner)
+        //console.log("objek1", getDetailInstructionData.data.instruction.owner)
+        ownerObj2.push({
+            "id": ownerObj1.id,
+            "name": ownerObj1.name,
+            "bgColor": ownerObj1.bgColor
+        })
+        //console.log("objek2",ownerObj2 )
+        //debugger
+        setOptionOwner0({
+            "id": ownerObj2[0].id,
+            "name": ownerObj2[0].name,
+            "bgColor": ownerObj2[0].bgColor
+        });
 
+        console.log(getDetailInstructionData)
 
-        //     // get response label (yang sudah dipilih sebelumnya) -- Owner -- //
-        //     getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
-        //         const newOwnerEdit = {
-        //             value: ownerList.id,
-        //             label: ownerList.name,
-        //             bgColor: ownerList.bgColor,
+        // get response label (yang sudah dipilih sebelumnya) -- Manager -- //
+        if (selectedManager?.data !== undefined || selectedManager?.data !== null) {
+            selectedManager?.data?.managerList.map((data) => {
+                const newManagerEdit = {
+                    value: data.id,
+                    label: data.name,
 
-        //         };
-        //         setOptionOwner0((option) => [...option, newOwnerEdit]);
-        //     });
+                };
+                setOptionManager0((option) => [...option, newManagerEdit]);
+            });
+        }
 
-        //     // get response label (yang sudah dipilih sebelumnya) -- Manager -- //
-        //     getDetailInstructionData?.data?.instruction?.managerList.map((managerList) => {
-        //         const newManagerEdit = {
-        //             value: managerList.id,
-        //             label: managerList.name,
+        // get dropdown list data -- Manager -- //
+        selectedManager?.data?.managerList.map((data) => {
+            const newManagerSet = {
+                value: data.id,
+                label: data.name,
 
-        //         };
-        //         setOptionManager0((option) => [...option, newManagerEdit]);
-        //     });
-
-        //     // get dropdown list data -- Owner -- //
-        //     getDetailInstructionData?.data?.ownerList.map((data) => {
-        //         const newOwnerSet = {
-        //             value: data.id,
-        //             label: data.name,
-        //             bgColor: data.bgColor,
-
-        //         };
-        //         setOptionOwner((option) => [...option, newOwnerSet]);
-        //     });
-
-        //     // get dropdown list data -- Manager -- //
-        //     getDetailInstructionData?.data?.managerList.map((data) => {
-        //         const newManagerSet = {
-        //             value: data.id,
-        //             label: data.name,
-
-        //         };
-        //         setOptionManager((option) => [...option, newManagerSet]);
-        //     })
-
-        //     // let t1 = []
-        //     // t1.push(getDetailInstructionData?.data?.instruction?.replyList)
-        //     // console.log('t1 ', t1)
-        //     ///t1.
-        //     // setReplyTabelListData(current => [...current, {
-        //     //     name: ""
-        //     //   }]);
-        //     setReplyTabelListData(getDetailInstructionData?.data?.instruction?.replyList);
-
-        //     setAttchedFilesTables(getDetailInstructionData?.data?.instruction?.attachFileList?.attachFileList);
-
-        //     setLogTable(getDetailInstructionData?.data?.instruction?.logList)
-
-        //     //SetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
-
-        //     getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
-        //         const newObj = {
-
-        //             file_num: attachFileList.no,
-        //             filename: attachFileList.name,
-
-        //         };
-
-        //         setGetFiles((option) => [...option, newObj]);
-
-        //         // SetFiles((option) => [...option, newObj]);
-
-        //         SetFiles2((option) => [...option, newObj]);
-        //     });
-
-        //     getDetailInstructionData?.data?.instruction?.replyList.map((replyList) => {
-        //         const objRply = {
-
-        //             reply_num: replyList.no
-        //         };
-
-        //         setReplyNum((option) => [...option, objRply])
-        //     })
-
-        //     getDetailInstructionData?.data?.statusList.map((statusList) => {
-        //         const objList = {
-
-        //             statusId: statusList.no,
-        //             statusNm: statusList.name,
-        //             colorList: statusList.bgColor,
-        //         };
-
-        //         setStatusList((option) => [...option, objList]);
-        //     })
-
-        // }
+            };
+            setOptionManager((option) => [...option, newManagerSet]);
+        })
 
         /* useEffect field here */
 
@@ -221,14 +172,6 @@ const EditInstructions = (props) => {
         }
     }, [replyNum], [])
 
-
-    useEffect(() => {
-        setEditInstructionsFirstRenderDone(true);
-        // dispatch(getDetailInstruction({
-        //     langType: "kor"
-        // }))
-    }, [])
-
     useEffect(() => {
 
         if (props.appEditInstructions) {
@@ -245,10 +188,16 @@ const EditInstructions = (props) => {
                     "langType": "eng"
                 }
             }))
+            dispatch(getSelectedManager({
+
+                search: {
+                    "num": num,
+                    "langType": "eng"
+                }
+
+            }))
         }
-        // else {
-        //     dispatch(getDetailInstruction({}))
-        // }
+       
     }, [props.appEditInstructions])
 
     const insert = async (values) => {
@@ -841,14 +790,19 @@ const EditInstructions = (props) => {
         num = num.toString()
 
         setTimeout(() => {
-            
+
             dispatch(getReply({
                 search: {
                     "num": num,
                     "langType": "eng"
                 }
             }))
-            
+            dispatch(getAttachmentData({
+                search: {
+                    "instruction_num": num,
+                }
+            }))
+
             setReplyClicked(false)
             editInstructionsValidInput.setFieldValue("content", '')
         }, 500)
@@ -912,17 +866,16 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         if (msgSaveReply.status == "1") {
-            // setApp015p02LovWilayah('')
-            // props.setApp015p01Page(true);
-            // props.setApp015p02Page(false);
-            // dispatch(getVendorData(props.app015p01TabelSearch))
         }
-        // setEditInstructionMsg(msgSaveReply)
-        // setEditInstructionsSpinner(false);
     }, [msgSaveReply])
 
 
     /*********************************** SIGIT MADE FROM HERE ***********************************/
+    /*********************************** SIGIT MADE FROM HERE ***********************************/
+    /*********************************** SIGIT MADE FROM HERE ***********************************/
+
+    const [instructionAttachment, setInstructionAttachment] = useState([])
+    const [replyAttachment, setReplyAttachment] = useState([])
 
     const [isHiddenReply, setIsHiddenReply] = useState(true)
     const [isHiddenLogs, setIsHiddenLogs] = useState(true)
@@ -956,6 +909,18 @@ const EditInstructions = (props) => {
         console.log("updatedReplyData : ", updatedReplyData)
         setReplyTabelListData(updatedReplyData);
     };
+
+    // useEffect(() => {
+    //     replyData.map(() => {
+    //         setReplyAttachment(
+    //             dispatch(getAttachmentData({
+    //                 search: {
+    //                     "instruction_num": num,
+    //                 }
+    //             }))
+    //         )
+    //     })
+    // }, [replyData])
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1548,67 +1513,65 @@ const EditInstructions = (props) => {
                                         </Row>
                                         <Row style={{ marginTop: "30px" }}>
                                             <Col md="12">
-                                                <Card>
+                                                <Row>
 
-                                                    <CardBody>
-                                                        <Row>
-
-                                                            <table className="tg"
-                                                                style={{ marginTop: "10px" }}
-                                                            >
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th className="tg-0lax">Name</th>
-                                                                        <th className="tg-0lax">Reply</th>
-                                                                        <th className="tg-0lax">Time</th>
-                                                                        <th className="tg-0lax">Attached Files</th>
-                                                                        <th className="tg-0lax"></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="replyTabelList">
-                                                                    {
-                                                                        replyData?.data?.replyList?.length > 0 &&
-                                                                        replyData?.data?.replyList.map((row, reply_num) => (
-                                                                            <>
-                                                                                <tr style={{ height: "25px" }}></tr>
-                                                                                <tr key={row.no} style={{ verticalAlign: "text-top" }}>
-                                                                                    <td className="tg-0lax">{row.name}</td>
-                                                                                    <td className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
-                                                                                        {selectedRowIndex === reply_num ? (
-                                                                                            <Input
-                                                                                                maxLength={100}
-                                                                                                style={{ width: "75%" }}
-                                                                                                name="content"
-                                                                                                type="textarea"
-                                                                                                value={row.content}
-                                                                                                onChange={(e) => handleChangeReply(e, reply_num)} 
-                                                                                            />
-                                                                                        ) : (
-                                                                                            row.content
-                                                                                        )}
-                                                                                        <p />
-                                                                                        {row.edit ? (
-                                                                                            <a onClick={() => setSelectedRowIndex(reply_num)}>
-                                                                                                {selectedRowIndex === reply_num ? "Save" : "Edit"}
-                                                                                            </a>
-                                                                                        ) : (
-                                                                                            ""
-                                                                                        )}
-                                                                                        &nbsp;&nbsp;&nbsp;
-                                                                                        {row.delete ? (
-                                                                                            <a href="/" onClick={() => replyDelete(row)}>
-                                                                                                Delete
-                                                                                            </a>
-                                                                                        ) : (
-                                                                                            ""
-                                                                                        )}
-                                                                                    </td>
-                                                                                    <td className="tg-0lax">
-                                                                                        {row.write_time === " " || row.write_time === ""
-                                                                                            ? ""
-                                                                                            : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
-                                                                                    </td>
-                                                                                   {/*  <td
+                                                    <table className="tg"
+                                                        style={{ marginTop: "10px", marginRight: "18px", marginLeft: "18px" }}
+                                                    >
+                                                        <thead>
+                                                            <tr>
+                                                                <th className="tg-0lax">Name</th>
+                                                                <th className="tg-0lax">Reply</th>
+                                                                <th className="tg-0lax">Time</th>
+                                                                <th className="tg-0lax">Attached Files</th>
+                                                                <th className="tg-0lax"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="replyTabelList">
+                                                            {
+                                                                replyData?.data?.replyList?.length > 0 &&
+                                                                replyData?.data?.replyList.map((row, reply_num) => (
+                                                                    <>
+                                                                        <tr style={{ height: "25px" }}></tr>
+                                                                        <tr key={row.no} style={{ verticalAlign: "text-top" }}>
+                                                                            <td className="tg-0lax">{row.name}</td>
+                                                                            <td className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
+                                                                                {selectedRowIndex === reply_num ? (
+                                                                                    <Input
+                                                                                        maxLength={100}
+                                                                                        style={{ width: "75%" }}
+                                                                                        name="content"
+                                                                                        type="textarea"
+                                                                                        value={row.content}
+                                                                                        onChange={(e) => handleChangeReply(e, reply_num)}
+                                                                                    />
+                                                                                ) : (
+                                                                                    row.content
+                                                                                )}
+                                                                                <p />
+                                                                                {row.edit ? (
+                                                                                    <a onClick={() => setSelectedRowIndex(reply_num)}>
+                                                                                        {selectedRowIndex === reply_num ? "Save" : "Edit"}
+                                                                                    </a>
+                                                                                ) : (
+                                                                                    ""
+                                                                                )}
+                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                {row.delete ? (
+                                                                                    <a href="/" onClick={() => replyDelete(row)}>
+                                                                                        Delete
+                                                                                    </a>
+                                                                                ) : (
+                                                                                    ""
+                                                                                )}
+                                                                            </td>
+                                                                            <td className="tg-0lax">
+                                                                                {row.write_time === " " || row.write_time === ""
+                                                                                    ? ""
+                                                                                    : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
+                                                                            </td>
+                                                                            {console.log("replyAttachment : ", replyAttachment)}
+                                                                            {/*  <td
                                                                                         className="tg-0lax"
                                                                                         style={{
                                                                                             maxWidth: "50px",
@@ -1626,19 +1589,17 @@ const EditInstructions = (props) => {
                                                                                             ""
                                                                                         )}
                                                                                     </td> */}
-                                                                                    {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
-                                                                                </tr>
-                                                                                <tr style={{ height: "25px" }}></tr>
-                                                                            </>
-                                                                        ))
-                                                                    }
+                                                                            {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
+                                                                        </tr>
+                                                                        <tr style={{ height: "25px" }}></tr>
+                                                                    </>
+                                                                ))
+                                                            }
 
-                                                                </tbody>
-                                                            </table>
+                                                        </tbody>
+                                                    </table>
 
-                                                        </Row>
-                                                    </CardBody>
-                                                </Card>
+                                                </Row>
                                             </Col>
                                         </Row>
 

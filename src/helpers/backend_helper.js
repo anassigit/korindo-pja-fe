@@ -143,6 +143,10 @@ export const updateMembers = req => postWithParam("/rest/SettingRest/UpdateMembe
 
 export const deleteMembers = req => postWithParam("/rest/SettingRest/DeleteMember", req)
 
+/* ATTACHMENTS */
+
+export const getAttachment = req => post("rest/InstructionRest/SelectAttachFileList", req)
+
 /* GENERAL SETTING */
 
 export const updateGeneralSetting = req => postWithParam("/rest/SettingRest/UpdateSetting", req)

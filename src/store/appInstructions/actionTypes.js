@@ -34,6 +34,16 @@ export const GET_REPLY = "GET_REPLY"
 export const RESP_GET_REPLY = "RESP_GET_REPLY"
 
 export const SAVE_REPLY = "SAVE_REPLY"
+
+export const EDIT_REPLY = "EDIT_REPLY"
+
 export const DELETE_REPLY = "DELETE_REPLY"
+
 export const MSGADDREPLY = "MSGADDREPLY"
+export const MSGEDITREPLY = "MSGEDITREPLY"
 export const MSGDELETEREPLY = "MSGDELETEREPLY"
+
+/* Attachment Instructions */
+
+export const GET_ATTACHMENT = "GET_ATTACHMENT"
+export const RESP_GET_ATTACHMENT = "RESP_GET_ATTACHMENT"
