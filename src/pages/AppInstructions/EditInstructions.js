@@ -124,10 +124,8 @@ const EditInstructions = (props) => {
 
                 };
                 setOptionManager((option) => [...option, newManagerSet]);
-            });
+            })
 
-            debugger
-            console.log('dd ', getDetailInstructionData?.data?.instruction?.replyList)
             // let t1 = []
             // t1.push(getDetailInstructionData?.data?.instruction?.replyList)
             // console.log('t1 ', t1)
@@ -835,6 +833,8 @@ const EditInstructions = (props) => {
                     "langType": "eng"
                 }
             }));
+            setReplyClicked(false)
+            editInstructionsValidInput.setFieldValue("content", '')
         }, 500)
     };
 
@@ -910,6 +910,9 @@ const EditInstructions = (props) => {
 
     const [isHiddenReply, setIsHiddenReply] = useState(true)
     const [isHiddenLogs, setIsHiddenLogs] = useState(true)
+    const [isEditableSelectedReply, setIsEditableSelectedReply] = useState(false)
+    const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
+
 
     const handleSaveDesc = async (val) => {
         try {
@@ -925,6 +928,18 @@ const EditInstructions = (props) => {
         }
     }, [replyTabelListData])
 
+    const handleChangeReply = (e, rowIndex) => {
+
+        debugger
+
+        const { name, value } = e.target;
+
+        const updatedReplyData = [...replyTabelListData];
+        updatedReplyData[rowIndex] = { ...updatedReplyData[rowIndex], [name]: value };
+
+        console.log("updatedReplyData : ", updatedReplyData)
+        setReplyTabelListData(updatedReplyData);
+    };
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1536,28 +1551,72 @@ const EditInstructions = (props) => {
                                                                 </thead>
                                                                 <tbody id="replyTabelList">
                                                                     {
-                                                                        getDetailInstructionData?.data?.instruction?.replyList.length > 0 && getDetailInstructionData?.data?.instruction?.replyList.map((row, reply_num) =>
+                                                                        replyTabelListData.length > 0 &&
+                                                                        replyTabelListData.map((row, reply_num) => (
                                                                             <>
-                                                                                <tr style={{ height: "25px" }} ></tr>
+                                                                                <tr style={{ height: "25px" }}></tr>
                                                                                 <tr key={row.no} style={{ verticalAlign: "text-top" }}>
-                                                                                    <td className="tg-0lax" >
-                                                                                        {row.name}
-                                                                                    </td>
+                                                                                    <td className="tg-0lax">{row.name}</td>
                                                                                     <td className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
-                                                                                        {row.content}
+                                                                                        {selectedRowIndex === reply_num ? (
+                                                                                            <Input
+                                                                                                maxLength={100}
+                                                                                                style={{ width: "75%" }}
+                                                                                                name="content"
+                                                                                                type="textarea"
+                                                                                                value={row.content}
+                                                                                                onChange={(e) => handleChangeReply(e, reply_num)} 
+                                                                                            />
+                                                                                        ) : (
+                                                                                            row.content
+                                                                                        )}
                                                                                         <p />
-                                                                                        {row.edit ? <a href="/">Edit</a> : ''}&nbsp;&nbsp;&nbsp;{row.delete ? <a href="/" onClick={() => { replyDelete(row) }}>Delete</a> : ''}
+                                                                                        {row.edit ? (
+                                                                                            <a onClick={() => setSelectedRowIndex(reply_num)}>
+                                                                                                {selectedRowIndex === reply_num ? "Save" : "Edit"}
+                                                                                            </a>
+                                                                                        ) : (
+                                                                                            ""
+                                                                                        )}
+                                                                                        &nbsp;&nbsp;&nbsp;
+                                                                                        {row.delete ? (
+                                                                                            <a href="/" onClick={() => replyDelete(row)}>
+                                                                                                Delete
+                                                                                            </a>
+                                                                                        ) : (
+                                                                                            ""
+                                                                                        )}
                                                                                     </td>
-                                                                                    <td className="tg-0lax" >{row.write_time === ' ' || row.write_time === '' ? '' : moment(row.write_time).format('yyyy-MM-DD hh:mm')}</td>
-                                                                                    <td className="tg-0lax" style={{ maxWidth: "50px", textOverflow: "clip", whiteSpace: "nowrap", overflow: "hidden" }}>{row.attachFileList.length > 0 ? row.attachFileList[0].name : ''}</td>
-                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}> {row.attachFileList.length > 0 || row.attachFileList !== null ? <i className="mdi mdi-download" onClick={() => { xxx() }} /> : ''}</td>
+                                                                                    <td className="tg-0lax">
+                                                                                        {row.write_time === " " || row.write_time === ""
+                                                                                            ? ""
+                                                                                            : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
+                                                                                    </td>
+                                                                                    <td
+                                                                                        className="tg-0lax"
+                                                                                        style={{
+                                                                                            maxWidth: "50px",
+                                                                                            textOverflow: "clip",
+                                                                                            whiteSpace: "nowrap",
+                                                                                            overflow: "hidden",
+                                                                                        }}
+                                                                                    >
+                                                                                        {row.attachFileList.length > 0 ? row.attachFileList[0].name : ""}
+                                                                                    </td>
+                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}>
+                                                                                        {row.attachFileList.length > 0 || row.attachFileList !== null ? (
+                                                                                            <i className="mdi mdi-download" onClick={() => xxx()} />
+                                                                                        ) : (
+                                                                                            ""
+                                                                                        )}
+                                                                                    </td>
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
-                                                                                <tr style={{ height: "25px" }} ></tr>
+                                                                                <tr style={{ height: "25px" }}></tr>
                                                                             </>
-
-                                                                        )
+                                                                        ))
                                                                     }
+
                                                                 </tbody>
                                                             </table>
 
