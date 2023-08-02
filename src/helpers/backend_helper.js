@@ -107,6 +107,8 @@ export const getOwnerList = req => post("rest/InstructionRest/SelectOwnerList", 
 
 export const getSelectedManager = req => post("rest/InstructionRest/SelectedManager", req)
 
+export const getStatusList = req => post("rest/InstructionRest/SelectStatusList", req)
+
 export const getInstructions2 = req => post("rest/InstructionRest/SelectInstructionList2", req)
 
 export const saveInstructions = req => postUpload("rest/InstructionRest/InsertInstruction", req)
