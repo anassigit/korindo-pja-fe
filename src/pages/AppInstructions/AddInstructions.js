@@ -50,6 +50,8 @@ const AddInstructions = (props) => {
     useEffect(() => {
         if (props.appAddInstructions) {
             addInstructionsValidInput.resetForm()
+            setOptionManager([]);
+            setOptionOwner([]);
             addInstructionsValidInput.setFieldValue("status", status)
             addInstructionsValidInput.setFieldValue("insDate", addInstructionsStartDate)
 
