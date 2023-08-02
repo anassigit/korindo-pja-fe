@@ -446,7 +446,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-8">
                                                 <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
-                                                    maxlength={50}
+                                                    maxLength={50}
                                                     name="title"
                                                     type="text"
                                                     onChange={addInstructionsValidInput.handleChange}
