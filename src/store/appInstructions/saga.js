@@ -1,6 +1,6 @@
 import { call, put, takeEvery, all} from "redux-saga/effects"
 
-import { GET_INSTRUCTIONS, GET_MANAGER, GET_OWNER, GET_SELECTED_MANAGER, GET_INSTRUCTIONS2, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY } from "./actionTypes"
+import { GET_INSTRUCTIONS, GET_MANAGER, GET_OWNER, GET_SELECTED_MANAGER, GET_INSTRUCTIONS2, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY, GET_REPLY } from "./actionTypes"
 
 import { respGetInstructions, respGetManager, respGetOwner, respGetSelectedManager, respGetInstructions2, msgAdd, msgEdit, msgDelete, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply, respGetReply } from "./actions"
 
