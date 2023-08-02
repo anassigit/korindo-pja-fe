@@ -114,10 +114,8 @@ const AddInstructions = (props) => {
         },
 
         validationSchema: Yup.object().shape({
-            title: Yup.string().required("Wajib diisi"),
-            insDate: Yup.string().required("Wajib diisi"),
-            status: Yup.string().required("Wajib diisi"),
-
+            title: Yup.string().required("Please input the Title."),
+            insDate: Yup.string().required("Please input the Date."),
         }),
 
         onSubmit: (val) => {
@@ -629,10 +627,10 @@ const AddInstructions = (props) => {
                                     </Row>
 
                                     <br></br>
-
+                                <div className="text-sm-end">
                                     <Button color="primary" className="ms-1" type="submit">
-                                        <i className="bx bxs-save align-middle me-2"></i>{" "}
-                                        Simpan
+                                        <i className="bx bxs-save align-middle me-2"></i>
+                                        Save
                                     </Button>&nbsp;
 
                                     <Button
@@ -643,9 +641,10 @@ const AddInstructions = (props) => {
                                             window.location.reload();
                                         }}
                                     >
-                                        <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                        Kembali
+                                        <i className="bx bx-arrow-back align-middle me-2"></i>
+                                        Back
                                     </Button>
+                                    </div>
                                 </FormGroup>
 
                             </Form>
