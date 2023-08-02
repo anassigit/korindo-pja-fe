@@ -17,7 +17,7 @@ import RoleAkses from "../pages/App004/RoleAkses"
 import User from "../pages/App008/User"
 import Instructions from "../pages/AppInstructions/Instructions"
 import UserProfile from "../pages/AppUserProfile/UserProfile"
-import ChangePassword from "../pages/Authentication/ChangePassword"
+import ChangePassword from "../pages/AppUserProfile/ChangePassword"
 import Setting from "pages/AppSetting/Setting"
 
 const authProtectedRoutes = [

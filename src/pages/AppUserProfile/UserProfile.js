@@ -25,7 +25,7 @@ import {
 import { editUserProfile, resetMessage, msgEdit, getProfile } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
-import ChangePassword from "pages/Authentication/ChangePassword";
+import ChangePassword from "pages/AppUserProfile/ChangePassword";
 import MsgModal from "components/Common/MsgModal";
 
 
@@ -42,16 +42,9 @@ const UserProfile = () => {
 
   useEffect(() => {
     dispatch(resetMessage());
-    // dispatch(getProfile({
-    //   "search": {
-    //     "langType": "eng"
-    //   }
-    // }))
   }, [])
 
   const getDetailProfile = useSelector(state => {
-
-    console.log("profile", state.userProfileReducer.respGetProfile)
     return state.userProfileReducer.respGetProfile;
   })
 
@@ -62,7 +55,6 @@ const UserProfile = () => {
   const [appUserProfileSpinner, setAppUserProfileSpinner] = useState(false);
 
   useEffect(() => {
-    debugger
     if (userId == getDetailProfile?.data?.member?.id || getDetailProfile !== null) {
       appUserProfilepValidInput.setFieldValue("name", getDetailProfile?.data?.member?.name)
       appUserProfilepValidInput.setFieldValue("pname", getDetailProfile?.data?.member?.pname)
