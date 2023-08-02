@@ -99,37 +99,25 @@ const Instructions = () => {
         //     ),
         // },
         {
-            dataField: "ownerList",
+            dataField: "owner",
             text: "Owner",
             align: "center",
             headerStyle: { textAlign: 'center' },
             style: { width: "150px" },
             formatter: (cellContent, appInstructionsData) => {
-            //     let ownerElements = "";
-            //     if (cellContent.length > 1) {
-            //         ownerElements = cellContent.map((owner, index) => (
-            //             <span className="mx-1" key={index}>
-            //                 <span className="rounded-circle" style={{ backgroundColor: owner.bgColor, color: "white", width: "30px", height: "30px", display: "inline-block", textAlign: "center", justifyContent: "center", lineHeight: "30px" }}>
-            //                     {owner.name.charAt(0).toUpperCase()}
-            //                 </span>
-            //             </span>
-            //         ))
-
-            //     } else {
-            //         ownerElements = cellContent.map((owner, index) => (
-            //             <span className="px-3 py-1 rounded" key={index} style={{ backgroundColor: owner.bgColor, color: "white", height: "30px" }}>
-            //                 {owner.name}
-            //             </span>
-            //         ))
-            //     }
-
-            //     return (
-            //         <>
-            //             <div>{ownerElements}</div>
-            //         </>
-            //     );
+                if (!cellContent || !cellContent.name || !cellContent.bgColor) {
+                    return null;
+                }
+        
+                return (
+                    <>
+                        <span className="px-3 py-1 rounded" style={{ backgroundColor: cellContent.bgColor, color: "white", height: "30px" }}>
+                            {cellContent.name}
+                        </span>
+                    </>
+                );
             },
-        },
+        },        
         {
             dataField: "managerList",
             text: "Manager",
