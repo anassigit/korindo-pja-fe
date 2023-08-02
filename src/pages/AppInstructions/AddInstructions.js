@@ -158,9 +158,6 @@ const AddInstructions = (props) => {
                     props.setAppInstructionsPage(true);
                     props.setAppAddInstructions(false);
                     insert(bodyForm, config);
-                    props.setAppInstructionsMsg(appAddInstructionsMessage);
-                    
-
 
         }
     });
@@ -171,6 +168,7 @@ const AddInstructions = (props) => {
 
     useEffect(() => {
         if (appAddInstructionsMessage.status == "1") {
+            debugger
             props.setAppInstructionsPage(true);
             props.setAppAddInstructions(false);
             dispatch(getInstructionsData(props.appInstructionsTabelSearch))

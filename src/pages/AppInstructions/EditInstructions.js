@@ -81,102 +81,103 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
-        if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
+        debugger
+        // if (getDetailInstructionData.data !== undefined && getDetailInstructionData.status == "1") {
 
 
-            // get response label (yang sudah dipilih sebelumnya) -- Owner -- //
-            getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
-                const newOwnerEdit = {
-                    value: ownerList.id,
-                    label: ownerList.name,
-                    bgColor: ownerList.bgColor,
+        //     // get response label (yang sudah dipilih sebelumnya) -- Owner -- //
+        //     getDetailInstructionData?.data?.instruction?.ownerList.map((ownerList) => {
+        //         const newOwnerEdit = {
+        //             value: ownerList.id,
+        //             label: ownerList.name,
+        //             bgColor: ownerList.bgColor,
 
-                };
-                setOptionOwner0((option) => [...option, newOwnerEdit]);
-            });
+        //         };
+        //         setOptionOwner0((option) => [...option, newOwnerEdit]);
+        //     });
 
-            // get response label (yang sudah dipilih sebelumnya) -- Manager -- //
-            getDetailInstructionData?.data?.instruction?.managerList.map((managerList) => {
-                const newManagerEdit = {
-                    value: managerList.id,
-                    label: managerList.name,
+        //     // get response label (yang sudah dipilih sebelumnya) -- Manager -- //
+        //     getDetailInstructionData?.data?.instruction?.managerList.map((managerList) => {
+        //         const newManagerEdit = {
+        //             value: managerList.id,
+        //             label: managerList.name,
 
-                };
-                setOptionManager0((option) => [...option, newManagerEdit]);
-            });
+        //         };
+        //         setOptionManager0((option) => [...option, newManagerEdit]);
+        //     });
 
-            // get dropdown list data -- Owner -- //
-            getDetailInstructionData?.data?.ownerList.map((data) => {
-                const newOwnerSet = {
-                    value: data.id,
-                    label: data.name,
-                    bgColor: data.bgColor,
+        //     // get dropdown list data -- Owner -- //
+        //     getDetailInstructionData?.data?.ownerList.map((data) => {
+        //         const newOwnerSet = {
+        //             value: data.id,
+        //             label: data.name,
+        //             bgColor: data.bgColor,
 
-                };
-                setOptionOwner((option) => [...option, newOwnerSet]);
-            });
+        //         };
+        //         setOptionOwner((option) => [...option, newOwnerSet]);
+        //     });
 
-            // get dropdown list data -- Manager -- //
-            getDetailInstructionData?.data?.managerList.map((data) => {
-                const newManagerSet = {
-                    value: data.id,
-                    label: data.name,
+        //     // get dropdown list data -- Manager -- //
+        //     getDetailInstructionData?.data?.managerList.map((data) => {
+        //         const newManagerSet = {
+        //             value: data.id,
+        //             label: data.name,
 
-                };
-                setOptionManager((option) => [...option, newManagerSet]);
-            })
+        //         };
+        //         setOptionManager((option) => [...option, newManagerSet]);
+        //     })
 
-            // let t1 = []
-            // t1.push(getDetailInstructionData?.data?.instruction?.replyList)
-            // console.log('t1 ', t1)
-            ///t1.
-            // setReplyTabelListData(current => [...current, {
-            //     name: ""
-            //   }]);
-            setReplyTabelListData(getDetailInstructionData?.data?.instruction?.replyList);
+        //     // let t1 = []
+        //     // t1.push(getDetailInstructionData?.data?.instruction?.replyList)
+        //     // console.log('t1 ', t1)
+        //     ///t1.
+        //     // setReplyTabelListData(current => [...current, {
+        //     //     name: ""
+        //     //   }]);
+        //     setReplyTabelListData(getDetailInstructionData?.data?.instruction?.replyList);
 
-            setAttchedFilesTables(getDetailInstructionData?.data?.instruction?.attachFileList?.attachFileList);
+        //     setAttchedFilesTables(getDetailInstructionData?.data?.instruction?.attachFileList?.attachFileList);
 
-            setLogTable(getDetailInstructionData?.data?.instruction?.logList)
+        //     setLogTable(getDetailInstructionData?.data?.instruction?.logList)
 
-            //SetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
+        //     //SetFiles(getDetailInstructionData?.data?.instruction?.attachFileList)
 
-            getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
-                const newObj = {
+        //     getDetailInstructionData?.data?.instruction?.attachFileList.map((attachFileList) => {
+        //         const newObj = {
 
-                    file_num: attachFileList.no,
-                    filename: attachFileList.name,
+        //             file_num: attachFileList.no,
+        //             filename: attachFileList.name,
 
-                };
+        //         };
 
-                setGetFiles((option) => [...option, newObj]);
+        //         setGetFiles((option) => [...option, newObj]);
 
-                // SetFiles((option) => [...option, newObj]);
+        //         // SetFiles((option) => [...option, newObj]);
 
-                SetFiles2((option) => [...option, newObj]);
-            });
+        //         SetFiles2((option) => [...option, newObj]);
+        //     });
 
-            getDetailInstructionData?.data?.instruction?.replyList.map((replyList) => {
-                const objRply = {
+        //     getDetailInstructionData?.data?.instruction?.replyList.map((replyList) => {
+        //         const objRply = {
 
-                    reply_num: replyList.no
-                };
+        //             reply_num: replyList.no
+        //         };
 
-                setReplyNum((option) => [...option, objRply])
-            })
+        //         setReplyNum((option) => [...option, objRply])
+        //     })
 
-            getDetailInstructionData?.data?.statusList.map((statusList) => {
-                const objList = {
+        //     getDetailInstructionData?.data?.statusList.map((statusList) => {
+        //         const objList = {
 
-                    statusId: statusList.no,
-                    statusNm: statusList.name,
-                    colorList: statusList.bgColor,
-                };
+        //             statusId: statusList.no,
+        //             statusNm: statusList.name,
+        //             colorList: statusList.bgColor,
+        //         };
 
-                setStatusList((option) => [...option, objList]);
-            })
+        //         setStatusList((option) => [...option, objList]);
+        //     })
 
-        }
+        // }
 
         /* useEffect field here */
 
