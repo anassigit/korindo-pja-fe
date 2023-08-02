@@ -67,6 +67,11 @@ const Instructions = () => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-num-column",
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
         },
 
         {
@@ -116,6 +121,11 @@ const Instructions = () => {
                     </>
                 );
             },
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
         },        
         {
             dataField: "managerList",
@@ -132,6 +142,11 @@ const Instructions = () => {
                     </a>
                 </>
             ),
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
         },
         {
             dataField: "insDate",
@@ -140,6 +155,11 @@ const Instructions = () => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-insdate-column",
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
         },
         {
             dataField: "status",
@@ -149,6 +169,11 @@ const Instructions = () => {
             headerStyle: { textAlign: 'center' },
             style: { minWidth: "180px" },
             classes: "custom-status-column",
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
             // formatter: (cellContent, appInstructionsData) => {
             //     if (cellContent.status == "1") {
             //         return <Badge color="warning" className="me-1 bg-soft">
@@ -193,6 +218,11 @@ const Instructions = () => {
                     </div>
                 </>
             ),
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
         },
         {
             dataField: "notice_count",
@@ -214,6 +244,11 @@ const Instructions = () => {
                     </div>
                 </>
             ),
+            events: {
+                onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    appInstructionsPreEdit(appInstructionsData);
+                },
+            },
         },
     ]
 
