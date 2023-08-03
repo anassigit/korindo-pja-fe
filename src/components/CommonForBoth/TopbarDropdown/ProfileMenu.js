@@ -10,25 +10,40 @@ import {
 //i18n
 import { withTranslation } from "react-i18next"
 // Redux
-import { connect } from "react-redux"
+import { connect, useDispatch, useSelector } from "react-redux"
 import { withRouter, Link } from "react-router-dom"
 
 // users
 import user1 from "../../../assets/images/users/circle-user.png"
 import { ReactSession } from 'react-client-session';
+import { getProfile } from "store/actions"
 
 const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
+
+  const dispatch = useDispatch()
   const [menu, setMenu] = useState(false)
 
   const [username, setusername] = useState("Admin")
 
+  const getDetailProfile = useSelector(state => {
+    return state.userProfileReducer.respGetProfile;
+  })
+
+  useEffect(() => {
+    dispatch(getProfile({
+      "search": {
+        "langType": "eng"
+      }
+    }))
+  }, [])
+
   useEffect(() => {
     if (ReactSession.get("user")) {
-        const u = JSON.parse(ReactSession.get("user"))
-        setusername(u.name)
+        const u = getDetailProfile?.data?.member?.name
+        setusername(u)
     }
-  }, [props.success])
+  }, [getDetailProfile])
 
   return (
     <React.Fragment>
