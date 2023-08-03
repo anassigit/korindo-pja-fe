@@ -33,9 +33,6 @@ import { saveDescriptions } from "helpers/backend_helper";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { preventDefault } from "@fullcalendar/core";
 import { reset } from "redux-form";
-// import { values } from "lodash";
-// import { arrayRemove, arrayRemoveAll } from "redux-form";
-
 
 
 const EditInstructions = (props) => {
@@ -110,6 +107,10 @@ const EditInstructions = (props) => {
         return state.instructionsReducer.respGetAttachment;
     })
 
+    const attachmentInstructionData = useSelector(state => {
+        return state.instructionsReducer.respGetAttachment;
+    })
+
     const logsData = useSelector(state => {
         return state.instructionsReducer.respGetLogs;
     })
@@ -156,6 +157,22 @@ const EditInstructions = (props) => {
             gname: manager.gname,
         })))
 
+        // let selectedAttachmentFiles = null;
+        // selectedAttachmentFiles = attachmentReplyData?.data?.attachFileList
+        // if (selectedAttachmentFiles) {
+        //     selectedAttachmentFiles = [{
+        //         file_num: selectedAttachmentFiles.no,
+        //         filename: selectedAttachmentFiles.name
+        //     }]
+        // }
+        // SetFiles2(selectedAttachmentFiles);
+
+
+
+        console.log("attach", Files)
+
+
+
 
         /* useEffect field here */
 
@@ -170,14 +187,20 @@ const EditInstructions = (props) => {
 
     }, [getDetailInstructionData]);
 
-    console.log("optionOwner0 : ", optionOwner0)
+    // useEffect(() => {
+    //     if (Files2 != null && Files2 != undefined) {
+    //         SetFiles(Files2)
+    //         return;
+    //     }
+    // }, [Files2], [])
 
-    useEffect(() => {
-        if (Files2 != null && Files2 != undefined) {
-            SetFiles(Files2)
-            return;
-        }
-    }, [Files2], [])
+    useEffect(() =>{
+        if (attachmentInstructionData?.data?.attachFileList) {
+            const entries = Object.values(attachmentInstructionData?.data?.attachFileList);
+            SetFiles(entries);
+          }
+        }, [attachmentInstructionData]);
+
 
     useEffect(() => {
         if (replyNum != null && replyNum != undefined) {
@@ -1187,11 +1210,6 @@ const EditInstructions = (props) => {
                                                                     const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                     return (
                                                                         <div className="file-atc-box" key={id}>
-                                                                            {
-                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                    <div className="file-image"></div> :
-                                                                                    <div className="file-image"></div>
-                                                                            }
                                                                             <div className="file-detail">
                                                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
@@ -1205,26 +1223,19 @@ const EditInstructions = (props) => {
                                                                 })
                                                             }
                                                         </div>
-                                                        {/* <div className="kb-buttons-box">
-                                                            <a onClick={() => handleUploadFile()} className="btn btn-primary">Upload</a>
-                                                        </div> */}
+
                                                     </Form>
                                                     {Files.length > 0 ?
                                                         <div className="kb-attach-box">
                                                             <hr />
                                                             <h6>Recent files uploaded</h6>
                                                             {
-                                                                attachmentReplyData.map((data, index) => {
+                                                                Files.map((data, index) => {
                                                                     const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
                                                                     return (
                                                                         <div className="file-atc-box" key={index}>
-                                                                            {
-                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                    <div className="file-image"></div> :
-                                                                                    <div className="file-image"></div>
-                                                                            }
                                                                             <div className="file-detail">
-                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
+                                                                                <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{data.name}</span>
                                                                                 &nbsp;&nbsp;&nbsp;
                                                                                 <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(file_num)} />
                                                                                 &nbsp;&nbsp;&nbsp;
@@ -1248,9 +1259,13 @@ const EditInstructions = (props) => {
 
                                 <div className="text-sm-end" >
 
-                                    <Button color="primary" className="ms-1" type="button" onClick={() => {
+                                    {/* <Button color="primary" className="ms-1" type="button" onClick={() => {
                                         handleSaveDesc(editInstructionsValidInput.values.description)
                                     }}>
+                                        Update
+                                    </Button>&nbsp; */}
+
+                                    <Button type="submit" color="primary" className="ms-1">
                                         Update
                                     </Button>&nbsp;
 
