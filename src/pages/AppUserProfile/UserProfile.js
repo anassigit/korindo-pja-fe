@@ -59,15 +59,15 @@ const UserProfile = () => {
       appUserProfilepValidInput.setFieldValue("hp", getDetailProfile?.data?.member?.hp)
       appUserProfilepValidInput.setFieldValue("id", getDetailProfile?.data?.member?.id)
     }
-}, [getDetailProfile])
+  }, [getDetailProfile])
 
-useEffect(() => {
-  dispatch(getProfile({
-    "search": {
-      "langType": "eng"
-    }
-  }))
-}, [])
+  useEffect(() => {
+    dispatch(getProfile({
+      "search": {
+        "langType": "eng"
+      }
+    }))
+  }, [])
 
 
   //const u = JSON.parse(ReactSession.get("user") || null)
@@ -96,20 +96,20 @@ useEffect(() => {
 
   const updateHp = async () => {
     try {
-    debugger   
-        var map = {
-            "hp":  appUserProfilepValidInput.values.hp
-        };
-        await dispatch(editUserProfile(map));
+      debugger
+      var map = {
+        "hp": appUserProfilepValidInput.values.hp
+      };
+      await dispatch(editUserProfile(map));
 
     } catch (message) {
-        console.log(message)
+      console.log(message)
     }
-};
+  };
 
-const respMsg = useSelector(state => {
-  return state.userProfileReducer.msgEdit;
-});
+  const respMsg = useSelector(state => {
+    return state.userProfileReducer.msgEdit;
+  });
 
 
   useEffect(() => {
@@ -124,154 +124,154 @@ const respMsg = useSelector(state => {
     setAppUserProfileMsg("")
     setUserProfilePageData(userProfilePageData)
     setUserProfilePage(false)
-    setUserProfilePassword(true)  
+    setUserProfilePassword(true)
   }
 
   return (
     <RootPageCustom
-            componentJsx={
-                <>
-                       
+      componentJsx={
+        <>
+
           {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
-          {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null}
-      
+            {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null}
+
           <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
-          <Row>
-            <Col lg={12}>
-              <Card>
-                <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>Change profile</CardHeader>
-                <CardBody>
-                  <Form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      appUserProfilepValidInput.handleSubmit();
-                      return false;
-                    }}>
-                    <FormGroup className="mb-0">
-                      <Row>
-                        <Col md="5">
-                          <div className="mb-3 col-sm-10">
-                            <Label>Name</Label>
-                            <Input
-                              name="name"
-                              type="text"
-                              disabled
-                              onChange={appUserProfilepValidInput.handleChange}
-                              value={appUserProfilepValidInput.values.name || ""}
-                              invalid={
-                                appUserProfilepValidInput.touched.name && appUserProfilepValidInput.errors.name ? true : false
-                              }
-                            />
-                            {appUserProfilepValidInput.touched.name && appUserProfilepValidInput.errors.name ? (
-                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.name}</FormFeedback>
-                            ) : null}
-                          </div>
+            <Row>
+              <Col lg={12}>
+                <Card>
+                  <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>Change profile</CardHeader>
+                  <CardBody>
+                    <Form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        appUserProfilepValidInput.handleSubmit();
+                        return false;
+                      }}>
+                      <FormGroup className="mb-0">
+                        <Row>
+                          <Col md="5">
+                            <div className="mb-3 col-sm-10">
+                              <Label>Name</Label>
+                              <Input
+                                name="name"
+                                type="text"
+                                disabled
+                                onChange={appUserProfilepValidInput.handleChange}
+                                value={appUserProfilepValidInput.values.name || ""}
+                                invalid={
+                                  appUserProfilepValidInput.touched.name && appUserProfilepValidInput.errors.name ? true : false
+                                }
+                              />
+                              {appUserProfilepValidInput.touched.name && appUserProfilepValidInput.errors.name ? (
+                                <FormFeedback type="invalid">{appUserProfilepValidInput.errors.name}</FormFeedback>
+                              ) : null}
+                            </div>
 
-                          <div className="mb-3 col-sm-10">
-                            <Label>Position</Label>
-                            <Input
-                              name="pname"
-                              type="text"
-                              disabled
-                              onChange={appUserProfilepValidInput.handleChange}
-                              value={appUserProfilepValidInput.values.pname || ""}
-                              invalid={
-                                appUserProfilepValidInput.touched.pname && appUserProfilepValidInput.errors.pname ? true : false
-                              }
-                            />
-                            {appUserProfilepValidInput.touched.pname && appUserProfilepValidInput.errors.pname ? (
-                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.pname}</FormFeedback>
-                            ) : null}
-                          </div>
+                            <div className="mb-3 col-sm-10">
+                              <Label>Position</Label>
+                              <Input
+                                name="pname"
+                                type="text"
+                                disabled
+                                onChange={appUserProfilepValidInput.handleChange}
+                                value={appUserProfilepValidInput.values.pname || ""}
+                                invalid={
+                                  appUserProfilepValidInput.touched.pname && appUserProfilepValidInput.errors.pname ? true : false
+                                }
+                              />
+                              {appUserProfilepValidInput.touched.pname && appUserProfilepValidInput.errors.pname ? (
+                                <FormFeedback type="invalid">{appUserProfilepValidInput.errors.pname}</FormFeedback>
+                              ) : null}
+                            </div>
 
-                          <div className="mb-3 col-sm-10">
-                            <Label>Group</Label>
-                            <Input
-                              name="gname"
-                              type="text"
-                              disabled
-                              onChange={appUserProfilepValidInput.handleChange}
-                              value={appUserProfilepValidInput.values.gname || ""}
-                              invalid={
-                                appUserProfilepValidInput.touched.gname && appUserProfilepValidInput.errors.gname ? true : false
-                              }
-                            />
-                            {appUserProfilepValidInput.touched.gname && appUserProfilepValidInput.errors.gname ? (
-                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.gname}</FormFeedback>
-                            ) : null}
-                          </div>
+                            <div className="mb-3 col-sm-10">
+                              <Label>Group</Label>
+                              <Input
+                                name="gname"
+                                type="text"
+                                disabled
+                                onChange={appUserProfilepValidInput.handleChange}
+                                value={appUserProfilepValidInput.values.gname || ""}
+                                invalid={
+                                  appUserProfilepValidInput.touched.gname && appUserProfilepValidInput.errors.gname ? true : false
+                                }
+                              />
+                              {appUserProfilepValidInput.touched.gname && appUserProfilepValidInput.errors.gname ? (
+                                <FormFeedback type="invalid">{appUserProfilepValidInput.errors.gname}</FormFeedback>
+                              ) : null}
+                            </div>
 
-                        </Col>
+                          </Col>
 
 
-                        <Col md="5">
+                          <Col md="5">
 
-                          <div className="mb-3 col-sm-8">
-                            <Label>HP<span style={{ color: "red" }}>* </span></Label>
-                            <Input
-                              name="hp"
-                              type="number"
-                              maxLength={12}
-                              onChange={appUserProfilepValidInput.handleChange}
-                              value={appUserProfilepValidInput.values.hp || ""}
-                              invalid={
-                                appUserProfilepValidInput.touched.hp && appUserProfilepValidInput.errors.hp ? true : false
-                              }
-                            />
-                            {appUserProfilepValidInput.touched.hp && appUserProfilepValidInput.errors.hp ? (
-                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.hp}</FormFeedback>
-                            ) : null}
-                          </div>
+                            <div className="mb-3 col-sm-8">
+                              <Label>HP<span style={{ color: "red" }}>* </span></Label>
+                              <Input
+                                name="hp"
+                                type="number"
+                                maxLength={12}
+                                onChange={appUserProfilepValidInput.handleChange}
+                                value={appUserProfilepValidInput.values.hp || ""}
+                                invalid={
+                                  appUserProfilepValidInput.touched.hp && appUserProfilepValidInput.errors.hp ? true : false
+                                }
+                              />
+                              {appUserProfilepValidInput.touched.hp && appUserProfilepValidInput.errors.hp ? (
+                                <FormFeedback type="invalid">{appUserProfilepValidInput.errors.hp}</FormFeedback>
+                              ) : null}
+                            </div>
 
-                          <div className="mb-3 col-sm-8">
-                            <Label>ID</Label>
-                            <Input
-                              name="id"
-                              type="text"
-                              disabled
-                              onChange={appUserProfilepValidInput.handleChange}
-                              value={appUserProfilepValidInput.values.id || ""}
-                              invalid={
-                                appUserProfilepValidInput.touched.id && appUserProfilepValidInput.errors.id ? true : false
-                              }
-                            />
-                            {appUserProfilepValidInput.touched.id && appUserProfilepValidInput.errors.id ? (
-                              <FormFeedback type="invalid">{appUserProfilepValidInput.errors.id}</FormFeedback>
-                            ) : null}
-                          </div>
+                            <div className="mb-3 col-sm-8">
+                              <Label>ID</Label>
+                              <Input
+                                name="id"
+                                type="text"
+                                disabled
+                                onChange={appUserProfilepValidInput.handleChange}
+                                value={appUserProfilepValidInput.values.id || ""}
+                                invalid={
+                                  appUserProfilepValidInput.touched.id && appUserProfilepValidInput.errors.id ? true : false
+                                }
+                              />
+                              {appUserProfilepValidInput.touched.id && appUserProfilepValidInput.errors.id ? (
+                                <FormFeedback type="invalid">{appUserProfilepValidInput.errors.id}</FormFeedback>
+                              ) : null}
+                            </div>
 
-                          <div className="mb-3 col-sm-8">
-                            <Label>Password</Label>
-                            <Button onClick={() => { ChangePassPage() }} className="ms-5" style={{ background: "#7BAE40" }}>
-                              Change Password
-                            </Button>
-                          </div>
-                          <span style={{ fontStyle: "italic" }}> * Please click button Change Password for change the password.</span>
-                        </Col>
-                      </Row>
-                      <Button color="primary" className="ms-1" onClick={(e) => { updateHp() }}>
-                        SAVE
-                      </Button>
-                      <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />
+                            <div className="mb-3 col-sm-8">
+                              <Label>Password</Label>
+                              <Button onClick={() => { ChangePassPage() }} className="ms-5" style={{ background: "#7BAE40" }}>
+                                Change Password
+                              </Button>
+                            </div>
+                            <span style={{ fontStyle: "italic" }}> * Please click button Change Password for change the password.</span>
+                          </Col>
+                        </Row>
+                        <Button color="primary" className="ms-1" onClick={(e) => { updateHp() }}>
+                          SAVE
+                        </Button>
+                        <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />
                       </FormGroup>
-                  </Form>
+                    </Form>
 
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
           </Container>
 
           <ChangePassword
-          userProfilePassword={userProfilePassword}
-          setUserProfilePassword={setUserProfilePassword}
-          setUserProfilePage={setUserProfilePage}
-          setAppUserProfileMsg={setAppUserProfileMsg}
+            userProfilePassword={userProfilePassword}
+            setUserProfilePassword={setUserProfilePassword}
+            setUserProfilePage={setUserProfilePage}
+            setAppUserProfileMsg={setAppUserProfileMsg}
           />
         </>
       }
-/>
- 
+    />
+
   );
 };
 export default UserProfile

@@ -35,12 +35,12 @@ const ChangePassword = (props) => {
 
   useEffect(() => {
     if (props.userProfilePassword) {
-debugger
+      debugger
       userProfilePasswordValidation.resetForm()
       const u = JSON.parse(ReactSession.get("user"))
       u.id = userProfilePasswordValidation.values.id
       ReactSession.get("user", JSON.stringify(u))
-   
+
     }
   }, [props.userProfilePassword])
 
@@ -73,145 +73,141 @@ debugger
   //   error: state.userProfileReducer.msgAdd,
   // }));
 
-  
+
 
   const updatePass = async () => {
     try {
       // debugger
-        var map = {
-            "currentPassword":  userProfilePasswordValidation.values.currentPassword,
-            "newPassword": userProfilePasswordValidation.values.newPassword
-        };
-        // console.log('map : ', map)
-        // debugger
-        setChangePasswordSpinner(true);
-        await dispatch(updateUserPassword(map));
-        history.push("/login");
-        props.setUserProfilePassword(false);
-        return "Please Re-Login."
+      var map = {
+        "currentPassword": userProfilePasswordValidation.values.currentPassword,
+        "newPassword": userProfilePasswordValidation.values.newPassword
+      };
+      // console.log('map : ', map)
+      // debugger
+      setChangePasswordSpinner(true);
+      await dispatch(updateUserPassword(map));
+      history.push("/login");
+      props.setUserProfilePassword(false);
+      return "Please Re-Login."
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
-};
+  };
 
-useEffect(() => {
-  if (changePasswordMsg.status == "1") {
-    props.setUserProfilePage(true);
-    props.setUserProfilePassword(false);
-  }
-  props.setAppUserProfileMsg(changePasswordMsg)
-  setChangePasswordSpinner(false);
-}, [changePasswordMsg])
+  useEffect(() => {
+    if (changePasswordMsg.status == "1") {
+      props.setUserProfilePage(true);
+      props.setUserProfilePassword(false);
+    }
+    props.setAppUserProfileMsg(changePasswordMsg)
+    setChangePasswordSpinner(false);
+  }, [changePasswordMsg])
 
   return (
     <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid={true} >
+      <Card>
+        <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Change Password</CardHeader>
+        <CardBody>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              userProfilePasswordValidation.handleSubmit();
+              return false;
+            }}>
 
-      <Row>
-        <Col lg={12}>
-          <Card>
-            <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Change Password</CardHeader>
-            <CardBody>
-              <Form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  userProfilePasswordValidation.handleSubmit();
-                  return false;
-                }}>
+            <FormGroup className="mb-0">
+              <div className="mb-3 col-sm-3">
 
-                <FormGroup className="mb-0">
-                <div className="mb-3 col-sm-3">
-                    
-                    <Input
-                      name="id"
-                      type="text"
-                      hidden
-                      maxLength={100}
-                      onChange={userProfilePasswordValidation.handleChange}
-                      value={userProfilePasswordValidation.values.id || ""}
-                      invalid={
-                        userProfilePasswordValidation.touched.id && userProfilePasswordValidation.errors.id ? true : false
-                      }
-                    />
-                    {userProfilePasswordValidation.touched.id && userProfilePasswordValidation.errors.id ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.id}</FormFeedback>
-                    ) : null}
-                  </div>
+                <Input
+                  name="id"
+                  type="text"
+                  hidden
+                  maxLength={100}
+                  onChange={userProfilePasswordValidation.handleChange}
+                  value={userProfilePasswordValidation.values.id || ""}
+                  invalid={
+                    userProfilePasswordValidation.touched.id && userProfilePasswordValidation.errors.id ? true : false
+                  }
+                />
+                {userProfilePasswordValidation.touched.id && userProfilePasswordValidation.errors.id ? (
+                  <FormFeedback type="invalid">{userProfilePasswordValidation.errors.id}</FormFeedback>
+                ) : null}
+              </div>
 
-                  <div className="mb-3 col-sm-3">
+              <div className="mb-3 col-sm-3">
 
-                    <Input
-                      name="currentPassword"
-                      type="password"
-                      placeholder="Enter Current Password"
-                      maxLength={100}
-                      onChange={userProfilePasswordValidation.handleChange}
-                      value={userProfilePasswordValidation.values.currentPassword || ""}
-                      invalid={
-                        userProfilePasswordValidation.touched.currentPassword && userProfilePasswordValidation.errors.currentPassword ? true : false
-                      }
-                    />
-                    {userProfilePasswordValidation.touched.currentPassword && userProfilePasswordValidation.errors.currentPassword ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.currentPassword}</FormFeedback>
-                    ) : null}
-                  </div>
+                <Input
+                  name="currentPassword"
+                  type="password"
+                  placeholder="Enter Current Password"
+                  maxLength={100}
+                  onChange={userProfilePasswordValidation.handleChange}
+                  value={userProfilePasswordValidation.values.currentPassword || ""}
+                  invalid={
+                    userProfilePasswordValidation.touched.currentPassword && userProfilePasswordValidation.errors.currentPassword ? true : false
+                  }
+                />
+                {userProfilePasswordValidation.touched.currentPassword && userProfilePasswordValidation.errors.currentPassword ? (
+                  <FormFeedback type="invalid">{userProfilePasswordValidation.errors.currentPassword}</FormFeedback>
+                ) : null}
+              </div>
 
-                  <div className="mb-3 col-sm-3">
-                    
-                    <Input
-                      name="newPassword"
-                      type="password"
-                      placeholder="Enter New Password"
-                      maxLength={100}
-                      onChange={userProfilePasswordValidation.handleChange}
-                      value={userProfilePasswordValidation.values.newPassword || ""}
-                      invalid={
-                        userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? true : false
-                      }
-                    />
-                    {userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.newPassword}</FormFeedback>
-                    ) : null}
-                  </div>
-                  <div className="mb-3 col-sm-3">
-                    
-                    <Input
-                      name="Password"
-                      type="password"
-                      placeholder="Confirm New Password"
-                      maxLength={100}
-                      onChange={userProfilePasswordValidation.handleChange}
-                      value={userProfilePasswordValidation.values.Password || ""}
-                      invalid={
-                        userProfilePasswordValidation.touched.Password && userProfilePasswordValidation.errors.Password ? true : false
-                      }
-                    />
-                    {userProfilePasswordValidation.touched.Password && userProfilePasswordValidation.errors.Password ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.Password}</FormFeedback>
-                    ) : null}
-                  </div>
+              <div className="mb-3 col-sm-3">
 
-                  <Button  color="primary" className="ms-1" onClick={() => { updatePass() }}>
-                   
-                    Simpan
-                    <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
-                  </Button>&nbsp;
+                <Input
+                  name="newPassword"
+                  type="password"
+                  placeholder="Enter New Password"
+                  maxLength={100}
+                  onChange={userProfilePasswordValidation.handleChange}
+                  value={userProfilePasswordValidation.values.newPassword || ""}
+                  invalid={
+                    userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? true : false
+                  }
+                />
+                {userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? (
+                  <FormFeedback type="invalid">{userProfilePasswordValidation.errors.newPassword}</FormFeedback>
+                ) : null}
+              </div>
+              <div className="mb-3 col-sm-3">
 
-                  <Button
-                    type="button"
-                    className="btn btn-danger "
-                    onClick={() => { props.setUserProfilePage(true); props.setUserProfilePassword(false); props.setAppUserProfileMsg("") }}
-                  >
-                   
-                    Kembali
-                  </Button>
-                </FormGroup>
+                <Input
+                  name="Password"
+                  type="password"
+                  placeholder="Confirm New Password"
+                  maxLength={100}
+                  onChange={userProfilePasswordValidation.handleChange}
+                  value={userProfilePasswordValidation.values.Password || ""}
+                  invalid={
+                    userProfilePasswordValidation.touched.Password && userProfilePasswordValidation.errors.Password ? true : false
+                  }
+                />
+                {userProfilePasswordValidation.touched.Password && userProfilePasswordValidation.errors.Password ? (
+                  <FormFeedback type="invalid">{userProfilePasswordValidation.errors.Password}</FormFeedback>
+                ) : null}
+              </div>
 
-              </Form>
+              <Button color="primary" className="ms-1" onClick={() => { updatePass() }}>
 
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+                Simpan
+                <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+              </Button>&nbsp;
+
+              <Button
+                type="button"
+                className="btn btn-danger "
+                onClick={() => { props.setUserProfilePage(true); props.setUserProfilePassword(false); props.setAppUserProfileMsg("") }}
+              >
+
+                Kembali
+              </Button>
+            </FormGroup>
+
+          </Form>
+
+        </CardBody>
+      </Card>
+
     </Container>
 
   );

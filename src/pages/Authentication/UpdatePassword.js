@@ -28,34 +28,34 @@ const UpdatePassword = props => {
   const dispatch = useDispatch();
   let history = useHistory();
   const [updatePasswordSpinner, setUpdatePasswordSpinner] = useState(false);
-  const [state={notLoaded:true}, setState] = useState(null);
+  const [state = { notLoaded: true }, setState] = useState(null);
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-        
-        newpassword: '',
-        newPassword: '',
+
+      newpassword: '',
+      newPassword: '',
 
     },
     validationSchema: Yup.object({
-        
-        newpassword: Yup.string().required("Please Enter Your New Password"),
-        newPassword: Yup.string().required("Please Re-Enter Your New Password"),
+
+      newpassword: Yup.string().required("Please Enter Your New Password"),
+      newPassword: Yup.string().required("Please Re-Enter Your New Password"),
     }),
-   
+
   });
 
-const updatePass = async () => {
-  try {
-    const queryParameters = new URLSearchParams(window.location.search)
-  const type = queryParameters.get("KOR_TOKEN")
+  const updatePass = async () => {
+    try {
+      const queryParameters = new URLSearchParams(window.location.search)
+      const type = queryParameters.get("KOR_TOKEN")
 
-    ReactSession.set("authUser", type);
+      ReactSession.set("authUser", type);
       var map = {
-          "newPassword": validation.values.newPassword
+        "newPassword": validation.values.newPassword
 
       };
       // console.log('map : ', map)
@@ -64,19 +64,19 @@ const updatePass = async () => {
       await dispatch(updateForgotPassword(map));
       // props.setAppUserProfileMsg("")
       history.push("/login");
-  } catch (error) {
+    } catch (error) {
       console.log(error)
-  }
-};
+    }
+  };
 
   const { error } = useSelector(state => ({
     error: state.Login.error,
   }));
 
   // handleValidSubmit
-//   const handleValidSubmit = (event, values) => {
-//     dispatch(loginUser(values, props.history));
-//   };
+  //   const handleValidSubmit = (event, values) => {
+  //     dispatch(loginUser(values, props.history));
+  //   };
 
   return (
     <React.Fragment>
@@ -103,7 +103,7 @@ const updatePass = async () => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                  
+
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
@@ -116,92 +116,92 @@ const updatePass = async () => {
                       {error ? <Alert color="danger">{error}</Alert> : null}
 
                       <div className="mb-3">
-                     
-                      <Input
-                      name="id"
-                      type="text"
-                      hidden
-                      maxLength={100}
-                      onChange={validation.handleChange}
-                      value={validation.values.id || ""}
-                      invalid={
-                        validation.touched.id && validation.errors.id ? true : false
-                      }
-                    />
-                    {validation.touched.id && validation.errors.id ? (
-                      <FormFeedback type="invalid">{validation.errors.id}</FormFeedback>
-                    ) : null}
-                  </div>
 
-                      <div className="mb-3">
-                     
-                      <Input
-                      name="currentPassword"
-                      type="text"
-                      hidden
-                      maxLength={100}
-                      onChange={validation.handleChange}
-                      value={validation.values.currentPassword || ""}
-                      invalid={
-                        validation.touched.currentPassword && validation.errors.currentPassword ? true : false
-                      }
-                    />
-                    {validation.touched.currentPassword && validation.errors.currentPassword ? (
-                      <FormFeedback type="invalid">{validation.errors.currentPassword}</FormFeedback>
-                    ) : null}
-                  </div>
-
-                  <div className="mb-3">
-                     
-                  <Input
-                      name="newPassword"
-                      type="password"
-                      placeholder="Enter New Password"
-                      maxLength={100}
-                      onChange={validation.handleChange}
-                      value={validation.values.newPassword || ""}
-                      invalid={
-                        validation.touched.newPassword && validation.errors.newPassword ? true : false
-                      }
-                    />
-                    {validation.touched.newPassword && validation.errors.newPassword ? (
-                      <FormFeedback type="invalid">{validation.errors.newPassword}</FormFeedback>
-                    ) : null}
-                  </div>
-
-                  <div className="mb-3">
-                     
-                  <Input
-                      name="Password"
-                      type="password"
-                      placeholder="Confirm New Password"
-                      maxLength={100}
-                      onChange={validation.handleChange}
-                      value={validation.values.Password || ""}
-                      invalid={
-                        validation.touched.Password && validation.errors.Password ? true : false
-                      }
-                    />
-                    {validation.touched.Password && validation.errors.Password ? (
-                      <FormFeedback type="invalid">{validation.errors.Password}</FormFeedback>
-                    ) : null}
-                  </div>
-
-                  <div className="mt-2 d-grid">
-                  <Button color="primary" className="ms-1" onClick={() => { updatePass() }}>
-                   
-                   Change
-                   <Spinner style={{ display: updatePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
-                 </Button>
+                        <Input
+                          name="id"
+                          type="text"
+                          hidden
+                          maxLength={100}
+                          onChange={validation.handleChange}
+                          value={validation.values.id || ""}
+                          invalid={
+                            validation.touched.id && validation.errors.id ? true : false
+                          }
+                        />
+                        {validation.touched.id && validation.errors.id ? (
+                          <FormFeedback type="invalid">{validation.errors.id}</FormFeedback>
+                        ) : null}
                       </div>
 
-                 
+                      <div className="mb-3">
+
+                        <Input
+                          name="currentPassword"
+                          type="text"
+                          hidden
+                          maxLength={100}
+                          onChange={validation.handleChange}
+                          value={validation.values.currentPassword || ""}
+                          invalid={
+                            validation.touched.currentPassword && validation.errors.currentPassword ? true : false
+                          }
+                        />
+                        {validation.touched.currentPassword && validation.errors.currentPassword ? (
+                          <FormFeedback type="invalid">{validation.errors.currentPassword}</FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mb-3">
+
+                        <Input
+                          name="newPassword"
+                          type="password"
+                          placeholder="Enter New Password"
+                          maxLength={100}
+                          onChange={validation.handleChange}
+                          value={validation.values.newPassword || ""}
+                          invalid={
+                            validation.touched.newPassword && validation.errors.newPassword ? true : false
+                          }
+                        />
+                        {validation.touched.newPassword && validation.errors.newPassword ? (
+                          <FormFeedback type="invalid">{validation.errors.newPassword}</FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mb-3">
+
+                        <Input
+                          name="Password"
+                          type="password"
+                          placeholder="Confirm New Password"
+                          maxLength={100}
+                          onChange={validation.handleChange}
+                          value={validation.values.Password || ""}
+                          invalid={
+                            validation.touched.Password && validation.errors.Password ? true : false
+                          }
+                        />
+                        {validation.touched.Password && validation.errors.Password ? (
+                          <FormFeedback type="invalid">{validation.errors.Password}</FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mt-2 d-grid">
+                        <Button color="primary" className="ms-1" onClick={() => { updatePass() }}>
+
+                          Change
+                          <Spinner style={{ display: updatePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+                        </Button>
+                      </div>
+
+
                     </Form>
                   </div>
                 </CardBody>
 
                 <div className="mt-3 text-center">
-                 
+
                   <p>
                     ©Korindo {new Date().getFullYear()}.
                   </p>

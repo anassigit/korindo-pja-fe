@@ -46,7 +46,7 @@ const ChangePassword = (props) => {
       Password1: '',
       Password2: '',
     },
-    
+
     validationSchema: Yup.object().shape({
       currentPassword: Yup.string().required("Please Enter Your Current Password"),
       Password1: Yup.string().required("Please Enter Your New Password"),
@@ -55,64 +55,53 @@ const ChangePassword = (props) => {
 
 
     onSubmit: (val) => {
-      debugger
-      if(val.Password1 !== val.Password2){
-        setChangePasswordMsg("Password not match.");
-      }else{
-      debugger
-     dispatch(updateUserPassword(val));
+      if (val.Password1 !== val.Password2) {
+        userProfilePasswordValidation.setFieldError('Password1', 'Passwords do not match');
+        userProfilePasswordValidation.setFieldError('Password2', 'Passwords do not match');
+      } else {
+        dispatch(updateUserPassword(val));
       }
-    
-  }
+
+    }
 
 
   });
 
   const updatePass = async () => {
     debugger
-    if(userProfilePasswordValidation.values.currentPassword !== "" || null){
-    try {
-      debugger
+    if (userProfilePasswordValidation.values.currentPassword !== "" || null) {
+      try {
+        debugger
 
         var map = {
-            "currentPassword":  userProfilePasswordValidation.values.currentPassword,
-            "newPassword": userProfilePasswordValidation.values.Password2
+          "currentPassword": userProfilePasswordValidation.values.currentPassword,
+          "newPassword": userProfilePasswordValidation.values.Password2
         };
-        // console.log('map : ', map)
-        // debugger
-        //setChangePasswordSpinner(true);
         await dispatch(updateUserPassword(map));
-        //history.push("/login");
-        //props.setUserProfilePassword(false);
-        //return "Please Re-Login."
-      
-    } catch (error) {
-        console.log(error)
-    }
-  }
-};
 
-useEffect(() => {
-  if (changePasswordMsg.status == "1") {
-    //props.setUserProfilePage(true);
-    props.setUserProfilePassword(true);
-  }
-  setChangePasswordMsg(changePasswordMsg)
-  setChangePasswordSpinner(false);
-}, [changePasswordMsg])
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (changePasswordMsg.status == "1") {
+      //props.setUserProfilePage(true);
+      props.setUserProfilePassword(true);
+    }
+    setChangePasswordMsg(changePasswordMsg)
+    setChangePasswordSpinner(false);
+  }, [changePasswordMsg])
 
   return (
-    <RootPageCustom
-     
-    componentJsx={
-     <>
-          {changePasswordMsg !== "" ? <UncontrolledAlert toggle={appChangePassCloseAllert} color={changePasswordMsg.status == "1" ? "success" : "danger"}>
-          {typeof changePasswordMsg == 'string' ? null : changePasswordMsg}</UncontrolledAlert> : null}
-   
-    <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid={true} >
+    <>
+      {changePasswordMsg !== "" ? <UncontrolledAlert toggle={appChangePassCloseAllert} color={changePasswordMsg.status == "1" ? "success" : "danger"}>
+        {typeof changePasswordMsg == 'string' ? null : changePasswordMsg}</UncontrolledAlert> : null}
 
-      <Row>
-        <Col lg={12}>
+      <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid={true} >
+
+        <Row>
           <Card>
             <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Change Password</CardHeader>
             <CardBody>
@@ -143,7 +132,7 @@ useEffect(() => {
                   </div>
 
                   <div className="mb-3 col-sm-3">
-                    
+
                     <Input
                       name="Password1"
                       type="password"
@@ -155,12 +144,12 @@ useEffect(() => {
                         userProfilePasswordValidation.touched.Password1 && userProfilePasswordValidation.errors.Password1 ? true : false
                       }
                     />
-                    {userProfilePasswordValidation.touched.Password1 && userProfilePasswordValidation.errors.Password1 ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.Password1}</FormFeedback>
+                    {userProfilePasswordValidation.touched.Password2 && userProfilePasswordValidation.errors.Password2 ? (
+                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.Password2}</FormFeedback>
                     ) : null}
                   </div>
                   <div className="mb-3 col-sm-3">
-                    
+
                     <Input
                       name="Password2"
                       type="password"
@@ -178,8 +167,8 @@ useEffect(() => {
                   </div>
 
                   <Button type="submit" color="primary" className="ms-1">
-                   
-                    Simpan
+
+                    Save
                     <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                   </Button>&nbsp;
 
@@ -194,8 +183,8 @@ useEffect(() => {
                     className="btn btn-danger "
                     onClick={() => { props.setUserProfilePage(true); props.setUserProfilePassword(false); props.setAppUserProfileMsg("") }}
                   >
-                   
-                    Kembali
+
+                    Back
                   </Button>
                 </FormGroup>
 
@@ -203,15 +192,10 @@ useEffect(() => {
 
             </CardBody>
           </Card>
-        </Col>
-      </Row>
-    </Container>
 
-               </>
-                }
-                       
-      />          
-
+        </Row>
+      </Container>
+    </>
   );
 };
 
