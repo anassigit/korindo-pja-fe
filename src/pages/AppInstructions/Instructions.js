@@ -349,9 +349,7 @@ const Instructions = () => {
                                         </div>
                                     </Col>
                                 </Row>
-
-                                <React.Fragment>
-                                    <Row>
+                                    <Row className="mb-5">
                                         <TableCustom
                                             keyField={"insId"}
                                             columns={appInstructionsp01Tabel}
@@ -365,7 +363,6 @@ const Instructions = () => {
                                         />
 
                                     </Row>
-                                </React.Fragment>
                             </Col>
                         </Row>
                     </Container>
