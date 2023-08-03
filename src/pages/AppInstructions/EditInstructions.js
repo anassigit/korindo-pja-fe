@@ -18,7 +18,7 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, getManager, getStatus, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
@@ -131,7 +131,6 @@ const EditInstructions = (props) => {
             setAppInstructionsData(parsedData);
         }
 
-        setOptionOwner0(null)
         let num = parsedData?.num.toString()
         dispatch(getDetailInstruction({
             search: {
@@ -153,6 +152,13 @@ const EditInstructions = (props) => {
             }
         }))
         dispatch(getManager({
+            search: {
+                "num": num,
+                "langType": "eng"
+            }
+
+        }))
+        dispatch(getOwner({
             search: {
                 "num": num,
                 "langType": "eng"
@@ -185,6 +191,7 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         /*** OWNER SELECT ***/
+        debugger
 
         let selectedOwner = null;
         selectedOwner = getDetailInstructionData?.data?.instruction.owner
@@ -211,7 +218,6 @@ const EditInstructions = (props) => {
 
 
         /*** MANAGER SELECT ***/
-        debugger
         setselectedMulti2(selectedManager?.data?.managerList.map((manager) => ({
             value: manager.id,
             label: manager.name,
@@ -250,7 +256,7 @@ const EditInstructions = (props) => {
         setStartDate(format(currentDate, 'yyyy-MM-dd'))
 
 
-    }, [getDetailInstructionData, selectedManager, getManagerList]);
+    }, [getDetailInstructionData, selectedManager, getManagerList, getOwnerList]);
 
     // useEffect(() => {
     //     if (Files2 != null && Files2 != undefined) {
