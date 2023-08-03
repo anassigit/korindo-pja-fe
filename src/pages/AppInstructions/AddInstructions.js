@@ -638,7 +638,6 @@ const AddInstructions = (props) => {
                                         className="btn btn-danger "
                                         onClick={() => {
                                             props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("")
-                                            window.location.reload();
                                         }}
                                     >
                                         <i className="bx bx-arrow-back align-middle me-2"></i>

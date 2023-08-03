@@ -24,10 +24,14 @@ import { updateGeneralSetting } from "helpers/backend_helper";
 import MsgModal from "components/Common/MsgModal";
 import AddMember from "./AddMember";
 import { ReactSession } from 'react-client-session';
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 
 const Setting = () => {
 
+    const history = useHistory()
+    debugger
+    console.log(history.location.state?.appInstructionsData)
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
     let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
 

@@ -260,6 +260,8 @@ const Instructions = () => {
     }
 
     const appInstructionsPreEdit = (appInstructionsData) => {
+        localStorage.setItem('appInstructionsData', JSON.stringify(appInstructionsData));
+        history.push('/AppEditInstruction');
         setAppInstructionsMsg("")
         setInstructionsData(appInstructionsData)
         setAppInstructionsPage(false)
@@ -372,14 +374,6 @@ const Instructions = () => {
                         setAppAddInstructions={setAppAddInstructions}
                         setAppInstructionsMsg={setAppInstructionsMsg}
                         setAppInstructionsPage={setAppInstructionsPage}
-                        appInstructionsTabelSearch={appInstructionsTabelSearch} />
-
-                    <EditInstructions
-                        appEditInstructions={appEditInstructions}
-                        setEditInstructions={setEditInstructions}
-                        setAppInstructionsMsg={setAppInstructionsMsg}
-                        setAppInstructionsPage={setAppInstructionsPage}
-                        instructionsData={instructionsData}
                         appInstructionsTabelSearch={appInstructionsTabelSearch} />
 
                 </>
