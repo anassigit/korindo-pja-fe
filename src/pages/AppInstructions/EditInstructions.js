@@ -1349,7 +1349,7 @@ const EditInstructions = (props) => {
                                             <Button
                                                 type="button"
                                                 className="btn btn-danger "
-                                                onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                             >
                                                 <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                                 Back
