@@ -35,7 +35,7 @@ const UserProfile = () => {
   const [userProfilePassword, setUserProfilePassword] = useState(false)
   const [userProfilePageData, setUserProfilePageData] = useState()
 
-
+  const [changePasswordMsg, setChangePasswordMsg] = useState("")
 
   useEffect(() => {
     dispatch(resetMessage());
@@ -47,6 +47,10 @@ const UserProfile = () => {
 
   const appUserProfileCloseAllert = () => {
     setAppUserProfileMsg("")
+  }
+
+  const appChangePassCloseAllert = () => {
+    setChangePasswordMsg("")
   }
 
   const [appUserProfileSpinner, setAppUserProfileSpinner] = useState(false);
@@ -101,7 +105,7 @@ const UserProfile = () => {
         "hp": appUserProfilepValidInput.values.hp
       };
       await dispatch(editUserProfile(map));
-
+      setAppUserProfileMsg("")
     } catch (message) {
       console.log(message)
     }
@@ -118,7 +122,14 @@ const UserProfile = () => {
     }
     setAppUserProfileMsg(respMsg)
     setAppUserProfileSpinner(false);
+    setAppUserProfileMsg
   }, [respMsg])
+
+  useEffect(() => {
+    if (appUserProfileMsg == "1") {
+      console.log(appUserProfileMsg)
+    }
+  }, [appUserProfileMsg])
 
   const ChangePassPage = () => {
     setAppUserProfileMsg("")
@@ -127,6 +138,14 @@ const UserProfile = () => {
     setUserProfilePassword(true)
   }
 
+  const handleKeyPress = (event) => {
+    const keyCode = event.which || event.keyCode;
+
+    if (keyCode < 48 || keyCode > 57) {
+      event.preventDefault();
+    }
+  }
+  
   return (
     <RootPageCustom
       componentJsx={
@@ -210,9 +229,10 @@ const UserProfile = () => {
                               <Label>HP<span style={{ color: "red" }}>* </span></Label>
                               <Input
                                 name="hp"
-                                type="number"
+                                type="text"
                                 maxLength={12}
                                 onChange={appUserProfilepValidInput.handleChange}
+                                onKeyPress={handleKeyPress}
                                 value={appUserProfilepValidInput.values.hp || ""}
                                 invalid={
                                   appUserProfilepValidInput.touched.hp && appUserProfilepValidInput.errors.hp ? true : false

@@ -29,6 +29,11 @@ const ChangePassword = (props) => {
 
   const dispatch = useDispatch();
   const [changePasswordSpinner, setChangePasswordSpinner] = useState(false);
+
+  const changePasswordMessage = useSelector(state => {
+    return state.userProfileReducer.msgUpdatePassword;
+  });
+
   const [changePasswordMsg, setChangePasswordMsg] = useState("")
   const history = useHistory();
 
@@ -44,38 +49,33 @@ const ChangePassword = (props) => {
     initialValues: {
       currentPassword: '',
       Password1: '',
-      Password2: '',
+      newPassword: '',
     },
 
     validationSchema: Yup.object().shape({
       currentPassword: Yup.string().required("Please Enter Your Current Password"),
       Password1: Yup.string().required("Please Enter Your New Password"),
-      Password2: Yup.string().required("Please Re-Enter Your New Password"),
+      newPassword: Yup.string().required("Please Re-Enter Your New Password"),
     }),
 
 
     onSubmit: (val) => {
-      if (val.Password1 !== val.Password2) {
+      if (val.Password1 !== val.newPassword) {
         userProfilePasswordValidation.setFieldError('Password1', 'Passwords do not match');
-        userProfilePasswordValidation.setFieldError('Password2', 'Passwords do not match');
+        userProfilePasswordValidation.setFieldError('newPassword', 'Passwords do not match');
       } else {
         dispatch(updateUserPassword(val));
       }
 
     }
-
-
   });
 
   const updatePass = async () => {
-    debugger
     if (userProfilePasswordValidation.values.currentPassword !== "" || null) {
       try {
-        debugger
-
         var map = {
           "currentPassword": userProfilePasswordValidation.values.currentPassword,
-          "newPassword": userProfilePasswordValidation.values.Password2
+          "newPassword": userProfilePasswordValidation.values.newPassword
         };
         await dispatch(updateUserPassword(map));
 
@@ -86,18 +86,36 @@ const ChangePassword = (props) => {
   };
 
   useEffect(() => {
-    if (changePasswordMsg.status == "1") {
-      //props.setUserProfilePage(true);
-      props.setUserProfilePassword(true);
+    debugger
+    if (changePasswordMessage.status == "1") {
+      setChangePasswordMsg("")
+      props.setUserProfilePage(true);
+      props.setAppUserProfileMsg(changePasswordMessage);
+      props.setUserProfilePassword(false);
     }
-    setChangePasswordMsg(changePasswordMsg)
+
+    if (changePasswordMessage.message != undefined && changePasswordMessage?.status === "0") {
+      setChangePasswordMsg(changePasswordMessage.message)
+    }
+
     setChangePasswordSpinner(false);
-  }, [changePasswordMsg])
+  }, [changePasswordMessage])
 
   return (
-    <>
-      {changePasswordMsg !== "" ? <UncontrolledAlert toggle={appChangePassCloseAllert} color={changePasswordMsg.status == "1" ? "success" : "danger"}>
-        {typeof changePasswordMsg == 'string' ? null : changePasswordMsg}</UncontrolledAlert> : null}
+
+    <React.Fragment>
+
+      {changePasswordMsg !== "" && (
+        <UncontrolledAlert
+          toggle={appChangePassCloseAllert}
+          color={changePasswordMessage?.status === "1" ? "success" : "danger"}
+        >
+          {typeof changePasswordMsg === 'string'
+            ? changePasswordMsg
+            : changePasswordMsg?.message?.map((msg, key) => <p key={key}>{"* " + msg}</p>)}
+        </UncontrolledAlert>
+      )}
+
 
       <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid={true} >
 
@@ -144,25 +162,25 @@ const ChangePassword = (props) => {
                         userProfilePasswordValidation.touched.Password1 && userProfilePasswordValidation.errors.Password1 ? true : false
                       }
                     />
-                    {userProfilePasswordValidation.touched.Password2 && userProfilePasswordValidation.errors.Password2 ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.Password2}</FormFeedback>
+                    {userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? (
+                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.newPassword}</FormFeedback>
                     ) : null}
                   </div>
                   <div className="mb-3 col-sm-3">
 
                     <Input
-                      name="Password2"
+                      name="newPassword"
                       type="password"
                       placeholder="Confirm New Password"
                       maxLength={50}
                       onChange={userProfilePasswordValidation.handleChange}
-                      value={userProfilePasswordValidation.values.Password2 || ""}
+                      value={userProfilePasswordValidation.values.newPassword || ""}
                       invalid={
-                        userProfilePasswordValidation.touched.Password2 && userProfilePasswordValidation.errors.Password2 ? true : false
+                        userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? true : false
                       }
                     />
-                    {userProfilePasswordValidation.touched.Password2 && userProfilePasswordValidation.errors.Password2 ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.Password2}</FormFeedback>
+                    {userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? (
+                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.newPassword}</FormFeedback>
                     ) : null}
                   </div>
 
@@ -195,7 +213,8 @@ const ChangePassword = (props) => {
 
         </Row>
       </Container>
-    </>
+    </React.Fragment>
+
   );
 };
 
