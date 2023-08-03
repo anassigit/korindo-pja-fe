@@ -1,10 +1,62 @@
-import { call, put, takeEvery, all } from "redux-saga/effects"
+import { call, put, takeEvery, all } from "redux-saga/effects";
 
-import { GET_INSTRUCTIONS, GET_MANAGER, GET_OWNER, GET_SELECTED_MANAGER, GET_STATUS, GET_INSTRUCTIONS2, SAVE_INSTRUCTIONS, EDIT_INSTRUCTIONS, DELETE_INSTRUCTIONS, GET_DETAIL_INSTRUCTION, SAVE_DESCRIPTION, SAVE_REPLY, DOWNLOAD_FILES, DELETE_REPLY, GET_REPLY, GET_ATTACHMENT } from "./actionTypes"
+import {
+  GET_INSTRUCTIONS,
+  GET_MANAGER,
+  GET_OWNER,
+  GET_SELECTED_MANAGER,
+  GET_INSTRUCTIONS2,
+  SAVE_INSTRUCTIONS,
+  EDIT_INSTRUCTIONS,
+  DELETE_INSTRUCTIONS,
+  GET_DETAIL_INSTRUCTION,
+  SAVE_DESCRIPTION,
+  SAVE_REPLY,
+  DOWNLOAD_FILES,
+  DELETE_REPLY,
+  GET_REPLY,
+  GET_ATTACHMENT,
+  EDIT_REPLY,
+  GET_STATUS, // Added this import
+} from "./actionTypes";
 
-import { respGetInstructions, respGetManager, respGetOwner, respGetSelectedManager, respGetStatus, respGetInstructions2, msgAdd, msgEdit, msgDelete, respGetDetailInstruction, msgDownload, msgDeleteReply, msgAddReply, respGetReply, respGetAttachment } from "./actions"
+import {
+  respGetInstructions,
+  respGetManager,
+  respGetOwner,
+  respGetSelectedManager,
+  respGetInstructions2,
+  msgAdd,
+  msgEdit,
+  msgDelete,
+  respGetDetailInstruction,
+  msgDownload,
+  msgDeleteReply,
+  msgAddReply,
+  respGetReply,
+  respGetAttachment,
+  msgEditReply,
+} from "./actions";
 
-import { getInstructions, getManagerList, getOwnerList, getSelectedManager, getStatusList, getInstructions2, saveInstructions, editInstructions, deleteInstructions, getDetailInstruction, saveDescriptions, saveReply, downloadFiles, deleteReply, getReply, getAttachment } from "helpers/backend_helper"
+import {
+  getInstructions,
+  getManagerList,
+  getOwnerList,
+  getSelectedManager,
+  getInstructions2,
+  saveInstructions,
+  editInstructions,
+  deleteInstructions,
+  getDetailInstruction,
+  saveDescriptions,
+  saveReply,
+  downloadFiles,
+  deleteReply,
+  getReply,
+  getAttachment,
+  editReply,
+  getStatusList, // Added this import
+} from "helpers/backend_helper";
 
 function* fetchGetInstructions({ payload: req }) {
   try {
@@ -185,6 +237,16 @@ function* fetchSaveReply({ payload: req }) {
   }
 }
 
+function* fetchEditReply({ payload: req }) {
+  try {
+    const response = yield call(editReply, req)
+    yield put(msgEditReply(response))
+  } catch (error) {
+    console.log(error);
+    yield put(msgEditReply({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
 function* fetchDownloadfiles({ payload: req }) {
   try {
     yield call(downloadFiles, req)
@@ -236,6 +298,7 @@ function* instructionsSaga() {
   yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
   yield takeEvery(DELETE_REPLY, fetchDeleteReply)
   yield takeEvery(GET_ATTACHMENT, fetchGetAttachment)
+  yield takeEvery(EDIT_REPLY, fetchEditReply)
 
 }
 

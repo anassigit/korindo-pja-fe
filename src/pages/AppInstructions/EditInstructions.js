@@ -18,7 +18,7 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, getAttachmentData, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
@@ -221,6 +221,7 @@ const EditInstructions = (props) => {
             status: '',
             description: '',
 
+            reply_num: '',
             content: '',
 
         },
@@ -853,8 +854,24 @@ const EditInstructions = (props) => {
 
             // setEditInstructionsSpinner(true);
             // setEditInstructionMsg("")
+            let num = editInstructionsValidInput.values.no
+            num = num.toString()
+            await dispatch(deleteReply(map))
+            setTimeout(() => {
 
-            await dispatch(deleteReply(map));
+                dispatch(getReply({
+                    search: {
+                        "num": num,
+                        "langType": "eng"
+                    }
+                }))
+                dispatch(getAttachmentData({
+                    search: {
+                        "instruction_num": num,
+                    }
+                }))
+
+            }, 500)
 
         } catch (error) {
             console.log(error)
@@ -874,13 +891,12 @@ const EditInstructions = (props) => {
     /*********************************** SIGIT MADE FROM HERE ***********************************/
     /*********************************** SIGIT MADE FROM HERE ***********************************/
 
-    const [instructionAttachment, setInstructionAttachment] = useState([])
-    const [replyAttachment, setReplyAttachment] = useState([])
-
     const [isHiddenReply, setIsHiddenReply] = useState(true)
     const [isHiddenLogs, setIsHiddenLogs] = useState(true)
     const [isEditableSelectedReply, setIsEditableSelectedReply] = useState(false)
+
     const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
+    const [editedContent, setEditedContent] = useState('');
 
 
     const handleSaveDesc = async (val) => {
@@ -897,37 +913,60 @@ const EditInstructions = (props) => {
         }
     }, [replyTabelListData])
 
-    const handleChangeReply = (e, rowIndex) => {
-
+    const updateReply = async (values) => {
+        await dispatch(editReply(values));
         debugger
 
-        const { name, value } = e.target;
+        let num = editInstructionsValidInput.values.no
+        num = num.toString()
 
-        const updatedReplyData = [...replyTabelListData];
-        updatedReplyData[rowIndex] = { ...updatedReplyData[rowIndex], [name]: value };
+        setTimeout(() => {
 
-        console.log("updatedReplyData : ", updatedReplyData)
-        setReplyTabelListData(updatedReplyData);
+            dispatch(getReply({
+                search: {
+                    "num": num,
+                    "langType": "eng"
+                }
+            }))
+            dispatch(getAttachmentData({
+                search: {
+                    "instruction_num": num,
+                }
+            }))
+
+            setReplyClicked(false)
+            editInstructionsValidInput.setFieldValue("content", '')
+        }, 500)
     };
 
-    useEffect(() => {
-        
-        if (replyData?.data?.replyList?.length > 0) {
-            
-            replyData?.data?.replyList.map((value) => {
-                debugger
-                console.log(value)
-                // setReplyAttachment(
-                //     dispatch(getAttachmentData({
-                //         search: {
-                //             "instruction_num": num,
-                //         }
-                //     }))
-                // )
-            })
+    const handleEditReply = (reply_num, editedContent) => {
+        debugger
+        var bodyForm = new FormData();
+        let selectedNum = null
 
+        replyData?.data?.replyList.map((row, index) => {
+            if (index == reply_num) {
+                selectedNum = row.no
+            }
+        })
+
+        bodyForm.append('reply_num', selectedNum);
+        bodyForm.append('content', editedContent);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
         }
-    }, [replyData])
+
+
+        // setEditInstructionsSpinner(true);
+        alert('Add reply success.')
+        updateReply(bodyForm, config)
+        setReplyClicked(!replyClicked)
+
+    }
+
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1541,43 +1580,53 @@ const EditInstructions = (props) => {
                                                                     <>
                                                                         <tr style={{ height: "25px" }}></tr>
                                                                         <tr key={row.no} style={{ verticalAlign: "text-top" }}>
-                                                                            <td className="tg-0lax">{row.name}</td>
-                                                                            <td className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
+                                                                            <td style={{width: "10%"}} className="tg-0lax">{row.name}</td>
+                                                                            <td  className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
                                                                                 {selectedRowIndex === reply_num ? (
                                                                                     <Input
                                                                                         maxLength={100}
-                                                                                        style={{ width: "75%" }}
+                                                                                        style={{ maxWidth: "75%" }}
                                                                                         name="content"
                                                                                         type="textarea"
-                                                                                        value={row.content}
-                                                                                        onChange={(e) => handleChangeReply(e, reply_num)}
+                                                                                        value={editedContent}
+                                                                                        onChange={(e) => setEditedContent(e.target.value)}
                                                                                     />
                                                                                 ) : (
-                                                                                    row.content
+                                                                                    <span
+                                                                                        style={{ maxWidth: "75%" }}
+                                                                                    >
+                                                                                        {row.content}
+                                                                                    </span>
                                                                                 )}
                                                                                 <p />
                                                                                 {row.edit ? (
-                                                                                    <a onClick={() => setSelectedRowIndex(reply_num)}>
+                                                                                    <a className="text-primary" onClick={() => {
+                                                                                        if (selectedRowIndex === reply_num) {
+                                                                                            handleEditReply(reply_num, editedContent);
+                                                                                            setSelectedRowIndex(null);
+                                                                                        } else {
+                                                                                            setSelectedRowIndex(reply_num);
+                                                                                            setEditedContent(row.content);
+                                                                                        }
+                                                                                    }}>
                                                                                         {selectedRowIndex === reply_num ? "Save" : "Edit"}
                                                                                     </a>
-                                                                                ) : (
-                                                                                    ""
-                                                                                )}
+                                                                                ) : ('')}
+
                                                                                 &nbsp;&nbsp;&nbsp;
                                                                                 {row.delete ? (
-                                                                                    <a href="/" onClick={() => replyDelete(row)}>
+                                                                                    <a className="text-primary" onClick={() => replyDelete(row)}>
                                                                                         Delete
                                                                                     </a>
                                                                                 ) : (
                                                                                     ""
                                                                                 )}
                                                                             </td>
-                                                                            <td className="tg-0lax">
+                                                                            <td style={{width: "10%"}} className="tg-0lax">
                                                                                 {row.write_time === " " || row.write_time === ""
                                                                                     ? ""
                                                                                     : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
                                                                             </td>
-                                                                            {console.log("replyAttachment : ", replyAttachment)}
                                                                             {/*  <td
                                                                                         className="tg-0lax"
                                                                                         style={{

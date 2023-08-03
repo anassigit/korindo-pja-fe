@@ -38,7 +38,9 @@ import {
   GET_REPLY,
   RESP_GET_REPLY,
   GET_ATTACHMENT,
-  RESP_GET_ATTACHMENT
+  RESP_GET_ATTACHMENT,
+  MSGEDITREPLY,
+  EDIT_REPLY
 
 } from "./actionTypes"
 
@@ -50,6 +52,9 @@ const INIT_STATE = {
   respGetSelectedManager: {},
   respGetInstructions2: {},
   respGetReply: {},
+  msgEditReply: "",
+  msgDeleteReply: "",
+  msgAddReply: "",
   respGetAttachment: {},
   msgAdd: "",
   msgEdit: "",
@@ -57,8 +62,6 @@ const INIT_STATE = {
   // respGetUserList: {},
   respGetDetailInstruction: {},
   msgDownload: "",
-  msgDeleteReply: "",
-  msgAddReply: "",
 }
 
 const instructionsReducer = (state = INIT_STATE, action) => {
@@ -197,6 +200,15 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         ...state,
         msgAddReply: action.payload,
       }
+    case EDIT_REPLY:
+      return {
+        ...state,
+      }
+    case MSGEDITREPLY:
+      return {
+        ...state,
+        msgEditReply: action.payload,
+      }
     case MSGDOWNLOAD:
       return {
         ...state,
@@ -217,7 +229,7 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         msgDeleteReply: action.payload,
       }
 
-    /**** REPLIES ****/
+    /**** ENDS HERE ****/
 
     case GET_ATTACHMENT:
       return {

@@ -69,6 +69,7 @@ const Instructions = () => {
             classes: "custom-num-column",
             events: {
                 onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
+                    debugger
                     appInstructionsPreEdit(appInstructionsData);
                 },
             },

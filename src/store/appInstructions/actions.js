@@ -33,7 +33,9 @@ import {
     GET_REPLY,
     RESP_GET_REPLY,
     GET_ATTACHMENT,
-    RESP_GET_ATTACHMENT
+    RESP_GET_ATTACHMENT,
+    EDIT_REPLY,
+    MSGEDITREPLY
 
 } from "./actionTypes"
 
@@ -187,6 +189,16 @@ export const getInstructionsData = (req) => ({
   export const msgAddReply = resp => ({
     type: MSGADDREPLY,
     payload: resp,
+  })  
+
+  export const editReply = (req) => ({
+    type: EDIT_REPLY,
+    payload: req,
+  })
+
+  export const msgEditReply = resp => ({
+    type: MSGEDITREPLY,
+    payload: resp,
   })
 
   export const deleteReply = (req) => ({
@@ -199,7 +211,7 @@ export const getInstructionsData = (req) => ({
     payload: req,
   })
 
-  /*** REPLIES HERE ***/
+  /*** ENDS HERE ***/
 
   
   export const getAttachmentData = (req) => ({
