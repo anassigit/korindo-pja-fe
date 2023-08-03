@@ -38,6 +38,7 @@ import {
   respGetAttachment,
   msgEditReply,
   respGetLogs,
+  respGetStatus,
 } from "./actions";
 
 import {
@@ -202,7 +203,7 @@ function* fetchSaveDescriptions({ payload: req }) {
 
 function* fetchGetStatus({ payload: req }) {
   try {
-    const response = yield call(getStatus, req)
+    const response = yield call(getStatusList, req)
     if (response.status == 1) {
       yield put(respGetStatus(response))
     } else {

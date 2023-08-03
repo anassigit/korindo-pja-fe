@@ -18,7 +18,7 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, getStatus, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
@@ -74,10 +74,26 @@ const EditInstructions = (props) => {
         dispatch(resetMessage());
     }, [])
 
+    /* MULTI SELECT OPTIONS */
+    
+    const getOwnerList = useSelector(state => {
+        return state.instructionsReducer.respGetOwner;
+    });
+    
+    const getManagerList = useSelector(state => {
+        return state.instructionsReducer.respGetManager;
+    });
+    
     const selectedManager = useSelector(state => {
         return state.instructionsReducer.respGetSelectedManager;
     })
-
+    
+    /* ENDS HERE */
+    
+    const statusData = useSelector(state => {
+        return state.instructionsReducer.respGetStatus;
+    })
+    
     const msgSaveReply = useSelector(state => {
         return state.instructionsReducer.msgAddReply;
     });
@@ -100,46 +116,46 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
-        let ownerObj1 = []
-        let ownerObj2 = []
-        ownerObj1.push(getDetailInstructionData?.data?.instruction?.owner)
-        //console.log("objek1", getDetailInstructionData.data.instruction.owner)
-        ownerObj2.push({
-            "id": ownerObj1.id,
-            "name": ownerObj1.name,
-            "bgColor": ownerObj1.bgColor
-        })
-        //console.log("objek2",ownerObj2 )
-        //debugger
-        setOptionOwner0({
-            "id": ownerObj2[0].id,
-            "name": ownerObj2[0].name,
-            "bgColor": ownerObj2[0].bgColor
-        });
+        /*** OWNER SELECT ***/
 
-        console.log(getDetailInstructionData)
+        let selectedOwner = null;
+        selectedOwner = getDetailInstructionData?.data?.instruction.owner
 
-        // get response label (yang sudah dipilih sebelumnya) -- Manager -- //
-        if (selectedManager?.data !== undefined || selectedManager?.data !== null) {
-            selectedManager?.data?.managerList.map((data) => {
-                const newManagerEdit = {
-                    value: data.id,
-                    label: data.name,
-
-                };
-                setOptionManager0((option) => [...option, newManagerEdit]);
-            });
+        if (selectedOwner) {
+            selectedOwner = [{
+                label: selectedOwner.name,
+                value: selectedOwner.id,
+                bgColor: selectedOwner.bgColor
+            }]
         }
 
-        // get dropdown list data -- Manager -- //
-        selectedManager?.data?.managerList.map((data) => {
-            const newManagerSet = {
-                value: data.id,
-                label: data.name,
+        setselectedMulti(selectedOwner)
 
-            };
-            setOptionManager((option) => [...option, newManagerSet]);
-        })
+        if (selectedOwner === null) {
+            setOptionOwner0(getOwnerList?.data?.ownerList.map((owner) => ({
+                value: owner.id,
+                label: owner.name,
+                bgColor: owner.bgColor,
+            })));
+        } else {
+            setOptionOwner0([]);
+        }
+
+
+        /*** MANAGER SELECT ***/
+
+        setselectedMulti2(selectedManager?.data?.managerList.map((manager) => ({
+            value: manager.id,
+            label: manager.name,
+            gname: manager.gname,
+        })))
+
+        setOptionManager0(getManagerList?.data?.managerList.map((manager) => ({
+            value: manager.id,
+            label: manager.name,
+            gname: manager.gname,
+        })))
+
 
         /* useEffect field here */
 
@@ -153,14 +169,8 @@ const EditInstructions = (props) => {
 
 
     }, [getDetailInstructionData]);
-    useEffect(() => {
-        if (optionOwner0 != null && optionManager0 != null) {
-            setselectedMulti(optionOwner0)
-            setselectedMulti2(optionManager0)
-            return;
-        }
 
-    }, [optionOwner0, optionManager0])
+    console.log("optionOwner0 : ", optionOwner0)
 
     useEffect(() => {
         if (Files2 != null && Files2 != undefined) {
@@ -179,12 +189,20 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         if (props.appEditInstructions) {
+            setOptionOwner0(null)
             let num = props.instructionsData?.num.toString()
             dispatch(getDetailInstruction({
                 search: {
                     "num": num,
                     "langType": "eng"
                 }
+            }))
+            dispatch(getStatus({
+                search: {
+                    "num": num,
+                    "langType": "eng"
+                }
+
             }))
             dispatch(getReply({
                 search: {
@@ -196,6 +214,13 @@ const EditInstructions = (props) => {
 
                 search: {
                     "num": num,
+                    "langType": "eng"
+                }
+
+            }))
+            dispatch(getAttachmentData({
+                search: {
+                    "instruction_num": num,
                     "langType": "eng"
                 }
 
@@ -579,7 +604,7 @@ const EditInstructions = (props) => {
     };
 
     function handleMulti(s) {
-        const currentSelection = selectedMulti.map((item) => item.value);
+        const currentSelection = (selectedMulti || []).map((item) => item.value);
 
         const addedValues = s.filter((item) => !currentSelection.includes(item.value));
         const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
@@ -601,6 +626,15 @@ const EditInstructions = (props) => {
             },
         };
 
+        if (s && s.length === 0) {
+            setOptionOwner0(getOwnerList?.data?.ownerList.map((owner) => ({
+                value: owner.id,
+                label: owner.name,
+                bgColor: owner.bgColor,
+            })));
+        } else {
+            setOptionOwner0([]);
+        }
         insert(bodyForm, config)
         setselectedMulti(s);
     }
@@ -974,7 +1008,6 @@ const EditInstructions = (props) => {
         setReplyClicked(!replyClicked)
 
     }
-
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1063,20 +1096,18 @@ const EditInstructions = (props) => {
                                                         name="status"
                                                         type="select"
                                                         onChange={(e) => {
-                                                            editInstructionsValidInput.handleChange(e);
-                                                            handleAutoSaveStatus(e)
-                                                        }}
-                                                        onBlur={() => {
+                                                            editInstructionsValidInput.handleChange(e)
                                                         }}
                                                         value={editInstructionsValidInput.values.status}
-                                                        invalid={
-                                                            editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
-                                                        }
+                                                        invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
                                                     >
-                                                        {statusList.map((value, key) => (
-                                                            <option key={key} value={value.statusNm}>{value.statusNm}</option>
+                                                        {statusData?.data?.statusList.map((value, key) => (
+                                                            <option key={key} value={value.name}>
+                                                                {value.name}
+                                                            </option>
                                                         ))}
                                                     </Input>
+
                                                     {editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? (
                                                         <FormFeedback type="invalid">{editInstructionsValidInput.errors.status}</FormFeedback>
                                                     ) : null}
@@ -1109,13 +1140,12 @@ const EditInstructions = (props) => {
                                                 <div className="mb-3 col-sm-8">
                                                     <Label> Choose Owner </Label>
                                                     <Select
-                                                        isOptionDisabled={() => selectedMulti.length >= 1}
                                                         value={selectedMulti}
                                                         isMulti={true}
                                                         onChange={(e) => {
                                                             handleMulti(e);
                                                         }}
-                                                        options={optionOwner}
+                                                        options={optionOwner0}
                                                         className="select2-selection"
                                                         styles={colourStyles}
                                                         components={{ DropdownIndicator }}
@@ -1128,11 +1158,10 @@ const EditInstructions = (props) => {
                                                     <Select
                                                         value={selectedMulti2}
                                                         isMulti={true}
-                                                        //onBlur={handleAutoSaveUsers}
                                                         onChange={(e) => {
                                                             handleMulti2(e);
                                                         }}
-                                                        options={optionManager}
+                                                        options={optionManager0}
 
                                                         className="select2-selection"
                                                         styles={colourStyles2}
@@ -1185,7 +1214,7 @@ const EditInstructions = (props) => {
                                                             <hr />
                                                             <h6>Recent files uploaded</h6>
                                                             {
-                                                                Files.map((data, index) => {
+                                                                attachmentReplyData.map((data, index) => {
                                                                     const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
                                                                     return (
                                                                         <div className="file-atc-box" key={index}>
@@ -1230,16 +1259,14 @@ const EditInstructions = (props) => {
                                     }}>
                                         Delete
                                     </Button>&nbsp;
-                                    <a href="/AppInstructions">
-                                        <Button
-                                            type="button"
-                                            className="btn btn-danger "
-                                            onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
-                                        >
-                                            <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                            Back
-                                        </Button>
-                                    </a>
+                                    <Button
+                                        type="button"
+                                        className="btn btn-danger "
+                                        onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                    >
+                                        <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
+                                        Back
+                                    </Button>
                                 </div>
 
                             </CardBody>
@@ -1433,16 +1460,14 @@ const EditInstructions = (props) => {
 
                                 <div className="text-sm-end" >
 
-                                    <a href="/AppInstructions">
-                                        <Button
-                                            type="button"
-                                            className="btn btn-danger "
-                                            onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
-                                        >
-                                            <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                            Back
-                                        </Button>
-                                    </a>
+                                    <Button
+                                        type="button"
+                                        className="btn btn-danger "
+                                        onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                    >
+                                        <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
+                                        Back
+                                    </Button>
                                 </div>
 
                             </CardBody>
@@ -1587,8 +1612,8 @@ const EditInstructions = (props) => {
                                                                     <>
                                                                         <tr style={{ height: "25px" }}></tr>
                                                                         <tr key={row.no} style={{ verticalAlign: "text-top" }}>
-                                                                            <td style={{width: "10%"}} className="tg-0lax">{row.name}</td>
-                                                                            <td  className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
+                                                                            <td style={{ width: "10%" }} className="tg-0lax">{row.name}</td>
+                                                                            <td className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
                                                                                 {selectedRowIndex === reply_num ? (
                                                                                     <Input
                                                                                         maxLength={100}
@@ -1629,7 +1654,7 @@ const EditInstructions = (props) => {
                                                                                     ""
                                                                                 )}
                                                                             </td>
-                                                                            <td style={{width: "10%"}} className="tg-0lax">
+                                                                            <td style={{ width: "10%" }} className="tg-0lax">
                                                                                 {row.write_time === " " || row.write_time === ""
                                                                                     ? ""
                                                                                     : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
