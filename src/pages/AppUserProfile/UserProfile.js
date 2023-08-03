@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react"
-import MetaTags from 'react-meta-tags';
-import Breadcrumbs from "../../components/Common/Breadcrumb";
 import RootPageCustom from '../../common/RootPageCustom';
 import { useFormik, } from "formik";
 import * as Yup from "yup";
@@ -25,8 +23,7 @@ import {
 import { editUserProfile, resetMessage, msgEdit, getProfile } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
-import ChangePassword from "pages/AppUserProfile/ChangePassword";
-import MsgModal from "components/Common/MsgModal";
+import ChangePassword from "./ChangePassword";
 
 
 const UserProfile = () => {
@@ -124,12 +121,10 @@ const respMsg = useSelector(state => {
   }, [respMsg])
 
   const ChangePassPage = () => {
-    setUserProfilePage(false)
-    setUserProfilePageData(userProfilePageData)
-    setUserProfilePassword(true)
     setAppUserProfileMsg("")
-    // setId(userProfilePageData.id)
-    // console.log("wow",userProfilePageData )
+    setUserProfilePageData(userProfilePageData)
+    setUserProfilePage(false)
+    setUserProfilePassword(true)  
   }
 
   return (
