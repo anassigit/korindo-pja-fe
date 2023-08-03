@@ -50,3 +50,8 @@ export const MSGDELETEREPLY = "MSGDELETEREPLY"
 
 export const GET_ATTACHMENT = "GET_ATTACHMENT"
 export const RESP_GET_ATTACHMENT = "RESP_GET_ATTACHMENT"
+
+/* Logs Instructions */
+
+export const GET_LOGS = "GET_LOGS"
+export const RESP_GET_LOGS = "RESP_GET_LOGS"

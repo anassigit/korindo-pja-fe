@@ -154,6 +154,10 @@ export const deleteMembers = req => postWithParam("/rest/SettingRest/DeleteMembe
 
 export const getAttachment = req => post("rest/InstructionRest/SelectAttachFileList", req)
 
+/* LOGS */
+
+export const getLogsList = req => post("rest/InstructionRest/SelectLogList", req)
+
 /* GENERAL SETTING */
 
 export const updateGeneralSetting = req => postWithParam("/rest/SettingRest/UpdateSetting", req)

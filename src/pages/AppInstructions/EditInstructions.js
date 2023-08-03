@@ -18,7 +18,7 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, resetMessage, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
@@ -92,6 +92,10 @@ const EditInstructions = (props) => {
 
     const attachmentReplyData = useSelector(state => {
         return state.instructionsReducer.respGetAttachment;
+    })
+
+    const logsData = useSelector(state => {
+        return state.instructionsReducer.respGetLogs;
     })
 
     useEffect(() => {
@@ -193,6 +197,12 @@ const EditInstructions = (props) => {
                 search: {
                     "num": num,
                     "langType": "eng"
+                }
+
+            }))
+            dispatch(getLogs({
+                search: {
+                    "num": num,
                 }
 
             }))
@@ -837,7 +847,6 @@ const EditInstructions = (props) => {
 
 
         // setEditInstructionsSpinner(true);
-        alert('Add reply success.')
         insert3(bodyForm, config)
         setReplyClicked(!replyClicked)
 
@@ -961,12 +970,10 @@ const EditInstructions = (props) => {
 
 
         // setEditInstructionsSpinner(true);
-        alert('Add reply success.')
         updateReply(bodyForm, config)
         setReplyClicked(!replyClicked)
 
     }
-
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1667,7 +1674,7 @@ const EditInstructions = (props) => {
                     </Col>
                 </Row>
 
-                <Row>
+                <Row style={{ display: getDetailInstructionData?.data?.instruction?.log ? 'flex' : 'none' }}>
 
                     <Col lg={12}>
                         <Card>
@@ -1703,9 +1710,8 @@ const EditInstructions = (props) => {
                                                             </tr>
                                                         </thead>
                                                         <tbody id="logTabelList">
-
                                                             {
-                                                                logTable != null && logTable.length > 0 && logTable.map((row, logs) =>
+                                                                logsData?.data?.logList != null && logsData?.data?.logList.length > 0 && logsData?.data?.logList.map((row, logs) =>
                                                                     <>
                                                                         <tr key={logs}>
                                                                             <td className="tg-0lax" >{row.content}</td>

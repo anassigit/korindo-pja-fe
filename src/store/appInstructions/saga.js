@@ -17,7 +17,8 @@ import {
   GET_REPLY,
   GET_ATTACHMENT,
   EDIT_REPLY,
-  GET_STATUS, // Added this import
+  GET_STATUS,
+  GET_LOGS, // Added this import
 } from "./actionTypes";
 
 import {
@@ -36,6 +37,7 @@ import {
   respGetReply,
   respGetAttachment,
   msgEditReply,
+  respGetLogs,
 } from "./actions";
 
 import {
@@ -55,7 +57,8 @@ import {
   getReply,
   getAttachment,
   editReply,
-  getStatusList, // Added this import
+  getStatusList,
+  getLogsList, // Added this import
 } from "helpers/backend_helper";
 
 function* fetchGetInstructions({ payload: req }) {
@@ -279,6 +282,22 @@ function* fetchGetAttachment({ payload: req }) {
   }
 }
 
+
+function* fetchGetLogs({ payload: req }) {
+  try {
+    const response = yield call(getLogsList, req)
+    if (response.status == 1) {
+      yield put(respGetLogs(response))
+    } else {
+      yield put(respGetLogs(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetLogs({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+
 function* instructionsSaga() {
 
   yield takeEvery(GET_INSTRUCTIONS, fetchGetInstructions)
@@ -299,6 +318,7 @@ function* instructionsSaga() {
   yield takeEvery(DELETE_REPLY, fetchDeleteReply)
   yield takeEvery(GET_ATTACHMENT, fetchGetAttachment)
   yield takeEvery(EDIT_REPLY, fetchEditReply)
+  yield takeEvery(GET_LOGS, fetchGetLogs)
 
 }
 

@@ -35,7 +35,9 @@ import {
     GET_ATTACHMENT,
     RESP_GET_ATTACHMENT,
     EDIT_REPLY,
-    MSGEDITREPLY
+    MSGEDITREPLY,
+    GET_LOGS,
+    RESP_GET_LOGS
 
 } from "./actionTypes"
 
@@ -224,3 +226,15 @@ export const getInstructionsData = (req) => ({
     payload: resp,
   })
   
+
+  /***** LOGS HERE *****/
+
+  export const getLogs = (req) => ({
+    type: GET_LOGS,
+    payload: req,
+  })
+
+  export const respGetLogs = resp => ({
+    type: RESP_GET_LOGS,
+    payload: resp,
+  })
