@@ -8,15 +8,16 @@ import { ReactSession } from 'react-client-session';
 import { login, getMenu } from "helpers/backend_helper"
 import { useEffect } from "react";
 
-window.addEventListener('DOMContentLoaded', function () {
-  window.onpopstate = function (event) {
-    debugger
-    if (location.pathname == '/login') {
-      history.pushState(null, null, location.href)
-    }
-  };
-});
 
+history.pushState(null, null, location.href);
+window.onpopstate = function (event) {
+  
+  debugger
+  if(event){
+
+  }
+  history.go(1);
+};
 
 function* loginUser({ payload: { user, history } }) {
   try {
@@ -33,7 +34,7 @@ function* loginUser({ payload: { user, history } }) {
       //   pathname: router.getCurrentLocation().pathname,
       //   state: {overlay: true}
       // })
-      history.push("/");
+      history.push({ pathname: '/', state: { firstLogin: true } });
       yield put(loginSuccess(response));
     } else {
       yield put(apiError(response.message))

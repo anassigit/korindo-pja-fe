@@ -280,7 +280,7 @@ const EditInstructions = (props) => {
 
     // const downloadFiles = async num => {
 
-    //     debugger
+    //     
     //     var ix = { num: num }
     //     await dispatch(downloadFile(ix))
     // }
@@ -293,6 +293,7 @@ const EditInstructions = (props) => {
             insDate: '',
             description: '',
             status: '',
+            content: '',
         },
 
         validationSchema: Yup.object().shape({
@@ -302,7 +303,7 @@ const EditInstructions = (props) => {
         onSubmit: (values) => {
 
 
-            debugger
+            
 
             var bodyForm = new FormData();
 
@@ -391,7 +392,7 @@ const EditInstructions = (props) => {
 
     const deleteInstruction = async () => {
         try {
-          debugger
+          
           var map = {
             "num": editInstructionsValidInput.values.no
           };
@@ -407,7 +408,7 @@ const EditInstructions = (props) => {
     });
 
     useEffect(()=> {
-        debugger
+        
         if (deleteInstructionsMessage.status == "1") {
             history.push({
                 pathname: '/AppInstructions',
@@ -419,7 +420,7 @@ const EditInstructions = (props) => {
 
     const downloadAttach = async (num, fileNm) => {
         try {
-            debugger
+            
             var indexed_array = {
                 "file_num": num,
                 "file_nm" : fileNm
@@ -962,14 +963,21 @@ const EditInstructions = (props) => {
 
     const replyDelete = async (row) => {
         try {
-
+            
             var map = {
-                "reply_num": row.no
+                "reply_num": row.num
             };
 
             // setEditInstructionsSpinner(true);
             // setEditInstructionMsg("")
-            let num = editInstructionsValidInput.values.no
+            debugger
+            const storedData = localStorage.getItem('appInstructionsData');
+            let parsedData = null
+            if (storedData) {
+                parsedData = JSON.parse(storedData);
+            }
+
+            let num = parsedData?.num
             num = num.toString()
             await dispatch(deleteReply(map))
             setTimeout(() => {
@@ -1040,10 +1048,16 @@ const EditInstructions = (props) => {
     }, [editInstructionsMessage])
 
     const updateReply = async (values) => {
+        
         await dispatch(editReply(values));
 
+        const storedData = localStorage.getItem('appInstructionsData');
+        let parsedData = null
+        if (storedData) {
+            parsedData = JSON.parse(storedData);
+        }
 
-        let num = editInstructionsValidInput.values.no
+        let num = parsedData?.num
         num = num.toString()
 
         setTimeout(() => {
@@ -1054,11 +1068,11 @@ const EditInstructions = (props) => {
                     "langType": "eng"
                 }
             }))
-            dispatch(getAttachmentData({
-                search: {
-                    "instruction_num": num,
-                }
-            }))
+            // dispatch(getAttachmentData({
+            //     search: {
+            //         "instruction_num": num,
+            //     }
+            // }))
 
             setReplyClicked(false)
             editInstructionsValidInput.setFieldValue("content", '')
@@ -1066,13 +1080,13 @@ const EditInstructions = (props) => {
     };
 
     const handleEditReply = (reply_num, editedContent) => {
-
         var bodyForm = new FormData();
         let selectedNum = null
-
+        
         replyData?.data?.replyList.map((row, index) => {
+            debugger
             if (index == reply_num) {
-                selectedNum = row.no
+                selectedNum = row.num
             }
         })
 
