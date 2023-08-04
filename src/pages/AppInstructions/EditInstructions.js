@@ -938,7 +938,7 @@ const EditInstructions = (props) => {
                 let a = selectedfileR[index];
 
                 bodyForm.append('file' + index, selectedfileR[index].fileori);
-                break;
+                SetSelectedFileR([])
             }
 
         }
@@ -1728,7 +1728,7 @@ const EditInstructions = (props) => {
                                                                                             ? ""
                                                                                             : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
                                                                                     </td>
-                                                                                    {/*  <td
+                                                                                     <td
                                                                                         className="tg-0lax"
                                                                                         style={{
                                                                                             maxWidth: "50px",
@@ -1739,7 +1739,7 @@ const EditInstructions = (props) => {
                                                                                     >
                                                                                         {row.attachFileList.length > 0 ? row.attachFileList[0].name : ""}
                                                                                     </td>
-                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}>
+                                                                                    {/* <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}>
                                                                                         {row.attachFileList.length > 0 || row.attachFileList !== null ? (
                                                                                             <i className="mdi mdi-download" onClick={() => xxx()} />
                                                                                         ) : (
