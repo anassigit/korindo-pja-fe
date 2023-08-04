@@ -467,6 +467,11 @@ const EditInstructions = (props) => {
             //images.push((e.target.files[i]));
             let reader = new FileReader();
             let file = e.target.files[i];
+
+            let fileNm = e.target.files[i].name;
+            fileNm = fileNm.substring(fileNm.lastIndexOf('.') + 1);
+
+            if (fileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
             reader.onloadend = () => {
                 SetSelectedFile((preValue) => {
                     return [
@@ -489,8 +494,11 @@ const EditInstructions = (props) => {
             if (e.target.files[i]) {
                 reader.readAsDataURL(file);
             }
+        } else {
+            alert("Files type are not allowed to upload or not supported.");
         }
     }
+}
 
     const DeleteSelectFile = (id) => {
         if (window.confirm("Are you sure you want to delete this file?")) {
@@ -504,7 +512,6 @@ const EditInstructions = (props) => {
 
     const FileUploadSubmit = async (e) => {
         e.preventDefault();
-
         e.target.reset();
         if (selectedfile.length > 0) {
             for (let index = 0; index < selectedfile.length; index++) {
