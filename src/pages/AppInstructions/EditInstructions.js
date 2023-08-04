@@ -473,6 +473,7 @@ const EditInstructions = (props) => {
     }
 
     function DeleteFileAttached(FileNo) {
+
     
         const bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.no);
@@ -482,12 +483,13 @@ const EditInstructions = (props) => {
             for (let index = 0; index < SetFiles.length; index++) {
 
                 let a = SetFiles[index];
-                //const result = SetFiles.filter((data) => data.no !== FileNo);
 
                 const result = (Object.values(Files).filter((data) => data.num !== FileNo));
 
-                bodyForm.append('removeFile', FileNo);
-                console.log(a);
+                result.forEach((deleteFile) => {
+                    setRemoveFile(current => [...current, deleteFile]);
+                })
+                console.log(removeFile);
                 SetFiles(result);
 
             }
@@ -500,9 +502,9 @@ const EditInstructions = (props) => {
             },
         };
 
-        insert(bodyForm, config);
+        //insert(bodyForm, config);
 
-        deleteFiles(bodyForm, config)
+        //deleteFiles(bodyForm, config)
         alert('Delete success.')
 
 
