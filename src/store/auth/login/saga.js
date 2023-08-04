@@ -9,16 +9,6 @@ import { login, getMenu } from "helpers/backend_helper"
 import { useEffect } from "react";
 
 
-history.pushState(null, null, location.href);
-window.onpopstate = function (event) {
-  
-  debugger
-  if(event){
-
-  }
-  history.go(1);
-};
-
 function* loginUser({ payload: { user, history } }) {
   try {
     const response = yield call(login, user);
