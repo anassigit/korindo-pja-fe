@@ -275,9 +275,10 @@ const EditInstructions = (props) => {
         await dispatch(editInstructions(values))
     };
 
-    const downloadFiles = async file_num => {
-        
-        var ix = { file_num: file_num }
+    const downloadFiles = async num => {
+
+        debugger
+        var ix = { num: num }
         await dispatch(downloadFile(ix))
     }
 
@@ -325,7 +326,7 @@ const EditInstructions = (props) => {
 
             //end status//
 
-            
+
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
@@ -693,7 +694,7 @@ const EditInstructions = (props) => {
         // const bodyForm = new FormData();
         // bodyForm.append('num', editInstructionsValidInput.values.no);
 
-        
+
         addedValues.forEach((addedItem) => {
             setAddUser(current => [...current, addedItem.value]);
         })
@@ -870,7 +871,7 @@ const EditInstructions = (props) => {
 
     const replyDelete = async (row) => {
         try {
-            
+
             var map = {
                 "reply_num": row.no
             };
@@ -939,14 +940,14 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         if (editInstructionsMessage.status == "1") {
-            history.push('/AppInstructions', {'setAppInstructionsMsg': editInstructionsMessage} )
+            history.push('/AppInstructions', { 'setAppInstructionsMsg': editInstructionsMessage })
         }
         setAppEditInstructionsMsg(editInstructionsMessage)
     }, [editInstructionsMessage])
 
     const updateReply = async (values) => {
         await dispatch(editReply(values));
-        
+
 
         let num = editInstructionsValidInput.values.no
         num = num.toString()
@@ -971,7 +972,7 @@ const EditInstructions = (props) => {
     };
 
     const handleEditReply = (reply_num, editedContent) => {
-        
+
         var bodyForm = new FormData();
         let selectedNum = null
 
@@ -1207,7 +1208,7 @@ const EditInstructions = (props) => {
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} />
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={data.name} onClick={() => downloadFiles(file_num)} />
+                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={data.name} onClick={() => downloadFiles(data.num)} />
 
                                                                                     </div>
                                                                                 </div>
@@ -1441,7 +1442,7 @@ const EditInstructions = (props) => {
                                             <Button
                                                 type="button"
                                                 className="btn btn-danger "
-                                                onClick={() => { props.setAppInstructionsPage(true); props.setEditInstructions(false); props.setAppInstructionsMsg(""); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                             >
                                                 <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
                                                 Back
