@@ -157,8 +157,6 @@ const AddInstructions = (props) => {
                         }
                     }
                     setAddInstructionsSpinner(true);
-                    props.setAppInstructionsPage(true);
-                    props.setAppAddInstructions(false);
                     insert(bodyForm, config);
 
         }

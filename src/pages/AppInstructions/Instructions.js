@@ -13,6 +13,7 @@ import {
     CardHeader,
     Badge,
     Input,
+    UncontrolledAlert,
 } from "reactstrap";
 import { getInstructionsData, getInstructionsData2, resetMessage } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
@@ -113,7 +114,7 @@ const Instructions = () => {
                 if (!cellContent || !cellContent.name || !cellContent.bgColor) {
                     return null;
                 }
-        
+
                 return (
                     <>
                         <span className="px-3 py-1 rounded" style={{ backgroundColor: cellContent.bgColor, color: "white", height: "30px" }}>
@@ -127,7 +128,7 @@ const Instructions = () => {
                     appInstructionsPreEdit(appInstructionsData);
                 },
             },
-        },        
+        },
         {
             dataField: "managerList",
             text: "Manager",
@@ -281,10 +282,11 @@ const Instructions = () => {
 
 
     return (
-        <RootPageCustom msgStateGet={appInstructionsMsg.message} msgStateSet={setAppInstructionsMsg}
+        <RootPageCustom msgStateGet={null} msgStateSet={null}
             componentJsx={
                 <>
-
+                    {appInstructionsMsg !== "" ? <UncontrolledAlert toggle={()=> setAppInstructionsMsg("")} color={appInstructionsMsg.status == "1" ? "success" : "danger"}>
+                        {typeof appInstructionsMsg == 'string' ? null : appInstructionsMsg.message}</UncontrolledAlert> : null}
                     <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
                         <Row>
                             <Col>
@@ -351,20 +353,20 @@ const Instructions = () => {
                                         </div>
                                     </Col>
                                 </Row>
-                                    <Row className="mb-5">
-                                        <TableCustom
-                                            keyField={"insId"}
-                                            columns={appInstructionsp01Tabel}
-                                            redukResponse={appInstructionsData}
-                                            appdata={appInstructionsData.data != null ? appInstructionsData.data.instructions : []}
-                                            appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.totalCount : 0}
-                                            searchSet={setAppInstructionsTabelSearch}
-                                            searchGet={appInstructionsTabelSearch}
-                                            redukCall={getInstructionsData}
-                                        //rowClick={() => appInstructionsPreEdit(appInstructionsData)}
-                                        />
+                                <Row className="mb-5">
+                                    <TableCustom
+                                        keyField={"insId"}
+                                        columns={appInstructionsp01Tabel}
+                                        redukResponse={appInstructionsData}
+                                        appdata={appInstructionsData.data != null ? appInstructionsData.data.instructions : []}
+                                        appdataTotal={appInstructionsData.data != null ? appInstructionsData.data.totalCount : 0}
+                                        searchSet={setAppInstructionsTabelSearch}
+                                        searchGet={appInstructionsTabelSearch}
+                                        redukCall={getInstructionsData}
+                                    //rowClick={() => appInstructionsPreEdit(appInstructionsData)}
+                                    />
 
-                                    </Row>
+                                </Row>
                             </Col>
                         </Row>
                     </Container>

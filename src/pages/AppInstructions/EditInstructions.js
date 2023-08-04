@@ -393,7 +393,7 @@ console.log("remov", removeUser);
 
     }
 
-    function DeleteFileAttached(num_file) {
+    function DeleteFileAttached(FileNo) {
 
         debugger
 
@@ -405,9 +405,11 @@ console.log("remov", removeUser);
             for (let index = 0; index < SetFiles.length; index++) {
 
                 let a = SetFiles[index];
-                const result = SetFiles.filter((data) => data.num_file !== num_file);
+                //const result = SetFiles.filter((data) => data.no !== FileNo);
 
-                bodyForm.append('removeFile', num_file);
+                const result = (Object.values(Files).filter((data) => data.no !== FileNo));
+
+                bodyForm.append('removeFile', FileNo);
                 console.log(a);
                 SetFiles(result);
 
@@ -1236,7 +1238,7 @@ console.log("remov", removeUser);
                                                                                     <div className="file-detail">
                                                                                         <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{data.name}</span>
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(file_num)} />
+                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.no)} />
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={filename} onClick={() => downloadFiles(file_num)} />
 
