@@ -8,6 +8,23 @@ import { ReactSession } from 'react-client-session';
 import { login, getMenu } from "helpers/backend_helper"
 import { useEffect } from "react";
 
+window.onpopstate = function (event) {
+  debugger;
+  const currentPath = event?.currentTarget?.location?.pathname;
+  const authUser = ReactSession.get("authUser");
+
+  // if (currentPath === '/login') 
+  // {
+  //   ReactSession.set("authUser", "");
+  //   ReactSession.set("user", "");
+  // }
+  //  else 
+  if (currentPath === '/login' && authUser !== null) {
+    history.go(1);
+  }
+};
+
+
 
 function* loginUser({ payload: { user, history } }) {
   try {
