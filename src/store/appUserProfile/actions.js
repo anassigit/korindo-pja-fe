@@ -8,7 +8,8 @@ import {
     UPDATE_USER_PASSWORD,
     MSGUPPASSWORD,
     EMAIL_FORGOT_PASSWORD,
-    UPDATE_FORGOT_PASSWORD
+    UPDATE_FORGOT_PASSWORD,
+    MSG_EMAIL_FORGOT_PASSWORD
 
 } from "./actionTypes"
 
@@ -49,6 +50,11 @@ import {
 
   export const emailForgotPassword = (req) => ({
     type: EMAIL_FORGOT_PASSWORD,
+    payload: req,
+  })
+
+  export const msgEmailForgotPassword = (req) => ({
+    type: MSG_EMAIL_FORGOT_PASSWORD,
     payload: req,
   })
 

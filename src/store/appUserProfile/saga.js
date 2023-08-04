@@ -2,7 +2,7 @@ import { call, put, takeEvery, all} from "redux-saga/effects"
 
 import { GET_PROFILE, EDIT_USER_PROFILE, UPDATE_USER_PASSWORD, EMAIL_FORGOT_PASSWORD, UPDATE_FORGOT_PASSWORD } from "./actionTypes"
 
-import {  respGetProfile, msgEdit, msgUpdatePassword } from "./actions"
+import {  respGetProfile, msgEdit, msgUpdatePassword, msgEmailForgotPassword } from "./actions"
 
 import { getProfile, editUserProfile, updateUserPassword, emailForgotPassword, updateForgotPassword } from "helpers/backend_helper"
 
@@ -42,11 +42,12 @@ function* fetchGetProfile({ payload: req }) {
 
   function* fetchEmailForgetPassword({ payload: req }) {
     try {
+      debugger
       const response = yield call(emailForgotPassword, req)
-      // yield put(msgUpdatePassword(response))
+      yield put(msgEmailForgotPassword(response))
     } catch (error) {
-      // console.log(error);
-      // yield put(msgUpdatePassword({ "status": 0, "message": "Error Get Data" }))
+      console.log(error);
+      yield put(msgEmailForgotPassword({ "status": 0, "message": "Error Get Data" }))
     }
   }
 

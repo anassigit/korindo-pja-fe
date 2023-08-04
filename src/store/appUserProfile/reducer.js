@@ -1,23 +1,25 @@
 import {
 
-    GET_PROFILE,
-    RESP_GET_PROFILE,
-    EDIT_USER_PROFILE,
-    MSGEDIT,
-    RESET_MESSAGE,
-    UPDATE_USER_PASSWORD,
-    MSGUPPASSWORD,
-    EMAIL_FORGOT_PASSWORD,
-    UPDATE_FORGOT_PASSWORD
+  GET_PROFILE,
+  RESP_GET_PROFILE,
+  EDIT_USER_PROFILE,
+  MSGEDIT,
+  RESET_MESSAGE,
+  UPDATE_USER_PASSWORD,
+  MSGUPPASSWORD,
+  EMAIL_FORGOT_PASSWORD,
+  UPDATE_FORGOT_PASSWORD,
+  MSG_EMAIL_FORGOT_PASSWORD
 
 } from "./actionTypes"
 
 const INIT_STATE = {
 
-    respGetProfile: {},
-    msgEdit: "",
-    msgUpdatePassword: "",
-    msgForgotPassword: "",
+  respGetProfile: {},
+  msgEdit: "",
+  msgUpdatePassword: "",
+  msgForgotPassword: "",
+  msgEmailForgotPassword: "",
 }
 
 const userProfileReducer = (state = INIT_STATE, action) => {
@@ -38,41 +40,46 @@ const userProfileReducer = (state = INIT_STATE, action) => {
         ...state,
         msgEdit: action.payload,
       }
-      case MSGEDIT:
-        return {
-          ...state,
-          msgEdit: action.payload,
-        }
-      case MSGUPPASSWORD:
+    case MSGEDIT:
+      return {
+        ...state,
+        msgEdit: action.payload,
+      }
+    case MSGUPPASSWORD:
       return {
         ...state,
         msgUpdatePassword: action.payload,
       }
-    case RESET_MESSAGE :
-        return {
-           ...state,
-           msgEdit: "",
-        }
+    case RESET_MESSAGE:
+      return {
+        ...state,
+        msgEdit: "",
+      }
     case EDIT_USER_PROFILE:
       return {
         ...state,
       }
-      case UPDATE_USER_PASSWORD:
+    case UPDATE_USER_PASSWORD:
       return {
         ...state,
       }
-      case EMAIL_FORGOT_PASSWORD:
+    case EMAIL_FORGOT_PASSWORD:
       return {
         ...state,
       }
-      case UPDATE_FORGOT_PASSWORD:
+    case MSG_EMAIL_FORGOT_PASSWORD:
+      return {
+        ...state,
+        msgEmailForgotPassword: action.payload,
+      }
+    case UPDATE_FORGOT_PASSWORD:
       return {
         ...state,
       }
-     
+
     default:
       return state
   }
-  }
-  
-  export default userProfileReducer
+}
+
+export default userProfileReducer

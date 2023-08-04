@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
 import React, { useState, useEffect } from "react";
 
-import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Spinner } from "reactstrap";
+import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Spinner, UncontrolledAlert } from "reactstrap";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { emailForgotPassword } from "../../store/appUserProfile/actions"
+import { emailForgotPassword, msgEmailForgotPassword } from "../../store/appUserProfile/actions"
 
 import { useHistory } from "react-router-dom";
 
@@ -27,6 +27,17 @@ const EmailVerPassword = props => {
   const dispatch = useDispatch();
   let history = useHistory();
   const [emailPasswordSpinner, setEmailPasswordSpinner] = useState(false);
+  const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
+
+  useEffect(() => {
+    dispatch(msgEmailForgotPassword())
+  }, [dispatch])
+
+  const error = useSelector(state => {
+    return state.userProfileReducer.msgEmailForgotPassword;
+  })
+
+  console.log(error)
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -36,37 +47,18 @@ const EmailVerPassword = props => {
       id: ''
     },
     validationSchema: Yup.object({
-        id: Yup.string().required("Please Enter Your Email"),
+      id: Yup.string().required("Please Enter Your Email"),
     }),
-    // onSubmit: (values) => {
-    //   dispatch(emailForgotPassword(values));
-    // }
+    onSubmit: (values) => {
+      dispatch(emailForgotPassword(values));
+    }
   });
 
-  const { error } = useSelector(state => ({
-    error: state.Login.error,
-  }));
-
-  // handleValidSubmit
-//   const handleValidSubmit = (event, values) => {
-//     dispatch(loginUser(values, props.history));
-//   };
-
-const sendEmail = async () => {
-  try {
-
-      var map = {
-          "id":  validation.values.id
-      };
-       console.log('map : ', map)
-
-      setEmailPasswordSpinner("true");
-      await dispatch(emailForgotPassword(map));
-      history.push("/login");
-  } catch (error) {
-      console.log(error)
-  }
-};
+  useEffect(() => {
+    if (error?.status == "1") {
+      debugger
+    }
+  }, [error])
 
   return (
     <React.Fragment>
@@ -93,20 +85,21 @@ const sendEmail = async () => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                  
+                  {/* {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
+                    {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null} */}
+
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
-                      // onSubmit={(e) => {
-                      //   e.preventDefault();
-                      //   validation.handleSubmit();
-                      //   return false;
-                      // }}
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        validation.handleSubmit();
+                        return false;
+                      }}
                     >
-                      {error ? <Alert color="danger">{error}</Alert> : null}
 
                       <div className="mb-3">
-                     
+
                         <Input
                           name="id"
                           className="form-control"
@@ -127,8 +120,7 @@ const sendEmail = async () => {
                       <div className="mt-2 d-grid">
                         <button
                           className="btn btn-success btn-block"
-                         onClick={() => { sendEmail() }}
-                         
+                          type="submit"
                         >
                           Send to Email
                           <Spinner style={{ display: emailPasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
@@ -138,9 +130,9 @@ const sendEmail = async () => {
                         <button
                           className="btn btn-light btn-block"
                           type="button"
-                          onClick={() => 
+                          onClick={() =>
                             history.push({
-                            pathname: '/login',
+                              pathname: '/login',
                             })}
                         >
                           Back
@@ -151,7 +143,7 @@ const sendEmail = async () => {
                 </CardBody>
 
                 <div className="mt-3 text-center">
-                 
+
                   <p>
                     ©Korindo {new Date().getFullYear()}.
                   </p>
