@@ -90,19 +90,22 @@ function responseError(response){
 export async function getWithXls(url, data, config ={responseType: 'blob'}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   let token = ReactSession.get("authUser"); 
-  return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
+  debugger
+  return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
     response => {
       if (response.status == 200) {
-        
-        let filename = response.headers['content-disposition']
-        .split(';')
-        .find(n => n.includes('filename='))
-        .replace('filename=', '')
-        .trim();
-        console.log(filename)
+        debugger
+        // let filename = response.headers['content-disposition']
+        // .split(';')
+        // .find(n => n.includes('filename='))
+        // .replace('filename=', '')
+        // .trim();
+        // console.log(filename)
+        // let url = window.URL.createObjectURL(new Blob([response.data]));   
+        // saveAs(url, filename);
         let url = window.URL.createObjectURL(new Blob([response.data]));   
-        saveAs(url, filename);
+        saveAs(url, "test1.xlsx");
       } else {
          return responseError(response);
       }
@@ -113,7 +116,7 @@ export async function getWithXls(url, data, config ={responseType: 'blob'}) {
 export async function getWithPdf(url, data, config ={responseType: 'blob'}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   let token = ReactSession.get("authUser"); 
-  return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
+  return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
     response => {
       if (response.status == 200) {
