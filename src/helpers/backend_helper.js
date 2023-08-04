@@ -122,23 +122,18 @@ export const editInstructions = req => postUpload("rest/InstructionRest/UpdateIn
 
 export const saveDescriptions = req => postWithParam("rest/InstructionRest/UpdateDescription", req)
 
+export const deleteInstructions = req => postWithParam("/rest/InstructionRest/DeleteInstruction", req)
+
 export const getReply = req => post("rest/InstructionRest/SelectReplyList", req)
 
 export const saveReply = req => postUpload("rest/InstructionRest/InsertReply", req)
 
 export const editReply = req => postUpload("rest/InstructionRest/UpdateReply", req)
 
-// export const downloadFiles = req => postWithParam("rest/InstructionRest/FileDownload", req)
-
 export const downloadFiles = req => postDownloadXlsx("rest/InstructionRest/FileDownload", req)
 
 export const deleteReply = req => postWithParam("rest/InstructionRest/DeleteReply", req)
 
-//export const downloadFile = req => getWithXls("/rest/app031/donwload-template", req)
-
-export const deleteInstructions = req => post("/rest/app008/delete", req)
-
-//export const getUserList = req => post("rest/InstructionRest/SelectInfo", req)
 
 //appSetting
 
