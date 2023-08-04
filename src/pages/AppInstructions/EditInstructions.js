@@ -433,6 +433,19 @@ const EditInstructions = (props) => {
         }
     };
 
+    const downloadReplyAttach = async (fNum, fName) => {
+        try {
+            debugger
+            var indexed_array = {
+                "file_num": fNum,
+                "file_nm": fName
+            };
+            await dispatch(downloadFile(indexed_array));
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const editInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgEdit;
     });
@@ -1335,27 +1348,29 @@ const EditInstructions = (props) => {
 
                                             </FormGroup>
 
+                                            <div className="text-sm-end col-10" >
+
+                                                <Button type="submit" color="primary">
+                                                    <i className="mdi mdi-check-circle align-middle me-2"></i>
+                                                    Update
+                                                </Button>&nbsp;
+
+                                                <Button color="danger" type="button" onClick={() => { deleteInstruction() }}>
+                                                    <i className="mdi mdi-delete-forever align-middle me-2"></i>
+                                                    Delete
+                                                </Button>&nbsp;
+                                                <Button
+                                                    type="button"
+                                                    className="btn btn-danger "
+                                                    onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                >
+                                                    <i className="bx bx-arrow-back align-middle me-2"></i>
+                                                    Back
+                                                </Button>
+                                            </div>
 
                                         </Form>
 
-                                        <div className="text-sm-end col-10" >
-
-                                            <Button type="submit" color="primary">
-                                                Update
-                                            </Button>&nbsp;
-
-                                            <Button color="danger" type="button" onClick={() => { deleteInstruction() }}>
-                                                Delete
-                                            </Button>&nbsp;
-                                            <Button
-                                                type="button"
-                                                className="btn btn-danger "
-                                                onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
-                                            >
-                                                <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                                Back
-                                            </Button>
-                                        </div>
 
                                     </CardBody>
                                 </Card>
@@ -1545,7 +1560,7 @@ const EditInstructions = (props) => {
                                             </FormGroup>
 
                                         </Form>
-                                        
+
                                         <div className="text-sm-end col-10" >
 
                                             <Button
@@ -1653,21 +1668,22 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                             </Col>
 
-                                                            <Col md="12">
-                                                                <div className="text-sm-end" >
+                                                            {/* <Col md="12"> */}
+                                                            <div className="text-sm-end col-10" >
 
-                                                                    <Button
-                                                                        type="button"
+                                                                <Button
+                                                                    type="button"
 
-                                                                        color="primary"
-                                                                        className="ms-1"
-                                                                        onClick={() => { insertReplyAndFiles() }}
-                                                                    >
-                                                                        Reply
-                                                                    </Button>
+                                                                    color="primary"
+                                                                    className="ms-1"
+                                                                    onClick={() => { insertReplyAndFiles() }}
+                                                                >
+                                                                    <i className="mdi mdi-send align-middle me-2" />
+                                                                    Reply
+                                                                </Button>
 
-                                                                </div>
-                                                            </Col>
+                                                            </div>
+                                                            {/* </Col> */}
                                                         </Row>
                                                     </div>
 
@@ -1758,13 +1774,17 @@ const EditInstructions = (props) => {
                                                                                     >
                                                                                         {row.attachFileList.length > 0 ? row.attachFileList[0].name : ""}
                                                                                     </td>
-                                                                                    {/* <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}>
-                                                                                        {row.attachFileList.length > 0 || row.attachFileList !== null ? (
-                                                                                            <i className="mdi mdi-download" onClick={() => xxx()} />
+                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}>
+                                                                                        {row.attachFileList && row.attachFileList.length > 0 ? (
+                                                                                            <i
+                                                                                                className="mdi mdi-download"
+                                                                                                onClick={() => downloadReplyAttach(row.attachFileList[0].num, row.attachFileList[0].name)}
+                                                                                            />
                                                                                         ) : (
-                                                                                            ""
+                                                                                            null
                                                                                         )}
-                                                                                    </td> */}
+                                                                                    </td>
+
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
                                                                                 <tr style={{ height: "25px" }}></tr>
