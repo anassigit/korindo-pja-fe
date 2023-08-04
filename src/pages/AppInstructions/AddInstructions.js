@@ -598,6 +598,7 @@ const AddInstructions = (props) => {
                                                     </div>
                                                     &nbsp;
                                                     <div className="kb-attach-box mb-3">
+                                                    <h6>Attach files preview:</h6>
                                                         {
                                                             selectedfile.map((data, index) => {
                                                                 const { id, filename, filetype, fileimage, datetime, filesize } = data;
