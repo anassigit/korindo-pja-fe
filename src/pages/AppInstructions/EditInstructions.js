@@ -72,6 +72,9 @@ const EditInstructions = (props) => {
     const [ownerObj1, setOwnerObj1] = useState([])
     const [ownerObj2, setOwnerObj2] = useState([])
 
+    const [addUser, setAddUser] = useState([])
+    const [removeUser, setRemoveUser] = useState([])
+
     const [appInstructionsData, setAppInstructionsData] = useState(null);
 
     /* MULTI SELECT OPTIONS */
@@ -191,7 +194,6 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         /*** OWNER SELECT ***/
-        debugger
 
         let selectedOwner = null;
         selectedOwner = getDetailInstructionData?.data?.instruction.owner
@@ -230,15 +232,10 @@ const EditInstructions = (props) => {
             gname: manager.gname,
         })))
 
-        // let selectedAttachmentFiles = null;
-        // selectedAttachmentFiles = attachmentReplyData?.data?.attachFileList
-        // if (selectedAttachmentFiles) {
-        //     selectedAttachmentFiles = [{
-        //         file_num: selectedAttachmentFiles.no,
-        //         filename: selectedAttachmentFiles.name
-        //     }]
-        // }
-        // SetFiles2(selectedAttachmentFiles);
+        if (attachmentInstructionData?.data?.attachFileList) {
+            const entries = Object.values(attachmentInstructionData?.data?.attachFileList);
+            SetFiles(entries);
+        }
 
         /* useEffect field here */
         const storedData = localStorage.getItem('appInstructionsData');
@@ -250,27 +247,20 @@ const EditInstructions = (props) => {
         editInstructionsValidInput.setFieldValue("no", parsedData?.num)
         editInstructionsValidInput.setFieldValue("title", parsedData?.title)
         editInstructionsValidInput.setFieldValue("insDate", parsedData?.insDate)
-        editInstructionsValidInput.setFieldValue("status", parsedData?.status)
+        editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
-
+        
         setStartDate(format(currentDate, 'yyyy-MM-dd'))
 
 
-    }, [getDetailInstructionData, selectedManager, getManagerList, getOwnerList]);
+    }, [getDetailInstructionData, selectedManager, getManagerList, getOwnerList, attachmentInstructionData]);
 
     // useEffect(() => {
-    //     if (Files2 != null && Files2 != undefined) {
-    //         SetFiles(Files2)
-    //         return;
+    //     if (attachmentInstructionData?.data?.attachFileList) {
+    //         const entries = Object.values(attachmentInstructionData?.data?.attachFileList);
+    //         SetFiles(entries);
     //     }
-    // }, [Files2], [])
-
-    useEffect(() => {
-        if (attachmentInstructionData?.data?.attachFileList) {
-            const entries = Object.values(attachmentInstructionData?.data?.attachFileList);
-            SetFiles(entries);
-        }
-    }, [attachmentInstructionData]);
+    // }, [attachmentInstructionData]);
 
 
     useEffect(() => {
@@ -279,55 +269,6 @@ const EditInstructions = (props) => {
             return;
         }
     }, [replyNum], [])
-
-    // useEffect(() => {
-
-    //     if (props.appEditInstructions) {
-    //         setOptionOwner0(null)
-    //         let num = props.instructionsData?.num.toString()
-    //         dispatch(getDetailInstruction({
-    //             search: {
-    //                 "num": num,
-    //                 "langType": "eng"
-    //             }
-    //         }))
-    //         dispatch(getStatus({
-    //             search: {
-    //                 "num": num,
-    //                 "langType": "eng"
-    //             }
-
-    //         }))
-    //         dispatch(getReply({
-    //             search: {
-    //                 "num": num,
-    //                 "langType": "eng"
-    //             }
-    //         }))
-    //         dispatch(getSelectedManager({
-
-    //             search: {
-    //                 "num": num,
-    //                 "langType": "eng"
-    //             }
-
-    //         }))
-    //         dispatch(getAttachmentData({
-    //             search: {
-    //                 "instruction_num": num,
-    //                 "langType": "eng"
-    //             }
-
-    //         }))
-    //         dispatch(getLogs({
-    //             search: {
-    //                 "num": num,
-    //             }
-
-    //         }))
-    //     }
-
-    // }, [props.appEditInstructions])
 
     const insert = async (values) => {
 
@@ -344,36 +285,59 @@ const EditInstructions = (props) => {
         enableReinitialize: true,
 
         initialValues: {
-            no: '',
             title: '',
             insDate: '',
-            status: '',
             description: '',
-
-            reply_num: '',
-            content: '',
-
+            status:'',
         },
 
         validationSchema: Yup.object().shape({
-            no: Yup.string().required("Wajib diisi"),
+            //title: Yup.string().required("Wajib diisi"),
         }),
 
-        onSubmit: (val) => {
+        onSubmit: (values) => {
+            debugger
+            var pa = []
+console.log("add", addUser);
+console.log("remov", removeUser);
+
+                addUser.forEach(el => {
+                   pa.push(el.tempAdd)
+                    console.log("el", el)
+            });
+            console.log("pa", pa)
+
 
             var bodyForm = new FormData();
 
-            bodyForm.append('num', val.no);
-            bodyForm.append('description', val.description);
+            bodyForm.append('num', values.no);
+            bodyForm.append('title', editInstructionsValidInput.values.title);
+            bodyForm.append('insDate', editInstructionsValidInput.values.insDate);
+            bodyForm.append('description', values.description);
+            bodyForm.append('addUser', pa);
+            bodyForm.append('removeUser', removeUser);
 
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
+            //status//
+
+            let statusId = null
+            statusId = statusData?.data?.statusList.map((item, index) =>{
+                if (item.name == values.status) {
+                    bodyForm.append('status', item.no)
                 }
+            })
+
+            //end status//
+
+
+
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+                insert(bodyForm, config);
+                //alert('Add description success.')
             }
-            insert2(bodyForm, config);
-            alert('Add description success.')
-        }
 
     });
 
@@ -464,7 +428,6 @@ const EditInstructions = (props) => {
 
 
     };
-
 
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';
@@ -698,27 +661,39 @@ const EditInstructions = (props) => {
     };
 
     function handleMulti(s) {
+        debugger
         const currentSelection = (selectedMulti || []).map((item) => item.value);
 
         const addedValues = s.filter((item) => !currentSelection.includes(item.value));
         const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
 
-        const bodyForm = new FormData();
-        bodyForm.append('num', editInstructionsValidInput.values.no);
-
+        // const bodyForm = new FormData();
+        // bodyForm.append('num', editInstructionsValidInput.values.no);
+        var tempAdd = []
         addedValues.forEach((addedItem) => {
-            bodyForm.append('addUser', addedItem.value);
+            //bodyForm.append('addUser', addedItem.value);
+
+            tempAdd.push(addedItem.value)
+            setAddUser(tempAdd)
         });
 
+        var tempRemove = []
         deletedValues.forEach((deletedItem) => {
-            bodyForm.append('removeUser', deletedItem);
+            //bodyForm.append('removeUser', deletedItem);
+
+            tempRemove.push(deletedItem)
+            setRemoveUser(tempRemove)
         });
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        };
+
+
+
+
+        // const config = {
+        //     headers: {
+        //         'content-type': 'multipart/form-data',
+        //     },
+        // };
 
         if (s && s.length === 0) {
             setOptionOwner0(getOwnerList?.data?.ownerList.map((owner) => ({
@@ -729,97 +704,47 @@ const EditInstructions = (props) => {
         } else {
             setOptionOwner0([]);
         }
-        insert(bodyForm, config)
+        // insert(bodyForm, config)
         setselectedMulti(s);
     }
 
     function handleMulti2(s) {
+
+        debugger
+
         const currentSelection = selectedMulti2.map((item) => item.value);
 
         const addedValues = s.filter((item) => !currentSelection.includes(item.value));
         const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
 
-        const bodyForm = new FormData();
-        bodyForm.append('num', editInstructionsValidInput.values.no);
+        // const bodyForm = new FormData();
+        // bodyForm.append('num', editInstructionsValidInput.values.no);
 
+        var tempAdd = []
         addedValues.forEach((addedItem) => {
-            bodyForm.append('addUser', addedItem.value);
+            //bodyForm.append('addUser', addedItem.value);
+
+            tempAdd.push(addedItem.value)
+            setAddUser(current => [...current, {
+                tempAdd
+              }]);
+            // setAddUser(tempAdd)
         });
 
+        var tempRemove = []
         deletedValues.forEach((deletedItem) => {
-            bodyForm.append('removeUser', deletedItem);
+            //bodyForm.append('removeUser', deletedItem);
+
+            tempRemove.push(deletedItem)
+            setRemoveUser(current => [...current, {
+                tempRemove
+              }]);
+            //setRemoveUser(tempRemove)
         });
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        };
-
-        insert(bodyForm, config);
 
         setselectedMulti2(s);
     }
-
-
-    function handleAutoSaveTitle(values) {
-
-        var bodyForm = new FormData();
-
-        bodyForm.append('num', editInstructionsValidInput.values.no);
-        bodyForm.append('title', editInstructionsValidInput.values.title);
-
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-        insert(bodyForm, config);
-        // dispatch(editInstructions(values));
-
-    }
-
-    function handleAutoSaveDate(values) {
-
-        var bodyForm = new FormData();
-
-        bodyForm.append('num', editInstructionsValidInput.values.no);
-        bodyForm.append('insDate', editInstructionsValidInput.values.insDate);
-
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-        insert(bodyForm, config);
-        // dispatch(editInstructions(values));
-
-    }
-
-    function handleAutoSaveStatus(values) {
-
-        const targetStatusNm = values.target.value
-        const targetStatus = statusList.find((status) => status.statusNm === targetStatusNm)
-
-        let statusId = null
-        statusId = targetStatus.statusId
-
-        var bodyForm = new FormData()
-        bodyForm.append('num', editInstructionsValidInput.values.no)
-        bodyForm.append('status', statusId)
-
-        setStatusList([...statusList]);
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        };
-        insert(bodyForm, config)
-    }
-
 
     const FileUploadSubmitD = async (e) => {
         e.preventDefault();
@@ -1153,7 +1078,7 @@ const EditInstructions = (props) => {
                                                                 name="title"
                                                                 type="text"
                                                                 onChange={editInstructionsValidInput.handleChange}
-                                                                onBlur={handleAutoSaveTitle}
+                                                                //onBlur={handleAutoSaveTitle}
                                                                 value={editInstructionsValidInput.values.title || ""}
                                                                 invalid={
                                                                     editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? true : false
@@ -1174,7 +1099,7 @@ const EditInstructions = (props) => {
                                                                 name="insDate"
                                                                 type="date"
                                                                 onChange={editInstructionsValidInput.handleChange}
-                                                                onBlur={handleAutoSaveDate}
+                                                                //onBlur={handleAutoSaveDate}
                                                                 value={editInstructionsValidInput.values.insDate || startDate}
                                                                 invalid={
                                                                     editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
@@ -1186,13 +1111,15 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> Status <span style={{ color: "red" }}>* </span></Label>
+                                                            <Label> Status <span style={{ color: "red" }}>* </span></Label>  
+                                                        
                                                             <Input
                                                                 name="status"
                                                                 type="select"
                                                                 onChange={(e) => {
                                                                     editInstructionsValidInput.handleChange(e)
                                                                 }}
+                                                                
                                                                 value={editInstructionsValidInput.values.status}
                                                                 invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
                                                             >
@@ -1327,19 +1254,14 @@ const EditInstructions = (props) => {
 
                                             </FormGroup>
 
+                                            <Button type="submit" color="primary" className="ms-1">
+                                                Update
+                                            </Button>&nbsp;
+
                                         </Form>
 
                                         <div className="text-sm-end" >
 
-                                            {/* <Button color="primary" className="ms-1" type="button" onClick={() => {
-                                        handleSaveDesc(editInstructionsValidInput.values.description)
-                                    }}>
-                                        Update
-                                    </Button>&nbsp; */}
-
-                                            <Button type="submit" color="primary" className="ms-1">
-                                                Update
-                                            </Button>&nbsp;
 
                                             <Button color="danger" className="ms-1" type="button" onClick={() => {
                                                 handleSaveDesc(editInstructionsValidInput.values.description)
