@@ -142,22 +142,22 @@ const AddInstructions = (props) => {
             if (selectedfile.length > 0) {
 
 
-                    for (let index = 0; index < selectedfile.length; index++) {
+                for (let index = 0; index < selectedfile.length; index++) {
 
                     let a = selectedfile[index];
 
                     bodyForm.append('file' + index, selectedfile[index].fileori);
 
-                    }
+                }
             }
 
-                    const config = {
-                        headers: {
-                            'content-type': 'multipart/form-data'
-                        }
-                    }
-                    setAddInstructionsSpinner(true);
-                    insert(bodyForm, config);
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            setAddInstructionsSpinner(true);
+            insert(bodyForm, config);
 
         }
     });
@@ -182,7 +182,7 @@ const AddInstructions = (props) => {
 
     const InputChange = (e) => {
         debugger
-        
+
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {
             images.push((e.target.files[i]));
@@ -193,28 +193,28 @@ const AddInstructions = (props) => {
             fileNm = fileNm.substring(fileNm.lastIndexOf('.') + 1);
 
             if (fileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
-            reader.onloadend = () => {
-                SetSelectedFile((preValue) => {
-                    return [
-                        ...preValue,
-                        {
-                            id: shortid.generate(),
-                            filename: e.target.files[i].name,
-                            filetype: e.target.files[i].type,
-                            fileimage: reader.result,
-                            fileori: file
-                        }
-                    ]
-                });
+                reader.onloadend = () => {
+                    SetSelectedFile((preValue) => {
+                        return [
+                            ...preValue,
+                            {
+                                id: shortid.generate(),
+                                filename: e.target.files[i].name,
+                                filetype: e.target.files[i].type,
+                                fileimage: reader.result,
+                                fileori: file
+                            }
+                        ]
+                    });
+                }
+                if (e.target.files[i]) {
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                alert("Files type are not allowed to upload or not supported.");
             }
-            if (e.target.files[i]) {
-                reader.readAsDataURL(file);
-            }
-        } else {
-            alert("Files type are not allowed to upload or not supported.");
         }
-        } 
-    
+
     }
 
 
@@ -598,17 +598,17 @@ const AddInstructions = (props) => {
                                                     </div>
                                                     &nbsp;
                                                     <div className="kb-attach-box mb-3">
-                                                    <h6>Attach files preview:</h6>
-                                                    
+                                                        <h6>Attach files preview:</h6>
+
                                                         {
-                                                            
+
                                                             selectedfile.map((data, index) => {
-                                                                
+
                                                                 const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                 return (
-                                                                    
+
                                                                     <div className="file-atc-box" key={id}>
-                                                                        
+
                                                                         {
                                                                             filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
                                                                                 <div className="file-image"></div> :
@@ -631,22 +631,22 @@ const AddInstructions = (props) => {
                                     </Row>
 
                                     <br></br>
-                                <div className="text-sm-end">
-                                    <Button color="primary" className="ms-1" type="submit">
-                                        <i className="bx bxs-save align-middle me-2"></i>
-                                        Save
-                                    </Button>&nbsp;
+                                    <div className="text-sm-end col-10" >
+                                        <Button color="primary" className="ms-1" type="submit">
+                                            <i className="bx bxs-save align-middle me-2"></i>
+                                            Save
+                                        </Button>&nbsp;
 
-                                    <Button
-                                        type="button"
-                                        className="btn btn-danger "
-                                        onClick={() => {
-                                            props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("")
-                                        }}
-                                    >
-                                        <i className="bx bx-arrow-back align-middle me-2"></i>
-                                        Back
-                                    </Button>
+                                        <Button
+                                            type="button"
+                                            className="btn btn-danger "
+                                            onClick={() => {
+                                                props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("")
+                                            }}
+                                        >
+                                            <i className="bx bx-arrow-back align-middle me-2"></i>
+                                            Back
+                                        </Button>
                                     </div>
                                 </FormGroup>
 

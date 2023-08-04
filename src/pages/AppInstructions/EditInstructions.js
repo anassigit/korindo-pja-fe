@@ -1335,16 +1335,16 @@ const EditInstructions = (props) => {
 
                                             </FormGroup>
 
-                                            <Button type="submit" color="primary" className="ms-1">
-                                                Update
-                                            </Button>&nbsp;
 
                                         </Form>
 
-                                        <div className="text-sm-end" >
+                                        <div className="text-sm-end col-10" >
 
+                                            <Button type="submit" color="primary">
+                                                Update
+                                            </Button>&nbsp;
 
-                                            <Button color="danger" className="ms-1" type="button" onClick={() => { deleteInstruction() }}>
+                                            <Button color="danger" type="button" onClick={() => { deleteInstruction() }}>
                                                 Delete
                                             </Button>&nbsp;
                                             <Button
@@ -1545,8 +1545,8 @@ const EditInstructions = (props) => {
                                             </FormGroup>
 
                                         </Form>
-
-                                        <div className="text-sm-end" >
+                                        
+                                        <div className="text-sm-end col-10" >
 
                                             <Button
                                                 type="button"
