@@ -18,7 +18,7 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, msgEdit, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
@@ -249,7 +249,7 @@ const EditInstructions = (props) => {
         editInstructionsValidInput.setFieldValue("insDate", parsedData?.insDate)
         editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
-        
+
         setStartDate(format(currentDate, 'yyyy-MM-dd'))
 
 
@@ -272,11 +272,11 @@ const EditInstructions = (props) => {
 
     const insert = async (values) => {
 
-        await dispatch(editInstructions(values));
+        await dispatch(editInstructions(values))
     };
 
     const downloadFiles = async file_num => {
-        debugger
+        
         var ix = { file_num: file_num }
         await dispatch(downloadFile(ix))
     }
@@ -288,7 +288,7 @@ const EditInstructions = (props) => {
             title: '',
             insDate: '',
             description: '',
-            status:'',
+            status: '',
         },
 
         validationSchema: Yup.object().shape({
@@ -296,31 +296,28 @@ const EditInstructions = (props) => {
         }),
 
         onSubmit: (values) => {
-            debugger
-            var pa = []
-console.log("add", addUser);
-console.log("remov", removeUser);
-
-                addUser.forEach(el => {
-                   pa.push(el.tempAdd)
-                    console.log("el", el)
-            });
-            console.log("pa", pa)
-
-
             var bodyForm = new FormData();
 
             bodyForm.append('num', values.no);
             bodyForm.append('title', editInstructionsValidInput.values.title);
             bodyForm.append('insDate', editInstructionsValidInput.values.insDate);
             bodyForm.append('description', values.description);
-            bodyForm.append('addUser', pa);
-            bodyForm.append('removeUser', removeUser);
+
+            if (addUser.length > 0) {
+                addUser.forEach(user => {
+                    bodyForm.append('addUser', user);
+                });
+            }
+            if (removeUser.length > 0) {
+                removeUser.forEach(user => {
+                    bodyForm.append('removeUser', user);
+                });
+            }
 
             //status//
 
             let statusId = null
-            statusId = statusData?.data?.statusList.map((item, index) =>{
+            statusId = statusData?.data?.statusList.map((item, index) => {
                 if (item.name == values.status) {
                     bodyForm.append('status', item.no)
                 }
@@ -328,16 +325,15 @@ console.log("remov", removeUser);
 
             //end status//
 
-
-
-                const config = {
-                    headers: {
-                        'content-type': 'multipart/form-data'
-                    }
+            
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
                 }
-                insert(bodyForm, config);
-                //alert('Add description success.')
             }
+            insert(bodyForm, config);
+            //alert('Add description success.')
+        }
 
     });
 
@@ -394,8 +390,6 @@ console.log("remov", removeUser);
     }
 
     function DeleteFileAttached(FileNo) {
-
-        debugger
 
         const bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.no);
@@ -663,39 +657,18 @@ console.log("remov", removeUser);
     };
 
     function handleMulti(s) {
-        debugger
         const currentSelection = (selectedMulti || []).map((item) => item.value);
 
         const addedValues = s.filter((item) => !currentSelection.includes(item.value));
         const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
 
-        // const bodyForm = new FormData();
-        // bodyForm.append('num', editInstructionsValidInput.values.no);
-        var tempAdd = []
         addedValues.forEach((addedItem) => {
-            //bodyForm.append('addUser', addedItem.value);
+            setAddUser(current => [...current, addedItem.value]);
+        })
 
-            tempAdd.push(addedItem.value)
-            setAddUser(tempAdd)
-        });
-
-        var tempRemove = []
         deletedValues.forEach((deletedItem) => {
-            //bodyForm.append('removeUser', deletedItem);
-
-            tempRemove.push(deletedItem)
-            setRemoveUser(tempRemove)
-        });
-
-
-
-
-
-        // const config = {
-        //     headers: {
-        //         'content-type': 'multipart/form-data',
-        //     },
-        // };
+            setRemoveUser(current => [...current, deletedItem]);
+        })
 
         if (s && s.length === 0) {
             setOptionOwner0(getOwnerList?.data?.ownerList.map((owner) => ({
@@ -712,8 +685,6 @@ console.log("remov", removeUser);
 
     function handleMulti2(s) {
 
-        debugger
-
         const currentSelection = selectedMulti2.map((item) => item.value);
 
         const addedValues = s.filter((item) => !currentSelection.includes(item.value));
@@ -722,28 +693,16 @@ console.log("remov", removeUser);
         // const bodyForm = new FormData();
         // bodyForm.append('num', editInstructionsValidInput.values.no);
 
-        var tempAdd = []
+        
         addedValues.forEach((addedItem) => {
-            //bodyForm.append('addUser', addedItem.value);
+            setAddUser(current => [...current, addedItem.value]);
+        })
 
-            tempAdd.push(addedItem.value)
-            setAddUser(current => [...current, {
-                tempAdd
-              }]);
-            // setAddUser(tempAdd)
-        });
-
-        var tempRemove = []
         deletedValues.forEach((deletedItem) => {
-            //bodyForm.append('removeUser', deletedItem);
-
-            tempRemove.push(deletedItem)
-            setRemoveUser(current => [...current, {
-                tempRemove
-              }]);
-            //setRemoveUser(tempRemove)
-        });
-
+            setRemoveUser(current => [...current, deletedItem]);
+        })
+        console.log(addUser)
+        console.log(removeUser)
 
         setselectedMulti2(s);
     }
@@ -911,7 +870,7 @@ console.log("remov", removeUser);
 
     const replyDelete = async (row) => {
         try {
-            debugger
+            
             var map = {
                 "reply_num": row.no
             };
@@ -977,9 +936,17 @@ console.log("remov", removeUser);
         }
     }, [replyTabelListData])
 
+    useEffect(() => {
+
+        if (editInstructionsMessage.status == "1") {
+            history.push('/AppInstructions', {'setAppInstructionsMsg': editInstructionsMessage} )
+        }
+        setAppEditInstructionsMsg(editInstructionsMessage)
+    }, [editInstructionsMessage])
+
     const updateReply = async (values) => {
         await dispatch(editReply(values));
-        debugger
+        
 
         let num = editInstructionsValidInput.values.no
         num = num.toString()
@@ -1004,7 +971,7 @@ console.log("remov", removeUser);
     };
 
     const handleEditReply = (reply_num, editedContent) => {
-        debugger
+        
         var bodyForm = new FormData();
         let selectedNum = null
 
@@ -1113,15 +1080,15 @@ console.log("remov", removeUser);
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> Status <span style={{ color: "red" }}>* </span></Label>  
-                                                        
+                                                            <Label> Status <span style={{ color: "red" }}>* </span></Label>
+
                                                             <Input
                                                                 name="status"
                                                                 type="select"
                                                                 onChange={(e) => {
                                                                     editInstructionsValidInput.handleChange(e)
                                                                 }}
-                                                                
+
                                                                 value={editInstructionsValidInput.values.status}
                                                                 invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
                                                             >

@@ -27,7 +27,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 const Instructions = () => {
 
     const dispatch = useDispatch();
-    let history = useHistory()
+    const history = useHistory()
     const [appInstructionsPage, setAppInstructionsPage] = useState(true)
     const [appAddInstructions, setAppAddInstructions] = useState(false)
     const [appEditInstructions, setEditInstructions] = useState(false)
@@ -57,6 +57,10 @@ const Instructions = () => {
     useEffect(() => {
         if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
+        }
+        debugger
+        if(history.location.state != undefined || history.location.state != null) {
+            setAppInstructionsMsg(history.location.state?.setAppInstructionsMsg)
         }
     }, [appInstructionsData])
 
