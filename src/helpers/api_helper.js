@@ -91,7 +91,7 @@ export async function getWithXls(url, data, config ={responseType: 'blob'}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   let token = ReactSession.get("authUser"); 
   debugger
-  return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
+  return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
     response => {
       if (response.status == 200) {
@@ -105,7 +105,7 @@ export async function getWithXls(url, data, config ={responseType: 'blob'}) {
         // let url = window.URL.createObjectURL(new Blob([response.data]));   
         // saveAs(url, filename);
         let url = window.URL.createObjectURL(new Blob([response.data]));   
-        saveAs(url, "test1.xlsx");
+        saveAs(url, data.file_nm);
       } else {
          return responseError(response);
       }

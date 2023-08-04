@@ -76,6 +76,8 @@ const EditInstructions = (props) => {
     const [addUser, setAddUser] = useState([])
     const [removeUser, setRemoveUser] = useState([])
 
+    const [removeFile, setRemoveFile] = useState([])
+
     const [appInstructionsData, setAppInstructionsData] = useState(null);
 
     /* MULTI SELECT OPTIONS */
@@ -363,6 +365,14 @@ const EditInstructions = (props) => {
 
                     alert("Files type are not allowed to upload or not supported.");
                 }
+            } else {
+
+                if (removeFile.length > 0) {
+                    removeFile.forEach(files => {
+                        bodyForm.append('removeFile', files);
+                    });
+                }
+                
             }
 
             //end//
@@ -407,11 +417,12 @@ const EditInstructions = (props) => {
         // setAppEditInstructionsMsg(deleteInstructionsMessage)
     },[deleteInstructionsMessage])
 
-    const download = async (e) => {
+    const downloadAttach = async (num, fileNm) => {
         try {
             debugger
             var indexed_array = {
-                "file_num": e,
+                "file_num": num,
+                "file_nm" : fileNm
             };
             await dispatch(downloadFile(indexed_array));
         } catch (error) {
@@ -430,10 +441,9 @@ const EditInstructions = (props) => {
 
     function handleUploadFile() {
 
-        var bodyForm = new FormData();
-
-        bodyForm.append('num', editInstructionsValidInput.values.no);
-
+        deletedValues.forEach((deletedItem) => {
+            setRemoveUser(current => [...current, deletedItem]);
+        })
 
         if (selectedfile.length > 0) {
 
@@ -447,22 +457,13 @@ const EditInstructions = (props) => {
                 for (let index = 0; index < selectedfile.length; index++) {
                     let a = selectedfile[index];
 
-                    bodyForm.append('file' + index, selectedfile[index].fileori);
+                    //bodyForm.append('file' + index, selectedfile[index].fileori);
 
                     console.log(a);
                     SetSelectedFile([]);
                     SetFiles([...Files, a]);
 
                 }
-                const config = {
-                    headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                }
-
-                insertUploadFileEdit(bodyForm, config);
-                alert("Upload files success.")
-
 
             } else {
                 alert("Files type are not allowed to upload or not supported.");
@@ -472,7 +473,7 @@ const EditInstructions = (props) => {
     }
 
     function DeleteFileAttached(FileNo) {
-
+    
         const bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.no);
 
@@ -1299,7 +1300,7 @@ const EditInstructions = (props) => {
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} />
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => download(data.num)} />
+                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => downloadAttach(data.num, data.name)} />
 
                                                                                     </div>
                                                                                 </div>
