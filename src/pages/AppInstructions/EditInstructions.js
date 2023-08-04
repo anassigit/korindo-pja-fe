@@ -407,7 +407,7 @@ console.log("remov", removeUser);
                 let a = SetFiles[index];
                 //const result = SetFiles.filter((data) => data.no !== FileNo);
 
-                const result = (Object.values(Files).filter((data) => data.no !== FileNo));
+                const result = (Object.values(Files).filter((data) => data.num !== FileNo));
 
                 bodyForm.append('removeFile', FileNo);
                 console.log(a);
@@ -1232,15 +1232,15 @@ console.log("remov", removeUser);
                                                                     <h6>Recent files uploaded</h6>
                                                                     {
                                                                         Files.map((data, index) => {
-                                                                            const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
+                                                                            //const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
                                                                             return (
                                                                                 <div className="file-atc-box" key={index}>
                                                                                     <div className="file-detail">
                                                                                         <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{data.name}</span>
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.no)} />
+                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} />
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={filename} onClick={() => downloadFiles(file_num)} />
+                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={data.name} onClick={() => downloadFiles(file_num)} />
 
                                                                                     </div>
                                                                                 </div>
