@@ -18,7 +18,7 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, msgEdit, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, deleteInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, msgEdit, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
@@ -275,12 +275,12 @@ const EditInstructions = (props) => {
         await dispatch(editInstructions(values))
     };
 
-    const downloadFiles = async num => {
+    // const downloadFiles = async num => {
 
-        debugger
-        var ix = { num: num }
-        await dispatch(downloadFile(ix))
-    }
+    //     debugger
+    //     var ix = { num: num }
+    //     await dispatch(downloadFile(ix))
+    // }
 
     const editInstructionsValidInput = useFormik({
         enableReinitialize: true,
@@ -337,6 +337,32 @@ const EditInstructions = (props) => {
         }
 
     });
+
+    const deleteInstruction = async () => {
+        try {
+          debugger
+          var map = {
+            "num": editInstructionsValidInput.values.no
+          };
+          await dispatch(deleteInstructions(map));
+          window.location.reload();
+        } catch (message) {
+          console.log(message)
+        }
+      };
+
+    const download = async (e) => {
+        try {
+            debugger
+            var indexed_array = {
+                "file_num": e,
+            };
+            await dispatch(downloadFile(indexed_array));
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
 
     const editInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgEdit;
@@ -1208,7 +1234,7 @@ const EditInstructions = (props) => {
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} />
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={data.name} onClick={() => downloadFiles(data.num)} />
+                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => download(data.num)} />
 
                                                                                     </div>
                                                                                 </div>
@@ -1233,9 +1259,7 @@ const EditInstructions = (props) => {
                                         <div className="text-sm-end" >
 
 
-                                            <Button color="danger" className="ms-1" type="button" onClick={() => {
-                                                handleSaveDesc(editInstructionsValidInput.values.description)
-                                            }}>
+                                            <Button color="danger" className="ms-1" type="button" onClick={() => {deleteInstruction()}}>
                                                 Delete
                                             </Button>&nbsp;
                                             <Button
