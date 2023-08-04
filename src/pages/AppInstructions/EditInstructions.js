@@ -43,6 +43,7 @@ const EditInstructions = (props) => {
     const dispatch = useDispatch();
 
     const [appEditInstructionsMsg, setAppEditInstructionsMsg] = useState("")
+    const [appDeleteInstructionsMsg, setAppDeleteInstructionsMsg] = useState("")
 
     const currentDate = new Date();
     const [editInstructionMsg, setEditInstructionMsg] = useState("")
@@ -385,11 +386,26 @@ const EditInstructions = (props) => {
             "num": editInstructionsValidInput.values.no
           };
           await dispatch(deleteInstructions(map));
-          history.push('/AppInstructions');
+
         } catch (message) {
-          console.log(message)
+            console.log(message)
         }
-      };
+    };
+    
+    const deleteInstructionsMessage = useSelector(state => {
+        return state.instructionsReducer.msgDelete;
+    });
+
+    useEffect(()=> {
+        debugger
+        if (deleteInstructionsMessage.status == "1") {
+            history.push({
+                pathname: '/AppInstructions',
+                state: { setAppInstructionsMsg: deleteInstructionsMessage }
+            });
+        }
+        // setAppEditInstructionsMsg(deleteInstructionsMessage)
+    },[deleteInstructionsMessage])
 
     const download = async (e) => {
         try {
@@ -402,7 +418,6 @@ const EditInstructions = (props) => {
             console.log(error)
         }
     };
-
 
     const editInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgEdit;
@@ -512,33 +527,33 @@ const EditInstructions = (props) => {
             fileNm = fileNm.substring(fileNm.lastIndexOf('.') + 1);
 
             if (fileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
-            reader.onloadend = () => {
-                SetSelectedFile((preValue) => {
-                    return [
-                        ...preValue,
-                        {
-                            id: shortid.generate(),
-                            filename: e.target.files[i].name,
-                            filetype: e.target.files[i].type,
-                            fileimage: reader.result,
-                            fileori: file
-                            //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
-                            //filesize: filesizes(e.target.files[i].size)
+                reader.onloadend = () => {
+                    SetSelectedFile((preValue) => {
+                        return [
+                            ...preValue,
+                            {
+                                id: shortid.generate(),
+                                filename: e.target.files[i].name,
+                                filetype: e.target.files[i].type,
+                                fileimage: reader.result,
+                                fileori: file
+                                //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
+                                //filesize: filesizes(e.target.files[i].size)
 
-                        }
+                            }
 
-                    ]
-                })
+                        ]
+                    })
 
+                }
+                if (e.target.files[i]) {
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                alert("Files type are not allowed to upload or not supported.");
             }
-            if (e.target.files[i]) {
-                reader.readAsDataURL(file);
-            }
-        } else {
-            alert("Files type are not allowed to upload or not supported.");
         }
     }
-}
 
     const DeleteSelectFile = (id) => {
         if (window.confirm("Are you sure you want to delete this file?")) {
@@ -1013,7 +1028,10 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         if (editInstructionsMessage.status == "1") {
-            history.push('/AppInstructions', { 'setAppInstructionsMsg': editInstructionsMessage })
+            history.push({
+                pathname: '/AppInstructions',
+                state: { setAppInstructionsMsg: editInstructionsMessage }
+            });
         }
         setAppEditInstructionsMsg(editInstructionsMessage)
     }, [editInstructionsMessage])
@@ -1306,7 +1324,7 @@ const EditInstructions = (props) => {
                                         <div className="text-sm-end" >
 
 
-                                            <Button color="danger" className="ms-1" type="button" onClick={() => {deleteInstruction()}}>
+                                            <Button color="danger" className="ms-1" type="button" onClick={() => { deleteInstruction() }}>
                                                 Delete
                                             </Button>&nbsp;
                                             <Button
