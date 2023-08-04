@@ -297,12 +297,19 @@ const EditInstructions = (props) => {
         }),
 
         onSubmit: (values) => {
+
+
+            debugger
+
             var bodyForm = new FormData();
 
             bodyForm.append('num', values.no);
             bodyForm.append('title', editInstructionsValidInput.values.title);
             bodyForm.append('insDate', editInstructionsValidInput.values.insDate);
             bodyForm.append('description', values.description);
+
+
+            //remove/add - Owner & Manager//
 
             if (addUser.length > 0) {
                 addUser.forEach(user => {
@@ -315,6 +322,8 @@ const EditInstructions = (props) => {
                 });
             }
 
+            //end//
+
             //status//
 
             let statusId = null
@@ -325,6 +334,37 @@ const EditInstructions = (props) => {
             })
 
             //end status//
+
+            //attach files//
+
+            if (selectedfile.length > 0) {
+
+                var getFileNm = selectedfile[0].filename;
+    
+                getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+    
+                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+    
+    
+                    for (let index = 0; index < selectedfile.length; index++) {
+                        let a = selectedfile[index];
+    
+                        bodyForm.append('file' + index, selectedfile[index].fileori);
+    
+                        console.log(a);
+                        SetSelectedFile([]);
+                        SetFiles([...Files, a]);
+    
+                    }
+    
+    
+                } else {
+
+                    alert("Files type are not allowed to upload or not supported.");
+                }
+            }
+
+            //end//
 
 
             const config = {
@@ -345,7 +385,7 @@ const EditInstructions = (props) => {
             "num": editInstructionsValidInput.values.no
           };
           await dispatch(deleteInstructions(map));
-          window.location.reload();
+          history.push('/AppInstructions');
         } catch (message) {
           console.log(message)
         }
