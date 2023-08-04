@@ -29,15 +29,10 @@ const EmailVerPassword = props => {
   const [emailPasswordSpinner, setEmailPasswordSpinner] = useState(false);
   const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
 
-  useEffect(() => {
-    dispatch(msgEmailForgotPassword())
-  }, [dispatch])
 
   const error = useSelector(state => {
     return state.userProfileReducer.msgEmailForgotPassword;
   })
-
-  console.log(error)
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -55,10 +50,13 @@ const EmailVerPassword = props => {
   });
 
   useEffect(() => {
-    if (error?.status == "1") {
-      debugger
-    }
+    debugger
+    setAppUserProfileMsg(error)
   }, [error])
+
+  const appUserProfileCloseAllert = () => {
+    setAppUserProfileMsg("")
+  }
 
   return (
     <React.Fragment>
@@ -85,8 +83,8 @@ const EmailVerPassword = props => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                  {/* {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
-                    {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null} */}
+                {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
+                    {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null}
 
                   <div className="p-2">
                     <Form

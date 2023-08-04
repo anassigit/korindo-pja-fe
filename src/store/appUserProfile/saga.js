@@ -42,7 +42,6 @@ function* fetchGetProfile({ payload: req }) {
 
   function* fetchEmailForgetPassword({ payload: req }) {
     try {
-      debugger
       const response = yield call(emailForgotPassword, req)
       yield put(msgEmailForgotPassword(response))
     } catch (error) {
