@@ -303,7 +303,7 @@ const EditInstructions = (props) => {
         onSubmit: (values) => {
 
 
-            
+
 
             var bodyForm = new FormData();
 
@@ -344,36 +344,38 @@ const EditInstructions = (props) => {
             if (selectedfile.length > 0) {
 
                 var getFileNm = selectedfile[0].filename;
-    
+
                 getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
-    
+
                 if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
-    
-    
+
+
                     for (let index = 0; index < selectedfile.length; index++) {
                         let a = selectedfile[index];
-    
+
                         bodyForm.append('file' + index, selectedfile[index].fileori);
-    
+
                         console.log(a);
                         SetSelectedFile([]);
                         SetFiles([...Files, a]);
-    
+
                     }
-    
-    
+
+
                 } else {
 
                     alert("Files type are not allowed to upload or not supported.");
                 }
             } else {
 
+                debugger
+
                 if (removeFile.length > 0) {
                     removeFile.forEach(files => {
                         bodyForm.append('removeFile', files);
                     });
                 }
-                
+
             }
 
             //end//
@@ -392,23 +394,23 @@ const EditInstructions = (props) => {
 
     const deleteInstruction = async () => {
         try {
-          
-          var map = {
-            "num": editInstructionsValidInput.values.no
-          };
-          await dispatch(deleteInstructions(map));
+
+            var map = {
+                "num": editInstructionsValidInput.values.no
+            };
+            await dispatch(deleteInstructions(map));
 
         } catch (message) {
             console.log(message)
         }
     };
-    
+
     const deleteInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgDelete;
     });
 
-    useEffect(()=> {
-        
+    useEffect(() => {
+
         if (deleteInstructionsMessage.status == "1") {
             history.push({
                 pathname: '/AppInstructions',
@@ -416,14 +418,14 @@ const EditInstructions = (props) => {
             });
         }
         // setAppEditInstructionsMsg(deleteInstructionsMessage)
-    },[deleteInstructionsMessage])
+    }, [deleteInstructionsMessage])
 
     const downloadAttach = async (num, fileNm) => {
         try {
-            
+
             var indexed_array = {
                 "file_num": num,
-                "file_nm" : fileNm
+                "file_nm": fileNm
             };
             await dispatch(downloadFile(indexed_array));
         } catch (error) {
@@ -475,7 +477,7 @@ const EditInstructions = (props) => {
 
     function DeleteFileAttached(FileNo) {
 
-    
+
         const bodyForm = new FormData();
         bodyForm.append('num', editInstructionsValidInput.values.no);
 
@@ -486,10 +488,11 @@ const EditInstructions = (props) => {
                 let a = SetFiles[index];
 
                 const result = (Object.values(Files).filter((data) => data.num !== FileNo));
-
-                result.forEach((deleteFile) => {
-                    setRemoveFile(current => [...current, deleteFile]);
-                })
+                debugger
+                let temp = null
+                temp = removeFile
+                temp.push(FileNo)
+                setRemoveFile(temp);
                 console.log(removeFile);
                 SetFiles(result);
 
@@ -963,7 +966,7 @@ const EditInstructions = (props) => {
 
     const replyDelete = async (row) => {
         try {
-            
+
             var map = {
                 "reply_num": row.num
             };
@@ -1048,7 +1051,7 @@ const EditInstructions = (props) => {
     }, [editInstructionsMessage])
 
     const updateReply = async (values) => {
-        
+
         await dispatch(editReply(values));
 
         const storedData = localStorage.getItem('appInstructionsData');
@@ -1082,7 +1085,7 @@ const EditInstructions = (props) => {
     const handleEditReply = (reply_num, editedContent) => {
         var bodyForm = new FormData();
         let selectedNum = null
-        
+
         replyData?.data?.replyList.map((row, index) => {
             debugger
             if (index == reply_num) {
@@ -1744,7 +1747,7 @@ const EditInstructions = (props) => {
                                                                                             ? ""
                                                                                             : moment(row.write_time).format("yyyy-MM-DD hh:mm")}
                                                                                     </td>
-                                                                                     <td
+                                                                                    <td
                                                                                         className="tg-0lax"
                                                                                         style={{
                                                                                             maxWidth: "50px",

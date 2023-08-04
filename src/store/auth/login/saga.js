@@ -9,7 +9,6 @@ import { login, getMenu } from "helpers/backend_helper"
 import { useEffect } from "react";
 
 window.onpopstate = function (event) {
-  debugger;
   const currentPath = event?.currentTarget?.location?.pathname;
   const authUser = ReactSession.get("authUser");
 

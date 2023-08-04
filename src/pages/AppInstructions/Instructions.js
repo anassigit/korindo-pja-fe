@@ -53,13 +53,12 @@ const Instructions = () => {
         return state.instructionsReducer.respGetInstructions;
     });
 
-
     useEffect(() => {
         if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
         }
         debugger
-        if(history.location.state != undefined || history.location.state != null) {
+        if(history.location.state != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
             setAppInstructionsMsg(history.location.state?.setAppInstructionsMsg)
         }
     }, [appInstructionsData])
