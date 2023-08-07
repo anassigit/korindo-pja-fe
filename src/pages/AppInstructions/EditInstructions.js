@@ -568,13 +568,8 @@ const EditInstructions = (props) => {
     }
 
     const DeleteSelectFile = (id) => {
-        if (window.confirm("Are you sure you want to delete this file?")) {
-            const result = selectedfile.filter((data) => data.id !== id);
-            SetSelectedFile(result);
-        } else {
-            // alert('No');
-        }
-
+        const result = selectedfile.filter((data) => data.id !== id);
+        SetSelectedFile(result);
     }
 
     const FileUploadSubmit = async (e) => {
@@ -867,13 +862,8 @@ const EditInstructions = (props) => {
 
 
     const DeleteSelectFileR = (id) => {
-        if (window.confirm("Are you sure you want to delete this file?")) {
-            const result = selectedfileR.filter((data) => data.id !== id);
-            SetSelectedFileR(result);
-        } else {
-            // alert('No');
-        }
-
+        const result = selectedfileR.filter((data) => data.id !== id);
+        SetSelectedFileR(result);
     }
 
     // const FileUploadSubmitR = async (e) => {
@@ -915,12 +905,8 @@ const EditInstructions = (props) => {
 
 
     const DeleteFileR = async (id) => {
-        if (window.confirm("Are you sure you want to delete this file?")) {
-            const result = Files.filter((data) => data.id !== id);
-            SetFilesR(result);
-        } else {
-            // alert('No');
-        }
+        const result = Files.filter((data) => data.id !== id);
+        SetFilesR(result)
     }
 
     const insert3 = async (values) => {
