@@ -162,27 +162,6 @@ const FileManagement = () => {
                               <i className="bx bx-search-alt search-icon"></i>
                             </div>
                           </div>
-
-                          <UncontrolledDropdown className="mb-0">
-                            <DropdownToggle
-                              className="btn btn-link text-muted mt-n2"
-                              tag="a"
-                            >
-                              <i className="mdi mdi-dots-vertical font-size-20"></i>
-                            </DropdownToggle>
-
-                            <DropdownMenu className="dropdown-menu-end">
-                              <DropdownItem href="#">
-                                Share Files
-                              </DropdownItem>
-                              <DropdownItem href="#">
-                                Share with me
-                              </DropdownItem>
-                              <DropdownItem href="#">
-                                Other Actions
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
                         </Form>
                       </Col>
                     </Row>
