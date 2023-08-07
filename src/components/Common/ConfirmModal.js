@@ -2,16 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 
-const ConfirmModal = ({ modal, toggle, message }) => {
+const ConfirmModal = ( props ) => {
+
+    const toggleYes = () => {
+        props.setIsYes(true);
+        props.toggle();
+    };
+
+    const toggleNo = () => {
+        props.setIsYes(false);
+        props.toggle();
+    };
+
     return (
-        <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader toggle={toggle}>Confirm</ModalHeader>
-            <ModalBody>{message}</ModalBody>
+        <Modal isOpen={props.modal} toggle={props.toggle}>
+            <ModalHeader toggle={props.toggle}>Confirmation Message</ModalHeader>
+            <ModalBody>{props.message}</ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={toggle}>
+                <Button color="primary" onClick={toggleYes}>
                     Yes
                 </Button>
-                <Button color="danger" onClick={toggle}>
+                <Button color="danger" onClick={toggleNo}>
                     No
                 </Button>
             </ModalFooter>
@@ -20,9 +31,10 @@ const ConfirmModal = ({ modal, toggle, message }) => {
 };
 
 ConfirmModal.propTypes = {
-    modal: PropTypes.any,
-    toggle: PropTypes.any,
-    message: PropTypes.any,
+    modal: PropTypes.bool,
+    toggle: PropTypes.func,
+    message: PropTypes.string,
+    setIsYes: PropTypes.func,
 };
 
 export default ConfirmModal;

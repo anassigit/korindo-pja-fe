@@ -396,26 +396,6 @@ const EditInstructions = (props) => {
 
     });
 
-    const deleteInstruction = async () => {
-
-        if (confirmModal === true) {
-
-            try {
-
-                var map = {
-                    "num": editInstructionsValidInput.values.no
-                };
-                await dispatch(deleteInstructions(map));
-
-            } catch (message) {
-                console.log(message)
-            }
-
-        } else {
-            null
-        }
-
-    };
 
     const deleteInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgDelete;
@@ -445,12 +425,6 @@ const EditInstructions = (props) => {
         }
     };
 
-    function downloadAllAttachments(attachFileList) {
-        attachFileList.forEach(file => {
-            downloadReplyAttach(file.num, file.name);
-        });
-    }
-    
 
     const downloadReplyAttach = async (fNum, fName) => {
         try {
@@ -997,7 +971,8 @@ const EditInstructions = (props) => {
 
     const replyDelete = async (row) => {
 
-        if (confirmModal2 === true) {
+        debugger
+        if (isYes === true) {
 
             try {
 
@@ -1060,9 +1035,12 @@ const EditInstructions = (props) => {
     const [isHiddenLogs, setIsHiddenLogs] = useState(true)
     const [isEditableSelectedReply, setIsEditableSelectedReply] = useState(false)
 
+    const [isYes, setIsYes] = useState(false)
+    const [isYes2, setIsYes2] = useState(false)
+    const [replyRow, setReplyRow] = useState()
+
     const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
     const [editedContent, setEditedContent] = useState('');
-
 
     const handleSaveDesc = async (val) => {
         try {
@@ -1155,21 +1133,92 @@ const EditInstructions = (props) => {
     };
 
     const confirmToggle = () => {
-        debugger
         setConfirmModal(!confirmModal)
-        deleteInstruction()
     }
-
-    const [row, setRow] = useState()
 
     const confirmToggle2 = (tempRow) => {
-        debugger
-        if (tempRow.num != null) {
-            setRow(tempRow)
+        if (tempRow?.num != null) {
+            setReplyRow(tempRow)
         }
         setConfirmModal2(!confirmModal2)
-        replyDelete(row)
     }
+
+    useEffect(() => {
+
+        const handleDeleteInstructions = async () => {
+            try {
+                const map = {
+                    "num": editInstructionsValidInput.values.no
+                };
+                await dispatch(deleteInstructions(map));
+                setConfirmModal(!confirmModal);
+            } catch (error) {
+                console.log(error);
+                setConfirmModal(!confirmModal);
+            }
+        };
+
+        if (isYes === true) {
+            handleDeleteInstructions();
+            setConfirmModal(!confirmModal);
+        }
+
+
+    }, [isYes]);
+
+    useEffect(() => {
+        const replyDelete = async () => {
+
+            let row = replyRow
+
+            if (isYes2 === true) {
+
+                try {
+
+                    var map = {
+                        "reply_num": row.num
+                    };
+
+                    const storedData = localStorage.getItem('appInstructionsData');
+                    let parsedData = null
+                    if (storedData) {
+                        parsedData = JSON.parse(storedData);
+                    }
+
+                    let num = parsedData?.num
+                    num = num.toString()
+                    await dispatch(deleteReply(map))
+                    setTimeout(() => {
+
+                        dispatch(getReply({
+                            search: {
+                                "num": num,
+                                "langType": "eng"
+                            }
+                        }))
+                        dispatch(getAttachmentData({
+                            search: {
+                                "instruction_num": num,
+                            }
+                        }))
+
+                    }, 500)
+
+                } catch (error) {
+                    console.log(error)
+                }
+
+            } else {
+                null
+            }
+
+        };
+
+        if (isYes2 === true) {
+            replyDelete();
+        }
+
+    }, [replyRow, isYes2])
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1184,11 +1233,14 @@ const EditInstructions = (props) => {
                         modal={confirmModal}
                         toggle={confirmToggle}
                         message={"Are you sure to delete this?"}
+                        setIsYes={setIsYes}
                     />
+
                     <ConfirmModal
                         modal={confirmModal2}
                         toggle={confirmToggle2}
                         message={"Are you sure to delete this?"}
+                        setIsYes={setIsYes2}
                     />
 
                     <Container fluid={true}>
@@ -1894,7 +1946,7 @@ const EditInstructions = (props) => {
                                                                                         {row.attachFileList && row.attachFileList.length > 0 ? (
                                                                                             <i
                                                                                                 className="mdi mdi-download"
-                                                                                                onClick={() => downloadAllAttachments(row.attachFileList)}
+                                                                                                onClick={() => downloadReplyAttach(row.fNum, row.fName)}
                                                                                             />
                                                                                         ) : (
                                                                                             null
