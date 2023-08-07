@@ -1137,6 +1137,7 @@ const EditInstructions = (props) => {
     }
 
     const confirmToggle2 = (tempRow) => {
+        debugger
         if (tempRow?.num != null) {
             setReplyRow(tempRow)
         }
@@ -1168,6 +1169,7 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         const replyDelete = async () => {
+            debugger
 
             let row = replyRow
 
@@ -1217,6 +1219,8 @@ const EditInstructions = (props) => {
         if (isYes2 === true) {
             replyDelete();
         }
+        
+        setIsYes2(false)
 
     }, [replyRow, isYes2])
 
