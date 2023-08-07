@@ -418,6 +418,11 @@ const AddInstructions = (props) => {
         }),
     };
 
+    const noEnterAllowed = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    };
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
@@ -442,6 +447,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-8">
                                                 <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
+                                                    onKeyPress={noEnterAllowed}
                                                     maxLength={50}
                                                     name="title"
                                                     type="text"

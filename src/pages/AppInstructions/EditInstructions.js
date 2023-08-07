@@ -34,6 +34,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { preventDefault } from "@fullcalendar/core";
 import { reset } from "redux-form";
 import RootPageCustom from "common/RootPageCustom";
+import ConfirmModal from "components/Common/ConfirmModal";
 
 
 const EditInstructions = (props) => {
@@ -79,6 +80,9 @@ const EditInstructions = (props) => {
     const [removeFile, setRemoveFile] = useState([])
 
     const [appInstructionsData, setAppInstructionsData] = useState(null);
+
+    const [confirmModal, setConfirmModal] = useState(false)
+    const [confirmModal2, setConfirmModal2] = useState(false)
 
     /* MULTI SELECT OPTIONS */
 
@@ -393,16 +397,24 @@ const EditInstructions = (props) => {
     });
 
     const deleteInstruction = async () => {
-        try {
 
-            var map = {
-                "num": editInstructionsValidInput.values.no
-            };
-            await dispatch(deleteInstructions(map));
+        if (confirmModal === true) {
 
-        } catch (message) {
-            console.log(message)
+            try {
+
+                var map = {
+                    "num": editInstructionsValidInput.values.no
+                };
+                await dispatch(deleteInstructions(map));
+
+            } catch (message) {
+                console.log(message)
+            }
+
+        } else {
+            null
         }
+
     };
 
     const deleteInstructionsMessage = useSelector(state => {
@@ -432,6 +444,13 @@ const EditInstructions = (props) => {
             console.log(error)
         }
     };
+
+    function downloadAllAttachments(attachFileList) {
+        attachFileList.forEach(file => {
+            downloadReplyAttach(file.num, file.name);
+        });
+    }
+    
 
     const downloadReplyAttach = async (fNum, fName) => {
         try {
@@ -522,7 +541,6 @@ const EditInstructions = (props) => {
         //insert(bodyForm, config);
 
         //deleteFiles(bodyForm, config)
-        alert('Delete success.')
 
 
     };
@@ -978,43 +996,51 @@ const EditInstructions = (props) => {
     // Reply tables functions //
 
     const replyDelete = async (row) => {
-        try {
 
-            var map = {
-                "reply_num": row.num
-            };
+        if (confirmModal2 === true) {
 
-            // setEditInstructionsSpinner(true);
-            // setEditInstructionMsg("")
-            debugger
-            const storedData = localStorage.getItem('appInstructionsData');
-            let parsedData = null
-            if (storedData) {
-                parsedData = JSON.parse(storedData);
+            try {
+
+                var map = {
+                    "reply_num": row.num
+                };
+
+                // setEditInstructionsSpinner(true);
+                // setEditInstructionMsg("")
+                debugger
+                const storedData = localStorage.getItem('appInstructionsData');
+                let parsedData = null
+                if (storedData) {
+                    parsedData = JSON.parse(storedData);
+                }
+
+                let num = parsedData?.num
+                num = num.toString()
+                await dispatch(deleteReply(map))
+                setTimeout(() => {
+
+                    dispatch(getReply({
+                        search: {
+                            "num": num,
+                            "langType": "eng"
+                        }
+                    }))
+                    dispatch(getAttachmentData({
+                        search: {
+                            "instruction_num": num,
+                        }
+                    }))
+
+                }, 500)
+
+            } catch (error) {
+                console.log(error)
             }
 
-            let num = parsedData?.num
-            num = num.toString()
-            await dispatch(deleteReply(map))
-            setTimeout(() => {
-
-                dispatch(getReply({
-                    search: {
-                        "num": num,
-                        "langType": "eng"
-                    }
-                }))
-                dispatch(getAttachmentData({
-                    search: {
-                        "instruction_num": num,
-                    }
-                }))
-
-            }, 500)
-
-        } catch (error) {
-            console.log(error)
+        } else {
+            null
         }
+
     };
 
 
@@ -1121,6 +1147,30 @@ const EditInstructions = (props) => {
         setReplyClicked(!replyClicked)
 
     }
+
+    const noEnterAllowed = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    };
+
+    const confirmToggle = () => {
+        debugger
+        setConfirmModal(!confirmModal)
+        deleteInstruction()
+    }
+
+    const [row, setRow] = useState()
+
+    const confirmToggle2 = (tempRow) => {
+        debugger
+        if (tempRow.num != null) {
+            setRow(tempRow)
+        }
+        setConfirmModal2(!confirmModal2)
+        replyDelete(row)
+    }
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1129,6 +1179,17 @@ const EditInstructions = (props) => {
                 <>
                     {/* {editInstructionMsg !== "" ? <UncontrolledAlert toggle={editInstructionCloseAllert} color={editInstructionMsg.status == "1" ? "success" : "danger"}>
                     {typeof editInstructionMsg == 'string' ? editInstructionMsg : editInstructionMsg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null} */}
+
+                    <ConfirmModal
+                        modal={confirmModal}
+                        toggle={confirmToggle}
+                        message={"Are you sure to delete this?"}
+                    />
+                    <ConfirmModal
+                        modal={confirmModal2}
+                        toggle={confirmToggle2}
+                        message={"Are you sure to delete this?"}
+                    />
 
                     <Container fluid={true}>
 
@@ -1168,12 +1229,13 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8">
                                                             <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                             <Input
-                                                                maxLength={50}
+                                                                maxLength={400}
                                                                 name="title"
                                                                 type="text"
                                                                 onChange={editInstructionsValidInput.handleChange}
                                                                 //onBlur={handleAutoSaveTitle}
                                                                 value={editInstructionsValidInput.values.title || ""}
+                                                                onKeyPress={noEnterAllowed}
                                                                 invalid={
                                                                     editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? true : false
                                                                 }
@@ -1205,29 +1267,38 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> Status <span style={{ color: "red" }}>* </span></Label>
-
+                                                            <Label>
+                                                                Status <span style={{ color: "red" }}>*</span>
+                                                            </Label>
                                                             <Input
                                                                 name="status"
                                                                 type="select"
                                                                 onChange={(e) => {
-                                                                    editInstructionsValidInput.handleChange(e)
+                                                                    editInstructionsValidInput.handleChange(e);
                                                                 }}
-
                                                                 value={editInstructionsValidInput.values.status}
                                                                 invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
                                                             >
-                                                                {statusData?.data?.statusList.map((value, key) => (
-                                                                    <option key={key} value={value.name}>
-                                                                        {value.name}
-                                                                    </option>
-                                                                ))}
+                                                                {statusData?.data?.statusList.map((value, key) => {
+                                                                    if (value.use) {
+                                                                        return (
+                                                                            <option key={key} value={value.name}>
+                                                                                {value.name}
+                                                                            </option>
+                                                                        );
+                                                                    }
+                                                                    return (
+                                                                        <option style={{ backgroundColor: "#DDDDDD" }} disabled key={key} value={value.name}>
+                                                                            {value.name}
+                                                                        </option>
+                                                                    )
+                                                                })}
                                                             </Input>
-
                                                             {editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? (
                                                                 <FormFeedback type="invalid">{editInstructionsValidInput.errors.status}</FormFeedback>
                                                             ) : null}
                                                         </div>
+
                                                         <div className="mb-3 col-sm-8">
                                                             <Label className="col-sm-5" style={{ marginTop: "15px" }}>
                                                                 Descriptions
@@ -1355,7 +1426,7 @@ const EditInstructions = (props) => {
                                                     Update
                                                 </Button>&nbsp;
 
-                                                <Button color="danger" type="button" onClick={() => { deleteInstruction() }}>
+                                                <Button color="danger" type="button" onClick={() => { confirmToggle() }}>
                                                     <i className="mdi mdi-delete-forever align-middle me-2"></i>
                                                     Delete
                                                 </Button>&nbsp;
@@ -1397,7 +1468,7 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8" hidden>
                                                             <Label>Instruction ID</Label>
                                                             <Input
-                                                                disabled
+
                                                                 name="no"
                                                                 type="text"
                                                                 value={editInstructionsValidInput.values.no || ""}
@@ -1411,11 +1482,14 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label>Title</Label>
+                                                            <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                             <Input
                                                                 disabled
+                                                                maxLength={50}
                                                                 name="title"
                                                                 type="text"
+                                                                onChange={editInstructionsValidInput.handleChange}
+                                                                //onBlur={handleAutoSaveTitle}
                                                                 value={editInstructionsValidInput.values.title || ""}
                                                                 invalid={
                                                                     editInstructionsValidInput.touched.title && editInstructionsValidInput.errors.title ? true : false
@@ -1429,13 +1503,15 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8">
                                                             <Label>
                                                                 Instruction Date{" "}
-
+                                                                <span style={{ color: "red" }}>* </span>
                                                             </Label>
 
                                                             <Input
                                                                 disabled
                                                                 name="insDate"
                                                                 type="date"
+                                                                onChange={editInstructionsValidInput.handleChange}
+                                                                //onBlur={handleAutoSaveDate}
                                                                 value={editInstructionsValidInput.values.insDate || startDate}
                                                                 invalid={
                                                                     editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
@@ -1447,79 +1523,88 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> Status </Label>
+                                                            <Label> Status <span style={{ color: "red" }}>* </span></Label>
+
                                                             <Input
                                                                 disabled
-                                                                type="select"
                                                                 name="status"
-                                                                value={editInstructionsValidInput.values.status || ""}
-                                                                invalid={
-                                                                    editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? true : false
-                                                                }
-                                                            >
-                                                                {statusList.map((value, key) => (
-                                                                    <option key={key} value={value.statusNm}>{value.statusNm}</option>
-                                                                ))}
+                                                                type="select"
+                                                                onChange={(e) => {
+                                                                    editInstructionsValidInput.handleChange(e)
+                                                                }}
 
+                                                                value={editInstructionsValidInput.values.status}
+                                                                invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
+                                                            >
+                                                                {statusData?.data?.statusList.map((value, key) => (
+                                                                    <option key={key} value={value.name}>
+                                                                        {value.name}
+                                                                    </option>
+                                                                ))}
                                                             </Input>
+
                                                             {editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status ? (
                                                                 <FormFeedback type="invalid">{editInstructionsValidInput.errors.status}</FormFeedback>
                                                             ) : null}
                                                         </div>
-
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions</Label>
-                                                            <Input
-                                                                disabled
-                                                                name="description"
-                                                                type="textarea"
-                                                                rows="5"
-                                                                maxLength={50}
-                                                                value={
-                                                                    editInstructionsValidInput.values.description ||
-                                                                    ""
-                                                                }
-                                                                invalid={
-                                                                    editInstructionsValidInput.touched.description &&
-                                                                        editInstructionsValidInput.errors.description
-                                                                        ? true
-                                                                        : false
-                                                                }
-                                                            />
-                                                            {editInstructionsValidInput.touched.description &&
-                                                                editInstructionsValidInput.errors.description ? (
-                                                                <FormFeedback type="invalid">
-                                                                    {editInstructionsValidInput.errors.description}
-                                                                </FormFeedback>
-                                                            ) : null}
+                                                            <Label className="col-sm-5" style={{ marginTop: "15px" }}>
+                                                                Descriptions
+                                                            </Label>
+
+                                                            <Col>
+                                                                <Input
+                                                                    disabled
+                                                                    name="description"
+                                                                    type="textarea"
+                                                                    rows="5"
+                                                                    onChange={editInstructionsValidInput.handleChange}
+                                                                    value={editInstructionsValidInput.values.description || ""}
+                                                                    invalid={editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? true : false}
+                                                                />
+                                                                {editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? (
+                                                                    <FormFeedback type="invalid">
+                                                                        {editInstructionsValidInput.errors.description}
+                                                                    </FormFeedback>
+                                                                ) : null}
+                                                            </Col>
                                                         </div>
 
                                                     </Col>
 
                                                     <Col md="6">
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> Choose Owner</Label>
+                                                            <Label> Choose Owner </Label>
                                                             <Select
-                                                                isDisabled={true}
+                                                                isDisabled
                                                                 value={selectedMulti}
                                                                 isMulti={true}
+                                                                onChange={(e) => {
+                                                                    handleMulti(e);
+                                                                }}
+                                                                options={optionOwner0}
                                                                 className="select2-selection"
                                                                 styles={colourStyles}
                                                                 components={{ DropdownIndicator }}
-                                                                placeholder={'No Owner Choosen'}
+                                                                placeholder={'Select or type...'}
                                                             />
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
                                                             <label>Choose Manager </label>
                                                             <Select
-                                                                isDisabled={true}
+                                                                isDisabled
                                                                 value={selectedMulti2}
                                                                 isMulti={true}
+                                                                onChange={(e) => {
+                                                                    handleMulti2(e);
+                                                                }}
+                                                                options={optionManager0}
+
                                                                 className="select2-selection"
                                                                 styles={colourStyles2}
                                                                 components={{ DropdownIndicator }}
-                                                                placeholder={'No manager choosen'}
+                                                                placeholder={'Select or type...'}
                                                             />
                                                         </div>
 
@@ -1527,24 +1612,50 @@ const EditInstructions = (props) => {
                                                             <label>Attached Files </label>
 
                                                             <Form onSubmit={FileUploadSubmit}>
+                                                                <div className="kb-file-upload">
 
-                                                            </Form>
-                                                            {getFiles.length > 0 ?
-                                                                <div className="kb-attach-box">
+                                                                    <div className="file-upload-box">
+                                                                        <input disabled type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                                                    </div>
+                                                                </div>
+                                                                &nbsp;&nbsp;&nbsp;
+                                                                <div className="kb-attach-box mb-3">
                                                                     {
-                                                                        getFiles.map((data, index) => {
-                                                                            const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
+                                                                        selectedfile.map((data, index) => {
+                                                                            const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                             return (
-                                                                                <div className="file-atc-box" key={index}>
-                                                                                    {
-                                                                                        filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                            <div className="file-image"></div> :
-                                                                                            <div className="file-image"></div>
-                                                                                    }
+                                                                                <div className="file-atc-box" key={id}>
                                                                                     <div className="file-detail">
                                                                                         <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
-                                                                                        &nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} download={filename} onClick={() => downloadFiles(file_num)}></i>
+                                                                                        &nbsp;&nbsp;&nbsp;
+
+                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
+
+                                                                                        <p />
+                                                                                    </div>
+                                                                                </div>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </div>
+
+                                                            </Form>
+                                                            {Files.length > 0 ?
+                                                                <div className="kb-attach-box">
+                                                                    <hr />
+                                                                    <h6>Recent files uploaded</h6>
+                                                                    {
+                                                                        Files.map((data, index) => {
+                                                                            //const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
+                                                                            return (
+                                                                                <div className="file-atc-box" key={index}>
+                                                                                    <div className="file-detail">
+                                                                                        <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{data.name}</span>
+                                                                                        &nbsp;&nbsp;&nbsp;
+                                                                                        {/* <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} /> */}
+                                                                                        &nbsp;&nbsp;&nbsp;
+                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => downloadAttach(data.num, data.name)} />
+
                                                                                     </div>
                                                                                 </div>
                                                                             )
@@ -1553,12 +1664,11 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                                 : ''}
                                                         </div>
-
                                                     </Col>
                                                 </Row>
 
-                                            </FormGroup>
 
+                                            </FormGroup>
                                         </Form>
 
                                         <div className="text-sm-end col-10" >
@@ -1717,7 +1827,7 @@ const EditInstructions = (props) => {
                                                                                 <tr style={{ height: "25px" }}></tr>
                                                                                 <tr key={row.no} style={{ verticalAlign: "text-top" }}>
                                                                                     <td style={{ width: "10%" }} className="tg-0lax">{row.name}</td>
-                                                                                    <td className="tg-0lax" style={{ maxWidth: "250px", wordBreak: "break-word" }}>
+                                                                                    <td className="tg-0lax" style={{ maxWidth: "250px", whiteSpace: "pre-wrap" }}>
                                                                                         {selectedRowIndex === reply_num ? (
                                                                                             <Input
                                                                                                 maxLength={100}
@@ -1728,11 +1838,10 @@ const EditInstructions = (props) => {
                                                                                                 onChange={(e) => setEditedContent(e.target.value)}
                                                                                             />
                                                                                         ) : (
-                                                                                            <span
-                                                                                                style={{ maxWidth: "75%" }}
-                                                                                            >
-                                                                                                {row.content}
-                                                                                            </span>
+
+
+                                                                                            row.content
+
                                                                                         )}
                                                                                         <p />
                                                                                         {row.edit ? (
@@ -1751,7 +1860,7 @@ const EditInstructions = (props) => {
 
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         {row.delete ? (
-                                                                                            <a className="text-primary" onClick={() => replyDelete(row)}>
+                                                                                            <a className="text-primary" onClick={() => confirmToggle2(row)}>
                                                                                                 Delete
                                                                                             </a>
                                                                                         ) : (
@@ -1768,11 +1877,47 @@ const EditInstructions = (props) => {
                                                                                         style={{
                                                                                             maxWidth: "50px",
                                                                                             textOverflow: "clip",
-                                                                                            whiteSpace: "nowrap",
+                                                                                            whiteSpace: "pre-wrap",
                                                                                             overflow: "hidden",
                                                                                         }}
                                                                                     >
-                                                                                        {row.attachFileList.length > 0 ? row.attachFileList[0].name : ""}
+                                                                                        {row.attachFileList.length > 0
+                                                                                            ? row.attachFileList.map((file, index) => (
+                                                                                                <span key={index}>
+                                                                                                    {file.name}
+                                                                                                    {index !== row.attachFileList.length - 1 && <br />}
+                                                                                                </span>
+                                                                                            ))
+                                                                                            : ""}
+                                                                                    </td>
+                                                                                    <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}>
+                                                                                        {row.attachFileList && row.attachFileList.length > 0 ? (
+                                                                                            <i
+                                                                                                className="mdi mdi-download"
+                                                                                                onClick={() => downloadAllAttachments(row.attachFileList)}
+                                                                                            />
+                                                                                        ) : (
+                                                                                            null
+                                                                                        )}
+                                                                                    </td>
+
+                                                                                    {/* <td
+                                                                                        className="tg-0lax"
+                                                                                        style={{
+                                                                                            maxWidth: "50px",
+                                                                                            textOverflow: "clip",
+                                                                                            whiteSpace: "pre-wrap",
+                                                                                            overflow: "hidden",
+                                                                                        }}
+                                                                                    >
+                                                                                        {row.attachFileList.length > 0
+                                                                                            ? row.attachFileList.map((file, index) => (
+                                                                                                <span key={index}>
+                                                                                                    {file.name}
+                                                                                                    {index !== row.attachFileList.length - 1 && <br />}
+                                                                                                </span>
+                                                                                            ))
+                                                                                            : ""}
                                                                                     </td>
                                                                                     <td className="tg-0lax" align="left" style={{ cursor: "pointer" }}>
                                                                                         {row.attachFileList && row.attachFileList.length > 0 ? (
@@ -1783,7 +1928,7 @@ const EditInstructions = (props) => {
                                                                                         ) : (
                                                                                             null
                                                                                         )}
-                                                                                    </td>
+                                                                                    </td> */}
 
                                                                                     {/* <td className="tg-0lax" align="right">{row.delete ? <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app027p01Delete(app027p01SpkData)} /> : ''}</td> */}
                                                                                 </tr>
