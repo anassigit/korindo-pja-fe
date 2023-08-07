@@ -18,7 +18,12 @@ import {
   FormGroup,
   CardHeader,
   UncontrolledAlert,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
 } from "reactstrap"
+import { Link } from "react-router-dom"
 
 import { editUserProfile, resetMessage, msgEdit, getProfile } from "../../store/appUserProfile/actions"
 import { useSelector, useDispatch } from "react-redux"
@@ -31,10 +36,6 @@ const FileManagement = () => {
   const dispatch = useDispatch();
   const [userProfilePage, setUserProfilePage] = useState(true)
   const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
-  const [userProfilePassword, setUserProfilePassword] = useState(false)
-  const [userProfilePageData, setUserProfilePageData] = useState()
-
-  const [changePasswordMsg, setChangePasswordMsg] = useState("")
 
   useEffect(() => {
     dispatch(resetMessage());
@@ -47,12 +48,6 @@ const FileManagement = () => {
   const appUserProfileCloseAllert = () => {
     setAppUserProfileMsg("")
   }
-
-  const appChangePassCloseAllert = () => {
-    setChangePasswordMsg("")
-  }
-
-  const [appUserProfileSpinner, setAppUserProfileSpinner] = useState(false);
 
   useEffect(() => {
     if (userId == getDetailProfile?.data?.member?.id || getDetailProfile !== null) {
@@ -72,8 +67,6 @@ const FileManagement = () => {
     }))
   }, [])
 
-
-  //const u = JSON.parse(ReactSession.get("user") || null)
 
   const appUserProfilepValidInput = useFormik({
     enableReinitialize: true,
@@ -96,54 +89,44 @@ const FileManagement = () => {
 
   });
 
-
-  const updateHp = async () => {
-    try {
-      debugger
-      var map = {
-        "hp": appUserProfilepValidInput.values.hp
-      };
-      await dispatch(editUserProfile(map));
-      setAppUserProfileMsg("")
-    } catch (message) {
-      console.log(message)
-    }
-  };
-
-  const respMsg = useSelector(state => {
-    return state.userProfileReducer.msgEdit;
-  });
-
-
-  useEffect(() => {
-    if (respMsg.status == "1") {
-      setUserProfilePage(true);
-    }
-    setAppUserProfileMsg(respMsg)
-    setAppUserProfileSpinner(false);
-    setAppUserProfileMsg
-  }, [respMsg])
-
-  useEffect(() => {
-    if (appUserProfileMsg == "1") {
-      console.log(appUserProfileMsg)
-    }
-  }, [appUserProfileMsg])
-
-  const ChangePassPage = () => {
-    setAppUserProfileMsg("")
-    setUserProfilePageData(userProfilePageData)
-    setUserProfilePage(false)
-    setUserProfilePassword(true)
-  }
-
-  const handleKeyPress = (event) => {
-    const keyCode = event.which || event.keyCode;
-
-    if (keyCode < 48 || keyCode > 57) {
-      event.preventDefault();
-    }
-  }
+  const myfiles = [
+    {
+      id: 1,
+      name: "Design",
+      file: "12",
+      Gb: 6,
+    },
+    {
+      id: 2,
+      name: "Development",
+      file: "20",
+      Gb: 8,
+    },
+    {
+      id: 3,
+      name: "Project A",
+      file: "06 ",
+      Gb: 2,
+    },
+    {
+      id: 4,
+      name: "Admin",
+      file: "08",
+      Gb: 4,
+    },
+    {
+      id: 5,
+      name: "Sketch Design",
+      file: "12",
+      Gb: 6,
+    },
+    {
+      id: 6,
+      name: "Applications",
+      file: "20",
+      Gb: 8,
+    },
+  ];
   
   return (
     <RootPageCustom
@@ -160,6 +143,110 @@ const FileManagement = () => {
                   <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>File Management</CardHeader>
                   <CardBody>
 
+                  <div>
+                    <Row className="mb-3">
+                      <Col xl={3} sm={6}>
+                        <div className="mt-2">
+                          <h5>My Files</h5>
+                        </div>
+                      </Col>
+                      <Col xl={9} sm={6}>
+                        <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
+                          <div className="search-box mb-2 me-2">
+                            <div className="position-relative">
+                              <input
+                                type="text"
+                                className="form-control bg-light border-light rounded"
+                                placeholder="Search..."
+                              />
+                              <i className="bx bx-search-alt search-icon"></i>
+                            </div>
+                          </div>
+
+                          <UncontrolledDropdown className="mb-0">
+                            <DropdownToggle
+                              className="btn btn-link text-muted mt-n2"
+                              tag="a"
+                            >
+                              <i className="mdi mdi-dots-vertical font-size-20"></i>
+                            </DropdownToggle>
+
+                            <DropdownMenu className="dropdown-menu-end">
+                              <DropdownItem href="#">
+                                Share Files
+                              </DropdownItem>
+                              <DropdownItem href="#">
+                                Share with me
+                              </DropdownItem>
+                              <DropdownItem href="#">
+                                Other Actions
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </UncontrolledDropdown>
+                        </Form>
+                      </Col>
+                    </Row>
+                  </div>
+                  <div>
+                    <Row>
+                      {myfiles.map((myfiles, key) => (
+                        <Col xl={4} sm={6} key={key}>
+                          <Card className="shadow-none border">
+                            <CardBody className="p-3">
+                              <div >
+                                <div className="float-end ms-2">
+                                  <UncontrolledDropdown className="mb-2">
+                                    <DropdownToggle
+                                      className="font-size-16 text-muted"
+                                      tag="a"
+                                    >
+                                      <i className="mdi mdi-dots-horizontal"></i>
+                                    </DropdownToggle>
+
+                                    <DropdownMenu className="dropdown-menu-end">
+                                      <DropdownItem href="#">
+                                        Open
+                                      </DropdownItem>
+                                      <DropdownItem href="#">
+                                        Edit
+                                      </DropdownItem>
+                                      <DropdownItem href="#">
+                                        Rename
+                                      </DropdownItem>
+                                      <div className="dropdown-divider"></div>
+                                      <DropdownItem href="#">
+                                        Remove
+                                      </DropdownItem>
+                                    </DropdownMenu>
+                                  </UncontrolledDropdown>
+                                </div>
+                                <div className="avatar-xs me-3 mb-3">
+                                  <div className="avatar-title bg-transparent rounded">
+                                    <i className="bx bxs-folder font-size-24 text-warning"></i>
+                                  </div>
+                                </div>
+                                <div className="d-flex">
+                                  <div className="overflow-hidden me-auto">
+                                    <h5 className="font-size-14 text-truncate mb-1">
+                                      <Link to="#" className="text-body">
+                                        {myfiles.name}
+                                      </Link>
+                                    </h5>
+                                    <p className="text-muted text-truncate mb-0">
+                                      {myfiles.file} Files
+                                    </p>
+                                  </div>
+                                  <div className="align-self-end ms-2">
+                                    <p className="text-muted mb-0">{myfiles.Gb}GB</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
                   </CardBody>
                 </Card>
               </Col>
