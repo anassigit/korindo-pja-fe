@@ -25,122 +25,99 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
-import { editUserProfile, resetMessage, msgEdit, getProfile } from "../../store/appUserProfile/actions"
+import { getSelectFile, resetMessage } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 
 
 const FileManagement = () => {
 
-  let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
+  //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
   const dispatch = useDispatch();
-  const [userProfilePage, setUserProfilePage] = useState(true)
-  const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
+  const [fileManagementPage, setFileManagementPage] = useState(true)
+  const [fileManagementMsg, setFileManagementMsg] = useState("")
+  const [myFiles, setMyFiles] = useState ([]);
 
   useEffect(() => {
     dispatch(resetMessage());
+    dispatch(getSelectFile())
   }, [])
 
-  const getDetailProfile = useSelector(state => {
-    return state.userProfileReducer.respGetProfile;
+  const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "asc", search: { any: "" } });
+
+  const getFileSelect = useSelector(state => {
+   
+    return state.fileManagementReducer.respGetSelect;
   })
 
-  const appUserProfileCloseAllert = () => {
-    setAppUserProfileMsg("")
+
+
+  const fileManagementCloseAlert = () => {
+    setFileManagementMsg("")
   }
 
   useEffect(() => {
-    if (userId == getDetailProfile?.data?.member?.id || getDetailProfile !== null) {
-      appUserProfilepValidInput.setFieldValue("name", getDetailProfile?.data?.member?.name)
-      appUserProfilepValidInput.setFieldValue("pname", getDetailProfile?.data?.member?.pname)
-      appUserProfilepValidInput.setFieldValue("gname", getDetailProfile?.data?.member?.gname)
-      appUserProfilepValidInput.setFieldValue("hp", getDetailProfile?.data?.member?.hp)
-      appUserProfilepValidInput.setFieldValue("id", getDetailProfile?.data?.member?.id)
+
+    console.log("ASDF", getFileSelect)
+    if (getFileSelect.status == "1") {
+
+    //   if (getFileSelect?.data?.childList) {
+    //     const entries = Object.values(getFileSelect?.data?.childList);
+    //     setMyFiles(entries);
+    // }
+
+        //setMyFiles(getFileSelect?.data?.childList)
+
+        setFileManagementMsg("")
     }
-  }, [getDetailProfile])
-
-  useEffect(() => {
-    dispatch(getProfile({
-      "search": {
-        "langType": "eng"
-      }
-    }))
-  }, [])
+}, [getFileSelect])
 
 
-  const appUserProfilepValidInput = useFormik({
-    enableReinitialize: true,
+  // const myFiles = [
+  //   // {
+  //   //   id: 6,
+  //   //   name: "Applications",
+  //   //   file: "20",
+  //   //   Gb: 8,
+  //   // },
+  // ];
 
-    initialValues: {
+//   const insideFolder = (getFileSelect) => {
+//     setApp042setMsg("")
+//     setApp042p01Data(app042p01HasilTanamData)
+//     setApp042p01Page(false)
+//     setApp042p02Page(true)
 
-      name: '',
-      pname: '',
-      gname: '',
-      hp: '',
-      id: '',
+// }
 
-    },
 
-    validationSchema: Yup.object().shape({
+const getInsideFolder = async (e) => {
+  debugger
+  try {
+    var map = {
+      "folder_num": e
+    };
+    await dispatch(getSelectFile(map));
 
-      hp: Yup.string().required("Please enter mobile phone number.")
+  } catch (message) {
+    console.log(message);
+  }
 
-    }),
-
-  });
-
-  const myfiles = [
-    {
-      id: 1,
-      name: "Design",
-      file: "12",
-      Gb: 6,
-    },
-    {
-      id: 2,
-      name: "Development",
-      file: "20",
-      Gb: 8,
-    },
-    {
-      id: 3,
-      name: "Project A",
-      file: "06 ",
-      Gb: 2,
-    },
-    {
-      id: 4,
-      name: "Admin",
-      file: "08",
-      Gb: 4,
-    },
-    {
-      id: 5,
-      name: "Sketch Design",
-      file: "12",
-      Gb: 6,
-    },
-    {
-      id: 6,
-      name: "Applications",
-      file: "20",
-      Gb: 8,
-    },
-  ];
+}
   
   return (
     <RootPageCustom
       componentJsx={
         <>
 
-          {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
-            {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null}
+          {fileManagementMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={fileManagementMsg.status == "1" ? "success" : "danger"}>
+            {typeof fileManagementMsg == 'string' ? null : fileManagementMsg.message}</UncontrolledAlert> : null}
 
-          <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
               <Col lg={12}>
                 <Card>
-                  <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>File Management</CardHeader>
+                  <CardHeader><i className="mdi mdi-folder-multiple-outline font-size-18 align-middle me-2"></i>File Management</CardHeader>
                   <CardBody>
 
                   <div>
@@ -167,8 +144,7 @@ const FileManagement = () => {
                     </Row>
                   </div>
                   <div>
-                    <Row>
-                      {myfiles.map((myfiles, key) => (
+                  {getFileSelect?.data?.childList.map((myfiles, key) => (
                         <Col xl={4} sm={6} key={key}>
                           <Card className="shadow-none border">
                             <CardBody className="p-3">
@@ -183,7 +159,7 @@ const FileManagement = () => {
                                     </DropdownToggle>
 
                                     <DropdownMenu className="dropdown-menu-end">
-                                      <DropdownItem href="#">
+                                      <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
                                         Open
                                       </DropdownItem>
                                       {/* <DropdownItem href="#">
@@ -201,7 +177,11 @@ const FileManagement = () => {
                                 </div>
                                 <div className="avatar-xs me-3 mb-3">
                                   <div className="avatar-title bg-transparent rounded">
-                                    <i className="bx bxs-folder font-size-24 text-warning"></i>
+                                     { myfiles.type == 0 ?
+                                        <i className="bx bxs-folder font-size-24 text-warning"></i> :
+                                        <i className="bx bxs-file font-size-24 text-warning"></i>
+                                     }
+                                    
                                   </div>
                                 </div>
                                 <div className="d-flex">
@@ -211,12 +191,12 @@ const FileManagement = () => {
                                         {myfiles.name}
                                       </Link>
                                     </h5>
-                                    <p className="text-muted text-truncate mb-0">
+                                    {/* <p className="text-muted text-truncate mb-0">
                                       {myfiles.file} Files
-                                    </p>
+                                    </p> */}
                                   </div>
                                   <div className="align-self-end ms-2">
-                                    <p className="text-muted mb-0">{myfiles.Gb}GB</p>
+                                    <p className="text-muted mb-0">{myfiles.file_size} MB</p>
                                   </div>
                                 </div>
                               </div>
@@ -224,7 +204,7 @@ const FileManagement = () => {
                           </Card>
                         </Col>
                       ))}
-                    </Row>
+                  
                   </div>
                   </CardBody>
                 </Card>
