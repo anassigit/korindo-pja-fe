@@ -156,3 +156,7 @@ export const getLogsList = req => post("rest/InstructionRest/SelectLogList", req
 /* GENERAL SETTING */
 
 export const updateGeneralSetting = req => postWithParam("/rest/SettingRest/UpdateSetting", req)
+
+/* FILE MANAGEMENT */
+
+export const selectFolder = req => post("/rest/FileManagementRest/SelectFolder", req) 

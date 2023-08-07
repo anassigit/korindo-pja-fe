@@ -12,6 +12,7 @@ export * from "./app008/actions"
 export * from "./appInstructions/actions"
 export * from "./appSetting/actions"
 export * from "./appUserProfile/actions"
+export * from "./appFileManagement/actions"
 
 
 

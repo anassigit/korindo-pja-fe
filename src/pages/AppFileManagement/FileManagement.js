@@ -186,9 +186,9 @@ const FileManagement = () => {
                                       <DropdownItem href="#">
                                         Open
                                       </DropdownItem>
-                                      <DropdownItem href="#">
+                                      {/* <DropdownItem href="#">
                                         Edit
-                                      </DropdownItem>
+                                      </DropdownItem> */}
                                       <DropdownItem href="#">
                                         Rename
                                       </DropdownItem>

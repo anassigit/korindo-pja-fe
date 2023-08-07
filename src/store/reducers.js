@@ -15,6 +15,7 @@ import MUserReducer from "./app008/reducer"
 import instructionsReducer from "./appInstructions/reducer"
 import userProfileReducer from "./appUserProfile/reducer"
 import settingReducer from "./appSetting/reducer"
+import fileManagementReducer from "./appFileManagement/reducer"
 
 const rootReducer = combineReducers({
   Layout,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   instructionsReducer,
   userProfileReducer,
   settingReducer,
+  fileManagementReducer,
 })
 
 export default rootReducer
