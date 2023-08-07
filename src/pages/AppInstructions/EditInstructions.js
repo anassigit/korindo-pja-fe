@@ -301,7 +301,7 @@ const EditInstructions = (props) => {
         },
 
         validationSchema: Yup.object().shape({
-            //title: Yup.string().required("Wajib diisi"),
+            content: Yup.string().required("You must fill the reply"),
         }),
 
         onSubmit: (values) => {
@@ -891,9 +891,7 @@ const EditInstructions = (props) => {
     const FileUploadSubmitR = async (e) => {
         e.preventDefault();
 
-        // Reset the form on submit
         e.target.reset();
-        debugger
 
         if (selectedfileR.length > 0) {
             SetFilesR((prevFiles) => [...prevFiles, ...selectedfileR]);
@@ -1762,15 +1760,19 @@ const EditInstructions = (props) => {
                                     <CardBody hidden={isHiddenReply}>
                                         <React.Fragment>
                                             <FormGroup className="mb-0">
-                                                <div className="row row-cols-2">
+                                                <div className="row col-8">
                                                     <div className="col">
                                                         <Row className="mb-2">
                                                             <Col sm="12">
                                                                 <div className="input-group">
-                                                                    <div className="col-sm-8">
+                                                                    <div className="col-sm-12">
                                                                         <label>Answer </label>
                                                                         <Input
-                                                                            maxLength={100}
+                                                                            style={{
+                                                                                minHeight: "10em",  
+                                                                            }}
+                                                                            maxLength={400}
+                                                                            placeholder="Please Input Your Answer Here..."
                                                                             name="content"
                                                                             type="textarea"
                                                                             onChange={editInstructionsValidInput.handleChange}
@@ -1788,11 +1790,9 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                             </Col>
                                                         </Row>
-                                                    </div>
-                                                    <div className="col">
                                                         <Row className="mb-2">
                                                             <Col sm="12">
-                                                                <div className="mb-3 col-sm-8">
+                                                                <div className="mb-3 col-sm-12">
                                                                     <label>Attached Files </label>
 
                                                                     <Form onSubmit={FileUploadSubmitR}>
@@ -1833,7 +1833,7 @@ const EditInstructions = (props) => {
                                                             </Col>
 
                                                             {/* <Col md="12"> */}
-                                                            <div className="text-sm-end col-10" >
+                                                            <div className="text-sm-end col-12" >
 
                                                                 <Button
                                                                     type="button"
@@ -1939,8 +1939,9 @@ const EditInstructions = (props) => {
                                                                                             <React.Fragment key={index}>
                                                                                                 <i
                                                                                                     className="mdi mdi-download"
-                                                                                                    onClick={() => downloadReplyAttach(row.num, file.fName)}
-                                                                                                />
+                                                                                                    onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                                    />
+                                                                                                    {console.log(file)}
                                                                                                 <br />
                                                                                             </React.Fragment>
                                                                                         ))}
