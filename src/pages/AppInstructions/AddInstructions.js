@@ -448,7 +448,7 @@ const AddInstructions = (props) => {
                                                 <Label>Title <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     onKeyPress={noEnterAllowed}
-                                                    maxLength={50}
+                                                    maxLength={400}
                                                     name="title"
                                                     type="text"
                                                     onChange={addInstructionsValidInput.handleChange}
