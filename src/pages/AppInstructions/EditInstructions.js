@@ -22,7 +22,6 @@ import { deleteReply, downloadFile, editInstructions, deleteInstructions, editRe
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
-
 import { format } from 'date-fns';
 import moment from "moment";
 import { ReactSession } from 'react-client-session';
@@ -35,6 +34,9 @@ import { preventDefault } from "@fullcalendar/core";
 import { reset } from "redux-form";
 import RootPageCustom from "common/RootPageCustom";
 import ConfirmModal from "components/Common/ConfirmModal";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css";
+
 
 
 const EditInstructions = (props) => {
@@ -49,6 +51,7 @@ const EditInstructions = (props) => {
     const currentDate = new Date();
     const [editInstructionMsg, setEditInstructionMsg] = useState("")
     const [startDate, setStartDate] = useState(format(currentDate, 'yyyy-MM-dd'))
+    const [insEditDate, setInsEditDate] = useState('')
     const [editInstructionsSpinner, setEditInstructionsSpinner] = useState(false);
     const [editInstructionsFirstRenderDone, setEditInstructionsFirstRenderDone] = useState(false);
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
@@ -253,6 +256,8 @@ const EditInstructions = (props) => {
 
         editInstructionsValidInput.setFieldValue("no", parsedData?.num)
         editInstructionsValidInput.setFieldValue("title", parsedData?.title)
+
+        debugger
         editInstructionsValidInput.setFieldValue("insDate", parsedData?.insDate)
         editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
@@ -1225,6 +1230,14 @@ const EditInstructions = (props) => {
 
     }, [replyRow, isYes2])
 
+    const handleChangeDate = val => {
+        if (val == "") {
+            editInstructionsValidInput.setFieldValue("insDate", '')
+        } else {
+            editInstructionsValidInput.setFieldValue("insDate", val)
+        }
+    }
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1308,19 +1321,17 @@ const EditInstructions = (props) => {
                                                                 <span style={{ color: "red" }}>* </span>
                                                             </Label>
 
-                                                            <Input
+                                                            <DatePicker
                                                                 name="insDate"
-                                                                type="date"
-                                                                onChange={editInstructionsValidInput.handleChange}
-                                                                //onBlur={handleAutoSaveDate}
-                                                                value={editInstructionsValidInput.values.insDate || startDate}
-                                                                invalid={
-                                                                    editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
-                                                                }
+                                                                className="form-control"
+                                                                dateFormat="yyyy-MM-dd"
+                                                                onChange={date => {
+                                                                    handleChangeDate(date);
+                                                                    editInstructionsValidInput.handleChange('insDate', date);
+                                                                }}
+                                                                selected={editInstructionsValidInput.values.insDate ? new Date(editInstructionsValidInput.values.insDate) : null}
                                                             />
-                                                            {editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? (
-                                                                <FormFeedback type="invalid"> {editInstructionsValidInput.errors.insDate} </FormFeedback>
-                                                            ) : null}
+
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
@@ -1562,20 +1573,16 @@ const EditInstructions = (props) => {
                                                                 <span style={{ color: "red" }}>* </span>
                                                             </Label>
 
-                                                            <Input
+                                                            <DatePicker
                                                                 disabled
                                                                 name="insDate"
-                                                                type="date"
-                                                                onChange={editInstructionsValidInput.handleChange}
-                                                                //onBlur={handleAutoSaveDate}
-                                                                value={editInstructionsValidInput.values.insDate || startDate}
-                                                                invalid={
-                                                                    editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
+                                                                className="form-control"
+                                                                dateFormat="yyyy-MM-dd"
+                                                                onChange={date =>
+                                                                    app044p01OnChangeSDate(date)
                                                                 }
+                                                                value={editInstructionsValidInput.values.insDate || ''}
                                                             />
-                                                            {editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? (
-                                                                <FormFeedback type="invalid"> {editInstructionsValidInput.errors.insDate} </FormFeedback>
-                                                            ) : null}
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
@@ -1892,7 +1899,7 @@ const EditInstructions = (props) => {
                                                                                 ) : (
 
 
-                                                                                    <b style={{whiteSpace: "pre-wrap"}}>{row.content}</b>
+                                                                                    <b style={{ whiteSpace: "pre-wrap" }}>{row.content}</b>
 
                                                                                 )}
                                                                             </div>
@@ -1900,6 +1907,7 @@ const EditInstructions = (props) => {
                                                                                 <React.Fragment key={index}>
                                                                                     <div className="reply-attachment d-flex align-items-start mb-1">
                                                                                         <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                        <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadReplyAttach(file.num, file.name)} />
                                                                                         <u
                                                                                             style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
                                                                                             onClick={() => downloadReplyAttach(file.num, file.name)}
@@ -1908,7 +1916,7 @@ const EditInstructions = (props) => {
                                                                                         </u>
                                                                                         &nbsp;
                                                                                         <i
-                                                                                            style={{ cursor: "pointer", fontSize: "20px", verticalAlign: "middle" }}
+                                                                                            style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
                                                                                             className="mdi mdi-download"
                                                                                             onClick={() => downloadReplyAttach(file.num, file.name)}
                                                                                         />
