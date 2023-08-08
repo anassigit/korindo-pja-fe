@@ -26,6 +26,7 @@ import RootPageCustom from '../../common/RootPageCustom';
 
 const FolderDetail = (props) => {
 
+
     const dispatch = useDispatch();
     const [folderDetailSpinner, setFolderDetailSpinner] = useState(false);
     const [folderDetailMsg, setFolderDetailMsg] = useState("");
@@ -38,11 +39,24 @@ const FolderDetail = (props) => {
         return state.fileManagementReducer.respGetSelectFile;
       })
 
-      debugger
+      
       useEffect(() => {
+        
+    //      const bodyForm = new FormData();    
+    // // try {
+    // //   var map = {
+    //     bodyForm.append('folder_num', props.idFile)
+    // //   }
+    //   const config = {
+    //     headers: {
+    //         'content-type': 'multipart/form-data'
+    //             }
+    //                   }
+  
+    
         dispatch(getSelectFile2({
-        'folder_num': props.idFile
-    }))
+            'folder_num': props.idFile
+        }))
       }, [props.idFile])
     
     const folderDetailCloseAlert = () => {

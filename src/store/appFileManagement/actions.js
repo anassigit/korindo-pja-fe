@@ -4,6 +4,7 @@ import {
     RESP_GET_SELECT,
     GET_SELECT_FILE,
     RESP_GET_SELECT_FILE,
+    DELETE_FILE_FOLDER,
     RESET_MESSAGE,
     MSGADD,
     MSGEDIT,
@@ -29,6 +30,11 @@ export const getSelectFile = (req) => ({
   export const respGetSelectFile = resp => ({
     type: RESP_GET_SELECT_FILE,
     payload: resp,
+  })
+
+  export const deleteFileFolder = (req) => ({
+    type: DELETE_FILE_FOLDER,
+    payload: req,
   })
 
   export const resetMessage = (resp) => ({

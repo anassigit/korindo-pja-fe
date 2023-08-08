@@ -159,4 +159,6 @@ export const updateGeneralSetting = req => postWithParam("/rest/SettingRest/Upda
 
 /* FILE MANAGEMENT */
 
-export const selectFolder = req => post("/rest/FileManagementRest/SelectFolder", req) 
+export const selectFolder = req => postWithParam("/rest/FileManagementRest/SelectFolder", req)
+
+export const deleteFileFolder = req => postWithParam("/rest/FileManagementRest/Delete", req)

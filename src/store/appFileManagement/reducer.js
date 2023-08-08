@@ -4,6 +4,7 @@ import {
     RESP_GET_SELECT,
     GET_SELECT_FILE,
     RESP_GET_SELECT_FILE,
+    DELETE_FILE_FOLDER,
     RESET_MESSAGE,
     MSGADD,
     MSGEDIT,
@@ -43,6 +44,11 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetSelectFile: action.payload,
                 }
+
+                case DELETE_FILE_FOLDER:
+                    return {
+                      ...state,
+                    }
         case RESET_MESSAGE:
             return {
             ...state,

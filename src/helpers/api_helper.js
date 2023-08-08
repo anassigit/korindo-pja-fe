@@ -90,12 +90,12 @@ function responseError(response){
 export async function getWithXls(url, data, config ={responseType: 'blob'}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   let token = ReactSession.get("authUser"); 
-  debugger
+  
   return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
     response => {
       if (response.status == 200) {
-        debugger
+        
         // let filename = response.headers['content-disposition']
         // .split(';')
         // .find(n => n.includes('filename='))
@@ -134,7 +134,7 @@ export async function getWithPdf(url, data, config ={responseType: 'blob'}) {
 
 export async function postUpload(url, data, config ={}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
-  debugger
+  
   return axiosApi
     .post(url, data, { ...config },)
     .then(function (response) {
@@ -144,7 +144,7 @@ export async function postUpload(url, data, config ={}) {
 
 
 export async function postDownload(url, data, config ={responseType: 'blob'}) {
-  debugger
+  
   console.log(data)
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
   let token = ReactSession.get("authUser"); 
@@ -152,9 +152,9 @@ export async function postDownload(url, data, config ={responseType: 'blob'}) {
   //return await axiosApi.post(url, { ...data }, { ...config },)
   .then(
     response => {
-      debugger
+      
       if (response.status == 200) {
-        debugger
+        
         console.log(response.headers)
         let filename = response.headers['content-disposition'].split("filename=")[1];
         // let abcd = filename.
