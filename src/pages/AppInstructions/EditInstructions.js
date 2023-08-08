@@ -935,8 +935,8 @@ const EditInstructions = (props) => {
     function insertReplyAndFiles(values) {
         debugger
 
-        if(editInstructionsValidInput.values.content == '') {
-        editInstructionsValidInput.setErrors({ content: "Please insert answer content" });
+        if (editInstructionsValidInput.values.content == '') {
+            editInstructionsValidInput.setErrors({ content: "Please insert answer content" });
         }
         var bodyForm = new FormData();
 
@@ -1032,7 +1032,7 @@ const EditInstructions = (props) => {
     /*********************************** SIGIT MADE FROM HERE ***********************************/
     /*********************************** SIGIT MADE FROM HERE ***********************************/
 
-    const [isHiddenReply, setIsHiddenReply] = useState(true)
+    const [isHiddenReply, setIsHiddenReply] = useState(false)
     const [isHiddenLogs, setIsHiddenLogs] = useState(true)
     const [isEditableSelectedReply, setIsEditableSelectedReply] = useState(false)
 
@@ -1861,7 +1861,54 @@ const EditInstructions = (props) => {
                                                 <Row style={{ marginTop: "30px" }}>
                                                     <Col md="12">
                                                         <Row>
-                                                            test
+                                                            {
+                                                                replyData?.data?.replyList?.length > 0 && replyData?.data?.replyList.map((row, reply_num) => (
+
+                                                                    <div
+                                                                        key={reply_num}
+                                                                        className="reply-row my-1 p-3"
+                                                                        style={{
+                                                                            backgroundColor: "#EEE",
+                                                                            display: "flex",
+                                                                            alignItems: "flex-start"
+                                                                        }}
+                                                                    >
+                                                                        <div className="reply-num">
+                                                                            {reply_num + 1}
+                                                                        </div>
+                                                                        <div className="reply-fill">
+                                                                            <div className="reply-content d-flex align-items-start mb-1">
+                                                                                <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                <b>Thank you... I will attach the documents soon.</b>
+                                                                            </div>
+                                                                            {row.attachFileList.map((file, index) => (
+                                                                                <React.Fragment key={index}>
+                                                                                    <div className="reply-attachment d-flex align-items-start mb-1">
+                                                                                        <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                        <u
+                                                                                            style={{ cursor: "pointer" }}
+                                                                                            onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                        >
+                                                                                            Attachment.jpg
+                                                                                        </u>
+                                                                                        &nbsp;
+                                                                                        <i
+                                                                                            style={{ cursor: "pointer", fontSize: "20px", verticalAlign: "-3px" }}
+                                                                                            className="mdi mdi-download"
+                                                                                            onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                        />
+                                                                                        <br />
+                                                                                    </div>
+                                                                                </React.Fragment>
+                                                                            ))}
+                                                                            <div className="reply-history d-flex align-items-start">
+                                                                                <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                <i>{row.write_time}</i>&nbsp; by {row.name}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            }
                                                         </Row>
                                                         <Row>
 
