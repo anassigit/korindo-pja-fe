@@ -1863,37 +1863,52 @@ const EditInstructions = (props) => {
                                                         <Row>
                                                             {
                                                                 replyData?.data?.replyList?.length > 0 && replyData?.data?.replyList.map((row, reply_num) => (
-
                                                                     <div
                                                                         key={reply_num}
                                                                         className="reply-row my-1 p-3"
                                                                         style={{
                                                                             backgroundColor: "#EEE",
                                                                             display: "flex",
-                                                                            alignItems: "flex-start"
+                                                                            alignItems: "flex-start",
+                                                                            justifyContent: "space-between",
                                                                         }}
                                                                     >
-                                                                        <div className="reply-num">
+                                                                        <div className="reply-num" style={{ width: "0.01%" }}>
                                                                             {reply_num + 1}
                                                                         </div>
-                                                                        <div className="reply-fill">
+                                                                        <div className="reply-fill" style={{ width: "90%" }}>
                                                                             <div className="reply-content d-flex align-items-start mb-1">
                                                                                 <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                <b>Thank you... I will attach the documents soon.</b>
+
+                                                                                {selectedRowIndex === reply_num ? (
+                                                                                    <Input
+                                                                                        maxLength={400}
+                                                                                        style={{ maxWidth: "50%", height: "10em" }}
+                                                                                        name="content"
+                                                                                        type="textarea"
+                                                                                        value={editedContent}
+                                                                                        onChange={(e) => setEditedContent(e.target.value)}
+                                                                                    />
+                                                                                ) : (
+
+
+                                                                                    <b style={{whiteSpace: "pre-wrap"}}>{row.content}</b>
+
+                                                                                )}
                                                                             </div>
                                                                             {row.attachFileList.map((file, index) => (
                                                                                 <React.Fragment key={index}>
                                                                                     <div className="reply-attachment d-flex align-items-start mb-1">
                                                                                         <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
                                                                                         <u
-                                                                                            style={{ cursor: "pointer" }}
+                                                                                            style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
                                                                                             onClick={() => downloadReplyAttach(file.num, file.name)}
                                                                                         >
-                                                                                            Attachment.jpg
+                                                                                            {file.name}
                                                                                         </u>
                                                                                         &nbsp;
                                                                                         <i
-                                                                                            style={{ cursor: "pointer", fontSize: "20px", verticalAlign: "-3px" }}
+                                                                                            style={{ cursor: "pointer", fontSize: "20px", verticalAlign: "middle" }}
                                                                                             className="mdi mdi-download"
                                                                                             onClick={() => downloadReplyAttach(file.num, file.name)}
                                                                                         />
@@ -1906,9 +1921,38 @@ const EditInstructions = (props) => {
                                                                                 <i>{row.write_time}</i>&nbsp; by {row.name}
                                                                             </div>
                                                                         </div>
+                                                                        <div className="reply-actions" style={{ width: "7%", display: "flex", justifyContent: "end" }}>
+                                                                            {row.edit ? (
+                                                                                <a className="text-primary" onClick={() => {
+                                                                                    if (selectedRowIndex === reply_num) {
+                                                                                        handleEditReply(reply_num, editedContent);
+                                                                                        setSelectedRowIndex(null);
+                                                                                    } else {
+                                                                                        setSelectedRowIndex(reply_num);
+                                                                                        setEditedContent(row.content);
+                                                                                    }
+                                                                                }}>
+                                                                                    {selectedRowIndex === reply_num ?
+                                                                                        <span className="mdi mdi-check-bold" style={{ fontSize: "18px" }}></span>
+                                                                                        :
+                                                                                        <span className="mdi mdi-pencil" style={{ fontSize: "18px" }}></span>
+                                                                                    }
+                                                                                </a>
+                                                                            ) : ('')}
+
+                                                                            &nbsp;&nbsp;&nbsp;
+                                                                            {row.delete ? (
+                                                                                <a className="text-primary" onClick={() => confirmToggle2(row)}>
+                                                                                    <span className="mdi mdi-trash-can text-danger" style={{ fontSize: "18px" }}></span>
+                                                                                </a>
+                                                                            ) : (
+                                                                                ""
+                                                                            )}
+                                                                        </div>
                                                                     </div>
                                                                 ))
                                                             }
+
                                                         </Row>
                                                         <Row>
 
