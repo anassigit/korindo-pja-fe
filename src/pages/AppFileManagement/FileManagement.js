@@ -28,6 +28,7 @@ import { Link } from "react-router-dom"
 import { getSelectFile, resetMessage } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
+import FolderDetail from "./FolderDetail";
 
 
 const FileManagement = () => {
@@ -35,7 +36,10 @@ const FileManagement = () => {
   //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
   const dispatch = useDispatch();
   const [fileManagementPage, setFileManagementPage] = useState(true)
+  const [insideFilePage, setInsideFilePage] = useState(false)
   const [fileManagementMsg, setFileManagementMsg] = useState("")
+  const [fileManagementData, setFileManagementData] = useState()
+  const [idFile, setIdFile] = useState("")
   const [myFiles, setMyFiles] = useState ([]);
 
   useEffect(() => {
@@ -58,15 +62,9 @@ const FileManagement = () => {
 
   useEffect(() => {
 
-    console.log("ASDF", getFileSelect)
     if (getFileSelect.status == "1") {
 
-    //   if (getFileSelect?.data?.childList) {
-    //     const entries = Object.values(getFileSelect?.data?.childList);
-    //     setMyFiles(entries);
-    // }
-
-        //setMyFiles(getFileSelect?.data?.childList)
+        
 
         setFileManagementMsg("")
     }
@@ -91,19 +89,30 @@ const FileManagement = () => {
 // }
 
 
-const getInsideFolder = async (e) => {
+const getInsideFolder = (e) => {
   debugger
-  try {
-    var map = {
-      "folder_num": e
-    };
-    await dispatch(getSelectFile(map));
-
-  } catch (message) {
-    console.log(message);
-  }
-
+  setIdFile(e)
+ //const bodyForm = new FormData();    
+    // try {
+    //   var map = {
+    //   map.append('folder_num', e)
+    //   }
+    //   const config = {
+    //     headers: {
+    //         'content-type': 'multipart/form-data'
+    //             }
+    //                   }
+  
+    //     dispatch(getSelectFile(config, map))
+  
+        setFileManagementMsg("")
+        setFileManagementData(fileManagementData)
+        setFileManagementPage(false)
+        setInsideFilePage(true)
+  
 }
+
+
   
   return (
     <RootPageCustom
@@ -211,6 +220,14 @@ const getInsideFolder = async (e) => {
               </Col>
             </Row>
           </Container>
+
+          <FolderDetail
+          insideFilePage={insideFilePage}
+          setInsideFilePage={setInsideFilePage}
+          setFileManagementPage={setFileManagementPage}
+          setFileManagementMsg={setFileManagementMsg}
+          idFile={idFile}
+          />
 
         </>
       }

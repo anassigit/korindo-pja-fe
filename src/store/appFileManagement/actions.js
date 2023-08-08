@@ -2,6 +2,8 @@ import {
 
     GET_SELECT,
     RESP_GET_SELECT,
+    GET_SELECT_FILE,
+    RESP_GET_SELECT_FILE,
     RESET_MESSAGE,
     MSGADD,
     MSGEDIT,
@@ -16,6 +18,16 @@ export const getSelectFile = (req) => ({
   
   export const respGetSelect = resp => ({
     type: RESP_GET_SELECT,
+    payload: resp,
+  })
+
+  export const getSelectFile2 = (req) => ({
+    type: GET_SELECT_FILE,
+    payload: req,
+  })
+
+  export const respGetSelectFile = resp => ({
+    type: RESP_GET_SELECT_FILE,
     payload: resp,
   })
 
