@@ -301,7 +301,7 @@ const EditInstructions = (props) => {
         },
 
         validationSchema: Yup.object().shape({
-            content: Yup.string().required("You must fill the reply"),
+            // content: Yup.string().required("You must fill the reply"),
         }),
 
         onSubmit: (values) => {
@@ -589,7 +589,6 @@ const EditInstructions = (props) => {
             SetSelectedFile([]);
 
         } else {
-            alert('Please select file')
         }
 
     }
@@ -897,7 +896,6 @@ const EditInstructions = (props) => {
             SetFilesR((prevFiles) => [...prevFiles, ...selectedfileR]);
             SetSelectedFileR([]);
         } else {
-            alert('Please select a file');
         }
     }
 
@@ -935,6 +933,11 @@ const EditInstructions = (props) => {
     const [replyClicked, setReplyClicked] = useState(false)
 
     function insertReplyAndFiles(values) {
+        debugger
+
+        if(editInstructionsValidInput.values.content == '') {
+        editInstructionsValidInput.setErrors({ content: "Please insert answer content" });
+        }
         var bodyForm = new FormData();
 
         bodyForm.append('instruction_num', editInstructionsValidInput.values.no);
@@ -1769,7 +1772,7 @@ const EditInstructions = (props) => {
                                                                         <label>Answer </label>
                                                                         <Input
                                                                             style={{
-                                                                                minHeight: "10em",  
+                                                                                minHeight: "10em",
                                                                             }}
                                                                             maxLength={400}
                                                                             placeholder="Please Input Your Answer Here..."
@@ -1790,7 +1793,7 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                             </Col>
                                                         </Row>
-                                                        <Row className="mb-2">
+                                                        <Row className="mb-1">
                                                             <Col sm="12">
                                                                 <div className="mb-3 col-sm-12">
                                                                     <label>Attached Files </label>
@@ -1827,38 +1830,39 @@ const EditInstructions = (props) => {
                                                                             }
                                                                         </div>
 
+                                                                        <div className="text-sm-end col-12" >
+
+                                                                            <Button
+                                                                                type="button"
+
+                                                                                color="primary"
+                                                                                className="ms-1"
+                                                                                onClick={() => { insertReplyAndFiles() }}
+                                                                            >
+                                                                                <i className="mdi mdi-send align-middle me-2" />
+                                                                                Reply
+                                                                            </Button>
+
+                                                                        </div>
                                                                     </Form>
 
                                                                 </div>
                                                             </Col>
 
                                                             {/* <Col md="12"> */}
-                                                            <div className="text-sm-end col-12" >
-
-                                                                <Button
-                                                                    type="button"
-
-                                                                    color="primary"
-                                                                    className="ms-1"
-                                                                    onClick={() => { insertReplyAndFiles() }}
-                                                                >
-                                                                    <i className="mdi mdi-send align-middle me-2" />
-                                                                    Reply
-                                                                </Button>
-
-                                                            </div>
                                                             {/* </Col> */}
                                                         </Row>
                                                     </div>
 
                                                 </div>
-                                                <br />
                                                 <Row>
                                                     <hr />
-                                                    <h6> Other Replies</h6>
                                                 </Row>
                                                 <Row style={{ marginTop: "30px" }}>
                                                     <Col md="12">
+                                                        <Row>
+                                                            test
+                                                        </Row>
                                                         <Row>
 
                                                             <table className="tg"
@@ -1940,8 +1944,7 @@ const EditInstructions = (props) => {
                                                                                                 <i
                                                                                                     className="mdi mdi-download"
                                                                                                     onClick={() => downloadReplyAttach(file.num, file.name)}
-                                                                                                    />
-                                                                                                    {console.log(file)}
+                                                                                                />
                                                                                                 <br />
                                                                                             </React.Fragment>
                                                                                         ))}
