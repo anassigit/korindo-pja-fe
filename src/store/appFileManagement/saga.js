@@ -56,6 +56,7 @@ function* fetchGetSelectFolder({ payload: req }) {
 
   function* fetchDeleteFileFolder({ payload: req }) {
     try {
+      debugger
       const response = yield call(deleteFileFolder, req)
       yield put(msgDelete(response))
     } catch (error) {
@@ -68,7 +69,7 @@ function* fetchGetSelectFolder({ payload: req }) {
 
     yield takeEvery(GET_SELECT, fetchGetSelectFolder)
     yield takeEvery(GET_SELECT_FILE, fetchGetSelectFolder2)
-    yield takeEvery(GET_SELECT_FILE, fetchDeleteFileFolder)
+    yield takeEvery(DELETE_FILE_FOLDER, fetchDeleteFileFolder)
 
   }
 

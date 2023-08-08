@@ -57,6 +57,9 @@ const FileManagement = () => {
   })
 
 
+  useEffect (() => {
+    debugger
+  }, [getFileSelect])
 
   const fileManagementCloseAlert = () => {
     setFileManagementMsg("")
@@ -101,16 +104,18 @@ const FileManagement = () => {
 
   }
 
-   
-  const removeFolderFile = async (e) => {
+
+  const removeFolderFile = (e) => {
     debugger
-  await dispatch(deleteFileFolder(
-    {
-      'file_num': e
-    }
-  ))
+    let num = e
+    num.toString();
+    dispatch(deleteFileFolder(
+      {
+        'file_num': num
+      }
+    ))
   }
-  
+
 
 
 

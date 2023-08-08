@@ -256,8 +256,6 @@ const EditInstructions = (props) => {
 
         editInstructionsValidInput.setFieldValue("no", parsedData?.num)
         editInstructionsValidInput.setFieldValue("title", parsedData?.title)
-
-        debugger
         editInstructionsValidInput.setFieldValue("insDate", parsedData?.insDate)
         editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
@@ -430,7 +428,6 @@ const EditInstructions = (props) => {
 
     const downloadReplyAttach = async (fNum, fName) => {
         try {
-            debugger
             var indexed_array = {
                 "file_num": fNum,
                 "file_nm": fName

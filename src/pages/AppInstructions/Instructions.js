@@ -57,12 +57,11 @@ const Instructions = () => {
         if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
         }
-        debugger
         if(history.location.state != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
             setAppInstructionsMsg(history.location.state?.setAppInstructionsMsg)
         }
     }, [appInstructionsData])
-
+    
     const appInstructionsp01Tabel = [
         {
             dataField: "num",
