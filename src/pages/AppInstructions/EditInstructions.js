@@ -311,14 +311,11 @@ const EditInstructions = (props) => {
 
         onSubmit: (values) => {
 
-
-
-
             var bodyForm = new FormData();
 
             bodyForm.append('num', values.no);
             bodyForm.append('title', editInstructionsValidInput.values.title);
-            bodyForm.append('insDate', editInstructionsValidInput.values.insDate);
+            bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, 'yyyy-MM-dd'));
             bodyForm.append('description', values.description);
 
 
@@ -1321,6 +1318,17 @@ const EditInstructions = (props) => {
                                                                 <span style={{ color: "red" }}>* </span>
                                                             </Label>
 
+                                                            {/* <Input
+                                                                name="insDate"
+                                                                type="date"
+                                                                onChange={editInstructionsValidInput.handleChange}
+                                                                //onBlur={handleAutoSaveDate}
+                                                                value={editInstructionsValidInput.values.insDate || startDate}
+                                                                invalid={
+                                                                    editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
+                                                                }
+                                                            /> */}
+                                                            
                                                             <DatePicker
                                                                 name="insDate"
                                                                 className="form-control"
