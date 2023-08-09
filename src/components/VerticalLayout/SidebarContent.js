@@ -12,6 +12,7 @@ import { Link } from "react-router-dom"
 //i18n
 import { withTranslation } from "react-i18next"
 import { ReactSession } from 'react-client-session';
+import { useSelector } from "react-redux"
 
 
 const SidebarContent = props => {
@@ -91,6 +92,12 @@ const SidebarContent = props => {
     return false
 
   }
+
+  const getDetailProfile = useSelector(state => {
+    return state.userProfileReducer.respGetProfile;
+  })
+
+  console.log(getDetailProfile)
 
   return (
     <React.Fragment>

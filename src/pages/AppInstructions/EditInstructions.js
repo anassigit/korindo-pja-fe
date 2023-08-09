@@ -278,7 +278,6 @@ const EditInstructions = (props) => {
     }, [getDetailInstructionData, selectedManager, getManagerList, getOwnerList, attachmentInstructionData]);
 
     useEffect(() => {
-        debugger
         replyData?.data?.replyList?.length > 0 && replyData.data.replyList.map((row, reply_num) => {
             if (reply_num === selectedRowIndex && (selectedRowIndex != null || selectedRowIndex != undefined)) {
                 row.attachFileList.map((file, index) => {
@@ -296,8 +295,6 @@ const EditInstructions = (props) => {
             setTempAttachReply2(tempAttachReply)
         }
     }, [tempAttachReply])
-
-    console.log(tempAttachReply2)
 
     useEffect(() => {
         if (replyNum != null && replyNum != undefined) {
@@ -706,6 +703,71 @@ const EditInstructions = (props) => {
         }),
     };
 
+    const colourStylesDisabled = {
+        control: (baseStyles, state) => ({
+            ...baseStyles,
+            borderColor: state.isFocused || state.isSelected || state.isDisabled ? 'white' : 'white',
+            border: 0,
+            boxShadow: 'none',
+        }),
+
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: isDisabled
+                    ? undefined
+                    : isSelected
+                        ? data.color
+                        : isFocused
+                            ? '#e6e6e6'
+                            : undefined,
+                color: isDisabled
+                    ? '#ccc'
+                    : isSelected
+                        ? 'white'
+                            ? 'white'
+                            : 'black'
+                        : data.color,
+                cursor: isDisabled ? 'not-allowed' : 'default',
+
+                ':active': {
+                    ...styles[':active'],
+                    backgroundColor: !isDisabled
+                        ? isSelected
+                            ? data.color
+                            : color
+                        : undefined,
+                },
+            };
+        },
+
+        multiValue: (styles, { data }) => {
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: color,
+
+            };
+        },
+
+        multiValueLabel: (styles, { data }) => ({
+            ...styles,
+            color: 'white',
+            fontSize: '13px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            paddingTop: '7.5px',
+            paddingBottom: '7.5px',
+            borderRadius: '0.25rem',
+        }),
+
+        multiValueRemove: (styles, { data }) => ({
+            ...styles,
+            color: data.bgColor,
+        }),
+    };
+
     const colourStyles2 = {
         control: (baseStyles, state) => ({
             ...baseStyles,
@@ -774,6 +836,73 @@ const EditInstructions = (props) => {
                 backgroundColor: data.bgColor,
                 color: 'white',
             },
+        }),
+    };
+
+    const colourStyles2Disabled = {
+        control: (baseStyles, state) => ({
+            ...baseStyles,
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isSelected ? 'white' : 'white',
+            borderColor: state.isFocused ? 'white' : 'white',
+            borderColor: state.isDisabled ? 'white' : 'white',
+            border: 0,
+            boxShadow: 'none',
+
+        }),
+
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: isDisabled
+                    ? undefined
+                    : isSelected
+                        ? data.color
+                        : isFocused
+                            ? '#e6e6e6'
+                            : undefined,
+                color: isDisabled
+                    ? '#ccc'
+                    : isSelected
+                        ? 'white'
+                        : 'black', // <-- Updated line here
+                cursor: isDisabled ? 'not-allowed' : 'default',
+
+                ':active': {
+                    ...styles[':active'],
+                    backgroundColor: !isDisabled
+                        ? isSelected
+                            ? data.color
+                            : color
+                        : undefined,
+                },
+            };
+        },
+
+        multiValue: (styles, { data }) => {
+            const color = data.bgColor;
+            return {
+                ...styles,
+                backgroundColor: '#579DFF',
+
+            };
+        },
+
+        multiValueLabel: (styles, { data }) => ({
+            ...styles,
+            color: 'white',
+            fontSize: '13px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            paddingTop: '7.5px',
+            paddingBottom: '7.5px',
+            borderRadius: '4px',
+        }),
+
+        multiValueRemove: (styles, { data }) => ({
+            ...styles,
+            color: '#579DFF'
         }),
     };
 
@@ -1704,10 +1833,11 @@ const EditInstructions = (props) => {
                                                                 name="insDate"
                                                                 className="form-control"
                                                                 dateFormat="yyyy-MM-dd"
-                                                                onChange={date =>
-                                                                    app044p01OnChangeSDate(date)
-                                                                }
-                                                                value={editInstructionsValidInput.values.insDate || ''}
+                                                                onChange={date => {
+                                                                    handleChangeDate(date);
+                                                                    editInstructionsValidInput.handleChange('insDate', date);
+                                                                }}
+                                                                selected={editInstructionsValidInput.values.insDate ? new Date(editInstructionsValidInput.values.insDate) : null}
                                                             />
                                                         </div>
 
@@ -1764,6 +1894,7 @@ const EditInstructions = (props) => {
                                                     <Col md="6">
                                                         <div className="mb-3 col-sm-8">
                                                             <Label> Choose Owner </Label>
+                                                            
                                                             <Select
                                                                 isDisabled
                                                                 value={selectedMulti}
@@ -1773,7 +1904,7 @@ const EditInstructions = (props) => {
                                                                 }}
                                                                 options={optionOwner0}
                                                                 className="select2-selection"
-                                                                styles={colourStyles}
+                                                                styles={colourStylesDisabled}
                                                                 components={{ DropdownIndicator }}
                                                                 placeholder={'Select or type...'}
                                                             />
@@ -1791,7 +1922,7 @@ const EditInstructions = (props) => {
                                                                 options={optionManager0}
 
                                                                 className="select2-selection"
-                                                                styles={colourStyles2}
+                                                                styles={colourStyles2Disabled}
                                                                 components={{ DropdownIndicator }}
                                                                 placeholder={'Select or type...'}
                                                             />
