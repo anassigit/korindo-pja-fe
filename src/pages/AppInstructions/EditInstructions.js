@@ -521,9 +521,7 @@ const EditInstructions = (props) => {
 
         }
 
-    };
-
-    console.log(removeFile)
+    }
 
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';

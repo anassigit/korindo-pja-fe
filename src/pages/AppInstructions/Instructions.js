@@ -226,7 +226,17 @@ const Instructions = () => {
 
                         <span>
                             <div>
-                                <i className="bx bx-message-dots" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.reply_count}
+                                {
+                                    appInstructionsData.reply_count > 0 ?
+                                        <>
+                                        <i className="bx bx-message-dots text-primary" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.reply_count}
+                                        </>
+                                        :
+                                        <>
+                                            <i className="bx bx-message-dots" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.reply_count}
+                                        </>
+                                }
+
                             </div>
                         </span>
 
@@ -252,7 +262,16 @@ const Instructions = () => {
 
                         <span>
                             <div>
-                                <i className="bx bxs-bell" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.notice_count}
+                                {
+                                    appInstructionsData.notice_count > 0 ?
+                                        <>
+                                            <i className="bx bxs-bell text-danger" id="repliesCount" style={{  fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.notice_count}
+                                        </>
+                                        :
+                                        <>
+                                            <i className="bx bxs-bell" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.notice_count}
+                                        </>
+                                }
                             </div>
                         </span>
 

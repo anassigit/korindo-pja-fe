@@ -97,8 +97,6 @@ const SidebarContent = props => {
     return state.userProfileReducer.respGetProfile;
   })
 
-  console.log(getDetailProfile)
-
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
@@ -115,7 +113,11 @@ const SidebarContent = props => {
                 <i className="fas fa-folder-open"></i>
                 <span>{props.t("File Management")}</span>
               </a>
-              <a href="/AppSetting" className="">
+              <a
+                href="/AppSetting"
+                className=""
+                hidden={getDetailProfile?.data?.member?.pname !== "admin" ? true : false}
+              >
                 <i className="fas fa-cog"></i>
                 <span>{props.t("Setting")}</span>
               </a>
