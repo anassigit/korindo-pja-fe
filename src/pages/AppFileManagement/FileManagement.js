@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react"
 import RootPageCustom from '../../common/RootPageCustom';
 import { useFormik, } from "formik";
+import PropTypes from 'prop-types';
 import * as Yup from "yup";
 import '../../config';
 import {
@@ -31,6 +32,8 @@ import { ReactSession } from 'react-client-session';
 import FolderDetail from "./FolderDetail";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import axios from 'axios';
+import Rename from "./Rename";
+
 
 
 const FileManagement = () => {
@@ -42,7 +45,16 @@ const FileManagement = () => {
   const [fileManagementMsg, setFileManagementMsg] = useState("")
   const [fileManagementData, setFileManagementData] = useState()
   const [idFile, setIdFile] = useState("")
+  const [idToggle, setIdToggle] = useState("")
   const [myFiles, setMyFiles] = useState([]);
+  const [renameModal, setRenameModal] = useState(false)
+
+
+  const toggleRenameModal = (idT) => {
+    debugger
+    setRenameModal(!renameModal)
+    setIdToggle(idT)
+}
 
   useEffect(() => {
     dispatch(resetMessage());
@@ -127,6 +139,12 @@ const FileManagement = () => {
           {fileManagementMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={fileManagementMsg.status == "1" ? "success" : "danger"}>
             {typeof fileManagementMsg == 'string' ? null : fileManagementMsg.message}</UncontrolledAlert> : null}
 
+            <Rename
+                        modal={renameModal}
+                        toggle={toggleRenameModal}
+                        idToggle={idToggle}
+            />
+
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
               <Col lg={12}>
@@ -155,6 +173,7 @@ const FileManagement = () => {
                       <div className="input-group">
                         <Col md="4">
                           <Row className="mb-1 col-sm-10">
+                            
                             {getFileSelect?.data?.childList.map((myfiles, key) => (
 
                               <Card className="shadow-none border" style={{ verticalAlign: "middle" }} key={key}>
@@ -173,8 +192,11 @@ const FileManagement = () => {
                                         <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
                                           Open
                                         </DropdownItem>
-                                        <DropdownItem href="#">
+                                        <DropdownItem onClick={() => toggleRenameModal(myfiles.num)}>
                                           Rename
+                                        </DropdownItem>
+                                        <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
+                                          Move
                                         </DropdownItem>
                                         <div className="dropdown-divider"></div>
                                         <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
@@ -186,30 +208,33 @@ const FileManagement = () => {
 
                                   <h5 className="font-size-14 text-truncate mb-1">
                                     <Link to="#" className="text-body">
-                                      {myfiles.type == "0" ?
+                                      {myfiles.type == 0 ?
                                         <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
                                         :
                                         <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
                                       }&nbsp;{myfiles.name}
                                     </Link>
                                   </h5>
-
-
-
-
                                 </CardBody>
                               </Card>
-
+                                    
                             ))}
+                                    
                           </Row>
                         </Col>
                       </div>
                     </div>
                   </Col>
                 </Row>
-                {/* <Breadcrumbs title="Forms" breadcrumbItem="Maintain Menu" style={{ marginTop: "20px"}}/> */}
-
-
+                <Row className="my-3 mt-5">
+                                    <Col className="d-flex justify-content-end">
+                                        <div className="col-12 col-lg-2">
+                                            <button className="btn btn-primary w-100" onClick={toggleRenameModal}>
+                                                <i className="fas fa-plus font-size-14  me-2"></i> Upload File
+                                            </button>
+                                        </div>
+                                    </Col>
+                </Row>
               </Col>
             </Row>
           </Container>

@@ -3,6 +3,7 @@ export const RESP_GET_SELECT = "RESP_GET_SELECT"
 export const GET_SELECT_FILE = "GET_SELECT_FILE"
 export const RESP_GET_SELECT_FILE = "RESP_GET_SELECT_FILE"
 export const DELETE_FILE_FOLDER = "DELETE_FILE_FOLDER"
+export const RENAME = "RENAME"
 
 export const RESET_MESSAGE = "RESET_MESSAGE"
 export const MSGEDIT = "MSGEDIT"

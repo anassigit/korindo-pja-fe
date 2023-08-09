@@ -16,6 +16,10 @@ import {
   FormGroup,
   CardHeader,
   UncontrolledAlert,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
 } from "reactstrap";
 
 import { useSelector, useDispatch } from "react-redux"
@@ -77,6 +81,33 @@ const FolderDetail = (props) => {
                             <CardBody>
                                 <React.Fragment>
                                     <FormGroup className="mb-0">
+
+                                    <div className="float-end ms-1">
+                                    <UncontrolledDropdown className="mb-2">
+                                      <DropdownToggle
+                                        className="font-size-16 text-muted"
+                                        tag="a"
+                                      >
+                                        <i className="mdi mdi-dots-horizontal" ></i>
+                                      </DropdownToggle>
+
+                                      <DropdownMenu className="dropdown-menu-end">
+                                        <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
+                                          Open
+                                        </DropdownItem>
+                                        <DropdownItem onClick={() => toggleRenameModal(myfiles.num)}>
+                                          Rename
+                                        </DropdownItem>
+                                        <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
+                                          Move
+                                        </DropdownItem>
+                                        <div className="dropdown-divider"></div>
+                                        <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
+                                          Remove
+                                        </DropdownItem>
+                                      </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                  </div>
 
                                         <Row style={{ marginTop: "30px" }}>
                                             <Col md="12">

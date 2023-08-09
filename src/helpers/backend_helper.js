@@ -162,3 +162,5 @@ export const updateGeneralSetting = req => postWithParam("/rest/SettingRest/Upda
 export const selectFolder = req => postWithParam("/rest/FileManagementRest/SelectFolder", req)
 
 export const deleteFileFolder = req => postWithParam("/rest/FileManagementRest/Delete", req)
+
+export const renameFileFolder = req => postWithParam("/rest/FileManagementRest/Rename", req)

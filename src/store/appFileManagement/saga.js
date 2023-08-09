@@ -5,6 +5,7 @@ import {
     GET_SELECT,
     GET_SELECT_FILE,
     DELETE_FILE_FOLDER,
+    RENAME,
 
 } from "./actionTypes"
 
@@ -21,7 +22,8 @@ import {
 import {
 
     selectFolder,
-    deleteFileFolder
+    deleteFileFolder,
+    renameFileFolder
 
 } from "helpers/backend_helper"
 
@@ -65,11 +67,23 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
+  function* fetchRenameFileFolder({ payload: req }) {
+    try {
+      debugger
+      const response = yield call(renameFileFolder, req)
+      yield put(msgAdd(response))
+    } catch (error) {
+      console.log(error);
+      yield put(msgAdd({ "status": 0, "data": "Error Rename Data" }))
+    }
+  }
+
   function* fileManagementSaga() {
 
     yield takeEvery(GET_SELECT, fetchGetSelectFolder)
     yield takeEvery(GET_SELECT_FILE, fetchGetSelectFolder2)
     yield takeEvery(DELETE_FILE_FOLDER, fetchDeleteFileFolder)
+    yield takeEvery(RENAME, fetchRenameFileFolder)
 
   }
 
