@@ -87,6 +87,12 @@ const EditInstructions = (props) => {
     const [confirmModal, setConfirmModal] = useState(false)
     const [confirmModal2, setConfirmModal2] = useState(false)
 
+    const [tempAttachReply, setTempAttachReply] = useState([])
+    const [tempAttachReply2, setTempAttachReply2] = useState([])
+
+    const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
+    const [selectedDeletedReplyAtt, setSelectedDeletedReplyAtt] = useState ([])
+
     /* MULTI SELECT OPTIONS */
 
     const getOwnerList = useSelector(state => {
@@ -260,25 +266,35 @@ const EditInstructions = (props) => {
         const inputDateString = parsedData?.insDate;
 
         const inputDate = new Date(inputDateString);
-        const timeZoneOffset = 7 * 60; 
+        const timeZoneOffset = 7 * 60;
         const adjustedDate = new Date(inputDate.getTime() + timeZoneOffset * 60 * 1000)
-        
+
         editInstructionsValidInput.setFieldValue("insDate", adjustedDate)
         editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
 
         setStartDate(format(currentDate, 'yyyy-MM-dd'))
 
-
     }, [getDetailInstructionData, selectedManager, getManagerList, getOwnerList, attachmentInstructionData]);
 
-    // useEffect(() => {
-    //     if (attachmentInstructionData?.data?.attachFileList) {
-    //         const entries = Object.values(attachmentInstructionData?.data?.attachFileList);
-    //         SetFiles(entries);
-    //     }
-    // }, [attachmentInstructionData]);
+    useEffect(() => {
+        replyData?.data?.replyList?.length > 0 && replyData.data.replyList.map((row, reply_num) => {
+            if (reply_num === selectedRowIndex && (selectedRowIndex != null || selectedRowIndex != undefined)) {
+                row.attachFileList.map((file, index) => {
+                    setTempAttachReply(oldFile => [...(oldFile || []), file])
+                })
+            }
+        })
+    }, [selectedRowIndex]);
 
+    useEffect(() => {
+        if (tempAttachReply?.length > 0) {
+            setTempAttachReply(null)
+            setTempAttachReply2(tempAttachReply)
+        }
+    }, [tempAttachReply])
+
+    console.log(tempAttachReply2)
 
     useEffect(() => {
         if (replyNum != null && replyNum != undefined) {
@@ -1047,7 +1063,6 @@ const EditInstructions = (props) => {
     const [isYes2, setIsYes2] = useState(false)
     const [replyRow, setReplyRow] = useState()
 
-    const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
     const [editedContent, setEditedContent] = useState('');
 
     const handleSaveDesc = async (val) => {
@@ -1112,7 +1127,6 @@ const EditInstructions = (props) => {
         let selectedNum = null
 
         replyData?.data?.replyList.map((row, index) => {
-            debugger
             if (index == reply_num) {
                 selectedNum = row.num
             }
@@ -1120,7 +1134,11 @@ const EditInstructions = (props) => {
 
         bodyForm.append('reply_num', selectedNum);
         bodyForm.append('content', editedContent);
-
+        
+        selectedDeletedReplyAtt?.map((item, index) => {
+            bodyForm.append('removeFile', selectedDeletedReplyAtt)
+        })
+        
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -1131,6 +1149,7 @@ const EditInstructions = (props) => {
         // setEditInstructionsSpinner(true);
         updateReply(bodyForm, config)
         setReplyClicked(!replyClicked)
+        setSelectedDeletedReplyAtt([])
 
     }
 
@@ -1145,7 +1164,6 @@ const EditInstructions = (props) => {
     }
 
     const confirmToggle2 = (tempRow) => {
-        debugger
         if (tempRow?.num != null) {
             setReplyRow(tempRow)
         }
@@ -1245,6 +1263,19 @@ const EditInstructions = (props) => {
         const result = selectedfile.filter((data) => data.id !== id);
         SetSelectedFile(result);
     }
+
+    const handleDeleteAttachedReplyRow = async (fNum, fName) => {
+        debugger
+        let tempDeletedFiles = []
+        tempAttachReply2.map((item, index) => {
+            if (fNum != item.num) {
+                tempDeletedFiles.push(tempAttachReply2[index])
+            }
+        })
+        setTempAttachReply2(tempDeletedFiles)
+        setSelectedDeletedReplyAtt((oldFnum) => [...oldFnum, fNum])
+    };
+
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1884,7 +1915,7 @@ const EditInstructions = (props) => {
                                                 <Row>
                                                     <hr />
                                                 </Row>
-                                                <Row style={{ marginTop: "30px" }}>
+                                                <Row style={{ marginTop: "15px" }}>
                                                     <Col md="12">
                                                         <Row>
                                                             {
@@ -1908,8 +1939,8 @@ const EditInstructions = (props) => {
 
                                                                                 {selectedRowIndex === reply_num ? (
                                                                                     <Input
-                                                                                        maxLength={400}
-                                                                                        style={{ maxWidth: "50%", height: "10em" }}
+                                                                                        maxLength={1900}
+                                                                                        style={{ maxWidth: "82%", height: "10em" }}
                                                                                         name="content"
                                                                                         type="textarea"
                                                                                         value={editedContent}
@@ -1918,31 +1949,114 @@ const EditInstructions = (props) => {
                                                                                 ) : (
 
 
-                                                                                    <b style={{ whiteSpace: "pre-wrap" }}>{row.content}</b>
+                                                                                    <b
+                                                                                        style={{
+                                                                                            whiteSpace: "pre-wrap",
+                                                                                            overflowWrap: "break-word",
+                                                                                            wordWrap: "break-word",
+                                                                                            wordBreak: "break-word",
+                                                                                        }}
+                                                                                    >{row.content}</b>
 
                                                                                 )}
                                                                             </div>
-                                                                            {row.attachFileList.map((file, index) => (
-                                                                                <React.Fragment key={index}>
-                                                                                    <div className="reply-attachment d-flex align-items-start mb-1">
-                                                                                        <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                        <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadReplyAttach(file.num, file.name)} />
-                                                                                        <u
-                                                                                            style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-                                                                                            onClick={() => downloadReplyAttach(file.num, file.name)}
-                                                                                        >
-                                                                                            {file.name}
-                                                                                        </u>
-                                                                                        &nbsp;
-                                                                                        <i
-                                                                                            style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
-                                                                                            className="mdi mdi-download"
-                                                                                            onClick={() => downloadReplyAttach(file.num, file.name)}
-                                                                                        />
-                                                                                        <br />
+                                                                            {selectedRowIndex === reply_num ? (
+                                                                                tempAttachReply2.map((file, index) => (
+                                                                                    <React.Fragment key={index}>
+                                                                                        <div className="reply-attachment d-flex align-items-start mb-1">
+                                                                                            <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadReplyAttach(file.num, file.name)} />
+                                                                                            <u
+                                                                                                style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                            >
+                                                                                                {file.name}
+                                                                                            </u>
+                                                                                            &nbsp;
+                                                                                            <i
+                                                                                                style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
+                                                                                                className="mdi mdi-download"
+                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                            />
+                                                                                            {selectedRowIndex === reply_num && (
+                                                                                                <i
+                                                                                                    style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px", marginLeft: "10px" }}
+                                                                                                    className="mdi mdi-close"
+                                                                                                    onClick={() => handleDeleteAttachedReplyRow(file.num, file.name)}
+                                                                                                />
+                                                                                            )}
+                                                                                            <br />
+                                                                                        </div>
+                                                                                    </React.Fragment>
+                                                                                ))
+                                                                            ) : (
+                                                                                row.attachFileList.map((file, index) => (
+                                                                                    <React.Fragment key={index}>
+                                                                                        <div className="reply-attachment d-flex align-items-start mb-1">
+                                                                                            <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadReplyAttach(file.num, file.name)} />
+                                                                                            <u
+                                                                                                style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                            >
+                                                                                                {file.name}
+                                                                                            </u>
+                                                                                            &nbsp;
+                                                                                            <i
+                                                                                                style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
+                                                                                                className="mdi mdi-download"
+                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                            />
+                                                                                            <br />
+                                                                                        </div>
+                                                                                    </React.Fragment>
+                                                                                ))
+                                                                            )}
+
+                                                                            <Row style={{ paddingLeft: "24px" }}>
+                                                                                <Col sm="10">
+                                                                                    <div className="col-sm-12">
+
+                                                                                        <Form onSubmit={FileUploadSubmitR}>
+                                                                                            <div className="kb-file-upload">
+
+                                                                                                {selectedRowIndex === reply_num && (
+                                                                                                    <div className="file-upload-box">
+                                                                                                        <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
+                                                                                                    </div>
+                                                                                                )}
+                                                                                            </div>
+                                                                                            &nbsp;&nbsp;&nbsp;
+                                                                                            <div className="kb-attach-box" hidden>
+                                                                                                {
+                                                                                                    selectedfileR.map((data, index) => {
+                                                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                                                        return (
+                                                                                                            <div className="file-atc-box" key={id}>
+
+                                                                                                                {
+                                                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                                                                        <div className="file-image"></div>
+                                                                                                                        :
+                                                                                                                        <div className="file-image"></div>
+                                                                                                                }
+                                                                                                                <div className="file-detail">
+                                                                                                                    <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
+                                                                                                                    &nbsp;&nbsp;&nbsp;
+                                                                                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFileR(id)} />
+
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
+                                                                                            </div>
+
+                                                                                        </Form>
+
                                                                                     </div>
-                                                                                </React.Fragment>
-                                                                            ))}
+                                                                                </Col>
+                                                                            </Row>
                                                                             <div className="reply-history d-flex align-items-start">
                                                                                 <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
                                                                                 <i>{row.write_time}</i>&nbsp; by {row.name}
@@ -1962,7 +2076,7 @@ const EditInstructions = (props) => {
                                                                                     {selectedRowIndex === reply_num ?
                                                                                         <span className="mdi mdi-check-bold" style={{ fontSize: "18px" }}></span>
                                                                                         :
-                                                                                        <span className="mdi mdi-pencil" style={{ fontSize: "18px" }}></span>
+                                                                                        <span className="mdi mdi-pencil-outline" style={{ fontSize: "18px" }}></span>
                                                                                     }
                                                                                 </a>
                                                                             ) : ('')}
@@ -1970,7 +2084,7 @@ const EditInstructions = (props) => {
                                                                             &nbsp;&nbsp;&nbsp;
                                                                             {row.delete ? (
                                                                                 <a className="text-primary" onClick={() => confirmToggle2(row)}>
-                                                                                    <span className="mdi mdi-trash-can text-danger" style={{ fontSize: "18px" }}></span>
+                                                                                    <span className="mdi mdi-trash-can-outline text-danger" style={{ fontSize: "18px" }}></span>
                                                                                 </a>
                                                                             ) : (
                                                                                 ""
