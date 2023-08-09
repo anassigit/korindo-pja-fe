@@ -48,6 +48,7 @@ const FileManagement = () => {
   const [idToggle, setIdToggle] = useState("")
   const [myFiles, setMyFiles] = useState([]);
   const [renameModal, setRenameModal] = useState(false)
+  //const [breadcrumbs, setBreadcrumbs] = useState([]);
 
 
   const toggleRenameModal = (idT) => {
@@ -68,11 +69,6 @@ const FileManagement = () => {
     return state.fileManagementReducer.respGetSelect;
   })
 
-
-  useEffect (() => {
-    debugger
-  }, [getFileSelect])
-
   const fileManagementCloseAlert = () => {
     setFileManagementMsg("")
   }
@@ -82,7 +78,7 @@ const FileManagement = () => {
     if (getFileSelect.status == "1") {
 
 
-
+      //setBreadcrumbs(getFileSelect)
       setFileManagementMsg("")
     }
   }, [getFileSelect])
@@ -167,6 +163,16 @@ const FileManagement = () => {
                   </Row>
                 </Col>
                 <p />
+                <Row>
+                <div>
+            {getFileSelect?.data?.parentList.map((breadcrumb, index) => (
+              <span key={index}>
+                {index > 0 && ' > '}
+                <a href={breadcrumb.name}>{breadcrumb.name}</a>
+              </span>
+            ))}
+          </div>
+                </Row>
                 <Row className="mb-2">
                   <Col sm="12">
                     <div className="form-group m-0">

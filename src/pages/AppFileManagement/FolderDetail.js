@@ -101,6 +101,9 @@ const FolderDetail = (props) => {
                                         <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
                                           Move
                                         </DropdownItem>
+                                        <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
+                                          Download
+                                        </DropdownItem>
                                         <div className="dropdown-divider"></div>
                                         <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
                                           Remove

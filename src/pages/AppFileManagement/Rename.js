@@ -42,7 +42,7 @@ const Rename = (props) => {
             setRenameSpinner(true)
             dispatch(renameFileFolder(value));
             toggleMsgModal(msgAdd)
-            setRenameSpinner(false)
+            //setRenameSpinner(false)
         }
     });
 
