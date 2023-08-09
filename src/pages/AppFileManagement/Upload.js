@@ -20,9 +20,9 @@ const Upload = (props) => {
 
     const uploadMsg = useSelector(state => {
         return state.fileManagementReducer.msgDownload;
-      })
+    })
 
-      useEffect(() => {
+    useEffect(() => {
         dispatch(resetMessage());
     }, [dispatch])
 
@@ -41,16 +41,15 @@ const Upload = (props) => {
 
         validationSchema: Yup.object().shape({
 
-            file_name: Yup.string().required("Please choose and upload at least an file."),
+            //file_name: Yup.string().required("Please choose and upload at least an file."),
         }),
 
         onSubmit: (value) => {
-            debugger
+
             var bodyForm = new FormData();
-            bodyForm.append('parent_num', val.parent_num);
-
+            bodyForm.append('parent_num', value.parent_num);
+            debugger
             if (selectedfile.length > 0) {
-
 
                 for (let index = 0; index < selectedfile.length; index++) {
 
@@ -67,10 +66,11 @@ const Upload = (props) => {
                 }
             }
 
-            setUploadSpinner(true)
+            //setUploadSpinner(true)
+            debugger
             insertUpload(bodyForm, config);
             //dispatch(uploadFileFolder(value));
-            toggleMsgModal(msgDownload)
+            //toggleMsgModal(msgDownload)
             //setRenameSpinner(false)
         }
     });
@@ -159,22 +159,13 @@ const Upload = (props) => {
     }
 
 
-    const DeleteFile = async (id) => {
-        if (window.confirm("Are you sure you want to delete this file?")) {
-            const result = Files.filter((data) => data.id !== id);
-            SetFiles(result);
-        } else {
-            // alert('No');
-        }
-    }
-
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
             <MsgModal
                 modal={uploadMsgModal}
                 toggle={toggleMsgModal}
                 message={uploadContentModal}
-                //data={idFile}
+            //data={idFile}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -182,69 +173,41 @@ const Upload = (props) => {
             }}>
                 <ModalHeader toggle={props.toggle}>Rename File or Folder</ModalHeader>
                 <ModalBody>
-                    <FormGroup className="mb-0">
-                    <div className="mb-3 col-sm-8">
-                                                <label>Upload Attach Files </label>
+                   
+                        <div className="mb-3 col-sm-8">
+                            <label>Upload Attach Files </label>
+                            <Form onSubmit={FileUploadSubmit}>
+                                <div className="kb-file-upload">
 
-                                                <Form onSubmit={FileUploadSubmit}>
-                                                    <div className="kb-file-upload">
-                                                        {/* <div className="file-upload-box">
-                                                            
-                                                            <label
-                                                                htmlFor="idFileUpload"
-                                                                className="btn btn-primary"
-                                                            >
-                                                             <i className="mdi mdi-paperclip" /> Upload files
-                                                            </label>
-                                                                                    
-                                                            <input 
-                                                            type="file" 
-                                                            onChange={InputChange} 
-                                                            multiple
-                                                            id="idFileUpload" 
-                                                            className="file-upload-input"
-                                                            style={{ display: 'none' }}
-                                                            />
-                                                   
-                                                        </div> */}
-                                                        <div className="kb-file-upload">
-                                                            <div className="file-upload-box">
-                                                                <input type="file" id="fileuploadAdd" className="form-control" onChange={InputChange} name="removeFile" multiple />
-                                                            </div>
-                                                        </div>
+                                    <div className="file-upload-box">
+                                        <input type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                    </div>
+                                </div>
+                                &nbsp;&nbsp;&nbsp;
+                                <div className="kb-attach-box mb-3">
+                                    {
+                                        selectedfile.map((data, index) => {
+                                            const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                            return (
+                                                <div className="file-atc-box" key={id}>
+                                                    <div className="file-detail">
+                                                        <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                         &nbsp;&nbsp;&nbsp;
+
+                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
+
                                                     </div>
-                                                    &nbsp;
-                                                    <div className="kb-attach-box mb-3">
-                                                        <h6>Attach files preview:</h6>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
 
-                                                        {
+           
+                            </Form>
+                        </div>
 
-                                                            selectedfile.map((data, index) => {
-
-                                                                const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                return (
-
-                                                                    <div className="file-atc-box" key={id}>
-
-                                                                        {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                <div className="file-image"></div> :
-                                                                                <div className="file-image"></div>
-                                                                        }
-                                                                        <div className="file-detail">
-                                                                            <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>&nbsp;&nbsp;
-                                                                            <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
-
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                </Form>
-                                            </div>                      
-                    </FormGroup>
+               
                 </ModalBody>
                 <ModalFooter>
                     <Button type="submit" color={uploadSpinner ? "primary disabled" : "primary"}>

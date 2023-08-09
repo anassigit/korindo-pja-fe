@@ -29,7 +29,7 @@ import { Link } from "react-router-dom"
 import { getSelectFile, deleteFileFolder, downloadFile, resetMessage } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
-import FolderDetail from "./FolderDetail";
+//import FolderDetail from "./FolderDetail";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import axios from 'axios';
 import Rename from "./Rename";
@@ -223,7 +223,7 @@ const FileManagement = () => {
                                           <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
                                             Move
                                           </DropdownItem>
-                                          <DropdownItem onClick={() => toggleUploadModal(myfiles.parent_num)}>
+                                          <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
                                             Upload
                                           </DropdownItem>
                                           <div className="dropdown-divider"></div>
@@ -336,13 +336,13 @@ const FileManagement = () => {
             </Row>
           </Container>
 
-          <FolderDetail
+          {/* <FolderDetail
             insideFilePage={insideFilePage}
             setInsideFilePage={setInsideFilePage}
             setFileManagementPage={setFileManagementPage}
             setFileManagementMsg={setFileManagementMsg}
             idFile={idFile}
-          />
+          /> */}
 
         </>
       }
