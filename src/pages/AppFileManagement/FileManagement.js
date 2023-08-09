@@ -175,7 +175,7 @@ const FileManagement = () => {
 
                 <Row>
                   <div>
-                    {getFileSelect?.data?.parentList.map((breadcrumb, index) => (
+                    {getFileSelect?.data?.path.map((breadcrumb, index) => (
                       <span key={index}>
                         {index > 0 && ' > '}
                         <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
