@@ -396,8 +396,6 @@ const EditInstructions = (props) => {
                 }
             }
 
-            debugger
-
             if (removeFile.length > 0) {
                 removeFile.forEach(files => {
                     bodyForm.append('removeFile', files);
