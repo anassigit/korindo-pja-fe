@@ -261,10 +261,8 @@ const EditInstructions = (props) => {
 
         const inputDate = new Date(inputDateString);
         const timeZoneOffset = 7 * 60; 
-        const adjustedDate = new Date(inputDate.getTime() + timeZoneOffset * 60 * 1000);
-
-        console.log(adjustedDate)
-
+        const adjustedDate = new Date(inputDate.getTime() + timeZoneOffset * 60 * 1000)
+        
         editInstructionsValidInput.setFieldValue("insDate", adjustedDate)
         editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
