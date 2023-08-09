@@ -256,7 +256,16 @@ const EditInstructions = (props) => {
 
         editInstructionsValidInput.setFieldValue("no", parsedData?.num)
         editInstructionsValidInput.setFieldValue("title", parsedData?.title)
-        editInstructionsValidInput.setFieldValue("insDate", parsedData?.insDate)
+
+        const inputDateString = parsedData?.insDate;
+
+        const inputDate = new Date(inputDateString);
+        const timeZoneOffset = 7 * 60; 
+        const adjustedDate = new Date(inputDate.getTime() + timeZoneOffset * 60 * 1000);
+
+        console.log(adjustedDate)
+
+        editInstructionsValidInput.setFieldValue("insDate", adjustedDate)
         editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
 
@@ -313,7 +322,8 @@ const EditInstructions = (props) => {
 
             bodyForm.append('num', values.no);
             bodyForm.append('title', editInstructionsValidInput.values.title);
-            bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, 'yyyy-MM-dd'));
+
+            bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
             bodyForm.append('description', values.description);
 
 
@@ -1225,11 +1235,17 @@ const EditInstructions = (props) => {
     }, [replyRow, isYes2])
 
     const handleChangeDate = val => {
+        debugger
         if (val == "") {
             editInstructionsValidInput.setFieldValue("insDate", '')
         } else {
             editInstructionsValidInput.setFieldValue("insDate", val)
         }
+    }
+
+    const handleDeleteAttachmentR = (id) => {
+        const result = selectedfile.filter((data) => data.id !== id);
+        SetSelectedFile(result);
     }
 
     /*********************************** ENDS HERE ***********************************/
@@ -1325,7 +1341,7 @@ const EditInstructions = (props) => {
                                                                     editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
                                                                 }
                                                             /> */}
-                                                            
+
                                                             <DatePicker
                                                                 name="insDate"
                                                                 className="form-control"
