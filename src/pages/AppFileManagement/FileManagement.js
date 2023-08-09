@@ -33,6 +33,7 @@ import FolderDetail from "./FolderDetail";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import axios from 'axios';
 import Rename from "./Rename";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 
 
@@ -49,6 +50,7 @@ const FileManagement = () => {
   const [myFiles, setMyFiles] = useState([]);
   const [renameModal, setRenameModal] = useState(false)
   //const [breadcrumbs, setBreadcrumbs] = useState([]);
+  const history = useHistory();
 
 
   const toggleRenameModal = (idT) => {
@@ -124,7 +126,12 @@ const FileManagement = () => {
     ))
   }
 
-
+  const getIdPath = (idPath) => {
+    debugger
+    dispatch(getSelectFile({
+      'folder_num': idPath
+  }))
+  };
 
 
   return (
@@ -168,10 +175,11 @@ const FileManagement = () => {
             {getFileSelect?.data?.parentList.map((breadcrumb, index) => (
               <span key={index}>
                 {index > 0 && ' > '}
-                <a href={breadcrumb.name}>{breadcrumb.name}</a>
+                <a onClick={() => {getIdPath(breadcrumb.num)}}>{breadcrumb.name}</a>
               </span>
             ))}
           </div>
+          <p />
                 </Row>
                 <Row className="mb-2">
                   <Col sm="12">
