@@ -38,6 +38,7 @@ const Instructions = () => {
     const [selected, setSelected] = useState("");
     const [getData, setGetData] = useState([]);
     const [getData2, setGetData2] = useState([]);
+    const [isClosed, setIsClosed] = useState(false)
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -57,11 +58,21 @@ const Instructions = () => {
         if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
         }
-        if(history.location.state != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
+        if (history.location.state != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
             setAppInstructionsMsg(history.location.state?.setAppInstructionsMsg)
         }
     }, [appInstructionsData])
-    
+
+    useEffect(() => {
+        if (isClosed == true) {
+            history.push({
+                state: {
+                    setAppInstructionsMsg: ""
+                }
+            })
+        }
+    }, [appInstructionsMsg])
+
     const appInstructionsp01Tabel = [
         {
             dataField: "num",
@@ -287,7 +298,7 @@ const Instructions = () => {
         <RootPageCustom msgStateGet={null} msgStateSet={null}
             componentJsx={
                 <>
-                    {appInstructionsMsg !== "" ? <UncontrolledAlert toggle={()=> setAppInstructionsMsg("")} color={appInstructionsMsg.status == "1" ? "success" : "danger"}>
+                    {appInstructionsMsg !== "" ? <UncontrolledAlert toggle={() => { setAppInstructionsMsg(""); setIsClosed(true) }} color={appInstructionsMsg.status == "1" ? "success" : "danger"}>
                         {typeof appInstructionsMsg == 'string' ? null : appInstructionsMsg.message}</UncontrolledAlert> : null}
                     <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
                         <Row>
