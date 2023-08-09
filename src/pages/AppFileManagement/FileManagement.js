@@ -107,12 +107,12 @@ const FileManagement = () => {
 
 
   const getInsideFolder = (e) => {
-
-    setIdFile(e)
-    setFileManagementMsg("")
-    setFileManagementData(fileManagementData)
-    setFileManagementPage(false)
-    setInsideFilePage(true)
+    dispatch(getSelectFile({'folder_num': e}))
+    // setIdFile(e)
+    // setFileManagementMsg("")
+    // setFileManagementData(fileManagementData)
+    // setFileManagementPage(false)
+    // setInsideFilePage(true)
 
   }
 
