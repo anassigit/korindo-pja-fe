@@ -394,17 +394,16 @@ const EditInstructions = (props) => {
 
                     alert("Files type are not allowed to upload or not supported.");
                 }
-            } else {
-
-                debugger
-
-                if (removeFile.length > 0) {
-                    removeFile.forEach(files => {
-                        bodyForm.append('removeFile', files);
-                    });
-                }
-
             }
+
+            debugger
+
+            if (removeFile.length > 0) {
+                removeFile.forEach(files => {
+                    bodyForm.append('removeFile', files);
+                });
+            }
+
 
             //end//
 
@@ -506,10 +505,6 @@ const EditInstructions = (props) => {
 
     function DeleteFileAttached(FileNo) {
 
-
-        const bodyForm = new FormData();
-        bodyForm.append('num', editInstructionsValidInput.values.no);
-
         if (SetFiles.length > 0) {
 
             for (let index = 0; index < SetFiles.length; index++) {
@@ -522,25 +517,15 @@ const EditInstructions = (props) => {
                 temp = removeFile
                 temp.push(FileNo)
                 setRemoveFile(temp);
-                console.log(removeFile);
                 SetFiles(result);
 
             }
 
         }
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        };
-
-        //insert(bodyForm, config);
-
-        //deleteFiles(bodyForm, config)
-
-
     };
+
+    console.log(removeFile)
 
     const filesizes = (bytes, decimals = 2) => {
         if (bytes === 0) return '0 Bytes';
@@ -1894,7 +1879,7 @@ const EditInstructions = (props) => {
                                                     <Col md="6">
                                                         <div className="mb-3 col-sm-8">
                                                             <Label> Choose Owner </Label>
-                                                            
+
                                                             <Select
                                                                 isDisabled
                                                                 value={selectedMulti}
