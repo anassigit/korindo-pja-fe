@@ -91,7 +91,7 @@ const EditInstructions = (props) => {
     const [tempAttachReply2, setTempAttachReply2] = useState([])
 
     const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
-    const [selectedDeletedReplyAtt, setSelectedDeletedReplyAtt] = useState ([])
+    const [selectedDeletedReplyAtt, setSelectedDeletedReplyAtt] = useState([])
 
     /* MULTI SELECT OPTIONS */
 
@@ -278,6 +278,7 @@ const EditInstructions = (props) => {
     }, [getDetailInstructionData, selectedManager, getManagerList, getOwnerList, attachmentInstructionData]);
 
     useEffect(() => {
+        debugger
         replyData?.data?.replyList?.length > 0 && replyData.data.replyList.map((row, reply_num) => {
             if (reply_num === selectedRowIndex && (selectedRowIndex != null || selectedRowIndex != undefined)) {
                 row.attachFileList.map((file, index) => {
@@ -285,6 +286,8 @@ const EditInstructions = (props) => {
                 })
             }
         })
+        SetSelectedFileR2([])
+        setTempAttachReply2([])
     }, [selectedRowIndex]);
 
     useEffect(() => {
@@ -852,7 +855,9 @@ const EditInstructions = (props) => {
 
 
     const [selectedfileR, SetSelectedFileR] = useState([]);
+    const [selectedfileR2, SetSelectedFileR2] = useState([]);
     const [FilesR, SetFilesR] = useState([]);
+    const [FilesR2, SetFilesR2] = useState([]);
 
 
     const InputChangeR = (e) => {
@@ -882,6 +887,32 @@ const EditInstructions = (props) => {
         }
     };
 
+    const InputChangeR2 = (e) => {
+        let images = [];
+        const files = e.target.files;
+
+        for (let i = 0; i < files.length; i++) {
+            let reader = new FileReader();
+            let file = files[i];
+
+            reader.onloadend = () => {
+                SetSelectedFileR2((prevValue) => [
+                    ...prevValue,
+                    {
+                        id: shortid.generate(),
+                        filename: file.name,
+                        filetype: file.type,
+                        fileimage: reader.result,
+                        fileori: file,
+                    },
+                ]);
+            };
+
+            if (files[i]) {
+                reader.readAsDataURL(file);
+            }
+        }
+    };
 
     const DeleteSelectFileR = (id) => {
         const result = selectedfileR.filter((data) => data.id !== id);
@@ -922,6 +953,17 @@ const EditInstructions = (props) => {
         }
     }
 
+    const FileUploadSubmitR2 = async (e) => {
+        e.preventDefault();
+
+        e.target.reset();
+
+        if (selectedfileR2.length > 0) {
+            SetFilesR2((prevFiles) => [...prevFiles, ...selectedfileR2]);
+            SetSelectedFileR2([]);
+        } else {
+        }
+    }
 
     const DeleteFileR = async (id) => {
         const result = Files.filter((data) => data.id !== id);
@@ -971,7 +1013,6 @@ const EditInstructions = (props) => {
             for (let index = 0; index < selectedfileR.length; index++) {
 
                 let a = selectedfileR[index];
-
                 bodyForm.append('file' + index, selectedfileR[index].fileori);
                 SetSelectedFileR([])
             }
@@ -1134,15 +1175,49 @@ const EditInstructions = (props) => {
 
         bodyForm.append('reply_num', selectedNum);
         bodyForm.append('content', editedContent);
-        
+
         selectedDeletedReplyAtt?.map((item, index) => {
-            bodyForm.append('removeFile', selectedDeletedReplyAtt)
+            bodyForm.append('removeFile', selectedDeletedReplyAtt[index])
         })
-        
+
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
+        }
+
+        if (selectedfileR2.length > 0) {
+
+            var getFileNm = selectedfileR2[0].filename;
+
+            getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+
+            if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+
+                for (let index = 0; index < selectedfileR2.length; index++) {
+                    let a = selectedfileR2[index];
+
+                    bodyForm.append('file' + index, selectedfileR2[index].fileori);
+
+                    SetSelectedFileR2([]);
+
+                }
+
+
+            } else {
+
+                alert("Files type are not allowed to upload or not supported.");
+            }
+        } else {
+
+            debugger
+
+            if (removeFile.length > 0) {
+                removeFile.forEach(files => {
+                    bodyForm.append('removeFile', files);
+                });
+            }
+
         }
 
 
@@ -1152,6 +1227,7 @@ const EditInstructions = (props) => {
         setSelectedDeletedReplyAtt([])
 
     }
+
 
     const noEnterAllowed = (event) => {
         if (event.key === 'Enter') {
@@ -1259,9 +1335,9 @@ const EditInstructions = (props) => {
         }
     }
 
-    const handleDeleteAttachmentR = (id) => {
-        const result = selectedfile.filter((data) => data.id !== id);
-        SetSelectedFile(result);
+    const DeleteSelectFileR2 = (id) => {
+        const result = selectedfileR2.filter((data) => data.id !== id);
+        SetSelectedFileR2(result);
     }
 
     const handleDeleteAttachedReplyRow = async (fNum, fName) => {
@@ -2017,43 +2093,36 @@ const EditInstructions = (props) => {
                                                                                 <Col sm="10">
                                                                                     <div className="col-sm-12">
 
-                                                                                        <Form onSubmit={FileUploadSubmitR}>
+                                                                                        <Form onSubmit={FileUploadSubmitR2}>
                                                                                             <div className="kb-file-upload">
 
                                                                                                 {selectedRowIndex === reply_num && (
                                                                                                     <div className="file-upload-box">
-                                                                                                        <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
+                                                                                                        <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR2} name="removeFile" multiple />
                                                                                                     </div>
                                                                                                 )}
                                                                                             </div>
-                                                                                            &nbsp;&nbsp;&nbsp;
-                                                                                            <div className="kb-attach-box" hidden>
-                                                                                                {
-                                                                                                    selectedfileR.map((data, index) => {
-                                                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                                                        return (
-                                                                                                            <div className="file-atc-box" key={id}>
-
-                                                                                                                {
-                                                                                                                    filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                                        <div className="file-image"></div>
-                                                                                                                        :
-                                                                                                                        <div className="file-image"></div>
-                                                                                                                }
-                                                                                                                <div className="file-detail">
-                                                                                                                    <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                                                    &nbsp;&nbsp;&nbsp;
-                                                                                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFileR(id)} />
-
-                                                                                                                </div>
+                                                                                            &nbsp;
+                                                                                            <div className="kb-attach-box">
+                                                                                                {selectedRowIndex === reply_num && selectedfileR2.map((data, index) => {
+                                                                                                    const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                                                    return (
+                                                                                                        <div className="file-atc-box" key={id}>
+                                                                                                            {filename.match(/\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ? (
+                                                                                                                <div className="file-image"></div>
+                                                                                                            ) : (
+                                                                                                                <div className="file-image"></div>
+                                                                                                            )}
+                                                                                                            <div className="file-detail">
+                                                                                                                <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
+                                                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFileR2(id)} />
                                                                                                             </div>
-                                                                                                        )
-                                                                                                    })
-                                                                                                }
+                                                                                                        </div>
+                                                                                                    );
+                                                                                                })}
                                                                                             </div>
-
                                                                                         </Form>
-
                                                                                     </div>
                                                                                 </Col>
                                                                             </Row>
