@@ -5,7 +5,9 @@ import {
     GET_SELECT,
     GET_SELECT_FILE,
     DELETE_FILE_FOLDER,
-    RENAME,
+    RENAME_FILE_FOLDER,
+    DOWNLOAD_FILES,
+    UPLOAD_FILES
 
 } from "./actionTypes"
 
@@ -15,7 +17,9 @@ import {
     respGetSelectFile,
     msgAdd,
     msgEdit,
-    msgDelete
+    msgDelete,
+    msgDownload,
+    msgUpload
 
 } from "./actions"
 
@@ -23,7 +27,9 @@ import {
 
     selectFolder,
     deleteFileFolder,
-    renameFileFolder
+    renameFileFolder,
+    downloadFileFolder,
+    uploadFileFolder
 
 } from "helpers/backend_helper"
 
@@ -78,12 +84,32 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
+  function* fetchDownloadfiles({ payload: req }) {
+    try {
+      debugger
+      yield call(downloadFileFolder, req)
+    } catch (error) {
+      yield put(msgDownload({ "status": 0, "message": "Error Download Data" }))
+    }
+  }
+
+  function* fetchUploadfiles({ payload: req }) {
+    try {
+      debugger
+      yield call(uploadFileFolder, req)
+    } catch (error) {
+      yield put(msgUpload({ "status": 0, "message": "Error Upload Data" }))
+    }
+  }
+
   function* fileManagementSaga() {
 
     yield takeEvery(GET_SELECT, fetchGetSelectFolder)
     yield takeEvery(GET_SELECT_FILE, fetchGetSelectFolder2)
     yield takeEvery(DELETE_FILE_FOLDER, fetchDeleteFileFolder)
-    yield takeEvery(RENAME, fetchRenameFileFolder)
+    yield takeEvery(RENAME_FILE_FOLDER, fetchRenameFileFolder)
+    yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
+    yield takeEvery(UPLOAD_FILES, fetchUploadfiles)
 
   }
 

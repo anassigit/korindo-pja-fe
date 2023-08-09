@@ -164,3 +164,7 @@ export const selectFolder = req => postWithParam("/rest/FileManagementRest/Selec
 export const deleteFileFolder = req => postWithParam("/rest/FileManagementRest/Delete", req)
 
 export const renameFileFolder = req => postWithParam("/rest/FileManagementRest/Rename", req)
+
+export const downloadFileFolder = req => getWithXls("/rest/FileManagementRest/FileDownload", req)
+
+export const uploadFileFolder = req => postUpload("/rest/FileManagementRest/FileUpload", req)

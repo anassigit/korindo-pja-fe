@@ -5,7 +5,11 @@ import {
     GET_SELECT_FILE,
     RESP_GET_SELECT_FILE,
     DELETE_FILE_FOLDER,
-    RENAME,
+    RENAME_FILE_FOLDER,
+    DOWNLOAD_FILES,
+    UPLOAD_FILES,
+    MSGDOWNLOAD,
+    MSGUPLOAD,
     RESET_MESSAGE,
     MSGADD,
     MSGEDIT,
@@ -39,7 +43,27 @@ export const getSelectFile = (req) => ({
   })
 
   export const renameFileFolder = (req) => ({
-    type: RENAME,
+    type: RENAME_FILE_FOLDER,
+    payload: req,
+  })
+
+  export const downloadFile = (req) => ({
+    type: DOWNLOAD_FILES,
+    payload: req,
+  })
+
+  export const msgDownload = (req) => ({
+    type: MSGDOWNLOAD,
+    payload: req,
+  })
+
+  export const uploadFile = (req) => ({
+    type: UPLOAD_FILES,
+    payload: req,
+  })
+
+  export const msgUpload = (req) => ({
+    type: MSGUPLOAD,
     payload: req,
   })
 
