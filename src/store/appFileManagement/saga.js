@@ -7,7 +7,8 @@ import {
     DELETE_FILE_FOLDER,
     RENAME_FILE_FOLDER,
     DOWNLOAD_FILES,
-    UPLOAD_FILES
+    UPLOAD_FILES,
+    MOVE_FILES
 
 } from "./actionTypes"
 
@@ -19,7 +20,8 @@ import {
     msgEdit,
     msgDelete,
     msgDownload,
-    msgUpload
+    msgUpload,
+    msgMove
 
 } from "./actions"
 
@@ -29,7 +31,8 @@ import {
     deleteFileFolder,
     renameFileFolder,
     downloadFileFolder,
-    uploadFileFolder
+    uploadFileFolder,
+    moveFileFolder
 
 } from "helpers/backend_helper"
 
@@ -102,6 +105,15 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
+  function* fetchMovefiles({ payload: req }) {
+    try {
+      debugger
+      yield call(moveFileFolder, req)
+    } catch (error) {
+      yield put(msgMove({ "status": 0, "message": "Error Move Data" }))
+    }
+  }
+
   function* fileManagementSaga() {
 
     yield takeEvery(GET_SELECT, fetchGetSelectFolder)
@@ -110,6 +122,7 @@ function* fetchGetSelectFolder({ payload: req }) {
     yield takeEvery(RENAME_FILE_FOLDER, fetchRenameFileFolder)
     yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
     yield takeEvery(UPLOAD_FILES, fetchUploadfiles)
+    yield takeEvery(MOVE_FILES, fetchMovefiles)
 
   }
 

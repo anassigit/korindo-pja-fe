@@ -23,10 +23,11 @@ import {
   DropdownMenu,
   DropdownToggle,
   UncontrolledDropdown,
+  Dropdown
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
-import { getSelectFile, deleteFileFolder, downloadFile, resetMessage } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolder, downloadFile, moveFile, resetMessage } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 //import FolderDetail from "./FolderDetail";
@@ -47,12 +48,20 @@ const FileManagement = () => {
   const [fileManagementMsg, setFileManagementMsg] = useState("")
   const [fileManagementData, setFileManagementData] = useState()
   const [idFile, setIdFile] = useState("")
+  const [idParent, setIdParent] = useState("")
+  const [idChild, setIdChild] = useState(-1)
   const [idToggle, setIdToggle] = useState("")
   const [idToggleUpload, setIdToggleUpload] = useState("")
   const [myFiles, setMyFiles] = useState([]);
   const [renameModal, setRenameModal] = useState(false)
   const [uploadModal, setUploadModal] = useState(false)
 
+  const [idFolderTemp, setIdFolderTemp] = useState()
+  const [idParentTemp, setIdParentTemp] = useState()
+
+  useEffect(() => {
+    console.log(idChild)
+  },[idChild])
 
   const toggleRenameModal = (idT) => {
     debugger
@@ -60,10 +69,11 @@ const FileManagement = () => {
     setIdToggle(idT)
   }
 
-  const toggleUploadModal = (idTU) => {
+  const toggleUploadModal = () => {
     debugger
+    console.log(idChild)
     setUploadModal(!uploadModal)
-    setIdToggleUpload(idTU)
+    setIdToggleUpload(idChild)
   }
 
   useEffect(() => {
@@ -84,15 +94,26 @@ const FileManagement = () => {
 
   useEffect(() => {
 
+    debugger
     if (getFileSelect.status == "1") {
+      /* vvvvv salah disini tadi vvvvv */
 
       setFileManagementMsg("")
+      
+      /* vvvvv jangan set child ID tiap status, ambil dari select, jgn lupa debug dlu vvvvv */
     }
+
   }, [getFileSelect])
 
 
-  const getInsideFolder = (e) => {
+  const getInsideFolder = (e, f) => {
+    debugger
+
     dispatch(getSelectFile({ 'folder_num': e }))
+    setIdFolderTemp(e)
+    setIdChild(e)
+    setIdParentTemp(f)
+    setIdParent(f)
   }
 
 
@@ -118,16 +139,21 @@ const FileManagement = () => {
     debugger
     try {
 
-        var indexed_array = {
-            "file_num": num,
-            "file_nm": fileNm
-        };
-        await dispatch(downloadFile(indexed_array));
+      var indexed_array = {
+        "file_num": num,
+        "file_nm": fileNm
+      };
+      await dispatch(downloadFile(indexed_array));
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
-};
+  };
 
+  const [selectedLanguage, setSelectedLanguage] = useState(false);
+
+  const handleLanguageChange = (e) => {
+    setSelectedLanguage(e.target.value);
+  };
 
   return (
     <RootPageCustom
@@ -169,6 +195,32 @@ const FileManagement = () => {
                       />
                     </div>
                   </Row>
+                </Col>
+                <Col sm="12">
+                  <div className="text-sm-end">
+                    <div className="float-end ms-1">
+                      <UncontrolledDropdown className="mb-2">
+                        <DropdownToggle className="font-size-16 text-muted" tag="a">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                          >
+                            <i className="mdi mdi-plus" style={{ verticalAlign: 'middle' }}></i>{' '}
+                            New
+                          </button>
+                        </DropdownToggle>
+
+                        <DropdownMenu className="dropdown-menu-end">
+                          <DropdownItem>
+                            Add New Folder
+                          </DropdownItem>
+                          <DropdownItem onClick={() => toggleUploadModal()}>
+                            Upload New File
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </div>
+                  </div>
                 </Col>
                 <p />
                 <p />
@@ -214,9 +266,9 @@ const FileManagement = () => {
                                         </DropdownToggle>
 
                                         <DropdownMenu className="dropdown-menu-end">
-                                          <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
+                                          {/* <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
                                             Open
-                                          </DropdownItem>
+                                          </DropdownItem> */}
                                           <DropdownItem onClick={() => toggleRenameModal(myfiles.num)}>
                                             Rename
                                           </DropdownItem>
@@ -235,13 +287,13 @@ const FileManagement = () => {
                                     </div>
 
                                     <h5 className="font-size-14 text-truncate mb-1">
-                                      <Link to="#" className="text-body">
+                                      <a onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} className="text-body">
                                         {myfiles.type === "FOLDER" ?
                                           <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
                                           :
                                           <i className="bx bxs-file font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
                                         }&nbsp;{myfiles.name}&nbsp;{myfiles.type}
-                                      </Link>
+                                      </a>
                                     </h5>
                                   </CardBody>
                                 </Card>
@@ -313,7 +365,7 @@ const FileManagement = () => {
                                   </CardBody>
                                 </Card>
 
-                                
+
                                 : ''
                             ))}
 

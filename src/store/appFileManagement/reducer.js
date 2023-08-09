@@ -6,8 +6,10 @@ import {
     RESP_GET_SELECT_FILE,
     DELETE_FILE_FOLDER,
     RENAME_FILE_FOLDER,
+    MOVE_FILES,
     DOWNLOAD_FILES,
     UPLOAD_FILES,
+    MSGMOVE,
     MSGDOWNLOAD,
     MSGUPLOAD,
     RESET_MESSAGE,
@@ -26,6 +28,7 @@ const INIT_STATE = {
     msgDelete: "",
     msgDownload: "",
     msgUpload: "",
+    msgMove: "",
 
 }
 
@@ -78,6 +81,15 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                           ...state,
                           msgUpload: action.payload,
                         }
+                        case MOVE_FILES:
+                            return {
+                              ...state,
+                            }
+                        case MSGMOVE:
+                            return {
+                              ...state,
+                              msgMove: action.payload,
+                            }
         case RESET_MESSAGE:
             return {
             ...state,
@@ -86,6 +98,7 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
             msgDelete: "",
             msgDownload: "",
             msgUpload: "",
+            msgMove:"",
             }
         case MSGADD:
             return {

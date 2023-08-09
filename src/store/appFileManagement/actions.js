@@ -8,8 +8,10 @@ import {
     RENAME_FILE_FOLDER,
     DOWNLOAD_FILES,
     UPLOAD_FILES,
+    MOVE_FILES,
     MSGDOWNLOAD,
     MSGUPLOAD,
+    MSGMOVE,
     RESET_MESSAGE,
     MSGADD,
     MSGEDIT,
@@ -64,6 +66,16 @@ export const getSelectFile = (req) => ({
 
   export const msgUpload = (req) => ({
     type: MSGUPLOAD,
+    payload: req,
+  })
+
+  export const moveFile = (req) => ({
+    type: MOVE_FILES,
+    payload: req,
+  })
+
+  export const msgMove = (req) => ({
+    type: MSGMOVE,
     payload: req,
   })
 
