@@ -35,6 +35,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import axios from 'axios';
 import Rename from "./Rename";
 import Upload from "./Upload";
+import Create from "./Create";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 
@@ -48,13 +49,15 @@ const FileManagement = () => {
   const [fileManagementMsg, setFileManagementMsg] = useState("")
   const [fileManagementData, setFileManagementData] = useState()
   const [idFile, setIdFile] = useState("")
-  const [idParent, setIdParent] = useState("")
+  const [idParent, setIdParent] = useState(-1)
   const [idChild, setIdChild] = useState(-1)
   const [idToggle, setIdToggle] = useState("")
   const [idToggleUpload, setIdToggleUpload] = useState("")
+  const [idToggleCreate, setIdToggleCreate] = useState("")
   const [myFiles, setMyFiles] = useState([]);
   const [renameModal, setRenameModal] = useState(false)
   const [uploadModal, setUploadModal] = useState(false)
+  const [createModal, setCreateModal] = useState(false)
 
   const [idFolderTemp, setIdFolderTemp] = useState()
   const [idParentTemp, setIdParentTemp] = useState()
@@ -62,6 +65,10 @@ const FileManagement = () => {
   useEffect(() => {
     console.log(idChild)
   },[idChild])
+
+  useEffect(() => {
+    console.log(idParent)
+  },[idParent])
 
   const toggleRenameModal = (idT) => {
     debugger
@@ -74,6 +81,13 @@ const FileManagement = () => {
     console.log(idChild)
     setUploadModal(!uploadModal)
     setIdToggleUpload(idChild)
+  }
+
+  const toggleCreateModal = () => {
+    debugger
+    console.log(idChild)
+    setCreateModal(!createModal)
+    setIdToggleCreate(idChild)
   }
 
   useEffect(() => {
@@ -112,8 +126,8 @@ const FileManagement = () => {
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
     setIdChild(e)
-    setIdParentTemp(f)
-    setIdParent(f)
+    setIdParentTemp(e)
+    setIdParent(e)
   }
 
 
@@ -175,6 +189,12 @@ const FileManagement = () => {
             idToggleUpload={idToggleUpload}
           />
 
+        <Create
+            modal={createModal}
+            toggle={toggleCreateModal}
+            idToggleCreate={idToggleCreate}
+          />  
+
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
               <Col lg={12}>
@@ -211,7 +231,7 @@ const FileManagement = () => {
                         </DropdownToggle>
 
                         <DropdownMenu className="dropdown-menu-end">
-                          <DropdownItem>
+                          <DropdownItem onClick={() => toggleCreateModal()}>
                             Add New Folder
                           </DropdownItem>
                           <DropdownItem onClick={() => toggleUploadModal()}>

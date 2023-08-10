@@ -7,11 +7,13 @@ export const RENAME_FILE_FOLDER = "RENAME_FILE_FOLDER"
 export const DOWNLOAD_FILES = "DOWNLOAD_FILES"
 export const UPLOAD_FILES = "UPLOAD_FILES"
 export const MOVE_FILES = "MOVE_FILES"
+export const CREATE_FOLDER = "CREATE_FOLDER"
 
 
 export const MSGDOWNLOAD = "MSGDOWNLOAD"
 export const MSGUPLOAD = "MSGUPLOAD"
 export const MSGMOVE = "MSGMOVE"
+export const MSGCREATE = "MSGCREATE"
 export const RESET_MESSAGE = "RESET_MESSAGE"
 export const MSGEDIT = "MSGEDIT"
 export const MSGDELETE = "MSGDELETE"

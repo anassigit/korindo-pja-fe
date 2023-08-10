@@ -9,6 +9,8 @@ import {
     DOWNLOAD_FILES,
     UPLOAD_FILES,
     MOVE_FILES,
+    CREATE_FOLDER,
+    MSGCREATE,
     MSGDOWNLOAD,
     MSGUPLOAD,
     MSGMOVE,
@@ -51,6 +53,16 @@ export const getSelectFile = (req) => ({
 
   export const downloadFile = (req) => ({
     type: DOWNLOAD_FILES,
+    payload: req,
+  })
+
+  export const createFolder = (req) => ({
+    type: CREATE_FOLDER,
+    payload: req,
+  })
+
+  export const msgCreate = (req) => ({
+    type: MSGCREATE,
     payload: req,
   })
 

@@ -8,7 +8,8 @@ import {
     RENAME_FILE_FOLDER,
     DOWNLOAD_FILES,
     UPLOAD_FILES,
-    MOVE_FILES
+    MOVE_FILES,
+    CREATE_FOLDER
 
 } from "./actionTypes"
 
@@ -21,7 +22,8 @@ import {
     msgDelete,
     msgDownload,
     msgUpload,
-    msgMove
+    msgMove,
+    msgCreate
 
 } from "./actions"
 
@@ -32,7 +34,8 @@ import {
     renameFileFolder,
     downloadFileFolder,
     uploadFileFolder,
-    moveFileFolder
+    moveFileFolder,
+    createFolder
 
 } from "helpers/backend_helper"
 
@@ -114,6 +117,17 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
+  function* fetchCretaeFolder({ payload: req }) {
+    try {
+      debugger
+      const response = yield call(createFolder, req)
+      yield put(msgCreate(response))
+    } catch (error) {
+      console.log(error);
+      yield put(msgCreate({ "status": 0, "data": "Error Create Data" }))
+    }
+  }
+
   function* fileManagementSaga() {
 
     yield takeEvery(GET_SELECT, fetchGetSelectFolder)
@@ -123,6 +137,7 @@ function* fetchGetSelectFolder({ payload: req }) {
     yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
     yield takeEvery(UPLOAD_FILES, fetchUploadfiles)
     yield takeEvery(MOVE_FILES, fetchMovefiles)
+    yield takeEvery(CREATE_FOLDER, fetchCretaeFolder)
 
   }
 

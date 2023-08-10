@@ -7,6 +7,8 @@ import {
     DELETE_FILE_FOLDER,
     RENAME_FILE_FOLDER,
     MOVE_FILES,
+    CREATE_FOLDER,
+    MSGCREATE,
     DOWNLOAD_FILES,
     UPLOAD_FILES,
     MSGMOVE,
@@ -29,6 +31,7 @@ const INIT_STATE = {
     msgDownload: "",
     msgUpload: "",
     msgMove: "",
+    msgCreate: "",
 
 }
 
@@ -38,86 +41,95 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
 
         case GET_SELECT:
             return {
-            ...state,
+                ...state,
             }
         case RESP_GET_SELECT:
             return {
-            ...state,
-            respGetSelect: action.payload,
-            }
-            case GET_SELECT_FILE:
-                return {
                 ...state,
-                }
-            case RESP_GET_SELECT_FILE:
-                return {
+                respGetSelect: action.payload,
+            }
+        case GET_SELECT_FILE:
+            return {
+                ...state,
+            }
+        case RESP_GET_SELECT_FILE:
+            return {
                 ...state,
                 respGetSelectFile: action.payload,
-                }
+            }
 
-            case DELETE_FILE_FOLDER:
-                return {
-                    ...state,
-                }
-            case RENAME_FILE_FOLDER:
-                return {
-                    ...state,
-                }
-                case MSGDOWNLOAD:
-                    return {
-                      ...state,
-                      msgDownload: action.payload,
-                    }
-                  case DOWNLOAD_FILES:
-                    return {
-                      ...state,
-                    }
-                    case UPLOAD_FILES:
-                        return {
-                          ...state,
-                        }
-                    case MSGUPLOAD:
-                        return {
-                          ...state,
-                          msgUpload: action.payload,
-                        }
-                        case MOVE_FILES:
-                            return {
-                              ...state,
-                            }
-                        case MSGMOVE:
-                            return {
-                              ...state,
-                              msgMove: action.payload,
-                            }
+        case DELETE_FILE_FOLDER:
+            return {
+                ...state,
+            }
+        case RENAME_FILE_FOLDER:
+            return {
+                ...state,
+            }
+        case MSGDOWNLOAD:
+            return {
+                ...state,
+                msgDownload: action.payload,
+            }
+        case DOWNLOAD_FILES:
+            return {
+                ...state,
+            }
+        case UPLOAD_FILES:
+            return {
+                ...state,
+            }
+        case MSGUPLOAD:
+            return {
+                ...state,
+                msgUpload: action.payload,
+            }
+        case MOVE_FILES:
+            return {
+                ...state,
+            }
+        case MSGMOVE:
+            return {
+                ...state,
+                msgMove: action.payload,
+            }
+        case CREATE_FOLDER:
+            return {
+                ...state,
+            }
+        case MSGCREATE:
+            return {
+                ...state,
+                msgCreate: action.payload,
+            }
         case RESET_MESSAGE:
             return {
-            ...state,
-            msgEdit: "",
-            msgAdd: "",
-            msgDelete: "",
-            msgDownload: "",
-            msgUpload: "",
-            msgMove:"",
+                ...state,
+                msgEdit: "",
+                msgAdd: "",
+                msgDelete: "",
+                msgDownload: "",
+                msgUpload: "",
+                msgMove: "",
             }
         case MSGADD:
             return {
-            ...state,
-            msgAdd: action.payload,
+                ...state,
+                msgAdd: action.payload,
             }
         case MSGEDIT:
             return {
-            ...state,
-            msgEdit: action.payload,
-            }         
+                ...state,
+                msgEdit: action.payload,
+            }
         case MSGDELETE:
             return {
-            ...state,
-            msgDelete: action.payload,
+                ...state,
+                msgDelete: action.payload,
             }
 
-    default:
-    return state
+        default:
+            return state
     }
 
 }
