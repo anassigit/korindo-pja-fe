@@ -12,18 +12,10 @@ window.onpopstate = function (event) {
   const currentPath = event?.currentTarget?.location?.pathname;
   const authUser = ReactSession.get("authUser");
 
-  // if (currentPath === '/login') 
-  // {
-  //   ReactSession.set("authUser", "");
-  //   ReactSession.set("user", "");
-  // }
-  //  else 
   if (currentPath === '/login' && authUser !== null) {
     history.go(1);
   }
 };
-
-
 
 function* loginUser({ payload: { user, history } }) {
   try {
@@ -32,15 +24,9 @@ function* loginUser({ payload: { user, history } }) {
 
       ReactSession.set("authUser", response.data.KOR_TOKEN);
       ReactSession.set("user", JSON.stringify(response.data.user));
-      // const res = yield call(getMenu)
-      // if(res.status == 1){
-      //   ReactSession.set("menu", JSON.stringify(res.data.menu));
-      // }
-      // router.push({
-      //   pathname: router.getCurrentLocation().pathname,
-      //   state: {overlay: true}
-      // })
-      history.push({ pathname: '/', state: { firstLogin: true } });
+      ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
+
+      history.push({ pathname: '/' });
       yield put(loginSuccess(response));
     } else {
       yield put(apiError(response.message))

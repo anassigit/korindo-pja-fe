@@ -6,6 +6,7 @@ import {
   API_ERROR,
   RELOGIN_USER,
   RELOGIN_SUCCESS,
+  RESET_MESSAGE,
 } from "./actionTypes"
 
 const initialState = {
@@ -45,12 +46,11 @@ const login = (state = initialState, action) => {
         loading: true,
       }
       break
-    case RELOGIN_SUCCESS:
-      state = {
+    case RESET_MESSAGE:
+      return {
         ...state,
-        loading: false,
+        error: "", 
       }
-      break
   }
   return state
 }

@@ -53,22 +53,41 @@ const ChangePassword = (props) => {
     },
 
     validationSchema: Yup.object().shape({
-      currentPassword: Yup.string().required("Please Enter Your Current Password"),
-      Password1: Yup.string().required("Please Enter Your New Password"),
-      newPassword: Yup.string().required("Please Re-Enter Your New Password"),
+      currentPassword: Yup.string().required("현재 비밀번호를 입력하세요."),
+      Password1: Yup.string()
+        .required("새로운 비밀번호를 입력하세요.")
+        .min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
+        .test(
+          "has-at-least-two-different-characters",
+          "비밀번호는 적어도 두 가지 다른 문자를 포함해야 합니다.",
+          value => {
+            const uniqueCharacters = new Set(value);
+            return uniqueCharacters.size >= 2;
+          }
+        ),
+      newPassword: Yup.string()
+        .required("새 비밀번호를 다시 입력하세요.")
+        .oneOf([Yup.ref('Password1')], '비밀번호가 일치하지 않습니다.'),
     }),
 
 
     onSubmit: (val) => {
-      if (val.Password1 !== val.newPassword) {
-        userProfilePasswordValidation.setFieldError('Password1', 'Passwords do not match');
-        userProfilePasswordValidation.setFieldError('newPassword', 'Passwords do not match');
-      } else {
-        dispatch(updateUserPassword(val));
-      }
-
+      dispatch(updateUserPassword(val))
+      setChangePasswordMsg("")
     }
   });
+  
+  useEffect(() => {
+    userProfilePasswordValidation.resetForm({
+      values: {
+        currentPassword: '',
+        Password1: '',
+        newPassword: '',
+      },
+    });
+  }, [props.userProfilePassword]);
+  
+
 
   const updatePass = async () => {
     if (userProfilePasswordValidation.values.currentPassword !== "" || null) {
@@ -86,14 +105,13 @@ const ChangePassword = (props) => {
   };
 
   useEffect(() => {
-    debugger
     if (changePasswordMessage.status == "1") {
       setChangePasswordMsg("")
       props.setUserProfilePage(true);
       props.setAppUserProfileMsg(changePasswordMessage);
       props.setUserProfilePassword(false);
     }
-
+    
     if (changePasswordMessage.message != undefined && changePasswordMessage?.status === "0") {
       setChangePasswordMsg(changePasswordMessage.message)
     }
@@ -162,8 +180,8 @@ const ChangePassword = (props) => {
                         userProfilePasswordValidation.touched.Password1 && userProfilePasswordValidation.errors.Password1 ? true : false
                       }
                     />
-                    {userProfilePasswordValidation.touched.newPassword && userProfilePasswordValidation.errors.newPassword ? (
-                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.newPassword}</FormFeedback>
+                    {userProfilePasswordValidation.touched.Password1 && userProfilePasswordValidation.errors.Password1 ? (
+                      <FormFeedback type="invalid">{userProfilePasswordValidation.errors.Password1}</FormFeedback>
                     ) : null}
                   </div>
                   <div className="mb-3 col-sm-3">
@@ -199,7 +217,11 @@ const ChangePassword = (props) => {
                   <Button
                     type="button"
                     className="btn btn-danger "
-                    onClick={() => { props.setUserProfilePage(true); props.setUserProfilePassword(false); props.setAppUserProfileMsg("") }}
+                    onClick={() => {
+                      props.setUserProfilePage(true);
+                      props.setUserProfilePassword(false);
+                      props.setAppUserProfileMsg("");
+                    }}
                   >
 
                     Back

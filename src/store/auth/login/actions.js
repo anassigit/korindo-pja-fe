@@ -6,6 +6,7 @@ import {
   API_ERROR,
   RELOGIN_USER,
   RELOGIN_SUCCESS,
+  RESET_MESSAGE,
 } from "./actionTypes"
 
 export const loginUser = (user, history) => {
@@ -36,7 +37,7 @@ export const logoutUserSuccess = () => {
   }
 }
 
-export const apiError = error => {
+export const apiError = (error) => {
   return {
     type: API_ERROR,
     payload: error,
@@ -57,6 +58,8 @@ export const reloginSuccess = user => {
   }
 }
 
-
-
-
+export const resetMessage = () => {
+  return {
+    type: RESET_MESSAGE,
+  };
+}

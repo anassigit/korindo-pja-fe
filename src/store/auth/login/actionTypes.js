@@ -8,3 +8,4 @@ export const API_ERROR = "LOGIN_API_ERROR"
 export const RELOGIN_USER = "RELOGIN_USER"
 export const RELOGIN_SUCCESS = "RELOGIN_SUCCESS"
 
+export const RESET_MESSAGE = "RESET_MESSAGE"

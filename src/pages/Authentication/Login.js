@@ -2,19 +2,21 @@ import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
 import React, { useState, useEffect } from "react";
 
-import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
+import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label, UncontrolledAlert } from "reactstrap";
+
+import { ReactSession } from 'react-client-session';
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, useNavigate } from "react-router-dom";
 
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { loginUser } from "../../store/actions";
+import { loginUser, resetMessage } from "../../store/actions";
 
 // import images
 import profile from "assets/images/profile-img.png";
@@ -23,6 +25,15 @@ import logo from "assets/images/logotitle.png";
 
 const Login = props => {
   const dispatch = useDispatch();
+  const [errorMsg, setErrorMsg] = useState(null)
+
+  useEffect(() => {
+    dispatch(resetMessage())
+  },[dispatch])
+
+  const { error } = useSelector(state => ({
+    error: state.Login.error,
+  }));
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -36,15 +47,24 @@ const Login = props => {
       id: Yup.string().required("Please Enter Your Email"),
       pw: Yup.string().required("Please Enter Your Password"),
     }),
-    onSubmit: (values) => {
-
-      dispatch(loginUser(values, props.history));
+    onSubmit: values => {
+      dispatch(loginUser(values, props.history))
+      setErrorMsg('')
     }
   });
 
-  const { error } = useSelector(state => ({
-    error: state.Login.error,
-  }));
+  useEffect(() => {
+    let isAuth = ReactSession.get('authUser')
+    if (isAuth) {
+      props.history.push('/')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (error) {
+      setErrorMsg(error)
+    }
+  }, [error, errorMsg])
 
 
   return (
@@ -83,7 +103,7 @@ const Login = props => {
                         return false;
                       }}
                     >
-                      {error ? <Alert color="danger">{error}</Alert> : null}
+                      {errorMsg ? <Alert color="danger">{errorMsg}</Alert> : null}
 
                       <div className="mb-3">
                         <Input

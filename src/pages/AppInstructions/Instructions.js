@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 import { getInstructionsData, getInstructionsData2, resetMessage } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
-//import { ReactSession } from 'react-client-session';
+import { ReactSession } from 'react-client-session';
 import AddInstructions from "./AddInstructions";
 import EditInstructions from "./EditInstructions";
 import "../../assets/scss/custom/table/TableCustom.css"
@@ -39,6 +39,13 @@ const Instructions = () => {
     const [getData, setGetData] = useState([]);
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
+
+    useEffect(()=> {
+        let temp = ReactSession.get('firstTime_Login')
+        if (temp === "true") {
+            history.push('/FirstLogin')
+        }
+    }, [])
 
     useEffect(() => {
         dispatch(resetMessage());

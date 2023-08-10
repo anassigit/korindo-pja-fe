@@ -21,6 +21,7 @@ import ChangePassword from "../pages/AppUserProfile/ChangePassword"
 import Setting from "pages/AppSetting/Setting"
 import EditInstructions from "pages/AppInstructions/EditInstructions"
 import FileManagement from "pages/AppFileManagement/FileManagement"
+import FirstLogin from "pages/Authentication/FirstLogin"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -34,6 +35,7 @@ const authProtectedRoutes = [
   { path: "/AppUserProfile", component: UserProfile },
   { path: "/changePassword", component: ChangePassword },
   { path: "/AppFileManagement", component: FileManagement },
+  { path: "/FirstLogin", component: FirstLogin },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

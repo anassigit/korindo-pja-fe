@@ -200,7 +200,6 @@ export async function postDownloadXlsx(
     responseType: "blob",
   }
 ) {
-  debugger
   console.log(data)
   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get("authUser")
   let token = ReactSession.get("authUser")
