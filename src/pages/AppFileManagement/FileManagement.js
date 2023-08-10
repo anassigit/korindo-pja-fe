@@ -49,11 +49,12 @@ const FileManagement = () => {
   const [fileManagementMsg, setFileManagementMsg] = useState("")
   const [fileManagementData, setFileManagementData] = useState()
   const [idFile, setIdFile] = useState("")
-  const [idParent, setIdParent] = useState(-1)
+  const [idParent, setIdParent] = useState(0)
   const [idChild, setIdChild] = useState(-1)
   const [idToggle, setIdToggle] = useState("")
   const [idToggleUpload, setIdToggleUpload] = useState("")
   const [idToggleCreate, setIdToggleCreate] = useState("")
+  const [nmToggle, setNmToggle] = useState("")
   const [myFiles, setMyFiles] = useState([]);
   const [renameModal, setRenameModal] = useState(false)
   const [uploadModal, setUploadModal] = useState(false)
@@ -64,30 +65,32 @@ const FileManagement = () => {
 
   useEffect(() => {
     console.log(idChild)
-  },[idChild])
+  }, [idChild])
 
   useEffect(() => {
     console.log(idParent)
-  },[idParent])
+  }, [idParent])
 
-  const toggleRenameModal = (idT) => {
+  const toggleRenameModal = (idT, nmT) => {
     debugger
     setRenameModal(!renameModal)
     setIdToggle(idT)
+    var nama = nmT.split('.').pop();
+    setNmToggle(nama)
   }
 
   const toggleUploadModal = () => {
     debugger
-    console.log(idChild)
+    console.log(idParent)
     setUploadModal(!uploadModal)
-    setIdToggleUpload(idChild)
+    setIdToggleUpload(idParent)
   }
 
   const toggleCreateModal = () => {
     debugger
-    console.log(idChild)
+    console.log(idParent)
     setCreateModal(!createModal)
-    setIdToggleCreate(idChild)
+    setIdToggleCreate(idParent)
   }
 
   useEffect(() => {
@@ -113,7 +116,7 @@ const FileManagement = () => {
       /* vvvvv salah disini tadi vvvvv */
 
       setFileManagementMsg("")
-      
+
       /* vvvvv jangan set child ID tiap status, ambil dari select, jgn lupa debug dlu vvvvv */
     }
 
@@ -181,6 +184,7 @@ const FileManagement = () => {
             modal={renameModal}
             toggle={toggleRenameModal}
             idToggle={idToggle}
+            nmToggle={nmToggle}
           />
 
           <Upload
@@ -189,11 +193,11 @@ const FileManagement = () => {
             idToggleUpload={idToggleUpload}
           />
 
-        <Create
+          <Create
             modal={createModal}
             toggle={toggleCreateModal}
             idToggleCreate={idToggleCreate}
-          />  
+          />
 
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
@@ -246,175 +250,185 @@ const FileManagement = () => {
                 <p />
 
                 <Row>
-                  <div>
+                  <div className="align-baseline fs-6">
+                    <strong>
                     {getFileSelect?.data?.path.map((breadcrumb, index) => (
                       <span key={index}>
                         {index > 0 && ' > '}
                         <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
                       </span>
                     ))}
+                    </strong>
                   </div>
-                  <p />
-                  <p />
-
-                  <h6>FOLDERS</h6>
-                  <p />
-
+                </Row>
+                <p />
+                <p />
+                <Row><h6>FOLDERS</h6></Row>
+                <p />
+                <p />
+                <Row>
+                  {getFileSelect?.data?.childList.map((myfiles, key) => (
+                    myfiles.type === "FOLDER" ?
+                      <Col xl={4} sm={6} key={key}>
+                        <Card className="shadow-none border">
+                          <CardBody className="p-3">
+                            <div >
+                              <div className="float-end ms-2">
+                                <UncontrolledDropdown className="mb-2">
+                                  <DropdownToggle
+                                    className="font-size-16 text-muted"
+                                    tag="a"
+                                  >
+                                    <i className="mdi mdi-dots-horizontal" ></i>
+                                  </DropdownToggle>
+                                  <DropdownMenu className="dropdown-menu-end">
+                                    <DropdownItem onClick={() => toggleRenameModal(myfiles.num)}>
+                                      Rename
+                                    </DropdownItem>
+                                    <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
+                                      Move
+                                    </DropdownItem>
+                                    {/* <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
+                                      Upload
+                                    </DropdownItem> */}
+                                    <div className="dropdown-divider"></div>
+                                    <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
+                                      Remove
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </UncontrolledDropdown>
+                              </div>
+                              <div className="avatar-xs me-3 mb-3">
+                                <div className="avatar-title bg-transparent rounded">
+                                  {myfiles.type === "FOLDER" ?
+                                    <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
+                                    :
+                                    <i className="fa fa-solid fa-file fs-3 align-baseline text-warning"></i>
+                                  }
+                                </div>
+                              </div>
+                              <div className="d-flex">
+                                <div className="overflow-hidden me-auto">
+                                  <h5 className="font-size-14 text-truncate mb-1">
+                                    <a onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} className="text-body fs-6 align-baseline">
+                                      {/* {myfiles.type === "FOLDER" ?
+                                        <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
+                                        :
+                                        <i className="bx bxs-file font-size-24 text-warning"></i>
+                                      }&nbsp; */}
+                                      {myfiles.name}&nbsp;
+                                    </a>
+                                  </h5>
+                                </div>
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                      : ''
+                  ))}
                 </Row>
 
-                <Row className="mb-2">
-                  <Col sm="12">
-                    <div className="form-group m-0">
-                      <div className="input-group">
-                        <Col md="4">
-                          <Row className="mb-1 col-sm-10">
 
-                            {getFileSelect?.data?.childList.map((myfiles, key) => (
-
-                              myfiles.type === "FOLDER" ?
-
-                                <Card className="shadow-none border" style={{ verticalAlign: "middle" }} key={key}>
-                                  <CardBody>
-
-                                    <div className="float-end ms-1">
-                                      <UncontrolledDropdown className="mb-2">
-                                        <DropdownToggle
-                                          className="font-size-16 text-muted"
-                                          tag="a"
-                                        >
-                                          <i className="mdi mdi-dots-horizontal" ></i>
-                                        </DropdownToggle>
-
-                                        <DropdownMenu className="dropdown-menu-end">
-                                          {/* <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
-                                            Open
-                                          </DropdownItem> */}
-                                          <DropdownItem onClick={() => toggleRenameModal(myfiles.num)}>
-                                            Rename
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
-                                            Move
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
-                                            Upload
-                                          </DropdownItem>
-                                          <div className="dropdown-divider"></div>
-                                          <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
-                                            Remove
-                                          </DropdownItem>
-                                        </DropdownMenu>
-                                      </UncontrolledDropdown>
-                                    </div>
-
-                                    <h5 className="font-size-14 text-truncate mb-1">
-                                      <a onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} className="text-body">
-                                        {myfiles.type === "FOLDER" ?
-                                          <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                          :
-                                          <i className="bx bxs-file font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                        }&nbsp;{myfiles.name}&nbsp;{myfiles.type}
-                                      </a>
-                                    </h5>
-                                  </CardBody>
-                                </Card>
-                                : ''
-                            ))}
-
-                          </Row>
-                        </Col>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
                 <p />
                 <h6>FILES</h6>
                 <p />
-                <Row className="mb-2">
-                  <Col sm="12">
-                    <div className="form-group m-0">
-                      <div className="input-group">
-                        <Col md="4">
-                          <Row className="mb-1 col-sm-10">
+                <Row>
 
-                            {getFileSelect?.data?.childList.map((myfiles, key) => (
+                  {getFileSelect?.data?.childList.map((myfiles, key) => (
 
-                              myfiles.type === "FILE" ?
+                  
 
-                                <Card className="shadow-none border" style={{ verticalAlign: "middle" }} key={key}>
-                                  <CardBody>
+                    myfiles.type === "FILE" ?
 
-                                    <div className="float-end ms-1">
-                                      <UncontrolledDropdown className="mb-2">
-                                        <DropdownToggle
-                                          className="font-size-16 text-muted"
-                                          tag="a"
-                                        >
-                                          <i className="mdi mdi-dots-horizontal" ></i>
-                                        </DropdownToggle>
+                      <Col xl={4} sm={6} key={key}>
+                        <Card className="shadow-none border">
+                          <CardBody className="p-3">
+                            <div >
+                              <div className="float-end ms-2">
+                                <UncontrolledDropdown className="mb-2">
+                                  <DropdownToggle
+                                    className="font-size-16 text-muted"
+                                    tag="a"
+                                  >
+                                    <i className="mdi mdi-dots-horizontal" ></i>
+                                  </DropdownToggle>
 
-                                        <DropdownMenu className="dropdown-menu-end">
-                                          <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
-                                            Open
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => toggleRenameModal(myfiles.num)}>
-                                            Rename
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
-                                            Move
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => downloadFolderFile(myfiles.num, myfiles.name)}>
-                                            Download
-                                          </DropdownItem>
-                                          <div className="dropdown-divider"></div>
-                                          <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
-                                            Remove
-                                          </DropdownItem>
-                                        </DropdownMenu>
-                                      </UncontrolledDropdown>
-                                    </div>
+                                  <DropdownMenu className="dropdown-menu-end">
+                                    {/* <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
+                                      Open
+                                    </DropdownItem> */}
+                                    <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name)}>
+                                      Rename
+                                    </DropdownItem>
+                                    <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
+                                      Move
+                                    </DropdownItem>
+                                    <DropdownItem onClick={() => downloadFolderFile(myfiles.num, myfiles.name)}>
+                                      Download
+                                    </DropdownItem>
+                                    <div className="dropdown-divider"></div>
+                                    <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
+                                      Remove
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </UncontrolledDropdown>
+                              </div>
 
-                                    <h5 className="font-size-14 text-truncate mb-1">
-                                      <Link to="#" className="text-body">
-                                        {myfiles.type === "FILE" ?
-                                          <i className="bx bxs-file font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                          :
-                                          <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                        }&nbsp;{myfiles.name}&nbsp;{myfiles.type}
-                                      </Link>
-                                    </h5>
-                                  </CardBody>
-                                </Card>
+                              <div className="avatar-xs me-3 mb-3">
+                                <div className="avatar-title bg-transparent rounded">
+                                {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
+                                  <i className="fa fa-solid fa-file-word fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                ) : myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
+                                  <img src={myfiles} key={key}
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    resizeMode: 'contain',
+                                  }}/>
+                                ) : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
+                                  <i className="fa fa-solid fa-file-excel fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                )
+                                : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
+                                  <i className="fa fa-solid fa-file-powerpoint fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                )
+                                : myfiles.name.endsWith("pdf") ? (
+                                  <i className="fa fa-solid fa-file-pdf fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                )
+                                :
+                                (
+                                  <i className="fa fa-solid fa-file fs-3 align-baseline text-warning" style={{ verticalAlign: "middle" }}></i>
+                                )}
+                                </div>
+                              </div>
+                              <div className="d-flex">
+                                <div className="overflow-hidden me-auto">
+                                  <h5 className="font-size-14 text-truncate mb-1">
+                                    <Link to="#" className="text-body">
+                                      {/* {myfiles.type === "FILE" ?
+                                        <i className="bx bxs-file font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                        :
+                                        <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                      } */}
+                                      &nbsp;{myfiles.name}&nbsp;
+                                    </Link>
+                                  </h5>
+                                </div>
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
 
 
-                                : ''
-                            ))}
+                      : ''
+                  ))}
 
-                          </Row>
-                        </Col>
-                      </div>
-                    </div>
-                  </Col>
+
                 </Row>
-                {/* <Row className="my-3 mt-5">
-                  <Col className="d-flex justify-content-end">
-                    <div className="col-12 col-lg-2">
-                      <button className="btn btn-primary w-100" onClick={() => toggleUploadModal(getFileSelect?.data?.childList?.parent_num)}>
-                        <i className="fas fa-plus font-size-14  me-2"></i> Upload File
-                      </button>
-                    </div>
-                  </Col>
-                </Row> */}
               </Col>
             </Row>
           </Container>
-
-          {/* <FolderDetail
-            insideFilePage={insideFilePage}
-            setInsideFilePage={setInsideFilePage}
-            setFileManagementPage={setFileManagementPage}
-            setFileManagementMsg={setFileManagementMsg}
-            idFile={idFile}
-          /> */}
 
         </>
       }

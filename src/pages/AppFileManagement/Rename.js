@@ -39,6 +39,7 @@ const Rename = (props) => {
 
         onSubmit: (value) => {
             debugger
+            value.newName = value.newName + '.' + props.nmToggle
             setRenameSpinner(true)
             dispatch(renameFileFolder(value));
             toggleMsgModal(msgAdd)
@@ -110,5 +111,6 @@ Rename.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idToggle: PropTypes.any,
+    nmToggle: PropTypes.any,
 };
 export default Rename
