@@ -12,6 +12,10 @@ import {
   EDIT_GENERAL_SETTING,
   GET_GENERAL_SETTING,
   RESP_GET_GENERAL_SETTING,
+  GET_MEMBERS,
+  RESP_GET_MEMBERS,
+  GET_RANK_LIST,
+  RESP_GET_RANK_LIST,
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -68,4 +72,28 @@ export const deleteMembers = (req) => ({
 export const editGeneralSetting = (req) => ({
   type: EDIT_GENERAL_SETTING,
   payload: req,
+})
+
+/* GET ALL MEMBERS */
+
+export const getMembersData = (req) => ({
+  type: GET_MEMBERS,
+  payload: req,
+})
+
+export const respGetMembers = resp => ({
+  type: RESP_GET_MEMBERS,
+  payload: resp,
+})
+
+/* GET ALL RANK LIST */
+
+export const getRankListData = (req) => ({
+  type: GET_RANK_LIST,
+  payload: req,
+})
+
+export const respGetRankList = resp => ({
+  type: RESP_GET_RANK_LIST,
+  payload: resp,
 })

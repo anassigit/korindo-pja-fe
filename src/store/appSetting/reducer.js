@@ -12,11 +12,17 @@ import {
   RESP_GET_GENERAL_SETTING,
   GET_SETTING,
   RESP_GET_SETTING,
+  GET_MEMBERS,
+  RESP_GET_MEMBERS,
+  GET_RANK_LIST,
+  RESP_GET_RANK_LIST,
 
 } from "./actionTypes"
 
 const INIT_STATE = {
   respGetSetting: {},
+  respGetMembers: {},
+  respGetRankList: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -80,6 +86,32 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
       }
+
+    /* MEMBERS */
+
+    case GET_MEMBERS:
+      return {
+        ...state,
+      }
+    case RESP_GET_MEMBERS:
+      return {
+        ...state,
+        respGetMembers: action.payload,
+      }
+
+
+    /* RANK LIST */
+
+    case GET_RANK_LIST:
+      return {
+        ...state,
+      }
+    case RESP_GET_RANK_LIST:
+      return {
+        ...state,
+        respGetRankList: action.payload,
+      }
+
     default:
       return state
   }

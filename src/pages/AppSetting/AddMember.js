@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { resetMessage } from 'store/appSetting/actions';
+import { getRankListData, resetMessage } from 'store/appSetting/actions';
 
 const AddMember = (props) => {
     const dispatch = useDispatch();
@@ -15,6 +15,14 @@ const AddMember = (props) => {
     const addMemberMsg = useSelector(state => {
         return state.settingReducer.msgAdd;
     });
+
+    const appRankListData = useSelector(state => {
+        return state.settingReducer.respGetRankList;
+    });
+
+    useEffect(() => {
+        dispatch(getRankListData())
+    }, [])
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -47,11 +55,13 @@ const AddMember = (props) => {
         }
     });
 
-    const rankOptions = [
-        { value: '1', label: 'Rank 1' },
-        { value: '2', label: 'Rank 2' },
-        // Add the rest of the rank options up to 13
-    ];
+    console.log(appRankListData)
+
+    const rankOptions = (appRankListData?.data?.rankList || []).map(({ num, name_kor }) => ({
+        value: num,
+        label: name_kor,
+    }));
+    
 
     const permissionOptions = [
         { value: '1', label: 'Permission 1' },

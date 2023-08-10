@@ -42,7 +42,7 @@ const TableCustom2 = props => {
             pagination={paginationFactory({
                 page: props.searchGet.page,
                 sizePerPage: props.searchGet.limit,
-                sizePerPageList: [5, 10, 20],
+                sizePerPageList: [10],
                 totalSize: props.appdataTotal,
                 showTotal: true,
             })}

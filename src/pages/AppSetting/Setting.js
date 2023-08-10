@@ -18,7 +18,7 @@ import Pagination from "react-js-pagination"
 
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { editGeneralSetting, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
+import { editGeneralSetting, getMembersData, getRankListData, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
 import TableCustom2 from "common/TableCustom2";
 import { updateGeneralSetting } from "helpers/backend_helper";
 import MsgModal from "components/Common/MsgModal";
@@ -30,8 +30,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 const Setting = () => {
 
     const history = useHistory()
-    debugger
-    console.log(history.location.state?.appInstructionsData)
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
     let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
 
@@ -68,6 +66,10 @@ const Setting = () => {
 
     const appSettingData = useSelector(state => {
         return state.settingReducer.respGetSetting;
+    });
+
+    const appMembersData = useSelector(state => {
+        return state.settingReducer.respGetMembers;
     });
 
     const [radioValue1, setRadioValue1] = useState("")
@@ -399,12 +401,12 @@ const Setting = () => {
                                                 <TableCustom2
                                                     keyField={"id"}
                                                     columns={appMembersp01Tabel}
-                                                    redukResponse={appSettingData}
-                                                    appdata={appSettingData?.data?.memberList != null ? appSettingData?.data?.memberList : []}
-                                                    appdataTotal={appSettingData?.data?.memberList?.length != null ? appSettingData?.data?.memberList?.length : 0}
+                                                    redukResponse={appMembersData}
+                                                    appdata={appMembersData?.data?.memberList != null ? appMembersData?.data?.memberList : []}
+                                                    appdataTotal={appMembersData?.data?.count != null ? appMembersData?.data?.count : 0}
                                                     searchSet={setAppMembersTabelSearch}
                                                     searchGet={appMembersTabelSearch}
-                                                    redukCall={getSettingData}
+                                                    redukCall={getMembersData}
                                                 />
                                             </Row>
                                         </React.Fragment>
@@ -428,7 +430,7 @@ const Setting = () => {
 
                                     <CardBody>
                                         <Row className="mb-2">
-                                            {appSettingData?.data?.groupList.map((num) => (
+                                            {/* {appSettingData?.data?.groupList.map((num) => (
                                                 <React.Fragment key={num.id}>
                                                     <Row className="mb-2">
                                                         <h2><strong>{num.name}</strong></h2>
@@ -447,7 +449,7 @@ const Setting = () => {
                                                        
                                                     </Row>
                                                 </React.Fragment>
-                                            ))}
+                                            ))} */}
                                         </Row>
 
                                     </CardBody>

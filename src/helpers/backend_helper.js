@@ -139,6 +139,10 @@ export const deleteReply = req => postWithParam("rest/InstructionRest/DeleteRepl
 
 export const getSetting = req => post("/rest/SettingRest/SelectSetting", req)
 
+export const getMembers = req => post("/rest/SettingRest/SelectMemeberList", req)
+
+export const getRankList = req => post("/rest/SettingRest/SelectRankList", req)
+
 export const saveMembers = req => postWithParam("/rest/SettingRest/InsertMember", req)
 
 export const updateMembers = req => postWithParam("/rest/SettingRest/UpdateMember", req)
