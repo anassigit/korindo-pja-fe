@@ -19,31 +19,22 @@ const Rename = (props) => {
 
     const renameMsg = useSelector(state => {
         return state.fileManagementReducer.msgRename;
-      })
+    })
 
-    const getFileSelect = useSelector(state => {
-        return state.fileManagementReducer.respGetSelect;
-      })
-
-      useEffect(() => {
-        dispatch(getSelectFile())
-    }, [])
-
-      useEffect(() => {
+    useEffect(() => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    useEffect(() =>{
-        debugger
+    useEffect(() => {
         renameFileFolderValidInput.setFieldValue("newName", props.nmToggle)
-    }, [props.toggle] )
+    }, [props.toggle])
 
     const renameFileFolderValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
-            file_num : props.idToggle,
-            newName: props.nmToggle,           
+            file_num: props.idToggle,
+            newName: props.nmToggle,
         },
 
         validationSchema: Yup.object().shape({
@@ -52,18 +43,18 @@ const Rename = (props) => {
         }),
 
         onSubmit: (value) => {
-            debugger
+
             //var file_num = props.idToggle
             var file_ext = props.nmToggleExt
             var types_rename = props.typeRename
-            if(types_rename === "FILE"){
+            if (types_rename === "FILE") {
 
                 let NewName = value.newName + '.' + file_ext
                 setRenameSpinner(true)
                 value.newName = NewName
                 dispatch(renameFileFolder(value));
                 toggleMsgModal()
-               
+
             } else {
                 let NewName = value.newName
                 setRenameSpinner(true)
@@ -75,39 +66,46 @@ const Rename = (props) => {
         }
     });
 
-    useEffect(() =>{
-        debugger
+    useEffect(() => {
+
         renameFileFolderValidInput.resetForm();
-    }, [props.toggle] )
+    }, [props.toggle])
 
     const [renameMsgModal, setRenameMsgModal] = useState(false)
     const [renameContentModal, setRenameContentModal] = useState("")
 
     const toggleMsgModal = () => {
         setRenameMsgModal(!renameMsgModal)
-        
-        if (renameFFMsg === "1") {
+        if (renameFFMsg.status === "1") {
+
             props.toggle()
+
+            setRenameFFMsg("")
+            dispatch(getSelectFile({ 'folder_num': props.idNowLoc }))
+
         }
     }
 
     useEffect(() => {
         if (renameMsg.status === "1") {
-           
+            debugger
             setRenameFFMsg(renameMsg)
+            renameFileFolderValidInput.resetForm();
+            //dispatch(getSelectFile({'folder_num': props.idNowLoc}))
         }
         setRenameContentModal(renameMsg.message);
         setRenameSpinner(false);
-        
+        //dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+
     }, [renameMsg]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} data-bs-backdrop="static" data-bs-keyboard="false">
             <MsgModal
                 modal={renameMsgModal}
                 toggle={toggleMsgModal}
                 message={renameContentModal}
-                
+
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -124,7 +122,7 @@ const Rename = (props) => {
                             {renameFileFolderValidInput.errors.newName && renameFileFolderValidInput.touched.newName && (
                                 <div style={{ color: 'red' }}>{renameFileFolderValidInput.errors.newName}</div>
                             )}
-                        </div>                       
+                        </div>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
@@ -151,5 +149,6 @@ Rename.propTypes = {
     nmToggle: PropTypes.any,
     nmToggleExt: PropTypes.any,
     typeRename: PropTypes.any,
+    idNowLoc: PropTypes.any,
 };
 export default Rename

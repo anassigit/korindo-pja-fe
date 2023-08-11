@@ -6,8 +6,8 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 //import { getSelectFile, deleteFileFolder, resetMessage } from "../../store/appFileManagement/actions"
 import MsgModal from 'components/Common/MsgModal';
-import { resetMessage, createFolder } from '../../store/appFileManagement/actions';
-import { msgCreate } from 'store/actions';
+import { resetMessage, createFolder, msgCreate, getSelectFile } from '../../store/appFileManagement/actions';
+//import { msgCreate } from 'store/actions';
 
 
 
@@ -16,11 +16,13 @@ const Create = (props) => {
     const dispatch = useDispatch();
     const [createSpinner, setCreateSpinner] = useState(false)
 
-    const createMsg = useSelector(state => {
+    const [createMsg, setCreateMsg] = useState(false)
+
+    const createRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgCreate;
       })
 
-      useEffect(() => {
+    useEffect(() => {
         dispatch(resetMessage());
     }, [dispatch])
 
@@ -39,30 +41,53 @@ const Create = (props) => {
 
         onSubmit: (value) => {
             debugger
+            if (value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined){
+
+                value.parent_num = 0;
+
+                setCreateSpinner(true)
+                dispatch(createFolder(value));
+                toggleMsgModal()
+
+            }else {
             setCreateSpinner(true)
             dispatch(createFolder(value));
-            toggleMsgModal(msgCreate)
-            setCreateSpinner(false)
+            toggleMsgModal()
+
+            }
         }
     });
+
+    useEffect(() => {
+
+        createFileFolderValidInput.resetForm();
+    }, [props.toggle])
 
     const [createMsgModal, setCreateMsgModal] = useState(false)
     const [createContentModal, setCreateContentModal] = useState("")
 
     const toggleMsgModal = () => {
         setCreateMsgModal(!createMsgModal)
-        if (createContentModal === "Sukses") {
+        if (createMsg.status === "1") {
+
             props.toggle()
-        }
+
+            setCreateMsg("")
+
+            dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+            
+        } 
     }
 
     useEffect(() => {
-        if (createMsg) {
-            setCreateContentModal(createMsg.message);
-            dispatch(resetMessage());
+        if (createRespMsg.status === "1") {
+
+            setCreateMsg(createRespMsg);
+            createFileFolderValidInput.resetForm();
         }
+        setCreateContentModal(createRespMsg.message)
         setCreateSpinner(false)
-    }, [createMsg]);
+    }, [createRespMsg]);
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
@@ -110,5 +135,6 @@ Create.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idToggleCreate: PropTypes.any,
+    idNowLoc: PropTypes.any,
 };
 export default Create

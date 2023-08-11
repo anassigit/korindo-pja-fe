@@ -45,6 +45,8 @@ import ConfirmModal from "components/Common/ConfirmModal";
 const FileManagement = () => {
 
   //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
+  let tempIndex = null
+
   const dispatch = useDispatch();
   const [fileManagementPage, setFileManagementPage] = useState(true)
   const [insideFilePage, setInsideFilePage] = useState(false)
@@ -79,25 +81,28 @@ const FileManagement = () => {
   const [currFolder, setCurrFolder] = useState()
   const [isTypeFolder, setIsTypeFolder] = useState()
 
+  const [idNowLoc, setIdNowLoc] = useState(0)
+
   const [typeRename, setTypeRename] = useState("")
 
   useEffect(() => {
-    console.log(idChild)
+    //console.log(idChild)
   }, [idChild])
 
   useEffect(() => {
-    console.log(idParent)
+    //console.log(idParent)
   }, [idParent])
 
   const toggleRenameModal = (idT, nmT, tpT) => {
-    debugger
+
+    setIdNowLoc(currFolder)
     setIdToggle(idT)
-    if(tpT === "FILE"){
-    var realNm = nmT.split('.').slice(0, -1).join('.')
-    setNmToggle(realNm)
-    var extNm = nmT.split('.').pop();
-    setNmToggleExt(extNm)
-    setTypeRename(tpT)
+    if (tpT === "FILE") {
+      var realNm = nmT.split('.').slice(0, -1).join('.')
+      setNmToggle(realNm)
+      var extNm = nmT.split('.').pop();
+      setNmToggleExt(extNm)
+      setTypeRename(tpT)
     } else {
       setNmToggle(nmT)
       setTypeRename(tpT)
@@ -106,29 +111,31 @@ const FileManagement = () => {
   }
 
   const toggleUploadModal = () => {
-    debugger
-    console.log(idParent)
+
+    //console.log(idParent)
+    setIdNowLoc(currFolder)
     setUploadModal(!uploadModal)
-    setIdToggleUpload(idParent)
+    setIdToggleUpload(idChild)
   }
 
   const toggleCreateModal = () => {
-    debugger
-    console.log(idParent)
+
+    //console.log("togglecreate",idToggleCreate)
+    setIdNowLoc(currFolder)
     setCreateModal(!createModal)
-    setIdToggleCreate(idParent)
+    setIdToggleCreate(idChild)
   }
 
   const toggleMoveModal = (Fid, Pid) => {
-    debugger
+
     setFnum(Fid)
     setPnum(Pid)
     setMoveModal(!moveModal)
-   
+
   }
-  
+
   const confirmToggleDelete = (e, typeFolder) => {
-    debugger
+
     if (e) {
       setTempIdDel(e)
       setIsTypeFolder(typeFolder)
@@ -160,7 +167,7 @@ const FileManagement = () => {
 
   useEffect(() => {
 
-    debugger
+
     if (getFileSelect.status == "1") {
       /* vvvvv salah disini tadi vvvvv */
 
@@ -173,17 +180,17 @@ const FileManagement = () => {
 
 
   const getInsideFolder = (e, f) => {
-    debugger
+
     setCurrFolder(e)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
     setIdChild(e)
-    setIdParentTemp(e)
-    setIdParent(e)
+    setIdParentTemp(f)
+    setIdParent(f)
   }
 
   useEffect(() => {
-    debugger
+
     if (isYes) {
       let num = null
       num = tempIdDel
@@ -197,12 +204,13 @@ const FileManagement = () => {
 
       if (msgDeleteFile?.status == "1") {
         dispatch(getSelectFile({ 'folder_num': currFolder }))
+        setIsYes(!isYes)
       }
     }
   }, [isYes, msgDeleteFile])
 
   // const removeFolderFile = (e) => {
-  //   debugger
+  //   
   //   let num = e
   //   num.toString();
   //   dispatch(deleteFileFolder(
@@ -213,14 +221,14 @@ const FileManagement = () => {
   // }
 
   const getIdPath = (idPath) => {
-    debugger
+
     dispatch(getSelectFile({
       'folder_num': idPath
     }))
   };
 
   const downloadFolderFile = async (num, fileNm) => {
-    debugger
+
     try {
 
       var indexed_array = {
@@ -239,6 +247,8 @@ const FileManagement = () => {
     setSelectedLanguage(e.target.value);
   };
 
+  //console.log(tempIndex)
+
   return (
     <RootPageCustom
       componentJsx={
@@ -254,24 +264,28 @@ const FileManagement = () => {
             nmToggle={nmToggle}
             nmToggleExt={nmToggleExt}
             typeRename={typeRename}
+            idNowLoc={idNowLoc}
           />
 
           <Upload
             modal={uploadModal}
             toggle={toggleUploadModal}
             idToggleUpload={idToggleUpload}
+            idNowLoc={idNowLoc}
           />
 
           <Create
             modal={createModal}
             toggle={toggleCreateModal}
             idToggleCreate={idToggleCreate}
+            idNowLoc={idNowLoc}
+
           />
 
           <Move
             modal={moveModal}
             toggle={toggleMoveModal}
-            idToggleCreate={idToggleCreate}
+            idNowLoc={idNowLoc}
             fNum={fNum}
             pNum={pNum}
           />
@@ -343,12 +357,16 @@ const FileManagement = () => {
                 <Row>
                   <div className="align-baseline fs-6">
                     <strong>
-                      {getFileSelect?.data?.path.map((breadcrumb, index) => (
-                        <span key={index}>
-                          {index > 0 && <i className="mdi mdi-chevron-right" />}
-                          <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
-                        </span>
-                      ))}
+                      {getFileSelect?.data?.path.map((breadcrumb, index) => {
+                        tempIndex = index
+                        return (
+                          <span key={index}>
+                            {index > 0 && <i className="mdi mdi-chevron-right" />}
+                            <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
+                          </span>
+                        )
+                      }
+                      )}
                     </strong>
                   </div>
                 </Row>
@@ -362,7 +380,7 @@ const FileManagement = () => {
                     myfiles.type === "FOLDER" ?
                       <Col xl={4} sm={6} key={key}>
                         <Card className="shadow-none border">
-                          <CardBody className="p-3">
+                          <CardBody className="p-3" onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} style={{ cursor: "pointer" }}>
                             <div >
                               <div className="float-end ms-2">
                                 <UncontrolledDropdown className="mb-2">
@@ -370,7 +388,7 @@ const FileManagement = () => {
                                     className="font-size-16 text-muted"
                                     tag="a"
                                   >
-                                    <i className="mdi mdi-dots-horizontal" ></i>
+                                    <i className="mdi mdi-dots-horizontal"></i>
                                   </DropdownToggle>
                                   <DropdownMenu className="dropdown-menu-end">
                                     <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
@@ -401,7 +419,7 @@ const FileManagement = () => {
                               <div className="d-flex">
                                 <div className="overflow-hidden me-auto">
                                   <h5 className="font-size-14 text-truncate mb-1">
-                                    <a onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} className="text-body fs-6 align-baseline">
+                                    <a className="text-body fs-6 align-baseline">
                                       {/* {myfiles.type === "FOLDER" ?
                                         <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
                                         :
@@ -428,12 +446,10 @@ const FileManagement = () => {
 
                   {getFileSelect?.data?.childList.map((myfiles, key) => (
 
-
-
                     myfiles.type === "FILE" ?
 
                       <Col xl={4} sm={6} key={key}>
-                        <Card className="shadow-none border">
+                        <Card className="shadow-none border" onClick={() => downloadFolderFile(myfiles.num, myfiles.name)} style={{ cursor: "pointer" }}>
                           <CardBody className="p-3">
                             <div >
                               <div className="float-end ms-2">
