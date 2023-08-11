@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all } from "redux-saga/effects"
 
-import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST } from "./actionTypes"
+import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST } from "./actionTypes"
 
-import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList } from "./actions"
+import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList } from "./actions"
 
-import { deleteMembers, getMembers, getRankList, getSetting, saveMembers, updateGeneralSetting, updateMembers } from "helpers/backend_helper"
+import { deleteMembers, getGroupList, getMembers, getPermissionList, getRankList, getSetting, saveMembers, updateGeneralSetting, updateMembers } from "helpers/backend_helper"
 
 function* fetchGetAllSetting({ payload: req }) {
   try {
@@ -94,6 +94,38 @@ function* fetchGetAllRankList({ payload: req }) {
   }
 }
 
+/* PERMISSION LIST */
+
+function* fetchGetAllPermissionList({ payload: req }) {
+  try {
+    const response = yield call(getPermissionList, req)
+    if (response.status == 1) {
+      yield put(respGetPermissionList(response))
+    } else {
+      yield put(respGetPermissionList(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetPermissionList({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+/* PERMISSION LIST */
+
+function* fetchGetAllGroupList({ payload: req }) {
+  try {
+    const response = yield call(getGroupList, req)
+    if (response.status == 1) {
+      yield put(respGetGroupList(response))
+    } else {
+      yield put(respGetGroupList(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetGroupList({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
 
 function* settingSaga() {
 
@@ -105,6 +137,9 @@ function* settingSaga() {
 
   yield takeEvery(GET_MEMBERS, fetchGetAllMembers)
   yield takeEvery(GET_RANK_LIST, fetchGetAllRankList)
+  yield takeEvery(GET_PERMISSION_LIST, fetchGetAllPermissionList)
+
+  yield takeEvery(GET_GROUP_LIST, fetchGetAllGroupList)
 }
 
 export default settingSaga

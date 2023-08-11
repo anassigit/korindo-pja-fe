@@ -6,13 +6,15 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { getRankListData, resetMessage } from 'store/appSetting/actions';
+import { getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 
 const AddMember = (props) => {
     const dispatch = useDispatch();
     const [addMemberSpinner, setAddMemberSpinner] = useState(false)
 
-    const addMemberMsg = useSelector(state => {
+    const [addMemberMsg, setAddMemberMsg] = useState(false)
+
+    const addMemberMessage = useSelector(state => {
         return state.settingReducer.msgAdd;
     });
 
@@ -20,8 +22,13 @@ const AddMember = (props) => {
         return state.settingReducer.respGetRankList;
     });
 
+    const appPermissionListData = useSelector(state => {
+        return state.settingReducer.respGetPermissionList;
+    });
+
     useEffect(() => {
         dispatch(getRankListData())
+        dispatch(getPermissionListData())
     }, [])
 
     useEffect(() => {
@@ -33,12 +40,12 @@ const AddMember = (props) => {
 
         initialValues: {
             id: '',
-            rank_id: '',
+            rank: '',
             hp: '',
-            permission_id: '',
+            permission: '',
             pw: '',
             name: '',
-            bgcolor: '',
+            bgColor: '',
         },
 
         validationSchema: Yup.object().shape({
@@ -49,43 +56,55 @@ const AddMember = (props) => {
         }),
 
         onSubmit: (value) => {
+            debugger
             setAddMemberSpinner(true)
             dispatch(saveMembers(value));
             toggleMsgModal()
         }
-    });
+    })
 
-    console.log(appRankListData)
+    useEffect(() => {
+        addMemberValidInput.resetForm();
+      }, [props.toggle]);
 
-    const rankOptions = (appRankListData?.data?.rankList || []).map(({ num, name_kor }) => ({
+    /* HP Validation */
+    const handleKeyPress = (event) => {
+        const keyCode = event.which || event.keyCode;
+
+        if (keyCode < 48 || keyCode > 57) {
+            event.preventDefault();
+        }
+    }
+
+    const rankOptions = (appRankListData?.data?.rankList || []).map(({ num, name_eng }) => ({
         value: num,
-        label: name_kor,
-    }));
-    
+        label: name_eng,
+    }))
 
-    const permissionOptions = [
-        { value: '1', label: 'Permission 1' },
-        { value: '2', label: 'Permission 2' },
-        { value: '3', label: 'Permission 3' },
-    ];
+    const permissionOptions = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
+        value: num,
+        label: name_eng,
+    }))
 
     const [addMemberMsgModal, setAddMemberMsgModal] = useState(false)
     const [addmemberContentModal, setAddMemberContentModal] = useState("")
 
     const toggleMsgModal = () => {
         setAddMemberMsgModal(!addMemberMsgModal)
-        if (addmemberContentModal === "Sukses") {
+        debugger
+        if (addMemberMsg.status === "1") {
             props.toggle()
         }
     }
 
     useEffect(() => {
-        if (addMemberMsg) {
-            setAddMemberContentModal(addMemberMsg.message);
-            dispatch(resetMessage());
+        if (addMemberMessage.status == "1") {
+            debugger
+            setAddMemberMsg(addMemberMessage)
         }
+        setAddMemberContentModal(addMemberMessage.message);
         setAddMemberSpinner(false)
-    }, [addMemberMsg]);
+    }, [addMemberMessage]);
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
@@ -97,6 +116,7 @@ const AddMember = (props) => {
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 addMemberValidInput.handleSubmit();
+                return false
             }}>
                 <ModalHeader toggle={props.toggle}>Add New Member</ModalHeader>
                 <ModalBody>
@@ -104,7 +124,12 @@ const AddMember = (props) => {
 
                         <div className="mb-3 mx-3">
                             <Label>Name <span style={{ color: "red" }}>*</span></Label>
-                            <Input type="text" name="name" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.name} />
+                            <Input
+                                type="text"
+                                name="name"
+                                onChange={addMemberValidInput.handleChange}
+                                value={addMemberValidInput.values.name || ''}
+                            />
                             {addMemberValidInput.errors.name && addMemberValidInput.touched.name && (
                                 <div style={{ color: 'red' }}>{addMemberValidInput.errors.name}</div>
                             )}
@@ -112,7 +137,12 @@ const AddMember = (props) => {
 
                         <div className="mb-3 mx-3">
                             <Label>Email <span style={{ color: "red" }}>*</span></Label>
-                            <Input type="email" name="id" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.id} />
+                            <Input
+                                type="email"
+                                name="id"
+                                onChange={addMemberValidInput.handleChange}
+                                value={addMemberValidInput.values.id || ''}
+                            />
                             {addMemberValidInput.errors.id && addMemberValidInput.touched.id && (
                                 <div style={{ color: 'red' }}>{addMemberValidInput.errors.id}</div>
                             )}
@@ -120,16 +150,23 @@ const AddMember = (props) => {
 
                         <div className="mb-3 mx-3">
                             <Label>HP</Label>
-                            <Input type="text" name="hp" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.hp} />
+                            <Input
+                                type="text"
+                                name="hp"
+                                maxLength={12}
+                                onKeyPress={handleKeyPress}
+                                onChange={addMemberValidInput.handleChange}
+                                value={addMemberValidInput.values.hp || ''}
+                            />
                         </div>
 
                         <div className="mb-3 mx-3">
                             <Label>Rank</Label>
                             <Input
                                 type="select"
-                                name="rank_id"
+                                name="rank"
                                 onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.rank_id}
+                                value={addMemberValidInput.values.rank || ''}
                             >
                                 <option value="">Select Rank</option>
                                 {rankOptions.map((rank) => (
@@ -143,9 +180,9 @@ const AddMember = (props) => {
                             <Label>Permission</Label>
                             <Input
                                 type="select"
-                                name="permission_id"
+                                name="permission"
                                 onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.permission_id}
+                                value={addMemberValidInput.values.permission || ''}
                             >
                                 <option value="">Select Permission</option>
                                 {permissionOptions.map((permission) => (
@@ -156,9 +193,14 @@ const AddMember = (props) => {
                             </Input>
                         </div>
 
-                        <div className="mb-3 mx-3">
+                        <div className="mb-3 mx-3" hidden={addMemberValidInput?.values?.permission !== '2'}>
                             <Label>Background Color</Label>
-                            <Input type="text" name="bgcolor" onChange={addMemberValidInput.handleChange} value={addMemberValidInput.values.bgcolor} />
+                            <Input
+                                type="color"
+                                name="bgColor"
+                                onChange={addMemberValidInput.handleChange}
+                                value={addMemberValidInput.values.bgColor || '#000'}
+                            />
                         </div>
                     </FormGroup>
                 </ModalBody>

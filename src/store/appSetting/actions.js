@@ -16,6 +16,10 @@ import {
   RESP_GET_MEMBERS,
   GET_RANK_LIST,
   RESP_GET_RANK_LIST,
+  GET_PERMISSION_LIST,
+  RESP_GET_PERMISSION_LIST,
+  GET_GROUP_LIST,
+  RESP_GET_GROUP_LIST,
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -95,5 +99,29 @@ export const getRankListData = (req) => ({
 
 export const respGetRankList = resp => ({
   type: RESP_GET_RANK_LIST,
+  payload: resp,
+})
+
+/* GET ALL RANK LIST */
+
+export const getPermissionListData = (req) => ({
+  type: GET_PERMISSION_LIST,
+  payload: req,
+})
+
+export const respGetPermissionList = resp => ({
+  type: RESP_GET_PERMISSION_LIST,
+  payload: resp,
+})
+
+/* GET ALL RANK LIST */
+
+export const getGroupListData = (req) => ({
+  type: GET_GROUP_LIST,
+  payload: req,
+})
+
+export const respGetGroupList = resp => ({
+  type: RESP_GET_GROUP_LIST,
   payload: resp,
 })

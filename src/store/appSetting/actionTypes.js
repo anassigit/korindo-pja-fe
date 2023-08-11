@@ -22,3 +22,11 @@ export const RESP_GET_MEMBERS = "RESP_GET_MEMBERS"
 //rank list
 export const GET_RANK_LIST = "GET_RANK_LIST"
 export const RESP_GET_RANK_LIST = "RESP_GET_RANK_LIST"
+
+//permission list
+export const GET_PERMISSION_LIST = "GET_PERMISSION_LIST"
+export const RESP_GET_PERMISSION_LIST = "RESP_GET_PERMISSION_LIST"
+
+//group list
+export const GET_GROUP_LIST = "GET_GROUP_LIST"
+export const RESP_GET_GROUP_LIST = "RESP_GET_GROUP_LIST"

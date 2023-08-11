@@ -143,6 +143,10 @@ export const getMembers = req => post("/rest/SettingRest/SelectMemeberList", req
 
 export const getRankList = req => post("/rest/SettingRest/SelectRankList", req)
 
+export const getPermissionList = req => post("/rest/SettingRest/SelectPermissionList", req)
+
+export const getGroupList = req => post("/rest/SettingRest/SelectMemberGroup", req)
+
 export const saveMembers = req => postWithParam("/rest/SettingRest/InsertMember", req)
 
 export const updateMembers = req => postWithParam("/rest/SettingRest/UpdateMember", req)

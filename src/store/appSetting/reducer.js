@@ -16,6 +16,10 @@ import {
   RESP_GET_MEMBERS,
   GET_RANK_LIST,
   RESP_GET_RANK_LIST,
+  GET_PERMISSION_LIST,
+  RESP_GET_PERMISSION_LIST,
+  GET_GROUP_LIST,
+  RESP_GET_GROUP_LIST,
 
 } from "./actionTypes"
 
@@ -23,6 +27,8 @@ const INIT_STATE = {
   respGetSetting: {},
   respGetMembers: {},
   respGetRankList: {},
+  respGetPermissionList: {},
+  respGetGroupList: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -99,7 +105,6 @@ const settingReducer = (state = INIT_STATE, action) => {
         respGetMembers: action.payload,
       }
 
-
     /* RANK LIST */
 
     case GET_RANK_LIST:
@@ -110,6 +115,30 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetRankList: action.payload,
+      }
+
+    /* PERMISSION LIST */
+
+    case GET_PERMISSION_LIST:
+      return {
+        ...state,
+      }
+    case RESP_GET_PERMISSION_LIST:
+      return {
+        ...state,
+        respGetPermissionList: action.payload,
+      }
+
+    /* PERMISSION LIST */
+
+    case GET_GROUP_LIST:
+      return {
+        ...state,
+      }
+    case RESP_GET_GROUP_LIST:
+      return {
+        ...state,
+        respGetGroupList: action.payload,
       }
 
     default:

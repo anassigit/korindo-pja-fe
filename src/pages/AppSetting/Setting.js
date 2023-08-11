@@ -18,9 +18,8 @@ import Pagination from "react-js-pagination"
 
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { editGeneralSetting, getMembersData, getRankListData, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
+import { editGeneralSetting, getGroupListData, getMembersData, getRankListData, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
 import TableCustom2 from "common/TableCustom2";
-import { updateGeneralSetting } from "helpers/backend_helper";
 import MsgModal from "components/Common/MsgModal";
 import AddMember from "./AddMember";
 import { ReactSession } from 'react-client-session';
@@ -37,9 +36,23 @@ const Setting = () => {
     const [appSettingMsg, setAppSettingMsg] = useState("")
     const [appSettingPage, setAppSettingPage] = useState(true)
 
+    const [tempState, setTempState] = useState([]);
+
     /* MODALS */
     const [generalMsgModal, setGeneralMsgModal] = useState(false)
     const [generalContentModal, setGeneralContentModal] = useState("")
+
+    const appSettingData = useSelector(state => {
+        return state.settingReducer.respGetSetting;
+    });
+
+    const appMembersData = useSelector(state => {
+        return state.settingReducer.respGetMembers;
+    });
+
+    const appGroupListData = useSelector(state => {
+        return state.settingReducer.respGetGroupList;
+    });
 
     const toggleMsgModal = () => {
         setGeneralMsgModal(!generalMsgModal)
@@ -61,16 +74,12 @@ const Setting = () => {
 
     useEffect(() => {
         dispatch(resetMessage());
-        dispatch(getSettingData(appMembersTabelSearch));
     }, [dispatch])
 
-    const appSettingData = useSelector(state => {
-        return state.settingReducer.respGetSetting;
-    });
-
-    const appMembersData = useSelector(state => {
-        return state.settingReducer.respGetMembers;
-    });
+    useEffect(() => {
+        dispatch(getGroupListData())
+        dispatch(getSettingData(appMembersTabelSearch))
+    }, [])
 
     const [radioValue1, setRadioValue1] = useState("")
     const [radioValue2, setRadioValue2] = useState("")
@@ -240,8 +249,6 @@ const Setting = () => {
         }
         setGeneralSetting([radioValue1, radioValue2, radioValue3])
     }, [appSettingData])
-
-    const [tempState, setTempState] = useState([]);
 
     const filterByGroupName = (data, groupName) => {
         return data.filter((item) => item.groupName === groupName);
@@ -430,12 +437,12 @@ const Setting = () => {
 
                                     <CardBody>
                                         <Row className="mb-2">
-                                            {/* {appSettingData?.data?.groupList.map((num) => (
+                                            {appGroupListData && appGroupListData?.data?.groupList ? (appGroupListData?.data?.groupList.map((num) => (
                                                 <React.Fragment key={num.id}>
                                                     <Row className="mb-2">
                                                         <h2><strong>{num.name}</strong></h2>
                                                     </Row>
-                                                    <Row>
+                                                    {/* <Row>
                                                         <TableCustom2
                                                             keyField={"num"}
                                                             columns={appGroupp01Tabel}
@@ -446,10 +453,10 @@ const Setting = () => {
                                                             searchGet={appMembersTabelSearch}
                                                             redukCall={getSettingData}
                                                         />
-                                                       
-                                                    </Row>
+
+                                                    </Row> */}
                                                 </React.Fragment>
-                                            ))} */}
+                                            ))) : null}
                                         </Row>
 
                                     </CardBody>
