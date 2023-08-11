@@ -27,7 +27,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
-import { getSelectFile, deleteFileFolder, downloadFile, moveFile, resetMessage } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolder, downloadFile, resetMessage } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 //import FolderDetail from "./FolderDetail";
@@ -36,6 +36,7 @@ import axios from 'axios';
 import Rename from "./Rename";
 import Upload from "./Upload";
 import Create from "./Create";
+import Move from "./Move";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import ConfirmModal from "components/Common/ConfirmModal";
 
@@ -61,12 +62,17 @@ const FileManagement = () => {
   const [renameModal, setRenameModal] = useState(false)
   const [uploadModal, setUploadModal] = useState(false)
   const [createModal, setCreateModal] = useState(false)
+  const [moveModal, setMoveModal] = useState(false)
 
-  const [confirmModal, setConfirmModal] = useState(false)
+  const [confirmModalDelete, setConfirmModalDelete] = useState(false)
   const [isYes, setIsYes] = useState(false)
+  const [isYesDownload, setIsYesDownload] = useState(false)
 
   const [idFolderTemp, setIdFolderTemp] = useState()
   const [idParentTemp, setIdParentTemp] = useState()
+
+  const [fNum, setFnum] = useState(0)
+  const [pNum, setPnum] = useState(0)
 
   const [tempIdDel, setTempIdDel] = useState()
 
@@ -85,7 +91,6 @@ const FileManagement = () => {
 
   const toggleRenameModal = (idT, nmT, tpT) => {
     debugger
-    setRenameModal(!renameModal)
     setIdToggle(idT)
     if(tpT === "FILE"){
     var realNm = nmT.split('.').slice(0, -1).join('.')
@@ -97,6 +102,7 @@ const FileManagement = () => {
       setNmToggle(nmT)
       setTypeRename(tpT)
     }
+    setRenameModal(!renameModal)
   }
 
   const toggleUploadModal = () => {
@@ -113,13 +119,21 @@ const FileManagement = () => {
     setIdToggleCreate(idParent)
   }
 
-  const confirmToggle = (e, typeFolder) => {
+  const toggleMoveModal = (Fid, Pid) => {
+    debugger
+    setFnum(Fid)
+    setPnum(Pid)
+    setMoveModal(!moveModal)
+   
+  }
+  
+  const confirmToggleDelete = (e, typeFolder) => {
     debugger
     if (e) {
       setTempIdDel(e)
       setIsTypeFolder(typeFolder)
     }
-    setConfirmModal(!confirmModal)
+    setConfirmModalDelete(!confirmModalDelete)
   }
 
   useEffect(() => {
@@ -254,12 +268,27 @@ const FileManagement = () => {
             idToggleCreate={idToggleCreate}
           />
 
+          <Move
+            modal={moveModal}
+            toggle={toggleMoveModal}
+            idToggleCreate={idToggleCreate}
+            fNum={fNum}
+            pNum={pNum}
+          />
+
           <ConfirmModal
-            modal={confirmModal}
-            toggle={confirmToggle}
+            modal={confirmModalDelete}
+            toggle={confirmToggleDelete}
             message={"Are you sure to delete this?"}
             setIsYes={setIsYes}
           />
+
+          {/* <ConfirmModal
+            modal={confirmModal}
+            toggle={confirmToggle}
+            message={"Are you sure to download this?"}
+            setIsYesDownload={setIsYesDownload}
+          /> */}
 
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
@@ -316,7 +345,7 @@ const FileManagement = () => {
                     <strong>
                       {getFileSelect?.data?.path.map((breadcrumb, index) => (
                         <span key={index}>
-                          {index > 0 && ' > '}
+                          {index > 0 && <i className="mdi mdi-chevron-right" />}
                           <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
                         </span>
                       ))}
@@ -347,14 +376,14 @@ const FileManagement = () => {
                                     <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
                                       Rename
                                     </DropdownItem>
-                                    <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
+                                    <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
                                       Move
                                     </DropdownItem>
                                     {/* <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
                                       Upload
                                     </DropdownItem> */}
                                     <div className="dropdown-divider"></div>
-                                    <DropdownItem onClick={() => confirmToggle(myfiles.num, myfiles.type)}>
+                                    <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
                                       Remove
                                     </DropdownItem>
                                   </DropdownMenu>
@@ -423,14 +452,14 @@ const FileManagement = () => {
                                     <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
                                       Rename
                                     </DropdownItem>
-                                    <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
+                                    <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
                                       Move
                                     </DropdownItem>
                                     <DropdownItem onClick={() => downloadFolderFile(myfiles.num, myfiles.name)}>
                                       Download
                                     </DropdownItem>
                                     <div className="dropdown-divider"></div>
-                                    <DropdownItem onClick={() => confirmToggle(myfiles.num, myfiles.type)}>
+                                    <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
                                       Remove
                                     </DropdownItem>
                                   </DropdownMenu>

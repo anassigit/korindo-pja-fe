@@ -17,7 +17,8 @@ import {
     RESET_MESSAGE,
     MSGADD,
     MSGEDIT,
-    MSGDELETE
+    MSGDELETE,
+    MSGRENAME
 
 } from "./actionTypes"
 
@@ -109,4 +110,9 @@ export const getSelectFile = (req) => ({
   export const msgDelete = resp => ({
     type: MSGDELETE,
     payload: resp,
+  })
+
+  export const msgRename = (req) => ({
+    type: MSGRENAME,
+    payload: req,
   })

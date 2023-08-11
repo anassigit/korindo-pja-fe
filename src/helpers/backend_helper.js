@@ -177,6 +177,6 @@ export const downloadFileFolder = req => getWithXls("/rest/FileManagementRest/Fi
 
 export const uploadFileFolder = req => postUpload("/rest/FileManagementRest/FileUpload", req)
 
-export const moveFileFolder = req => postUpload("/rest/FileManagementRest/Move", req)
+export const moveFileFolder = req => postWithParam("/rest/FileManagementRest/Move", req)
 
 export const createFolder = req => postWithParam("/rest/FileManagementRest/CreateNewFolder", req)

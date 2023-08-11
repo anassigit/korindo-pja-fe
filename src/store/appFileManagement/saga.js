@@ -23,7 +23,8 @@ import {
     msgDownload,
     msgUpload,
     msgMove,
-    msgCreate
+    msgCreate,
+    msgRename
 
 } from "./actions"
 
@@ -83,10 +84,10 @@ function* fetchGetSelectFolder({ payload: req }) {
     try {
       debugger
       const response = yield call(renameFileFolder, req)
-      yield put(msgAdd(response))
+      yield put(msgRename(response))
     } catch (error) {
       console.log(error);
-      yield put(msgAdd({ "status": 0, "data": "Error Rename Data" }))
+      yield put(msgRename({ "status": 0, "data": "Error Rename Data" }))
     }
   }
 

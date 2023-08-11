@@ -6,8 +6,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 //import { getSelectFile, deleteFileFolder, resetMessage } from "../../store/appFileManagement/actions"
 import MsgModal from 'components/Common/MsgModal';
-import { resetMessage, renameFileFolder } from '../../store/appFileManagement/actions';
-import { msgAdd } from 'store/actions';
+import { getSelectFile, resetMessage, renameFileFolder } from '../../store/appFileManagement/actions';
 
 
 
@@ -16,9 +15,19 @@ const Rename = (props) => {
     const dispatch = useDispatch();
     const [renameSpinner, setRenameSpinner] = useState(false)
 
+    const [renameFFMsg, setRenameFFMsg] = useState(false)
+
     const renameMsg = useSelector(state => {
-        return state.fileManagementReducer.msgAdd;
+        return state.fileManagementReducer.msgRename;
       })
+
+    const getFileSelect = useSelector(state => {
+        return state.fileManagementReducer.respGetSelect;
+      })
+
+      useEffect(() => {
+        dispatch(getSelectFile())
+    }, [])
 
       useEffect(() => {
         dispatch(resetMessage());
@@ -34,8 +43,7 @@ const Rename = (props) => {
 
         initialValues: {
             file_num : props.idToggle,
-            newName: props.nmToggle,
-            
+            newName: props.nmToggle,           
         },
 
         validationSchema: Yup.object().shape({
@@ -51,38 +59,46 @@ const Rename = (props) => {
             if(types_rename === "FILE"){
 
                 let NewName = value.newName + '.' + file_ext
-                value.newName = NewName
                 setRenameSpinner(true)
+                value.newName = NewName
                 dispatch(renameFileFolder(value));
-                toggleMsgModal(msgAdd)
+                toggleMsgModal()
                
             } else {
                 let NewName = value.newName
-                value.newName = NewName
                 setRenameSpinner(true)
+                value.newName = NewName
                 dispatch(renameFileFolder(value));
-                toggleMsgModal(msgAdd)
+                toggleMsgModal()
             }
 
         }
     });
+
+    useEffect(() =>{
+        debugger
+        renameFileFolderValidInput.resetForm();
+    }, [props.toggle] )
 
     const [renameMsgModal, setRenameMsgModal] = useState(false)
     const [renameContentModal, setRenameContentModal] = useState("")
 
     const toggleMsgModal = () => {
         setRenameMsgModal(!renameMsgModal)
-        if (renameContentModal === "Sukses") {
+        
+        if (renameFFMsg === "1") {
             props.toggle()
         }
     }
 
     useEffect(() => {
-        if (renameMsg) {
-            setRenameContentModal(renameMsg.message);
-            dispatch(resetMessage());
+        if (renameMsg.status === "1") {
+           
+            setRenameFFMsg(renameMsg)
         }
-        setRenameSpinner(false)
+        setRenameContentModal(renameMsg.message);
+        setRenameSpinner(false);
+        
     }, [renameMsg]);
 
     return (
@@ -91,11 +107,12 @@ const Rename = (props) => {
                 modal={renameMsgModal}
                 toggle={toggleMsgModal}
                 message={renameContentModal}
-                //data={idFile}
+                
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 renameFileFolderValidInput.handleSubmit();
+                return false
             }}>
                 <ModalHeader toggle={props.toggle}>Rename File or Folder</ModalHeader>
                 <ModalBody>

@@ -17,7 +17,8 @@ import {
     RESET_MESSAGE,
     MSGADD,
     MSGEDIT,
-    MSGDELETE
+    MSGDELETE,
+    MSGRENAME
 
 } from "./actionTypes"
 
@@ -32,6 +33,7 @@ const INIT_STATE = {
     msgUpload: "",
     msgMove: "",
     msgCreate: "",
+    msgRename: "",
 
 }
 
@@ -111,6 +113,7 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                 msgDownload: "",
                 msgUpload: "",
                 msgMove: "",
+                msgRename: "",
             }
         case MSGADD:
             return {
@@ -127,6 +130,12 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                 ...state,
                 msgDelete: action.payload,
             }
+
+            case MSGRENAME:
+                return {
+                    ...state,
+                    msgRename: action.payload,
+                }
 
         default:
             return state
