@@ -20,6 +20,8 @@ import {
   RESP_GET_PERMISSION_LIST,
   GET_GROUP_LIST,
   RESP_GET_GROUP_LIST,
+  GET_RELATION_LIST,
+  RESP_GET_RELATION_LIST,
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -123,5 +125,17 @@ export const getGroupListData = (req) => ({
 
 export const respGetGroupList = resp => ({
   type: RESP_GET_GROUP_LIST,
+  payload: resp,
+})
+
+/* GET ALL RANK LIST */
+
+export const getRelationListData = (req) => ({
+  type: GET_RELATION_LIST,
+  payload: req,
+})
+
+export const respGetRelationList = resp => ({
+  type: RESP_GET_RELATION_LIST,
   payload: resp,
 })

@@ -8,13 +8,13 @@ import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
 import { getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 
-const AddMember = (props) => {
+const AddGroupMapping = (props) => {
     const dispatch = useDispatch();
-    const [addMemberSpinner, setAddMemberSpinner] = useState(false)
+    const [addGroupMappingSpinner, setAddGroupMappingSpinner] = useState(false)
 
-    const [addMemberMsg, setAddMemberMsg] = useState(false)
+    const [addGroupMappingMsg, setAddGroupMappingMsg] = useState(false)
 
-    const addMemberMessage = useSelector(state => {
+    const addGroupMappingMessage = useSelector(state => {
         return state.settingReducer.msgAdd;
     });
 
@@ -35,7 +35,7 @@ const AddMember = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const addMemberValidInput = useFormik({
+    const addGroupMappingValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
@@ -57,14 +57,14 @@ const AddMember = (props) => {
 
         onSubmit: (value) => {
             debugger
-            setAddMemberSpinner(true)
+            setAddGroupMappingSpinner(true)
             dispatch(saveMembers(value));
             toggleMsgModal()
         }
     })
 
     useEffect(() => {
-        addMemberValidInput.resetForm();
+        addGroupMappingValidInput.resetForm();
       }, [props.toggle]);
 
     /* HP Validation */
@@ -86,36 +86,36 @@ const AddMember = (props) => {
         label: name_eng,
     }))
 
-    const [addMemberMsgModal, setAddMemberMsgModal] = useState(false)
-    const [addmemberContentModal, setAddMemberContentModal] = useState("")
+    const [addGroupMappingMsgModal, setAddGroupMappingMsgModal] = useState(false)
+    const [addgroupmappingContentModal, setAddGroupMappingContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        setAddMemberMsgModal(!addMemberMsgModal)
+        setAddGroupMappingMsgModal(!addGroupMappingMsgModal)
         debugger
-        if (addMemberMsg.status === "1") {
+        if (addGroupMappingMsg.status === "1") {
             props.toggle()
         }
     }
 
     useEffect(() => {
-        if (addMemberMessage.status == "1") {
+        if (addGroupMappingMessage.status == "1") {
             debugger
-            setAddMemberMsg(addMemberMessage)
+            setAddGroupMappingMsg(addGroupMappingMessage)
         }
-        setAddMemberContentModal(addMemberMessage.message);
-        setAddMemberSpinner(false)
-    }, [addMemberMessage]);
+        setAddGroupMappingContentModal(addGroupMappingMessage.message);
+        setAddGroupMappingSpinner(false)
+    }, [addGroupMappingMessage]);
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
             <MsgModal
-                modal={addMemberMsgModal}
+                modal={addGroupMappingMsgModal}
                 toggle={toggleMsgModal}
-                message={addmemberContentModal}
+                message={addgroupmappingContentModal}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
-                addMemberValidInput.handleSubmit();
+                addGroupMappingValidInput.handleSubmit();
                 return false
             }}>
                 <ModalHeader toggle={props.toggle}>Add New Member</ModalHeader>
@@ -127,11 +127,11 @@ const AddMember = (props) => {
                             <Input
                                 type="text"
                                 name="name"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.name || ''}
+                                onChange={addGroupMappingValidInput.handleChange}
+                                value={addGroupMappingValidInput.values.name || ''}
                             />
-                            {addMemberValidInput.errors.name && addMemberValidInput.touched.name && (
-                                <div style={{ color: 'red' }}>{addMemberValidInput.errors.name}</div>
+                            {addGroupMappingValidInput.errors.name && addGroupMappingValidInput.touched.name && (
+                                <div style={{ color: 'red' }}>{addGroupMappingValidInput.errors.name}</div>
                             )}
                         </div>
 
@@ -140,11 +140,11 @@ const AddMember = (props) => {
                             <Input
                                 type="email"
                                 name="id"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.id || ''}
+                                onChange={addGroupMappingValidInput.handleChange}
+                                value={addGroupMappingValidInput.values.id || ''}
                             />
-                            {addMemberValidInput.errors.id && addMemberValidInput.touched.id && (
-                                <div style={{ color: 'red' }}>{addMemberValidInput.errors.id}</div>
+                            {addGroupMappingValidInput.errors.id && addGroupMappingValidInput.touched.id && (
+                                <div style={{ color: 'red' }}>{addGroupMappingValidInput.errors.id}</div>
                             )}
                         </div>
 
@@ -155,8 +155,8 @@ const AddMember = (props) => {
                                 name="hp"
                                 maxLength={12}
                                 onKeyPress={handleKeyPress}
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.hp || ''}
+                                onChange={addGroupMappingValidInput.handleChange}
+                                value={addGroupMappingValidInput.values.hp || ''}
                             />
                         </div>
 
@@ -165,8 +165,8 @@ const AddMember = (props) => {
                             <Input
                                 type="select"
                                 name="rank"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.rank || ''}
+                                onChange={addGroupMappingValidInput.handleChange}
+                                value={addGroupMappingValidInput.values.rank || ''}
                             >
                                 <option value="">Select Rank</option>
                                 {rankOptions.map((rank) => (
@@ -181,8 +181,8 @@ const AddMember = (props) => {
                             <Input
                                 type="select"
                                 name="permission"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.permission || ''}
+                                onChange={addGroupMappingValidInput.handleChange}
+                                value={addGroupMappingValidInput.values.permission || ''}
                             >
                                 <option value="">Select Permission</option>
                                 {permissionOptions.map((permission) => (
@@ -193,22 +193,22 @@ const AddMember = (props) => {
                             </Input>
                         </div>
 
-                        <div className="mb-3 mx-3" hidden={addMemberValidInput?.values?.permission !== '2'}>
+                        <div className="mb-3 mx-3" hidden={addGroupMappingValidInput?.values?.permission !== '2'}>
                             <Label>Background Color</Label>
                             <Input
                                 type="color"
                                 name="bgColor"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.bgColor || '#000'}
+                                onChange={addGroupMappingValidInput.handleChange}
+                                value={addGroupMappingValidInput.values.bgColor || '#000'}
                             />
                         </div>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color={addMemberSpinner ? "primary disabled" : "primary"}>
+                    <Button type="submit" color={addGroupMappingSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                         Save
-                        <Spinner style={{ display: addMemberSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+                        <Spinner style={{ display: addGroupMappingSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
                         Close
@@ -219,9 +219,9 @@ const AddMember = (props) => {
     );
 };
 
-AddMember.propTypes = {
+AddGroupMapping.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
 };
 
-export default AddMember;
+export default AddGroupMapping;

@@ -18,29 +18,40 @@ import Pagination from "react-js-pagination"
 
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { editGeneralSetting, getGroupListData, getMembersData, getRankListData, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
+import { deleteMembers, editGeneralSetting, getGroupListData, getMembersData, getRankListData, getRelationListData, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
 import TableCustom2 from "common/TableCustom2";
 import MsgModal from "components/Common/MsgModal";
 import AddMember from "./AddMember";
 import { ReactSession } from 'react-client-session';
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import EditMember from "./EditMember";
+import ConfirmModal from "components/Common/ConfirmModal";
+import TableCustomNoPagination from "common/TableCustomNoPagination";
 
+const ITEMS_PER_PAGE = 10;
 
 const Setting = () => {
 
     const history = useHistory()
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
     let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
+    
 
     const dispatch = useDispatch();
     const [appSettingMsg, setAppSettingMsg] = useState("")
     const [appSettingPage, setAppSettingPage] = useState(true)
 
-    const [tempState, setTempState] = useState([]);
+    const [selectedMemberData, setSelectedMemberData] = useState()
 
     /* MODALS */
+    const [confirmModal, setConfirmModal] = useState(false)
+    const [isYes, setIsYes] = useState(false)
+
     const [generalMsgModal, setGeneralMsgModal] = useState(false)
     const [generalContentModal, setGeneralContentModal] = useState("")
+
+    const [addMemberModal, setAddMemberModal] = useState(false)
+    const [editMemberModal, setEditMemberModal] = useState(false)
 
     const appSettingData = useSelector(state => {
         return state.settingReducer.respGetSetting;
@@ -54,23 +65,35 @@ const Setting = () => {
         return state.settingReducer.respGetGroupList;
     });
 
+    const appRelationListData = useSelector(state => {
+        return state.settingReducer.respGetRelationList;
+    });
+
     const toggleMsgModal = () => {
         setGeneralMsgModal(!generalMsgModal)
     }
 
-    const [addMemberModal, setAddMemberModal] = useState(false)
-
     const toggleAddMemberModal = () => {
         setAddMemberModal(!addMemberModal)
+    }
+
+    const toggleEditMemberModal = () => {
+        setEditMemberModal(!editMemberModal)
     }
 
     /* ENDS OF MODAL */
 
     const [appMembersTabelSearch, setAppMembersTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
-            any: "", langType: "kor"
+            any: "", langType: "eng"
         }
-    });
+    })
+
+    const [appRelationTabelSearch, setAppRelationTabelSearch] = useState({
+        page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
+            group: "", langType: "eng"
+        }
+    })
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -79,6 +102,7 @@ const Setting = () => {
     useEffect(() => {
         dispatch(getGroupListData())
         dispatch(getSettingData(appMembersTabelSearch))
+        dispatch(getRelationListData())
     }, [])
 
     const [radioValue1, setRadioValue1] = useState("")
@@ -138,7 +162,7 @@ const Setting = () => {
             formatter: (cellContent, data) => (
                 <>
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                        <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app008p01PreEdit(data)} />
+                        <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => appSettingPreEdit(data)} />
                         <UncontrolledTooltip placement="top" target="edittooltip">
                             Ubah
                         </UncontrolledTooltip>
@@ -154,7 +178,7 @@ const Setting = () => {
             formatter: (cellContent, data) => (
                 <>
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                        <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app008p01Delete(data)} />
+                        <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => confirmToggle(data)} />
                         <UncontrolledTooltip placement="top" target="deletetooltip">
                             Hapus
                         </UncontrolledTooltip>
@@ -166,11 +190,19 @@ const Setting = () => {
 
     const appGroupp01Tabel = [
         {
-            dataField: "memberName",
+            dataField: "memberId",
             text: "Name (Email)",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
+            // formatter: (cellContent, data) => {
+            //     console.log(cellContent)
+            //     let cell = cellContent
+            //     return (
+            //         cell
+            //     )
+
+            // }
         },
         {
             dataField: "edit",
@@ -232,7 +264,8 @@ const Setting = () => {
     }
 
     const appSettingPreEdit = (e) => {
-        null
+        setSelectedMemberData(e)
+        toggleEditMemberModal()
     }
 
     useEffect(() => {
@@ -250,14 +283,59 @@ const Setting = () => {
         setGeneralSetting([radioValue1, radioValue2, radioValue3])
     }, [appSettingData])
 
-    const filterByGroupName = (data, groupName) => {
-        return data.filter((item) => item.groupName === groupName);
+    /* TABLE FROM HERE */
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const groupList = appGroupListData?.data?.groupList || [];
+    const totalItems = groupList.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
+
+    const confirmToggle = (val) => {
+        if (val) {
+            setSelectedMemberData(val)
+        }
+        setConfirmModal(!confirmModal)
+    }
+
+    useEffect(() => {
+        if (isYes === true) {
+            debugger
+            let id = selectedMemberData?.id.toString()
+            dispatch(deleteMembers({ id }))
+            setAppMembersTabelSearch(
+                {
+                    page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
+                        any: "", langType: "eng"
+                    }
+                }
+            )
+        }
+    }, [isYes])
+
+    // useEffect(() => {
+    //     const foundRelation = appRelationListData?.data?.relationList.find((e) => e.groupName === num.name)
+    // }, [appRelationListData])
+
+    /* ENDED HERE */
 
     return (
         <RootPageCustom msgStateGet={appSettingMsg} msgStateSet={setAppSettingMsg}
             componentJsx={
                 <>
+                    <ConfirmModal
+                        modal={confirmModal}
+                        toggle={confirmToggle}
+                        message={"Are you sure to delete this?"}
+                        setIsYes={setIsYes}
+                    />
                     <MsgModal
                         modal={generalMsgModal}
                         toggle={toggleMsgModal}
@@ -266,6 +344,11 @@ const Setting = () => {
                     <AddMember
                         modal={addMemberModal}
                         toggle={toggleAddMemberModal}
+                    />
+                    <EditMember
+                        modal={editMemberModal}
+                        toggle={toggleEditMemberModal}
+                        data={selectedMemberData}
                     />
 
                     <Container style={{ display: appSettingPage ? 'block' : 'none' }} fluid={true}>
@@ -437,26 +520,46 @@ const Setting = () => {
 
                                     <CardBody>
                                         <Row className="mb-2">
-                                            {appGroupListData && appGroupListData?.data?.groupList ? (appGroupListData?.data?.groupList.map((num) => (
-                                                <React.Fragment key={num.id}>
-                                                    <Row className="mb-2">
-                                                        <h2><strong>{num.name}</strong></h2>
-                                                    </Row>
-                                                    {/* <Row>
-                                                        <TableCustom2
-                                                            keyField={"num"}
-                                                            columns={appGroupp01Tabel}
-                                                            redukResponse={appSettingData}
-                                                            appdata={filterByGroupName(appSettingData?.data?.relationList, num.name)}
-                                                            appdataTotal={appSettingData?.data?.relationList?.length != null ? appSettingData?.data?.relationList?.length : 0}
-                                                            searchSet={setAppMembersTabelSearch}
-                                                            searchGet={appMembersTabelSearch}
-                                                            redukCall={getSettingData}
-                                                        />
+                                            {/* {appGroupListData && appGroupListData.data?.groupList ? (
+                                                appGroupListData.data.groupList.map((group) => (
+                                                    <React.Fragment key={group.id}>
+                                                        <Row className="mb-2">
+                                                            <h2><strong>{group.name}</strong></h2>
+                                                        </Row>
+                                                        <Row className="mb-2">
+                                                            <table>
 
-                                                    </Row> */}
-                                                </React.Fragment>
-                                            ))) : null}
+                                                            </table>
+                                                        </Row>
+                                                    </React.Fragment>
+                                                ))
+                                            ) : null} */}
+
+                                            {appGroupListData && appGroupListData?.data?.groupList ? (
+                                                appGroupListData?.data?.groupList.map((num) => {
+
+                                                    return (
+                                                        <React.Fragment key={num.id}>
+                                                            <Row className="mb-2">
+                                                                <h2><strong>{num.name}</strong></h2>
+                                                            </Row>
+                                                            <Row>
+                                                                <TableCustomNoPagination
+                                                                    keyField={"num"}
+                                                                    columns={appGroupp01Tabel}
+                                                                    redukResponse={appRelationListData}
+                                                                    appdata={appRelationListData?.data?.relationList != null ? appRelationListData?.data?.relationList : []}
+                                                                    appdataTotal={appRelationListData?.data?.relationList?.length != null ? appRelationListData?.data?.relationList : 0}
+                                                                    searchSet={setAppRelationTabelSearch}
+                                                                    searchGet={appRelationTabelSearch}
+                                                                    redukCall={getRelationListData}
+                                                                />
+                                                            </Row>
+                                                        </React.Fragment>
+                                                    );
+                                                })
+                                            ) : null}
+
                                         </Row>
 
                                     </CardBody>

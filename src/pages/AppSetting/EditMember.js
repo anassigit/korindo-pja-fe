@@ -6,16 +6,16 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { editMembers, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 
-const AddMember = (props) => {
+const EditMember = (props) => {
     const dispatch = useDispatch();
-    const [addMemberSpinner, setAddMemberSpinner] = useState(false)
+    const [editMemberSpinner, setEditMemberSpinner] = useState(false)
 
-    const [addMemberMsg, setAddMemberMsg] = useState(false)
+    const [editMemberMsg, setEditMemberMsg] = useState(false)
 
-    const addMemberMessage = useSelector(state => {
-        return state.settingReducer.msgAdd;
+    const editMemberMessage = useSelector(state => {
+        return state.settingReducer.msgEdit;
     });
 
     const appRankListData = useSelector(state => {
@@ -35,7 +35,7 @@ const AddMember = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const addMemberValidInput = useFormik({
+    const editMemberValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
@@ -43,7 +43,6 @@ const AddMember = (props) => {
             rank: '',
             hp: '',
             permission: '',
-            pw: '',
             name: '',
             bgColor: '',
         },
@@ -56,16 +55,31 @@ const AddMember = (props) => {
         }),
 
         onSubmit: (value) => {
-            debugger
-            setAddMemberSpinner(true)
-            dispatch(saveMembers(value));
+            setEditMemberSpinner(true)
+            dispatch(editMembers(value));
             toggleMsgModal()
         }
     })
 
+
     useEffect(() => {
-        addMemberValidInput.resetForm();
-      }, [props.toggle]);
+        if (props.data) {
+            editMemberValidInput.setFieldValue('id', props.data.id);
+            editMemberValidInput.setFieldValue('hp', props.data.hp);
+            editMemberValidInput.setFieldValue('name', props.data.name);
+            editMemberValidInput.setFieldValue('bgColor', props.data.bgcolor);
+
+            const filteredRankOption = rankOptions.find(option => option.label === props.data.rname);
+            const filteredPermissionOption = permissionOptions.find(option => option.label === props.data.pname);
+
+            if (filteredRankOption) {
+                editMemberValidInput.setFieldValue('rank', filteredRankOption.value);
+            }
+            if (filteredPermissionOption) {
+                editMemberValidInput.setFieldValue('permission', filteredPermissionOption.value);
+            }
+        }
+    }, [props.data]);
 
     /* HP Validation */
     const handleKeyPress = (event) => {
@@ -86,39 +100,38 @@ const AddMember = (props) => {
         label: name_eng,
     }))
 
-    const [addMemberMsgModal, setAddMemberMsgModal] = useState(false)
-    const [addmemberContentModal, setAddMemberContentModal] = useState("")
+    const [editMemberMsgModal, setEditMemberMsgModal] = useState(false)
+    const [editmemberContentModal, setEditMemberContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        setAddMemberMsgModal(!addMemberMsgModal)
+        setEditMemberMsgModal(!editMemberMsgModal)
         debugger
-        if (addMemberMsg.status === "1") {
+        if (editMemberMsg.status === "1") {
             props.toggle()
         }
     }
 
     useEffect(() => {
-        if (addMemberMessage.status == "1") {
-            debugger
-            setAddMemberMsg(addMemberMessage)
+        if (editMemberMessage.status == "1") {
+            setEditMemberMsg(editMemberMessage)
         }
-        setAddMemberContentModal(addMemberMessage.message);
-        setAddMemberSpinner(false)
-    }, [addMemberMessage]);
+        setEditMemberContentModal(editMemberMessage.message);
+        setEditMemberSpinner(false)
+    }, [editMemberMessage]);
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
             <MsgModal
-                modal={addMemberMsgModal}
+                modal={editMemberMsgModal}
                 toggle={toggleMsgModal}
-                message={addmemberContentModal}
+                message={editmemberContentModal}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
-                addMemberValidInput.handleSubmit();
+                editMemberValidInput.handleSubmit();
                 return false
             }}>
-                <ModalHeader toggle={props.toggle}>Add New Member</ModalHeader>
+                <ModalHeader toggle={props.toggle}>Edit Member</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
@@ -127,11 +140,11 @@ const AddMember = (props) => {
                             <Input
                                 type="text"
                                 name="name"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.name || ''}
+                                onChange={editMemberValidInput.handleChange}
+                                value={editMemberValidInput.values.name}
                             />
-                            {addMemberValidInput.errors.name && addMemberValidInput.touched.name && (
-                                <div style={{ color: 'red' }}>{addMemberValidInput.errors.name}</div>
+                            {editMemberValidInput.errors.name && editMemberValidInput.touched.name && (
+                                <div style={{ color: 'red' }}>{editMemberValidInput.errors.name}</div>
                             )}
                         </div>
 
@@ -140,11 +153,11 @@ const AddMember = (props) => {
                             <Input
                                 type="email"
                                 name="id"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.id || ''}
+                                onChange={editMemberValidInput.handleChange}
+                                value={editMemberValidInput.values.id}
                             />
-                            {addMemberValidInput.errors.id && addMemberValidInput.touched.id && (
-                                <div style={{ color: 'red' }}>{addMemberValidInput.errors.id}</div>
+                            {editMemberValidInput.errors.id && editMemberValidInput.touched.id && (
+                                <div style={{ color: 'red' }}>{editMemberValidInput.errors.id}</div>
                             )}
                         </div>
 
@@ -155,8 +168,8 @@ const AddMember = (props) => {
                                 name="hp"
                                 maxLength={12}
                                 onKeyPress={handleKeyPress}
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.hp || ''}
+                                onChange={editMemberValidInput.handleChange}
+                                value={editMemberValidInput.values.hp}
                             />
                         </div>
 
@@ -165,8 +178,8 @@ const AddMember = (props) => {
                             <Input
                                 type="select"
                                 name="rank"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.rank || ''}
+                                onChange={editMemberValidInput.handleChange}
+                                value={editMemberValidInput.values.rank}
                             >
                                 <option value="">Select Rank</option>
                                 {rankOptions.map((rank) => (
@@ -181,8 +194,8 @@ const AddMember = (props) => {
                             <Input
                                 type="select"
                                 name="permission"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.permission || ''}
+                                onChange={editMemberValidInput.handleChange}
+                                value={editMemberValidInput.values.permission}
                             >
                                 <option value="">Select Permission</option>
                                 {permissionOptions.map((permission) => (
@@ -193,22 +206,22 @@ const AddMember = (props) => {
                             </Input>
                         </div>
 
-                        <div className="mb-3 mx-3" hidden={addMemberValidInput?.values?.permission !== '2'}>
+                        <div className="mb-3 mx-3" hidden={editMemberValidInput?.values?.permission !== '2'}>
                             <Label>Background Color</Label>
                             <Input
                                 type="color"
                                 name="bgColor"
-                                onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.bgColor || '#000'}
+                                onChange={editMemberValidInput.handleChange}
+                                value={editMemberValidInput.values.bgColor || '#000'}
                             />
                         </div>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color={addMemberSpinner ? "primary disabled" : "primary"}>
+                    <Button type="submit" color={editMemberSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                         Save
-                        <Spinner style={{ display: addMemberSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+                        <Spinner style={{ display: editMemberSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
                         Close
@@ -219,9 +232,10 @@ const AddMember = (props) => {
     );
 };
 
-AddMember.propTypes = {
+EditMember.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
+    data: PropTypes.any,
 };
 
-export default AddMember;
+export default EditMember;

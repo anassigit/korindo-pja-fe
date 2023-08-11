@@ -20,6 +20,8 @@ import {
   RESP_GET_PERMISSION_LIST,
   GET_GROUP_LIST,
   RESP_GET_GROUP_LIST,
+  GET_RELATION_LIST,
+  RESP_GET_RELATION_LIST,
 
 } from "./actionTypes"
 
@@ -29,6 +31,7 @@ const INIT_STATE = {
   respGetRankList: {},
   respGetPermissionList: {},
   respGetGroupList: {},
+  respGetRelationList: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -139,6 +142,19 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetGroupList: action.payload,
+      }
+
+
+    /* RELATION LIST */
+
+    case GET_RELATION_LIST:
+      return {
+        ...state,
+      }
+    case RESP_GET_RELATION_LIST:
+      return {
+        ...state,
+        respGetRelationList: action.payload,
       }
 
     default:
