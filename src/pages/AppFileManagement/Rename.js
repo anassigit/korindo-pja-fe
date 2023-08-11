@@ -24,12 +24,18 @@ const Rename = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
+    useEffect(() =>{
+        debugger
+        renameFileFolderValidInput.setFieldValue("newName", props.nmToggle)
+    }, [props.toggle] )
+
     const renameFileFolderValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
-            file_num: props.idToggle,
-            newName: '',
+            file_num : props.idToggle,
+            newName: props.nmToggle,
+            
         },
 
         validationSchema: Yup.object().shape({
@@ -39,11 +45,25 @@ const Rename = (props) => {
 
         onSubmit: (value) => {
             debugger
-            value.newName = value.newName + '.' + props.nmToggle
-            setRenameSpinner(true)
-            dispatch(renameFileFolder(value));
-            toggleMsgModal(msgAdd)
-            //setRenameSpinner(false)
+            //var file_num = props.idToggle
+            var file_ext = props.nmToggleExt
+            var types_rename = props.typeRename
+            if(types_rename === "FILE"){
+
+                let NewName = value.newName + '.' + file_ext
+                value.newName = NewName
+                setRenameSpinner(true)
+                dispatch(renameFileFolder(value));
+                toggleMsgModal(msgAdd)
+               
+            } else {
+                let NewName = value.newName
+                value.newName = NewName
+                setRenameSpinner(true)
+                dispatch(renameFileFolder(value));
+                toggleMsgModal(msgAdd)
+            }
+
         }
     });
 
@@ -83,7 +103,7 @@ const Rename = (props) => {
 
                         <div className="mb-3 mx-3">
                             <Label>Rename <span style={{ color: "red" }}>*</span></Label>
-                            <Input type="text" name="newName" onChange={renameFileFolderValidInput.handleChange} value={renameFileFolderValidInput.values.newName} />
+                            <Input type="text" name="newName" onChange={renameFileFolderValidInput.handleChange} value={renameFileFolderValidInput.values.newName || ""} />
                             {renameFileFolderValidInput.errors.newName && renameFileFolderValidInput.touched.newName && (
                                 <div style={{ color: 'red' }}>{renameFileFolderValidInput.errors.newName}</div>
                             )}
@@ -112,5 +132,7 @@ Rename.propTypes = {
     toggle: PropTypes.any,
     idToggle: PropTypes.any,
     nmToggle: PropTypes.any,
+    nmToggleExt: PropTypes.any,
+    typeRename: PropTypes.any,
 };
 export default Rename

@@ -37,6 +37,7 @@ import Rename from "./Rename";
 import Upload from "./Upload";
 import Create from "./Create";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import ConfirmModal from "components/Common/ConfirmModal";
 
 
 
@@ -55,13 +56,24 @@ const FileManagement = () => {
   const [idToggleUpload, setIdToggleUpload] = useState("")
   const [idToggleCreate, setIdToggleCreate] = useState("")
   const [nmToggle, setNmToggle] = useState("")
+  const [nmToggleExt, setNmToggleExt] = useState("")
   const [myFiles, setMyFiles] = useState([]);
   const [renameModal, setRenameModal] = useState(false)
   const [uploadModal, setUploadModal] = useState(false)
   const [createModal, setCreateModal] = useState(false)
 
+  const [confirmModal, setConfirmModal] = useState(false)
+  const [isYes, setIsYes] = useState(false)
+
   const [idFolderTemp, setIdFolderTemp] = useState()
   const [idParentTemp, setIdParentTemp] = useState()
+
+  const [tempIdDel, setTempIdDel] = useState()
+
+  const [currFolder, setCurrFolder] = useState()
+  const [isTypeFolder, setIsTypeFolder] = useState()
+
+  const [typeRename, setTypeRename] = useState("")
 
   useEffect(() => {
     console.log(idChild)
@@ -71,12 +83,20 @@ const FileManagement = () => {
     console.log(idParent)
   }, [idParent])
 
-  const toggleRenameModal = (idT, nmT) => {
+  const toggleRenameModal = (idT, nmT, tpT) => {
     debugger
     setRenameModal(!renameModal)
     setIdToggle(idT)
-    var nama = nmT.split('.').pop();
-    setNmToggle(nama)
+    if(tpT === "FILE"){
+    var realNm = nmT.split('.').slice(0, -1).join('.')
+    setNmToggle(realNm)
+    var extNm = nmT.split('.').pop();
+    setNmToggleExt(extNm)
+    setTypeRename(tpT)
+    } else {
+      setNmToggle(nmT)
+      setTypeRename(tpT)
+    }
   }
 
   const toggleUploadModal = () => {
@@ -93,6 +113,15 @@ const FileManagement = () => {
     setIdToggleCreate(idParent)
   }
 
+  const confirmToggle = (e, typeFolder) => {
+    debugger
+    if (e) {
+      setTempIdDel(e)
+      setIsTypeFolder(typeFolder)
+    }
+    setConfirmModal(!confirmModal)
+  }
+
   useEffect(() => {
     dispatch(resetMessage());
     dispatch(getSelectFile())
@@ -100,9 +129,15 @@ const FileManagement = () => {
 
   const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "asc", search: { any: "" } });
 
-  const getFileSelect = useSelector(state => {
 
+  /* KUMPULAN USE SELECTOR */
+
+  const getFileSelect = useSelector(state => {
     return state.fileManagementReducer.respGetSelect;
+  })
+
+  const msgDeleteFile = useSelector(state => {
+    return state.fileManagementReducer.msgDelete;
   })
 
   const fileManagementCloseAlert = () => {
@@ -125,7 +160,7 @@ const FileManagement = () => {
 
   const getInsideFolder = (e, f) => {
     debugger
-
+    setCurrFolder(e)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
     setIdChild(e)
@@ -133,17 +168,35 @@ const FileManagement = () => {
     setIdParent(e)
   }
 
-
-  const removeFolderFile = (e) => {
+  useEffect(() => {
     debugger
-    let num = e
-    num.toString();
-    dispatch(deleteFileFolder(
-      {
-        'file_num': num
+    if (isYes) {
+      let num = null
+      num = tempIdDel
+      num.toString()
+
+      dispatch(deleteFileFolder(
+        {
+          'file_num': num
+        }
+      ))
+
+      if (msgDeleteFile?.status == "1") {
+        dispatch(getSelectFile({ 'folder_num': currFolder }))
       }
-    ))
-  }
+    }
+  }, [isYes, msgDeleteFile])
+
+  // const removeFolderFile = (e) => {
+  //   debugger
+  //   let num = e
+  //   num.toString();
+  //   dispatch(deleteFileFolder(
+  //     {
+  //       'file_num': num
+  //     }
+  //   ))
+  // }
 
   const getIdPath = (idPath) => {
     debugger
@@ -185,6 +238,8 @@ const FileManagement = () => {
             toggle={toggleRenameModal}
             idToggle={idToggle}
             nmToggle={nmToggle}
+            nmToggleExt={nmToggleExt}
+            typeRename={typeRename}
           />
 
           <Upload
@@ -197,6 +252,13 @@ const FileManagement = () => {
             modal={createModal}
             toggle={toggleCreateModal}
             idToggleCreate={idToggleCreate}
+          />
+
+          <ConfirmModal
+            modal={confirmModal}
+            toggle={confirmToggle}
+            message={"Are you sure to delete this?"}
+            setIsYes={setIsYes}
           />
 
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
@@ -252,12 +314,12 @@ const FileManagement = () => {
                 <Row>
                   <div className="align-baseline fs-6">
                     <strong>
-                    {getFileSelect?.data?.path.map((breadcrumb, index) => (
-                      <span key={index}>
-                        {index > 0 && ' > '}
-                        <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
-                      </span>
-                    ))}
+                      {getFileSelect?.data?.path.map((breadcrumb, index) => (
+                        <span key={index}>
+                          {index > 0 && ' > '}
+                          <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
+                        </span>
+                      ))}
                     </strong>
                   </div>
                 </Row>
@@ -282,7 +344,7 @@ const FileManagement = () => {
                                     <i className="mdi mdi-dots-horizontal" ></i>
                                   </DropdownToggle>
                                   <DropdownMenu className="dropdown-menu-end">
-                                    <DropdownItem onClick={() => toggleRenameModal(myfiles.num)}>
+                                    <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
                                       Rename
                                     </DropdownItem>
                                     <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
@@ -292,7 +354,7 @@ const FileManagement = () => {
                                       Upload
                                     </DropdownItem> */}
                                     <div className="dropdown-divider"></div>
-                                    <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
+                                    <DropdownItem onClick={() => confirmToggle(myfiles.num, myfiles.type)}>
                                       Remove
                                     </DropdownItem>
                                   </DropdownMenu>
@@ -337,7 +399,7 @@ const FileManagement = () => {
 
                   {getFileSelect?.data?.childList.map((myfiles, key) => (
 
-                  
+
 
                     myfiles.type === "FILE" ?
 
@@ -358,7 +420,7 @@ const FileManagement = () => {
                                     {/* <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
                                       Open
                                     </DropdownItem> */}
-                                    <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name)}>
+                                    <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
                                       Rename
                                     </DropdownItem>
                                     <DropdownItem onClick={() => moveFolderFile(myfiles.num)}>
@@ -368,7 +430,7 @@ const FileManagement = () => {
                                       Download
                                     </DropdownItem>
                                     <div className="dropdown-divider"></div>
-                                    <DropdownItem onClick={() => removeFolderFile(myfiles.num)}>
+                                    <DropdownItem onClick={() => confirmToggle(myfiles.num, myfiles.type)}>
                                       Remove
                                     </DropdownItem>
                                   </DropdownMenu>
@@ -377,28 +439,28 @@ const FileManagement = () => {
 
                               <div className="avatar-xs me-3 mb-3">
                                 <div className="avatar-title bg-transparent rounded">
-                                {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
-                                  <i className="fa fa-solid fa-file-word fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                ) : myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
-                                  <img src={myfiles} key={key}
-                                  style={{
-                                    width: 20,
-                                    height: 20,
-                                    resizeMode: 'contain',
-                                  }}/>
-                                ) : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
-                                  <i className="fa fa-solid fa-file-excel fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                )
-                                : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
-                                  <i className="fa fa-solid fa-file-powerpoint fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                )
-                                : myfiles.name.endsWith("pdf") ? (
-                                  <i className="fa fa-solid fa-file-pdf fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                )
-                                :
-                                (
-                                  <i className="fa fa-solid fa-file fs-3 align-baseline text-warning" style={{ verticalAlign: "middle" }}></i>
-                                )}
+                                  {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
+                                    <i className="fa fa-solid fa-file-word fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                  ) : myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
+                                    <img src={myfiles} key={key}
+                                      style={{
+                                        width: 20,
+                                        height: 20,
+                                        resizeMode: 'contain',
+                                      }} />
+                                  ) : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
+                                    <i className="fa fa-solid fa-file-excel fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                  )
+                                    : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
+                                      <i className="fa fa-solid fa-file-powerpoint fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                    )
+                                      : myfiles.name.endsWith("pdf") ? (
+                                        <i className="fa fa-solid fa-file-pdf fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                      )
+                                        :
+                                        (
+                                          <i className="fa fa-solid fa-file fs-3 align-baseline text-warning" style={{ verticalAlign: "middle" }}></i>
+                                        )}
                                 </div>
                               </div>
                               <div className="d-flex">
