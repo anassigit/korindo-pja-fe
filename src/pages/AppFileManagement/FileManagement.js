@@ -120,8 +120,6 @@ const FileManagement = () => {
 
   const toggleCreateModal = () => {
 
-    debugger
-
     setIdNowLoc(currFolder)
     setCreateModal(!createModal)
     setIdToggleCreate(idChild)
@@ -158,23 +156,37 @@ const FileManagement = () => {
     dispatch(resetMessage());
     dispatch(getSelectFile())
     dispatch(getSearch({
-      "search" : ""
+      "search": ""
     }))
   }, [])
 
 
   /* KUMPULAN USE SELECTOR */
   //const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "name", order: "asc", search: { any: "" } });
-  let getFileSelect = useSelector(state => {
+  const [realFileList, setRealFileList] = useState()
+  const [realFilePath, setRealFilePath] = useState()
+
+  const getFileSelect = useSelector(state => {
     return state.fileManagementReducer.respGetSelect;
   })
 
   const getSearchFile = useSelector(state => {
-    return state.fileManagementReducer.respSearchFile;
+    return state.fileManagementReducer.respGetSearchFile;
   })
 
   useEffect(() => {
-    getFileSelect = getSearchFile;
+    if (getFileSelect) {
+      setRealFileList(getFileSelect?.data?.childList)
+      setRealFilePath(getFileSelect?.data?.path);
+    }
+  }, [getFileSelect])
+
+  useEffect(() => {
+    if (getSearchFile?.data !== null) {
+      setRealFileList(getSearchFile?.data?.searchList)
+    } else if (getSearchFile?.data === null) {
+      setRealFileList(getFileSelect?.data?.childList)
+    }
   }, [getSearchFile])
 
 
@@ -199,7 +211,7 @@ const FileManagement = () => {
 
 
   const getInsideFolder = (e, f) => {
-  console.log("curr", currFolder)
+    console.log("curr", currFolder)
     setCurrFolder(e)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
@@ -231,8 +243,8 @@ const FileManagement = () => {
 
 
   // const getIdPath = (idPath) => {
-  //   debugger
-    
+  //   ser
+
   //   console.log("nowbread", idPath )
 
   //   dispatch(getSelectFile({
@@ -261,6 +273,10 @@ const FileManagement = () => {
   const handleLanguageChange = (e) => {
     setSelectedLanguage(e.target.value);
   };
+
+  const handleSearchChange = (e) => {
+    dispatch(getSearch({ "search": e.target.value }))
+  }
 
   //console.log(tempIndex)
 
@@ -322,9 +338,7 @@ const FileManagement = () => {
                       <input
                         type="text"
                         className="form-control"
-                        //value={appInstructionsTabelSearch.search.search}
-                        
-                          onBlur={() => dispatch(getSearch({"search": ""}))}
+                        onChange={handleSearchChange}
                       />
                     </div>
                   </Row>
@@ -361,7 +375,7 @@ const FileManagement = () => {
                 <Row>
                   <div className="align-baseline fs-6">
                     <strong>
-                      {getFileSelect?.data?.path.map((breadcrumb, index) => {
+                      {realFilePath?.map((breadcrumb, index) => {
                         tempIndex = index
                         return (
                           <span key={index}>
@@ -383,12 +397,12 @@ const FileManagement = () => {
                 <Row>
                   {
                     // kalo search tidak null ? hasil API :
-                    getFileSelect?.data?.childList.map((myfiles, key) => (
+                    realFileList?.map((myfiles, key) => (
                       myfiles.type === "FOLDER" ?
                         <Col xl={4} sm={6} key={key}>
                           <Card className="shadow-none border">
-                            <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => {getInsideFolder(myfiles.num, myfiles.parent_num)}}> 
-                            {/* onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} */}
+                            <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num) }}>
+                              {/* onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} */}
                               <div >
                                 <div className="float-end ms-2">
                                   <UncontrolledDropdown className="mb-2">
@@ -443,7 +457,7 @@ const FileManagement = () => {
                           </Card>
                         </Col>
                         : ''
-                    )) 
+                    ))
                   }
                 </Row>
 
@@ -453,7 +467,7 @@ const FileManagement = () => {
                 <p />
                 <Row>
 
-                  {getFileSelect?.data?.childList.map((myfiles, key) => (
+                  {realFileList?.map((myfiles, key) => (
 
                     myfiles.type === "FILE" ?
 
