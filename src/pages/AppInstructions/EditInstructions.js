@@ -28,7 +28,7 @@ import { ReactSession } from 'react-client-session';
 import Select, { components } from "react-select";
 import shortid from "shortid";
 import VerticalLayout from "components/VerticalLayout";
-import { saveDescriptions } from "helpers/backend_helper";
+import { downloadFiles, saveDescriptions } from "helpers/backend_helper";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { preventDefault } from "@fullcalendar/core";
 import { reset } from "redux-form";
@@ -440,7 +440,7 @@ const EditInstructions = (props) => {
                 "file_num": num,
                 "file_nm": fileNm
             };
-            await dispatch(downloadFile(indexed_array));
+            await dispatch(downloadFiles(indexed_array));
         } catch (error) {
             console.log(error)
         }
@@ -453,7 +453,7 @@ const EditInstructions = (props) => {
                 "file_num": fNum,
                 "file_nm": fName
             };
-            await dispatch(downloadFile(indexed_array));
+            await dispatch(downloadFiles(indexed_array));
         } catch (error) {
             console.log(error)
         }
