@@ -4,20 +4,18 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, La
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-//import { getSelectFile, deleteFileFolder, resetMessage } from "../../store/appFileManagement/actions"
 import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, msgUpload, uploadFile, getSelectFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
-
 
 
 const Upload = (props) => {
 
     const dispatch = useDispatch();
     const [uploadSpinner, setUploadSpinner] = useState(false)
+    const [uploadMsg, setUploadMsg] = useState(false)
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
-    const [uploadMsg, setUploadMsg] = useState(false)
 
     const uploadRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgUpload;
@@ -41,13 +39,14 @@ const Upload = (props) => {
         }),
 
         onSubmit: (value) => {
-debugger
+    //debugger
             var bodyForm = new FormData();
             
-        if(value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined){
-                value.parent_num = 0;
+            const isParentUndefined = value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined;
+
+            value.parent_num = isParentUndefined ? 0 : value.parent_num;
             
-                debugger
+                //debugger
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -70,35 +69,13 @@ debugger
             insertUpload(bodyForm, config);
             toggleMsgModal()
             
-        } else {
-
-            if (selectedfile.length > 0) {
-
-                for (let index = 0; index < selectedfile.length; index++) {
-
-                    let a = selectedfile[index];
-
-                    bodyForm.append('file' + index, selectedfile[index].fileori);
-
-                }
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            bodyForm.append('parent_num', value.parent_num);
-            setUploadSpinner(true)
-            insertUpload(bodyForm, config);
-            toggleMsgModal()
-        }
+        
         }
     });
 
     
     const insertUpload = async (value) => {
-        debugger
+        //debugger
         
         await dispatch(uploadFile(value));
         // toggleMsgModal()
@@ -115,13 +92,16 @@ debugger
     const [uploadContentModal, setUploadContentModal] = useState("")
 
     const toggleMsgModal = () => {
+        debugger
         setUploadMsgModal(!uploadMsgModal)
         if (uploadMsg.status === "1") {
 
             props.toggle()
 
             setUploadMsg("")
-            //console.log("currfolderupload", props.idNowLoc )
+
+            SetSelectedFile([])
+
             dispatch(getSelectFile({'folder_num': props.idNowLoc}))
 
         }
@@ -130,8 +110,8 @@ debugger
     useEffect(() => {
         if (uploadRespMsg.status === "1") {
 
+        debugger
             setUploadMsg(uploadRespMsg);
-            uploadFileFolderValidInput.resetForm();
 
         }
         setUploadContentModal(uploadRespMsg.message)

@@ -102,12 +102,25 @@ function* fetchGetSelectFolder({ payload: req }) {
 
   function* fetchUploadfiles({ payload: req }) {
     try {
-      debugger
-      yield call(uploadFileFolder, req)
+      const response = yield call(uploadFileFolder, req)
+      if(response.status == 1){
+        yield put(msgUpload(response))
+      }else{
+        yield put(msgUpload(response))
+      }
     } catch (error) {
-      yield put(msgUpload({ "status": 0, "message": "Error Upload Data" }))
+      yield put(msgUpload({"status" : 0, "message" : "Error Upload Data"}))
     }
   }
+
+  // function* fetchUploadfiles({ payload: req }) {
+  //   try {
+  //     debugger
+  //     yield call(uploadFileFolder, req)
+  //   } catch (error) {
+  //     yield put(msgUpload({ "status": 0, "message": "Error Upload Data" }))
+  //   }
+  // }
 
   function* fetchMovefiles({ payload: req }) {
     try {

@@ -8,13 +8,10 @@ import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, createFolder, msgCreate, getSelectFile } from '../../store/appFileManagement/actions';
 
 
-
-
 const Create = (props) => {
 
     const dispatch = useDispatch();
     const [createSpinner, setCreateSpinner] = useState(false)
-
     const [createMsg, setCreateMsg] = useState(false)
 
     const createRespMsg = useSelector(state => {
