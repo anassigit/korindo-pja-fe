@@ -4,10 +4,9 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, La
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-//import { getSelectFile, deleteFileFolder, resetMessage } from "../../store/appFileManagement/actions"
 import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, createFolder, msgCreate, getSelectFile } from '../../store/appFileManagement/actions';
-//import { msgCreate } from 'store/actions';
+
 
 
 
@@ -95,7 +94,7 @@ const Create = (props) => {
                 modal={createMsgModal}
                 toggle={toggleMsgModal}
                 message={createContentModal}
-                //data={idFile}
+                
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();

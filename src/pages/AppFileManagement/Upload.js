@@ -27,19 +27,12 @@ const Upload = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const insertUpload = async (value) => {
-        debugger
-        setUploadSpinner(true)
-        await dispatch(uploadFile(value));
-        toggleMsgModal()
-    };
-
     const uploadFileFolderValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
             parent_num: props.idToggleUpload,
-            file_name: '',
+            //file_name: '',
         },
 
         validationSchema: Yup.object().shape({
@@ -50,11 +43,11 @@ const Upload = (props) => {
         onSubmit: (value) => {
 debugger
             var bodyForm = new FormData();
-            bodyForm.append('parent_num', value.parent_num);
-            if(value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined){
+            
+        if(value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined){
                 value.parent_num = 0;
             
-            debugger
+                debugger
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -72,14 +65,46 @@ debugger
                 }
             }
 
-            
+            bodyForm.append('parent_num', value.parent_num);
+            setUploadSpinner(true)
             insertUpload(bodyForm, config);
+            toggleMsgModal()
             
         } else {
-           console.log ("alert", uploadRespMsg)
+
+            if (selectedfile.length > 0) {
+
+                for (let index = 0; index < selectedfile.length; index++) {
+
+                    let a = selectedfile[index];
+
+                    bodyForm.append('file' + index, selectedfile[index].fileori);
+
+                }
+            }
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            bodyForm.append('parent_num', value.parent_num);
+            setUploadSpinner(true)
+            insertUpload(bodyForm, config);
+            toggleMsgModal()
         }
         }
     });
+
+    
+    const insertUpload = async (value) => {
+        debugger
+        
+        await dispatch(uploadFile(value));
+        // toggleMsgModal()
+        
+    };
+
 
     useEffect(() => {
 
@@ -91,11 +116,12 @@ debugger
 
     const toggleMsgModal = () => {
         setUploadMsgModal(!uploadMsgModal)
-        if (uploadMsg === "1") {
+        if (uploadMsg.status === "1") {
+
             props.toggle()
 
             setUploadMsg("")
-
+            //console.log("currfolderupload", props.idNowLoc )
             dispatch(getSelectFile({'folder_num': props.idNowLoc}))
 
         }
@@ -103,7 +129,9 @@ debugger
 
     useEffect(() => {
         if (uploadRespMsg.status === "1") {
+
             setUploadMsg(uploadRespMsg);
+            uploadFileFolderValidInput.resetForm();
 
         }
         setUploadContentModal(uploadRespMsg.message)
@@ -188,11 +216,11 @@ debugger
                 e.preventDefault();
                 uploadFileFolderValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>Rename File or Folder</ModalHeader>
+                <ModalHeader toggle={props.toggle}>Upload file</ModalHeader>
                 <ModalBody>
                    
                         <div className="mb-3 col-sm-8">
-                            <label>Upload Attach Files </label>
+                            <label>Upload Files </label>
                             <Form onSubmit={FileUploadSubmit}>
                                 <div className="kb-file-upload">
 

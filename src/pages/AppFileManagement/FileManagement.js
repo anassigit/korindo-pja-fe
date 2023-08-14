@@ -85,6 +85,8 @@ const FileManagement = () => {
 
   const [typeRename, setTypeRename] = useState("")
 
+  const [idPathB, setIdPathB] = useState()
+
   useEffect(() => {
     //console.log(idChild)
   }, [idChild])
@@ -112,7 +114,6 @@ const FileManagement = () => {
 
   const toggleUploadModal = () => {
 
-    //console.log(idParent)
     setIdNowLoc(currFolder)
     setUploadModal(!uploadModal)
     setIdToggleUpload(idChild)
@@ -120,7 +121,8 @@ const FileManagement = () => {
 
   const toggleCreateModal = () => {
 
-    //console.log("togglecreate",idToggleCreate)
+    debugger
+
     setIdNowLoc(currFolder)
     setCreateModal(!createModal)
     setIdToggleCreate(idChild)
@@ -169,18 +171,15 @@ const FileManagement = () => {
 
 
     if (getFileSelect.status == "1") {
-      /* vvvvv salah disini tadi vvvvv */
 
       setFileManagementMsg("")
-
-      /* vvvvv jangan set child ID tiap status, ambil dari select, jgn lupa debug dlu vvvvv */
     }
 
   }, [getFileSelect])
 
 
   const getInsideFolder = (e, f) => {
-
+console.log("curr", currFolder)
     setCurrFolder(e)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
@@ -209,23 +208,17 @@ const FileManagement = () => {
     }
   }, [isYes, msgDeleteFile])
 
-  // const removeFolderFile = (e) => {
-  //   
-  //   let num = e
-  //   num.toString();
-  //   dispatch(deleteFileFolder(
-  //     {
-  //       'file_num': num
-  //     }
-  //   ))
-  // }
+  // const getIdPath = (idPath) => {
+  //   debugger
+    
+  //   console.log("nowbread", idPath )
 
-  const getIdPath = (idPath) => {
+  //   dispatch(getSelectFile({
+  //     'folder_num': idPath
+  //   }))
 
-    dispatch(getSelectFile({
-      'folder_num': idPath
-    }))
-  };
+
+  // };
 
   const downloadFolderFile = async (num, fileNm) => {
 
@@ -362,7 +355,8 @@ const FileManagement = () => {
                         return (
                           <span key={index}>
                             {index > 0 && <i className="mdi mdi-chevron-right" />}
-                            <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
+                            < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)}>{breadcrumb.name}</a>
+                            {/* <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a> */}
                           </span>
                         )
                       }
@@ -380,7 +374,8 @@ const FileManagement = () => {
                     myfiles.type === "FOLDER" ?
                       <Col xl={4} sm={6} key={key}>
                         <Card className="shadow-none border">
-                          <CardBody className="p-3" onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} style={{ cursor: "pointer" }}>
+                          <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => {getInsideFolder(myfiles.num, myfiles.parent_num)}}> 
+                          {/* onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} */}
                             <div >
                               <div className="float-end ms-2">
                                 <UncontrolledDropdown className="mb-2">
@@ -449,7 +444,7 @@ const FileManagement = () => {
                     myfiles.type === "FILE" ?
 
                       <Col xl={4} sm={6} key={key}>
-                        <Card className="shadow-none border" onClick={() => downloadFolderFile(myfiles.num, myfiles.name)} style={{ cursor: "pointer" }}>
+                        <Card className="shadow-none border">
                           <CardBody className="p-3">
                             <div >
                               <div className="float-end ms-2">

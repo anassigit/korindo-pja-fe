@@ -4,7 +4,6 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, La
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-//import { getSelectFile, deleteFileFolder, resetMessage } from "../../store/appFileManagement/actions"
 import MsgModal from 'components/Common/MsgModal';
 import { getSelectFile, resetMessage, renameFileFolder } from '../../store/appFileManagement/actions';
 
@@ -44,7 +43,6 @@ const Rename = (props) => {
 
         onSubmit: (value) => {
 
-            //var file_num = props.idToggle
             var file_ext = props.nmToggleExt
             var types_rename = props.typeRename
             if (types_rename === "FILE") {
@@ -75,6 +73,7 @@ const Rename = (props) => {
     const [renameContentModal, setRenameContentModal] = useState("")
 
     const toggleMsgModal = () => {
+        debugger
         setRenameMsgModal(!renameMsgModal)
         if (renameFFMsg.status === "1") {
 
@@ -87,15 +86,16 @@ const Rename = (props) => {
     }
 
     useEffect(() => {
+        debugger
         if (renameMsg.status === "1") {
             debugger
             setRenameFFMsg(renameMsg)
             renameFileFolderValidInput.resetForm();
-            //dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+
         }
         setRenameContentModal(renameMsg.message);
         setRenameSpinner(false);
-        //dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+
 
     }, [renameMsg]);
 
