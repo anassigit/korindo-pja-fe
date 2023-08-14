@@ -27,7 +27,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
-import { getSelectFile, deleteFileFolder, downloadFile, resetMessage, getSearch } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolde, resetMessage, getSearch } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -38,6 +38,7 @@ import Create from "./Create";
 import Move from "./Move";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import ConfirmModal from "components/Common/ConfirmModal";
+import { downloadFileFolder } from "helpers/backend_helper";
 
 
 
@@ -256,13 +257,14 @@ const FileManagement = () => {
 
   const downloadFolderFile = async (num, fileNm) => {
 
+    debugger
     try {
 
       var indexed_array = {
         "file_num": num,
         "file_nm": fileNm
       };
-      await dispatch(downloadFile(indexed_array));
+      await dispatch(downloadFileFolder(indexed_array));
     } catch (error) {
       console.log(error)
     }
