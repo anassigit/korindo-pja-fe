@@ -22,6 +22,9 @@ import {
   RESP_GET_GROUP_LIST,
   GET_RELATION_LIST,
   RESP_GET_RELATION_LIST,
+  SAVE_GROUP_MAPPING,
+  EDIT_GROUP_MAPPING,
+  DELETE_GROUP_MAPPING,
 
 } from "./actionTypes"
 
@@ -155,6 +158,20 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetRelationList: action.payload,
+      }
+
+    /* GROUP MAPPING */
+    case SAVE_GROUP_MAPPING:
+      return {
+        ...state,
+      }
+    case EDIT_GROUP_MAPPING:
+      return {
+        ...state,
+      }
+    case DELETE_GROUP_MAPPING:
+      return {
+        ...state,
       }
 
     default:

@@ -155,6 +155,12 @@ export const updateMembers = req => postWithParam("/rest/SettingRest/UpdateMembe
 
 export const deleteMembers = req => postWithParam("/rest/SettingRest/DeleteMember", req)
 
+export const saveGroupMapping = req => postWithParam("/rest/SettingRest/InsertRelation", req)
+
+export const updateGroupMapping = req => postWithParam("/rest/SettingRest/UpdateRelation", req)
+
+export const deleteGroupMapping = req => postWithParam("/rest/SettingRest/DeleteRelation", req)
+
 /* ATTACHMENTS */
 
 export const getAttachment = req => post("rest/InstructionRest/SelectAttachFileList", req)

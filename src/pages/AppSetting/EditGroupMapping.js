@@ -6,19 +6,19 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { getMembersData, getPermissionListData, getRankListData, resetMessage, saveGroupMapping } from 'store/appSetting/actions';
+import { editGroupMapping, getMembersData, getPermissionListData, getRankListData, resetMessage, saveGroupMapping } from 'store/appSetting/actions';
 import MsgModal2 from 'components/Common/MsgModal2';
 
-const AddGroupMapping = (props) => {
+const EditGroupMapping = (props) => {
     const dispatch = useDispatch();
-    const [addGroupMappingSpinner, setAddGroupMappingSpinner] = useState(false)
+    const [editGroupMappingSpinner, setEditGroupMappingSpinner] = useState(false)
 
     const [isClosed, setIsClosed] = useState(false)
 
-    const [addGroupMappingMsg, setAddGroupMappingMsg] = useState(false)
+    const [editGroupMappingMsg, setEditGroupMappingMsg] = useState(false)
 
-    const addGroupMappingMessage = useSelector(state => {
-        return state.settingReducer.msgAdd;
+    const editGroupMappingMessage = useSelector(state => {
+        return state.settingReducer.msgEdit;
     });
 
     const appMembersData = useSelector(state => {
@@ -33,10 +33,11 @@ const AddGroupMapping = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const addGroupMappingValidInput = useFormik({
+    const editGroupMappingValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
+            num: '',
             member_id: '',
             group_id: '',
         },
@@ -47,15 +48,11 @@ const AddGroupMapping = (props) => {
         }),
 
         onSubmit: (value) => {
-            setAddGroupMappingSpinner(true)
-            dispatch(saveGroupMapping(value));
+            setEditGroupMappingSpinner(true)
+            dispatch(editGroupMapping(value));
             toggleMsgModal()
         }
     })
-
-    useEffect(() => {
-        addGroupMappingValidInput.resetForm();
-    }, [props.toggle]);
 
     const memberOption = (appMembersData?.data?.memberList || []).map(({ id, index }) => ({
         value: id,
@@ -67,50 +64,74 @@ const AddGroupMapping = (props) => {
         label: name,
     }))
 
-    const [addGroupMappingMsgModal, setAddGroupMappingMsgModal] = useState(false)
-    const [addgroupmappingContentModal, setAddGroupMappingContentModal] = useState("")
+
+    useEffect(() => {
+        if (props.data) {
+            debugger
+            editGroupMappingValidInput.setFieldValue('num', props.data.num)
+            const filteredNameOption = memberOption.find(option => option.label === props.data.memberId);
+            const filteredGroupOption = groupOption.find(option => option.label === props.data.groupName);
+
+            if (filteredNameOption) {
+                editGroupMappingValidInput.setFieldValue('member_id', filteredNameOption.value);
+            }
+            if (filteredGroupOption) {
+                editGroupMappingValidInput.setFieldValue('group_id', filteredGroupOption.value);
+            }
+        }
+    }, [props.data]);
+
+    const [editGroupMappingMsgModal, setEditGroupMappingMsgModal] = useState(false)
+    const [editgroupmappingContentModal, setEditGroupMappingContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        setAddGroupMappingMsgModal(!addGroupMappingMsgModal)
-        if (addGroupMappingMsg.status === "1") {
+        setEditGroupMappingMsgModal(!editGroupMappingMsgModal)
+        if (editGroupMappingMsg.status === "1") {
             props.toggle()
-            setAddGroupMappingMsg('')
-            window.location.reload()
+            setEditGroupMappingMsg('')
         }
     }
 
     useEffect(() => {
-        if (addGroupMappingMessage.status == "1") {
-            setAddGroupMappingMsg(addGroupMappingMessage)
+        if (editGroupMappingMessage.status == "1") {
+            debugger
+            setEditGroupMappingMsg(editGroupMappingMessage)
         }
-        setAddGroupMappingContentModal(addGroupMappingMessage.message);
-        setAddGroupMappingSpinner(false)
-    }, [addGroupMappingMessage]);
+        setEditGroupMappingContentModal(editGroupMappingMessage.message);
+        setEditGroupMappingSpinner(false)
+    }, [editGroupMappingMessage])
+
+    useEffect(() => {
+        if (isClosed === true) {
+            window.location.reload()
+        }
+    }, [isClosed])
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
             <MsgModal2
-                modal={addGroupMappingMsgModal}
+                modal={editGroupMappingMsgModal}
                 toggle={toggleMsgModal}
-                message={addgroupmappingContentModal}
+                message={editgroupmappingContentModal}
                 setIsClosed={setIsClosed}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
-                addGroupMappingValidInput.handleSubmit();
+                editGroupMappingValidInput.handleSubmit();
                 return false
             }}>
-                <ModalHeader toggle={props.toggle}>Add Group Mapping</ModalHeader>
+                <ModalHeader toggle={props.toggle}>Edit Group Mapping</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
                             <Label>Name (Email) <span style={{ color: "red" }}>*</span></Label>
                             <Input
+                                disabled
                                 type="select"
                                 name="member_id"
-                                onChange={addGroupMappingValidInput.handleChange}
-                                value={addGroupMappingValidInput.values.member_id || ''}
+                                onChange={editGroupMappingValidInput.handleChange}
+                                value={editGroupMappingValidInput.values.member_id || ''}
                             >
                                 <option value="">Select Member</option>
                                 {memberOption.map((member) => (
@@ -126,8 +147,8 @@ const AddGroupMapping = (props) => {
                             <Input
                                 type="select"
                                 name="group_id"
-                                onChange={addGroupMappingValidInput.handleChange}
-                                value={addGroupMappingValidInput.values.group_id || ''}
+                                onChange={editGroupMappingValidInput.handleChange}
+                                value={editGroupMappingValidInput.values.group_id || ''}
                             >
                                 <option value="">Select Group</option>
                                 {groupOption.map((group) => (
@@ -141,10 +162,10 @@ const AddGroupMapping = (props) => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color={addGroupMappingSpinner ? "primary disabled" : "primary"}>
+                    <Button type="submit" color={editGroupMappingSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                         Save
-                        <Spinner style={{ display: addGroupMappingSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+                        <Spinner style={{ display: editGroupMappingSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
                         Close
@@ -155,9 +176,10 @@ const AddGroupMapping = (props) => {
     );
 };
 
-AddGroupMapping.propTypes = {
+EditGroupMapping.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
+    data: PropTypes.any,
 };
 
-export default AddGroupMapping;
+export default EditGroupMapping;

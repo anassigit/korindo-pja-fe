@@ -108,6 +108,7 @@ const EditMember = (props) => {
         debugger
         if (editMemberMsg.status === "1") {
             props.toggle()
+            setEditMemberMsg('')
         }
     }
 

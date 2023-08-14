@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all } from "redux-saga/effects"
 
-import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST } from "./actionTypes"
+import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING } from "./actionTypes"
 
 import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList } from "./actions"
 
-import { deleteMembers, getGroupList, getMembers, getPermissionList, getRankList, getRelationList, getSetting, saveMembers, updateGeneralSetting, updateMembers } from "helpers/backend_helper"
+import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getPermissionList, getRankList, getRelationList, getSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
 
 function* fetchGetAllSetting({ payload: req }) {
   try {
@@ -42,7 +42,6 @@ function* fetchEditMembers({ payload: req }) {
 
 function* fetchDeleteMembers({ payload: req }) {
   try {
-    debugger
     const response = yield call(deleteMembers, req)
     yield put(msgDelete(response))
   } catch (error) {
@@ -143,6 +142,37 @@ function* fetchGetAllRelationList({ payload: req }) {
   }
 }
 
+/* GROUP MAPPING */
+
+function* fetchSaveGroupMapping({ payload: req }) {
+  try {
+    const response = yield call(saveGroupMapping, req)
+    yield put(msgAdd(response))
+  } catch (error) {
+    console.log(error);
+    yield put(msgAdd({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchEditGroupMapping({ payload: req }) {
+  try {
+    const response = yield call(updateGroupMapping, req)
+    yield put(msgEdit(response))
+  } catch (error) {
+    console.log(error);
+    yield put(msgEdit({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchDeleteGroupMapping({ payload: req }) {
+  try {
+    const response = yield call(deleteGroupMapping, req)
+    yield put(msgDelete(response))
+  } catch (error) {
+    console.log(error);
+    yield put(msgDelete({ "status": 0, "data": "Error Delete Data" }))
+  }
+}
 
 function* settingSaga() {
 
@@ -151,14 +181,18 @@ function* settingSaga() {
   yield takeEvery(EDIT_MEMBERS, fetchEditMembers)
   yield takeEvery(DELETE_MEMBERS, fetchDeleteMembers)
   yield takeEvery(EDIT_GENERAL_SETTING, fetchEditGeneralSetting)
-
+  
   yield takeEvery(GET_MEMBERS, fetchGetAllMembers)
   yield takeEvery(GET_RANK_LIST, fetchGetAllRankList)
   yield takeEvery(GET_PERMISSION_LIST, fetchGetAllPermissionList)
-
+  
   yield takeEvery(GET_GROUP_LIST, fetchGetAllGroupList)
-
+  
   yield takeEvery(GET_RELATION_LIST, fetchGetAllRelationList)
+  yield takeEvery(SAVE_GROUP_MAPPING, fetchSaveGroupMapping)
+  yield takeEvery(EDIT_GROUP_MAPPING, fetchEditGroupMapping)
+  yield takeEvery(DELETE_GROUP_MAPPING, fetchDeleteGroupMapping)
+
 }
 
 export default settingSaga

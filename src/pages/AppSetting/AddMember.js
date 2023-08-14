@@ -94,6 +94,7 @@ const AddMember = (props) => {
         debugger
         if (addMemberMsg.status === "1") {
             props.toggle()
+            setAddMemberMsg('')
         }
     }
 

@@ -18,7 +18,7 @@ import Pagination from "react-js-pagination"
 
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { deleteMembers, editGeneralSetting, getGroupListData, getMembersData, getRankListData, getRelationListData, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
+import { deleteGroupMapping, deleteMembers, editGeneralSetting, getGroupListData, getMembersData, getRankListData, getRelationListData, getSettingData, msgEdit, resetMessage } from "store/appSetting/actions";
 import TableCustom2 from "common/TableCustom2";
 import MsgModal from "components/Common/MsgModal";
 import AddMember from "./AddMember";
@@ -27,6 +27,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import EditMember from "./EditMember";
 import ConfirmModal from "components/Common/ConfirmModal";
 import TableCustomNoPagination from "common/TableCustomNoPagination";
+import AddGroupMapping from "./AddGroupMapping";
+import EditGroupMapping from "./EditGroupMapping";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -35,7 +37,7 @@ const Setting = () => {
     const history = useHistory()
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
     let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
-    
+
 
     const dispatch = useDispatch();
     const [appSettingMsg, setAppSettingMsg] = useState("")
@@ -45,13 +47,18 @@ const Setting = () => {
 
     /* MODALS */
     const [confirmModal, setConfirmModal] = useState(false)
+    const [confirmModal2, setConfirmModal2] = useState(false)
     const [isYes, setIsYes] = useState(false)
+    const [isYes2, setIsYes2] = useState(false)
 
     const [generalMsgModal, setGeneralMsgModal] = useState(false)
     const [generalContentModal, setGeneralContentModal] = useState("")
 
     const [addMemberModal, setAddMemberModal] = useState(false)
     const [editMemberModal, setEditMemberModal] = useState(false)
+
+    const [addGroupMappingModal, setAddGroupMappingModal] = useState(false)
+    const [editGroupMappingModal, setEditGroupMappingModal] = useState(false)
 
     const appSettingData = useSelector(state => {
         return state.settingReducer.respGetSetting;
@@ -69,6 +76,10 @@ const Setting = () => {
         return state.settingReducer.respGetRelationList;
     });
 
+    const appDeleteMessage = useSelector(state => {
+        return state.settingReducer.msgDelete;
+    });
+
     const toggleMsgModal = () => {
         setGeneralMsgModal(!generalMsgModal)
     }
@@ -79,6 +90,14 @@ const Setting = () => {
 
     const toggleEditMemberModal = () => {
         setEditMemberModal(!editMemberModal)
+    }
+
+    const toggleAddGroupMappingModal = () => {
+        setAddGroupMappingModal(!addGroupMappingModal)
+    }
+
+    const toggleEditGroupMappingModal = () => {
+        setEditGroupMappingModal(!editGroupMappingModal)
     }
 
     /* ENDS OF MODAL */
@@ -188,55 +207,55 @@ const Setting = () => {
         },
     ]
 
-    const appGroupp01Tabel = [
-        {
-            dataField: "memberId",
-            text: "Name (Email)",
-            sort: true,
-            align: "left",
-            headerStyle: { textAlign: 'center' },
-            // formatter: (cellContent, data) => {
-            //     console.log(cellContent)
-            //     let cell = cellContent
-            //     return (
-            //         cell
-            //     )
+    // const appGroupp01Tabel = [
+    //     {
+    //         dataField: "memberId",
+    //         text: "Name (Email)",
+    //         sort: true,
+    //         align: "left",
+    //         headerStyle: { textAlign: 'center' },
+    //         // formatter: (cellContent, data) => {
+    //         //     console.log(cellContent)
+    //         //     let cell = cellContent
+    //         //     return (
+    //         //         cell
+    //         //     )
 
-            // }
-        },
-        {
-            dataField: "edit",
-            isDummyField: true,
-            text: "Edit",
-            headerStyle: { textAlign: 'center' },
-            formatter: (cellContent, data) => (
-                <>
-                    <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                        <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app008p01PreEdit(data)} />
-                        <UncontrolledTooltip placement="top" target="edittooltip">
-                            Ubah
-                        </UncontrolledTooltip>
-                    </div>
-                </>
-            ),
-        },
-        {
-            dataField: "delete",
-            isDummyField: true,
-            text: "Delete",
-            headerStyle: { textAlign: 'center' },
-            formatter: (cellContent, data) => (
-                <>
-                    <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-                        <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app008p01Delete(data)} />
-                        <UncontrolledTooltip placement="top" target="deletetooltip">
-                            Hapus
-                        </UncontrolledTooltip>
-                    </div>
-                </>
-            ),
-        },
-    ]
+    //         // }
+    //     },
+    //     {
+    //         dataField: "edit",
+    //         isDummyField: true,
+    //         text: "Edit",
+    //         headerStyle: { textAlign: 'center' },
+    //         formatter: (cellContent, data) => (
+    //             <>
+    //                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+    //                     <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app008p01PreEdit(data)} />
+    //                     <UncontrolledTooltip placement="top" target="edittooltip">
+    //                         Ubah
+    //                     </UncontrolledTooltip>
+    //                 </div>
+    //             </>
+    //         ),
+    //     },
+    //     {
+    //         dataField: "delete",
+    //         isDummyField: true,
+    //         text: "Delete",
+    //         headerStyle: { textAlign: 'center' },
+    //         formatter: (cellContent, data) => (
+    //             <>
+    //                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+    //                     <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app008p01Delete(data)} />
+    //                     <UncontrolledTooltip placement="top" target="deletetooltip">
+    //                         Hapus
+    //                     </UncontrolledTooltip>
+    //                 </div>
+    //             </>
+    //         ),
+    //     },
+    // ]
 
     const handleRadioChange1 = (event) => {
         setRadioValue1(event.target.value)
@@ -266,6 +285,11 @@ const Setting = () => {
     const appSettingPreEdit = (e) => {
         setSelectedMemberData(e)
         toggleEditMemberModal()
+    }
+
+    const appGroupMappingPreEdit = (e) => {
+        setSelectedMemberData(e)
+        toggleEditGroupMappingModal()
     }
 
     useEffect(() => {
@@ -305,9 +329,15 @@ const Setting = () => {
         setConfirmModal(!confirmModal)
     }
 
+    const confirmToggle2 = (val) => {
+        if (val) {
+            setSelectedMemberData(val)
+        }
+        setConfirmModal2(!confirmModal2)
+    }
+
     useEffect(() => {
         if (isYes === true) {
-            debugger
             let id = selectedMemberData?.id.toString()
             dispatch(deleteMembers({ id }))
             setAppMembersTabelSearch(
@@ -320,9 +350,18 @@ const Setting = () => {
         }
     }, [isYes])
 
-    // useEffect(() => {
-    //     const foundRelation = appRelationListData?.data?.relationList.find((e) => e.groupName === num.name)
-    // }, [appRelationListData])
+    useEffect(() => {
+        if (isYes2 === true) {
+            let num = selectedMemberData?.num.toString()
+            dispatch(deleteGroupMapping({ num }))
+        }
+    }, [isYes2])
+
+    useEffect(() => {
+        if (appDeleteMessage.status === '1') {
+            window.location.reload()
+        }
+    }, [appDeleteMessage])
 
     /* ENDED HERE */
 
@@ -330,11 +369,19 @@ const Setting = () => {
         <RootPageCustom msgStateGet={appSettingMsg} msgStateSet={setAppSettingMsg}
             componentJsx={
                 <>
+                    {/* DELETE MEMBER */}
                     <ConfirmModal
                         modal={confirmModal}
                         toggle={confirmToggle}
                         message={"Are you sure to delete this?"}
                         setIsYes={setIsYes}
+                    />
+                    {/* DELETE RELATION */}
+                    <ConfirmModal
+                        modal={confirmModal2}
+                        toggle={confirmToggle2}
+                        message={"Are you sure to delete this?"}
+                        setIsYes={setIsYes2}
                     />
                     <MsgModal
                         modal={generalMsgModal}
@@ -348,6 +395,15 @@ const Setting = () => {
                     <EditMember
                         modal={editMemberModal}
                         toggle={toggleEditMemberModal}
+                        data={selectedMemberData}
+                    />
+                    <AddGroupMapping
+                        modal={addGroupMappingModal}
+                        toggle={toggleAddGroupMappingModal}
+                    />
+                    <EditGroupMapping
+                        modal={editGroupMappingModal}
+                        toggle={toggleEditGroupMappingModal}
                         data={selectedMemberData}
                     />
 
@@ -506,7 +562,7 @@ const Setting = () => {
                                 <Row className="my-3 mt-5">
                                     <Col className="col-xl-9 d-flex justify-content-end">
                                         <div className="col-12 col-lg-3">
-                                            <button className="btn btn-primary w-100">
+                                            <button className="btn btn-primary w-100" onClick={toggleAddGroupMappingModal}>
                                                 <i className="fas fa-plus font-size-14"></i> Add Group Mapping
                                             </button>
                                         </div>
@@ -520,45 +576,55 @@ const Setting = () => {
 
                                     <CardBody>
                                         <Row className="mb-2">
-                                            {/* {appGroupListData && appGroupListData.data?.groupList ? (
-                                                appGroupListData.data.groupList.map((group) => (
-                                                    <React.Fragment key={group.id}>
-                                                        <Row className="mb-2">
-                                                            <h2><strong>{group.name}</strong></h2>
-                                                        </Row>
-                                                        <Row className="mb-2">
-                                                            <table>
-
-                                                            </table>
-                                                        </Row>
-                                                    </React.Fragment>
-                                                ))
-                                            ) : null} */}
 
                                             {appGroupListData && appGroupListData?.data?.groupList ? (
-                                                appGroupListData?.data?.groupList.map((num) => {
+                                                appGroupListData?.data?.groupList.map((item, index) => {
+                                                    // Filter the members based on groupName matching item.name
+                                                    const filteredMembers = appRelationListData?.data?.relationList.filter(
+                                                        (member) => member.groupName === item.name
+                                                    );
 
                                                     return (
-                                                        <React.Fragment key={num.id}>
-                                                            <Row className="mb-2">
-                                                                <h2><strong>{num.name}</strong></h2>
-                                                            </Row>
-                                                            <Row>
-                                                                <TableCustomNoPagination
-                                                                    keyField={"num"}
-                                                                    columns={appGroupp01Tabel}
-                                                                    redukResponse={appRelationListData}
-                                                                    appdata={appRelationListData?.data?.relationList != null ? appRelationListData?.data?.relationList : []}
-                                                                    appdataTotal={appRelationListData?.data?.relationList?.length != null ? appRelationListData?.data?.relationList : 0}
-                                                                    searchSet={setAppRelationTabelSearch}
-                                                                    searchGet={appRelationTabelSearch}
-                                                                    redukCall={getRelationListData}
-                                                                />
-                                                            </Row>
-                                                        </React.Fragment>
+                                                        <div className="table-responsive table-secondary" key={index}>
+                                                            <h2 className="pt-3"><strong>{item.name}</strong></h2>
+                                                            <table className="table table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th className="text-center" scope="col">Name (Email)</th>
+                                                                        <th className="text-center" scope="col">Edit</th>
+                                                                        <th className="text-center" scope="col">Delete</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {filteredMembers?.map((member) => (
+                                                                        <tr key={member.memberId}>
+                                                                            <td style={{ minWidth: "300px" }}>{member.memberId}</td>
+                                                                            <td>
+                                                                                <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+                                                                                    <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => appGroupMappingPreEdit(member)} />
+                                                                                    <UncontrolledTooltip placement="top" target="edittooltip">
+                                                                                        Edit
+                                                                                    </UncontrolledTooltip>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+                                                                                    <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => confirmToggle2(member)} />
+                                                                                    <UncontrolledTooltip placement="top" target="deletetooltip">
+                                                                                        Delete
+                                                                                    </UncontrolledTooltip>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     );
                                                 })
-                                            ) : null}
+                                            ) : (
+                                                <p>No group data available.</p>
+                                            )}
 
                                         </Row>
 

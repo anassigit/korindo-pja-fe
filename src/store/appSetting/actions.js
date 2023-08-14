@@ -22,6 +22,9 @@ import {
   RESP_GET_GROUP_LIST,
   GET_RELATION_LIST,
   RESP_GET_RELATION_LIST,
+  SAVE_GROUP_MAPPING,
+  EDIT_GROUP_MAPPING,
+  DELETE_GROUP_MAPPING,
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -138,4 +141,21 @@ export const getRelationListData = (req) => ({
 export const respGetRelationList = resp => ({
   type: RESP_GET_RELATION_LIST,
   payload: resp,
+})
+
+/* GROUP MAPPING */
+
+export const saveGroupMapping = (req) => ({
+  type: SAVE_GROUP_MAPPING,
+  payload: req,
+})
+
+export const editGroupMapping = (req) => ({
+  type: EDIT_GROUP_MAPPING,
+  payload: req,
+})
+
+export const deleteGroupMapping = (req) => ({
+  type: DELETE_GROUP_MAPPING,
+  payload: req,
 })
