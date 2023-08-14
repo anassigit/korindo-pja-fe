@@ -54,11 +54,6 @@ const EditGroupMapping = (props) => {
         }
     })
 
-    const memberOption = (appMembersData?.data?.memberList || []).map(({ id, index }) => ({
-        value: id,
-        label: id,
-    }))
-
     const groupOption = (appGroupListData?.data?.groupList || []).map(({ num, name }) => ({
         value: num,
         label: name,
@@ -69,12 +64,10 @@ const EditGroupMapping = (props) => {
         if (props.data) {
             debugger
             editGroupMappingValidInput.setFieldValue('num', props.data.num)
-            const filteredNameOption = memberOption.find(option => option.label === props.data.memberId);
+            editGroupMappingValidInput.setFieldValue('member_id', props.data.memberId);
+            
             const filteredGroupOption = groupOption.find(option => option.label === props.data.groupName);
-
-            if (filteredNameOption) {
-                editGroupMappingValidInput.setFieldValue('member_id', filteredNameOption.value);
-            }
+            
             if (filteredGroupOption) {
                 editGroupMappingValidInput.setFieldValue('group_id', filteredGroupOption.value);
             }
@@ -128,17 +121,11 @@ const EditGroupMapping = (props) => {
                             <Label>Name (Email) <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 disabled
-                                type="select"
+                                type="text"
                                 name="member_id"
                                 onChange={editGroupMappingValidInput.handleChange}
                                 value={editGroupMappingValidInput.values.member_id || ''}
                             >
-                                <option value="">Select Member</option>
-                                {memberOption.map((member) => (
-                                    <option key={member.value} value={member.value}>
-                                        {member.label}
-                                    </option>
-                                ))}
                             </Input>
                         </div>
 
