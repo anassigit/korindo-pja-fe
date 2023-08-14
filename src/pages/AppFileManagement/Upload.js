@@ -92,7 +92,7 @@ const Upload = (props) => {
     const [uploadContentModal, setUploadContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        debugger
+        // debugger
         setUploadMsgModal(!uploadMsgModal)
         if (uploadMsg.status === "1") {
 
@@ -110,7 +110,7 @@ const Upload = (props) => {
     useEffect(() => {
         if (uploadRespMsg.status === "1") {
 
-        debugger
+        // debugger
             setUploadMsg(uploadRespMsg);
 
         }
@@ -119,7 +119,7 @@ const Upload = (props) => {
     }, [uploadRespMsg]);
 
     const InputChange = (e) => {
-        debugger
+        // debugger
 
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {
@@ -185,7 +185,7 @@ const Upload = (props) => {
 
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
                 modal={uploadMsgModal}
                 toggle={toggleMsgModal}

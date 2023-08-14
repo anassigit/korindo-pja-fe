@@ -105,7 +105,7 @@ const EditMember = (props) => {
 
     const toggleMsgModal = () => {
         setEditMemberMsgModal(!editMemberMsgModal)
-        debugger
+        
         if (editMemberMsg.status === "1") {
             props.toggle()
             setEditMemberMsg('')
@@ -121,7 +121,7 @@ const EditMember = (props) => {
     }, [editMemberMessage]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
                 modal={editMemberMsgModal}
                 toggle={toggleMsgModal}

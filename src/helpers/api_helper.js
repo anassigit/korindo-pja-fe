@@ -210,9 +210,9 @@ export async function postDownloadXlsx(
       { ...config }
     )
     .then(response => {
-      debugger
+      // debugger
       if (response.status == 200) {
-        debugger
+        // debugger
         let res = response.data.data.download
         console.log(res)
         const contentType =
@@ -230,7 +230,7 @@ export async function postDownloadXlsx(
 
 
 const String64toBlob = (data, contentType = "", sliceSize = 512) => {
-  debugger
+  // debugger
   const byteCharacters = atob(data)
   const byteArrays = []
 

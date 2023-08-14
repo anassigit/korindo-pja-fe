@@ -15,7 +15,7 @@ const ConfirmModal = ( props ) => {
     };
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <ModalHeader toggle={props.toggle}>Confirmation Message</ModalHeader>
             <ModalBody>{props.message}</ModalBody>
             <ModalFooter>

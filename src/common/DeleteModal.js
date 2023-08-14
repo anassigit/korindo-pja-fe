@@ -4,7 +4,7 @@ import { Col, Modal, ModalBody, Row } from "reactstrap"
 
 const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
   return (
-    <Modal isOpen={show} toggle={onCloseClick} centered={true}>
+    <Modal isOpen={show} toggle={onCloseClick} centered={true} backdrop="static">
       <ModalBody className="py-3 px-3">
         <Row>
           <Col lg={12}>

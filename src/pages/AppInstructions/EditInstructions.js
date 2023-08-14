@@ -510,7 +510,7 @@ const EditInstructions = (props) => {
                 let a = SetFiles[index];
 
                 const result = (Object.values(Files).filter((data) => data.num !== FileNo));
-                debugger
+                // debugger
                 let temp = null
                 temp = removeFile
                 temp.push(FileNo)
@@ -1108,7 +1108,7 @@ const EditInstructions = (props) => {
     const [replyClicked, setReplyClicked] = useState(false)
 
     function insertReplyAndFiles(values) {
-        debugger
+        // debugger
 
         if (editInstructionsValidInput.values.content == '') {
             editInstructionsValidInput.setErrors({ content: "Please insert answer content" });
@@ -1146,7 +1146,7 @@ const EditInstructions = (props) => {
 
     const replyDelete = async (row) => {
 
-        debugger
+        // debugger
         if (isYes === true) {
 
             try {
@@ -1157,7 +1157,7 @@ const EditInstructions = (props) => {
 
                 // setEditInstructionsSpinner(true);
                 // setEditInstructionMsg("")
-                debugger
+                // debugger
                 const storedData = localStorage.getItem('appInstructionsData');
                 let parsedData = null
                 if (storedData) {
@@ -1320,7 +1320,7 @@ const EditInstructions = (props) => {
             }
         } else {
 
-            debugger
+            // debugger
 
             if (removeFile.length > 0) {
                 removeFile.forEach(files => {
@@ -1381,7 +1381,7 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         const replyDelete = async () => {
-            debugger
+            // debugger
 
             let row = replyRow
 
@@ -1437,7 +1437,7 @@ const EditInstructions = (props) => {
     }, [replyRow, isYes2])
 
     const handleChangeDate = val => {
-        debugger
+        // debugger
         if (val == "") {
             editInstructionsValidInput.setFieldValue("insDate", '')
         } else {
@@ -1451,7 +1451,7 @@ const EditInstructions = (props) => {
     }
 
     const handleDeleteAttachedReplyRow = async (fNum, fName) => {
-        debugger
+        // debugger
         let tempDeletedFiles = []
         tempAttachReply2.map((item, index) => {
             if (fNum != item.num) {

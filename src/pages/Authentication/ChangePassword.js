@@ -35,7 +35,7 @@ const ChangePassword = (props) => {
 
   useEffect(() => {
     if (props.userProfilePassword) {
-      debugger
+     
       userProfilePasswordValidation.resetForm()
       const u = JSON.parse(ReactSession.get("user"))
       u.id = userProfilePasswordValidation.values.id
@@ -77,13 +77,12 @@ const ChangePassword = (props) => {
 
   const updatePass = async () => {
     try {
-      // debugger
+  
       var map = {
         "currentPassword": userProfilePasswordValidation.values.currentPassword,
         "newPassword": userProfilePasswordValidation.values.newPassword
       };
-      // console.log('map : ', map)
-      // debugger
+
       setChangePasswordSpinner(true);
       await dispatch(updateUserPassword(map));
       history.push("/login");

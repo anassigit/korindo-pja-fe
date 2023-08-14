@@ -68,7 +68,7 @@ const Move = (props) => {
         }),
 
         onSubmit: (value) => {
-            debugger
+            // debugger
                 setMoveSpinner(true)
                 dispatch(moveFile(value));
                 toggleMsgModal()
@@ -81,7 +81,7 @@ const Move = (props) => {
     const [moveContentModal, setMoveContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        debugger
+        // debugger
         setMoveMsgModal(!moveMsgModal)
         if (moveMsg.status === "1") {
 
@@ -107,7 +107,7 @@ const Move = (props) => {
 
 
     const getInsideFolder = (e, f) => {
-        debugger
+        // debugger
 
         dispatch(getSelectFile({ 'folder_num': e }))
 
@@ -119,7 +119,7 @@ const Move = (props) => {
 
     return (
 
-        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog modal-xl">
+        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog modal-xl" backdrop="static">
 
                 <MsgModal
                 modal={moveMsgModal}

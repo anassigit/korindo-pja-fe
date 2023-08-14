@@ -36,7 +36,7 @@ const Create = (props) => {
         }),
 
         onSubmit: (value) => {
-            debugger
+            // debugger
             if (value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined){
 
                 value.parent_num = 0;
@@ -86,7 +86,7 @@ const Create = (props) => {
     }, [createRespMsg]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
                 modal={createMsgModal}
                 toggle={toggleMsgModal}

@@ -100,7 +100,7 @@ const UserProfile = () => {
 
   const updateHp = async () => {
     try {
-      debugger
+    
       var map = {
         "hp": appUserProfilepValidInput.values.hp
       };

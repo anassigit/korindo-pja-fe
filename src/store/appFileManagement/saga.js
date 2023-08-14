@@ -88,7 +88,7 @@ function* fetchGetSelectFolder({ payload: req }) {
 
   function* fetchDeleteFileFolder({ payload: req }) {
     try {
-      debugger
+      
       const response = yield call(deleteFileFolder, req)
       yield put(msgDelete(response))
     } catch (error) {
@@ -99,7 +99,7 @@ function* fetchGetSelectFolder({ payload: req }) {
 
   function* fetchRenameFileFolder({ payload: req }) {
     try {
-      debugger
+     
       const response = yield call(renameFileFolder, req)
       yield put(msgRename(response))
     } catch (error) {
@@ -110,7 +110,7 @@ function* fetchGetSelectFolder({ payload: req }) {
 
   function* fetchDownloadfiles({ payload: req }) {
     try {
-      debugger
+      
       yield call(downloadFileFolder, req)
     } catch (error) {
       yield put(msgDownload({ "status": 0, "message": "Error Download Data" }))
@@ -130,15 +130,6 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
-  // function* fetchUploadfiles({ payload: req }) {
-  //   try {
-  //     debugger
-  //     yield call(uploadFileFolder, req)
-  //   } catch (error) {
-  //     yield put(msgUpload({ "status": 0, "message": "Error Upload Data" }))
-  //   }
-  // }
-
   function* fetchMovefiles({ payload: req }) {
     try {
       const response = yield call(moveFileFolder, req)
@@ -152,18 +143,9 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
-  // function* fetchMovefiles({ payload: req }) {
-  //   try {
-  //     debugger
-  //     yield call(moveFileFolder, req)
-  //   } catch (error) {
-  //     yield put(msgMove({ "status": 0, "message": "Error Move Data" }))
-  //   }
-  // }
-
   function* fetchCretaeFolder({ payload: req }) {
     try {
-      debugger
+     
       const response = yield call(createFolder, req)
       yield put(msgCreate(response))
     } catch (error) {

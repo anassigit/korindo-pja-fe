@@ -4,7 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 
 const MsgModal = ({ modal, toggle, message }) => {
     return (
-        <Modal isOpen={modal} toggle={toggle}>
+        <Modal isOpen={modal} toggle={toggle} backdrop="static">
             <ModalHeader toggle={toggle}>Message</ModalHeader>
             <ModalBody>{message}</ModalBody>
             <ModalFooter>

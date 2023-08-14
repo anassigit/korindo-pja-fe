@@ -73,7 +73,7 @@ const Rename = (props) => {
     const [renameContentModal, setRenameContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        debugger
+        // debugger
         setRenameMsgModal(!renameMsgModal)
         if (renameFFMsg.status === "1") {
 
@@ -86,9 +86,9 @@ const Rename = (props) => {
     }
 
     useEffect(() => {
-        debugger
+        // debugger
         if (renameMsg.status === "1") {
-            debugger
+            // debugger
             setRenameFFMsg(renameMsg)
             renameFileFolderValidInput.resetForm();
 
@@ -100,7 +100,7 @@ const Rename = (props) => {
     }, [renameMsg]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} data-bs-backdrop="static" data-bs-keyboard="false">
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
                 modal={renameMsgModal}
                 toggle={toggleMsgModal}

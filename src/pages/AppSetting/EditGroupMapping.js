@@ -62,7 +62,7 @@ const EditGroupMapping = (props) => {
 
     useEffect(() => {
         if (props.data) {
-            debugger
+        
             editGroupMappingValidInput.setFieldValue('num', props.data.num)
             editGroupMappingValidInput.setFieldValue('member_id', props.data.memberId);
             
@@ -87,7 +87,7 @@ const EditGroupMapping = (props) => {
 
     useEffect(() => {
         if (editGroupMappingMessage.status == "1") {
-            debugger
+          
             setEditGroupMappingMsg(editGroupMappingMessage)
         }
         setEditGroupMappingContentModal(editGroupMappingMessage.message);

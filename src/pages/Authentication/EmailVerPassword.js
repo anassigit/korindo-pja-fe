@@ -50,7 +50,7 @@ const EmailVerPassword = props => {
   });
 
   useEffect(() => {
-    debugger
+   
     setAppUserProfileMsg(error)
   }, [error])
 

@@ -56,7 +56,7 @@ const AddMember = (props) => {
         }),
 
         onSubmit: (value) => {
-            debugger
+          
             setAddMemberSpinner(true)
             dispatch(saveMembers(value));
             toggleMsgModal()
@@ -91,7 +91,7 @@ const AddMember = (props) => {
 
     const toggleMsgModal = () => {
         setAddMemberMsgModal(!addMemberMsgModal)
-        debugger
+       
         if (addMemberMsg.status === "1") {
             props.toggle()
             setAddMemberMsg('')
@@ -100,7 +100,7 @@ const AddMember = (props) => {
 
     useEffect(() => {
         if (addMemberMessage.status == "1") {
-            debugger
+           
             setAddMemberMsg(addMemberMessage)
         }
         setAddMemberContentModal(addMemberMessage.message);

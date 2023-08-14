@@ -168,7 +168,7 @@ const AddInstructions = (props) => {
 
     useEffect(() => {
         if (appAddInstructionsMessage.status == "1") {
-            debugger
+            // debugger
             props.setAppInstructionsPage(true);
             props.setAppAddInstructions(false);
             dispatch(getInstructionsData(props.appInstructionsTabelSearch))
@@ -181,7 +181,7 @@ const AddInstructions = (props) => {
     const [Files, SetFiles] = useState([]);
 
     const InputChange = (e) => {
-        debugger
+        // debugger
 
         let images = [];
         for (let i = 0; i < e.target.files.length; i++) {

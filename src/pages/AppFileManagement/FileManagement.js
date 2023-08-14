@@ -354,16 +354,18 @@ const FileManagement = () => {
                             type="button"
                             className="btn btn-primary"
                           >
-                            <i className="mdi mdi-plus" style={{ verticalAlign: 'middle' }}></i>{' '}
+                            <i className="mdi mdi-plus fs-5" style={{ verticalAlign: 'middle' }}></i>{' '}
                             New
                           </button>
                         </DropdownToggle>
 
                         <DropdownMenu className="dropdown-menu-end">
                           <DropdownItem onClick={() => toggleCreateModal()}>
+                          {/* <i className="mdi mdi-folder-plus fs-4" />&nbsp; */}
                             Add New Folder
                           </DropdownItem>
                           <DropdownItem onClick={() => toggleUploadModal()}>
+                          {/* <i className="mdi mdi-folder-upload fs-4" />&nbsp; */}
                             Upload New File
                           </DropdownItem>
                         </DropdownMenu>
@@ -412,7 +414,7 @@ const FileManagement = () => {
                                       className="font-size-16 text-muted"
                                       tag="a"
                                     >
-                                      <i className="mdi mdi-dots-horizontal"></i>
+                                      <i className="mdi mdi-dots-vertical fs-3"></i>
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-menu-end">
                                       <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
@@ -483,7 +485,7 @@ const FileManagement = () => {
                                     className="font-size-16 text-muted"
                                     tag="a"
                                   >
-                                    <i className="mdi mdi-dots-horizontal" ></i>
+                                    <i className="mdi mdi-dots-vertical fs-3" ></i>
                                   </DropdownToggle>
 
                                   <DropdownMenu className="dropdown-menu-end">

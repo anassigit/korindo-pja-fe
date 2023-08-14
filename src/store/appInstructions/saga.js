@@ -253,7 +253,6 @@ function* fetchEditReply({ payload: req }) {
 
 function* fetchDownloadfiles({ payload: req }) {
   try {
-    debugger
     yield call(downloadFiles, req)
   } catch (error) {
     yield put(msgDownload({ "status": 0, "message": "Error Download Data" }))
