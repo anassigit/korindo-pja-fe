@@ -2,6 +2,8 @@ import {
 
     GET_SELECT,
     RESP_GET_SELECT,
+    SEARCH_FILE,
+    RESP_SEARCH_FILE,
     GET_SELECT_FILE,
     RESP_GET_SELECT_FILE,
     DELETE_FILE_FOLDER,
@@ -26,6 +28,7 @@ const INIT_STATE = {
 
     respGetSelect: {},
     respGetSelectFile: {},
+    respGetSearchFile: {},
     msgAdd: "",
     msgEdit: "",
     msgDelete: "",
@@ -50,6 +53,15 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetSelect: action.payload,
             }
+            case SEARCH_FILE:
+                return {
+                    ...state,
+                }
+            case RESP_SEARCH_FILE:
+                return {
+                    ...state,
+                    respGetSearchFile: action.payload,
+                }
         case GET_SELECT_FILE:
             return {
                 ...state,

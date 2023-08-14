@@ -10,6 +10,8 @@ import {
     UPLOAD_FILES,
     MOVE_FILES,
     CREATE_FOLDER,
+    SEARCH_FILE,
+    RESP_SEARCH_FILE,
     MSGCREATE,
     MSGDOWNLOAD,
     MSGUPLOAD,
@@ -29,6 +31,16 @@ export const getSelectFile = (req) => ({
   
   export const respGetSelect = resp => ({
     type: RESP_GET_SELECT,
+    payload: resp,
+  })
+
+  export const getSearch = (req) => ({
+    type: SEARCH_FILE,
+    payload: req,
+  })
+  
+  export const respSearchFile = resp => ({
+    type: RESP_SEARCH_FILE,
     payload: resp,
   })
 

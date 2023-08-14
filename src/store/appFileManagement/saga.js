@@ -9,7 +9,8 @@ import {
     DOWNLOAD_FILES,
     UPLOAD_FILES,
     MOVE_FILES,
-    CREATE_FOLDER
+    CREATE_FOLDER,
+    SEARCH_FILE,
 
 } from "./actionTypes"
 
@@ -17,6 +18,7 @@ import {
 
     respGetSelect,
     respGetSelectFile,
+    respSearchFile,
     msgAdd,
     msgEdit,
     msgDelete,
@@ -36,7 +38,8 @@ import {
     downloadFileFolder,
     uploadFileFolder,
     moveFileFolder,
-    createFolder
+    createFolder,
+    searchFile,
 
 } from "helpers/backend_helper"
 
@@ -51,6 +54,20 @@ function* fetchGetSelectFolder({ payload: req }) {
     } catch (error) {
       console.log(error);
       yield put(respGetSelect({ "status": 0, "message": "Error Get Data" }))
+    }
+  }
+
+  function* fetchGetSearchFile({ payload: req }) {
+    try {
+      const response = yield call(searchFile, req)
+      if (response.status == 1) {
+        yield put(respSearchFile(response))
+      } else {
+        yield put(respSearchFile(response))
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(respSearchFile({ "status": 0, "message": "Error Get Data" }))
     }
   }
 
@@ -165,6 +182,8 @@ function* fetchGetSelectFolder({ payload: req }) {
     yield takeEvery(UPLOAD_FILES, fetchUploadfiles)
     yield takeEvery(MOVE_FILES, fetchMovefiles)
     yield takeEvery(CREATE_FOLDER, fetchCretaeFolder)
+    yield takeEvery(SEARCH_FILE, fetchGetSearchFile)
+    
 
   }
 

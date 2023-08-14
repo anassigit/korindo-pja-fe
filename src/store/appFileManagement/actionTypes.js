@@ -8,6 +8,8 @@ export const DOWNLOAD_FILES = "DOWNLOAD_FILES"
 export const UPLOAD_FILES = "UPLOAD_FILES"
 export const MOVE_FILES = "MOVE_FILES"
 export const CREATE_FOLDER = "CREATE_FOLDER"
+export const SEARCH_FILE = "SEARCH_FILE"
+export const RESP_SEARCH_FILE = "RESP_SEARCH_FILE"
 
 
 export const MSGDOWNLOAD = "MSGDOWNLOAD"

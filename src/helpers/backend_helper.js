@@ -188,3 +188,5 @@ export const uploadFileFolder = req => postUpload("/rest/FileManagementRest/File
 export const moveFileFolder = req => postWithParam("/rest/FileManagementRest/Move", req)
 
 export const createFolder = req => postWithParam("/rest/FileManagementRest/CreateNewFolder", req)
+
+export const searchFile = req => postWithParam("/rest/FileManagementRest/Search", req)

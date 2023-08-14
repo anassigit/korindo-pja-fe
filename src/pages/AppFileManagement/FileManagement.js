@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react"
 import RootPageCustom from '../../common/RootPageCustom';
 import { useFormik, } from "formik";
-import PropTypes from 'prop-types';
+import PropTypes, { any } from 'prop-types';
 import * as Yup from "yup";
 import '../../config';
 import {
@@ -27,7 +27,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
-import { getSelectFile, deleteFileFolder, downloadFile, resetMessage } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolder, downloadFile, resetMessage, getSearch } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -157,16 +157,26 @@ const FileManagement = () => {
   useEffect(() => {
     dispatch(resetMessage());
     dispatch(getSelectFile())
+    dispatch(getSearch({
+      "search" : ""
+    }))
   }, [])
-
-  const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "name", order: "asc", search: { any: "" } });
 
 
   /* KUMPULAN USE SELECTOR */
-
-  const getFileSelect = useSelector(state => {
+  //const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "name", order: "asc", search: { any: "" } });
+  let getFileSelect = useSelector(state => {
     return state.fileManagementReducer.respGetSelect;
   })
+
+  const getSearchFile = useSelector(state => {
+    return state.fileManagementReducer.respSearchFile;
+  })
+
+  useEffect(() => {
+    getFileSelect = getSearchFile;
+  }, [getSearchFile])
+
 
   const msgDeleteFile = useSelector(state => {
     return state.fileManagementReducer.msgDelete;
@@ -180,10 +190,10 @@ const FileManagement = () => {
   useEffect(() => {
 
 
-    if (getFileSelect.status == "1") {
+    // if (getFileSelect.status == "1") {
 
-      setFileManagementMsg("")
-    }
+    //   setFileManagementMsg("")
+    // }
 
   }, [getFileSelect])
 
@@ -312,13 +322,9 @@ const FileManagement = () => {
                       <input
                         type="text"
                         className="form-control"
-                      // value={appInstructionsTabelSearch.search.search}
-                      // onChange={e => {
-                      //   setAppInstructionsTabelSearch({
-                      //     page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
-                      //     sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status }
-                      //   })
-                      // }}
+                        //value={appInstructionsTabelSearch.search.search}
+                        
+                          onBlur={() => dispatch(getSearch({"search": ""}))}
                       />
                     </div>
                   </Row>
@@ -375,67 +381,70 @@ const FileManagement = () => {
                 <p />
                 <p />
                 <Row>
-                  {getFileSelect?.data?.childList.map((myfiles, key) => (
-                    myfiles.type === "FOLDER" ?
-                      <Col xl={4} sm={6} key={key}>
-                        <Card className="shadow-none border">
-                          <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => {getInsideFolder(myfiles.num, myfiles.parent_num)}}> 
-                          {/* onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} */}
-                            <div >
-                              <div className="float-end ms-2">
-                                <UncontrolledDropdown className="mb-2">
-                                  <DropdownToggle
-                                    className="font-size-16 text-muted"
-                                    tag="a"
-                                  >
-                                    <i className="mdi mdi-dots-horizontal"></i>
-                                  </DropdownToggle>
-                                  <DropdownMenu className="dropdown-menu-end">
-                                    <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                      Rename
-                                    </DropdownItem>
-                                    <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                      Move
-                                    </DropdownItem>
-                                    {/* <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
-                                      Upload
-                                    </DropdownItem> */}
-                                    <div className="dropdown-divider"></div>
-                                    <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                      Remove
-                                    </DropdownItem>
-                                  </DropdownMenu>
-                                </UncontrolledDropdown>
-                              </div>
-                              <div className="avatar-xs me-3 mb-3">
-                                <div className="avatar-title bg-transparent rounded">
-                                  {myfiles.type === "FOLDER" ?
-                                    <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
-                                    :
-                                    <i className="fa fa-solid fa-file fs-3 align-baseline text-warning"></i>
-                                  }
+                  {
+                    // kalo search tidak null ? hasil API :
+                    getFileSelect?.data?.childList.map((myfiles, key) => (
+                      myfiles.type === "FOLDER" ?
+                        <Col xl={4} sm={6} key={key}>
+                          <Card className="shadow-none border">
+                            <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => {getInsideFolder(myfiles.num, myfiles.parent_num)}}> 
+                            {/* onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} */}
+                              <div >
+                                <div className="float-end ms-2">
+                                  <UncontrolledDropdown className="mb-2">
+                                    <DropdownToggle
+                                      className="font-size-16 text-muted"
+                                      tag="a"
+                                    >
+                                      <i className="mdi mdi-dots-horizontal"></i>
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-end">
+                                      <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                        Rename
+                                      </DropdownItem>
+                                      <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                        Move
+                                      </DropdownItem>
+                                      {/* <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
+                                        Upload
+                                      </DropdownItem> */}
+                                      <div className="dropdown-divider"></div>
+                                      <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                        Remove
+                                      </DropdownItem>
+                                    </DropdownMenu>
+                                  </UncontrolledDropdown>
+                                </div>
+                                <div className="avatar-xs me-3 mb-3">
+                                  <div className="avatar-title bg-transparent rounded">
+                                    {myfiles.type === "FOLDER" ?
+                                      <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
+                                      :
+                                      <i className="fa fa-solid fa-file fs-3 align-baseline text-warning"></i>
+                                    }
+                                  </div>
+                                </div>
+                                <div className="d-flex">
+                                  <div className="overflow-hidden me-auto">
+                                    <h5 className="font-size-14 text-truncate mb-1">
+                                      <a className="text-body fs-6 align-baseline">
+                                        {/* {myfiles.type === "FOLDER" ?
+                                          <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
+                                          :
+                                          <i className="bx bxs-file font-size-24 text-warning"></i>
+                                        }&nbsp; */}
+                                        {myfiles.name}&nbsp;
+                                      </a>
+                                    </h5>
+                                  </div>
                                 </div>
                               </div>
-                              <div className="d-flex">
-                                <div className="overflow-hidden me-auto">
-                                  <h5 className="font-size-14 text-truncate mb-1">
-                                    <a className="text-body fs-6 align-baseline">
-                                      {/* {myfiles.type === "FOLDER" ?
-                                        <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
-                                        :
-                                        <i className="bx bxs-file font-size-24 text-warning"></i>
-                                      }&nbsp; */}
-                                      {myfiles.name}&nbsp;
-                                    </a>
-                                  </h5>
-                                </div>
-                              </div>
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                      : ''
-                  ))}
+                            </CardBody>
+                          </Card>
+                        </Col>
+                        : ''
+                    )) 
+                  }
                 </Row>
 
 
