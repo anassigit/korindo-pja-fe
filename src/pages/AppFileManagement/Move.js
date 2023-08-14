@@ -19,38 +19,38 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-//import { getSelectFile, deleteFileFolder, resetMessage } from "../../store/appFileManagement/actions"
 import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, msgMove, getSelectFile, moveFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
 import { Link } from "react-router-dom"
 
 
-
-
 const Move = (props) => {
 
     const dispatch = useDispatch();
     const [moveSpinner, setMoveSpinner] = useState(false)
+    const [moveMsg, setMoveMsg] = useState(false)
 
     const [numF, setNumF] = useState(0)
     const [numP, setNumP] = useState(0)
 
 
-    useEffect(() => {
-        dispatch(resetMessage());
-        dispatch(getSelectFile())
-    }, [])
-
     const getFileSelect = useSelector(state => {
         return state.fileManagementReducer.respGetSelect;
     })
 
-    // useEffect(() =>{
-    //     valid.setFieldValue('file_numB', props.fNum)
-    //     valid.setFieldValue('parent_numB', props.pNum)
+    const moveRespMsg = useSelector(state => {
+        return state.fileManagementReducer.msgMove;
+      })
 
-    // }, [props.toggle])
+      
+    useEffect(() => {
+        dispatch(getSelectFile())
+    }, [])
+
+    useEffect(() => {
+        dispatch(resetMessage());
+    }, [dispatch])
 
 
     const valid = useFormik({
@@ -69,25 +69,41 @@ const Move = (props) => {
 
         onSubmit: (value) => {
             debugger
-            // let a = props.fNum
-            // let b = numF
-            // value.file_num = a
-            // value.parent_num = b
                 setMoveSpinner(true)
                 dispatch(moveFile(value));
-                //toggleMsgModal()
+                toggleMsgModal()
                
 
         }
     });
 
-    const getIdPath = (idPath) => {
-        debugger
-        dispatch(getSelectFile({
-            'folder_num': idPath
-        }))
-    };
+    const [moveMsgModal, setMoveMsgModal] = useState(false)
+    const [moveContentModal, setMoveContentModal] = useState("")
 
+    const toggleMsgModal = () => {
+        debugger
+        setMoveMsgModal(!moveMsgModal)
+        if (moveMsg.status === "1") {
+
+            props.toggle()
+
+            setMoveMsg("")
+
+            dispatch(getSelectFile({'folder_num': numF}))
+            //dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+            
+        } 
+    }
+
+    useEffect(() => {
+        if (moveRespMsg.status === "1") {
+
+            setMoveMsg(moveRespMsg);
+            //createFileFolderValidInput.resetForm();
+        }
+        setMoveContentModal(moveRespMsg.message)
+        setMoveSpinner(false)
+    }, [moveRespMsg]);
 
 
     const getInsideFolder = (e, f) => {
@@ -99,23 +115,25 @@ const Move = (props) => {
         setNumP(f)
     }
 
+
+
     return (
 
         <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog modal-xl">
 
-            {/* <MsgModal
-                modal={uploadMsgModal}
+                <MsgModal
+                modal={moveMsgModal}
                 toggle={toggleMsgModal}
-                message={uploadContentModal}
-           
-            /> */}
+                message={moveContentModal}
+                
+            />
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 valid.handleSubmit();
             }}>
                 <ModalHeader toggle={props.toggle}>Move File or Folder</ModalHeader>
                 <ModalBody>
-                <div className="mb-3 mx-3">
+                {/* <div className="mb-3 mx-3">
                             <Label>id file yang mau dipindah<span style={{ color: "red" }}>*</span></Label>
                             <Input type="text" value={props.fNum || ""} />
 
@@ -131,14 +149,14 @@ const Move = (props) => {
                             <Label>id folder yang dituju yang akan jadi parent baru <span style={{ color: "red" }}>*</span></Label>
                             <Input type="text"  value={numF || ""} />
 
-                        </div>
+                        </div> */}
                 <Row>
                   <div className="align-baseline fs-6">
                     <strong>
                       {getFileSelect?.data?.path.map((breadcrumb, index) => (
                         <span key={index}>
                           {index > 0 && <i className="mdi mdi-chevron-right" />}
-                          <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a>
+                          <a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}>{breadcrumb.name}</a>
                         </span>
                       ))}
                     </strong>
@@ -153,7 +171,8 @@ const Move = (props) => {
                             myfiles.type === "FOLDER" ?
                                 <Col xl={4} sm={6} key={key}>
                                     <Card className="shadow-none border">
-                                        <CardBody className="p-3">
+                                        <CardBody className="p-3" onDoubleClick={() => {getInsideFolder(myfiles.num, myfiles.parent_num)}} style={{ cursor: "pointer" }}>
+                                        
                                             <div >
 
                                                 <div className="avatar-xs me-3 mb-3">
@@ -168,7 +187,7 @@ const Move = (props) => {
                                                 <div className="d-flex">
                                                     <div className="overflow-hidden me-auto">
                                                         <h5 className="font-size-14 text-truncate mb-1">
-                                                            <a onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} className="text-body fs-6 align-baseline">
+                                                            <a className="text-body fs-6 align-baseline">
                                                                 {/* {myfiles.type === "FOLDER" ?
                                         <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
                                         :
@@ -282,5 +301,6 @@ Move.propTypes = {
     toggle: PropTypes.any,
     fNum: PropTypes.any,
     pNum: PropTypes.any,
+    idNowLoc: PropTypes.any,
 };
 export default Move

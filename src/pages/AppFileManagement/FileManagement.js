@@ -30,7 +30,6 @@ import { Link } from "react-router-dom"
 import { getSelectFile, deleteFileFolder, downloadFile, resetMessage } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
-//import FolderDetail from "./FolderDetail";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import axios from 'axios';
 import Rename from "./Rename";
@@ -67,8 +66,8 @@ const FileManagement = () => {
   const [moveModal, setMoveModal] = useState(false)
 
   const [confirmModalDelete, setConfirmModalDelete] = useState(false)
+  const [confirmModalDownload, setConfirmModalDownload] = useState(false)
   const [isYes, setIsYes] = useState(false)
-  const [isYesDownload, setIsYesDownload] = useState(false)
 
   const [idFolderTemp, setIdFolderTemp] = useState()
   const [idParentTemp, setIdParentTemp] = useState()
@@ -132,8 +131,18 @@ const FileManagement = () => {
 
     setFnum(Fid)
     setPnum(Pid)
+    setIdNowLoc(currFolder)
     setMoveModal(!moveModal)
 
+  }
+
+  const confirmToggleDownload = (e, typeFolder) => {
+
+    if (e) {
+      setTempIdDel(e)
+      setIsTypeFolder(typeFolder)
+    }
+    setConfirmModalDownload(!confirmModalDownload)
   }
 
   const confirmToggleDelete = (e, typeFolder) => {
@@ -150,7 +159,7 @@ const FileManagement = () => {
     dispatch(getSelectFile())
   }, [])
 
-  const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "num", order: "asc", search: { any: "" } });
+  const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "name", order: "asc", search: { any: "" } });
 
 
   /* KUMPULAN USE SELECTOR */
@@ -162,6 +171,7 @@ const FileManagement = () => {
   const msgDeleteFile = useSelector(state => {
     return state.fileManagementReducer.msgDelete;
   })
+
 
   const fileManagementCloseAlert = () => {
     setFileManagementMsg("")
@@ -179,7 +189,7 @@ const FileManagement = () => {
 
 
   const getInsideFolder = (e, f) => {
-console.log("curr", currFolder)
+  console.log("curr", currFolder)
     setCurrFolder(e)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
@@ -207,6 +217,8 @@ console.log("curr", currFolder)
       }
     }
   }, [isYes, msgDeleteFile])
+
+
 
   // const getIdPath = (idPath) => {
   //   debugger
@@ -290,13 +302,6 @@ console.log("curr", currFolder)
             setIsYes={setIsYes}
           />
 
-          {/* <ConfirmModal
-            modal={confirmModal}
-            toggle={confirmToggle}
-            message={"Are you sure to download this?"}
-            setIsYesDownload={setIsYesDownload}
-          /> */}
-
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
               <Col lg={12}>
@@ -355,7 +360,7 @@ console.log("curr", currFolder)
                         return (
                           <span key={index}>
                             {index > 0 && <i className="mdi mdi-chevron-right" />}
-                            < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)}>{breadcrumb.name}</a>
+                            < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}>{breadcrumb.name}</a>
                             {/* <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a> */}
                           </span>
                         )
