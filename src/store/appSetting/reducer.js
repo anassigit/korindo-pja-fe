@@ -25,6 +25,8 @@ import {
   SAVE_GROUP_MAPPING,
   EDIT_GROUP_MAPPING,
   DELETE_GROUP_MAPPING,
+  GET_MEMBERS_MAPPING,
+  RESP_GET_MEMBERS_MAPPING,
 
 } from "./actionTypes"
 
@@ -35,6 +37,7 @@ const INIT_STATE = {
   respGetPermissionList: {},
   respGetGroupList: {},
   respGetRelationList: {},
+  respGetMembersMapping: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -172,6 +175,16 @@ const settingReducer = (state = INIT_STATE, action) => {
     case DELETE_GROUP_MAPPING:
       return {
         ...state,
+      }
+
+    case GET_MEMBERS_MAPPING:
+      return {
+        ...state,
+      }
+    case RESP_GET_MEMBERS_MAPPING:
+      return {
+        ...state,
+        respGetMembersMapping: action.payload,
       }
 
     default:

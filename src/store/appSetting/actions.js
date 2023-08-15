@@ -25,6 +25,8 @@ import {
   SAVE_GROUP_MAPPING,
   EDIT_GROUP_MAPPING,
   DELETE_GROUP_MAPPING,
+  RESP_GET_MEMBERS_MAPPING,
+  GET_MEMBERS_MAPPING,
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -158,4 +160,14 @@ export const editGroupMapping = (req) => ({
 export const deleteGroupMapping = (req) => ({
   type: DELETE_GROUP_MAPPING,
   payload: req,
+})
+
+export const getMembersMapping = (req) => ({
+  type: GET_MEMBERS_MAPPING,
+  payload: req,
+})
+
+export const respGetMembersMapping = resp => ({
+  type: RESP_GET_MEMBERS_MAPPING,
+  payload: resp,
 })

@@ -1,8 +1,8 @@
 import { call, put, takeEvery, all } from "redux-saga/effects"
 
-import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING } from "./actionTypes"
+import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING, GET_MEMBERS_MAPPING } from "./actionTypes"
 
-import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList } from "./actions"
+import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping } from "./actions"
 
 import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getPermissionList, getRankList, getRelationList, getSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
 
@@ -174,6 +174,22 @@ function* fetchDeleteGroupMapping({ payload: req }) {
   }
 }
 
+
+function* fetchGetAllMembersMapping({ payload: req }) {
+  try {
+    const response = yield call(getMembers, req)
+    if (response.status == 1) {
+      yield put(respGetMembersMapping(response))
+    } else {
+      yield put(respGetMembersMapping(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetMembersMapping({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+
 function* settingSaga() {
 
   yield takeEvery(GET_SETTING, fetchGetAllSetting)
@@ -192,6 +208,7 @@ function* settingSaga() {
   yield takeEvery(SAVE_GROUP_MAPPING, fetchSaveGroupMapping)
   yield takeEvery(EDIT_GROUP_MAPPING, fetchEditGroupMapping)
   yield takeEvery(DELETE_GROUP_MAPPING, fetchDeleteGroupMapping)
+  yield takeEvery(GET_MEMBERS_MAPPING, fetchGetAllMembersMapping)
 
 }
 

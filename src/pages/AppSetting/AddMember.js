@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { getMembersData, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 
 const AddMember = (props) => {
     const dispatch = useDispatch();
@@ -95,6 +95,7 @@ const AddMember = (props) => {
         if (addMemberMsg.status === "1") {
             props.toggle()
             setAddMemberMsg('')
+            dispatch(getMembersData(props.appMembersTabelSearch))
         }
     }
 
@@ -223,6 +224,7 @@ const AddMember = (props) => {
 AddMember.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
+    appMembersTabelSearch: PropTypes.any,
 };
 
 export default AddMember;

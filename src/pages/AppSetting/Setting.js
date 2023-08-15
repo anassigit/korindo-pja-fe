@@ -391,6 +391,7 @@ const Setting = () => {
                     <AddMember
                         modal={addMemberModal}
                         toggle={toggleAddMemberModal}
+                        appMembersTabelSearch={appMembersTabelSearch}
                     />
                     <EditMember
                         modal={editMemberModal}
