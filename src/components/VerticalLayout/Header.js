@@ -28,9 +28,9 @@ import {
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 import languages from '../../common/languages';
 
-import us from '../../assets/images/flags/united-states-of-america.png'
-import id from '../../assets/images/flags/indonesia.png'
-import kr from '../../assets/images/flags/south-korea.png'
+// import us from '../../assets/images/flags/united-states-of-america.png'
+// import id from '../../assets/images/flags/indonesia.png'
+// import kr from '../../assets/images/flags/south-korea.png'
 
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 

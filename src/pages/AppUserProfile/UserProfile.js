@@ -24,9 +24,12 @@ import { editUserProfile, resetMessage, msgEdit, getProfile } from "../../store/
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import ChangePassword from "./ChangePassword";
+import { withTranslation } from "react-i18next"
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import PropTypes from "prop-types"
 
 
-const UserProfile = () => {
+const UserProfile = (props) => {
 
   let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
   const dispatch = useDispatch();
@@ -34,6 +37,7 @@ const UserProfile = () => {
   const [appUserProfileMsg, setAppUserProfileMsg] = useState("")
   const [userProfilePassword, setUserProfilePassword] = useState(false)
   const [userProfilePageData, setUserProfilePageData] = useState()
+  //const [ t ] = withTranslation();
 
   const [changePasswordMsg, setChangePasswordMsg] = useState("")
 
@@ -158,7 +162,7 @@ const UserProfile = () => {
             <Row>
               <Col lg={12}>
                 <Card>
-                  <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>Change profile</CardHeader>
+                  <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>{props.t("Change profile")}</CardHeader>
                   <CardBody>
                     <Form
                       onSubmit={(e) => {
@@ -294,4 +298,10 @@ const UserProfile = () => {
 
   );
 };
-export default UserProfile
+
+UserProfile.propTypes = {
+  location: PropTypes.object,
+  t: PropTypes.any
+}
+
+export default withTranslation()(UserProfile)
