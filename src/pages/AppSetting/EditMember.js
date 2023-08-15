@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { editMembers, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { editMembers, getMembersData, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 
 const EditMember = (props) => {
     const dispatch = useDispatch();
@@ -109,6 +109,7 @@ const EditMember = (props) => {
         if (editMemberMsg.status === "1") {
             props.toggle()
             setEditMemberMsg('')
+            dispatch(getMembersData(props.appMembersTabelSearch))
         }
     }
 
@@ -152,6 +153,7 @@ const EditMember = (props) => {
                         <div className="mb-3 mx-3">
                             <Label>Email <span style={{ color: "red" }}>*</span></Label>
                             <Input
+                                disabled
                                 type="email"
                                 name="id"
                                 onChange={editMemberValidInput.handleChange}
@@ -237,6 +239,7 @@ EditMember.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     data: PropTypes.any,
+    appMembersTabelSearch: PropTypes.any,
 };
 
 export default EditMember;

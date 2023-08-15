@@ -396,6 +396,7 @@ const Setting = () => {
                         modal={editMemberModal}
                         toggle={toggleEditMemberModal}
                         data={selectedMemberData}
+                        appMembersTabelSearch={appMembersTabelSearch}
                     />
                     <AddGroupMapping
                         modal={addGroupMappingModal}
