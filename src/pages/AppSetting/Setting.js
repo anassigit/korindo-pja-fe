@@ -29,10 +29,12 @@ import ConfirmModal from "components/Common/ConfirmModal";
 import TableCustomNoPagination from "common/TableCustomNoPagination";
 import AddGroupMapping from "./AddGroupMapping";
 import EditGroupMapping from "./EditGroupMapping";
+import PropTypes from "prop-types";
+import { withTranslation } from "react-i18next";
 
 const ITEMS_PER_PAGE = 10;
 
-const Setting = () => {
+const Setting = (props) => {
 
     const history = useHistory()
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
@@ -133,14 +135,14 @@ const Setting = () => {
     const appMembersp01Tabel = [
         {
             dataField: "name",
-            text: "Name",
+            text: props.t("Name"),
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "id",
-            text: "Email",
+            text: "ID (Email)",
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
@@ -154,21 +156,21 @@ const Setting = () => {
         },
         {
             dataField: "rname",
-            text: "Rank",
+            text: props.t("Rank"),
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "pname",
-            text: "Permission",
+            text: props.t("Permission"),
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "bgcolor",
-            text: "Background Color",
+            text: props.t("Background Color"),
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
@@ -176,14 +178,14 @@ const Setting = () => {
         {
             dataField: "edit",
             isDummyField: true,
-            text: "Edit",
+            text: props.t("Edit"),
             headerStyle: { textAlign: 'center' },
             formatter: (cellContent, data) => (
                 <>
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                         <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => appSettingPreEdit(data)} />
                         <UncontrolledTooltip placement="top" target="edittooltip">
-                            Edit
+                            {props.t("Edit")}
                         </UncontrolledTooltip>
                     </div>
                 </>
@@ -192,14 +194,14 @@ const Setting = () => {
         {
             dataField: "delete",
             isDummyField: true,
-            text: "Delete",
+            text: props.t("Delete"),
             headerStyle: { textAlign: 'center' },
             formatter: (cellContent, data) => (
                 <>
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                         <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => confirmToggle(data)} />
                         <UncontrolledTooltip placement="top" target="deletetooltip">
-                            Delete
+                            {props.t("Delete")}
                         </UncontrolledTooltip>
                     </div>
                 </>
@@ -414,7 +416,7 @@ const Setting = () => {
                             <Col>
                                 <Card>
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                                        <strong>General Settings</strong>
+                                        <strong>{props.t("General Settings")}</strong>
                                     </CardHeader>
 
                                     <CardBody>
@@ -422,7 +424,7 @@ const Setting = () => {
                                             <Row className="mb-2">
                                                 <Col md="12" lg="4" >
                                                     <Row className="mb-2">
-                                                        <b>Instruction Display Settings</b>
+                                                        <b>{props.t("Instruction Display Settings")}</b>
                                                     </Row>
                                                     <Row>
                                                         <label>
@@ -433,7 +435,7 @@ const Setting = () => {
                                                                 checked={radioValue1 === "0"}
                                                                 onChange={handleRadioChange1}
                                                             />
-                                                            <span> </span>Show Your Own Instruction
+                                                            <span> </span>{props.t("Show Your Own Instruction")}
                                                         </label>
                                                         <label>
                                                             <Input
@@ -443,13 +445,13 @@ const Setting = () => {
                                                                 checked={radioValue1 === "1"}
                                                                 onChange={handleRadioChange1}
                                                             />
-                                                            <span> </span>Show All Instruction
+                                                            <span> </span>{props.t("Show All Instruction")}
                                                         </label>
                                                     </Row>
                                                 </Col>
                                                 <Col md="12" lg="4">
                                                     <Row className="mb-2">
-                                                        <b>Notification Settings</b>
+                                                        <b>{props.t("Notification Settings")}</b>
                                                     </Row>
                                                     <Row>
                                                         <label>
@@ -460,7 +462,7 @@ const Setting = () => {
                                                                 checked={radioValue2 === "0"}
                                                                 onChange={handleRadioChange2}
                                                             />
-                                                            <span> </span>Send Notifications
+                                                            <span> </span>{props.t("Send Notifications")}
                                                         </label>
                                                         <label>
                                                             <Input
@@ -470,13 +472,13 @@ const Setting = () => {
                                                                 checked={radioValue2 === "1"}
                                                                 onChange={handleRadioChange2}
                                                             />
-                                                            <span> </span>Don&rsquo;t Send Notifications
+                                                            <span> </span>{props.t("Don't Send Notifications")}
                                                         </label>
                                                     </Row>
                                                 </Col>
                                                 <Col md="12" lg="4">
                                                     <Row className="mb-2">
-                                                        <b>Notification Settings 2</b>
+                                                    <b>{props.t("Notification Settings 2")}</b>
                                                     </Row>
                                                     <Row>
                                                         <label>
@@ -497,7 +499,7 @@ const Setting = () => {
                                                                 checked={radioValue3 === "1"}
                                                                 onChange={handleRadioChange3}
                                                             />
-                                                            <span> </span>Email
+                                                            <span> </span>{props.t("Email")}
                                                         </label>
                                                         <label>
                                                             <Input
@@ -507,7 +509,7 @@ const Setting = () => {
                                                                 checked={radioValue3 === "2"}
                                                                 onChange={handleRadioChange3}
                                                             />
-                                                            <span> </span>Both
+                                                            <span> </span>{props.t("Both")}
                                                         </label>
                                                     </Row>
                                                 </Col>
@@ -519,7 +521,7 @@ const Setting = () => {
                                                             className="btn btn-primary w-100"
                                                             onClick={handleSaveGeneral}
                                                         >
-                                                            Apply
+                                                            {props.t("Apply")}
                                                         </button>
                                                     </div>
                                                 </Col>
@@ -532,7 +534,7 @@ const Setting = () => {
                                     <Col className="d-flex justify-content-end">
                                         <div className="col-12 col-lg-2">
                                             <button className="btn btn-primary w-100" onClick={toggleAddMemberModal}>
-                                                <i className="fas fa-plus font-size-14  me-2"></i> Add Member
+                                                <i className="fas fa-plus font-size-14  me-2"></i> {props.t("Add Member")}
                                             </button>
                                         </div>
                                     </Col>
@@ -540,7 +542,7 @@ const Setting = () => {
 
                                 <Card>
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                                        <strong>Members</strong>
+                                        <strong>{props.t("Members")}</strong>
                                     </CardHeader>
 
                                     <CardBody>
@@ -565,7 +567,7 @@ const Setting = () => {
                                     <Col className="col-xl-9 d-flex justify-content-end">
                                         <div className="col-12 col-lg-3">
                                             <button className="btn btn-primary w-100" onClick={toggleAddGroupMappingModal}>
-                                                <i className="fas fa-plus font-size-14"></i> Add Group Mapping
+                                                <i className="fas fa-plus font-size-14"></i> {props.t("Add Group Mapping")}
                                             </button>
                                         </div>
                                     </Col>
@@ -573,7 +575,7 @@ const Setting = () => {
 
                                 <Card className="col-xl-9">
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                                        <strong>Group Mapping</strong>
+                                        <strong>{props.t("Group Mapping")}</strong>
                                     </CardHeader>
 
                                     <CardBody>
@@ -592,9 +594,9 @@ const Setting = () => {
                                                             <table className="table table-hover">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th className="text-center" scope="col">Name (Email)</th>
-                                                                        <th className="text-center" scope="col">Edit</th>
-                                                                        <th className="text-center" scope="col">Delete</th>
+                                                                        <th className="text-center" scope="col">{props.t("Name (Email)")}</th>
+                                                                        <th className="text-center" scope="col">{props.t("Edit")}</th>
+                                                                        <th className="text-center" scope="col">{props.t("Delete")}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -605,7 +607,7 @@ const Setting = () => {
                                                                                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                                                                                     <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => appGroupMappingPreEdit(member)} />
                                                                                     <UncontrolledTooltip placement="top" target="edittooltip">
-                                                                                        Edit
+                                                                                        {props.t("Edit")}
                                                                                     </UncontrolledTooltip>
                                                                                 </div>
                                                                             </td>
@@ -613,7 +615,7 @@ const Setting = () => {
                                                                                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                                                                                     <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => confirmToggle2(member)} />
                                                                                     <UncontrolledTooltip placement="top" target="deletetooltip">
-                                                                                        Delete
+                                                                                        {props.t("Delete")}
                                                                                     </UncontrolledTooltip>
                                                                                 </div>
                                                                             </td>
@@ -644,4 +646,9 @@ const Setting = () => {
 
 
 }
-export default Setting
+
+Setting.propTypes = {
+    location: PropTypes.object,
+    t: PropTypes.any
+}
+export default withTranslation()(Setting)

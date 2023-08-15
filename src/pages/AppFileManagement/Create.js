@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, createFolder, msgCreate, getSelectFile } from '../../store/appFileManagement/actions';
-
+import { withTranslation } from "react-i18next"
 
 const Create = (props) => {
 
@@ -97,12 +97,12 @@ const Create = (props) => {
                 e.preventDefault();
                 createFileFolderValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>Create File or Folder</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Create Folder")}</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>Create <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Input folder name")} <span style={{ color: "red" }}>*</span></Label>
                             <Input type="text" name="folder_name" onChange={createFileFolderValidInput.handleChange} value={createFileFolderValidInput.values.folder_name} />
                             {createFileFolderValidInput.errors.folder_name && createFileFolderValidInput.touched.folder_name && (
                                 <div style={{ color: 'red' }}>{createFileFolderValidInput.errors.folder_name}</div>
@@ -113,11 +113,11 @@ const Create = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={createSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        Save
+                        {props.t("Save")}
                         <Spinner style={{ display: createSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                        Close
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>
@@ -132,5 +132,7 @@ Create.propTypes = {
     toggle: PropTypes.any,
     idToggleCreate: PropTypes.any,
     idNowLoc: PropTypes.any,
+    location: PropTypes.object,
+    t: PropTypes.any
 };
-export default Create
+export default withTranslation()(Create)

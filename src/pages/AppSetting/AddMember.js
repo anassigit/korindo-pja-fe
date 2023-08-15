@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
 import { getMembersData, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { withTranslation } from "react-i18next"
 
 const AddMember = (props) => {
     const dispatch = useDispatch();
@@ -120,12 +121,12 @@ const AddMember = (props) => {
                 addMemberValidInput.handleSubmit();
                 return false
             }}>
-                <ModalHeader toggle={props.toggle}>Add New Member</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Add New Member")}</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>Name <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Name")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 type="text"
                                 name="name"
@@ -138,7 +139,7 @@ const AddMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>Email <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Email")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 type="email"
                                 name="id"
@@ -163,14 +164,14 @@ const AddMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>Rank</Label>
+                            <Label>{props.t("Rank")}</Label>
                             <Input
                                 type="select"
                                 name="rank"
                                 onChange={addMemberValidInput.handleChange}
                                 value={addMemberValidInput.values.rank || ''}
                             >
-                                <option value="">Select Rank</option>
+                                <option value="">{props.t("Select Rank")}</option>
                                 {rankOptions.map((rank) => (
                                     <option key={rank.value} value={rank.value}>
                                         {rank.label}
@@ -179,7 +180,7 @@ const AddMember = (props) => {
                             </Input>
                         </div>
                         <div className="mb-3 mx-3">
-                            <Label>Permission</Label>
+                            <Label>{props.t("Permission")}</Label>
                             <Input
                                 type="select"
                                 name="permission"
@@ -196,7 +197,7 @@ const AddMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3" hidden={addMemberValidInput?.values?.permission !== '2'}>
-                            <Label>Background Color</Label>
+                            <Label>{props.t("Background Color")}</Label>
                             <Input
                                 type="color"
                                 name="bgColor"
@@ -209,11 +210,11 @@ const AddMember = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={addMemberSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        Save
+                        {props.t("Save")}
                         <Spinner style={{ display: addMemberSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                        Close
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>
@@ -225,6 +226,8 @@ AddMember.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     appMembersTabelSearch: PropTypes.any,
+    location: PropTypes.object,
+    t: PropTypes.any
 };
 
-export default AddMember;
+export default withTranslation()(AddMember);

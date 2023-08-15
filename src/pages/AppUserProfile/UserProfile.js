@@ -25,7 +25,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import ChangePassword from "./ChangePassword";
 import { withTranslation } from "react-i18next"
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import PropTypes from "prop-types"
 
 
@@ -162,7 +161,7 @@ const UserProfile = (props) => {
             <Row>
               <Col lg={12}>
                 <Card>
-                  <CardHeader><i className="bx bxs-edit-alt font-size-18 align-middle me-2"></i>{props.t("Change profile")}</CardHeader>
+                  <CardHeader><i className="mdi mdi-account fs-5 align-middle me-2"></i>{props.t("Change profile")}</CardHeader>
                   <CardBody>
                     <Form
                       onSubmit={(e) => {
@@ -174,7 +173,7 @@ const UserProfile = (props) => {
                         <Row>
                           <Col md="5">
                             <div className="mb-3 col-sm-10">
-                              <Label>Name</Label>
+                              <Label>{props.t("Name")}</Label>
                               <Input
                                 name="name"
                                 type="text"
@@ -191,7 +190,7 @@ const UserProfile = (props) => {
                             </div>
 
                             <div className="mb-3 col-sm-10">
-                              <Label>Position</Label>
+                              <Label>{props.t("Position")}</Label>
                               <Input
                                 name="pname"
                                 type="text"
@@ -208,7 +207,7 @@ const UserProfile = (props) => {
                             </div>
 
                             <div className="mb-3 col-sm-10">
-                              <Label>Group</Label>
+                              <Label>{props.t("Group")}</Label>
                               <Input
                                 name="gname"
                                 type="text"
@@ -230,7 +229,7 @@ const UserProfile = (props) => {
                           <Col md="5">
 
                             <div className="mb-3 col-sm-8">
-                              <Label>HP<span style={{ color: "red" }}>* </span></Label>
+                              <Label>{props.t("HP")}<span style={{ color: "red" }}>* </span></Label>
                               <Input
                                 name="hp"
                                 type="text"
@@ -248,7 +247,7 @@ const UserProfile = (props) => {
                             </div>
 
                             <div className="mb-3 col-sm-8">
-                              <Label>ID</Label>
+                              <Label>{props.t("ID (Email)")}</Label>
                               <Input
                                 name="id"
                                 type="text"
@@ -265,16 +264,16 @@ const UserProfile = (props) => {
                             </div>
 
                             <div className="mb-3 col-sm-8">
-                              <Label>Password</Label>
+                              <Label>{props.t("Password")}</Label>
                               <Button onClick={() => { ChangePassPage() }} className="ms-5" style={{ background: "#7BAE40" }}>
-                                Change Password
+                              <i className="mdi mdi-lock fs-6 align-middle" />{" "}{props.t("Change Password")}
                               </Button>
                             </div>
-                            <span style={{ fontStyle: "italic" }}> * Please click button Change Password for change the password.</span>
+                            <span style={{ fontStyle: "italic" }}> {props.t("Please click button 'Change Password' for change the password")}</span>
                           </Col>
                         </Row>
                         <Button color="primary" className="ms-1" onClick={(e) => { updateHp() }}>
-                          SAVE
+                          <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
                         </Button>
                         <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />
                       </FormGroup>

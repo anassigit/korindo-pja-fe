@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
 import { getSelectFile, resetMessage, renameFileFolder } from '../../store/appFileManagement/actions';
-
+import { withTranslation } from "react-i18next"
 
 
 const Rename = (props) => {
@@ -112,12 +112,12 @@ const Rename = (props) => {
                 renameFileFolderValidInput.handleSubmit();
                 return false
             }}>
-                <ModalHeader toggle={props.toggle}>Rename File or Folder</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Rename File or Folder")}</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>Rename <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Rename")} <span style={{ color: "red" }}>*</span></Label>
                             <Input type="text" name="newName" onChange={renameFileFolderValidInput.handleChange} value={renameFileFolderValidInput.values.newName || ""} />
                             {renameFileFolderValidInput.errors.newName && renameFileFolderValidInput.touched.newName && (
                                 <div style={{ color: 'red' }}>{renameFileFolderValidInput.errors.newName}</div>
@@ -128,11 +128,11 @@ const Rename = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={renameSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        Save
+                        {props.t("Save")}
                         <Spinner style={{ display: renameSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                        Close
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>
@@ -150,5 +150,7 @@ Rename.propTypes = {
     nmToggleExt: PropTypes.any,
     typeRename: PropTypes.any,
     idNowLoc: PropTypes.any,
+    location: PropTypes.object,
+    t: PropTypes.any
 };
-export default Rename
+export default withTranslation()(Rename)

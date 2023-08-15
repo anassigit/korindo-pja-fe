@@ -39,10 +39,10 @@ import Move from "./Move";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import ConfirmModal from "components/Common/ConfirmModal";
 import { downloadFileFolder } from "helpers/backend_helper";
+import { withTranslation } from "react-i18next"
 
 
-
-const FileManagement = () => {
+const FileManagement = (props) => {
 
   //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
   let tempIndex = null
@@ -326,7 +326,7 @@ const FileManagement = () => {
           <ConfirmModal
             modal={confirmModalDelete}
             toggle={confirmToggleDelete}
-            message={"Are you sure to delete this?"}
+            message={props.t("Are you sure to delete this")}
             setIsYes={setIsYes}
           />
 
@@ -335,7 +335,7 @@ const FileManagement = () => {
               <Col lg={12}>
                 <Col md="4">
                   <Row className="mb-1 col-sm-10">
-                    <label className="col-sm-3" style={{ marginTop: "8px" }}>Search : </label>
+                    <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
                     <div className="col-sm-7">
                       <input
                         type="text"
@@ -355,18 +355,18 @@ const FileManagement = () => {
                             className="btn btn-primary"
                           >
                             <i className="mdi mdi-plus fs-5" style={{ verticalAlign: 'middle' }}></i>{' '}
-                            New
+                            {props.t("New")}
                           </button>
                         </DropdownToggle>
 
                         <DropdownMenu className="dropdown-menu-end">
                           <DropdownItem onClick={() => toggleCreateModal()}>
                           {/* <i className="mdi mdi-folder-plus fs-4" />&nbsp; */}
-                            Add New Folder
+                            {props.t("Add New Folder")}
                           </DropdownItem>
                           <DropdownItem onClick={() => toggleUploadModal()}>
                           {/* <i className="mdi mdi-folder-upload fs-4" />&nbsp; */}
-                            Upload New File
+                            {props.t("Upload New File")}
                           </DropdownItem>
                         </DropdownMenu>
                       </UncontrolledDropdown>
@@ -395,7 +395,7 @@ const FileManagement = () => {
                 </Row>
                 <p />
                 <p />
-                <Row><h6>FOLDERS</h6></Row>
+                <Row><h6>{props.t("Folders")}</h6></Row>
                 <p />
                 <p />
                 <Row>
@@ -418,17 +418,17 @@ const FileManagement = () => {
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-menu-end">
                                       <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                        Rename
+                                        {props.t("Rename")}
                                       </DropdownItem>
                                       <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                        Move
+                                        {props.t("Move")}
                                       </DropdownItem>
                                       {/* <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
                                         Upload
                                       </DropdownItem> */}
                                       <div className="dropdown-divider"></div>
                                       <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                        Remove
+                                        {props.t("Remove")}
                                       </DropdownItem>
                                     </DropdownMenu>
                                   </UncontrolledDropdown>
@@ -467,7 +467,7 @@ const FileManagement = () => {
 
 
                 <p />
-                <h6>FILES</h6>
+                <h6>{props.t("Files")}</h6>
                 <p />
                 <Row>
 
@@ -493,17 +493,17 @@ const FileManagement = () => {
                                       Open
                                     </DropdownItem> */}
                                     <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                      Rename
+                                      {props.t("Rename")}
                                     </DropdownItem>
                                     <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                      Move
+                                      {props.t("Move")}
                                     </DropdownItem>
                                     <DropdownItem onClick={() => downloadFolderFile(myfiles.num, myfiles.name)}>
-                                      Download
+                                      {props.t("Download")}
                                     </DropdownItem>
                                     <div className="dropdown-divider"></div>
                                     <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                      Remove
+                                      {props.t("Remove")}
                                     </DropdownItem>
                                   </DropdownMenu>
                                 </UncontrolledDropdown>
@@ -570,4 +570,8 @@ const FileManagement = () => {
 
   );
 };
-export default FileManagement
+FileManagement.propTypes = {
+  location: PropTypes.object,
+  t: PropTypes.any
+}
+export default withTranslation()(FileManagement)

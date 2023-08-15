@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, msgUpload, uploadFile, getSelectFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
-
+import { withTranslation } from "react-i18next"
 
 const Upload = (props) => {
 
@@ -196,11 +196,11 @@ const Upload = (props) => {
                 e.preventDefault();
                 uploadFileFolderValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>Upload file</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Upload New File")}</ModalHeader>
                 <ModalBody>
                    
                         <div className="mb-3 col-sm-8">
-                            <label>Upload Files </label>
+                            <label>{props.t("Choose files")} </label>
                             <Form onSubmit={FileUploadSubmit}>
                                 <div className="kb-file-upload">
 
@@ -237,11 +237,11 @@ const Upload = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={uploadSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        Save
+                        {props.t("Save")}
                         <Spinner style={{ display: uploadSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                        Close
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>
@@ -256,5 +256,7 @@ Upload.propTypes = {
     toggle: PropTypes.any,
     idToggleUpload: PropTypes.any,
     idNowLoc: PropTypes.any,
+    location: PropTypes.object,
+    t: PropTypes.any
 };
-export default Upload
+export default withTranslation()(Upload)

@@ -36,7 +36,7 @@ import RootPageCustom from "common/RootPageCustom";
 import ConfirmModal from "components/Common/ConfirmModal";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-
+import { withTranslation } from "react-i18next";
 
 
 const EditInstructions = (props) => {
@@ -1491,7 +1491,7 @@ const EditInstructions = (props) => {
                         <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit ? 'flex' : 'none' }}>
                             <Col lg={12}>
                                 <Card>
-                                    <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil font-size-18 align-middle me-2"></i>Edit Instructions</CardHeader>
+                                    <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>{props.t("Edit Instructions")}</CardHeader>
                                     <CardBody>
                                         <Form
                                             onSubmit={(e) => {
@@ -1522,7 +1522,7 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label>Title <span style={{ color: "red" }}>* </span></Label>
+                                                            <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                             <Input
                                                                 maxLength={400}
                                                                 name="title"
@@ -1542,7 +1542,7 @@ const EditInstructions = (props) => {
 
                                                         <div className="mb-3 col-sm-8">
                                                             <Label>
-                                                                Instruction Date{" "}
+                                                                {props.t("Instruction Date")}{" "}
                                                                 <span style={{ color: "red" }}>* </span>
                                                             </Label>
 
@@ -1572,7 +1572,7 @@ const EditInstructions = (props) => {
 
                                                         <div className="mb-3 col-sm-8">
                                                             <Label>
-                                                                Status <span style={{ color: "red" }}>*</span>
+                                                                {props.t("Status")} <span style={{ color: "red" }}>*</span>
                                                             </Label>
                                                             <Input
                                                                 name="status"
@@ -1605,7 +1605,7 @@ const EditInstructions = (props) => {
 
                                                         <div className="mb-3 col-sm-8">
                                                             <Label className="col-sm-5" style={{ marginTop: "15px" }}>
-                                                                Descriptions
+                                                                {props.t("Descriptions")}
                                                             </Label>
 
                                                             <Col>
@@ -1629,7 +1629,7 @@ const EditInstructions = (props) => {
 
                                                     <Col md="6">
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> Choose Owner </Label>
+                                                            <Label> {props.t("Choose Owners")} </Label>
                                                             <Select
                                                                 value={selectedMulti}
                                                                 isMulti={true}
@@ -1640,12 +1640,12 @@ const EditInstructions = (props) => {
                                                                 className="select2-selection"
                                                                 styles={colourStyles}
                                                                 components={{ DropdownIndicator }}
-                                                                placeholder={'Select or type...'}
+                                                                placeholder={props.t("Select or type")}
                                                             />
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <label>Choose Manager </label>
+                                                            <label>{props.t("Choose Managers")} </label>
                                                             <Select
                                                                 value={selectedMulti2}
                                                                 isMulti={true}
@@ -1657,12 +1657,12 @@ const EditInstructions = (props) => {
                                                                 className="select2-selection"
                                                                 styles={colourStyles2}
                                                                 components={{ DropdownIndicator }}
-                                                                placeholder={'Select or type...'}
+                                                                placeholder={props.t("Select or type")}
                                                             />
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <label>Attached Files </label>
+                                                            <label>{props.t("Attached Files")} </label>
 
                                                             <Form onSubmit={FileUploadSubmit}>
                                                                 <div className="kb-file-upload">
@@ -1695,7 +1695,7 @@ const EditInstructions = (props) => {
                                                             {Files.length > 0 ?
                                                                 <div className="kb-attach-box">
                                                                     <hr />
-                                                                    <h6>Recent files uploaded</h6>
+                                                                    <h6>{props.t("Recent files uploaded")}</h6>
                                                                     {
                                                                         Files.map((data, index) => {
                                                                             //const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
@@ -1725,21 +1725,21 @@ const EditInstructions = (props) => {
                                             <div className="text-sm-end col-10" >
 
                                                 <Button type="submit" color="primary">
-                                                    <i className="mdi mdi-check-circle align-middle me-2"></i>
-                                                    Update
+                                                    <i className="mdi mdi-check-circle fs-5 align-middle me-2"></i>
+                                                    {props.t("Update")}
                                                 </Button>&nbsp;
 
                                                 <Button color="danger" type="button" onClick={() => { confirmToggle() }}>
-                                                    <i className="mdi mdi-delete-forever align-middle me-2"></i>
-                                                    Delete
+                                                    <i className="mdi mdi-delete-forever fs-5 align-middle me-2"></i>
+                                                    {props.t("Delete")}
                                                 </Button>&nbsp;
                                                 <Button
                                                     type="button"
                                                     className="btn btn-danger "
                                                     onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                                 >
-                                                    <i className="bx bx-arrow-back align-middle me-2"></i>
-                                                    Back
+                                                    <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
+                                                    {props.t("Back")}
                                                 </Button>
                                             </div>
 
@@ -1754,7 +1754,7 @@ const EditInstructions = (props) => {
                         <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit ? 'none' : 'flex' }}>
                             <Col lg={12}>
                                 <Card>
-                                    <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="mdi mdi-file-document-box font-size-18 align-middle me-2"></i>Detail Instructions</CardHeader>
+                                    <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="mdi mdi-file-document fs-5 align-middle me-2"></i>{props.t("Detail Instructions")}</CardHeader>
                                     <CardBody>
                                         <Form
                                             onSubmit={(e) => {
@@ -1785,7 +1785,7 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label>Title <span style={{ color: "red" }}>* </span></Label>
+                                                            <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                             <Input
                                                                 disabled
                                                                 maxLength={50}
@@ -1805,7 +1805,7 @@ const EditInstructions = (props) => {
 
                                                         <div className="mb-3 col-sm-8">
                                                             <Label>
-                                                                Instruction Date{" "}
+                                                                {props.t("Instruction Date")}{" "}
                                                                 <span style={{ color: "red" }}>* </span>
                                                             </Label>
 
@@ -1849,7 +1849,7 @@ const EditInstructions = (props) => {
                                                         </div>
                                                         <div className="mb-3 col-sm-8">
                                                             <Label className="col-sm-5" style={{ marginTop: "15px" }}>
-                                                                Descriptions
+                                                                {props.t("Descriptions")}
                                                             </Label>
 
                                                             <Col>
@@ -1874,7 +1874,7 @@ const EditInstructions = (props) => {
 
                                                     <Col md="6">
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> Choose Owner </Label>
+                                                            <Label> {props.t("Choose Owners")} </Label>
 
                                                             <Select
                                                                 isDisabled
@@ -1892,7 +1892,7 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <label>Choose Manager </label>
+                                                            <label>{props.t("Choose Managers")} </label>
                                                             <Select
                                                                 isDisabled
                                                                 value={selectedMulti2}
@@ -1910,9 +1910,9 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <label>Attached Files </label>
+                                                            <label>{props.t("Attached Files")} </label>
 
-                                                            <Form onSubmit={FileUploadSubmit}>
+                                                            {/* <Form onSubmit={FileUploadSubmit}>
                                                                 <div className="kb-file-upload">
 
                                                                     <div className="file-upload-box">
@@ -1940,11 +1940,11 @@ const EditInstructions = (props) => {
                                                                     }
                                                                 </div>
 
-                                                            </Form>
+                                                            </Form> */}
                                                             {Files.length > 0 ?
                                                                 <div className="kb-attach-box">
-                                                                    <hr />
-                                                                    <h6>Recent files uploaded</h6>
+                                                                   
+                
                                                                     {
                                                                         Files.map((data, index) => {
                                                                             //const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;
@@ -1979,8 +1979,8 @@ const EditInstructions = (props) => {
                                                 className="btn btn-danger "
                                                 onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                             >
-                                                <i className="bx bx-arrow-back align-middle me-2"></i>{" "}
-                                                Back
+                                                <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
+                                                {props.t("Back")}
                                             </Button>
                                         </div>
 
@@ -1995,7 +1995,7 @@ const EditInstructions = (props) => {
                                     <a>
                                         <CardHeader onClick={() => setIsHiddenReply(!isHiddenReply)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "15px 15px 0 0" }}>
                                             <span style={{ flex: "1", textAlign: "left" }}>
-                                                <i className="mdi mdi-forum font-size-8 align-middle me-2"></i>Reply
+                                                <i className="mdi mdi-forum fs-5 align-middle me-2"></i>{props.t("Replies")}
                                             </span>
                                             {isHiddenReply ? (
                                                 <i className="bx bxs-down-arrow font-size-8 align-middle me-2"></i>
@@ -2014,13 +2014,13 @@ const EditInstructions = (props) => {
                                                             <Col sm="12">
                                                                 <div className="input-group">
                                                                     <div className="col-sm-12">
-                                                                        <label>Answer </label>
+                                                                        <label>{props.t("Answer")} </label>
                                                                         <Input
                                                                             style={{
                                                                                 minHeight: "10em",
                                                                             }}
                                                                             maxLength={400}
-                                                                            placeholder="Please Input Your Answer Here..."
+                                                                            placeholder={props.t("Please input your answer here")}
                                                                             name="content"
                                                                             type="textarea"
                                                                             onChange={editInstructionsValidInput.handleChange}
@@ -2041,7 +2041,7 @@ const EditInstructions = (props) => {
                                                         <Row className="mb-1">
                                                             <Col sm="12">
                                                                 <div className="mb-3 col-sm-12">
-                                                                    <label>Attached Files </label>
+                                                                    <label>{props.t("Attached Files")} </label>
 
                                                                     <Form onSubmit={FileUploadSubmitR}>
                                                                         <div className="kb-file-upload">
@@ -2085,7 +2085,7 @@ const EditInstructions = (props) => {
                                                                                 onClick={() => { insertReplyAndFiles() }}
                                                                             >
                                                                                 <i className="mdi mdi-send align-middle me-2" />
-                                                                                Reply
+                                                                                {props.t("Reply")}
                                                                             </Button>
 
                                                                         </div>
@@ -2364,6 +2364,8 @@ EditInstructions.propTypes = {
     setAppInstructionsPage: PropTypes.any,
     instructionsData: PropTypes.any,
     appInstructionsTabelSearch: PropTypes.any,
+    location: PropTypes.object,
+    t: PropTypes.any
 }
 
-export default EditInstructions
+export default withTranslation()(EditInstructions)

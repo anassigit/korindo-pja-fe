@@ -23,6 +23,7 @@ import { ReactSession } from 'react-client-session';
 import { updateUserPassword, editUserProfile } from "../../store/appUserProfile/actions"
 import { useHistory } from "react-router-dom";
 import RootPageCustom from '../../common/RootPageCustom';
+import { withTranslation } from "react-i18next"
 
 
 const ChangePassword = (props) => {
@@ -139,7 +140,7 @@ const ChangePassword = (props) => {
 
         <Row>
           <Card>
-            <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Change Password</CardHeader>
+            <CardHeader><i className="mdi mdi-lock fs-6 align-baseline" />{" "}{props.t("Change Password")}</CardHeader>
             <CardBody>
               <Form
                 onSubmit={(e) => {
@@ -154,7 +155,7 @@ const ChangePassword = (props) => {
                     <Input
                       name="currentPassword"
                       type="password"
-                      placeholder="Enter Current Password"
+                      placeholder={props.t("Enter current password")}
                       maxLength={50}
                       onChange={userProfilePasswordValidation.handleChange}
                       value={userProfilePasswordValidation.values.currentPassword || ""}
@@ -172,7 +173,7 @@ const ChangePassword = (props) => {
                     <Input
                       name="Password1"
                       type="password"
-                      placeholder="Enter New Password"
+                      placeholder={props.t("Enter new password")}
                       maxLength={50}
                       onChange={userProfilePasswordValidation.handleChange}
                       value={userProfilePasswordValidation.values.Password1 || ""}
@@ -189,7 +190,7 @@ const ChangePassword = (props) => {
                     <Input
                       name="newPassword"
                       type="password"
-                      placeholder="Confirm New Password"
+                      placeholder={props.t("Confirm new password")}
                       maxLength={50}
                       onChange={userProfilePasswordValidation.handleChange}
                       value={userProfilePasswordValidation.values.newPassword || ""}
@@ -204,15 +205,9 @@ const ChangePassword = (props) => {
 
                   <Button type="submit" color="primary" className="ms-1">
 
-                    Save
+                  <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
                     <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                   </Button>&nbsp;
-
-                  {/* <Button  color="primary" className="ms-1" onClick={() => { updatePass() }}>
-                   
-                    Simpan
-                    <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
-                  </Button>&nbsp; */}
 
                   <Button
                     type="button"
@@ -224,7 +219,7 @@ const ChangePassword = (props) => {
                     }}
                   >
 
-                    Back
+                <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}{props.t("Back")}
                   </Button>
                 </FormGroup>
 
@@ -245,7 +240,9 @@ ChangePassword.propTypes = {
   setUserProfilePassword: PropTypes.any,
   setUserProfilePage: PropTypes.any,
   setAppUserProfileMsg: PropTypes.any,
+  location: PropTypes.object,
+  t: PropTypes.any
 };
 
-export default ChangePassword
+export default withTranslation()(ChangePassword)
 

@@ -23,7 +23,7 @@ import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, msgMove, getSelectFile, moveFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
 import { Link } from "react-router-dom"
-
+import { withTranslation } from "react-i18next"
 
 const Move = (props) => {
 
@@ -131,7 +131,7 @@ const Move = (props) => {
                 e.preventDefault();
                 valid.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>Move File or Folder</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Move File or Folder")}</ModalHeader>
                 <ModalBody>
                 {/* <div className="mb-3 mx-3">
                             <Label>id file yang mau dipindah<span style={{ color: "red" }}>*</span></Label>
@@ -163,7 +163,7 @@ const Move = (props) => {
                   </div>
                 </Row>
                     <hr />
-                    <Row><h6>FOLDERS</h6></Row>
+                    <Row><h6>{props.t("Folders")}</h6></Row>
                     <p />
                     <p />
                     <Row>
@@ -208,7 +208,7 @@ const Move = (props) => {
 
 
                     <p />
-                    <h6>FILES</h6>
+                    <h6>{props.t("Files")}</h6>
                     <p />
                     <Row>
 
@@ -280,11 +280,11 @@ const Move = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={moveSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        Move
+                        {props.t("Move")}
                         <Spinner style={{ display: moveSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                        Close
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>
@@ -302,5 +302,7 @@ Move.propTypes = {
     fNum: PropTypes.any,
     pNum: PropTypes.any,
     idNowLoc: PropTypes.any,
+    location: PropTypes.object,
+    t: PropTypes.any
 };
-export default Move
+export default withTranslation()(Move)

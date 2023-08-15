@@ -25,6 +25,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { format } from 'date-fns';
 import Select, { components } from "react-select";
 import shortid from "shortid";
+import { withTranslation } from "react-i18next";
 
 const AddInstructions = (props) => {
 
@@ -429,7 +430,7 @@ const AddInstructions = (props) => {
             <Row>
                 <Col lg={12}>
                     <Card>
-                        <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Add Instructions</CardHeader>
+                        <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>{props.t("Add Instructions")}</CardHeader>
                         <CardBody>
                             <Form
                                 onSubmit={(e) => {
@@ -445,7 +446,7 @@ const AddInstructions = (props) => {
                                         <Col md="6">
 
                                             <div className="mb-3 col-sm-8">
-                                                <Label>Title <span style={{ color: "red" }}>* </span></Label>
+                                                <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     onKeyPress={noEnterAllowed}
                                                     maxLength={400}
@@ -464,7 +465,7 @@ const AddInstructions = (props) => {
 
                                             <div className="mb-3 col-sm-8">
                                                 <Label>
-                                                    Instruction Date{" "}
+                                                    {props.t("Instruction Date")}{" "}
                                                     <span style={{ color: "red" }}>* </span>
                                                 </Label>
 
@@ -483,7 +484,7 @@ const AddInstructions = (props) => {
                                             </div>
 
                                             <div className="mb-3 col-sm-8" style={{ display: "none" }}>
-                                                <Label> Status <span style={{ color: "red" }}>* </span></Label>
+                                                <Label> {props.t("Status")} <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
                                                     name="status"
@@ -497,7 +498,7 @@ const AddInstructions = (props) => {
                                                 >
                                                     <option></option>
 
-                                                    <option id="1">Not Started</option>
+                                                    <option id="1">{props.t("Not Started")}</option>
 
 
                                                 </Input>
@@ -507,7 +508,7 @@ const AddInstructions = (props) => {
                                             </div>
 
                                             <div className="mb-3 col-sm-8">
-                                                <Label className="col-sm-5" style={{ marginTop: "15px" }}>Descriptions </Label>
+                                                <Label className="col-sm-5" style={{ marginTop: "15px" }}>{props.t("Descriptions")} </Label>
                                                 <Input
                                                     name="description"
                                                     type="textarea"
@@ -536,7 +537,7 @@ const AddInstructions = (props) => {
 
                                         <Col md="6">
                                             <div className="mb-3 col-sm-8">
-                                                <Label> Choose Owners </Label>
+                                                <Label> {props.t("Choose Owners")} </Label>
                                                 <Select
                                                     isOptionDisabled={() => selectedMulti.length >= 1}
                                                     value={selectedMulti}
@@ -548,13 +549,13 @@ const AddInstructions = (props) => {
                                                     className="select2-selection"
                                                     styles={colourStyles}
                                                     components={{ DropdownIndicator }}
-                                                    placeholder={'Select or type...'}
+                                                    placeholder={props.t("Select or type")}
 
                                                 />
                                             </div>
 
                                             <div className="mb-3 col-sm-8">
-                                                <label>Choose Managers </label>
+                                                <label>{props.t("Choose Managers")} </label>
                                                 <Select
                                                     //id="user"
                                                     value={selectedMulti2}
@@ -566,13 +567,13 @@ const AddInstructions = (props) => {
                                                     className="select2-selection"
                                                     styles={colourStyles2}
                                                     components={{ DropdownIndicator }}
-                                                    placeholder={'Select or type...'}
+                                                    placeholder={props.t("Select or type")}
 
                                                 />
                                             </div>
 
                                             <div className="mb-3 col-sm-8">
-                                                <label>Upload Attach Files </label>
+                                                <label>{props.t("Upload Attach Files")} </label>
 
                                                 <Form onSubmit={FileUploadSubmit}>
                                                     <div className="kb-file-upload">
@@ -604,7 +605,7 @@ const AddInstructions = (props) => {
                                                     </div>
                                                     &nbsp;
                                                     <div className="kb-attach-box mb-3">
-                                                        <h6>Attach files preview:</h6>
+                                                        <h6>{props.t("Attach files preview")}</h6>
 
                                                         {
 
@@ -639,8 +640,8 @@ const AddInstructions = (props) => {
                                     <br></br>
                                     <div className="text-sm-end col-10" >
                                         <Button color="primary" className="ms-1" type="submit">
-                                            <i className="bx bxs-save align-middle me-2"></i>
-                                            Save
+                                        <i className="mdi mdi-check fs-5 align-middle" />{" "}
+                                            {props.t("Save")}
                                         </Button>&nbsp;
 
                                         <Button
@@ -650,8 +651,8 @@ const AddInstructions = (props) => {
                                                 props.setAppInstructionsPage(true); props.setAppAddInstructions(false); props.setAppInstructionsMsg("")
                                             }}
                                         >
-                                            <i className="bx bx-arrow-back align-middle me-2"></i>
-                                            Back
+                                            <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
+                                            {props.t("Back")}
                                         </Button>
                                     </div>
                                 </FormGroup>
@@ -674,6 +675,8 @@ AddInstructions.propTypes = {
     setAppInstructionsMsg: PropTypes.any,
     setAppInstructionsPage: PropTypes.any,
     appInstructionsTabelSearch: PropTypes.any,
+    location: PropTypes.object,
+    t: PropTypes.any
 
 }
-export default AddInstructions
+export default withTranslation()(AddInstructions)
