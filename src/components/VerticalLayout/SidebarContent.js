@@ -121,7 +121,7 @@ const SidebarContent = props => {
                 hidden={!getDetailProfile?.data?.admin}
               >
                 <i className="fas fa-cog"></i>
-                <span>{props.t("Setting")}</span>
+                <span>{props.t("Settings")}</span>
               </a>
             </li>
           </ul>

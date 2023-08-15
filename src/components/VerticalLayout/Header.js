@@ -25,7 +25,7 @@ import {
   toggleLeftmenu,
   changeSidebarType,
 } from "../../store/actions";
-
+import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 import languages from '../../common/languages';
 
 import us from '../../assets/images/flags/united-states-of-america.png'
@@ -248,8 +248,8 @@ const Header = props => {
                 </form>
               </div>
             </div>
-
-            <LanguageDropdown /> */}
+*/}
+            <LanguageDropdown /> 
 
             {/* <Dropdown
               className="d-none d-lg-inline-block ms-1"
@@ -311,7 +311,7 @@ const Header = props => {
               </DropdownMenu>
             </Dropdown> */}
 
-            <Dropdown
+            {/* <Dropdown
               isOpen={selectedLanguage}
               toggle={() => {
                 setSelectedLanguage(!selectedLanguage);
@@ -333,7 +333,7 @@ const Header = props => {
                 <Link to="/" className="dropdown-item"><img src={id} height="16" className="me-2" />
                   <span className="align-middle">Indonesia</span></Link>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
 
             {/* <div className="dropdown d-none d-lg-inline-block ms-1" >
               <button
