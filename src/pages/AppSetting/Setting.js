@@ -183,7 +183,7 @@ const Setting = () => {
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                         <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => appSettingPreEdit(data)} />
                         <UncontrolledTooltip placement="top" target="edittooltip">
-                            Ubah
+                            Edit
                         </UncontrolledTooltip>
                     </div>
                 </>
@@ -199,7 +199,7 @@ const Setting = () => {
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                         <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => confirmToggle(data)} />
                         <UncontrolledTooltip placement="top" target="deletetooltip">
-                            Hapus
+                            Delete
                         </UncontrolledTooltip>
                     </div>
                 </>
