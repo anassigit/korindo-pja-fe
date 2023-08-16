@@ -10,6 +10,8 @@ import { getMembersData, getPermissionListData, getRankListData, resetMessage } 
 import { withTranslation } from "react-i18next"
 
 const AddMember = (props) => {
+
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [addMemberSpinner, setAddMemberSpinner] = useState(false)
 
@@ -57,7 +59,7 @@ const AddMember = (props) => {
         }),
 
         onSubmit: (value) => {
-          
+
             setAddMemberSpinner(true)
             dispatch(saveMembers(value));
             toggleMsgModal()
@@ -66,7 +68,7 @@ const AddMember = (props) => {
 
     useEffect(() => {
         addMemberValidInput.resetForm();
-      }, [props.toggle]);
+    }, [props.toggle]);
 
     /* HP Validation */
     const handleKeyPress = (event) => {
@@ -77,14 +79,38 @@ const AddMember = (props) => {
         }
     }
 
-    const rankOptions = (appRankListData?.data?.rankList || []).map(({ num, name_eng }) => ({
+    /******* rank *******/
+
+    const rankOptionsEng = (appRankListData?.data?.rankList || []).map(({ num, name_eng }) => ({
         value: num,
         label: name_eng,
     }))
 
-    const permissionOptions = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
+    const rankOptionsIdr = (appRankListData?.data?.rankList || []).map(({ num, name_idr }) => ({
+        value: num,
+        label: name_idr,
+    }))
+
+    const rankOptionsKor = (appRankListData?.data?.rankList || []).map(({ num, name_kor }) => ({
+        value: num,
+        label: name_kor,
+    }))
+
+    /******* Permission *******/
+
+    const permissionOptionsEng = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
         value: num,
         label: name_eng,
+    }))
+
+    const permissionOptionsIdr = (appPermissionListData?.data?.permissionList || []).map(({ num, name_idr }) => ({
+        value: num,
+        label: name_idr,
+    }))
+
+    const permissionOptionsKor = (appPermissionListData?.data?.permissionList || []).map(({ num, name_kor }) => ({
+        value: num,
+        label: name_kor,
     }))
 
     const [addMemberMsgModal, setAddMemberMsgModal] = useState(false)
@@ -92,7 +118,7 @@ const AddMember = (props) => {
 
     const toggleMsgModal = () => {
         setAddMemberMsgModal(!addMemberMsgModal)
-       
+
         if (addMemberMsg.status === "1") {
             props.toggle()
             setAddMemberMsg('')
@@ -102,7 +128,7 @@ const AddMember = (props) => {
 
     useEffect(() => {
         if (addMemberMessage.status == "1") {
-           
+
             setAddMemberMsg(addMemberMessage)
         }
         setAddMemberContentModal(addMemberMessage.message);
@@ -172,11 +198,13 @@ const AddMember = (props) => {
                                 value={addMemberValidInput.values.rank || ''}
                             >
                                 <option value="">{props.t("Select Rank")}</option>
-                                {rankOptions.map((rank) => (
-                                    <option key={rank.value} value={rank.value}>
-                                        {rank.label}
-                                    </option>
-                                ))}
+                                {
+                                    (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).map((rank) => (
+                                        <option key={rank.value} value={rank.value}>
+                                            {rank.label}
+                                        </option>
+                                    ))
+                                }
                             </Input>
                         </div>
                         <div className="mb-3 mx-3">
@@ -187,12 +215,13 @@ const AddMember = (props) => {
                                 onChange={addMemberValidInput.handleChange}
                                 value={addMemberValidInput.values.permission || ''}
                             >
-                                <option value="">Select Permission</option>
-                                {permissionOptions.map((permission) => (
-                                    <option key={permission.value} value={permission.value}>
-                                        {permission.label}
-                                    </option>
-                                ))}
+                                <option value="">{props.t("Select Permission")}</option>
+                                {
+                                    (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).map((permission) => (
+                                        <option key={permission.value} value={permission.value}>
+                                            {permission.label}
+                                        </option>
+                                    ))}
                             </Input>
                         </div>
 

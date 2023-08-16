@@ -28,6 +28,7 @@ import PropTypes from "prop-types"
 
 const Instructions = (props) => {
 
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const history = useHistory()
     const [appInstructionsPage, setAppInstructionsPage] = useState(true)
@@ -55,9 +56,18 @@ const Instructions = (props) => {
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
-            search: "", langType: "eng", status: selected
+            search: "", langType: langType, status: selected
         }
     });
+
+    useEffect(() => {
+        setAppInstructionsTabelSearch({
+            page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset, sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
+                search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status
+            }
+        });
+    },[props.t, langType])
+
 
     const appInstructionsData = useSelector(state => {
         return state.instructionsReducer.respGetInstructions;

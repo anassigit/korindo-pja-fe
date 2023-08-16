@@ -42,6 +42,7 @@ import { withTranslation } from "react-i18next";
 const EditInstructions = (props) => {
 
 
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const history = useHistory()
     const dispatch = useDispatch();
 
@@ -154,47 +155,47 @@ const EditInstructions = (props) => {
         dispatch(getDetailInstruction({
             search: {
                 "num": num,
-                "langType": "eng"
+                "langType": langType
             }
         }))
         dispatch(getStatus({
             search: {
                 "num": num,
-                "langType": "eng"
+                "langType": langType
             }
 
         }))
         dispatch(getReply({
             search: {
                 "num": num,
-                "langType": "eng"
+                "langType": langType
             }
         }))
         dispatch(getManager({
             search: {
                 "num": num,
-                "langType": "eng"
+                "langType": langType
             }
 
         }))
         dispatch(getOwner({
             search: {
                 "num": num,
-                "langType": "eng"
+                "langType": langType
             }
 
         }))
         dispatch(getSelectedManager({
             search: {
                 "num": num,
-                "langType": "eng"
+                "langType": langType
             }
 
         }))
         dispatch(getAttachmentData({
             search: {
                 "instruction_num": num,
-                "langType": "eng"
+                "langType": langType
             }
 
         }))
@@ -206,6 +207,73 @@ const EditInstructions = (props) => {
         }))
 
     }, [])
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('appInstructionsData');
+        let parsedData = null
+
+        if (storedData) {
+            parsedData = JSON.parse(storedData);
+            setAppInstructionsData(parsedData);
+        }
+
+        let num = parsedData?.num.toString()
+        dispatch(getDetailInstruction({
+            search: {
+                "num": num,
+                "langType": langType
+            }
+        }))
+        dispatch(getStatus({
+            search: {
+                "num": num,
+                "langType": langType
+            }
+
+        }))
+        dispatch(getReply({
+            search: {
+                "num": num,
+                "langType": langType
+            }
+        }))
+        dispatch(getManager({
+            search: {
+                "num": num,
+                "langType": langType
+            }
+
+        }))
+        dispatch(getOwner({
+            search: {
+                "num": num,
+                "langType": langType
+            }
+
+        }))
+        dispatch(getSelectedManager({
+            search: {
+                "num": num,
+                "langType": langType
+            }
+
+        }))
+        dispatch(getAttachmentData({
+            search: {
+                "instruction_num": num,
+                "langType": langType
+            }
+
+        }))
+        dispatch(getLogs({
+            search: {
+                "num": num,
+            }
+
+        }))
+
+    }, [props.t, langType])
+
 
     useEffect(() => {
 
@@ -1091,7 +1159,7 @@ const EditInstructions = (props) => {
             dispatch(getReply({
                 search: {
                     "num": num,
-                    "langType": "eng"
+                    "langType": langType
                 }
             }))
             dispatch(getAttachmentData({
@@ -1172,7 +1240,7 @@ const EditInstructions = (props) => {
                     dispatch(getReply({
                         search: {
                             "num": num,
-                            "langType": "eng"
+                            "langType": langType
                         }
                     }))
                     dispatch(getAttachmentData({
@@ -1259,7 +1327,7 @@ const EditInstructions = (props) => {
             dispatch(getReply({
                 search: {
                     "num": num,
-                    "langType": "eng"
+                    "langType": langType
                 }
             }))
             // dispatch(getAttachmentData({
@@ -1407,7 +1475,7 @@ const EditInstructions = (props) => {
                         dispatch(getReply({
                             search: {
                                 "num": num,
-                                "langType": "eng"
+                                "langType": langType
                             }
                         }))
                         dispatch(getAttachmentData({
@@ -1943,8 +2011,8 @@ const EditInstructions = (props) => {
                                                             </Form> */}
                                                             {Files.length > 0 ?
                                                                 <div className="kb-attach-box">
-                                                                   
-                
+
+
                                                                     {
                                                                         Files.map((data, index) => {
                                                                             //const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;

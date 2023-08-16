@@ -11,6 +11,7 @@ import { withTranslation } from "react-i18next"
 const Create = (props) => {
 
     const dispatch = useDispatch();
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const [createSpinner, setCreateSpinner] = useState(false)
     const [createMsg, setCreateMsg] = useState(false)
 

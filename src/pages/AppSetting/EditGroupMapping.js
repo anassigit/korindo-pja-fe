@@ -8,8 +8,11 @@ import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
 import { editGroupMapping, getMembersData, getPermissionListData, getRankListData, resetMessage, saveGroupMapping } from 'store/appSetting/actions';
 import MsgModal2 from 'components/Common/MsgModal2';
+import { withTranslation } from "react-i18next"
 
 const EditGroupMapping = (props) => {
+    
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [editGroupMappingSpinner, setEditGroupMappingSpinner] = useState(false)
 
@@ -113,12 +116,12 @@ const EditGroupMapping = (props) => {
                 editGroupMappingValidInput.handleSubmit();
                 return false
             }}>
-                <ModalHeader toggle={props.toggle}>Edit Group Mapping</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Edit Group Mapping")}</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>Name (Email) <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Name (Email)")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 disabled
                                 type="text"
@@ -130,14 +133,14 @@ const EditGroupMapping = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>Group <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Group")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 type="select"
                                 name="group_id"
                                 onChange={editGroupMappingValidInput.handleChange}
                                 value={editGroupMappingValidInput.values.group_id || ''}
                             >
-                                <option value="">Select Group</option>
+                                <option value="">{props.t("Select Group")}</option>
                                 {groupOption.map((group) => (
                                     <option key={group.value} value={group.value}>
                                         {group.label}
@@ -167,6 +170,7 @@ EditGroupMapping.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     data: PropTypes.any,
+    t: PropTypes.any
 };
 
-export default EditGroupMapping;
+export default withTranslation()(EditGroupMapping);

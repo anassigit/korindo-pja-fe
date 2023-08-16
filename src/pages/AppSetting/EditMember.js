@@ -7,8 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
 import { editMembers, getMembersData, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { withTranslation } from "react-i18next"
 
 const EditMember = (props) => {
+
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [editMemberSpinner, setEditMemberSpinner] = useState(false)
 
@@ -69,8 +72,9 @@ const EditMember = (props) => {
             editMemberValidInput.setFieldValue('name', props.data.name);
             editMemberValidInput.setFieldValue('bgColor', props.data.bgcolor);
 
-            const filteredRankOption = rankOptions.find(option => option.label === props.data.rname);
-            const filteredPermissionOption = permissionOptions.find(option => option.label === props.data.pname);
+            debugger
+            const filteredRankOption = (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).find(option => option.label === props.data.rname);
+            const filteredPermissionOption = (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).find(option => option.label === props.data.pname);
 
             if (filteredRankOption) {
                 editMemberValidInput.setFieldValue('rank', filteredRankOption.value);
@@ -90,14 +94,38 @@ const EditMember = (props) => {
         }
     }
 
-    const rankOptions = (appRankListData?.data?.rankList || []).map(({ num, name_eng }) => ({
+    /******* rank *******/
+
+    const rankOptionsEng = (appRankListData?.data?.rankList || []).map(({ num, name_eng }) => ({
         value: num,
         label: name_eng,
     }))
 
-    const permissionOptions = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
+    const rankOptionsIdr = (appRankListData?.data?.rankList || []).map(({ num, name_idr }) => ({
+        value: num,
+        label: name_idr,
+    }))
+
+    const rankOptionsKor = (appRankListData?.data?.rankList || []).map(({ num, name_kor }) => ({
+        value: num,
+        label: name_kor,
+    }))
+
+    /******* Permission *******/
+
+    const permissionOptionsEng = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
         value: num,
         label: name_eng,
+    }))
+
+    const permissionOptionsIdr = (appPermissionListData?.data?.permissionList || []).map(({ num, name_idr }) => ({
+        value: num,
+        label: name_idr,
+    }))
+
+    const permissionOptionsKor = (appPermissionListData?.data?.permissionList || []).map(({ num, name_kor }) => ({
+        value: num,
+        label: name_kor,
     }))
 
     const [editMemberMsgModal, setEditMemberMsgModal] = useState(false)
@@ -105,7 +133,7 @@ const EditMember = (props) => {
 
     const toggleMsgModal = () => {
         setEditMemberMsgModal(!editMemberMsgModal)
-        
+
         if (editMemberMsg.status === "1") {
             props.toggle()
             setEditMemberMsg('')
@@ -184,12 +212,14 @@ const EditMember = (props) => {
                                 onChange={editMemberValidInput.handleChange}
                                 value={editMemberValidInput.values.rank}
                             >
-                                <option value="">Select Rank</option>
-                                {rankOptions.map((rank) => (
-                                    <option key={rank.value} value={rank.value}>
-                                        {rank.label}
-                                    </option>
-                                ))}
+                                <option value="">{props.t("Select Rank")}</option>
+                                {
+                                    (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).map((rank) => (
+                                        <option key={rank.value} value={rank.value}>
+                                            {rank.label}
+                                        </option>
+                                    ))
+                                }
                             </Input>
                         </div>
                         <div className="mb-3 mx-3">
@@ -200,12 +230,13 @@ const EditMember = (props) => {
                                 onChange={editMemberValidInput.handleChange}
                                 value={editMemberValidInput.values.permission}
                             >
-                                <option value="">Select Permission</option>
-                                {permissionOptions.map((permission) => (
-                                    <option key={permission.value} value={permission.value}>
-                                        {permission.label}
-                                    </option>
-                                ))}
+                                <option value="">{props.t("Select Permission")}</option>
+                                {
+                                    (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).map((permission) => (
+                                        <option key={permission.value} value={permission.value}>
+                                            {permission.label}
+                                        </option>
+                                    ))}
                             </Input>
                         </div>
 
@@ -240,6 +271,7 @@ EditMember.propTypes = {
     toggle: PropTypes.any,
     data: PropTypes.any,
     appMembersTabelSearch: PropTypes.any,
+    t: PropTypes.any
 };
 
-export default EditMember;
+export default withTranslation()(EditMember);

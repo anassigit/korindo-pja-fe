@@ -30,6 +30,7 @@ import PropTypes from "prop-types"
 
 const UserProfile = (props) => {
 
+  let langType = localStorage.getItem("I18N_LANGUAGE")
   let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
   const dispatch = useDispatch();
   const [userProfilePage, setUserProfilePage] = useState(true)
@@ -71,10 +72,18 @@ const UserProfile = (props) => {
   useEffect(() => {
     dispatch(getProfile({
       "search": {
-        "langType": "eng"
+        "langType": langType
       }
     }))
   }, [])
+
+  useEffect(() => {
+    dispatch(getProfile({
+      "search": {
+        "langType": langType
+      }
+    }))
+  }, [props.t, langType])
 
 
   //const u = JSON.parse(ReactSession.get("user") || null)
@@ -103,7 +112,7 @@ const UserProfile = (props) => {
 
   const updateHp = async () => {
     try {
-    
+
       var map = {
         "hp": appUserProfilepValidInput.values.hp
       };
@@ -148,7 +157,7 @@ const UserProfile = (props) => {
       event.preventDefault();
     }
   }
-  
+
   return (
     <RootPageCustom
       componentJsx={
@@ -266,7 +275,7 @@ const UserProfile = (props) => {
                             <div className="mb-3 col-sm-8">
                               <Label>{props.t("Password")}</Label>
                               <Button onClick={() => { ChangePassPage() }} className="ms-5" style={{ background: "#7BAE40" }}>
-                              <i className="mdi mdi-lock fs-6 align-middle" />{" "}{props.t("Change Password")}
+                                <i className="mdi mdi-lock fs-6 align-middle" />{" "}{props.t("Change Password")}
                               </Button>
                             </div>
                             <span style={{ fontStyle: "italic" }}> {props.t("Please click button 'Change Password' for change the password")}</span>

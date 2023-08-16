@@ -36,6 +36,7 @@ const ITEMS_PER_PAGE = 10;
 
 const Setting = (props) => {
 
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const history = useHistory()
     let memberId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
     let pId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).pname : "";
@@ -106,16 +107,9 @@ const Setting = (props) => {
 
     const [appMembersTabelSearch, setAppMembersTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
-            any: "", langType: "eng"
+            any: "", langType: langType
         }
     })
-
-    const [appRelationTabelSearch, setAppRelationTabelSearch] = useState({
-        page: 1, limit: 10, offset: 0, sort: "id", order: "desc", search: {
-            group: "", langType: "eng"
-        }
-    })
-
     useEffect(() => {
         dispatch(resetMessage());
     }, [dispatch])
@@ -125,6 +119,20 @@ const Setting = (props) => {
         dispatch(getSettingData(appMembersTabelSearch))
         dispatch(getRelationListData())
     }, [])
+
+
+    useEffect(() => {
+        setAppMembersTabelSearch({
+            page: appMembersTabelSearch.page, limit: appMembersTabelSearch.limit, offset: appMembersTabelSearch.offset, sort: appMembersTabelSearch.sort, order: appMembersTabelSearch.order, search: {
+                any: appMembersTabelSearch.search, langType: langType
+            }
+        })
+    }, [props.t, langType])
+
+    useEffect(() => {
+        dispatch(getSettingData(appMembersTabelSearch))
+    }, [appMembersTabelSearch])
+
 
     const [radioValue1, setRadioValue1] = useState("")
     const [radioValue2, setRadioValue2] = useState("")
@@ -478,7 +486,7 @@ const Setting = (props) => {
                                                 </Col>
                                                 <Col md="12" lg="4">
                                                     <Row className="mb-2">
-                                                    <b>{props.t("Notification Settings 2")}</b>
+                                                        <b>{props.t("Notification Settings 2")}</b>
                                                     </Row>
                                                     <Row>
                                                         <label>

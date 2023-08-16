@@ -23,15 +23,15 @@ const languages = {
   //   label: "Russian",
   //   flag: russia,
   // },
-  en: {
+  eng: {
     label: "English",
     flag: usFlag,
   },
-  id: {
+  idr: {
     label: "Indonesian",
     flag: indonesian,
   },
-  kr: {
+  kor: {
     label: "Korean",
     flag: southKorean,
   },

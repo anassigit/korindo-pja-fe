@@ -23,7 +23,6 @@ const LanguageDropdown = () => {
   }, [])
 
   const changeLanguageAction = lang => {
-    debugger
     //set language as i18n
     i18n.changeLanguage(lang);
     localStorage.setItem("I18N_LANGUAGE", lang);
