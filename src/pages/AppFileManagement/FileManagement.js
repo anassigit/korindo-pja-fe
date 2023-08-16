@@ -27,7 +27,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
-import { getSelectFile, deleteFileFolde, resetMessage, getSearch } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolder, resetMessage, getSearch } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
