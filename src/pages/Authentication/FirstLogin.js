@@ -22,9 +22,9 @@ import { loginUser, updateUserPassword } from "../../store/actions";
 import profile from "assets/images/profile-img.png";
 import logo from "assets/images/logotitle.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { withTranslation } from "react-i18next"
 
-
-const FirstLogin = () => {
+const FirstLogin = (props) => {
   const history = useHistory()
   const dispatch = useDispatch();
 
@@ -46,21 +46,21 @@ const FirstLogin = () => {
     },
 
     validationSchema: Yup.object().shape({
-      currentPassword: Yup.string().required("현재 비밀번호를 입력하세요."),
+      currentPassword: Yup.string().required(props.t("Please enter your current password")),
       password1: Yup.string()
-        .required("새로운 비밀번호를 입력하세요.")
-        .min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
+        .required(props.t("Enter your new password"))
+        .min(8, props.t('The password must be at least 8 characters long'))
         .test(
-          "has-at-least-two-different-characters",
-          "비밀번호는 적어도 두 가지 다른 문자를 포함해야 합니다.",
+          props.t("has-at-least-two-different-characters"),
+          props.t("The password must contain at least two different characters"),
           value => {
             const uniqueCharacters = new Set(value);
             return uniqueCharacters.size >= 2;
           }
         ),
       newPassword: Yup.string()
-        .required("새 비밀번호를 다시 입력하세요.")
-        .oneOf([Yup.ref('password1')], '비밀번호가 일치하지 않습니다.'),
+        .required(props.t("Enter your new password again"))
+        .oneOf([Yup.ref('password1')], props.t('The passwords does not match')),
     }),
 
     onSubmit: (values) => {
@@ -110,7 +110,7 @@ const FirstLogin = () => {
                 </div>
                 <CardBody className="pt-0">
                   <div className="pt-3 pb-2 text-center" style={{ fontSize: "18px" }}>
-                    보안상의 이유로 비밀번호를 변경하십시오
+                  {props.t("Change your password for security reasons")}
                   </div>
                   <div className="py-2">
                     <Form
@@ -128,7 +128,7 @@ const FirstLogin = () => {
                           name="currentPassword"
                           className="form-control"
                           type={showPassword ? 'text' : 'password'}
-                          placeholder="현재 비밀번호 입력"
+                          placeholder={props.t("Enter your current password")}
                           maxLength={50}
                           onChange={validation.handleChange}
                           value={validation.values.currentPassword || ''}
@@ -148,7 +148,7 @@ const FirstLogin = () => {
                           name="password1"
                           className="form-control"
                           type={showPassword ? 'text' : 'password'}
-                          placeholder="새로운 비밀번호 입력"
+                          placeholder={props.t("Enter a new password")}
                           maxLength={50}
                           onChange={validation.handleChange}
                           value={validation.values.password1 || ""}
@@ -166,7 +166,7 @@ const FirstLogin = () => {
                           name="newPassword"
                           value={validation.values.newPassword || ""}
                           type={showPassword ? 'text' : 'password'}
-                          placeholder="새 비밀번호를 다시 입력하세요"
+                          placeholder={props.t("Re-enter your new password")}
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           invalid={
@@ -182,14 +182,14 @@ const FirstLogin = () => {
                           type="checkbox"
                           onChange={togglePasswordVisibility}
                         />{' '}
-                        비밀번호 표시하기
+                        {props.t("Show password")}
                       </Label>
                       <div className="mt-2 d-grid">
                         <button
                           className="btn btn-success btn-block"
                           type="submit"
                         >
-                          확인
+                          {props.t("Confirm")}
                         </button>
                       </div>
 
@@ -205,4 +205,9 @@ const FirstLogin = () => {
   );
 };
 
-export default FirstLogin
+FirstLogin.propTypes = {
+  location: PropTypes.object,
+  t: PropTypes.any
+}
+
+export default withTranslation()(FirstLogin)

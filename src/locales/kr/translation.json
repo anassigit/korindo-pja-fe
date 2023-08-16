@@ -96,5 +96,17 @@
   "Send Notifications": "알림 보내기",
   "Don't Send Notifications": "알림 보내지 않기",
   "Notification Settings 2": "알림 보내기 대상",
-  "Both": "둘 다"
+  "Both": "둘 다",
+  "Please enter your current password": "현재 비밀번호를 입력하세요.",
+  "Enter your new password": "새로운 비밀번호를 입력하세요.",
+  "The password must be at least 8 characters long": "비밀번호는 최소 8자 이상이어야 합니다.",
+  "The password must contain at least two different characters": "비밀번호는 최소 두 가지 다른 문자를 포함해야 합니다.",
+  "Enter your new password again": "새로운 비밀번호를 다시 입력하세요.",
+  "The passwords do not match": "비밀번호가 일치하지 않습니다.",
+  "Change your password for security reasons": "보안을 위해 비밀번호를 변경하세요.",
+  "Enter your current password": "현재 비밀번호를 입력하세요.",
+  "Enter a new password": "새로운 비밀번호를 입력하세요.",
+  "Re-enter your new password": "새로운 비밀번호를 다시 입력하세요.",
+  "Show password": "비밀번호 보기",
+  "Confirm": "확인하다"
 }

@@ -96,5 +96,17 @@
     "Send Notifications": "Kirim pemberitahuan",
     "Don't Send Notifications": "Jangan kirim pemberitahuan",
     "Notification Settings 2": "Kirim pemberitahuan ke",
-    "Both": "Keduanya"
+    "Both": "Keduanya",
+    "Please enter your current password": "Masukkan kata sandi saat ini",
+    "Enter your new password": "Masukkan kata sandi baru",
+    "The password must be at least 8 characters long": "Kata sandi harus minimal 8 karakter",
+    "The password must contain at least two different characters": "Kata sandi harus memiliki setidaknya 2 karakter berbeda",
+    "Enter your new password again": "Masukkan ulang kata sandi baru",
+    "The passwords do not match": "Kata sandi tidak sama",
+    "Change your password for security reasons": "Ubah kata sandi untuk kemanan",
+    "Enter your current password": "Masukkan kata sandi saat ini",
+    "Enter a new password": "Masukkan kata sandi baru",
+    "Re-enter your new password": "Masukkan kembali kata sandi baru",
+    "Show password": "Tampilkan kata sandi",
+    "Confirm": "Konfirmasi"
 }
