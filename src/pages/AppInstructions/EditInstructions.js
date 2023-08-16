@@ -2240,7 +2240,7 @@ const EditInstructions = (props) => {
                                                                             </Row>
                                                                             <div className="reply-history d-flex align-items-start">
                                                                                 <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                <i>{row.write_time}</i>&nbsp; by {row.name}
+                                                                                <i>{row.write_time}</i>&nbsp; {props.t("by")} {row.name}
                                                                             </div>
                                                                         </div>
                                                                         <div className="reply-actions" style={{ width: "7%", display: "flex", justifyContent: "end" }}>

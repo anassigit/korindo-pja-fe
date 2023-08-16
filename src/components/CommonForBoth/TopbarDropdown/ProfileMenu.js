@@ -69,12 +69,12 @@ const ProfileMenu = props => {
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <Link to="/AppUserProfile" className="dropdown-item">
-            <i className="bx bx-lock-open font-size-16 align-middle me-1"/>
+            <i className="mdi mdi-account-box fs-4 align-middle me-1"/>
             <span>{props.t("Profile")}</span>
           </Link>
           <div className="dropdown-divider"/>
           <Link to="/logout" className="dropdown-item">
-            <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger"/>
+            <i className="mdi mdi-power fs-4 align-middle me-1 text-danger"/>
             <span>{props.t("Log Out")}</span>
           </Link>
         </DropdownMenu>
