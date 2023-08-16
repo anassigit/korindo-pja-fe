@@ -446,11 +446,11 @@ const FileManagement = (props) => {
                                 </div>
                                 <div className="d-flex flex-row bd-highlight mb-1">
                                   <div className="overflow-hidden me-auto">
-                                    <h5 className="text-truncate mb-1">
+                                    <div className="text-truncate mb-1">
                                       <a className="text-body fs-6 align-baseline">
                                         {myfiles.name}
                                       </a>
-                                    </h5>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -538,11 +538,11 @@ const FileManagement = (props) => {
                               </div>
                               <div className="d-flex">
                                 <div className="overflow-hidden me-auto">
-                                  <h5 className="fs-6 text-truncate mb-1">
+                                  <div className="fs-6 text-truncate mb-1">
                                     <Link to="#" className="text-body">
                                       &nbsp;{myfiles.name}&nbsp;
                                     </Link>
-                                  </h5>
+                                  </div>
                                 </div>
                               </div>
                             </div>

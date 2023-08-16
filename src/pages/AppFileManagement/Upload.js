@@ -199,7 +199,7 @@ const Upload = (props) => {
                 <ModalHeader toggle={props.toggle}>{props.t("Upload New File")}</ModalHeader>
                 <ModalBody>
                    
-                        <div className="mb-3 col-sm-8">
+                        <div className="mb-3">
                             <label>{props.t("Choose files")} </label>
                             <Form onSubmit={FileUploadSubmit}>
                                 <div className="kb-file-upload">
@@ -215,7 +215,7 @@ const Upload = (props) => {
                                             const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                             return (
                                                 <div className="file-atc-box" key={id}>
-                                                    <div className="file-detail">
+                                                    <div className="file-detail text-wrap">
                                                         <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                         &nbsp;&nbsp;&nbsp;
 
