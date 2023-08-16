@@ -25,6 +25,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { withTranslation } from "react-i18next"
 
 const FirstLogin = (props) => {
+  console.log(props.t("Enter your new password"))
   const history = useHistory()
   const dispatch = useDispatch();
 
