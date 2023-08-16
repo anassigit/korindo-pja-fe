@@ -156,7 +156,7 @@ const Move = (props) => {
                       {getFileSelect?.data?.path.map((breadcrumb, index) => (
                         <span key={index}>
                           {index > 0 && <i className="mdi mdi-chevron-right" />}
-                          <a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}>{breadcrumb.name}</a>
+                          <a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
                         </span>
                       ))}
                     </strong>
@@ -168,9 +168,14 @@ const Move = (props) => {
                     <p />
                     <Row>
                         {getFileSelect?.data?.childList.map((myfiles, key) => (
-                            myfiles.type === "FOLDER" ?
+                            myfiles.type === "FOLDER" ? 
+                            
+                             myfiles.num === props.fNum ?
+                               
+                             null :
+
                                 <Col xl={4} sm={6} key={key}>
-                                    <Card className="shadow-none border">
+                                    <Card className="shadow-none border ">
                                         <CardBody className="p-3" onDoubleClick={() => {getInsideFolder(myfiles.num, myfiles.parent_num)}} style={{ cursor: "pointer" }}>
                                         
                                             <div >
@@ -188,11 +193,6 @@ const Move = (props) => {
                                                     <div className="overflow-hidden me-auto">
                                                         <h5 className="font-size-14 text-truncate mb-1">
                                                             <a className="text-body fs-6 align-baseline">
-                                                                {/* {myfiles.type === "FOLDER" ?
-                                        <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
-                                        :
-                                        <i className="bx bxs-file font-size-24 text-warning"></i>
-                                      }&nbsp; */}
                                                                 {myfiles.name}&nbsp;
                                                             </a>
                                                         </h5>
@@ -202,7 +202,9 @@ const Move = (props) => {
                                         </CardBody>
                                     </Card>
                                 </Col>
-                                : ''
+                                
+                            : ''
+                                
                         ))}
                     </Row>
 
@@ -216,7 +218,11 @@ const Move = (props) => {
 
 
 
-                            myfiles.type === "FILE" ?
+                            myfiles.type === "FILE" ? 
+                            
+                            myfiles.num === props.fNum ?
+                               
+                            null :
 
                                 <Col xl={4} sm={6} key={key}>
                                     <Card className="shadow-none border">
@@ -253,11 +259,6 @@ const Move = (props) => {
                                                     <div className="overflow-hidden me-auto">
                                                         <h5 className="font-size-14 text-truncate mb-1">
                                                             <Link to="#" className="text-body">
-                                                                {/* {myfiles.type === "FILE" ?
-                                        <i className="bx bxs-file font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                        :
-                                        <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                      } */}
                                                                 &nbsp;{myfiles.name}&nbsp;
                                                             </Link>
                                                         </h5>
@@ -268,8 +269,8 @@ const Move = (props) => {
                                     </Card>
                                 </Col>
 
-
-                                : ''
+                            : ''
+                               
                         ))}
 
 
@@ -279,11 +280,12 @@ const Move = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button type="submit" color={moveSpinner ? "primary disabled" : "primary"}>
-                        <i className="bx bxs-save align-middle me-2"></i>{" "}
+                        <i className="mdi mdi-check fs-5 align-middle me-2"></i>{" "}
                         {props.t("Move")}
                         <Spinner style={{ display: moveSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
-                    <Button color="danger" onClick={props.toggle}>
+                    <Button color="danger" onClick={props.toggle} className='align-middle me-2'>
+                    <i className="mdi mdi-window-close fs-5 align-middle me-2"></i>{" "}
                         {props.t("Close")}
                     </Button>
                 </ModalFooter>

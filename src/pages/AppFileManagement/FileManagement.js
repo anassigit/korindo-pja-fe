@@ -384,7 +384,7 @@ const FileManagement = (props) => {
                         return (
                           <span key={index}>
                             {index > 0 && <i className="mdi mdi-chevron-right" />}
-                            < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}>{breadcrumb.name}</a>
+                            < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
                             {/* <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a> */}
                           </span>
                         )
@@ -514,12 +514,13 @@ const FileManagement = (props) => {
                                   {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
                                     <i className="fa fa-solid fa-file-word fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
                                   ) : myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
-                                    <img src={myfiles} key={key}
-                                      style={{
-                                        width: 20,
-                                        height: 20,
-                                        resizeMode: 'contain',
-                                      }} />
+                                    // <img src={myfiles} key={key}
+                                    //   style={{
+                                    //     width: 20,
+                                    //     height: 20,
+                                    //     resizeMode: 'contain',
+                                    //   }} />
+                                    <i className="fa fa-solid fa-image fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
                                   ) : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
                                     <i className="fa fa-solid fa-file-excel fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
                                   )
