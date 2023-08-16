@@ -41,9 +41,9 @@ const Move = (props) => {
 
     const moveRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgMove;
-      })
+    })
 
-      
+
     useEffect(() => {
         dispatch(getSelectFile())
     }, [])
@@ -57,9 +57,9 @@ const Move = (props) => {
         enableReinitialize: true,
 
         initialValues: {
- 
-            file_num : props.fNum,
-            parent_num: numF,           
+
+            file_num: props.fNum,
+            parent_num: numF,
         },
 
         validationSchema: Yup.object().shape({
@@ -69,10 +69,10 @@ const Move = (props) => {
 
         onSubmit: (value) => {
             // debugger
-                setMoveSpinner(true)
-                dispatch(moveFile(value));
-                toggleMsgModal()
-               
+            setMoveSpinner(true)
+            dispatch(moveFile(value));
+            toggleMsgModal()
+
 
         }
     });
@@ -89,10 +89,10 @@ const Move = (props) => {
 
             setMoveMsg("")
 
-            dispatch(getSelectFile({'folder_num': numF}))
+            dispatch(getSelectFile({ 'folder_num': numF }))
             //dispatch(getSelectFile({'folder_num': props.idNowLoc}))
-            
-        } 
+
+        }
     }
 
     useEffect(() => {
@@ -119,13 +119,13 @@ const Move = (props) => {
 
     return (
 
-        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog modal-xl" backdrop="static">
+        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static">
 
-                <MsgModal
+            <MsgModal
                 modal={moveMsgModal}
                 toggle={toggleMsgModal}
                 message={moveContentModal}
-                
+
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -133,7 +133,7 @@ const Move = (props) => {
             }}>
                 <ModalHeader toggle={props.toggle}>{props.t("Move File or Folder")}</ModalHeader>
                 <ModalBody>
-                {/* <div className="mb-3 mx-3">
+                    {/* <div className="mb-3 mx-3">
                             <Label>id file yang mau dipindah<span style={{ color: "red" }}>*</span></Label>
                             <Input type="text" value={props.fNum || ""} />
 
@@ -150,131 +150,134 @@ const Move = (props) => {
                             <Input type="text"  value={numF || ""} />
 
                         </div> */}
-                <Row>
-                  <div className="align-baseline fs-6">
-                    <strong>
-                      {getFileSelect?.data?.path.map((breadcrumb, index) => (
-                        <span key={index}>
-                          {index > 0 && <i className="mdi mdi-chevron-right" />}
-                          <a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
-                        </span>
-                      ))}
-                    </strong>
-                  </div>
-                </Row>
+                    <Row>
+                        <div className="align-baseline fs-6">
+                            <strong>
+                                {getFileSelect?.data?.path.map((breadcrumb, index) => (
+                                    <span key={index}>
+                                        {index > 0 && <i className="mdi mdi-chevron-right" />}
+                                        <a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
+                                    </span>
+                                ))}
+                            </strong>
+                        </div>
+                    </Row>
                     <hr />
-                    <Row><h6>{props.t("Folders")}</h6></Row>
+                    <Row><h6><i className="mdi mdi-folder align-middle fs-5" /> {"  "}{props.t("Folders")}</h6></Row>
                     <p />
                     <p />
                     <Row>
                         {getFileSelect?.data?.childList.map((myfiles, key) => (
-                            myfiles.type === "FOLDER" ? 
-                            
-                             myfiles.num === props.fNum ?
-                               
-                             null :
+                            myfiles.type === "FOLDER" ?
 
-                                <Col xl={4} sm={6} key={key}>
-                                    <Card className="shadow-none border ">
-                                        <CardBody className="p-3" onDoubleClick={() => {getInsideFolder(myfiles.num, myfiles.parent_num)}} style={{ cursor: "pointer" }}>
-                                        
-                                            <div >
+                                myfiles.num === props.fNum ?
 
-                                                <div className="avatar-xs me-3 mb-3">
-                                                    <div className="avatar-title bg-transparent rounded">
-                                                        {myfiles.type === "FOLDER" ?
-                                                            <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
-                                                            :
-                                                            <i className="fa fa-solid fa-file fs-3 align-baseline text-warning"></i>
-                                                        }
+                                    null :
+
+                                    <Col xl={4} sm={6} key={key}>
+                                        <Card className="shadow-none border ">
+                                            <CardBody className="p-3" onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num) }} style={{ cursor: "pointer" }}>
+
+                                                <div >
+
+                                                    <div className="avatar-xs me-3 mb-3">
+                                                        <div className="avatar-title bg-transparent rounded">
+                                                            {myfiles.type === "FOLDER" ?
+                                                                <i className="fa fa-solid fa-folder fs-3 align-middle" style={{ color: "#7bae40" }}></i>
+                                                                :
+                                                                <i className="fa fa-solid fa-file fs-3 align-middle" style={{ color: "#7bae40" }} ></i>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <div className="overflow-hidden me-auto">
+                                                            <h5 className="font-size-14 text-truncate mb-1">
+                                                                <a className="text-body fs-6 align-baseline">
+                                                                    {myfiles.name}&nbsp;
+                                                                </a>
+                                                            </h5>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="d-flex">
-                                                    <div className="overflow-hidden me-auto">
-                                                        <h5 className="font-size-14 text-truncate mb-1">
-                                                            <a className="text-body fs-6 align-baseline">
-                                                                {myfiles.name}&nbsp;
-                                                            </a>
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </CardBody>
-                                    </Card>
-                                </Col>
-                                
-                            : ''
-                                
+                                            </CardBody>
+                                        </Card>
+                                    </Col>
+
+                                : ''
+
                         ))}
                     </Row>
 
 
-                    <p />
-                    <h6>{props.t("Files")}</h6>
-                    <p />
-                    <Row>
+                    {/* <p />
+                    <h6><i className="mdi mdi-file align-middle fs-5" /> {"  "}{props.t("Files")}</h6>
+                    <p /> */}
+                    {/* <Row>
 
                         {getFileSelect?.data?.childList.map((myfiles, key) => (
 
 
 
-                            myfiles.type === "FILE" ? 
-                            
-                            myfiles.num === props.fNum ?
-                               
-                            null :
+                            myfiles.type === "FILE" ?
 
-                                <Col xl={4} sm={6} key={key}>
-                                    <Card className="shadow-none border">
-                                        <CardBody className="p-3">
-                                            <div >
+                                myfiles.num === props.fNum ?
 
-                                                <div className="avatar-xs me-3 mb-3">
-                                                    <div className="avatar-title bg-transparent rounded">
-                                                        {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
-                                                            <i className="fa fa-solid fa-file-word fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                                        ) : myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
-                                                            <img src={myfiles} key={key}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                    resizeMode: 'contain',
-                                                                }} />
-                                                        ) : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
-                                                            <i className="fa fa-solid fa-file-excel fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                                        )
-                                                            : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
-                                                                <i className="fa fa-solid fa-file-powerpoint fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                                            )
-                                                                : myfiles.name.endsWith("pdf") ? (
-                                                                    <i className="fa fa-solid fa-file-pdf fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                    null :
+
+                                    <Col xl={4} sm={6} key={key}>
+                                        <Card className="shadow-none border">
+                                            <CardBody className="p-3">
+                                                <div >
+
+                                                    <div className="avatar-xs me-3 mb-3">
+                                                        <div className="avatar-title bg-transparent rounded">
+                                                            {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
+                                                                <i className="fa fa-solid fa-file-word fs-3 " style={{ verticalAlign: "middle", color: "#41a5ee" }}></i>
+                                                            ) :
+                                                                myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
+                                                                    // <img src={myfiles} key={key}
+                                                                    //   style={{
+                                                                    //     width: 20,
+                                                                    //     height: 20,
+                                                                    //     resizeMode: 'contain',
+                                                                    //   }} />
+                                                                    <i className="fa fa-solid fa-image fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
                                                                 )
-                                                                    :
-                                                                    (
-                                                                        <i className="fa fa-solid fa-file fs-3 align-baseline text-warning" style={{ verticalAlign: "middle" }}></i>
-                                                                    )}
+                                                                    : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
+                                                                        <i className="fa fa-solid fa-file-excel fs-3 " style={{ verticalAlign: "middle", color: "#32c37e" }}></i>
+                                                                    )
+                                                                        : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
+                                                                            <i className="fa fa-solid fa-file-powerpoint fs-3" style={{ verticalAlign: "middle", color: "#ff8f6b" }}></i>
+                                                                        )
+                                                                            : myfiles.name.endsWith("pdf") ? (
+                                                                                <i className="fa fa-solid fa-file-pdf fs-3" style={{ verticalAlign: "middle", color: "#b40c01" }}></i>
+                                                                            )
+                                                                                :
+                                                                                (
+                                                                                    <i className="fa fa-solid fa-file fs-3 align-baseline" style={{ verticalAlign: "middle", color: "#b7b7b7" }}></i>
+                                                                                )}
+                                                        </div>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <div className="overflow-hidden me-auto">
+                                                            <h5 className="font-size-14 text-truncate mb-1">
+                                                                <Link to="#" className="text-body">
+                                                                    &nbsp;{myfiles.name}&nbsp;
+                                                                </Link>
+                                                            </h5>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="d-flex">
-                                                    <div className="overflow-hidden me-auto">
-                                                        <h5 className="font-size-14 text-truncate mb-1">
-                                                            <Link to="#" className="text-body">
-                                                                &nbsp;{myfiles.name}&nbsp;
-                                                            </Link>
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </CardBody>
-                                    </Card>
-                                </Col>
+                                            </CardBody>
+                                        </Card>
+                                    </Col>
 
-                            : ''
-                               
+                                : ''
+
                         ))}
 
 
-                    </Row>
+                    </Row> */}
 
 
                 </ModalBody>
@@ -285,7 +288,7 @@ const Move = (props) => {
                         <Spinner style={{ display: moveSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle} className='align-middle me-2'>
-                    <i className="mdi mdi-window-close fs-5 align-middle me-2"></i>{" "}
+                        <i className="mdi mdi-window-close fs-5 align-middle me-2"></i>{" "}
                         {props.t("Close")}
                     </Button>
                 </ModalFooter>

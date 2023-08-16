@@ -354,18 +354,18 @@ const FileManagement = (props) => {
                             type="button"
                             className="btn btn-primary"
                           >
-                            <i className="mdi mdi-plus fs-5" style={{ verticalAlign: 'middle' }}></i>{' '}
+                            <i className="mdi mdi-plus fs-4" style={{ verticalAlign: 'middle' }}></i>{' '}
                             {props.t("New")}
                           </button>
                         </DropdownToggle>
 
                         <DropdownMenu className="dropdown-menu-end">
                           <DropdownItem onClick={() => toggleCreateModal()}>
-                          {/* <i className="mdi mdi-folder-plus fs-4" />&nbsp; */}
+                            <i className="mdi mdi-folder align-middle fs-4 mb-2" /> {"  "}
                             {props.t("Add New Folder")}
                           </DropdownItem>
                           <DropdownItem onClick={() => toggleUploadModal()}>
-                          {/* <i className="mdi mdi-folder-upload fs-4" />&nbsp; */}
+                            <i className="mdi mdi-file align-middle fs-4 mb-2" /> {"  "}
                             {props.t("Upload New File")}
                           </DropdownItem>
                         </DropdownMenu>
@@ -395,15 +395,17 @@ const FileManagement = (props) => {
                 </Row>
                 <p />
                 <p />
-                <Row><h6>{props.t("Folders")}</h6></Row>
+                <Row><h6><i className="mdi mdi-folder align-middle fs-5" /> {"  "}{props.t("Folders")}</h6></Row>
                 <p />
                 <p />
                 <Row>
                   {
                     // kalo search tidak null ? hasil API :
                     realFileList?.map((myfiles, key) => (
+
                       myfiles.type === "FOLDER" ?
-                        <Col xl={4} sm={6} key={key}>
+
+                        <Col xl={2} key={key}>
                           <Card className="shadow-none border">
                             <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num) }}>
                               {/* onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} */}
@@ -414,20 +416,20 @@ const FileManagement = (props) => {
                                       className="font-size-16 text-muted"
                                       tag="a"
                                     >
-                                      <i className="mdi mdi-dots-vertical fs-3"></i>
+                                      <i className="mdi mdi-dots-vertical fs-4"></i>
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-menu-end">
                                       <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                        <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
                                         {props.t("Rename")}
                                       </DropdownItem>
                                       <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                        <i className="mdi mdi-arrow-all align-middle fs-4 mb-2" /> {"  "}
                                         {props.t("Move")}
                                       </DropdownItem>
-                                      {/* <DropdownItem onClick={() => toggleUploadModal(myfiles.num)}>
-                                        Upload
-                                      </DropdownItem> */}
                                       <div className="dropdown-divider"></div>
                                       <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                        <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
                                         {props.t("Remove")}
                                       </DropdownItem>
                                     </DropdownMenu>
@@ -436,22 +438,17 @@ const FileManagement = (props) => {
                                 <div className="avatar-xs me-3 mb-3">
                                   <div className="avatar-title bg-transparent rounded">
                                     {myfiles.type === "FOLDER" ?
-                                      <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
+                                      <i className="fa fa-solid fa-folder fs-3 align-middle" style={{ color: "#7bae40" }}></i>
                                       :
-                                      <i className="fa fa-solid fa-file fs-3 align-baseline text-warning"></i>
+                                      <i className="fa fa-solid fa-file fs-3 align-middle" style={{ color: "#7bae40" }} ></i>
                                     }
                                   </div>
                                 </div>
-                                <div className="d-flex">
+                                <div className="d-flex flex-row bd-highlight mb-1">
                                   <div className="overflow-hidden me-auto">
-                                    <h5 className="font-size-14 text-truncate mb-1">
+                                    <h5 className="text-truncate mb-1">
                                       <a className="text-body fs-6 align-baseline">
-                                        {/* {myfiles.type === "FOLDER" ?
-                                          <i className="fa fa-solid fa-folder fs-3 align-baseline text-warning"></i>
-                                          :
-                                          <i className="bx bxs-file font-size-24 text-warning"></i>
-                                        }&nbsp; */}
-                                        {myfiles.name}&nbsp;
+                                        {myfiles.name}
                                       </a>
                                     </h5>
                                   </div>
@@ -461,13 +458,13 @@ const FileManagement = (props) => {
                           </Card>
                         </Col>
                         : ''
-                    ))
-                  }
+
+                    ))}
                 </Row>
 
 
                 <p />
-                <h6>{props.t("Files")}</h6>
+                <h6><i className="mdi mdi-file align-middle fs-5" /> {"  "}{props.t("Files")}</h6>
                 <p />
                 <Row>
 
@@ -475,34 +472,35 @@ const FileManagement = (props) => {
 
                     myfiles.type === "FILE" ?
 
-                      <Col xl={4} sm={6} key={key}>
+                      <Col xl={2} key={key}>
                         <Card className="shadow-none border">
                           <CardBody className="p-3">
                             <div >
                               <div className="float-end ms-2">
                                 <UncontrolledDropdown className="mb-2">
                                   <DropdownToggle
-                                    className="font-size-16 text-muted"
+                                    className="font-size-17 text-muted"
                                     tag="a"
                                   >
-                                    <i className="mdi mdi-dots-vertical fs-3" ></i>
+                                    <i className="mdi mdi-dots-vertical fs-4" style={{ color: "3b7b7b7" }}></i>
                                   </DropdownToggle>
 
                                   <DropdownMenu className="dropdown-menu-end">
-                                    {/* <DropdownItem onClick={() => getInsideFolder(myfiles.num)}>
-                                      Open
-                                    </DropdownItem> */}
                                     <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                      <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
                                       {props.t("Rename")}
                                     </DropdownItem>
                                     <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                      <i className="mdi mdi-arrow-all align-middle fs-4 mb-2" /> {"  "}
                                       {props.t("Move")}
                                     </DropdownItem>
                                     <DropdownItem onClick={() => downloadFolderFile(myfiles.num, myfiles.name)}>
+                                      <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
                                       {props.t("Download")}
                                     </DropdownItem>
                                     <div className="dropdown-divider"></div>
                                     <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                      <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
                                       {props.t("Remove")}
                                     </DropdownItem>
                                   </DropdownMenu>
@@ -512,39 +510,36 @@ const FileManagement = (props) => {
                               <div className="avatar-xs me-3 mb-3">
                                 <div className="avatar-title bg-transparent rounded">
                                   {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
-                                    <i className="fa fa-solid fa-file-word fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                  ) : myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
-                                    // <img src={myfiles} key={key}
-                                    //   style={{
-                                    //     width: 20,
-                                    //     height: 20,
-                                    //     resizeMode: 'contain',
-                                    //   }} />
-                                    <i className="fa fa-solid fa-image fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                  ) : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
-                                    <i className="fa fa-solid fa-file-excel fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                  )
-                                    : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
-                                      <i className="fa fa-solid fa-file-powerpoint fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                    <i className="fa fa-solid fa-file-word fs-3 " style={{ verticalAlign: "middle", color: "#41a5ee" }}></i>
+                                  ) :
+                                    myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
+                                      // <img src={myfiles} key={key}
+                                      //   style={{
+                                      //     width: 20,
+                                      //     height: 20,
+                                      //     resizeMode: 'contain',
+                                      //   }} />
+                                      <i className="fa fa-solid fa-image fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
                                     )
-                                      : myfiles.name.endsWith("pdf") ? (
-                                        <i className="fa fa-solid fa-file-pdf fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                      : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
+                                        <i className="fa fa-solid fa-file-excel fs-3 " style={{ verticalAlign: "middle", color: "#32c37e" }}></i>
                                       )
-                                        :
-                                        (
-                                          <i className="fa fa-solid fa-file fs-3 align-baseline text-warning" style={{ verticalAlign: "middle" }}></i>
-                                        )}
+                                        : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
+                                          <i className="fa fa-solid fa-file-powerpoint fs-3" style={{ verticalAlign: "middle", color: "#ff8f6b" }}></i>
+                                        )
+                                          : myfiles.name.endsWith("pdf") ? (
+                                            <i className="fa fa-solid fa-file-pdf fs-3" style={{ verticalAlign: "middle", color: "#b40c01" }}></i>
+                                          )
+                                            :
+                                            (
+                                              <i className="fa fa-solid fa-file fs-3 align-baseline" style={{ verticalAlign: "middle", color: "#b7b7b7" }}></i>
+                                            )}
                                 </div>
                               </div>
                               <div className="d-flex">
                                 <div className="overflow-hidden me-auto">
-                                  <h5 className="font-size-14 text-truncate mb-1">
+                                  <h5 className="fs-6 text-truncate mb-1">
                                     <Link to="#" className="text-body">
-                                      {/* {myfiles.type === "FILE" ?
-                                        <i className="bx bxs-file font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                        :
-                                        <i className="bx bxs-folder font-size-24 text-warning" style={{ verticalAlign: "middle" }}></i>
-                                      } */}
                                       &nbsp;{myfiles.name}&nbsp;
                                     </Link>
                                   </h5>
