@@ -22,14 +22,13 @@ import { loginUser, resetMessage } from "../../store/actions";
 import profile from "assets/images/profile-img.png";
 import logo from "assets/images/logotitle.png";
 
-
 const Login = props => {
   const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState(null)
 
   useEffect(() => {
     dispatch(resetMessage())
-  },[dispatch])
+  }, [dispatch])
 
   const { error } = useSelector(state => ({
     error: state.Login.error,
@@ -41,11 +40,11 @@ const Login = props => {
     initialValues: {
       id: '',
       pw: '',
-      langType: 'ENG',
+      langType: 'KOR', // 언어 유형: 한국어
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Please Enter Your Email"),
-      pw: Yup.string().required("Please Enter Your Password"),
+      id: Yup.string().required("이메일을 입력해주세요"),
+      pw: Yup.string().required("비밀번호를 입력해주세요"),
     }),
     onSubmit: values => {
       dispatch(loginUser(values, props.history))
@@ -65,7 +64,6 @@ const Login = props => {
       setErrorMsg(error)
     }
   }, [error, errorMsg])
-
 
   return (
     <React.Fragment>
@@ -109,7 +107,7 @@ const Login = props => {
                         <Input
                           name="id"
                           className="form-control"
-                          placeholder="Enter Email"
+                          placeholder="이메일을 입력하세요"
                           type="text"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
@@ -128,7 +126,7 @@ const Login = props => {
                           name="pw"
                           value={validation.values.pw || ""}
                           type="password"
-                          placeholder="Enter Password"
+                          placeholder="비밀번호를 입력하세요"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           invalid={
@@ -145,14 +143,14 @@ const Login = props => {
                           className="btn btn-success btn-block"
                           type="submit"
                         >
-                          Login
+                          로그인
                         </button>
                       </div>
 
                       <div className="mt-4 text-center">
                         <Link to="/emailPassword" className="text-muted">
                           <i className="mdi mdi-lock me-1" />
-                          Forgot your password?
+                          비밀번호를 잊으셨나요?
                         </Link>
                       </div>
                     </Form>

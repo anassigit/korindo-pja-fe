@@ -42,7 +42,7 @@ const EmailVerPassword = props => {
       id: ''
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Please Enter Your Email"),
+      id: Yup.string().required("이메일을 입력해주세요"),
     }),
     onSubmit: (values) => {
       dispatch(emailForgotPassword(values));
@@ -50,7 +50,6 @@ const EmailVerPassword = props => {
   });
 
   useEffect(() => {
-   
     setAppUserProfileMsg(error)
   }, [error])
 
@@ -77,7 +76,7 @@ const EmailVerPassword = props => {
                   <Row>
                     <Col xs={12}>
                       <div className="text-primary p-4">
-                        <h2 className="text-primary text-left" >Enter your Email</h2>
+                        <h2 className="text-primary text-left" >이메일을 입력하세요</h2>
                       </div>
                     </Col>
                   </Row>
@@ -97,11 +96,10 @@ const EmailVerPassword = props => {
                     >
 
                       <div className="mb-3">
-
                         <Input
                           name="id"
                           className="form-control"
-                          placeholder="Enter Email"
+                          placeholder="이메일을 입력하세요"
                           type="text"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
@@ -120,7 +118,7 @@ const EmailVerPassword = props => {
                           className="btn btn-success btn-block"
                           type="submit"
                         >
-                          Send to Email
+                          이메일로 전송하기
                           <Spinner style={{ display: emailPasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                         </button>
                       </div>
@@ -133,7 +131,7 @@ const EmailVerPassword = props => {
                               pathname: '/login',
                             })}
                         >
-                          Back
+                          뒤로 가기
                         </button>
                       </div>
                     </Form>
@@ -141,7 +139,6 @@ const EmailVerPassword = props => {
                 </CardBody>
 
                 <div className="mt-3 text-center">
-
                   <p>
                     ©Korindo {new Date().getFullYear()}.
                   </p>
@@ -156,7 +153,6 @@ const EmailVerPassword = props => {
 };
 
 export default withRouter(EmailVerPassword);
-
 // Login.propTypes = {
 //   history: PropTypes.object,
 // };
