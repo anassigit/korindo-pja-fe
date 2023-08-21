@@ -13,7 +13,7 @@ import instructionsSaga from "./appInstructions/saga"
 import userProfileSaga from "./appUserProfile/saga"
 import settingSaga from "./appSetting/saga"
 import fileManagementSaga from "./appFileManagement/saga"
-import langSaga from "./language/saga"
+// import langSaga from "./language/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -29,6 +29,6 @@ export default function* rootSaga() {
     fork(userProfileSaga),
     fork(settingSaga),
     fork(fileManagementSaga),
-    fork(langSaga),
+    // fork(langSaga),
   ])
 }
