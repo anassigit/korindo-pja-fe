@@ -11,6 +11,8 @@ export const getDataImage = req => getWithXls("/app001/get-file-image", req)
 
 export const getDataPdf = req => getWithPdf("/app001/get-file-image", req)
 
+export const getLang = req => post("/rest/LanguageRest/SelectLang", req)
+
 export const login = req => postLogin("/MemberRest/login", req)
 
 export const emailForgotPassword = req => postWithParam("/MemberRest/ForgotPassword", req)
