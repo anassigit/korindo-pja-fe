@@ -29,6 +29,65 @@ import { withTranslation } from "react-i18next"
 const ChangePassword = (props) => {
 
   const dispatch = useDispatch();
+  
+  const langType = localStorage.getItem("I18N_LANGUAGE") || "eng"; 
+  const validationMessages = {
+    eng: {
+      currentPassword: "Please enter your current password.",
+      Password1: {
+        required: "Please enter a new password.",
+        min: "Password must be at least 8 characters long.",
+        test: "Password must include at least two different characters.",
+      },
+      newPassword: {
+        required: "Please re-enter the new password.",
+        oneOf: "Passwords do not match.",
+      },
+    },
+    kor: {
+      currentPassword: "현재 비밀번호를 입력하세요.",
+      Password1: {
+        required: "새로운 비밀번호를 입력하세요.",
+        min: "비밀번호는 최소 8자 이상이어야 합니다.",
+        test: "비밀번호는 적어도 두 가지 다른 문자를 포함해야 합니다.",
+      },
+      newPassword: {
+        required: "새 비밀번호를 다시 입력하세요.",
+        oneOf: "비밀번호가 일치하지 않습니다.",
+      },
+    },
+    idr: {
+      currentPassword: "Silakan masukkan kata sandi saat ini.",
+      Password1: {
+        required: "Silakan masukkan kata sandi baru.",
+        min: "Kata sandi harus terdiri dari setidaknya 8 karakter.",
+        test: "Kata sandi harus mengandung setidaknya dua karakter yang berbeda.",
+      },
+      newPassword: {
+        required: "Silakan masukkan kembali kata sandi baru.",
+        oneOf: "Kata sandi tidak cocok.",
+      },
+    },
+  }
+
+  const validationSchema = Yup.object().shape({
+    currentPassword: Yup.string().required(validationMessages[langType].currentPassword),
+    Password1: Yup.string()
+      .required(validationMessages[langType].Password1.required)
+      .min(8, validationMessages[langType].Password1.min)
+      .test(
+        "has-at-least-two-different-characters",
+        validationMessages[langType].Password1.test,
+        (value) => {
+          const uniqueCharacters = new Set(value);
+          return uniqueCharacters.size >= 2;
+        }
+      ),
+    newPassword: Yup.string()
+      .required(validationMessages[langType].newPassword.required)
+      .oneOf([Yup.ref('Password1')], validationMessages[langType].newPassword.oneOf),
+  });
+
   const [changePasswordSpinner, setChangePasswordSpinner] = useState(false);
 
   const changePasswordMessage = useSelector(state => {
@@ -53,23 +112,7 @@ const ChangePassword = (props) => {
       newPassword: '',
     },
 
-    validationSchema: Yup.object().shape({
-      currentPassword: Yup.string().required("현재 비밀번호를 입력하세요."),
-      Password1: Yup.string()
-        .required("새로운 비밀번호를 입력하세요.")
-        .min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
-        .test(
-          "has-at-least-two-different-characters",
-          "비밀번호는 적어도 두 가지 다른 문자를 포함해야 합니다.",
-          value => {
-            const uniqueCharacters = new Set(value);
-            return uniqueCharacters.size >= 2;
-          }
-        ),
-      newPassword: Yup.string()
-        .required("새 비밀번호를 다시 입력하세요.")
-        .oneOf([Yup.ref('Password1')], '비밀번호가 일치하지 않습니다.'),
-    }),
+    validationSchema: validationSchema,
 
 
     onSubmit: (val) => {
