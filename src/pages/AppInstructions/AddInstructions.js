@@ -78,7 +78,7 @@ const AddInstructions = (props) => {
                 getManagerList.data.managerList.map((data) => {
                     const newManager = {
                         value: data.id,
-                        label: data.name,
+                        label: data.name + (data.gname !== null ? ` (` + data.gname + `)` : ''),
                     };
                     setOptionManager((option) => [...option, newManager]);
                 });
@@ -437,12 +437,12 @@ const AddInstructions = (props) => {
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
 
-            <MsgModal
+            {/* <MsgModal
                 modal={addInstructionMsgModal}
                 toggle={toggleMsgModal}
                 message={null}
                 isHidden={true}
-            />
+            /> */}
 
             <Row>
                 <Spinner animation="grow" style={{ width: "250px", height: "250px", display: !addInstructionsSpinner ? "block" : "none", marginLeft: '-250px', marginTop: '-350px', zIndex: 2, position: "absolute" }} color="danger" />
@@ -619,11 +619,11 @@ const AddInstructions = (props) => {
                                                                 <input type="file" id="fileuploadAdd" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                                             </div>
                                                         </div>
+                                                        <span style={{fontSize:"12px", color:"blue"}} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                                                         &nbsp;&nbsp;&nbsp;
-                                                    <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
                                                     </div>
-                                                    
-                                                    
+
+
                                                     <div className="kb-attach-box mb-3">
                                                         <h6>{props.t("Attach files preview")}</h6>
 

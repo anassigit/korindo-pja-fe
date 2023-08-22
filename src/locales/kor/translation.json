@@ -109,5 +109,6 @@
   "Re-enter your new password": "새로운 비밀번호를 다시 입력하세요.",
   "Show password": "비밀번호 보기",
   "Confirm": "확인",
-  "Skip": "건너뛰기"
+  "Skip": "건너뛰기",
+  "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "사용 가능한 확장자: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt"
 }

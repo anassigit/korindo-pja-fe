@@ -109,5 +109,6 @@
     "Re-enter your new password": "Masukkan kembali kata sandi baru",
     "Show password": "Tampilkan kata sandi",
     "Confirm": "Konfirmasi",
-    "Skip": "Lewati"
+    "Skip": "Lewati",
+    "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "Tipe Berkas Diizinkan: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt"
   }

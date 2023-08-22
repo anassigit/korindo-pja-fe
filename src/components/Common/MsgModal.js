@@ -13,8 +13,8 @@ const MsgModal = ({ modal, toggle, message, isHidden }) => {
                         <Spinner
                             animation="grow"
                             style={{
-                                width: '250px',
-                                height: '250px',
+                                width: '25px',
+                                height: '25px',
                                 display: 'block',
                                 left: '50%',
                                 top: '50%',

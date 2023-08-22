@@ -1039,28 +1039,34 @@ const EditInstructions = (props) => {
 
 
     const InputChangeR = (e) => {
+        debugger
         let images = [];
         const files = e.target.files;
+        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i;
 
         for (let i = 0; i < files.length; i++) {
-            let reader = new FileReader();
-            let file = files[i];
-
-            reader.onloadend = () => {
-                SetSelectedFileR((prevValue) => [
-                    ...prevValue,
-                    {
-                        id: shortid.generate(),
-                        filename: file.name,
-                        filetype: file.type,
-                        fileimage: reader.result,
-                        fileori: file,
-                    },
-                ]);
-            };
-
-            if (files[i]) {
-                reader.readAsDataURL(file);
+            if (allowedExtensions.test(files[i]?.name)) {
+                let reader = new FileReader();
+                let file = files[i];
+        
+                reader.onloadend = () => {
+                    SetSelectedFileR((prevValue) => [
+                        ...prevValue,
+                        {
+                            id: shortid.generate(),
+                            filename: file.name,
+                            filetype: file.type,
+                            fileimage: reader.result,
+                            fileori: file,
+                        },
+                    ]);
+                };
+        
+                if (files[i]) {
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                alert("File types are not allowed to upload or are not supported.");
             }
         }
     };
@@ -1736,7 +1742,7 @@ const EditInstructions = (props) => {
                                                             />
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="col-sm-8">
                                                             <label>{props.t("Attached Files")} </label>
 
                                                             <Form onSubmit={FileUploadSubmit}>
@@ -1747,7 +1753,7 @@ const EditInstructions = (props) => {
                                                                     </div>
                                                                 </div>
                                                                 &nbsp;&nbsp;&nbsp;
-                                                                <div className="kb-attach-box mb-3">
+                                                                <div className="kb-attach-box">
                                                                     {
                                                                         selectedfile.map((data, index) => {
                                                                             const { id, filename, filetype, fileimage, datetime, filesize } = data;
@@ -1790,8 +1796,8 @@ const EditInstructions = (props) => {
                                                                     }
                                                                 </div>
                                                                 : ''}
+                                                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                                                         </div>
-                                                        <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
                                                     </Col>
                                                 </Row>
 
@@ -2041,7 +2047,7 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                                 : ''}
                                                         </div>
-                                                        <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
+                                                        <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                                                     </Col>
                                                 </Row>
 
@@ -2150,7 +2156,7 @@ const EditInstructions = (props) => {
                                                                                     )
                                                                                 })
                                                                             }
-                                                                            <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
+                                                                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                                                                         </div>
 
                                                                         <div className="text-sm-end col-12" >
@@ -2295,6 +2301,7 @@ const EditInstructions = (props) => {
                                                                                             &nbsp;
                                                                                             <div className="kb-attach-box">
                                                                                                 {selectedRowIndex === reply_num && selectedfileR2.map((data, index) => {
+                                                                                                    debugger
                                                                                                     const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                                                     return (
                                                                                                         <div className="file-atc-box" key={id}>
