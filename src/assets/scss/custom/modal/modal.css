@@ -1,7 +1,3 @@
 .modal-header .btn-close {
     display: none;
 }
-.modal-backdrop
-{
-    opacity:0 !important;
-}
