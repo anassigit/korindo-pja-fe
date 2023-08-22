@@ -6,12 +6,13 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { getMembersData, getPermissionListData, getRankListData, resetMessage, saveGroupMapping } from 'store/appSetting/actions';
+import { getMembersData, getMembersData2, getPermissionListData, getRankListData, resetMessage, saveGroupMapping } from 'store/appSetting/actions';
 import MsgModal2 from 'components/Common/MsgModal2';
 import { withTranslation } from 'react-i18next';
 
 const AddGroupMapping = (props) => {
     const dispatch = useDispatch();
+    let langType = localStorage.getItem("I18N_LANGUAGE")
     const [addGroupMappingSpinner, setAddGroupMappingSpinner] = useState(false)
 
     const [isClosed, setIsClosed] = useState(false)
@@ -22,8 +23,8 @@ const AddGroupMapping = (props) => {
         return state.settingReducer.msgAdd;
     });
 
-    const appMembersData = useSelector(state => {
-        return state.settingReducer.respGetMembers;
+    const appMembersData2 = useSelector(state => {
+        return state.settingReducer.respGetMembers2;
     });
 
     const appGroupListData = useSelector(state => {
@@ -58,7 +59,7 @@ const AddGroupMapping = (props) => {
         addGroupMappingValidInput.resetForm();
     }, [props.toggle]);
 
-    const memberOption = (appMembersData?.data?.memberList || []).map(({ id, index }) => ({
+    const memberOption = (appMembersData2?.data?.memberList || []).map(({ id, index }) => ({
         value: id,
         label: id,
     }))
@@ -79,6 +80,17 @@ const AddGroupMapping = (props) => {
             window.location.reload()
         }
     }
+
+    useEffect(() => {
+        debugger
+        if (props.modal === true) {
+            dispatch(getMembersData2({
+                page: 1, limit: 10000, offset: 0, sort: "id", order: "desc", search: {
+                    any: "", langType: langType
+                }
+            }))
+        }
+    }, [props.toggle])
 
     useEffect(() => {
         if (addGroupMappingMessage.status == "1") {
@@ -148,7 +160,7 @@ const AddGroupMapping = (props) => {
                         <Spinner style={{ display: addGroupMappingSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                    {props.t("Close")}
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>

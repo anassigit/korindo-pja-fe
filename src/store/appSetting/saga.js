@@ -1,8 +1,8 @@
 import { call, put, takeEvery, all } from "redux-saga/effects"
 
-import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING, GET_MEMBERS_MAPPING } from "./actionTypes"
+import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING, GET_MEMBERS_MAPPING, GET_MEMBERS2 } from "./actionTypes"
 
-import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping } from "./actions"
+import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping, respGetMembers2 } from "./actions"
 
 import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getPermissionList, getRankList, getRelationList, getSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
 
@@ -75,6 +75,20 @@ function* fetchGetAllMembers({ payload: req }) {
   } catch (error) {
     console.log(error);
     yield put(respGetMembers({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchGetAllMembers2({ payload: req }) {
+  try {
+    const response = yield call(getMembers, req)
+    if (response.status == 1) {
+      yield put(respGetMembers2(response))
+    } else {
+      yield put(respGetMembers2(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetMembers2({ "status": 0, "message": "Error Get Data" }))
   }
 }
 
@@ -199,6 +213,7 @@ function* settingSaga() {
   yield takeEvery(EDIT_GENERAL_SETTING, fetchEditGeneralSetting)
   
   yield takeEvery(GET_MEMBERS, fetchGetAllMembers)
+  yield takeEvery(GET_MEMBERS2, fetchGetAllMembers2)
   yield takeEvery(GET_RANK_LIST, fetchGetAllRankList)
   yield takeEvery(GET_PERMISSION_LIST, fetchGetAllPermissionList)
   

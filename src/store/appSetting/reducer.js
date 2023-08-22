@@ -27,12 +27,15 @@ import {
   DELETE_GROUP_MAPPING,
   GET_MEMBERS_MAPPING,
   RESP_GET_MEMBERS_MAPPING,
+  GET_MEMBERS2,
+  RESP_GET_MEMBERS2,
 
 } from "./actionTypes"
 
 const INIT_STATE = {
   respGetSetting: {},
   respGetMembers: {},
+  respGetMembers2: {},
   respGetRankList: {},
   respGetPermissionList: {},
   respGetGroupList: {},
@@ -113,6 +116,17 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetMembers: action.payload,
       }
+
+      case GET_MEMBERS2:
+        return {
+          ...state,
+        }
+      case RESP_GET_MEMBERS2:
+        return {
+          ...state,
+          respGetMembers2: action.payload,
+        }
+  
 
     /* RANK LIST */
 

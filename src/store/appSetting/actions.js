@@ -27,6 +27,8 @@ import {
   DELETE_GROUP_MAPPING,
   RESP_GET_MEMBERS_MAPPING,
   GET_MEMBERS_MAPPING,
+  GET_MEMBERS2,
+  RESP_GET_MEMBERS2,
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -94,6 +96,16 @@ export const getMembersData = (req) => ({
 
 export const respGetMembers = resp => ({
   type: RESP_GET_MEMBERS,
+  payload: resp,
+})
+
+export const getMembersData2 = (req) => ({
+  type: GET_MEMBERS2,
+  payload: req,
+})
+
+export const respGetMembers2 = resp => ({
+  type: RESP_GET_MEMBERS2,
   payload: resp,
 })
 

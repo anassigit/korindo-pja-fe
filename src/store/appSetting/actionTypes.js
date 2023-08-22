@@ -19,6 +19,9 @@ export const EDIT_GENERAL_SETTING = "EDIT_GENERAL_SETTING"
 export const GET_MEMBERS = "GET_MEMBERS"
 export const RESP_GET_MEMBERS = "RESP_GET_MEMBERS"
 
+export const GET_MEMBERS2 = "GET_MEMBERS2"
+export const RESP_GET_MEMBERS2 = "RESP_GET_MEMBERS2"
+
 //rank list
 export const GET_RANK_LIST = "GET_RANK_LIST"
 export const RESP_GET_RANK_LIST = "RESP_GET_RANK_LIST"
