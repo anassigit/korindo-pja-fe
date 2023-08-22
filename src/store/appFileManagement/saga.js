@@ -4,6 +4,8 @@ import {
 
     GET_SELECT,
     GET_SELECT_FILE,
+    GET_SELECT2,
+    GET_SELECT_FILE2,
     DELETE_FILE_FOLDER,
     RENAME_FILE_FOLDER,
     DOWNLOAD_FILES,
@@ -17,6 +19,7 @@ import {
 import {
 
     respGetSelect,
+    respGetSelect2,
     respGetSelectFile,
     respSearchFile,
     msgAdd,
@@ -57,6 +60,20 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
+  function* fetchGetSelectFolder2({ payload: req }) {
+    try {
+      const response = yield call(selectFolder, req)
+      if (response.status == 1) {
+        yield put(respGetSelect2(response))
+      } else {
+        yield put(respGetSelect2(response))
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(respGetSelect2({ "status": 0, "message": "Error Get Data" }))
+    }
+  }
+
   function* fetchGetSearchFile({ payload: req }) {
     try {
       const response = yield call(searchFile, req)
@@ -71,20 +88,20 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
-  function* fetchGetSelectFolder2({ payload: req }) {
-    try {
+  // function* fetchGetSelectFolder2({ payload: req }) {
+  //   try {
       
-      const response = yield call(selectFolder, req)
-      if (response.status == 1) {
-        yield put(respGetSelectFile(response))
-      } else {
-        yield put(respGetSelectFile(response))
-      }
-    } catch (error) {
-      console.log(error);
-      yield put(respGetSelectFile({ "status": 0, "message": "Error Get Data" }))
-    }
-  }
+  //     const response = yield call(selectFolder, req)
+  //     if (response.status == 1) {
+  //       yield put(respGetSelectFile(response))
+  //     } else {
+  //       yield put(respGetSelectFile(response))
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     yield put(respGetSelectFile({ "status": 0, "message": "Error Get Data" }))
+  //   }
+  // }
 
   function* fetchDeleteFileFolder({ payload: req }) {
     try {
@@ -157,7 +174,8 @@ function* fetchGetSelectFolder({ payload: req }) {
   function* fileManagementSaga() {
 
     yield takeEvery(GET_SELECT, fetchGetSelectFolder)
-    yield takeEvery(GET_SELECT_FILE, fetchGetSelectFolder2)
+    yield takeEvery(GET_SELECT2, fetchGetSelectFolder2)
+    //yield takeEvery(GET_SELECT_FILE, fetchGetSelectFolder2)
     yield takeEvery(DELETE_FILE_FOLDER, fetchDeleteFileFolder)
     yield takeEvery(RENAME_FILE_FOLDER, fetchRenameFileFolder)
     yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)

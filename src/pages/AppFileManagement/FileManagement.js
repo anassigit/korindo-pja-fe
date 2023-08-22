@@ -18,6 +18,7 @@ import {
   Spinner,
   FormGroup,
   CardHeader,
+  UncontrolledTooltip,
   UncontrolledAlert,
   DropdownItem,
   DropdownMenu,
@@ -212,7 +213,8 @@ const FileManagement = (props) => {
 
 
   const getInsideFolder = (e, f) => {
-    console.log("curr", currFolder)
+    //debugger
+    //console.log("curr", currFolder)
     setCurrFolder(e)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
@@ -395,7 +397,7 @@ const FileManagement = (props) => {
                 </Row>
                 <p />
                 <p />
-                <Row><h6><i className="mdi mdi-folder align-middle fs-5" /> {"  "}{props.t("Folders")}</h6></Row>
+                <Row><h6><i className="mdi mdi-folder align-middle fs-5" />{"   "}{props.t("Folders")}</h6></Row>
                 <p />
                 <p />
                 <Row>
@@ -447,8 +449,11 @@ const FileManagement = (props) => {
                                 <div className="d-flex flex-row bd-highlight mb-1">
                                   <div className="overflow-hidden me-auto">
                                     <div className="text-truncate mb-1">
-                                      <a className="text-body fs-6 align-baseline">
+                                      <a className="text-body fs-6 align-baseline" id={`folderTooltip_${key}`}>
                                         {myfiles.name}
+                                        <UncontrolledTooltip placement="bottom" target={`folderTooltip_${key}`}>
+                                          {myfiles.name}
+                                        </UncontrolledTooltip>
                                       </a>
                                     </div>
                                   </div>
@@ -464,7 +469,7 @@ const FileManagement = (props) => {
 
 
                 <p />
-                <h6><i className="mdi mdi-file align-middle fs-5" /> {"  "}{props.t("Files")}</h6>
+                <h6><i className="mdi mdi-file align-middle fs-5" />{"   "}{props.t("Files")}</h6>
                 <p />
                 <Row>
 
@@ -539,8 +544,12 @@ const FileManagement = (props) => {
                               <div className="d-flex">
                                 <div className="overflow-hidden me-auto">
                                   <div className="fs-6 text-truncate mb-1">
-                                    <Link to="#" className="text-body">
+                                    <Link to="#" className="text-body" id={`nameTooltip_${key}`}>
                                       &nbsp;{myfiles.name}&nbsp;
+
+                                      <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                        {myfiles.name}
+                                      </UncontrolledTooltip>
                                     </Link>
                                   </div>
                                 </div>

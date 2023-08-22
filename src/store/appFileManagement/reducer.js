@@ -2,6 +2,8 @@ import {
 
     GET_SELECT,
     RESP_GET_SELECT,
+    GET_SELECT2,
+    RESP_GET_SELECT2,
     SEARCH_FILE,
     RESP_SEARCH_FILE,
     GET_SELECT_FILE,
@@ -27,6 +29,7 @@ import {
 const INIT_STATE = {
 
     respGetSelect: {},
+    respGetSelect2: {},
     respGetSelectFile: {},
     respGetSearchFile: {},
     msgAdd: "",
@@ -53,6 +56,15 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetSelect: action.payload,
             }
+            case GET_SELECT2:
+                return {
+                    ...state,
+                }
+            case RESP_GET_SELECT2:
+                return {
+                    ...state,
+                    respGetSelect2: action.payload,
+                }
             case SEARCH_FILE:
                 return {
                     ...state,

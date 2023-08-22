@@ -2,6 +2,8 @@ import {
 
     GET_SELECT,
     RESP_GET_SELECT,
+    GET_SELECT2,
+    RESP_GET_SELECT2,
     GET_SELECT_FILE,
     RESP_GET_SELECT_FILE,
     DELETE_FILE_FOLDER,
@@ -34,6 +36,16 @@ export const getSelectFile = (req) => ({
     payload: resp,
   })
 
+  export const getSelectFile2 = (req) => ({
+    type: GET_SELECT2,
+    payload: req,
+  })
+  
+  export const respGetSelect2 = resp => ({
+    type: RESP_GET_SELECT2,
+    payload: resp,
+  })
+
   export const getSearch = (req) => ({
     type: SEARCH_FILE,
     payload: req,
@@ -44,10 +56,10 @@ export const getSelectFile = (req) => ({
     payload: resp,
   })
 
-  export const getSelectFile2 = (req) => ({
-    type: GET_SELECT_FILE,
-    payload: req,
-  })
+  // export const getSelectFile2 = (req) => ({
+  //   type: GET_SELECT_FILE,
+  //   payload: req,
+  // })
 
   export const respGetSelectFile = resp => ({
     type: RESP_GET_SELECT_FILE,

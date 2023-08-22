@@ -15,15 +15,17 @@ import {
     Col,
     Card,
     CardBody,
+    UncontrolledTooltip
 } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
-import { resetMessage, msgMove, getSelectFile, moveFile } from '../../store/appFileManagement/actions';
+import { resetMessage, msgMove, getSelectFile, getSelectFile2, moveFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
 import { Link } from "react-router-dom"
 import { withTranslation } from "react-i18next"
+
 
 const Move = (props) => {
 
@@ -36,7 +38,13 @@ const Move = (props) => {
 
 
     const getFileSelect = useSelector(state => {
+        console.log("resp1", state.fileManagementReducer.respGetSelect)
         return state.fileManagementReducer.respGetSelect;
+    })
+
+    const getFileSelect2 = useSelector(state => {
+        console.log("resp2", state.fileManagementReducer.respGetSelect2)
+        return state.fileManagementReducer.respGetSelect2;
     })
 
     const moveRespMsg = useSelector(state => {
@@ -45,6 +53,7 @@ const Move = (props) => {
 
 
     useEffect(() => {
+        dispatch(getSelectFile2())
         dispatch(getSelectFile())
     }, [])
 
@@ -81,45 +90,76 @@ const Move = (props) => {
     const [moveContentModal, setMoveContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        // debugger
-        setMoveMsgModal(!moveMsgModal)
+        debugger;
+        setMoveMsgModal(!moveMsgModal);
+    
         if (moveMsg.status === "1") {
+            props.toggle();
+            setMoveMsg("");
+    
+            dispatch(getSelectFile({ 'folder_num': props.idNowLoc }));
 
-            props.toggle()
-
-            setMoveMsg("")
-
-            dispatch(getSelectFile({ 'folder_num': numF }))
-            //dispatch(getSelectFile({'folder_num': props.idNowLoc}))
-
+            handleEffect();
         }
-    }
+    };
+
+    const handleEffect = () => {
+        if (moveRespMsg.status === "1") {
+            setMoveMsg(moveRespMsg);
+            // dispatch(getSelectFile({ 'folder_num': numF }));
+        }
+        setMoveContentModal(moveRespMsg.message);
+        setMoveSpinner(false);
+    };
 
     useEffect(() => {
-        if (moveRespMsg.status === "1") {
-
-            setMoveMsg(moveRespMsg);
-            //createFileFolderValidInput.resetForm();
-        }
-        setMoveContentModal(moveRespMsg.message)
-        setMoveSpinner(false)
+        handleEffect();
     }, [moveRespMsg]);
 
 
-    const getInsideFolder = (e, f) => {
-        // debugger
+    // useEffect(() => {
+    //     if (moveRespMsg.status === "1") {
 
-        dispatch(getSelectFile({ 'folder_num': e }))
+    //         setMoveMsg(moveRespMsg);
+    //         //dispatch(getSelectFile({ 'folder_num': numF }));
+            
+    //     }
+    //     setMoveContentModal(moveRespMsg.message)
+        
+    //     setMoveSpinner(false)
+    // }, [getFileSelect,moveRespMsg]);
 
+    // const callEffect = () => {
+    //     useEffect(() => {
+    //         if (moveRespMsg.status === "1") {
+    
+    //             setMoveMsg(moveRespMsg);
+    //             //dispatch(getSelectFile({ 'folder_num': numF }));
+                
+    //         }
+    //         setMoveContentModal(moveRespMsg.message)
+            
+    //         setMoveSpinner(false)
+    //     }, [moveRespMsg]);
+    // }
+
+
+
+
+    const getInsideFolderMove = (e, f) => {
+        //debugger
+        dispatch(getSelectFile2({ 'folder_num': e }))
         setNumF(e)
         setNumP(f)
+
+        
     }
 
 
 
     return (
 
-        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static">
+        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog modal-lg" backdrop="static">
 
             <MsgModal
                 modal={moveMsgModal}
@@ -153,10 +193,10 @@ const Move = (props) => {
                     <Row>
                         <div className="align-baseline fs-6">
                             <strong>
-                                {getFileSelect?.data?.path.map((breadcrumb, index) => (
+                                {getFileSelect2?.data?.path.map((breadcrumb, index) => (
                                     <span key={index}>
                                         {index > 0 && <i className="mdi mdi-chevron-right" />}
-                                        <a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
+                                        <a onClick={() => getInsideFolderMove(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
                                     </span>
                                 ))}
                             </strong>
@@ -167,7 +207,7 @@ const Move = (props) => {
                     <p />
                     <p />
                     <Row>
-                        {getFileSelect?.data?.childList.map((myfiles, key) => (
+                        {getFileSelect2?.data?.childList.map((myfiles, key) => (
                             myfiles.type === "FOLDER" ?
 
                                 myfiles.num === props.fNum ?
@@ -176,7 +216,7 @@ const Move = (props) => {
 
                                     <Col xl={4} sm={6} key={key}>
                                         <Card className="shadow-none border ">
-                                            <CardBody className="p-3" onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num) }} style={{ cursor: "pointer" }}>
+                                            <CardBody className="p-3" onDoubleClick={() => { getInsideFolderMove(myfiles.num, myfiles.parent_num) }} style={{ cursor: "pointer" }}>
 
                                                 <div >
 
@@ -192,8 +232,11 @@ const Move = (props) => {
                                                     <div className="d-flex">
                                                         <div className="overflow-hidden me-auto">
                                                             <h5 className="font-size-14 text-truncate mb-1">
-                                                                <a className="text-body fs-6 align-baseline">
-                                                                    {myfiles.name}&nbsp;
+                                                                <a className="text-body fs-6 align-baseline" id={`folderTooltip_${key}`}>
+                                                                    {myfiles.name}
+                                                                    <UncontrolledTooltip placement="bottom" target={`folderTooltip_${key}`}>
+                                                                        {myfiles.name}
+                                                                    </UncontrolledTooltip>
                                                                 </a>
                                                             </h5>
                                                         </div>
@@ -209,12 +252,12 @@ const Move = (props) => {
                     </Row>
 
 
-                    {/* <p />
+                    <p />
                     <h6><i className="mdi mdi-file align-middle fs-5" /> {"  "}{props.t("Files")}</h6>
-                    <p /> */}
-                    {/* <Row>
+                    <p />
+                    <Row>
 
-                        {getFileSelect?.data?.childList.map((myfiles, key) => (
+                        {getFileSelect2?.data?.childList.map((myfiles, key) => (
 
 
 
@@ -261,8 +304,12 @@ const Move = (props) => {
                                                     <div className="d-flex">
                                                         <div className="overflow-hidden me-auto">
                                                             <h5 className="font-size-14 text-truncate mb-1">
-                                                                <Link to="#" className="text-body">
+                                                                <Link to="#" className="text-body" id={`nameTooltip_${key}`}>
                                                                     &nbsp;{myfiles.name}&nbsp;
+
+                                                                    <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                                                        {myfiles.name}
+                                                                    </UncontrolledTooltip>
                                                                 </Link>
                                                             </h5>
                                                         </div>
@@ -277,7 +324,7 @@ const Move = (props) => {
                         ))}
 
 
-                    </Row> */}
+                    </Row>
 
 
                 </ModalBody>
