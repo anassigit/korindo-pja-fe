@@ -7,23 +7,14 @@ import {
     ModalFooter,
     Button,
     Form,
-    FormGroup,
-    Label,
-    Input,
     Spinner,
-    Row,
-    Col,
-    Card,
-    CardBody,
-    UncontrolledTooltip
+    Row
 } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, msgMove, getSelectFile, getSelectFile2, moveFile } from '../../store/appFileManagement/actions';
-import shortid from "shortid";
-import { Link } from "react-router-dom"
 import { withTranslation } from "react-i18next"
 
 
@@ -32,18 +23,19 @@ const Move = (props) => {
     const dispatch = useDispatch();
     const [moveSpinner, setMoveSpinner] = useState(false)
     const [moveMsg, setMoveMsg] = useState(false)
+    const [moveMsgModal, setMoveMsgModal] = useState(false)
+    const [moveContentModal, setMoveContentModal] = useState("")
 
     const [numF, setNumF] = useState(0)
     const [numP, setNumP] = useState(0)
+    const [nem, setNem] = useState("")
 
 
     const getFileSelect = useSelector(state => {
-        console.log("resp1", state.fileManagementReducer.respGetSelect)
         return state.fileManagementReducer.respGetSelect;
     })
 
     const getFileSelect2 = useSelector(state => {
-        console.log("resp2", state.fileManagementReducer.respGetSelect2)
         return state.fileManagementReducer.respGetSelect2;
     })
 
@@ -86,33 +78,41 @@ const Move = (props) => {
         }
     });
 
-    const [moveMsgModal, setMoveMsgModal] = useState(false)
-    const [moveContentModal, setMoveContentModal] = useState("")
+    const getInsideFolderMove = (e, f, n) => {
+        debugger
+        dispatch(getSelectFile2({ "folder_num": e }))
+        setNumF(e)
+        setNumP(f)
+        setNem(n)
+
+    }
 
     const toggleMsgModal = () => {
         debugger;
         setMoveMsgModal(!moveMsgModal);
-    
+
         if (moveMsg.status === "1") {
             props.toggle();
-            setMoveMsg("");
-    
-            dispatch(getSelectFile({ 'folder_num': props.idNowLoc }));
-
+            dispatch(getSelectFile({ "folder_num": props.idNowLoc }));
             handleEffect();
+            setMoveMsg("");
+            
         }
     };
 
     const handleEffect = () => {
+        debugger
         if (moveRespMsg.status === "1") {
             setMoveMsg(moveRespMsg);
-            // dispatch(getSelectFile({ 'folder_num': numF }));
         }
         setMoveContentModal(moveRespMsg.message);
         setMoveSpinner(false);
+
     };
 
     useEffect(() => {
+        debugger
+        setMoveMsg("");
         handleEffect();
     }, [moveRespMsg]);
 
@@ -122,44 +122,31 @@ const Move = (props) => {
 
     //         setMoveMsg(moveRespMsg);
     //         //dispatch(getSelectFile({ 'folder_num': numF }));
-            
+
     //     }
     //     setMoveContentModal(moveRespMsg.message)
-        
+
     //     setMoveSpinner(false)
     // }, [getFileSelect,moveRespMsg]);
 
     // const callEffect = () => {
     //     useEffect(() => {
     //         if (moveRespMsg.status === "1") {
-    
+
     //             setMoveMsg(moveRespMsg);
     //             //dispatch(getSelectFile({ 'folder_num': numF }));
-                
+
     //         }
     //         setMoveContentModal(moveRespMsg.message)
-            
+
     //         setMoveSpinner(false)
     //     }, [moveRespMsg]);
     // }
 
 
-
-
-    const getInsideFolderMove = (e, f) => {
-        //debugger
-        dispatch(getSelectFile2({ 'folder_num': e }))
-        setNumF(e)
-        setNumP(f)
-
-        
-    }
-
-
-
     return (
 
-        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog modal-lg" backdrop="static">
+        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static">
 
             <MsgModal
                 modal={moveMsgModal}
@@ -191,22 +178,57 @@ const Move = (props) => {
 
                         </div> */}
                     <Row>
+                        <div className='align-middle text-body'>
+                            Current folder: {props.fName}
+                            <p />
+                            Move to: {nem}
+                        </div>
+                    </Row>
+
+                    <hr />
+                    <Row>
                         <div className="align-baseline fs-6">
-                            <strong>
                                 {getFileSelect2?.data?.path.map((breadcrumb, index) => (
                                     <span key={index}>
                                         {index > 0 && <i className="mdi mdi-chevron-right" />}
-                                        <a onClick={() => getInsideFolderMove(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
+                                        <a onClick={() => getInsideFolderMove(breadcrumb.num, breadcrumb.parent_num, breadcrumb.name)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
                                     </span>
                                 ))}
-                            </strong>
                         </div>
                     </Row>
                     <hr />
                     <Row><h6><i className="mdi mdi-folder align-middle fs-5" /> {"  "}{props.t("Folders")}</h6></Row>
                     <p />
-                    <p />
                     <Row>
+                        {getFileSelect2?.data?.childList.map((myfiles2, key) => (
+                            myfiles2.type === "FOLDER" ?
+
+                                myfiles2.num === props.fNum ?
+
+                                    null :
+
+                                    <div >
+
+                                        {myfiles2.type === "FOLDER" ?
+                                            <ul className="list-group" key={key}>
+                                                <li className="list-group-item border-0 py-1 fs-6 align-baseline" onDoubleClick={() => { getInsideFolderMove(myfiles2.num, myfiles2.parent_num, myfiles2.name) }} style={{ cursor: "pointer" }}>
+                                                    <i className="fa fa-solid fa-folder fs-6 align-baseline" style={{ color: "#7bae40" }}></i> {myfiles2.name}
+                                                </li>
+                                            </ul>
+
+                                            :
+                                            null
+
+                                        }
+
+                                    </div>
+
+                                : ''
+
+                        ))}
+                    </Row>
+
+                    {/* <Row>
                         {getFileSelect2?.data?.childList.map((myfiles, key) => (
                             myfiles.type === "FOLDER" ?
 
@@ -249,21 +271,53 @@ const Move = (props) => {
                                 : ''
 
                         ))}
-                    </Row>
-
+                    </Row> */}
 
                     <p />
                     <h6><i className="mdi mdi-file align-middle fs-5" /> {"  "}{props.t("Files")}</h6>
                     <p />
+
                     <Row>
 
-                        {getFileSelect2?.data?.childList.map((myfiles, key) => (
+                        {
+                            getFileSelect2?.data?.childList.map((myfiles2, key) => (
+                                myfiles2.type === "FILE" && myfiles2.num !== props.fNum ? (
+                                    <div key={key} className="text-break">
+                                        <ul className="list-group">
+                                            <li className="list-group-item border-0 py-1 fs-6 align-baseline disabled">
+                                                {myfiles2.name.endsWith("docx") || myfiles2.name.endsWith("doc") ? (
+                                                    <i className="fa fa-solid fa-file-word fs-6" style={{ verticalAlign: "middle", color: "#41a5ee" }}></i>
+                                                ) : myfiles2.name.endsWith("jpg") || myfiles2.name.endsWith("jpeg") || myfiles2.name.endsWith("gif") || myfiles2.name.endsWith("png") ? (
+                                                    <i className="fa fa-solid fa-image fs-6 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                                ) : myfiles2.name.endsWith("xls") || myfiles2.name.endsWith("xlsx") || myfiles2.name.endsWith("csv") ? (
+                                                    <i className="fa fa-solid fa-file-excel fs-6" style={{ verticalAlign: "middle", color: "#32c37e" }}></i>
+                                                ) : myfiles2.name.endsWith("ppt") || myfiles2.name.endsWith("pptx") ? (
+                                                    <i className="fa fa-solid fa-file-powerpoint fs-6" style={{ verticalAlign: "middle", color: "#ff8f6b" }}></i>
+                                                ) : myfiles2.name.endsWith("pdf") ? (
+                                                    <i className="fa fa-solid fa-file-pdf fs-6" style={{ verticalAlign: "middle", color: "#b40c01" }}></i>
+                                                ) : (
+                                                    <i className="fa fa-solid fa-file fs-6 align-baseline" style={{ verticalAlign: "middle", color: "#b7b7b7" }}></i>
+                                                )}
+                                                {" "}{myfiles2.name}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                ) : null
+                            ))
+                        }
+
+
+                    </Row>
+
+                    {/* <Row>
+
+                        {getFileSelect2?.data?.childList.map((myfiles2, key) => (
 
 
 
-                            myfiles.type === "FILE" ?
+                            myfiles2.type === "FILE" ?
 
-                                myfiles.num === props.fNum ?
+                                myfiles2.num === props.fNum ?
 
                                     null :
 
@@ -274,10 +328,10 @@ const Move = (props) => {
 
                                                     <div className="avatar-xs me-3 mb-3">
                                                         <div className="avatar-title bg-transparent rounded">
-                                                            {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
+                                                            {myfiles2.name.endsWith("docx") || myfiles2.name.endsWith("doc") ? (
                                                                 <i className="fa fa-solid fa-file-word fs-3 " style={{ verticalAlign: "middle", color: "#41a5ee" }}></i>
                                                             ) :
-                                                                myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
+                                                                myfiles2.name.endsWith("jpg") || myfiles2.name.endsWith("jpeg") || myfiles2.name.endsWith("gif") || myfiles2.name.endsWith("png") ? (
                                                                     // <img src={myfiles} key={key}
                                                                     //   style={{
                                                                     //     width: 20,
@@ -286,13 +340,13 @@ const Move = (props) => {
                                                                     //   }} />
                                                                     <i className="fa fa-solid fa-image fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
                                                                 )
-                                                                    : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
+                                                                    : myfiles2.name.endsWith("xls") || myfiles2.name.endsWith("xlsx") || myfiles2.name.endsWith("csv") ? (
                                                                         <i className="fa fa-solid fa-file-excel fs-3 " style={{ verticalAlign: "middle", color: "#32c37e" }}></i>
                                                                     )
-                                                                        : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
+                                                                        : myfiles2.name.endsWith("ppt") || myfiles2.name.endsWith("pptx") ? (
                                                                             <i className="fa fa-solid fa-file-powerpoint fs-3" style={{ verticalAlign: "middle", color: "#ff8f6b" }}></i>
                                                                         )
-                                                                            : myfiles.name.endsWith("pdf") ? (
+                                                                            : myfiles2.name.endsWith("pdf") ? (
                                                                                 <i className="fa fa-solid fa-file-pdf fs-3" style={{ verticalAlign: "middle", color: "#b40c01" }}></i>
                                                                             )
                                                                                 :
@@ -305,10 +359,10 @@ const Move = (props) => {
                                                         <div className="overflow-hidden me-auto">
                                                             <h5 className="font-size-14 text-truncate mb-1">
                                                                 <Link to="#" className="text-body" id={`nameTooltip_${key}`}>
-                                                                    &nbsp;{myfiles.name}&nbsp;
+                                                                    &nbsp;{myfiles2.name}&nbsp;
 
                                                                     <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                                                        {myfiles.name}
+                                                                        {myfiles2.name}
                                                                     </UncontrolledTooltip>
                                                                 </Link>
                                                             </h5>
@@ -324,9 +378,19 @@ const Move = (props) => {
                         ))}
 
 
-                    </Row>
+                    </Row> */}
+                    <hr />
 
-
+                    {/* <Row>
+                        <div className="align-baseline fs-6">
+                                {getFileSelect2?.data?.path.map((breadcrumb, index) => (
+                                    <span key={index}>
+                                        {index > 0 && <i className="mdi mdi-chevron-right" />}
+                                        <a onClick={() => getInsideFolderMove(breadcrumb.num, breadcrumb.parent_num, breadcrumb.name)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
+                                    </span>
+                                ))}
+                        </div>
+                    </Row> */}
                 </ModalBody>
                 <ModalFooter>
                     <Button type="submit" color={moveSpinner ? "primary disabled" : "primary"}>
@@ -353,6 +417,7 @@ Move.propTypes = {
     toggle: PropTypes.any,
     fNum: PropTypes.any,
     pNum: PropTypes.any,
+    fName: PropTypes.any,
     idNowLoc: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any

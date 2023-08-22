@@ -15,4 +15,18 @@
         }
     }
 }
+
+//vin add
+.breadcrumb-container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent breadcrumbs from wrapping to multiple lines */
+    overflow-x: auto; /* Add horizontal scrollbar when content overflows */
+    max-width: 100%; /* Limit the width to the container's width */
+}
+
+/* Style for individual breadcrumb items */
+.breadcrumb-container span {
+    margin-right: 5px; /* Add space between breadcrumb items */
+}
+
   

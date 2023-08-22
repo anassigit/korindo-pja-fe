@@ -76,6 +76,8 @@ const FileManagement = (props) => {
 
   const [fNum, setFnum] = useState(0)
   const [pNum, setPnum] = useState(0)
+  const [fNem, setFnem] = useState("")
+  const [fName, setFName] = useState("")
 
   const [tempIdDel, setTempIdDel] = useState()
 
@@ -131,6 +133,7 @@ const FileManagement = (props) => {
 
     setFnum(Fid)
     setPnum(Pid)
+    setFName(fNem)
     setIdNowLoc(currFolder)
     setMoveModal(!moveModal)
 
@@ -212,7 +215,7 @@ const FileManagement = (props) => {
   }, [getFileSelect])
 
 
-  const getInsideFolder = (e, f) => {
+  const getInsideFolder = (e, f, n) => {
     //debugger
     //console.log("curr", currFolder)
     setCurrFolder(e)
@@ -221,6 +224,7 @@ const FileManagement = (props) => {
     setIdChild(e)
     setIdParentTemp(f)
     setIdParent(f)
+    setFnem(n)
   }
 
   useEffect(() => {
@@ -323,6 +327,7 @@ const FileManagement = (props) => {
             idNowLoc={idNowLoc}
             fNum={fNum}
             pNum={pNum}
+            fName={fName}
           />
 
           <ConfirmModal
@@ -386,7 +391,7 @@ const FileManagement = (props) => {
                         return (
                           <span key={index}>
                             {index > 0 && <i className="mdi mdi-chevron-right" />}
-                            < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
+                            < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num, breadcrumb.name)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
                             {/* <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a> */}
                           </span>
                         )
@@ -409,7 +414,7 @@ const FileManagement = (props) => {
 
                         <Col xl={2} key={key}>
                           <Card className="shadow-none border">
-                            <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num) }}>
+                            <CardBody className="p-3" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
                               {/* onClick={() => getInsideFolder(myfiles.num, myfiles.parent_num)} */}
                               <div >
                                 <div className="float-end ms-2">
