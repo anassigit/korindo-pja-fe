@@ -431,7 +431,7 @@ debugger
                                         {props.t("Rename")}
                                       </DropdownItem>
                                       <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                        <i className="mdi mdi-arrow-all align-middle fs-4 mb-2" /> {"  "}
+                                        <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
                                         {props.t("Move")}
                                       </DropdownItem>
                                       <div className="dropdown-divider"></div>
@@ -502,7 +502,7 @@ debugger
                                       {props.t("Rename")}
                                     </DropdownItem>
                                     <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                      <i className="mdi mdi-arrow-all align-middle fs-4 mb-2" /> {"  "}
+                                      <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
                                       {props.t("Move")}
                                     </DropdownItem>
                                     <DropdownItem onClick={() => downloadFolderFile(myfiles.num, myfiles.name)}>

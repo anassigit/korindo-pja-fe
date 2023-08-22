@@ -69,7 +69,7 @@ const Move = (props) => {
         }),
 
         onSubmit: (value) => {
-            // debugger
+            
             setMoveSpinner(true)
             dispatch(moveFile(value));
             toggleMsgModal()
@@ -79,7 +79,7 @@ const Move = (props) => {
     });
 
     const getInsideFolderMove = (e, f, n) => {
-        debugger
+  
         dispatch(getSelectFile2({ "folder_num": e }))
         setNumF(e)
         setNumP(f)
@@ -88,7 +88,7 @@ const Move = (props) => {
     }
 
     const toggleMsgModal = () => {
-        debugger;
+    
         setMoveMsgModal(!moveMsgModal);
 
         if (moveMsg.status === "1") {
@@ -101,7 +101,7 @@ const Move = (props) => {
     };
 
     const handleEffect = () => {
-        debugger
+     
         if (moveRespMsg.status === "1") {
             setMoveMsg(moveRespMsg);
         }
@@ -111,7 +111,7 @@ const Move = (props) => {
     };
 
     useEffect(() => {
-        debugger
+       
         setMoveMsg("");
         handleEffect();
     }, [moveRespMsg]);
@@ -119,11 +119,12 @@ const Move = (props) => {
 
 
     const closeButton = () => {
-    debugger
-    dispatch(getSelectFile2({
-        "folder_num": 0
-    }))
-        props.toggle()
+
+        props.toggle();
+        dispatch(getSelectFile2({
+            "folder_num": 0
+        }))
+        
 
     }
     // useEffect(() => {
@@ -198,14 +199,14 @@ const Move = (props) => {
                                 {getFileSelect2?.data?.path.map((breadcrumb, index) => (
                                     <span key={index}>
                                         {index > 0 && <i className="mdi mdi-chevron-right" />}
-                                        <a onClick={() => getInsideFolderMove(breadcrumb.num, breadcrumb.parent_num, breadcrumb.name)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
+                                        <a onClick={() => getInsideFolderMove(breadcrumb.num, breadcrumb.parent_num, breadcrumb.name)} style={{ cursor: "pointer" }}>{breadcrumb.name}</a>
                                     </span>
                                 ))}
                         </div>
                     </Row>
                     <hr />
                     <Row><h6><i className="mdi mdi-folder align-middle fs-5" /> {"  "}{props.t("Folders")}</h6></Row>
-                    <p />
+                    
                     <Row>
                         {getFileSelect2?.data?.childList.map((myfiles2, key) => (
                             myfiles2.type === "FOLDER" ?
@@ -282,7 +283,7 @@ const Move = (props) => {
 
                     <p />
                     <h6><i className="mdi mdi-file align-middle fs-5" /> {"  "}{props.t("Files")}</h6>
-                    <p />
+                   
 
                     <Row>
 
