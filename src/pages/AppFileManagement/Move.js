@@ -219,7 +219,7 @@ const Move = (props) => {
 
                                         {myfiles2.type === "FOLDER" ?
                                             <ul className="list-group" key={key}>
-                                                <li className="list-group-item border-0 py-1 fs-6 align-baseline" onDoubleClick={() => { getInsideFolderMove(myfiles2.num, myfiles2.parent_num, myfiles2.name) }} style={{ cursor: "pointer" }}>
+                                                <li className="list-group-item border-0 py-1 fs-6 align-baseline" onClick={() => { getInsideFolderMove(myfiles2.num, myfiles2.parent_num, myfiles2.name) }} style={{ cursor: "pointer" }}>
                                                     <i className="fa fa-solid fa-folder fs-6 align-baseline" style={{ color: "#7bae40" }}></i> {myfiles2.name}
                                                 </li>
                                             </ul>
