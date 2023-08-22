@@ -445,7 +445,6 @@ const AddInstructions = (props) => {
             /> */}
 
             <Row>
-                <Spinner animation="grow" style={{ width: "250px", height: "250px", display: !addInstructionsSpinner ? "block" : "none", marginLeft: '-250px', marginTop: '-350px', zIndex: 2, position: "absolute" }} color="danger" />
                 <Col lg={12}>
                     <Card>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>{props.t("Add Instructions")}</CardHeader>
@@ -619,7 +618,7 @@ const AddInstructions = (props) => {
                                                                 <input type="file" id="fileuploadAdd" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                                             </div>
                                                         </div>
-                                                        <span style={{fontSize:"12px", color:"blue"}} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                                        <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                                                         &nbsp;&nbsp;&nbsp;
                                                     </div>
 
@@ -664,6 +663,7 @@ const AddInstructions = (props) => {
 
                                             <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
 
+                                            <Spinner style={{ padding:"24px",display: addInstructionsSpinner ? "block" : "none", marginLeft: '-550px', marginTop: '-250px', zIndex: 2, position: "absolute" }} color="danger" />
                                         </Button>&nbsp;
 
 
