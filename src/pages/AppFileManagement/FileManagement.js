@@ -130,7 +130,7 @@ const FileManagement = (props) => {
   }
 
   const toggleMoveModal = (Fid, Pid) => {
-
+debugger
     setFnum(Fid)
     setPnum(Pid)
     setFName(fNem)
@@ -451,6 +451,7 @@ const FileManagement = (props) => {
                                     }
                                   </div>
                                 </div>
+                                
                                 <div className="d-flex flex-row bd-highlight mb-1">
                                   <div className="overflow-hidden me-auto">
                                     <div className="text-truncate mb-1">

@@ -117,6 +117,15 @@ const Move = (props) => {
     }, [moveRespMsg]);
 
 
+
+    const closeButton = () => {
+    debugger
+    dispatch(getSelectFile2({
+        "folder_num": 0
+    }))
+        props.toggle()
+
+    }
     // useEffect(() => {
     //     if (moveRespMsg.status === "1") {
 
@@ -177,17 +186,15 @@ const Move = (props) => {
                             <Input type="text"  value={numF || ""} />
 
                         </div> */}
-                    <Row>
+                    {/* <Row>
                         <div className='align-middle text-body'>
                             Current folder: {props.fName}
-                            <p />
-                            Move to: {nem}
                         </div>
-                    </Row>
+                    </Row> */}
 
-                    <hr />
+                    {/* <hr /> */}
                     <Row>
-                        <div className="align-baseline fs-6">
+                    <div className="align-baseline fs-6">
                                 {getFileSelect2?.data?.path.map((breadcrumb, index) => (
                                     <span key={index}>
                                         {index > 0 && <i className="mdi mdi-chevron-right" />}
@@ -379,7 +386,7 @@ const Move = (props) => {
 
 
                     </Row> */}
-                    <hr />
+                    {/* <hr /> */}
 
                     {/* <Row>
                         <div className="align-baseline fs-6">
@@ -398,7 +405,7 @@ const Move = (props) => {
                         {props.t("Move")}
                         <Spinner style={{ display: moveSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
-                    <Button color="danger" onClick={props.toggle} className='align-middle me-2'>
+                    <Button color="danger" onClick={()=>{closeButton()}} className='align-middle me-2'>
                         <i className="mdi mdi-window-close fs-5 align-middle me-2"></i>{" "}
                         {props.t("Close")}
                     </Button>
