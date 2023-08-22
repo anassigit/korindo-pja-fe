@@ -29,8 +29,8 @@ import { withTranslation } from "react-i18next"
 const ChangePassword = (props) => {
 
   const dispatch = useDispatch();
-  
-  const langType = localStorage.getItem("I18N_LANGUAGE") || "eng"; 
+
+  const langType = localStorage.getItem("I18N_LANGUAGE") || "eng";
   const validationMessages = {
     eng: {
       currentPassword: "Please enter your current password.",
@@ -76,11 +76,22 @@ const ChangePassword = (props) => {
       .required(validationMessages[langType].Password1.required)
       .min(8, validationMessages[langType].Password1.min)
       .test(
-        "has-at-least-two-different-characters",
+        "has-at-least-two-different-types",
         validationMessages[langType].Password1.test,
         (value) => {
-          const uniqueCharacters = new Set(value);
-          return uniqueCharacters.size >= 2;
+          const characterTypes = {
+            digit: /\d/,
+            lowercase: /[a-z]/,
+            uppercase: /[A-Z]/,
+            special: /[\W_]/, 
+          };
+
+          const typeCount = Object.values(characterTypes).reduce(
+            (count, regex) => (regex.test(value) ? count + 1 : count),
+            0
+          );
+
+          return typeCount >= 2;
         }
       ),
     newPassword: Yup.string()
@@ -120,7 +131,7 @@ const ChangePassword = (props) => {
       setChangePasswordMsg("")
     }
   });
-  
+
   useEffect(() => {
     userProfilePasswordValidation.resetForm({
       values: {
@@ -130,7 +141,7 @@ const ChangePassword = (props) => {
       },
     });
   }, [props.userProfilePassword]);
-  
+
 
 
   const updatePass = async () => {
@@ -155,7 +166,7 @@ const ChangePassword = (props) => {
       props.setAppUserProfileMsg(changePasswordMessage);
       props.setUserProfilePassword(false);
     }
-    
+
     if (changePasswordMessage.message != undefined && changePasswordMessage?.status === "0") {
       setChangePasswordMsg(changePasswordMessage.message)
     }
@@ -248,7 +259,7 @@ const ChangePassword = (props) => {
 
                   <Button type="submit" color="primary" className="ms-1">
 
-                  <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
+                    <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
                     <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                   </Button>&nbsp;
 
@@ -262,7 +273,7 @@ const ChangePassword = (props) => {
                     }}
                   >
 
-                <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}{props.t("Back")}
+                    <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}{props.t("Back")}
                   </Button>
                 </FormGroup>
 

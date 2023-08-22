@@ -37,6 +37,46 @@ const FirstLogin = (props) => {
     validation.setFieldValue('currentPassword', '1111')
   }, [])
 
+  const langType = localStorage.getItem("I18N_LANGUAGE") || "eng";
+  const validationMessages = {
+    eng: {
+      currentPassword: "Please enter your current password.",
+      Password1: {
+        required: "Please enter a new password.",
+        min: "Password must be at least 8 characters long.",
+        test: "Password must include at least two different characters.",
+      },
+      newPassword: {
+        required: "Please re-enter the new password.",
+        oneOf: "Passwords do not match.",
+      },
+    },
+    kor: {
+      currentPassword: "현재 비밀번호를 입력하세요.",
+      Password1: {
+        required: "새로운 비밀번호를 입력하세요.",
+        min: "비밀번호는 최소 8자 이상이어야 합니다.",
+        test: "비밀번호는 적어도 두 가지 다른 문자를 포함해야 합니다.",
+      },
+      newPassword: {
+        required: "새 비밀번호를 다시 입력하세요.",
+        oneOf: "비밀번호가 일치하지 않습니다.",
+      },
+    },
+    idr: {
+      currentPassword: "Silakan masukkan kata sandi saat ini.",
+      Password1: {
+        required: "Silakan masukkan kata sandi baru.",
+        min: "Kata sandi harus terdiri dari setidaknya 8 karakter.",
+        test: "Kata sandi harus mengandung setidaknya dua karakter yang berbeda.",
+      },
+      newPassword: {
+        required: "Silakan masukkan kembali kata sandi baru.",
+        oneOf: "Kata sandi tidak cocok.",
+      },
+    },
+  }
+
   const validation = useFormik({
     enableReinitialize: true,
 
@@ -47,21 +87,31 @@ const FirstLogin = (props) => {
     },
 
     validationSchema: Yup.object().shape({
-      currentPassword: Yup.string().required(props.t("Please enter your current password")),
       password1: Yup.string()
-        .required(props.t("Enter your new password"))
-        .min(8, props.t('The password must be at least 8 characters long'))
+        .required(validationMessages[langType].Password1.required)
+        .min(8, validationMessages[langType].Password1.min)
         .test(
-          props.t("has-at-least-two-different-characters"),
-          props.t("The password must contain at least two different characters"),
-          value => {
-            const uniqueCharacters = new Set(value);
-            return uniqueCharacters.size >= 2;
+          "has-at-least-two-different-types",
+          validationMessages[langType].Password1.test,
+          (value) => {
+            const characterTypes = {
+              digit: /\d/,
+              lowercase: /[a-z]/,
+              uppercase: /[A-Z]/,
+              special: /[\W_]/,
+            };
+
+            const typeCount = Object.values(characterTypes).reduce(
+              (count, regex) => (regex.test(value) ? count + 1 : count),
+              0
+            );
+
+            return typeCount >= 2;
           }
         ),
       newPassword: Yup.string()
         .required(props.t("Enter your new password again"))
-        .oneOf([Yup.ref('password1')], props.t('The passwords does not match')),
+        .oneOf([Yup.ref('password1')], validationMessages[langType].newPassword.oneOf),
     }),
 
     onSubmit: (values) => {
@@ -111,7 +161,7 @@ const FirstLogin = (props) => {
                 </div>
                 <CardBody className="pt-0">
                   <div className="pt-3 pb-2 text-center" style={{ fontSize: "18px" }}>
-                  {props.t("Change your password for security reasons")}
+                    {props.t("Change your password for security reasons")}
                   </div>
                   <div className="py-2">
                     <Form
@@ -124,7 +174,7 @@ const FirstLogin = (props) => {
                     >
                       {error ? <Alert color="danger">{error}</Alert> : null}
 
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <Input
                           name="currentPassword"
                           className="form-control"
@@ -142,7 +192,7 @@ const FirstLogin = (props) => {
                         {validation.touched.currentPassword && validation.errors.currentPassword ? (
                           <FormFeedback type="invalid">{validation.errors.currentPassword}</FormFeedback>
                         ) : null}
-                      </div>
+                      </div> */}
 
                       <div className="mb-3">
                         <Input
@@ -178,21 +228,27 @@ const FirstLogin = (props) => {
                           <FormFeedback type="invalid">{validation.errors.newPassword}</FormFeedback>
                         ) : null}
                       </div>
-                      <Label style={{ cursor: "pointer", userSelect: "none" }} check>
-                        <Input
-                          type="checkbox"
-                          onChange={togglePasswordVisibility}
-                        />{' '}
-                        {props.t("Show password")}
-                      </Label>
-                      <div className="mt-2 d-grid">
-                        <button
-                          className="btn btn-success btn-block"
-                          type="submit"
-                        >
-                          {props.t("Confirm")}
-                        </button>
-                      </div>
+
+                      <Row className="row-cols-gap">
+                        <Col>
+                          <div className="d-grid">
+                            <button className="btn btn-success btn-block" style={{ width: "102.5%" }} type="submit">
+                              {props.t("Confirm")}
+                            </button>
+                          </div>
+                        </Col>
+                        <Col>
+                          <div className="d-grid" style={{ width: "102.5%", marginLeft: "-5%" }}>
+                            <button className="btn btn-light btn-block" style={{ width: "102.5%" }} onClick={() => {
+                              ReactSession.set('firstTime_Login', 'false')
+                              history.push('/')
+                            }}
+                            >
+                              {props.t("Skip")}
+                            </button>
+                          </div>
+                        </Col>
+                      </Row>
 
                     </Form>
                   </div>

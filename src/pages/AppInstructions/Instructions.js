@@ -43,11 +43,12 @@ const Instructions = (props) => {
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
 
-    useEffect(()=> {
+    useEffect(() => {
         let temp = ReactSession.get('firstTime_Login')
         if (temp === "true") {
             history.push('/FirstLogin')
         }
+        setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
     }, [])
 
     useEffect(() => {
@@ -61,13 +62,21 @@ const Instructions = (props) => {
     });
 
     useEffect(() => {
+        localStorage.setItem('appInstructionsTabelSearch', JSON.stringify(appInstructionsTabelSearch));
+    }, [appInstructionsTabelSearch]);
+    
+    // useEffect(() => {
+    //     debugger
+    //     setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
+    // }, [appInstructionsTabelSearch, localStorage]);
+
+    useEffect(() => {
         setAppInstructionsTabelSearch({
             page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset, sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
                 search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status
             }
         });
-    },[props.t, langType])
-
+    }, [props.t, langType])
 
     const appInstructionsData = useSelector(state => {
         return state.instructionsReducer.respGetInstructions;
@@ -152,13 +161,25 @@ const Instructions = (props) => {
             text: props.t("Manager"),
             align: "left",
             headerStyle: { textAlign: 'center' },
-            style: { width: "150px", minWidth: "150px", maxWidth: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+            style: {
+                width: "150px",
+                minWidth: "150px",
+                maxWidth: "150px",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
+            },
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <a>
-                        {cellContent.map((data, index) => {
-                            return index === 0 ? data.name : `, ${data.name}`;
-                        })}
+                        {cellContent.map((data, index) => (
+                            <span key={index}>
+                                {index === 0
+                                    ? data.name + (data.gname !== null ? ` (${data.gname})` : '')
+                                    : `, ${data.name}` + (data.gname !== null ? ` (${data.gname})` : '')
+                                }
+                            </span>
+                        ))}
                     </a>
                 </>
             ),
@@ -167,7 +188,7 @@ const Instructions = (props) => {
                     appInstructionsPreEdit(appInstructionsData);
                 },
             },
-        },
+        },          
         {
             dataField: "insDate",
             text: props.t("Instruction Date"),
@@ -211,7 +232,7 @@ const Instructions = (props) => {
                                 {
                                     appInstructionsData.reply_count > 0 ?
                                         <>
-                                        <i className="bx bx-message-dots text-primary" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.reply_count}
+                                            <i className="bx bx-message-dots text-primary" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.reply_count}
                                         </>
                                         :
                                         <>
@@ -247,7 +268,7 @@ const Instructions = (props) => {
                                 {
                                     appInstructionsData.notice_count > 0 ?
                                         <>
-                                            <i className="bx bxs-bell text-danger" id="repliesCount" style={{  fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.notice_count}
+                                            <i className="bx bxs-bell text-danger" id="repliesCount" style={{ fontSize: "25px", verticalAlign: "middle" }} />&nbsp;{appInstructionsData.notice_count}
                                         </>
                                         :
                                         <>
@@ -403,6 +424,6 @@ const Instructions = (props) => {
 Instructions.propTypes = {
     location: PropTypes.object,
     t: PropTypes.any
-  }
+}
 
 export default withTranslation()(Instructions)

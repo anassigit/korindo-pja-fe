@@ -26,6 +26,7 @@ import { format } from 'date-fns';
 import Select, { components } from "react-select";
 import shortid from "shortid";
 import { withTranslation } from "react-i18next";
+import MsgModal from "components/Common/MsgModal";
 
 const AddInstructions = (props) => {
 
@@ -41,6 +42,7 @@ const AddInstructions = (props) => {
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
 
+    const [addInstructionMsgModal, setAddInstructionMsgModal] = useState(false)
 
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
@@ -158,6 +160,7 @@ const AddInstructions = (props) => {
                 }
             }
             setAddInstructionsSpinner(true);
+            setAddInstructionMsgModal(true)
             insert(bodyForm, config);
 
         }
@@ -166,17 +169,6 @@ const AddInstructions = (props) => {
     const appAddInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgAdd;
     });
-
-    useEffect(() => {
-        if (appAddInstructionsMessage.status == "1") {
-            // debugger
-            props.setAppInstructionsPage(true);
-            props.setAppAddInstructions(false);
-            dispatch(getInstructionsData(props.appInstructionsTabelSearch))
-        }
-        props.setAppInstructionsMsg(appAddInstructionsMessage)
-        setAddInstructionsSpinner(false);
-    }, [appAddInstructionsMessage])
 
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
@@ -425,9 +417,35 @@ const AddInstructions = (props) => {
         }
     };
 
+    const toggleMsgModal = () => {
+        setAddInstructionMsgModal(!addInstructionMsgModal)
+    }
+
+    useEffect(() => {
+        if (appAddInstructionsMessage.status == "1") {
+            // debugger
+            props.setAppInstructionsPage(true);
+            props.setAppAddInstructions(false);
+            dispatch(getInstructionsData(props.appInstructionsTabelSearch))
+            toggleMsgModal()
+        }
+        props.setAppInstructionsMsg(appAddInstructionsMessage)
+        setAddInstructionsSpinner(false);
+    }, [appAddInstructionsMessage])
+
+
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
+
+            <MsgModal
+                modal={addInstructionMsgModal}
+                toggle={toggleMsgModal}
+                message={null}
+                isHidden={true}
+            />
+
             <Row>
+                <Spinner animation="grow" style={{ width: "250px", height: "250px", display: !addInstructionsSpinner ? "block" : "none", marginLeft: '-250px', marginTop: '-350px', zIndex: 2, position: "absolute" }} color="danger" />
                 <Col lg={12}>
                     <Card>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>{props.t("Add Instructions")}</CardHeader>
@@ -602,8 +620,10 @@ const AddInstructions = (props) => {
                                                             </div>
                                                         </div>
                                                         &nbsp;&nbsp;&nbsp;
+                                                    <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
                                                     </div>
-                                                    &nbsp;
+                                                    
+                                                    
                                                     <div className="kb-attach-box mb-3">
                                                         <h6>{props.t("Attach files preview")}</h6>
 
@@ -639,10 +659,13 @@ const AddInstructions = (props) => {
 
                                     <br></br>
                                     <div className="text-sm-end col-10" >
-                                        <Button color="primary" className="ms-1" type="submit">
-                                        <i className="mdi mdi-check fs-5 align-middle" />{" "}
-                                            {props.t("Save")}
+
+                                        <Button type="submit" color="primary" disabled={addInstructionsSpinner} className="ms-1">
+
+                                            <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
+
                                         </Button>&nbsp;
+
 
                                         <Button
                                             type="button"

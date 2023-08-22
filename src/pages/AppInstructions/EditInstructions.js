@@ -306,13 +306,13 @@ const EditInstructions = (props) => {
         /*** MANAGER SELECT ***/
         setselectedMulti2(selectedManager?.data?.managerList.map((manager) => ({
             value: manager.id,
-            label: manager.name,
+            label: manager.name + (manager.gname !== null ? ` (` + manager.gname + `)` : ''),
             gname: manager.gname,
         })))
 
         setOptionManager0(getManagerList?.data?.managerList.map((manager) => ({
             value: manager.id,
-            label: manager.name,
+            label: manager.name + (manager.gname !== null ? ` (` + manager.gname + `)` : ''),
             gname: manager.gname,
         })))
 
@@ -1210,6 +1210,13 @@ const EditInstructions = (props) => {
 
     };
 
+    useEffect(() => {
+        debugger
+        if (msgSaveReply.status == '0') {
+            alert(msgSaveReply.message);
+        }
+    }, [msgSaveReply])
+
     // Reply tables functions //
 
     const replyDelete = async (row) => {
@@ -1784,6 +1791,7 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                                 : ''}
                                                         </div>
+                                                        <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
                                                     </Col>
                                                 </Row>
 
@@ -2033,6 +2041,7 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                                 : ''}
                                                         </div>
+                                                        <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
                                                     </Col>
                                                 </Row>
 
@@ -2141,6 +2150,7 @@ const EditInstructions = (props) => {
                                                                                     )
                                                                                 })
                                                                             }
+                                                                            <span className="text-danger">Allowed File Types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt</span>
                                                                         </div>
 
                                                                         <div className="text-sm-end col-12" >

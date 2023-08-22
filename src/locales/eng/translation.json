@@ -108,5 +108,6 @@
   "Enter a new password": "Enter a new password.",
   "Re-enter your new password": "Re-enter your new password.",
   "Show password": "Show password",
-  "Confirm": "Confirm"
+  "Confirm": "Confirm",
+  "Skip": "Skip"
 }
