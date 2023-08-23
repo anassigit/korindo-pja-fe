@@ -94,6 +94,7 @@ const Move = (props) => {
         if (moveMsg.status === "1") {
             props.toggle();
             dispatch(getSelectFile({ "folder_num": props.idNowLoc }));
+            dispatch(getSelectFile2({ "folder_num": "" }))
             handleEffect();
             setMoveMsg("");
             
@@ -121,11 +122,8 @@ const Move = (props) => {
     const closeButton = () => {
 
         props.toggle();
-        dispatch(getSelectFile2({
-            "folder_num": 0
-        }))
-        
-
+        dispatch(getSelectFile2({"folder_num": ""}))
+    
     }
     // useEffect(() => {
     //     if (moveRespMsg.status === "1") {

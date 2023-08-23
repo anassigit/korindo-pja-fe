@@ -14,7 +14,10 @@ import {
     CREATE_FOLDER,
     MSGCREATE,
     DOWNLOAD_FILES,
+    DOWNLOAD_CHECK,
+    RESP_DOWNLOAD_CHECK,
     UPLOAD_FILES,
+    MSGDOWNLOADCHECK,
     MSGMOVE,
     MSGDOWNLOAD,
     MSGUPLOAD,
@@ -32,6 +35,8 @@ const INIT_STATE = {
     respGetSelect2: {},
     respGetSelectFile: {},
     respGetSearchFile: {},
+    respGetDownloadCheck: {},
+    msgDownloadCheck:"",
     msgAdd: "",
     msgEdit: "",
     msgDelete: "",
@@ -128,6 +133,15 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                 ...state,
                 msgCreate: action.payload,
             }
+            case DOWNLOAD_CHECK:
+                return {
+                    ...state,
+                }
+            case RESP_DOWNLOAD_CHECK:
+                return {
+                    ...state,
+                    respGetDownloadCheck: action.payload,
+                }
         case RESET_MESSAGE:
             return {
                 ...state,
@@ -135,6 +149,7 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                 msgAdd: "",
                 msgDelete: "",
                 msgDownload: "",
+                msgDownloadCheck: "",
                 msgUpload: "",
                 msgMove: "",
                 msgRename: "",
@@ -160,6 +175,11 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                     ...state,
                     msgRename: action.payload,
                 }
+                case MSGDOWNLOADCHECK:
+                    return {
+                        ...state,
+                        msgDownloadCheck: action.payload,
+                    }
 
         default:
             return state

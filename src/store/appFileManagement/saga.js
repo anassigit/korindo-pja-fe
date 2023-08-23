@@ -9,6 +9,7 @@ import {
     DELETE_FILE_FOLDER,
     RENAME_FILE_FOLDER,
     DOWNLOAD_FILES,
+    DOWNLOAD_CHECK,
     UPLOAD_FILES,
     MOVE_FILES,
     CREATE_FOLDER,
@@ -22,6 +23,7 @@ import {
     respGetSelect2,
     respGetSelectFile,
     respSearchFile,
+    respGetDownloadCheckFile,
     msgAdd,
     msgEdit,
     msgDelete,
@@ -39,6 +41,7 @@ import {
     deleteFileFolder,
     renameFileFolder,
     downloadFileFolder,
+    downloadCheck,
     uploadFileFolder,
     moveFileFolder,
     createFolder,
@@ -88,20 +91,19 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
-  // function* fetchGetSelectFolder2({ payload: req }) {
-  //   try {
-      
-  //     const response = yield call(selectFolder, req)
-  //     if (response.status == 1) {
-  //       yield put(respGetSelectFile(response))
-  //     } else {
-  //       yield put(respGetSelectFile(response))
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     yield put(respGetSelectFile({ "status": 0, "message": "Error Get Data" }))
-  //   }
-  // }
+  function* fetchGetDownloadCheckFile({ payload: req }) {
+    try {
+      const response = yield call(downloadCheck, req)
+      if (response.status == 1) {
+        yield put(respGetDownloadCheckFile(response))
+      } else {
+        yield put(respGetDownloadCheckFile(response))
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(respGetDownloadCheckFile({ "status": 0, "message": "Error Get Data" }))
+    }
+  }
 
   function* fetchDeleteFileFolder({ payload: req }) {
     try {
@@ -179,6 +181,7 @@ function* fetchGetSelectFolder({ payload: req }) {
     yield takeEvery(DELETE_FILE_FOLDER, fetchDeleteFileFolder)
     yield takeEvery(RENAME_FILE_FOLDER, fetchRenameFileFolder)
     yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
+    yield takeEvery(DOWNLOAD_CHECK, fetchGetDownloadCheckFile)
     yield takeEvery(UPLOAD_FILES, fetchUploadfiles)
     yield takeEvery(MOVE_FILES, fetchMovefiles)
     yield takeEvery(CREATE_FOLDER, fetchCretaeFolder)

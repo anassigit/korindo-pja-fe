@@ -28,7 +28,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
-import { getSelectFile, deleteFileFolder, resetMessage, getSearch } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -39,8 +39,9 @@ import Create from "./Create";
 import Move from "./Move";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import ConfirmModal from "components/Common/ConfirmModal";
-import { downloadFileFolder } from "helpers/backend_helper";
+import { downloadFileFolder, downloadCheck } from "helpers/backend_helper";
 import { withTranslation } from "react-i18next"
+import MsgModal from 'components/Common/MsgModal';
 
 
 const FileManagement = (props) => {
@@ -50,10 +51,7 @@ const FileManagement = (props) => {
 
   const dispatch = useDispatch();
   const [fileManagementPage, setFileManagementPage] = useState(true)
-  const [insideFilePage, setInsideFilePage] = useState(false)
   const [fileManagementMsg, setFileManagementMsg] = useState("")
-  const [fileManagementData, setFileManagementData] = useState()
-  const [idFile, setIdFile] = useState("")
   const [idParent, setIdParent] = useState(0)
   const [idChild, setIdChild] = useState(-1)
   const [idToggle, setIdToggle] = useState("")
@@ -61,42 +59,28 @@ const FileManagement = (props) => {
   const [idToggleCreate, setIdToggleCreate] = useState("")
   const [nmToggle, setNmToggle] = useState("")
   const [nmToggleExt, setNmToggleExt] = useState("")
-  const [myFiles, setMyFiles] = useState([]);
   const [renameModal, setRenameModal] = useState(false)
   const [uploadModal, setUploadModal] = useState(false)
   const [createModal, setCreateModal] = useState(false)
   const [moveModal, setMoveModal] = useState(false)
-
   const [confirmModalDelete, setConfirmModalDelete] = useState(false)
   const [confirmModalDownload, setConfirmModalDownload] = useState(false)
   const [isYes, setIsYes] = useState(false)
-
+  const [downloadFlag, setDownloadFlag] = useState(false)
   const [idFolderTemp, setIdFolderTemp] = useState()
   const [idParentTemp, setIdParentTemp] = useState()
-
   const [fNum, setFnum] = useState(0)
   const [pNum, setPnum] = useState(0)
   const [fNem, setFnem] = useState("")
   const [fName, setFName] = useState("")
-
   const [tempIdDel, setTempIdDel] = useState()
-
   const [currFolder, setCurrFolder] = useState()
   const [isTypeFolder, setIsTypeFolder] = useState()
-
   const [idNowLoc, setIdNowLoc] = useState(0)
-
   const [typeRename, setTypeRename] = useState("")
-
-  const [idPathB, setIdPathB] = useState()
-
-  useEffect(() => {
-    //console.log(idChild)
-  }, [idChild])
-
-  useEffect(() => {
-    //console.log(idParent)
-  }, [idParent])
+  const [downloadMsg, setDownloadMsg] = useState(false)
+  const [downloadMsgModal, setDownloadMsgModal] = useState(false)
+  const [downloadContentModal, setDownloadContentModal] = useState("")
 
   const toggleRenameModal = (idT, nmT, tpT) => {
 
@@ -130,7 +114,7 @@ const FileManagement = (props) => {
   }
 
   const toggleMoveModal = (Fid, Pid) => {
-debugger
+    debugger
     setFnum(Fid)
     setPnum(Pid)
     setFName(fNem)
@@ -167,7 +151,7 @@ debugger
 
 
   /* KUMPULAN USE SELECTOR */
-  //const [fileManagementSearch, setFileManagementSearch] = useState({ page: 1, limit: 10, offset: 0, sort: "name", order: "asc", search: { any: "" } });
+
   const [realFileList, setRealFileList] = useState()
   const [realFilePath, setRealFilePath] = useState()
 
@@ -178,6 +162,11 @@ debugger
   const getSearchFile = useSelector(state => {
     return state.fileManagementReducer.respGetSearchFile;
   })
+
+  const downloadRespMsg = useSelector(state => {
+    return state.fileManagementReducer.respGetDownloadCheck;
+  })
+
 
   useEffect(() => {
     if (getFileSelect) {
@@ -204,20 +193,8 @@ debugger
     setFileManagementMsg("")
   }
 
-  useEffect(() => {
-
-
-    // if (getFileSelect.status == "1") {
-
-    //   setFileManagementMsg("")
-    // }
-
-  }, [getFileSelect])
-
-
   const getInsideFolder = (e, f, n) => {
-    //debugger
-    //console.log("curr", currFolder)
+
     setCurrFolder(e)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
@@ -248,33 +225,73 @@ debugger
   }, [isYes, msgDeleteFile])
 
 
+  const [numTemp, setNumTemp] = useState()
+  const [fileNmTemp, setFileNmTemp] = useState()
 
-  // const getIdPath = (idPath) => {
-  //   ser
-
-  //   console.log("nowbread", idPath )
-
-  //   dispatch(getSelectFile({
-  //     'folder_num': idPath
-  //   }))
-
-
-  // };
-
-  const downloadFolderFile = async (num, fileNm) => {
-
+  const downloadCheckFile1 = (num, fileNm) => {
     debugger
+    setNumTemp(num)
+    setFileNmTemp(fileNm)
+    setDownloadFlag(true)
+  }
+
+  const downloadCheckFile2 = (num, fileNm) => {
+    debugger
+    setDownloadFlag(true)
+
+  };
+
+  const toggleMsgModal = () => {
+    setDownloadMsgModal(!downloadMsgModal);
+
+    if (downloadMsg.status === "0") {
+      downloadCheckFile2
+      handleEffect();
+
+    }
+
+  };
+
+  useEffect(() => {
+    debugger
+    if (downloadFlag) {
+
+      const indexed_array = {
+        file_num: numTemp,
+        file_nm: fileNmTemp
+      };
+      dispatch(downloadCheckFile(indexed_array))
+      setDownloadFlag(false)
+
+    }
+  }, [downloadFlag, fileNmTemp, numTemp])
+
+  const downloadFolderFile = async () => {
     try {
 
-      var indexed_array = {
-        "file_num": num,
-        "file_nm": fileNm
+      const indexed_array = {
+        file_num: numTemp,
+        file_nm: fileNmTemp
       };
-      await dispatch(downloadFileFolder(indexed_array));
+      dispatch(downloadFileFolder(indexed_array))
     } catch (error) {
       console.log(error)
     }
   };
+
+  useEffect(() => {
+    debugger
+    if (downloadRespMsg.status === "0") {
+      setDownloadMsg(downloadRespMsg);
+      toggleMsgModal()
+
+    } else if (downloadRespMsg.status === "1") {
+      downloadFolderFile()
+    }
+    setDownloadContentModal(downloadRespMsg.message)
+    setDownloadMsg("");
+
+  }, [downloadRespMsg])
 
   const [selectedLanguage, setSelectedLanguage] = useState(false);
 
@@ -286,7 +303,6 @@ debugger
     dispatch(getSearch({ "search": e.target.value }))
   }
 
-  //console.log(tempIndex)
 
   return (
     <RootPageCustom
@@ -335,6 +351,13 @@ debugger
             toggle={confirmToggleDelete}
             message={props.t("Are you sure to delete this")}
             setIsYes={setIsYes}
+          />
+
+          <MsgModal
+            modal={downloadMsgModal}
+            toggle={toggleMsgModal}
+            message={downloadContentModal}
+
           />
 
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
@@ -451,7 +474,7 @@ debugger
                                     }
                                   </div>
                                 </div>
-                                
+
                                 <div className="d-flex flex-row bd-highlight mb-1">
                                   <div className="overflow-hidden me-auto">
                                     <div className="text-truncate mb-1">
@@ -505,7 +528,7 @@ debugger
                                       <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
                                       {props.t("Move")}
                                     </DropdownItem>
-                                    <DropdownItem onClick={() => downloadFolderFile(myfiles.num, myfiles.name)}>
+                                    <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
                                       <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
                                       {props.t("Download")}
                                     </DropdownItem>

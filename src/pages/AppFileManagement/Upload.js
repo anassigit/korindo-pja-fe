@@ -208,6 +208,8 @@ const Upload = (props) => {
                                         <input type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                     </div>
                                 </div>
+                                &nbsp;
+                                <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                                 &nbsp;&nbsp;&nbsp;
                                 <div className="kb-attach-box mb-3">
                                     {

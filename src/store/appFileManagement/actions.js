@@ -9,11 +9,14 @@ import {
     DELETE_FILE_FOLDER,
     RENAME_FILE_FOLDER,
     DOWNLOAD_FILES,
+    DOWNLOAD_CHECK,
+    RESP_DOWNLOAD_CHECK,
     UPLOAD_FILES,
     MOVE_FILES,
     CREATE_FOLDER,
     SEARCH_FILE,
     RESP_SEARCH_FILE,
+    MSGDOWNLOADCHECK,
     MSGCREATE,
     MSGDOWNLOAD,
     MSGUPLOAD,
@@ -56,11 +59,6 @@ export const getSelectFile = (req) => ({
     payload: resp,
   })
 
-  // export const getSelectFile2 = (req) => ({
-  //   type: GET_SELECT_FILE,
-  //   payload: req,
-  // })
-
   export const respGetSelectFile = resp => ({
     type: RESP_GET_SELECT_FILE,
     payload: resp,
@@ -81,6 +79,16 @@ export const getSelectFile = (req) => ({
     payload: req,
   })
 
+  export const downloadCheckFile = (req) => ({
+    type: DOWNLOAD_CHECK,
+    payload: req,
+  })
+
+  export const respGetDownloadCheckFile = resp => ({
+    type: RESP_DOWNLOAD_CHECK,
+    payload: resp,
+  })
+
   export const createFolder = (req) => ({
     type: CREATE_FOLDER,
     payload: req,
@@ -93,6 +101,11 @@ export const getSelectFile = (req) => ({
 
   export const msgDownload = (req) => ({
     type: MSGDOWNLOAD,
+    payload: req,
+  })
+
+  export const msgDownloadCheck = (req) => ({
+    type: MSGDOWNLOADCHECK,
     payload: req,
   })
 
