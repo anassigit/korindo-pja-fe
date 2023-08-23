@@ -376,12 +376,21 @@ const EditInstructions = (props) => {
         await dispatch(editInstructions(values))
     };
 
-    // const downloadFiles = async num => {
+    const validationMessages = {
+        eng: {
+            title: "You must fill the Title.",
+        },
+        kor: {
+            title: "제목을 입력해야 합니다.",
+        },
+        idr: {
+            title: "Anda harus mengisi Judul.",
+        },
+    };
 
-    //     
-    //     var ix = { num: num }
-    //     await dispatch(downloadFile(ix))
-    // }
+    const validationSchema = Yup.object().shape({
+        title: Yup.string().required(validationMessages[langType].title),
+    })
 
     const editInstructionsValidInput = useFormik({
         enableReinitialize: true,
@@ -394,9 +403,7 @@ const EditInstructions = (props) => {
             content: '',
         },
 
-        validationSchema: Yup.object().shape({
-            // content: Yup.string().required("You must fill the reply"),
-        }),
+        validationSchema: validationSchema,
 
         onSubmit: (values) => {
 
@@ -1048,7 +1055,7 @@ const EditInstructions = (props) => {
             if (allowedExtensions.test(files[i]?.name)) {
                 let reader = new FileReader();
                 let file = files[i];
-        
+
                 reader.onloadend = () => {
                     SetSelectedFileR((prevValue) => [
                         ...prevValue,
@@ -1061,7 +1068,7 @@ const EditInstructions = (props) => {
                         },
                     ]);
                 };
-        
+
                 if (files[i]) {
                     reader.readAsDataURL(file);
                 }
@@ -1544,6 +1551,30 @@ const EditInstructions = (props) => {
     };
 
 
+    const datepickerRef = useRef(null);
+
+    useEffect(() => {
+        const inputElement = datepickerRef.current.input;
+        inputElement.addEventListener('keydown', handleDateInputKeydown);
+        inputElement.addEventListener('paste', handleDateInputPaste);
+
+        return () => {
+            inputElement.removeEventListener('keydown', handleDateInputKeydown);
+            inputElement.removeEventListener('paste', handleDateInputPaste);
+        };
+    }, []);
+
+    const handleDateInputKeydown = (event) => {
+        if (event.key === 'Delete' || event.key === 'Backspace') {
+            event.preventDefault();
+        }
+    };
+
+    const handleDateInputPaste = (event) => {
+        event.preventDefault();
+    };
+
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1640,6 +1671,7 @@ const EditInstructions = (props) => {
 
                                                             <DatePicker
                                                                 name="insDate"
+                                                                ref={datepickerRef}
                                                                 className="form-control"
                                                                 dateFormat="yyyy-MM-dd"
                                                                 onChange={date => {
@@ -1811,7 +1843,7 @@ const EditInstructions = (props) => {
                                                     {props.t("Update")}
                                                 </Button>&nbsp;
 
-                                                <Button color="danger" type="button" onClick={() => { confirmToggle() }}>
+                                                <Button hidden={!getDetailInstructionData?.data?.instruction?.delete} color="danger" type="button" onClick={() => { confirmToggle() }}>
                                                     <i className="mdi mdi-delete-forever fs-5 align-middle me-2"></i>
                                                     {props.t("Delete")}
                                                 </Button>&nbsp;

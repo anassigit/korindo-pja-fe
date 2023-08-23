@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import '../../config';
@@ -27,6 +27,7 @@ import Select, { components } from "react-select";
 import shortid from "shortid";
 import { withTranslation } from "react-i18next";
 import MsgModal from "components/Common/MsgModal";
+import DatePicker from "react-datepicker";
 
 const AddInstructions = (props) => {
 
@@ -44,6 +45,83 @@ const AddInstructions = (props) => {
 
     const [addInstructionMsgModal, setAddInstructionMsgModal] = useState(false)
 
+    const langType = localStorage.getItem("I18N_LANGUAGE") || "eng";
+    const validationMessages = {
+        eng: {
+            title: "You must fill the Title.",
+        },
+        kor: {
+            title: "제목을 입력해야 합니다.",
+        },
+        idr: {
+            title: "Anda harus mengisi Judul.",
+        },
+    };
+
+    const validationSchema = Yup.object().shape({
+        title: Yup.string().required(validationMessages[langType].title),
+    })
+
+
+    const addInstructionsValidInput = useFormik({
+        enableReinitialize: true,
+
+        initialValues: {
+            title: '',
+            insDate: '',
+            status: '',
+            description: '',
+        },
+
+        validationSchema: validationSchema,
+
+        onSubmit: (val) => {
+
+            var bodyForm = new FormData();
+
+            bodyForm.append('title', val.title);
+
+            bodyForm.append('insDate', format(addInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
+
+            bodyForm.append('status', val.status);
+            bodyForm.append('description', val.description);
+
+
+            selectedMulti.map((data, index) => {
+
+                bodyForm.append('user', data.value);
+
+            })
+            selectedMulti2.map((data, index) => {
+
+                bodyForm.append('user', data.value);
+
+            })
+
+            if (selectedfile.length > 0) {
+
+
+                for (let index = 0; index < selectedfile.length; index++) {
+
+                    let a = selectedfile[index];
+
+                    bodyForm.append('file' + index, selectedfile[index].fileori);
+
+                }
+            }
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            setAddInstructionsSpinner(true);
+            setAddInstructionMsgModal(true)
+            insert(bodyForm, config);
+
+        }
+    });
+
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
         dispatch(getManager({}))
@@ -58,7 +136,7 @@ const AddInstructions = (props) => {
             setselectedMulti([]);
             setselectedMulti2([]);
             addInstructionsValidInput.setFieldValue("status", status)
-            addInstructionsValidInput.setFieldValue("insDate", addInstructionsStartDate)
+            addInstructionsValidInput.setFieldValue('insDate', new Date)
 
             if (getOwnerList.data !== undefined) {
 
@@ -105,66 +183,6 @@ const AddInstructions = (props) => {
     const insert = async (val) => {
         await dispatch(saveInstructions(val));
     };
-
-    const addInstructionsValidInput = useFormik({
-        enableReinitialize: true,
-
-        initialValues: {
-            title: '',
-            insDate: '',
-            status: '',
-            description: '',
-        },
-
-        validationSchema: Yup.object().shape({
-            title: Yup.string().required("Please input the Title."),
-            insDate: Yup.string().required("Please input the Date."),
-        }),
-
-        onSubmit: (val) => {
-
-            var bodyForm = new FormData();
-
-            bodyForm.append('title', val.title);
-            bodyForm.append('insDate', val.insDate);
-            bodyForm.append('status', val.status);
-            bodyForm.append('description', val.description);
-
-
-            selectedMulti.map((data, index) => {
-
-                bodyForm.append('user', data.value);
-
-            })
-            selectedMulti2.map((data, index) => {
-
-                bodyForm.append('user', data.value);
-
-            })
-
-            if (selectedfile.length > 0) {
-
-
-                for (let index = 0; index < selectedfile.length; index++) {
-
-                    let a = selectedfile[index];
-
-                    bodyForm.append('file' + index, selectedfile[index].fileori);
-
-                }
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            setAddInstructionsSpinner(true);
-            setAddInstructionMsgModal(true)
-            insert(bodyForm, config);
-
-        }
-    });
 
     const appAddInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgAdd;
@@ -433,6 +451,37 @@ const AddInstructions = (props) => {
         setAddInstructionsSpinner(false);
     }, [appAddInstructionsMessage])
 
+    const datepickerRef = useRef(null);
+
+    useEffect(() => {
+        const inputElement = datepickerRef.current.input;
+        inputElement.addEventListener('keydown', handleDateInputKeydown);
+        inputElement.addEventListener('paste', handleDateInputPaste);
+
+        return () => {
+            inputElement.removeEventListener('keydown', handleDateInputKeydown);
+            inputElement.removeEventListener('paste', handleDateInputPaste);
+        };
+    }, []);
+
+    const handleDateInputKeydown = (event) => {
+        if (event.key === 'Delete' || event.key === 'Backspace') {
+            event.preventDefault();
+        }
+    };
+
+    const handleDateInputPaste = (event) => {
+        event.preventDefault();
+    };
+
+    const handleChangeDate = val => {
+        if (val == null) {
+            addInstructionsValidInput.setFieldValue("insDate", null);
+        } else {
+            addInstructionsValidInput.setFieldValue("insDate", val)
+        }
+    }
+
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
@@ -486,18 +535,28 @@ const AddInstructions = (props) => {
                                                     <span style={{ color: "red" }}>* </span>
                                                 </Label>
 
-                                                <Input
+                                                <DatePicker
                                                     name="insDate"
-                                                    type="date"
-                                                    onChange={addInstructionsValidInput.handleChange}
-                                                    value={addInstructionsValidInput.values.insDate || addInstructionsStartDate}
+                                                    className="form-control"
+                                                    dateFormat="yyyy-MM-dd"
+                                                    ref={datepickerRef}
+                                                    onChange={date => {
+                                                        handleChangeDate(date);
+                                                        addInstructionsValidInput.handleChange('insDate', date);
+                                                        addInstructionsValidInput.setFieldTouched('insDate', true);
+                                                    }}
+                                                    selected={addInstructionsValidInput.values.insDate ? new Date(addInstructionsValidInput.values.insDate) : null}
+                                                    isClearable={false}
                                                     invalid={
                                                         addInstructionsValidInput.touched.insDate && addInstructionsValidInput.errors.insDate ? true : false
                                                     }
                                                 />
                                                 {addInstructionsValidInput.touched.insDate && addInstructionsValidInput.errors.insDate ? (
-                                                    <FormFeedback type="invalid"> {addInstructionsValidInput.errors.insDate} </FormFeedback>
+                                                    <FormFeedback type="invalid">
+                                                        {addInstructionsValidInput.errors.insDate}
+                                                    </FormFeedback>
                                                 ) : null}
+
                                             </div>
 
                                             <div className="mb-3 col-sm-8" style={{ display: "none" }}>
@@ -663,7 +722,6 @@ const AddInstructions = (props) => {
 
                                             <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
 
-                                            <Spinner style={{ padding:"24px",display: addInstructionsSpinner ? "block" : "none", marginLeft: '-550px', marginTop: '-250px', zIndex: 2, position: "absolute" }} color="danger" />
                                         </Button>&nbsp;
 
 
@@ -685,6 +743,9 @@ const AddInstructions = (props) => {
                         </CardBody>
                     </Card>
                 </Col>
+                <div style={{ position: "absolute" }}>
+                    <Spinner style={{ padding: "24px", display: addInstructionsSpinner ? "block" : "none", marginLeft: "36.5%", marginTop: '225px', zIndex: 2, position: "relative" }} color="danger" />
+                </div>
             </Row>
         </Container>
     );

@@ -49,6 +49,8 @@ const Instructions = (props) => {
             history.push('/FirstLogin')
         }
         setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
+        console.log(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
+        // console.log(appInstructionsTabelSearch)
     }, [])
 
     useEffect(() => {
@@ -59,11 +61,7 @@ const Instructions = (props) => {
         page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
             search: "", langType: langType, status: selected
         }
-    });
-
-    useEffect(() => {
-        localStorage.setItem('appInstructionsTabelSearch', JSON.stringify(appInstructionsTabelSearch));
-    }, [appInstructionsTabelSearch]);
+    })
     
     // useEffect(() => {
     //     debugger
