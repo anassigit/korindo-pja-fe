@@ -29,7 +29,7 @@ const MsgModal = ({ modal, toggle, message, successClose }) => {
                 {
                     successClose === true ?
                     <Button color="primary" onClick={toggle}>
-                    Okay
+                    Ok
                 </Button>
                 :
                 <Button color="danger" onClick={toggle}>

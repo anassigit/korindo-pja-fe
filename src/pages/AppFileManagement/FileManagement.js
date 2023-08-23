@@ -447,7 +447,7 @@ const FileManagement = (props) => {
                     // kalo search tidak null ? hasil API :
                     realFileList?.map((myfiles, key) => (
 
-                      myfiles.type === "FOLDER" ?
+                      myfiles.type === "FOLDER" || myfiles > 0?
 
                         <Col xl={2} key={key}>
                           <Card className="shadow-none border">
@@ -522,7 +522,7 @@ const FileManagement = (props) => {
 
                   {realFileList?.map((myfiles, key) => (
 
-                    myfiles.type === "FILE" ?
+                    myfiles.type === "FILE" || myfiles > 0 ?
 
                       <Col xl={2} key={key}>
                         <Card className="shadow-none border">
