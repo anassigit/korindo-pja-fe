@@ -16,6 +16,7 @@ const Upload = (props) => {
     const [uploadMsg, setUploadMsg] = useState(false)
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
+    const [successClose, setSuccessClose] = useState(false)
 
     const uploadRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgUpload;
@@ -110,7 +111,8 @@ const Upload = (props) => {
     useEffect(() => {
         if (uploadRespMsg.status === "1") {
 
-        // debugger
+        // 
+        setSuccessClose(true)
             setUploadMsg(uploadRespMsg);
 
         }
@@ -190,6 +192,7 @@ const Upload = (props) => {
                 modal={uploadMsgModal}
                 toggle={toggleMsgModal}
                 message={uploadContentModal}
+                successClose={successClose}
             //data={idFile}
             />
             <Form onSubmit={(e) => {

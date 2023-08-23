@@ -15,6 +15,7 @@ const Rename = (props) => {
     const [renameSpinner, setRenameSpinner] = useState(false)
 
     const [renameFFMsg, setRenameFFMsg] = useState(false)
+    const [successClose, setSuccessClose] = useState(false)
 
     const renameMsg = useSelector(state => {
         return state.fileManagementReducer.msgRename;
@@ -89,6 +90,7 @@ const Rename = (props) => {
         debugger
         if (renameMsg.status === "1") {
             // debugger
+            setSuccessClose(true)
             setRenameFFMsg(renameMsg)
             renameFileFolderValidInput.resetForm();
 
@@ -105,7 +107,7 @@ const Rename = (props) => {
                 modal={renameMsgModal}
                 toggle={toggleMsgModal}
                 message={renameContentModal}
-
+                successClose={successClose}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();

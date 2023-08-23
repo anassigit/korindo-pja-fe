@@ -81,6 +81,7 @@ const FileManagement = (props) => {
   const [downloadMsg, setDownloadMsg] = useState(false)
   const [downloadMsgModal, setDownloadMsgModal] = useState(false)
   const [downloadContentModal, setDownloadContentModal] = useState("")
+  const [successClose, setSuccessClose] = useState(false)
 
   const toggleRenameModal = (idT, nmT, tpT) => {
 
@@ -119,6 +120,7 @@ const FileManagement = (props) => {
     setPnum(Pid)
     setFName(fNem)
     setIdNowLoc(currFolder)
+    setSuccessClose(false)
     setMoveModal(!moveModal)
 
   }

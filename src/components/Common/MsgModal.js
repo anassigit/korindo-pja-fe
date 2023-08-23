@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Spinner } from 'reactstrap';
 import '../../assets/scss/custom/modal/modal.css'
-const MsgModal = ({ modal, toggle, message }) => {
+const MsgModal = ({ modal, toggle, message, successClose }) => {
     return (
         <Modal isOpen={modal} toggle={toggle} backdrop="static">
             <ModalHeader toggle={toggle}>Message</ModalHeader>
@@ -26,9 +26,16 @@ const MsgModal = ({ modal, toggle, message }) => {
                 )}
             </ModalBody>
             <ModalFooter>
+                {
+                    successClose === true ?
+                    <Button color="primary" onClick={toggle}>
+                    Oke
+                </Button>
+                :
                 <Button color="danger" onClick={toggle}>
                     Close
                 </Button>
+                }
             </ModalFooter>
         </Modal>
     );
@@ -38,6 +45,7 @@ MsgModal.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     message: PropTypes.any,
+    successClose: PropTypes.any,
 };
 
 export default MsgModal;

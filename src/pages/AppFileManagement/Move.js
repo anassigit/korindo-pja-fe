@@ -25,6 +25,7 @@ const Move = (props) => {
     const [moveMsg, setMoveMsg] = useState(false)
     const [moveMsgModal, setMoveMsgModal] = useState(false)
     const [moveContentModal, setMoveContentModal] = useState("")
+    const [successClose, setSuccessClose] = useState(false)
 
     const [numF, setNumF] = useState(0)
     const [numP, setNumP] = useState(0)
@@ -104,6 +105,7 @@ const Move = (props) => {
     const handleEffect = () => {
      
         if (moveRespMsg.status === "1") {
+            setSuccessClose(true)
             setMoveMsg(moveRespMsg);
         }
         setMoveContentModal(moveRespMsg.message);
@@ -160,7 +162,7 @@ const Move = (props) => {
                 modal={moveMsgModal}
                 toggle={toggleMsgModal}
                 message={moveContentModal}
-
+                successClose={successClose}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();

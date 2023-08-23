@@ -14,6 +14,8 @@ const Create = (props) => {
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const [createSpinner, setCreateSpinner] = useState(false)
     const [createMsg, setCreateMsg] = useState(false)
+    const [successClose, setSuccessClose] = useState(false)
+    
 
     const createRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgCreate;
@@ -66,19 +68,20 @@ const Create = (props) => {
     const toggleMsgModal = () => {
         setCreateMsgModal(!createMsgModal)
         if (createMsg.status === "1") {
-
+debugger
             props.toggle()
-
             setCreateMsg("")
 
             dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+
+            
             
         } 
     }
 
     useEffect(() => {
         if (createRespMsg.status === "1") {
-
+            setSuccessClose(true)
             setCreateMsg(createRespMsg);
             createFileFolderValidInput.resetForm();
         }
@@ -92,7 +95,7 @@ const Create = (props) => {
                 modal={createMsgModal}
                 toggle={toggleMsgModal}
                 message={createContentModal}
-                
+                successClose={successClose}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
