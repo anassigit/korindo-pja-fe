@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import '../../assets/scss/custom/modal/modal.css'
 
 const MsgModal2 = (props) => {
 
