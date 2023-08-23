@@ -6,9 +6,23 @@ const MsgModal = ({ modal, toggle, message }) => {
         <Modal isOpen={modal} toggle={toggle} backdrop="static">
             <ModalHeader toggle={toggle}>Message</ModalHeader>
             <ModalBody>
-                {
+                {message == null ? (
+                    <div className='d-flex justify-content-center'>
+                        <Spinner
+                            animation="grow"
+                            style={{
+                                width: '25px',
+                                height: '25px',
+                                display: 'block',
+                                left: '50%',
+                                top: '50%',
+                            }}
+                            color="danger"
+                        />
+                    </div>
+                ) : (
                     message
-                }
+                )}
             </ModalBody>
             <ModalFooter>
                 <Button color="danger" onClick={toggle}>
