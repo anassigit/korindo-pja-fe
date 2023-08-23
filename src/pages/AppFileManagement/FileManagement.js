@@ -364,7 +364,9 @@ const FileManagement = (props) => {
 
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
-              <Col lg={12}>
+              <Col>
+              <Row className="mb-2">
+                <Col sm="12">
                 <Col md="4">
                   <Row className="mb-1 col-sm-10">
                     <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
@@ -407,8 +409,12 @@ const FileManagement = (props) => {
                 </Col>
                 <p />
                 <p />
-
-                <Row>
+                </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col sm="12">
+                    <Col md="6">
+                  <Row>
                   <div className="align-baseline fs-6">
                     <strong>
                       {realFilePath?.map((breadcrumb, index) => {
@@ -425,11 +431,17 @@ const FileManagement = (props) => {
                     </strong>
                   </div>
                 </Row>
+                </Col>
+                  </Col>
+                </Row>
                 <p />
                 <p />
-                <Row><h6><i className="mdi mdi-folder align-middle fs-5" />{"   "}{props.t("Folders")}</h6></Row>
+                <Row className="mb-1 col-sm-10"><h6><i className="mdi mdi-folder align-baseline fs-5" />{"   "}{props.t("Folders")}</h6></Row>
                 <p />
                 <p />
+                <Row className="mb-2">
+                  <Col sm="12">
+                    
                 <Row>
                   {
                     // kalo search tidak null ? hasil API :
@@ -497,11 +509,15 @@ const FileManagement = (props) => {
 
                     ))}
                 </Row>
-
-
+               
+                </Col>
+                </Row>
                 <p />
-                <h6><i className="mdi mdi-file align-middle fs-5" />{"   "}{props.t("Files")}</h6>
                 <p />
+                <Row className="mb-1 col-sm-10"><h6><i className="mdi mdi-file align-baseline fs-5" />{"   "}{props.t("Files")}</h6></Row>
+                <p />
+                <Row className="mb-2">
+                  <Col sm="12">
                 <Row>
 
                   {realFileList?.map((myfiles, key) => (
@@ -544,7 +560,7 @@ const FileManagement = (props) => {
                               </div>
 
                               <div className="avatar-xs me-3 mb-3">
-                                <div className="avatar-title bg-transparent rounded">
+                                  <div className="avatar-title bg-transparent rounded">
                                   {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
                                     <i className="fa fa-solid fa-file-word fs-3 " style={{ verticalAlign: "middle", color: "#41a5ee" }}></i>
                                   ) :
@@ -572,9 +588,9 @@ const FileManagement = (props) => {
                                             )}
                                 </div>
                               </div>
-                              <div className="d-flex">
-                                <div className="overflow-hidden me-auto">
-                                  <div className="fs-6 text-truncate mb-1">
+                              <div className="d-flex flex-row bd-highlight mb-1">
+                                  <div className="overflow-hidden me-auto">
+                                    <div className="text-truncate mb-1">
                                     <Link to="#" className="text-body" id={`nameTooltip_${key}`}>
                                       &nbsp;{myfiles.name}&nbsp;
 
@@ -595,6 +611,8 @@ const FileManagement = (props) => {
                   ))}
 
 
+                </Row>
+                </Col>
                 </Row>
               </Col>
             </Row>
