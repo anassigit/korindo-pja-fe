@@ -37,19 +37,21 @@ import {
     EDIT_REPLY,
     MSGEDITREPLY,
     GET_LOGS,
-    RESP_GET_LOGS
+    RESP_GET_LOGS,
+    GET_CHECK_DOWNLOAD,
+    RESP_GET_CHECK_DOWNLOAD
 
 } from "./actionTypes"
 
 export const getInstructionsData = (req) => ({
-    type: GET_INSTRUCTIONS,
-    payload: req,
-  })
-  
-  export const respGetInstructions = resp => ({
-    type: RESP_GET_INSTRUCTIONS,
-    payload: resp,
-  })
+  type: GET_INSTRUCTIONS,
+  payload: req,
+})
+
+export const respGetInstructions = resp => ({
+  type: RESP_GET_INSTRUCTIONS,
+  payload: resp,
+})
 
   export const getManager = (req) => ({
     type: GET_MANAGER,
@@ -171,6 +173,15 @@ export const getInstructionsData = (req) => ({
     payload: req,
   })
 
+  export const getCheckDownloadData = (req) => ({
+    type: GET_CHECK_DOWNLOAD,
+    payload: req,
+  })
+  
+  export const respGetCheckDownload = resp => ({
+    type: RESP_GET_CHECK_DOWNLOAD,
+    payload: resp,
+  })
   /*** REPLIES HERE ***/
 
   export const getReply = (req) => ({

@@ -44,7 +44,9 @@ import {
   MSGEDITREPLY,
   EDIT_REPLY,
   GET_LOGS,
-  RESP_GET_LOGS
+  RESP_GET_LOGS,
+  GET_CHECK_DOWNLOAD,
+  RESP_GET_CHECK_DOWNLOAD
 
 } from "./actionTypes"
 
@@ -56,6 +58,7 @@ const INIT_STATE = {
   respGetSelectedManager: {},
   respGetInstructions2: {},
   respGetReply: {},
+  respGetCheckDownload: {},
   msgEditReply: "",
   msgDeleteReply: "",
   msgAddReply: "",
@@ -183,6 +186,15 @@ const instructionsReducer = (state = INIT_STATE, action) => {
     case SAVE_DESCRIPTION:
       return {
         ...state,
+      }
+    case GET_CHECK_DOWNLOAD:
+      return {
+        ...state,
+      }
+    case RESP_GET_CHECK_DOWNLOAD:
+      return {
+        ...state,
+        respGetCheckDownload: action.payload,
       }
     /**** REPLIES ****/
 

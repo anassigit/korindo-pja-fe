@@ -48,13 +48,13 @@ const AddInstructions = (props) => {
     const langType = localStorage.getItem("I18N_LANGUAGE") || "eng";
     const validationMessages = {
         eng: {
-            title: "You must fill the Title.",
+            title: "Please enter instructions.",
         },
         kor: {
-            title: "제목을 입력해야 합니다.",
+            title: "지시사항을 입력해 주세요.",
         },
         idr: {
-            title: "Anda harus mengisi Judul.",
+            title: "Harap masukkan instruksi.",
         },
     };
 
@@ -125,7 +125,11 @@ const AddInstructions = (props) => {
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
         dispatch(getManager({}))
-        dispatch(getOwner({}))
+        dispatch(getOwner({
+            search: {
+                "langType": langType
+            }
+        }))
     }, [])
 
     useEffect(() => {
@@ -267,7 +271,6 @@ const AddInstructions = (props) => {
     }
 
     function handleMulti(s) {
-
         setselectedMulti(s);
 
     }
@@ -465,9 +468,7 @@ const AddInstructions = (props) => {
     }, []);
 
     const handleDateInputKeydown = (event) => {
-        if (event.key === 'Delete' || event.key === 'Backspace') {
-            event.preventDefault();
-        }
+        event.preventDefault();
     };
 
     const handleDateInputPaste = (event) => {
@@ -482,6 +483,38 @@ const AddInstructions = (props) => {
         }
     }
 
+    useEffect(() => {
+        dispatch(getOwner({
+            search: {
+                "langType": langType
+            }
+        }))
+    }, [langType])
+
+    useEffect(() => {
+
+        if (getOwnerList?.data !== undefined) {
+            const newOwners = getOwnerList?.data?.ownerList.map((data) => ({
+                value: data.id,
+                label: data.name,
+                bgColor: data.bgColor,
+            }))
+            
+            if (selectedMulti?.length > 0) {
+                getOwnerList?.data?.ownerList.map((val) => {
+                    if (val.id == selectedMulti[0].value) {
+                        setselectedMulti([{
+                            value: val.id,
+                            label: val.name,
+                            bgColor: val.bgColor,
+                        }])
+                    }
+                })
+
+            }
+            setOptionOwner(newOwners);
+        }
+    }, [getOwnerList, langType])
 
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>

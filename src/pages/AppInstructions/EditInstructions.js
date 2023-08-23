@@ -18,7 +18,7 @@ import {
     Row
 } from "reactstrap";
 import * as Yup from "yup";
-import { deleteReply, downloadFile, editInstructions, deleteInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, msgEdit, resetMessage, respGetAttachment, saveDescription, saveReply } from "../../store/appInstructions/actions";
+import { deleteReply, downloadFile, editInstructions, deleteInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, msgEdit, resetMessage, respGetAttachment, saveDescription, saveReply, getCheckDownloadData } from "../../store/appInstructions/actions";
 // import { getDetailInstruction } from "helpers/backend_helper"
 import { getDetailInstruction, getReply, getSelectedManager } from "../../store/appInstructions/actions"
 
@@ -37,6 +37,7 @@ import ConfirmModal from "components/Common/ConfirmModal";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import { withTranslation } from "react-i18next";
+import MsgModal from "components/Common/MsgModal";
 
 
 const EditInstructions = (props) => {
@@ -93,6 +94,9 @@ const EditInstructions = (props) => {
 
     const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
     const [selectedDeletedReplyAtt, setSelectedDeletedReplyAtt] = useState([])
+
+    const [downloadMsgModal, setDownloadMsgModal] = useState(false)
+    const [downloadContentModal, setDownloadContentModal] = useState("")
 
     /* MULTI SELECT OPTIONS */
 
@@ -277,7 +281,7 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
-        /*** OWNER SELECT ***/
+        /** OWNER SELECT **/
 
         let selectedOwner = null;
         selectedOwner = getDetailInstructionData?.data?.instruction.owner
@@ -303,7 +307,7 @@ const EditInstructions = (props) => {
         }
 
 
-        /*** MANAGER SELECT ***/
+        /** MANAGER SELECT **/
         setselectedMulti2(selectedManager?.data?.managerList.map((manager) => ({
             value: manager.id,
             label: manager.name + (manager.gname !== null ? ` (` + manager.gname + `)` : ''),
@@ -378,13 +382,13 @@ const EditInstructions = (props) => {
 
     const validationMessages = {
         eng: {
-            title: "You must fill the Title.",
+            title: "Please enter instructions.",
         },
         kor: {
-            title: "제목을 입력해야 합니다.",
+            title: "지시사항을 입력해 주세요.",
         },
         idr: {
-            title: "Anda harus mengisi Judul.",
+            title: "Harap masukkan instruksi.",
         },
     };
 
@@ -508,31 +512,6 @@ const EditInstructions = (props) => {
         // setAppEditInstructionsMsg(deleteInstructionsMessage)
     }, [deleteInstructionsMessage])
 
-    const downloadAttach = async (num, fileNm) => {
-        try {
-
-            var indexed_array = {
-                "file_num": num,
-                "file_nm": fileNm
-            };
-            await dispatch(downloadFiles(indexed_array));
-        } catch (error) {
-            console.log(error)
-        }
-    };
-
-
-    const downloadReplyAttach = async (fNum, fName) => {
-        try {
-            var indexed_array = {
-                "file_num": fNum,
-                "file_nm": fName
-            };
-            await dispatch(downloadFiles(indexed_array));
-        } catch (error) {
-            console.log(error)
-        }
-    };
 
     const editInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgEdit;
@@ -585,8 +564,7 @@ const EditInstructions = (props) => {
                 let a = SetFiles[index];
 
                 const result = (Object.values(Files).filter((data) => data.num !== FileNo));
-                // debugger
-                let temp = null
+                //                 let temp = null
                 temp = removeFile
                 temp.push(FileNo)
                 setRemoveFile(temp);
@@ -1046,10 +1024,9 @@ const EditInstructions = (props) => {
 
 
     const InputChangeR = (e) => {
-        debugger
         let images = [];
         const files = e.target.files;
-        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i;
+        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i;
 
         for (let i = 0; i < files.length; i++) {
             if (allowedExtensions.test(files[i]?.name)) {
@@ -1189,8 +1166,7 @@ const EditInstructions = (props) => {
     const [replyClicked, setReplyClicked] = useState(false)
 
     function insertReplyAndFiles(values) {
-        // debugger
-
+        // 
         if (editInstructionsValidInput.values.content == '') {
             editInstructionsValidInput.setErrors({ content: "Please insert answer content" });
         }
@@ -1224,7 +1200,6 @@ const EditInstructions = (props) => {
     };
 
     useEffect(() => {
-        debugger
         if (msgSaveReply.status == '0') {
             alert(msgSaveReply.message);
         }
@@ -1234,7 +1209,6 @@ const EditInstructions = (props) => {
 
     const replyDelete = async (row) => {
 
-        // debugger
         if (isYes === true) {
 
             try {
@@ -1245,8 +1219,7 @@ const EditInstructions = (props) => {
 
                 // setEditInstructionsSpinner(true);
                 // setEditInstructionMsg("")
-                // debugger
-                const storedData = localStorage.getItem('appInstructionsData');
+                //                 const storedData = localStorage.getItem('appInstructionsData');
                 let parsedData = null
                 if (storedData) {
                     parsedData = JSON.parse(storedData);
@@ -1408,8 +1381,7 @@ const EditInstructions = (props) => {
             }
         } else {
 
-            // debugger
-
+            // 
             if (removeFile.length > 0) {
                 removeFile.forEach(files => {
                     bodyForm.append('removeFile', files);
@@ -1469,8 +1441,7 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         const replyDelete = async () => {
-            // debugger
-
+            // 
             let row = replyRow
 
             if (isYes2 === true) {
@@ -1525,7 +1496,6 @@ const EditInstructions = (props) => {
     }, [replyRow, isYes2])
 
     const handleChangeDate = val => {
-        // debugger
         if (val == "") {
             editInstructionsValidInput.setFieldValue("insDate", '')
         } else {
@@ -1539,8 +1509,7 @@ const EditInstructions = (props) => {
     }
 
     const handleDeleteAttachedReplyRow = async (fNum, fName) => {
-        // debugger
-        let tempDeletedFiles = []
+        //         let tempDeletedFiles = []
         tempAttachReply2.map((item, index) => {
             if (fNum != item.num) {
                 tempDeletedFiles.push(tempAttachReply2[index])
@@ -1574,6 +1543,72 @@ const EditInstructions = (props) => {
         event.preventDefault();
     };
 
+    /* FOR MODAL */
+
+    const [numTemp, setNumTemp] = useState()
+    const [fileNmTemp, setFileNmTemp] = useState()
+
+    const [downloadMsg, setDownloadMsg] = useState()
+
+    // first
+    const downloadCheckFileInst = (num, fileNm) => {
+        setNumTemp(num)
+        setFileNmTemp(fileNm)
+    }
+    
+    const downloadAttach = async () => {
+        debugger
+        try {
+            var indexed_array = {
+                "file_num": numTemp,
+                "file_nm": fileNmTemp
+            };
+            await dispatch(downloadFiles(indexed_array));
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    // const downloadAttach = async () => {
+    //     try {
+    //         var indexed_array = {
+    //             "file_num": numTemp,
+    //             "file_nm": fileNmTemp
+    //         };
+    //         await dispatch(downloadFiles(indexed_array));
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // };
+
+    const downloadMessage = useSelector(state => {
+        return state.instructionsReducer.respGetCheckDownload;
+    });
+
+    const toggleMsgModal = () => {
+        setDownloadMsgModal(!downloadMsgModal);
+    };
+
+    // first
+    useEffect(() => {
+        debugger
+        if (numTemp) {
+            dispatch(getCheckDownloadData({file_num: numTemp}))
+        }
+    }, [numTemp])
+
+    useEffect(() => {
+        debugger
+        if (downloadMessage.status === "0") {
+            setDownloadMsg(downloadMessage);
+            toggleMsgModal()
+        } else if (downloadMessage.status === "1") {
+            downloadAttach()
+        }
+        setDownloadContentModal(downloadMessage.message)
+        setDownloadMsg("");
+
+    }, [downloadMessage])
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1587,15 +1622,22 @@ const EditInstructions = (props) => {
                     <ConfirmModal
                         modal={confirmModal}
                         toggle={confirmToggle}
-                        message={"Are you sure to delete this?"}
+                        message={props.t("Are you sure to delete this?")}
                         setIsYes={setIsYes}
                     />
 
                     <ConfirmModal
                         modal={confirmModal2}
                         toggle={confirmToggle2}
-                        message={"Are you sure to delete this?"}
+                        message={props.t("Are you sure to delete this?")}
                         setIsYes={setIsYes2}
+                    />
+
+                    <MsgModal
+                        modal={downloadMsgModal}
+                        toggle={toggleMsgModal}
+                        message={downloadContentModal}
+
                     />
 
                     <Container fluid={true}>
@@ -1819,7 +1861,7 @@ const EditInstructions = (props) => {
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} />
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => downloadAttach(data.num, data.name)} />
+                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => downloadCheckFileInst(data.num, data.name)} />
 
                                                                                     </div>
                                                                                 </div>
@@ -2269,10 +2311,10 @@ const EditInstructions = (props) => {
                                                                                     <React.Fragment key={index}>
                                                                                         <div className="reply-attachment d-flex align-items-start mb-1">
                                                                                             <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadReplyAttach(file.num, file.name)} />
+                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadCheckFileInst(file.num, file.name)} />
                                                                                             <u
                                                                                                 style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
                                                                                             >
                                                                                                 {file.name}
                                                                                             </u>
@@ -2280,7 +2322,7 @@ const EditInstructions = (props) => {
                                                                                             <i
                                                                                                 style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
                                                                                                 className="mdi mdi-download"
-                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
                                                                                             />
                                                                                             {selectedRowIndex === reply_num && (
                                                                                                 <i
@@ -2298,10 +2340,10 @@ const EditInstructions = (props) => {
                                                                                     <React.Fragment key={index}>
                                                                                         <div className="reply-attachment d-flex align-items-start mb-1">
                                                                                             <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadReplyAttach(file.num, file.name)} />
+                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadCheckFileInst(file.num, file.name)} />
                                                                                             <u
                                                                                                 style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
                                                                                             >
                                                                                                 {file.name}
                                                                                             </u>
@@ -2309,7 +2351,7 @@ const EditInstructions = (props) => {
                                                                                             <i
                                                                                                 style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
                                                                                                 className="mdi mdi-download"
-                                                                                                onClick={() => downloadReplyAttach(file.num, file.name)}
+                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
                                                                                             />
                                                                                             <br />
                                                                                         </div>
@@ -2333,11 +2375,10 @@ const EditInstructions = (props) => {
                                                                                             &nbsp;
                                                                                             <div className="kb-attach-box">
                                                                                                 {selectedRowIndex === reply_num && selectedfileR2.map((data, index) => {
-                                                                                                    debugger
                                                                                                     const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                                                     return (
                                                                                                         <div className="file-atc-box" key={id}>
-                                                                                                            {filename.match(/\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ? (
+                                                                                                            {filename.match(/\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i) ? (
                                                                                                                 <div className="file-image"></div>
                                                                                                             ) : (
                                                                                                                 <div className="file-image"></div>
