@@ -15,7 +15,8 @@ import {
     FormGroup,
     Input,
     Label,
-    Row
+    Row,
+    Spinner
 } from "reactstrap";
 import * as Yup from "yup";
 import { deleteReply, downloadFile, editInstructions, deleteInstructions, editReply, getAttachmentData, getLogs, getManager, getOwner, getStatus, msgEdit, resetMessage, respGetAttachment, saveDescription, saveReply, getCheckDownloadData } from "../../store/appInstructions/actions";
@@ -118,9 +119,25 @@ const EditInstructions = (props) => {
         return state.instructionsReducer.respGetStatus;
     })
 
+    const msgEditInstruction = useSelector(state => {
+        return state.instructionsReducer.msgEdit;
+    })
+
+    const msgDeleteInstruction = useSelector(state => {
+        return state.instructionsReducer.msgDelete;
+    })
+
     const msgSaveReply = useSelector(state => {
         return state.instructionsReducer.msgAddReply;
-    });
+    })
+
+    const msgEditReply = useSelector(state => {
+        return state.instructionsReducer.msgEditReply;
+    })
+
+    const msgDeleteReply = useSelector(state => {
+        return state.instructionsReducer.msgDeleteReply;
+    })
 
     const getDetailInstructionData = useSelector(state => {
         return state.instructionsReducer.respGetDetailInstruction;
@@ -585,44 +602,49 @@ const EditInstructions = (props) => {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 
+    const refCleanser = useRef(null)
+
+    const onClear = () => {
+        ref.current.value = ""
+    }
+
     const InputChange = (e) => {
-        let images = [];
-        for (let i = 0; i < e.target.files.length; i++) {
-            //images.push((e.target.files[i]));
-            let reader = new FileReader();
-            let file = e.target.files[i];
+        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i
+        const selectedFiles = Array.from(e.target.files)
 
-            let fileNm = e.target.files[i].name;
-            fileNm = fileNm.substring(fileNm.lastIndexOf('.') + 1);
+        const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
+        const invalidFiles = selectedFiles.filter((file) => !allowedFileExtensions.test(file.name))
 
-            if (fileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
+        if (invalidFiles.length === 0 && validFiles.length > 0) {
+            const processedFiles = []
+
+            validFiles.forEach((file) => {
+                const reader = new FileReader()
+
                 reader.onloadend = () => {
-                    SetSelectedFile((preValue) => {
-                        return [
-                            ...preValue,
-                            {
-                                id: shortid.generate(),
-                                filename: e.target.files[i].name,
-                                filetype: e.target.files[i].type,
-                                fileimage: reader.result,
-                                fileori: file
-                                //datetime: e.target.files[i].lastModifiedDate.toLocaleString('en-IN'),
-                                //filesize: filesizes(e.target.files[i].size)
-
-                            }
-
-                        ]
+                    processedFiles.push({
+                        id: shortid.generate(),
+                        filename: file.name,
+                        filetype: file.type,
+                        fileimage: reader.result,
+                        fileori: file,
                     })
 
+                    if (processedFiles.length === validFiles.length) {
+                        // All files have been processed
+                        SetSelectedFile((prevValue) => [...prevValue, ...processedFiles])
+                    }
                 }
-                if (e.target.files[i]) {
-                    reader.readAsDataURL(file);
-                }
-            } else {
-                alert("Files type are not allowed to upload or not supported.");
-            }
+
+                reader.readAsDataURL(file)
+            })
+        } else if (e.target.files.length != 0) {
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            refCleanser.current.value = ""
         }
-    }
+
+    };
+
 
     const DeleteSelectFile = (id) => {
         const result = selectedfile.filter((data) => data.id !== id);
@@ -1024,61 +1046,93 @@ const EditInstructions = (props) => {
 
 
     const InputChangeR = (e) => {
-        let images = [];
+        debugger
         const files = e.target.files;
         const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i;
+        const validFiles = [];
+        const invalidFiles = [];
 
         for (let i = 0; i < files.length; i++) {
             if (allowedExtensions.test(files[i]?.name)) {
-                let reader = new FileReader();
-                let file = files[i];
-
-                reader.onloadend = () => {
-                    SetSelectedFileR((prevValue) => [
-                        ...prevValue,
-                        {
-                            id: shortid.generate(),
-                            filename: file.name,
-                            filetype: file.type,
-                            fileimage: reader.result,
-                            fileori: file,
-                        },
-                    ]);
-                };
-
-                if (files[i]) {
-                    reader.readAsDataURL(file);
-                }
+                validFiles.push(files[i]);
             } else {
-                alert("File types are not allowed to upload or are not supported.");
+                invalidFiles.push(files[i]);
             }
         }
-    };
+        if (invalidFiles.length > 0 && e.target.files.length != 0) {
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            refCleanser.current.value = ""
+        } else {
 
-    const InputChangeR2 = (e) => {
-        let images = [];
-        const files = e.target.files;
+            const processedFiles = [];
 
-        for (let i = 0; i < files.length; i++) {
-            let reader = new FileReader();
-            let file = files[i];
+            validFiles.forEach((file) => {
+                let reader = new FileReader();
 
-            reader.onloadend = () => {
-                SetSelectedFileR2((prevValue) => [
-                    ...prevValue,
-                    {
+                reader.onloadend = () => {
+                    processedFiles.push({
                         id: shortid.generate(),
                         filename: file.name,
                         filetype: file.type,
                         fileimage: reader.result,
                         fileori: file,
-                    },
-                ]);
-            };
+                    });
 
-            if (files[i]) {
-                reader.readAsDataURL(file);
+                    if (processedFiles.length === validFiles.length) {
+                        SetSelectedFileR((prevValue) => [...prevValue, ...processedFiles]);
+                    }
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+
+        }
+    };
+
+    const InputChangeR2 = (e) => {
+        const files = e.target.files;
+        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i;
+        const validFiles = [];
+        const invalidFiles = [];
+
+        for (let i = 0; i < files.length; i++) {
+            if (allowedExtensions.test(files[i]?.name)) {
+                validFiles.push(files[i]);
+            } else {
+                invalidFiles.push(files[i]);
             }
+        }
+        if (invalidFiles.length > 0 && e.target.files.length != 0) {
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            refCleanser.current.value = ""
+        } else {
+
+            const processedFiles = [];
+
+            validFiles.forEach((file) => {
+                let reader = new FileReader();
+
+                reader.onloadend = () => {
+                    processedFiles.push({
+                        id: shortid.generate(),
+                        filename: file.name,
+                        filetype: file.type,
+                        fileimage: reader.result,
+                        fileori: file,
+                    });
+
+                    if (processedFiles.length === validFiles.length) {
+                        SetSelectedFileR2((prevValue) => [...prevValue, ...processedFiles]);
+                    }
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+
         }
     };
 
@@ -1086,28 +1140,6 @@ const EditInstructions = (props) => {
         const result = selectedfileR.filter((data) => data.id !== id);
         SetSelectedFileR(result);
     }
-
-    // const FileUploadSubmitR = async (e) => {
-    //     e.preventDefault();
-
-    //     // form reset on submit 
-    //     e.target.reset();
-    //     if (selectedfileR.length > 0) {
-    //         for (let index = 0; index < selectedfileR.length; index++) {
-    //             SetFilesR((preValue) => {
-    //                 return [
-    //                     ...preValue,
-    //                     selectedfileR[index]
-    //                 ]
-    //             })
-    //             break;
-    //         }
-    //         SetSelectedFileR([]);
-    //     } else {
-    //         alert('Please select file')
-    //     }
-
-    // }
 
     const FileUploadSubmitR = async (e) => {
         e.preventDefault();
@@ -1117,6 +1149,7 @@ const EditInstructions = (props) => {
         if (selectedfileR.length > 0) {
             SetFilesR((prevFiles) => [...prevFiles, ...selectedfileR]);
             SetSelectedFileR([]);
+            refCleanser.current.value = ""
         } else {
         }
     }
@@ -1129,6 +1162,7 @@ const EditInstructions = (props) => {
         if (selectedfileR2.length > 0) {
             SetFilesR2((prevFiles) => [...prevFiles, ...selectedfileR2]);
             SetSelectedFileR2([]);
+            refCleanser.current.value = ""
         } else {
         }
     }
@@ -1141,26 +1175,7 @@ const EditInstructions = (props) => {
     const insert3 = async (values) => {
         await dispatch(saveReply(values));
 
-        let num = editInstructionsValidInput.values.no
-        num = num.toString()
-
-        setTimeout(() => {
-
-            dispatch(getReply({
-                search: {
-                    "num": num,
-                    "langType": langType
-                }
-            }))
-            dispatch(getAttachmentData({
-                search: {
-                    "instruction_num": num,
-                }
-            }))
-
-            setReplyClicked(false)
-            editInstructionsValidInput.setFieldValue("content", '')
-        }, 500)
+        setLoadingSpinner(true)
     };
 
     const [replyClicked, setReplyClicked] = useState(false)
@@ -1197,70 +1212,119 @@ const EditInstructions = (props) => {
         insert3(bodyForm, config)
         setReplyClicked(!replyClicked)
 
-    };
+    }
+
+    const [loadingSpinner, setLoadingSpinner] = useState(false)
 
     useEffect(() => {
+        const storedData = localStorage.getItem('appInstructionsData');
+        let parsedData = null
+        if (storedData) {
+            parsedData = JSON.parse(storedData);
+        }
+
+        let num = parsedData?.num
+        num = num.toString()
         if (msgSaveReply.status == '0') {
             alert(msgSaveReply.message);
         }
+        if (msgSaveReply.status == '1') {
+            dispatch(getReply({
+                search: {
+                    "num": num,
+                    "langType": langType
+                }
+            }))
+            if (refCleanser.current != null) {
+                refCleanser.current.value = ""
+            }
+        }
+        setLoadingSpinner(false)
     }, [msgSaveReply])
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('appInstructionsData');
+        let parsedData = null
+        if (storedData) {
+            parsedData = JSON.parse(storedData);
+        }
+
+        let num = parsedData?.num
+        num = num.toString()
+        if (msgEditReply.status == '1') {
+            dispatch(getReply({
+                search: {
+                    "num": num,
+                    "langType": langType
+                }
+            }))
+
+            if (refCleanser.current != null) {
+                refCleanser.current.value = ""
+            }
+        }
+        setLoadingSpinner(false)
+    }, [msgEditReply])
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('appInstructionsData');
+        let parsedData = null
+        if (storedData) {
+            parsedData = JSON.parse(storedData);
+        }
+
+        let num = parsedData?.num
+        num = num.toString()
+        if (msgDeleteReply.status == '1') {
+            dispatch(getReply({
+                search: {
+                    "num": num,
+                    "langType": langType
+                }
+            }))
+
+            if (refCleanser.current != null) {
+                refCleanser.current.value = ""
+            }
+        }
+    }, [msgDeleteReply])
 
     // Reply tables functions //
 
-    const replyDelete = async (row) => {
+    // const replyDelete = async (row) => {
 
-        if (isYes === true) {
+    //     if (isYes === true) {
 
-            try {
+    //         try {
 
-                var map = {
-                    "reply_num": row.num
-                };
+    //             var map = {
+    //                 "reply_num": row.num
+    //             };
 
-                // setEditInstructionsSpinner(true);
-                // setEditInstructionMsg("")
-                //                 const storedData = localStorage.getItem('appInstructionsData');
-                let parsedData = null
-                if (storedData) {
-                    parsedData = JSON.parse(storedData);
-                }
+    //             // setEditInstructionsSpinner(true);
+    //             // setEditInstructionMsg("")
+    //             //                 const storedData = localStorage.getItem('appInstructionsData');
+    //             let parsedData = null
+    //             if (storedData) {
+    //                 parsedData = JSON.parse(storedData);
+    //             }
 
-                let num = parsedData?.num
-                num = num.toString()
-                await dispatch(deleteReply(map))
-                setTimeout(() => {
+    //             let num = parsedData?.num
+    //             num = num.toString()
+    //             await dispatch(deleteReply(map))
 
-                    dispatch(getReply({
-                        search: {
-                            "num": num,
-                            "langType": langType
-                        }
-                    }))
-                    dispatch(getAttachmentData({
-                        search: {
-                            "instruction_num": num,
-                        }
-                    }))
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
 
-                }, 500)
+    //     } else {
+    //         null
+    //     }
 
-            } catch (error) {
-                console.log(error)
-            }
-
-        } else {
-            null
-        }
-
-    };
+    // };
 
 
     // end function //
-
-    useEffect(() => {
-        if (msgSaveReply.status == "1") {
-        }
-    }, [msgSaveReply])
 
 
     /*********************************** SIGIT MADE FROM HERE ***********************************/
@@ -1276,14 +1340,6 @@ const EditInstructions = (props) => {
     const [replyRow, setReplyRow] = useState()
 
     const [editedContent, setEditedContent] = useState('');
-
-    const handleSaveDesc = async (val) => {
-        try {
-            await dispatch(saveDescriptions({ "num": editInstructionsValidInput.values.no, "description": val }))
-        } catch (error) {
-            console.error("Error saving descriptions:", error)
-        }
-    }
 
     useEffect(() => {
         if (getDetailInstructionData?.data?.instruction?.replyList) {
@@ -1305,33 +1361,7 @@ const EditInstructions = (props) => {
     const updateReply = async (values) => {
 
         await dispatch(editReply(values));
-
-        const storedData = localStorage.getItem('appInstructionsData');
-        let parsedData = null
-        if (storedData) {
-            parsedData = JSON.parse(storedData);
-        }
-
-        let num = parsedData?.num
-        num = num.toString()
-
-        setTimeout(() => {
-
-            dispatch(getReply({
-                search: {
-                    "num": num,
-                    "langType": langType
-                }
-            }))
-            // dispatch(getAttachmentData({
-            //     search: {
-            //         "instruction_num": num,
-            //     }
-            // }))
-
-            setReplyClicked(false)
-            editInstructionsValidInput.setFieldValue("content", '')
-        }, 500)
+        setLoadingSpinner(true)
     };
 
     const handleEditReply = (reply_num, editedContent) => {
@@ -1416,6 +1446,7 @@ const EditInstructions = (props) => {
         setConfirmModal2(!confirmModal2)
     }
 
+    // /* DELETE INSTRUCTION 
     useEffect(() => {
 
         const handleDeleteInstructions = async () => {
@@ -1439,6 +1470,8 @@ const EditInstructions = (props) => {
 
     }, [isYes]);
 
+
+    /* DELETE REPLY */
     useEffect(() => {
         const replyDelete = async () => {
             // 
@@ -1452,30 +1485,7 @@ const EditInstructions = (props) => {
                         "reply_num": row.num
                     };
 
-                    const storedData = localStorage.getItem('appInstructionsData');
-                    let parsedData = null
-                    if (storedData) {
-                        parsedData = JSON.parse(storedData);
-                    }
-
-                    let num = parsedData?.num
-                    num = num.toString()
-                    await dispatch(deleteReply(map))
-                    setTimeout(() => {
-
-                        dispatch(getReply({
-                            search: {
-                                "num": num,
-                                "langType": langType
-                            }
-                        }))
-                        dispatch(getAttachmentData({
-                            search: {
-                                "instruction_num": num,
-                            }
-                        }))
-
-                    }, 500)
+                    setLoadingSpinner(true)
 
                 } catch (error) {
                     console.log(error)
@@ -1509,7 +1519,7 @@ const EditInstructions = (props) => {
     }
 
     const handleDeleteAttachedReplyRow = async (fNum, fName) => {
-        //         let tempDeletedFiles = []
+        let tempDeletedFiles = []
         tempAttachReply2.map((item, index) => {
             if (fNum != item.num) {
                 tempDeletedFiles.push(tempAttachReply2[index])
@@ -1555,9 +1565,8 @@ const EditInstructions = (props) => {
         setNumTemp(num)
         setFileNmTemp(fileNm)
     }
-    
+
     const downloadAttach = async () => {
-        debugger
         try {
             var indexed_array = {
                 "file_num": numTemp,
@@ -1591,14 +1600,12 @@ const EditInstructions = (props) => {
 
     // first
     useEffect(() => {
-        debugger
         if (numTemp) {
-            dispatch(getCheckDownloadData({file_num: numTemp}))
+            dispatch(getCheckDownloadData({ file_num: numTemp }))
         }
     }, [numTemp])
 
     useEffect(() => {
-        debugger
         if (downloadMessage.status === "0") {
             setDownloadMsg(downloadMessage);
             toggleMsgModal()
@@ -1639,6 +1646,10 @@ const EditInstructions = (props) => {
                         message={downloadContentModal}
 
                     />
+                    
+                    <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+                        <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+                    </div>
 
                     <Container fluid={true}>
 
@@ -1823,7 +1834,7 @@ const EditInstructions = (props) => {
                                                                 <div className="kb-file-upload">
 
                                                                     <div className="file-upload-box">
-                                                                        <input type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                                                        <input type="file" ref={refCleanser} id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf" />
                                                                     </div>
                                                                 </div>
                                                                 &nbsp;&nbsp;&nbsp;
@@ -2072,7 +2083,7 @@ const EditInstructions = (props) => {
                                                                 <div className="kb-file-upload">
 
                                                                     <div className="file-upload-box">
-                                                                        <input disabled type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                                                        <input disabled type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf"/>
                                                                     </div>
                                                                 </div>
                                                                 &nbsp;&nbsp;&nbsp;
@@ -2203,7 +2214,7 @@ const EditInstructions = (props) => {
                                                                     <Form onSubmit={FileUploadSubmitR}>
                                                                         <div className="kb-file-upload">
                                                                             <div className="file-upload-box">
-                                                                                <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR} name="removeFile" multiple />
+                                                                                <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf" />
                                                                             </div>
                                                                         </div>
                                                                         &nbsp;&nbsp;&nbsp;
@@ -2368,7 +2379,7 @@ const EditInstructions = (props) => {
 
                                                                                                 {selectedRowIndex === reply_num && (
                                                                                                     <div className="file-upload-box">
-                                                                                                        <input type="file" id="fileupload3" className="form-control" onChange={InputChangeR2} name="removeFile" multiple />
+                                                                                                        <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR2} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf" />
                                                                                                     </div>
                                                                                                 )}
                                                                                             </div>

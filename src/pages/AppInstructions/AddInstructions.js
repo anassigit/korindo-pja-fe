@@ -499,7 +499,7 @@ const AddInstructions = (props) => {
                 label: data.name,
                 bgColor: data.bgColor,
             }))
-            
+
             if (selectedMulti?.length > 0) {
                 getOwnerList?.data?.ownerList.map((val) => {
                     if (val.id == selectedMulti[0].value) {
@@ -776,10 +776,10 @@ const AddInstructions = (props) => {
                         </CardBody>
                     </Card>
                 </Col>
-                <div style={{ position: "absolute" }}>
-                    <Spinner style={{ padding: "24px", display: addInstructionsSpinner ? "block" : "none", marginLeft: "36.5%", marginTop: '225px', zIndex: 2, position: "relative" }} color="danger" />
-                </div>
             </Row>
+                <div className="spinner-wrapper" style={{ display: addInstructionsSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+                    <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+                </div>
         </Container>
     );
 
