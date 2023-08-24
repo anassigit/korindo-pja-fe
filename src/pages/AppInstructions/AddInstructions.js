@@ -196,40 +196,39 @@ const AddInstructions = (props) => {
     const [Files, SetFiles] = useState([]);
 
     const InputChange = (e) => {
-        // debugger
+        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i
+        const selectedFiles = Array.from(e.target.files)
 
-        let images = [];
-        for (let i = 0; i < e.target.files.length; i++) {
-            images.push((e.target.files[i]));
-            let reader = new FileReader();
-            let file = e.target.files[i];
+        const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
+        const invalidFiles = selectedFiles.filter((file) => !allowedFileExtensions.test(file.name))
 
-            let fileNm = e.target.files[i].name;
-            fileNm = fileNm.substring(fileNm.lastIndexOf('.') + 1);
+        if (invalidFiles.length === 0 && validFiles.length > 0) {
+            const processedFiles = []
 
-            if (fileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
+            validFiles.forEach((file) => {
+                const reader = new FileReader()
+
                 reader.onloadend = () => {
-                    SetSelectedFile((preValue) => {
-                        return [
-                            ...preValue,
-                            {
-                                id: shortid.generate(),
-                                filename: e.target.files[i].name,
-                                filetype: e.target.files[i].type,
-                                fileimage: reader.result,
-                                fileori: file
-                            }
-                        ]
-                    });
-                }
-                if (e.target.files[i]) {
-                    reader.readAsDataURL(file);
-                }
-            } else {
-                alert("Files type are not allowed to upload or not supported.");
-            }
-        }
+                    processedFiles.push({
+                        id: shortid.generate(),
+                        filename: file.name,
+                        filetype: file.type,
+                        fileimage: reader.result,
+                        fileori: file,
+                    })
 
+                    if (processedFiles.length === validFiles.length) {
+                        // All files have been processed
+                        SetSelectedFile((prevValue) => [...prevValue, ...processedFiles])
+                    }
+                }
+
+                reader.readAsDataURL(file)
+            })
+        } else if (e.target.files.length != 0) {
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            e.target.value = ""
+        }
     }
 
 

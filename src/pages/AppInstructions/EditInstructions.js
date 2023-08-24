@@ -604,10 +604,6 @@ const EditInstructions = (props) => {
 
     const refCleanser = useRef(null)
 
-    const onClear = () => {
-        ref.current.value = ""
-    }
-
     const InputChange = (e) => {
         const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i
         const selectedFiles = Array.from(e.target.files)
@@ -641,6 +637,7 @@ const EditInstructions = (props) => {
         } else if (e.target.files.length != 0) {
             alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
             refCleanser.current.value = ""
+            e.target.value = ""
         }
 
     };
@@ -1180,7 +1177,7 @@ const EditInstructions = (props) => {
     const [replyClicked, setReplyClicked] = useState(false)
 
     function insertReplyAndFiles(values) {
-        // 
+        debugger
         if (editInstructionsValidInput.values.content == '') {
             editInstructionsValidInput.setErrors({ content: "Please insert answer content" });
         }
