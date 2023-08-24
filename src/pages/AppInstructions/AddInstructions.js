@@ -707,7 +707,15 @@ const AddInstructions = (props) => {
                                                         </div> */}
                                                         <div className="kb-file-upload">
                                                             <div className="file-upload-box">
-                                                                <input type="file" id="fileuploadAdd" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                                                <input
+                                                                    type="file"
+                                                                    id="fileuploadAdd"
+                                                                    className="form-control"
+                                                                    onChange={InputChange}
+                                                                    name="removeFile"
+                                                                    multiple
+                                                                    accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                                                />
                                                             </div>
                                                         </div>
                                                         <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
@@ -777,9 +785,9 @@ const AddInstructions = (props) => {
                     </Card>
                 </Col>
             </Row>
-                <div className="spinner-wrapper" style={{ display: addInstructionsSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
-                    <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
-                </div>
+            <div className="spinner-wrapper" style={{ display: addInstructionsSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+                <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+            </div>
         </Container>
     );
 

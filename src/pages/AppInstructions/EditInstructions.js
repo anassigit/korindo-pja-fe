@@ -439,16 +439,16 @@ const EditInstructions = (props) => {
 
             //remove/add - Owner & Manager//
 
-            if (addUser.length > 0) {
-                addUser.forEach(user => {
-                    bodyForm.append('addUser', user);
-                });
-            }
-            if (removeUser.length > 0) {
-                removeUser.forEach(user => {
-                    bodyForm.append('removeUser', user);
-                });
-            }
+            const filteredAddUser = addUser.filter(user => !removeUser.includes(user));
+            const filteredRemoveUser = removeUser.filter(user => !addUser.includes(user));
+
+            filteredAddUser.forEach(user => {
+                bodyForm.append('addUser', user);
+            });
+
+            filteredRemoveUser.forEach(user => {
+                bodyForm.append('removeUser', user);
+            });
 
             //end//
 
@@ -1046,7 +1046,6 @@ const EditInstructions = (props) => {
 
 
     const InputChangeR = (e) => {
-        debugger
         const files = e.target.files;
         const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i;
         const validFiles = [];
@@ -1287,45 +1286,8 @@ const EditInstructions = (props) => {
                 refCleanser.current.value = ""
             }
         }
+        setLoadingSpinner(false)
     }, [msgDeleteReply])
-
-    // Reply tables functions //
-
-    // const replyDelete = async (row) => {
-
-    //     if (isYes === true) {
-
-    //         try {
-
-    //             var map = {
-    //                 "reply_num": row.num
-    //             };
-
-    //             // setEditInstructionsSpinner(true);
-    //             // setEditInstructionMsg("")
-    //             //                 const storedData = localStorage.getItem('appInstructionsData');
-    //             let parsedData = null
-    //             if (storedData) {
-    //                 parsedData = JSON.parse(storedData);
-    //             }
-
-    //             let num = parsedData?.num
-    //             num = num.toString()
-    //             await dispatch(deleteReply(map))
-
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-
-    //     } else {
-    //         null
-    //     }
-
-    // };
-
-
-    // end function //
-
 
     /*********************************** SIGIT MADE FROM HERE ***********************************/
     /*********************************** SIGIT MADE FROM HERE ***********************************/
@@ -1446,7 +1408,7 @@ const EditInstructions = (props) => {
         setConfirmModal2(!confirmModal2)
     }
 
-    // /* DELETE INSTRUCTION 
+    /* DELETE INSTRUCTION */
     useEffect(() => {
 
         const handleDeleteInstructions = async () => {
@@ -1480,10 +1442,10 @@ const EditInstructions = (props) => {
             if (isYes2 === true) {
 
                 try {
-
                     var map = {
                         "reply_num": row.num
-                    };
+                    }
+                    dispatch(deleteReply(map))
 
                     setLoadingSpinner(true)
 
@@ -1646,14 +1608,14 @@ const EditInstructions = (props) => {
                         message={downloadContentModal}
 
                     />
-                    
+
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
 
                     <Container fluid={true}>
 
-                        <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit ? 'flex' : 'none' }}>
+                        <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == "ALL" || getDetailInstructionData?.data?.instruction?.edit == "STATUS" ? 'flex' : 'none' }}>
                             <Col lg={12}>
                                 <Card>
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>{props.t("Edit Instructions")}</CardHeader>
@@ -1673,7 +1635,6 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8" hidden>
                                                             <Label>Instruction ID</Label>
                                                             <Input
-
                                                                 name="no"
                                                                 type="text"
                                                                 value={editInstructionsValidInput.values.no || ""}
@@ -1689,6 +1650,7 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8">
                                                             <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                             <Input
+                                                                disabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                 maxLength={400}
                                                                 name="title"
                                                                 type="text"
@@ -1723,6 +1685,7 @@ const EditInstructions = (props) => {
                                                             /> */}
 
                                                             <DatePicker
+                                                                disabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                 name="insDate"
                                                                 ref={datepickerRef}
                                                                 className="form-control"
@@ -1741,6 +1704,7 @@ const EditInstructions = (props) => {
                                                                 {props.t("Status")} <span style={{ color: "red" }}>*</span>
                                                             </Label>
                                                             <Input
+                                                                disabled={getDetailInstructionData?.data?.instruction?.edit !== "STATUS" && getDetailInstructionData?.data?.instruction?.edit !== "ALL"}
                                                                 name="status"
                                                                 type="select"
                                                                 onChange={(e) => {
@@ -1776,6 +1740,7 @@ const EditInstructions = (props) => {
 
                                                             <Col>
                                                                 <Input
+                                                                    disabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                     name="description"
                                                                     type="textarea"
                                                                     rows="5"
@@ -1797,6 +1762,7 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8">
                                                             <Label> {props.t("Choose Owners")} </Label>
                                                             <Select
+                                                                isDisabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                 value={selectedMulti}
                                                                 isMulti={true}
                                                                 onChange={(e) => {
@@ -1813,6 +1779,7 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8">
                                                             <label>{props.t("Choose Managers")} </label>
                                                             <Select
+                                                                isDisabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                 value={selectedMulti2}
                                                                 isMulti={true}
                                                                 onChange={(e) => {
@@ -1834,7 +1801,16 @@ const EditInstructions = (props) => {
                                                                 <div className="kb-file-upload">
 
                                                                     <div className="file-upload-box">
-                                                                        <input type="file" ref={refCleanser} id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf" />
+                                                                        <input type="file"
+                                                                            ref={refCleanser}
+                                                                            hidden={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
+                                                                            id="fileupload2"
+                                                                            className="form-control"
+                                                                            onChange={InputChange}
+                                                                            name="removeFile"
+                                                                            multiple
+                                                                            accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                                                        />
                                                                     </div>
                                                                 </div>
                                                                 &nbsp;&nbsp;&nbsp;
@@ -1918,7 +1894,7 @@ const EditInstructions = (props) => {
                             </Col>
                         </Row>
 
-                        <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit ? 'none' : 'flex' }}>
+                        <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == "ALL" || getDetailInstructionData?.data?.instruction?.edit == "STATUS" ? 'none' : 'flex' }}>
                             <Col lg={12}>
                                 <Card>
                                     <CardHeader style={{ borderRadius: "15px 15px 0 0" }} ><i className="mdi mdi-file-document fs-5 align-middle me-2"></i>{props.t("Detail Instructions")}</CardHeader>
@@ -2083,7 +2059,7 @@ const EditInstructions = (props) => {
                                                                 <div className="kb-file-upload">
 
                                                                     <div className="file-upload-box">
-                                                                        <input disabled type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf"/>
+                                                                        <input disabled type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"/>
                                                                     </div>
                                                                 </div>
                                                                 &nbsp;&nbsp;&nbsp;
@@ -2214,7 +2190,7 @@ const EditInstructions = (props) => {
                                                                     <Form onSubmit={FileUploadSubmitR}>
                                                                         <div className="kb-file-upload">
                                                                             <div className="file-upload-box">
-                                                                                <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf" />
+                                                                                <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt" />
                                                                             </div>
                                                                         </div>
                                                                         &nbsp;&nbsp;&nbsp;
@@ -2379,7 +2355,7 @@ const EditInstructions = (props) => {
 
                                                                                                 {selectedRowIndex === reply_num && (
                                                                                                     <div className="file-upload-box">
-                                                                                                        <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR2} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf" />
+                                                                                                        <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR2} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt" />
                                                                                                     </div>
                                                                                                 )}
                                                                                             </div>
