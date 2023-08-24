@@ -1176,40 +1176,6 @@ const EditInstructions = (props) => {
 
     const [replyClicked, setReplyClicked] = useState(false)
 
-    function insertReplyAndFiles(values) {
-        debugger
-        if (editInstructionsValidInput.values.content == '') {
-            editInstructionsValidInput.setErrors({ content: "Please insert answer content" });
-        }
-        var bodyForm = new FormData();
-
-        bodyForm.append('instruction_num', editInstructionsValidInput.values.no);
-        bodyForm.append('content', editInstructionsValidInput.values.content);
-
-        if (selectedfileR.length > 0) {
-
-            for (let index = 0; index < selectedfileR.length; index++) {
-
-                let a = selectedfileR[index];
-                bodyForm.append('file' + index, selectedfileR[index].fileori);
-                SetSelectedFileR([])
-            }
-
-        }
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-
-
-        // setEditInstructionsSpinner(true);
-        insert3(bodyForm, config)
-        setReplyClicked(!replyClicked)
-
-    }
-
     const [loadingSpinner, setLoadingSpinner] = useState(false)
 
     useEffect(() => {
@@ -1222,7 +1188,6 @@ const EditInstructions = (props) => {
         let num = parsedData?.num
         num = num.toString()
         if (msgSaveReply.status == '0') {
-            alert(msgSaveReply.message);
         }
         if (msgSaveReply.status == '1') {
             dispatch(getReply({
@@ -1235,6 +1200,7 @@ const EditInstructions = (props) => {
                 refCleanser.current.value = ""
             }
         }
+        setReplyClicked(!replyClicked)
         setLoadingSpinner(false)
     }, [msgSaveReply])
 
@@ -1382,7 +1348,6 @@ const EditInstructions = (props) => {
 
         // setEditInstructionsSpinner(true);
         updateReply(bodyForm, config)
-        setReplyClicked(!replyClicked)
         setSelectedDeletedReplyAtt([])
 
     }
@@ -1576,15 +1541,65 @@ const EditInstructions = (props) => {
 
     }, [downloadMessage])
 
+
+    /* REPLY VALID INPUT */
+    const initialValues = {
+        content: '',
+    };
+
+    const validationSchemaReply = Yup.object().shape({
+        content: Yup.string().required('Content is required'),
+    });
+
+    const onSubmit = (values) => {
+        debugger
+
+        if (values.content !== '') {
+            var bodyForm = new FormData();
+
+            bodyForm.append('instruction_num', editInstructionsValidInput.values.no);
+            bodyForm.append('content', values.content);
+
+            if (selectedfileR.length > 0) {
+
+                for (let index = 0; index < selectedfileR.length; index++) {
+
+                    let a = selectedfileR[index];
+                    bodyForm.append('file' + index, selectedfileR[index].fileori);
+                    SetSelectedFileR([])
+                }
+
+            }
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+
+
+            // setEditInstructionsSpinner(true);
+            insert3(bodyForm, config)
+            replyValidInput.setFieldValue('content', '')
+        } else {
+            replyValidInput.setFieldError('content', props.t('Please enter content'))
+        }
+
+    };
+
+    const replyValidInput = useFormik({
+        initialValues,
+        validationSchemaReply,
+        onSubmit,
+    });
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
         <RootPageCustom msgStateGet={appEditInstructionsMsg.message} msgStateSet={setAppEditInstructionsMsg}
             componentJsx={
                 <>
-                    {/* {editInstructionMsg !== "" ? <UncontrolledAlert toggle={editInstructionCloseAllert} color={editInstructionMsg.status == "1" ? "success" : "danger"}>
-                    {typeof editInstructionMsg == 'string' ? editInstructionMsg : editInstructionMsg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null} */}
-
+                    
                     <ConfirmModal
                         modal={confirmModal}
                         toggle={confirmToggle}
@@ -1669,17 +1684,6 @@ const EditInstructions = (props) => {
                                                                 {props.t("Instruction Date")}{" "}
                                                                 <span style={{ color: "red" }}>* </span>
                                                             </Label>
-
-                                                            {/* <Input
-                                                                name="insDate"
-                                                                type="date"
-                                                                onChange={editInstructionsValidInput.handleChange}
-                                                                //onBlur={handleAutoSaveDate}
-                                                                value={editInstructionsValidInput.values.insDate || startDate}
-                                                                invalid={
-                                                                    editInstructionsValidInput.touched.insDate && editInstructionsValidInput.errors.insDate ? true : false
-                                                                }
-                                                            /> */}
 
                                                             <DatePicker
                                                                 disabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
@@ -2149,13 +2153,14 @@ const EditInstructions = (props) => {
                                     <CardBody hidden={isHiddenReply}>
                                         <React.Fragment>
                                             <FormGroup className="mb-0">
+
                                                 <div className="row col-8">
                                                     <div className="col">
-                                                        <Row className="mb-2">
-                                                            <Col sm="12">
+                                                        <form onSubmit={replyValidInput.handleSubmit}>
+                                                            <div className="mb-2">
                                                                 <div className="input-group">
                                                                     <div className="col-sm-12">
-                                                                        <label>{props.t("Answer")} </label>
+                                                                        <label>{props.t("Answer")}</label>
                                                                         <Input
                                                                             style={{
                                                                                 minHeight: "10em",
@@ -2164,84 +2169,75 @@ const EditInstructions = (props) => {
                                                                             placeholder={props.t("Please input your answer here")}
                                                                             name="content"
                                                                             type="textarea"
-                                                                            onChange={editInstructionsValidInput.handleChange}
-                                                                            //style={{ color: "black" }}
-                                                                            //placeholder={'Type here...'}
-                                                                            value={replyClicked == true ? '' : editInstructionsValidInput.values.content}
+                                                                            onChange={(event) => {
+                                                                                replyValidInput.handleChange(event);
+                                                                            }}
+                                                                            value={replyValidInput.values.content || ""}
                                                                             invalid={
-                                                                                editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? true : false
+                                                                                replyValidInput.touched.content && replyValidInput.errors.content ? true : false
                                                                             }
                                                                         />
-                                                                        {editInstructionsValidInput.touched.content && editInstructionsValidInput.errors.content ? (
-                                                                            <FormFeedback type="invalid">{editInstructionsValidInput.errors.content}</FormFeedback>
-                                                                        ) : null}
+                                                                        {replyValidInput.touched.content && replyValidInput.errors.content && (
+                                                                            <div className="invalid-feedback">{replyValidInput.errors.content}</div>
+                                                                        )}
                                                                     </div>
                                                                 </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className="mb-1">
-                                                            <Col sm="12">
+                                                            </div>
+                                                            <div className="mb-1">
                                                                 <div className="mb-3 col-sm-12">
-                                                                    <label>{props.t("Attached Files")} </label>
-
-                                                                    <Form onSubmit={FileUploadSubmitR}>
-                                                                        <div className="kb-file-upload">
-                                                                            <div className="file-upload-box">
-                                                                                <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt" />
-                                                                            </div>
+                                                                    <label>{props.t("Attached Files")}</label>
+                                                                    <div className="kb-file-upload">
+                                                                        <div className="file-upload-box">
+                                                                            <input
+                                                                                type="file"
+                                                                                id="fileupload3"
+                                                                                className="form-control"
+                                                                                multiple
+                                                                                accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                                                                onChange={(event) => {
+                                                                                    replyValidInput.setFieldValue('files', event.currentTarget.files);
+                                                                                }}
+                                                                            />
                                                                         </div>
-                                                                        &nbsp;&nbsp;&nbsp;
-                                                                        <div className="kb-attach-box mb-3">
-                                                                            {
-                                                                                selectedfileR.map((data, index) => {
-                                                                                    const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                                    return (
-                                                                                        <div className="file-atc-box" key={id}>
-
-                                                                                            {
-                                                                                                filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
-                                                                                                    <div className="file-image"></div>
-                                                                                                    :
-                                                                                                    <div className="file-image"></div>
-                                                                                            }
-                                                                                            <div className="file-detail">
-                                                                                                <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                                &nbsp;&nbsp;&nbsp;
-                                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFileR(id)} />
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    )
-                                                                                })
-                                                                            }
-                                                                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
-                                                                        </div>
-
-                                                                        <div className="text-sm-end col-12" >
-
-                                                                            <Button
-                                                                                type="button"
-
-                                                                                color="primary"
-                                                                                className="ms-1"
-                                                                                onClick={() => { insertReplyAndFiles() }}
-                                                                            >
-                                                                                <i className="mdi mdi-send align-middle me-2" />
-                                                                                {props.t("Reply")}
-                                                                            </Button>
-
-                                                                        </div>
-                                                                    </Form>
-
+                                                                    </div>
+                                                                    &nbsp;&nbsp;&nbsp;
+                                                                    <div className="kb-attach-box mb-3">
+                                                                        {replyValidInput.values.files &&
+                                                                            Array.from(replyValidInput.values.files).map((file, index) => (
+                                                                                <div className="file-atc-box" key={index}>
+                                                                                    {/* Display file details here */}
+                                                                                    <div className="file-detail">
+                                                                                        <span>
+                                                                                            <i className="fas fa-paperclip" />
+                                                                                            &nbsp;{file.name}
+                                                                                        </span>
+                                                                                        &nbsp;&nbsp;&nbsp;
+                                                                                        <i
+                                                                                            className="mdi mdi-close"
+                                                                                            style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
+                                                                                            onClick={() => {
+                                                                                                const newFiles = Array.from(replyValidInput.values.files);
+                                                                                                newFiles.splice(index, 1);
+                                                                                                replyValidInput.setFieldValue('files', newFiles);
+                                                                                            }}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            ))}
+                                                                        <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                                                    </div>
                                                                 </div>
-                                                            </Col>
-
-                                                            {/* <Col md="12"> */}
-                                                            {/* </Col> */}
-                                                        </Row>
+                                                            </div>
+                                                            <div className="text-sm-end col-12">
+                                                                <button type="submit" className="btn btn-primary ms-1">
+                                                                    <i className="mdi mdi-send align-middle me-2" />
+                                                                    {props.t("Reply")}
+                                                                </button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-
                                                 </div>
+                                                &nbsp;
                                                 <Row>
                                                     <hr />
                                                 </Row>
