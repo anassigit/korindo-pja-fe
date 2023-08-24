@@ -23,7 +23,7 @@
   "Download": "다운로드",
   "Folders": "폴더",
   "Files": "파일",
-  "Move": "확인",
+  "Move": "이동",
   "Move File or Folder": "파일 또는 폴더 이동",
   "Are you sure to delete this": "이 항목을 삭제하시겠습니까?",
   "New": "추가",
@@ -112,5 +112,5 @@
   "Skip": "건너뛰기",
   "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "사용 가능한 확장자: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt",
   "Are you sure to delete this?": "삭제하시겠습니까?",
-  "Please enter content": "컨텐츠를 입력해주세요"
+  "Please enter content": "답변을 입력해주세요"
 }

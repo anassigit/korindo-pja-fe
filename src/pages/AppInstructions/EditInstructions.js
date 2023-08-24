@@ -598,13 +598,14 @@ const EditInstructions = (props) => {
     function DeleteFileAttached(FileNo) {
 
         if (SetFiles.length > 0) {
+            debugger
 
             for (let index = 0; index < SetFiles.length; index++) {
 
                 let a = SetFiles[index];
 
                 const result = (Object.values(Files).filter((data) => data.num !== FileNo));
-                //                 let temp = null
+                let temp = null
                 temp = removeFile
                 temp.push(FileNo)
                 setRemoveFile(temp);
@@ -667,6 +668,7 @@ const EditInstructions = (props) => {
 
 
     const DeleteSelectFile = (id) => {
+        debugger
         const result = selectedfile.filter((data) => data.id !== id);
         SetSelectedFile(result);
     }
@@ -842,6 +844,7 @@ const EditInstructions = (props) => {
             ...styles,
             color: data.bgColor,
         }),
+
     };
 
     const colourStyles2 = {
@@ -1794,7 +1797,7 @@ const EditInstructions = (props) => {
                                                                 }}
                                                                 options={optionOwner0}
                                                                 className="select2-selection"
-                                                                styles={colourStyles}
+                                                                styles={getDetailInstructionData?.data?.instruction?.edit === "STATUS" ? colourStylesDisabled : colourStyles}
                                                                 components={{ DropdownIndicator }}
                                                                 placeholder={props.t("Select or type")}
                                                             />
@@ -1812,7 +1815,7 @@ const EditInstructions = (props) => {
                                                                 options={optionManager0}
 
                                                                 className="select2-selection"
-                                                                styles={colourStyles2}
+                                                                styles={getDetailInstructionData?.data?.instruction?.edit === "STATUS" ? colourStyles2Disabled : colourStyles2}
                                                                 components={{ DropdownIndicator }}
                                                                 placeholder={props.t("Select or type")}
                                                             />
@@ -1870,7 +1873,7 @@ const EditInstructions = (props) => {
                                                                                     <div className="file-detail">
                                                                                         <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{data.name}</span>
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} />
+                                                                                        <i hidden={getDetailInstructionData?.data?.instruction?.edit === "STATUS"} className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} />
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => downloadCheckFileInst(data.num, data.name)} />
 
@@ -2122,7 +2125,7 @@ const EditInstructions = (props) => {
                                                                                         &nbsp;&nbsp;&nbsp;
                                                                                         {/* <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteFileAttached(data.num)} /> */}
                                                                                         &nbsp;&nbsp;&nbsp;
-                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => downloadAttach(data.num, data.name)} />
+                                                                                        <i className="mdi mdi-download" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => downloadCheckFileInst(data.num, data.name)} />
 
                                                                                     </div>
                                                                                 </div>

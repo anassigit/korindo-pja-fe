@@ -83,7 +83,7 @@ const ChangePassword = (props) => {
             digit: /\d/,
             lowercase: /[a-z]/,
             uppercase: /[A-Z]/,
-            special: /[\W_]/, 
+            special: /[\W_]/,
           };
 
           const typeCount = Object.values(characterTypes).reduce(
@@ -260,7 +260,6 @@ const ChangePassword = (props) => {
                   <Button type="submit" color="primary" className="ms-1">
 
                     <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
-                    <Spinner style={{ display: changePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                   </Button>&nbsp;
 
                   <Button
@@ -283,6 +282,11 @@ const ChangePassword = (props) => {
           </Card>
 
         </Row>
+
+        <div className="spinner-wrapper" style={{ display: changePasswordSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)" }}>
+          <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+        </div>
+
       </Container>
     </React.Fragment>
 

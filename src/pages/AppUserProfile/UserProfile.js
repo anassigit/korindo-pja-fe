@@ -102,9 +102,9 @@ const UserProfile = (props) => {
     },
 
     validationSchema: Yup.object().shape({
-
-      hp: Yup.string().required("Please enter mobile phone number.")
-
+      hp: Yup.string()
+        .matches(/^(08[0-9]{8,10})$/, "Invalid mobile phone number.")
+        .required("Please enter a mobile phone number."),
     }),
 
   });
@@ -118,6 +118,7 @@ const UserProfile = (props) => {
       };
       await dispatch(editUserProfile(map));
       setAppUserProfileMsg("")
+      setAppUserProfileSpinner(true)
     } catch (message) {
       console.log(message)
     }
@@ -284,7 +285,6 @@ const UserProfile = (props) => {
                         <Button color="primary" className="ms-1" onClick={(e) => { updateHp() }}>
                           <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
                         </Button>
-                        <Spinner style={{ display: appUserProfileSpinner ? "block" : "none", marginTop: '-35px' }} className="ms-4" color="danger" />
                       </FormGroup>
                     </Form>
 
@@ -293,6 +293,10 @@ const UserProfile = (props) => {
               </Col>
             </Row>
           </Container>
+
+          <div className="spinner-wrapper" style={{ display: appUserProfileSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)" }}>
+            <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+          </div>
 
           <ChangePassword
             userProfilePassword={userProfilePassword}
