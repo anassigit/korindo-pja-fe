@@ -325,11 +325,31 @@ const EditInstructions = (props) => {
 
 
         /** MANAGER SELECT **/
-        setselectedMulti2(selectedManager?.data?.managerList.map((manager) => ({
-            value: manager.id,
-            label: manager.name + (manager.gname !== null ? ` (` + manager.gname + `)` : ''),
-            gname: manager.gname,
-        })))
+        const managerList = selectedManager?.data?.managerList;
+
+        if (managerList) {
+            const uniqueManagers = [];
+            const seenNames = new Set();
+
+            managerList.forEach(manager => {
+                const name = manager.name;
+                const gname = manager.gname;
+
+                const fullName = gname !== null ? `${name} (${gname})` : name;
+
+                if (!seenNames.has(fullName)) {
+                    seenNames.add(fullName);
+                    uniqueManagers.push({
+                        value: manager.id,
+                        label: fullName,
+                        gname: manager.gname,
+                    });
+                }
+            });
+
+            setselectedMulti2(uniqueManagers);
+        }
+
 
         setOptionManager0(getManagerList?.data?.managerList.map((manager) => ({
             value: manager.id,
@@ -439,8 +459,11 @@ const EditInstructions = (props) => {
 
             //remove/add - Owner & Manager//
 
-            const filteredAddUser = addUser.filter(user => !removeUser.includes(user));
-            const filteredRemoveUser = removeUser.filter(user => !addUser.includes(user));
+            const uniqueAddUser = new Set(addUser);
+            const uniqueRemoveUser = new Set(removeUser);
+
+            const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
+            const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
 
             filteredAddUser.forEach(user => {
                 bodyForm.append('addUser', user);
@@ -1599,7 +1622,7 @@ const EditInstructions = (props) => {
         <RootPageCustom msgStateGet={appEditInstructionsMsg.message} msgStateSet={setAppEditInstructionsMsg}
             componentJsx={
                 <>
-                    
+
                     <ConfirmModal
                         modal={confirmModal}
                         toggle={confirmToggle}
