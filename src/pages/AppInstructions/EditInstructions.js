@@ -1563,7 +1563,7 @@ const EditInstructions = (props) => {
             downloadAttach()
         }
         setDownloadContentModal(downloadMessage.message)
-        setDownloadMsg("");
+        setDownloadMsg("")
 
     }, [downloadMessage])
 
