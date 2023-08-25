@@ -482,9 +482,9 @@ const FileManagement = (props) => {
                                 <div className="avatar-xs me-3 mb-3">
                                   <div className="avatar-title bg-transparent rounded">
                                     {myfiles.type === "FOLDER" ?
-                                      <i className="fa fa-solid fa-folder fs-3 align-middle" style={{ color: "#7bae40" }}></i>
+                                      <i className="fa fa-solid fa-folder fs-1 align-middle" style={{ color: "#7bae40" }}></i>
                                       :
-                                      <i className="fa fa-solid fa-file fs-3 align-middle" style={{ color: "#7bae40" }} ></i>
+                                      <i className="fa fa-solid fa-file fs-1 align-middle" style={{ color: "#7bae40" }} ></i>
                                     }
                                   </div>
                                 </div>
@@ -562,7 +562,7 @@ const FileManagement = (props) => {
                               <div className="avatar-xs me-3 mb-3">
                                   <div className="avatar-title bg-transparent rounded">
                                   {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
-                                    <i className="fa fa-solid fa-file-word fs-3 " style={{ verticalAlign: "middle", color: "#41a5ee" }}></i>
+                                    <i className="fa fa-solid fa-file-word fs-1 " style={{ verticalAlign: "middle", color: "#41a5ee" }}></i>
                                   ) :
                                     myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
                                       // <img src={myfiles} key={key}
@@ -571,20 +571,20 @@ const FileManagement = (props) => {
                                       //     height: 20,
                                       //     resizeMode: 'contain',
                                       //   }} />
-                                      <i className="fa fa-solid fa-image fs-3 text-warning" style={{ verticalAlign: "middle" }}></i>
+                                      <i className="fa fa-solid fa-image fs-1 text-warning" style={{ verticalAlign: "middle" }}></i>
                                     )
                                       : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
-                                        <i className="fa fa-solid fa-file-excel fs-3 " style={{ verticalAlign: "middle", color: "#32c37e" }}></i>
+                                        <i className="fa fa-solid fa-file-excel fs-1 " style={{ verticalAlign: "middle", color: "#32c37e" }}></i>
                                       )
                                         : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
-                                          <i className="fa fa-solid fa-file-powerpoint fs-3" style={{ verticalAlign: "middle", color: "#ff8f6b" }}></i>
+                                          <i className="fa fa-solid fa-file-powerpoint fs-1" style={{ verticalAlign: "middle", color: "#ff8f6b" }}></i>
                                         )
                                           : myfiles.name.endsWith("pdf") ? (
-                                            <i className="fa fa-solid fa-file-pdf fs-3" style={{ verticalAlign: "middle", color: "#b40c01" }}></i>
+                                            <i className="fa fa-solid fa-file-pdf fs-1" style={{ verticalAlign: "middle", color: "#b40c01" }}></i>
                                           )
                                             :
                                             (
-                                              <i className="fa fa-solid fa-file fs-3 align-baseline" style={{ verticalAlign: "middle", color: "#b7b7b7" }}></i>
+                                              <i className="fa fa-solid fa-file fs-1 align-baseline" style={{ verticalAlign: "middle", color: "#b7b7b7" }}></i>
                                             )}
                                 </div>
                               </div>
