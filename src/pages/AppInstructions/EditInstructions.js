@@ -1591,6 +1591,7 @@ const EditInstructions = (props) => {
     /* REPLY VALID INPUT */
     const initialValues = {
         content: '',
+        files: [],
     };
 
     const validationSchemaReply = Yup.object().shape({
@@ -1598,21 +1599,18 @@ const EditInstructions = (props) => {
     });
 
     const onSubmit = (values) => {
-        debugger
-
         if (values.content !== '') {
             var bodyForm = new FormData();
 
             bodyForm.append('instruction_num', editInstructionsValidInput.values.no);
             bodyForm.append('content', values.content);
 
-            if (selectedfileR.length > 0) {
+            if (values.files.length > 0) {
 
-                for (let index = 0; index < selectedfileR.length; index++) {
+                for (let index = 0; index < values.files.length; index++) {
 
-                    let a = selectedfileR[index];
-                    bodyForm.append('file' + index, selectedfileR[index].fileori);
-                    SetSelectedFileR([])
+                    const file = values.files[index];
+                    bodyForm.append('file' + index, file);
                 }
 
             }
@@ -1623,10 +1621,11 @@ const EditInstructions = (props) => {
                 }
             }
 
-
             // setEditInstructionsSpinner(true);
             insert3(bodyForm, config)
             replyValidInput.setFieldValue('content', '')
+            replyValidInput.setFieldValue('files', [])
+            refCleanser.current.value = ""
         } else {
             replyValidInput.setFieldError('content', props.t('Please enter content'))
         }
@@ -2210,7 +2209,13 @@ const EditInstructions = (props) => {
 
                                                 <div className="row col-8">
                                                     <div className="col">
-                                                        <form onSubmit={replyValidInput.handleSubmit}>
+                                                        <Form
+                                                            onSubmit={(e) => {
+                                                                e.preventDefault();
+                                                                replyValidInput.handleSubmit();
+                                                                return false;
+                                                            }}
+                                                        >
                                                             <div className="mb-2">
                                                                 <div className="input-group">
                                                                     <div className="col-sm-12">
@@ -2246,6 +2251,7 @@ const EditInstructions = (props) => {
                                                                                 type="file"
                                                                                 id="fileupload3"
                                                                                 className="form-control"
+                                                                                ref={refCleanser}
                                                                                 multiple
                                                                                 accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
                                                                                 onChange={(event) => {
@@ -2288,7 +2294,7 @@ const EditInstructions = (props) => {
                                                                     {props.t("Reply")}
                                                                 </button>
                                                             </div>
-                                                        </form>
+                                                        </Form>
                                                     </div>
                                                 </div>
                                                 &nbsp;
