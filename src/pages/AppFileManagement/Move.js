@@ -8,7 +8,9 @@ import {
     Button,
     Form,
     Spinner,
-    Row
+    Row,
+    Label,
+    Input
 } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
@@ -46,9 +48,15 @@ const Move = (props) => {
 
 
     useEffect(() => {
-        dispatch(getSelectFile2())
         dispatch(getSelectFile())
-    }, [])
+
+    },[])
+
+    useEffect(() => {
+        dispatch(getSelectFile2({
+            "folder_num": props.pNum
+        }))
+    },[props.pNum])
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -62,6 +70,7 @@ const Move = (props) => {
 
             file_num: props.fNum,
             parent_num: numF,
+            
         },
 
         validationSchema: Yup.object().shape({
@@ -80,7 +89,7 @@ const Move = (props) => {
     });
 
     const getInsideFolderMove = (e, f, n) => {
-  
+  debugger
         dispatch(getSelectFile2({ "folder_num": e }))
         setNumF(e)
         setNumP(f)

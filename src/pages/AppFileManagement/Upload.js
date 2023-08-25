@@ -208,7 +208,10 @@ const Upload = (props) => {
                                 <div className="kb-file-upload">
 
                                     <div className="file-upload-box">
-                                        <input type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                        <input type="file" 
+                                        accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                        text/plain, application/pdf, image/*"
+                                        id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                     </div>
                                 </div>
                                 &nbsp;
