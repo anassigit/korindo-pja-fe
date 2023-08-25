@@ -710,7 +710,13 @@ const EditInstructions = (props) => {
                 <i className="mdi mdi-plus-thick" />
             </components.DropdownIndicator>
         );
-    };
+    }
+
+    const DropdownIndicatorDisabled = (props) => {
+        return (
+            null
+        );
+    }
 
     const colourStyles = {
         control: (baseStyles, state) => ({
@@ -784,9 +790,12 @@ const EditInstructions = (props) => {
     const colourStylesDisabled = {
         control: (baseStyles, state) => ({
             ...baseStyles,
-            borderColor: state.isFocused || state.isSelected || state.isDisabled ? 'white' : 'white',
+            borderColor: state.isFocused || state.isSelected ? 'white' : 'white',
             border: 0,
             boxShadow: 'none',
+            '& input': {
+                paddingRight: '0', // Hide the "+" symbol by removing right padding
+            },
         }),
 
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
@@ -844,6 +853,12 @@ const EditInstructions = (props) => {
             ...styles,
             color: data.bgColor,
         }),
+
+        DropdownIndicator: (base, state) => ({
+            ...base,
+            display: 'block',
+        }),
+
 
     };
 
@@ -1556,15 +1571,20 @@ const EditInstructions = (props) => {
     }, [numTemp])
 
     useEffect(() => {
-        if (downloadMessage.status === "0") {
+        debugger
+        if (downloadMsg?.status === "0") {
             setDownloadMsg(downloadMessage);
             toggleMsgModal()
-        } else if (downloadMessage.status === "1") {
+        } else if (downloadMsg?.status === "1") {
             downloadAttach()
         }
         setDownloadContentModal(downloadMessage.message)
         setDownloadMsg("")
 
+    }, [downloadMsg])
+
+    useEffect(() => {
+        setDownloadMsg(downloadMessage)
     }, [downloadMessage])
 
 
@@ -1798,7 +1818,9 @@ const EditInstructions = (props) => {
                                                                 options={optionOwner0}
                                                                 className="select2-selection"
                                                                 styles={getDetailInstructionData?.data?.instruction?.edit === "STATUS" ? colourStylesDisabled : colourStyles}
-                                                                components={{ DropdownIndicator }}
+                                                                components={{
+                                                                    DropdownIndicator: getDetailInstructionData?.data?.instruction?.edit === "STATUS" ? DropdownIndicatorDisabled : DropdownIndicator,
+                                                                }}
                                                                 placeholder={props.t("Select or type")}
                                                             />
                                                         </div>
@@ -1816,7 +1838,9 @@ const EditInstructions = (props) => {
 
                                                                 className="select2-selection"
                                                                 styles={getDetailInstructionData?.data?.instruction?.edit === "STATUS" ? colourStyles2Disabled : colourStyles2}
-                                                                components={{ DropdownIndicator }}
+                                                                components={{
+                                                                    DropdownIndicator: getDetailInstructionData?.data?.instruction?.edit === "STATUS" ? DropdownIndicatorDisabled : DropdownIndicator,
+                                                                }}
                                                                 placeholder={props.t("Select or type")}
                                                             />
                                                         </div>
@@ -2056,7 +2080,9 @@ const EditInstructions = (props) => {
                                                                 options={optionOwner0}
                                                                 className="select2-selection"
                                                                 styles={colourStylesDisabled}
-                                                                components={{ DropdownIndicator }}
+                                                                components={{
+                                                                    DropdownIndicator: DropdownIndicatorDisabled
+                                                                }}
                                                                 placeholder={'Select or type...'}
                                                             />
                                                         </div>
@@ -2074,7 +2100,9 @@ const EditInstructions = (props) => {
 
                                                                 className="select2-selection"
                                                                 styles={colourStyles2Disabled}
-                                                                components={{ DropdownIndicator }}
+                                                                components={{
+                                                                    DropdownIndicator: DropdownIndicatorDisabled
+                                                                }}
                                                                 placeholder={'Select or type...'}
                                                             />
                                                         </div>
