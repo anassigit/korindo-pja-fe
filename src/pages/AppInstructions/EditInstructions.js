@@ -2236,7 +2236,7 @@ const EditInstructions = (props) => {
                                         <React.Fragment>
                                             <FormGroup className="mb-0">
 
-                                                <div className="row col-8">
+                                                {/* <div className="row col-8">
                                                     <div className="col">
                                                         <Form
                                                             onSubmit={(e) => {
@@ -2244,8 +2244,8 @@ const EditInstructions = (props) => {
                                                                 replyValidInput.handleSubmit();
                                                                 return false;
                                                             }}
-                                                        >
-                                                            <div className="mb-2">
+                                                        > */}
+                                                            {/* <div className="mb-2">
                                                                 <div className="input-group">
                                                                     <div className="col-sm-12">
                                                                         <label>{props.t("Answer")}</label>
@@ -2270,10 +2270,10 @@ const EditInstructions = (props) => {
                                                                         )}
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="mb-1">
-                                                                <div className="mb-3 col-sm-12">
-                                                                    <label>{props.t("Attached Files")}</label>
+                                                            </div> */}
+                                                            {/* <div className="mb-1">
+                                                            <div className="mb-3 col-sm-12"> */}
+                                                                    {/* <label>{props.t("Attached Files")}</label>
                                                                     <div className="kb-file-upload">
                                                                         <div className="file-upload-box">
                                                                             <input
@@ -2288,14 +2288,14 @@ const EditInstructions = (props) => {
                                                                                 }}
                                                                             />
                                                                         </div>
-                                                                    </div>
-                                                                    &nbsp;&nbsp;&nbsp;
-                                                                    <div className="kb-attach-box mb-3">
+                                                                    </div> */}
+                                                               
+                                                                    {/* <div className="kb-attach-box mb-3">
                                                                         {replyValidInput.values.files &&
                                                                             Array.from(replyValidInput.values.files).map((file, index) => (
                                                                                 <div className="file-atc-box" key={index}>
                                                                                     {/* Display file details here */}
-                                                                                    <div className="file-detail">
+                                                                                    {/* <div className="file-detail">
                                                                                         <span>
                                                                                             <i className="fas fa-paperclip" />
                                                                                             &nbsp;{file.name}
@@ -2310,26 +2310,26 @@ const EditInstructions = (props) => {
                                                                                                 replyValidInput.setFieldValue('files', newFiles);
                                                                                             }}
                                                                                         />
-                                                                                    </div>
-                                                                                </div>
+                                                                                    </div> */}
+                                                                                {/* </div>
                                                                             ))}
                                                                         <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="text-sm-end col-12">
+                                                                    </div> */}
+                                                            {/* </div>
+                                                            </div> */}
+                                                            {/* <div className="text-sm-end col-12">
                                                                 <button type="submit" className="btn btn-primary ms-1">
                                                                     <i className="mdi mdi-send align-middle me-2" />
                                                                     {props.t("Reply")}
                                                                 </button>
-                                                            </div>
-                                                        </Form>
+                                                            </div> */}
+                                                        {/* </Form>
                                                     </div>
-                                                </div>
-                                                &nbsp;
-                                                <Row>
+                                                </div> */}
+                                              
+                                                {/* <Row>
                                                     <hr />
-                                                </Row>
+                                                </Row> */}
                                                 <Row style={{ marginTop: "15px" }}>
                                                     <Col md="12">
                                                         <Row>

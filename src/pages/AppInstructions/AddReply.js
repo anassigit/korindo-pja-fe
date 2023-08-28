@@ -152,87 +152,71 @@ const AddReply = (props) => {
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>{props.t("Name")} <span style={{ color: "red" }}>*</span></Label>
+                            <label>{props.t("Answer")}</label>
                             <Input
-                                type="text"
-                                name="name"
-                                onChange={addReplyValidInput.handleChange}
-                                value={addReplyValidInput.values.name || ''}
-                            />
-                            {addReplyValidInput.errors.name && addReplyValidInput.touched.name && (
-                                <div style={{ color: 'red' }}>{addReplyValidInput.errors.name}</div>
-                            )}
-                        </div>
-
-                        <div className="mb-3 mx-3">
-                            <Label>{props.t("Email")} <span style={{ color: "red" }}>*</span></Label>
-                            <Input
-                                type="email"
-                                name="id"
-                                onChange={addReplyValidInput.handleChange}
-                                value={addReplyValidInput.values.id || ''}
-                            />
-                            {addReplyValidInput.errors.id && addReplyValidInput.touched.id && (
-                                <div style={{ color: 'red' }}>{addReplyValidInput.errors.id}</div>
-                            )}
-                        </div>
-
-                        <div className="mb-3 mx-3">
-                            <Label>HP</Label>
-                            <Input
-                                type="text"
-                                name="hp"
-                                maxLength={12}
-                                onKeyPress={handleKeyPress}
-                                onChange={addReplyValidInput.handleChange}
-                                value={addReplyValidInput.values.hp || ''}
-                            />
-                        </div>
-
-                        <div className="mb-3 mx-3">
-                            <Label>{props.t("Rank")}</Label>
-                            <Input
-                                type="select"
-                                name="rank"
-                                onChange={addReplyValidInput.handleChange}
-                                value={addReplyValidInput.values.rank || ''}
-                            >
-                                <option value="">{props.t("Select Rank")}</option>
-                                {
-                                    (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).map((rank) => (
-                                        <option key={rank.value} value={rank.value}>
-                                            {rank.label}
-                                        </option>
-                                    ))
+                                style={{
+                                    minHeight: "10em",
+                                }}
+                                maxLength={400}
+                                placeholder={props.t("Please input your answer here")}
+                                name="content"
+                                type="textarea"
+                                onChange={(event) => {
+                                    addReplyValidInput.handleChange(event);
+                                }}
+                                value={addReplyValidInput.values.content || ""}
+                                invalid={
+                                    addReplyValidInput.touched.content && addReplyValidInput.errors.content ? true : false
                                 }
-                            </Input>
-                        </div>
-                        <div className="mb-3 mx-3">
-                            <Label>{props.t("Permission")}</Label>
-                            <Input
-                                type="select"
-                                name="permission"
-                                onChange={addReplyValidInput.handleChange}
-                                value={addReplyValidInput.values.permission || ''}
-                            >
-                                <option value="">{props.t("Select Permission")}</option>
-                                {
-                                    (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).map((permission) => (
-                                        <option key={permission.value} value={permission.value}>
-                                            {permission.label}
-                                        </option>
-                                    ))}
-                            </Input>
+                            />
+                            {addReplyValidInput.touched.content && addReplyValidInput.errors.content && (
+                                <div className="invalid-feedback">{addReplyValidInput.errors.content}</div>
+                            )}
                         </div>
 
-                        <div className="mb-3 mx-3" hidden={addReplyValidInput?.values?.permission !== '2'}>
-                            <Label>{props.t("Background Color")}</Label>
-                            <Input
-                                type="color"
-                                name="bgColor"
-                                onChange={addReplyValidInput.handleChange}
-                                value={addReplyValidInput.values.bgColor || '#000'}
-                            />
+                        <div className="mb-3 mx-3">
+                            <label>{props.t("Attached Files")}</label>
+                            <div className="kb-file-upload">
+                                <div className="file-upload-box">
+                                    <input
+                                        type="file"
+                                        id="fileupload3"
+                                        className="form-control"
+                                        ref={refCleanser}
+                                        multiple
+                                        accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                        onChange={(event) => {
+                                            addReplyValidInput.setFieldValue('files', event.currentTarget.files);
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div className="kb-attach-box mb-3">
+                                {addReplyValidInput.values.files &&
+                                    Array.from(addReplyValidInput.values.files).map((file, index) => (
+                                        <div className="file-atc-box" key={index}>
+                                            {/* Display file details here */}
+                                            <div className="file-detail">
+                                                <span>
+                                                    <i className="fas fa-paperclip" />
+                                                    &nbsp;{file.name}
+                                                </span>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <i
+                                                    className="mdi mdi-close"
+                                                    style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
+                                                    onClick={() => {
+                                                        const newFiles = Array.from(addReplyValidInput.values.files);
+                                                        newFiles.splice(index, 1);
+                                                        addReplyValidInput.setFieldValue('files', newFiles);
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                            </div>
                         </div>
                     </FormGroup>
                 </ModalBody>
