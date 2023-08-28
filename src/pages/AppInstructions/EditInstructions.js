@@ -1713,7 +1713,7 @@ const EditInstructions = (props) => {
 
                                                 <Row>
                                                     <Col md="6">
-                                                        <div className="mb-3 col-sm-8" hidden>
+                                                        <div className="mb-3 col-sm-10" hidden>
                                                             <Label>Instruction ID</Label>
                                                             <Input
                                                                 name="no"
@@ -1728,7 +1728,7 @@ const EditInstructions = (props) => {
                                                             ) : null}
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                             <Input
                                                                 disabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
@@ -1748,7 +1748,7 @@ const EditInstructions = (props) => {
                                                             ) : null}
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label>
                                                                 {props.t("Instruction Date")}{" "}
                                                                 <span style={{ color: "red" }}>* </span>
@@ -1769,7 +1769,7 @@ const EditInstructions = (props) => {
 
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label>
                                                                 {props.t("Status")} <span style={{ color: "red" }}>*</span>
                                                             </Label>
@@ -1803,7 +1803,7 @@ const EditInstructions = (props) => {
                                                             ) : null}
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label className="col-sm-5" style={{ marginTop: "15px" }}>
                                                                 {props.t("Descriptions")}
                                                             </Label>
@@ -1813,7 +1813,7 @@ const EditInstructions = (props) => {
                                                                     disabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                     name="description"
                                                                     type="textarea"
-                                                                    rows="5"
+                                                                    rows="12"
                                                                     onChange={editInstructionsValidInput.handleChange}
                                                                     value={editInstructionsValidInput.values.description || ""}
                                                                     invalid={editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? true : false}
@@ -1990,7 +1990,7 @@ const EditInstructions = (props) => {
 
                                                 <Row>
                                                     <Col md="6">
-                                                        <div className="mb-3 col-sm-8" hidden>
+                                                        <div className="mb-3 col-sm-10" hidden>
                                                             <Label>Instruction ID</Label>
                                                             <Input
 
@@ -2006,7 +2006,7 @@ const EditInstructions = (props) => {
                                                             ) : null}
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                             <Input
                                                                 disabled
@@ -2025,7 +2025,7 @@ const EditInstructions = (props) => {
                                                             ) : null}
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label>
                                                                 {props.t("Instruction Date")}{" "}
                                                                 <span style={{ color: "red" }}>* </span>
@@ -2044,7 +2044,7 @@ const EditInstructions = (props) => {
                                                             />
                                                         </div>
 
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label> Status <span style={{ color: "red" }}>* </span></Label>
 
                                                             <Input
@@ -2069,7 +2069,7 @@ const EditInstructions = (props) => {
                                                                 <FormFeedback type="invalid">{editInstructionsValidInput.errors.status}</FormFeedback>
                                                             ) : null}
                                                         </div>
-                                                        <div className="mb-3 col-sm-8">
+                                                        <div className="mb-3 col-sm-10">
                                                             <Label className="col-sm-5" style={{ marginTop: "15px" }}>
                                                                 {props.t("Descriptions")}
                                                             </Label>
@@ -2079,7 +2079,7 @@ const EditInstructions = (props) => {
                                                                     disabled
                                                                     name="description"
                                                                     type="textarea"
-                                                                    rows="5"
+                                                                    rows="12"
                                                                     onChange={editInstructionsValidInput.handleChange}
                                                                     value={editInstructionsValidInput.values.description || ""}
                                                                     invalid={editInstructionsValidInput.touched.description && editInstructionsValidInput.errors.description ? true : false}
