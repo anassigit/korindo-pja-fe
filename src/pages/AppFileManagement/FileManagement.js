@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import RootPageCustom from '../../common/RootPageCustom';
-import { useFormik, } from "formik";
 import PropTypes, { any } from 'prop-types';
-import * as Yup from "yup";
 import '../../config';
 import {
   Row,
@@ -10,36 +8,23 @@ import {
   Card,
   CardBody,
   Container,
-  Button,
-  Label,
-  Input,
-  FormFeedback,
-  Form,
-  Spinner,
-  FormGroup,
-  CardHeader,
   UncontrolledTooltip,
   UncontrolledAlert,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  UncontrolledDropdown,
-  Dropdown
+  UncontrolledDropdown
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
-import { ReactSession } from 'react-client-session';
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-import axios from 'axios';
 import Rename from "./Rename";
 import Upload from "./Upload";
 import Create from "./Create";
 import Move from "./Move";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import ConfirmModal from "components/Common/ConfirmModal";
-import { downloadFileFolder, downloadCheck } from "helpers/backend_helper";
+import { downloadFileFolder } from "helpers/backend_helper";
 import { withTranslation } from "react-i18next"
 import MsgModal from 'components/Common/MsgModal';
 
@@ -82,6 +67,7 @@ const FileManagement = (props) => {
   const [downloadMsgModal, setDownloadMsgModal] = useState(false)
   const [downloadContentModal, setDownloadContentModal] = useState("")
   const [successClose, setSuccessClose] = useState(false)
+  const [appFileManagementData, setAppFileManagementData] = useState(null);
 
   const toggleRenameModal = (idT, nmT, tpT) => {
 
@@ -144,8 +130,21 @@ debugger
   }
 
   useEffect(() => {
+    
+    const storedData = localStorage.getItem('appFileManagementData');
+    let parsedData = null
+
+    if (storedData) {
+        parsedData = JSON.parse(storedData);
+        setCurrFolder(parsedData);
+    }
+
     dispatch(resetMessage());
-    dispatch(getSelectFile())
+    if (storedData !== null) {
+      dispatch(getSelectFile({ 'folder_num': storedData }))
+    } else {
+      dispatch(getSelectFile())
+    }
     dispatch(getSearch({
       "search": ""
     }))
@@ -169,8 +168,9 @@ debugger
     return state.fileManagementReducer.respGetDownloadCheck;
   })
 
-
   useEffect(() => {
+
+
     if (getFileSelect) {
       setRealFileList(getFileSelect?.data?.childList)
       setRealFilePath(getFileSelect?.data?.path);
@@ -178,6 +178,8 @@ debugger
   }, [getFileSelect])
 
   useEffect(() => {
+
+
     if (getSearchFile?.data !== null) {
       setRealFileList(getSearchFile?.data?.searchList)
     } else if (getSearchFile?.data === null) {
@@ -198,6 +200,7 @@ debugger
   const getInsideFolder = (e, f, n) => {
 
     setCurrFolder(e)
+    localStorage.setItem('appFileManagementData', JSON.stringify(e));
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
     setIdChild(e)
