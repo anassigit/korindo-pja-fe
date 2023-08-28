@@ -22,6 +22,7 @@ import { withTranslation } from "react-i18next"
 
 const Move = (props) => {
 
+
     const dispatch = useDispatch();
     const [moveSpinner, setMoveSpinner] = useState(false)
     const [moveMsg, setMoveMsg] = useState(false)
@@ -29,7 +30,7 @@ const Move = (props) => {
     const [moveContentModal, setMoveContentModal] = useState("")
     const [successClose, setSuccessClose] = useState(false)
 
-    const [numF, setNumF] = useState(0)
+    const [numF, setNumF] = useState("")
     const [numP, setNumP] = useState(0)
     const [nem, setNem] = useState("")
 
@@ -49,7 +50,7 @@ const Move = (props) => {
 
     useEffect(() => {
         dispatch(getSelectFile())
-
+        dispatch(getSelectFile2())
     },[])
 
     useEffect(() => {
@@ -62,6 +63,14 @@ const Move = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
+    const getInsideFolderMove = (e, f, n) => {
+
+              dispatch(getSelectFile2({ "folder_num": e }))
+              setNumF(e)
+              setNumP(f)
+              setNem(n)
+      
+          }
 
     const valid = useFormik({
         enableReinitialize: true,
@@ -79,51 +88,71 @@ const Move = (props) => {
         }),
 
         onSubmit: (value) => {
-            
-            setMoveSpinner(true)
-            dispatch(moveFile(value));
-            toggleMsgModal()
 
+            var newParent = props.pNum;
+        
+            if (numF === null || numF === undefined || numF === "") {
+                value.parent_num = newParent;
+
+                setMoveSpinner(true);
+                dispatch(moveFile(value));
+                toggleMsgModal();
+
+            } else {
+        
+                value.parent_num = numF
+                setMoveSpinner(true);
+                dispatch(moveFile(value));
+                toggleMsgModal();
+
+            }
 
         }
     });
 
-    const getInsideFolderMove = (e, f, n) => {
-  debugger
-        dispatch(getSelectFile2({ "folder_num": e }))
-        setNumF(e)
-        setNumP(f)
-        setNem(n)
-
-    }
-
     const toggleMsgModal = () => {
-    
-        setMoveMsgModal(!moveMsgModal);
 
+        setMoveMsgModal(!moveMsgModal);
+    
         if (moveMsg.status === "1") {
             props.toggle();
-            dispatch(getSelectFile({ "folder_num": props.idNowLoc }));
-            dispatch(getSelectFile2({ "folder_num": "" }))
-            handleEffect();
-            setMoveMsg("");
-            
+            dispatch(getSelectFile({ folder_num: props.idNowLoc }));
+            dispatch(getSelectFile2({ folder_num: "" }));
+        } else if (moveMsg.status === "0") {
+            props.toggle();
+            dispatch(getSelectFile({ folder_num: props.idNowLoc }));
+            dispatch(getSelectFile2({ folder_num: "" }));
         }
+
+        handleEffect();
+        setMoveMsg("");
+
+
     };
 
     const handleEffect = () => {
-     
+
+
         if (moveRespMsg.status === "1") {
-            setSuccessClose(true)
+            setSuccessClose(true);
+
             setMoveMsg(moveRespMsg);
+            setMoveContentModal(moveRespMsg.message);
+            setMoveSpinner(false);
+        } else {
+            setSuccessClose(false);
+
+            setMoveMsg(moveRespMsg);
+            setMoveContentModal(moveRespMsg.message);
+            setMoveSpinner(false);
         }
-        setMoveContentModal(moveRespMsg.message);
-        setMoveSpinner(false);
+    
+
 
     };
 
     useEffect(() => {
-       
+
         setMoveMsg("");
         handleEffect();
     }, [moveRespMsg]);

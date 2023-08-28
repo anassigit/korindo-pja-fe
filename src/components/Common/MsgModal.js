@@ -26,6 +26,7 @@ const MsgModal = ({ modal, toggle, message, successClose }) => {
                 )}
             </ModalBody>
             <ModalFooter>
+                
                 {
                     successClose === true ?
                     <Button color="primary" onClick={toggle}>
