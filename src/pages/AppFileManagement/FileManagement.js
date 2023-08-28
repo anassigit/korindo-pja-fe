@@ -101,7 +101,7 @@ const FileManagement = (props) => {
   }
 
   const toggleUploadModal = () => {
-
+debugger
     setIdNowLoc(currFolder)
     setUploadModal(!uploadModal)
     setIdToggleUpload(idChild)

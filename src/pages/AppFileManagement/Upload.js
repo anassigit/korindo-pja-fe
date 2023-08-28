@@ -40,14 +40,14 @@ const Upload = (props) => {
         }),
 
         onSubmit: (value) => {
-    //debugger
+    debugger
             var bodyForm = new FormData();
             
             const isParentUndefined = value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined;
 
             value.parent_num = isParentUndefined ? 0 : value.parent_num;
             
-                //debugger
+                debugger
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -76,7 +76,7 @@ const Upload = (props) => {
 
     
     const insertUpload = async (value) => {
-        //debugger
+        debugger
         
         await dispatch(uploadFile(value));
         // toggleMsgModal()
@@ -93,7 +93,7 @@ const Upload = (props) => {
     const [uploadContentModal, setUploadContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        // debugger
+        debugger
         setUploadMsgModal(!uploadMsgModal)
         if (uploadMsg.status === "1") {
 
@@ -111,9 +111,10 @@ const Upload = (props) => {
     useEffect(() => {
         if (uploadRespMsg.status === "1") {
 
-        // 
+       debugger
         setSuccessClose(true)
             setUploadMsg(uploadRespMsg);
+            
 
         }
         setUploadContentModal(uploadRespMsg.message)
@@ -146,11 +147,16 @@ const Upload = (props) => {
                             }
                         ]
                     });
+                    e.target.value = null
                 }
                 if (e.target.files[i]) {
                     reader.readAsDataURL(file);
+                    
                 }
+                
             } else {
+                
+                e.target.value = null
                 alert("Files type are not allowed to upload or not supported.");
             }
         }
@@ -185,6 +191,12 @@ const Upload = (props) => {
         }
     }
 
+    const closeButton = () => {
+
+        props.toggle();
+        SetSelectedFile([])
+    
+    }
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
@@ -261,7 +273,7 @@ const Upload = (props) => {
                         {props.t("Save")}
                         <Spinner style={{ display: uploadSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
-                    <Button color="danger" onClick={props.toggle}>
+                    <Button color="danger"  onClick={()=>{closeButton()}}>
                         {props.t("Close")}
                     </Button>
                 </ModalFooter>
