@@ -234,7 +234,6 @@ const Upload = (props) => {
                                         .jpg,
                                         .jpeg,
                                         .png,
-                                        .svg,
                                         .gif"
                                         id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                     </div>
