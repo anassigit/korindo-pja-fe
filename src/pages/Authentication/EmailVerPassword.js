@@ -42,7 +42,7 @@ const EmailVerPassword = props => {
       id: ''
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("이메일을 입력해주세요"),
+      id: Yup.string().required("아이디를 입력해주세요"),
     }),
     onSubmit: (values) => {
       dispatch(emailForgotPassword(values));

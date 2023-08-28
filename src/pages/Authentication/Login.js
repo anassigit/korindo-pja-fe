@@ -43,7 +43,7 @@ const Login = props => {
       langType: 'KOR', // 언어 유형: 한국어
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("이메일을 입력해주세요"),
+      id: Yup.string().required("아이디를 입력해주세요"),
       pw: Yup.string().required("비밀번호를 입력해주세요"),
     }),
     onSubmit: values => {

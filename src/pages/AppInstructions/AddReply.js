@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import { saveReplys } from 'store/actions';
+import { saveReply, saveReplys } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { getReplysData, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 import { withTranslation } from "react-i18next"
 
 const AddReply = (props) => {
 
+    const refCleanser = useRef(null)
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [addReplySpinner, setAddReplySpinner] = useState(false)
 
     const [addReplyMsg, setAddReplyMsg] = useState(false)
 
-    const addReplyMessage = useSelector(state => {
-        return state.settingReducer.msgAdd;
-    });
+    const msgSaveReply = useSelector(state => {
+        return state.instructionsReducer.msgAddReply;
+    })
 
     const appRankListData = useSelector(state => {
         return state.settingReducer.respGetRankList;
@@ -27,7 +28,7 @@ const AddReply = (props) => {
 
     const appPermissionListData = useSelector(state => {
         return state.settingReducer.respGetPermissionList;
-    });
+    })
 
     useEffect(() => {
         dispatch(getRankListData())
@@ -38,36 +39,62 @@ const AddReply = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const addReplyValidInput = useFormik({
-        enableReinitialize: true,
+    const insert3 = async (values) => {
+        await dispatch(saveReply(values));
 
-        initialValues: {
-            id: '',
-            rank: '',
-            hp: '',
-            permission: '',
-            pw: '',
-            name: '',
-            bgColor: '',
-        },
+        setAddReplySpinner(true)
+    };
 
-        validationSchema: Yup.object().shape({
-            id: Yup.string()
-                .email("Email must be a valid email address")
-                .required("Email is required"),
-            name: Yup.string().required("Name is required"),
-        }),
+    const initialValues = {
+        content: '',
+        files: [],
+    };
 
-        onSubmit: (value) => {
+    const validationSchemaReply = Yup.object().shape({
+        content: Yup.string().required('Content is required'),
+    });
 
-            setAddReplySpinner(true)
-            dispatch(saveReplys(value));
-            toggleMsgModal()
+    const onSubmit = (values) => {
+        if (values.content !== '') {
+            var bodyForm = new FormData();
+
+            bodyForm.append('instruction_num', props.idInstruction);
+            bodyForm.append('content', values.content);
+
+            if (values.files.length > 0) {
+
+                for (let index = 0; index < values.files.length; index++) {
+
+                    const file = values.files[index];
+                    bodyForm.append('file' + index, file);
+                }
+            }
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+
+            // setEditInstructionsSpinner(true);
+            insert3(bodyForm, config)
+            replyValidInput.setFieldValue('content', '')
+            replyValidInput.setFieldValue('files', [])
+            refCleanser.current.value = ""
+        } else {
+            replyValidInput.setFieldError('content', props.t('Please enter content'))
         }
-    })
+
+    };
+
+    const replyValidInput = useFormik({
+        initialValues,
+        validationSchemaReply,
+        onSubmit,
+    });
 
     useEffect(() => {
-        addReplyValidInput.resetForm();
+        replyValidInput.resetForm();
     }, [props.toggle]);
 
     /* HP Validation */
@@ -78,41 +105,7 @@ const AddReply = (props) => {
             event.preventDefault();
         }
     }
-
-    /******* rank *******/
-
-    const rankOptionsEng = (appRankListData?.data?.rankList || []).map(({ num, name_eng }) => ({
-        value: num,
-        label: name_eng,
-    }))
-
-    const rankOptionsIdr = (appRankListData?.data?.rankList || []).map(({ num, name_idr }) => ({
-        value: num,
-        label: name_idr,
-    }))
-
-    const rankOptionsKor = (appRankListData?.data?.rankList || []).map(({ num, name_kor }) => ({
-        value: num,
-        label: name_kor,
-    }))
-
-    /******* Permission *******/
-
-    const permissionOptionsEng = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
-        value: num,
-        label: name_eng,
-    }))
-
-    const permissionOptionsIdr = (appPermissionListData?.data?.permissionList || []).map(({ num, name_idr }) => ({
-        value: num,
-        label: name_idr,
-    }))
-
-    const permissionOptionsKor = (appPermissionListData?.data?.permissionList || []).map(({ num, name_kor }) => ({
-        value: num,
-        label: name_kor,
-    }))
-
+    
     const [addReplyMsgModal, setAddReplyMsgModal] = useState(false)
     const [addmemberContentModal, setAddReplyContentModal] = useState("")
 
@@ -122,18 +115,18 @@ const AddReply = (props) => {
         if (addReplyMsg.status === "1") {
             props.toggle()
             setAddReplyMsg('')
-            dispatch(getReplysData(props.appReplysTabelSearch))
+            dispatch()
         }
     }
 
     useEffect(() => {
-        if (addReplyMessage.status == "1") {
-
-            setAddReplyMsg(addReplyMessage)
+        if (msgSaveReply.status == "1") {
+            setAddReplyMsg(msgSaveReply)
+            props.toggle()
         }
-        setAddReplyContentModal(addReplyMessage.message);
+        setAddReplyContentModal(msgSaveReply.message);
         setAddReplySpinner(false)
-    }, [addReplyMessage]);
+    }, [msgSaveReply]);
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
@@ -144,7 +137,7 @@ const AddReply = (props) => {
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
-                addReplyValidInput.handleSubmit();
+                replyValidInput.handleSubmit();
                 return false
             }}>
                 <ModalHeader toggle={props.toggle}>{props.t("Add New Reply")}</ModalHeader>
@@ -162,15 +155,15 @@ const AddReply = (props) => {
                                 name="content"
                                 type="textarea"
                                 onChange={(event) => {
-                                    addReplyValidInput.handleChange(event);
+                                    replyValidInput.handleChange(event);
                                 }}
-                                value={addReplyValidInput.values.content || ""}
+                                value={replyValidInput.values.content || ""}
                                 invalid={
-                                    addReplyValidInput.touched.content && addReplyValidInput.errors.content ? true : false
+                                    replyValidInput.touched.content && replyValidInput.errors.content ? true : false
                                 }
                             />
-                            {addReplyValidInput.touched.content && addReplyValidInput.errors.content && (
-                                <div className="invalid-feedback">{addReplyValidInput.errors.content}</div>
+                            {replyValidInput.touched.content && replyValidInput.errors.content && (
+                                <div className="invalid-feedback">{replyValidInput.errors.content}</div>
                             )}
                         </div>
 
@@ -186,15 +179,15 @@ const AddReply = (props) => {
                                         multiple
                                         accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
                                         onChange={(event) => {
-                                            addReplyValidInput.setFieldValue('files', event.currentTarget.files);
+                                            replyValidInput.setFieldValue('files', event.currentTarget.files);
                                         }}
                                     />
                                 </div>
                             </div>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
-                                {addReplyValidInput.values.files &&
-                                    Array.from(addReplyValidInput.values.files).map((file, index) => (
+                                {replyValidInput.values.files &&
+                                    Array.from(replyValidInput.values.files).map((file, index) => (
                                         <div className="file-atc-box" key={index}>
                                             {/* Display file details here */}
                                             <div className="file-detail">
@@ -207,9 +200,9 @@ const AddReply = (props) => {
                                                     className="mdi mdi-close"
                                                     style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
                                                     onClick={() => {
-                                                        const newFiles = Array.from(addReplyValidInput.values.files);
+                                                        const newFiles = Array.from(replyValidInput.values.files);
                                                         newFiles.splice(index, 1);
-                                                        addReplyValidInput.setFieldValue('files', newFiles);
+                                                        replyValidInput.setFieldValue('files', newFiles);
                                                     }}
                                                 />
                                             </div>
@@ -238,7 +231,7 @@ const AddReply = (props) => {
 AddReply.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
-    appReplysTabelSearch: PropTypes.any,
+    idInstruction: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

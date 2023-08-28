@@ -39,6 +39,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import { withTranslation } from "react-i18next";
 import MsgModal from "components/Common/MsgModal";
+import AddReply from "./AddReply";
 
 
 const EditInstructions = (props) => {
@@ -1209,12 +1210,6 @@ const EditInstructions = (props) => {
         SetFilesR(result)
     }
 
-    const insert3 = async (values) => {
-        await dispatch(saveReply(values));
-
-        setLoadingSpinner(true)
-    };
-
     const [replyClicked, setReplyClicked] = useState(false)
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
@@ -1589,54 +1584,6 @@ const EditInstructions = (props) => {
 
 
     /* REPLY VALID INPUT */
-    const initialValues = {
-        content: '',
-        files: [],
-    };
-
-    const validationSchemaReply = Yup.object().shape({
-        content: Yup.string().required('Content is required'),
-    });
-
-    const onSubmit = (values) => {
-        if (values.content !== '') {
-            var bodyForm = new FormData();
-
-            bodyForm.append('instruction_num', editInstructionsValidInput.values.no);
-            bodyForm.append('content', values.content);
-
-            if (values.files.length > 0) {
-
-                for (let index = 0; index < values.files.length; index++) {
-
-                    const file = values.files[index];
-                    bodyForm.append('file' + index, file);
-                }
-
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-
-            // setEditInstructionsSpinner(true);
-            insert3(bodyForm, config)
-            replyValidInput.setFieldValue('content', '')
-            replyValidInput.setFieldValue('files', [])
-            refCleanser.current.value = ""
-        } else {
-            replyValidInput.setFieldError('content', props.t('Please enter content'))
-        }
-
-    };
-
-    const replyValidInput = useFormik({
-        initialValues,
-        validationSchemaReply,
-        onSubmit,
-    });
 
     const [replyModal, setReplyModal] = useState(false)
     const [replyContentModal, setReplyContentModal] = useState(
@@ -1683,11 +1630,11 @@ const EditInstructions = (props) => {
                         toggle={toggleMsgModal}
                         message={downloadContentModal}
                     />
-
-                    <MsgModal
+                    <AddReply
                         modal={replyModal}
                         toggle={toggleReplyModal}
                         message={replyContentModal}
+                        idInstruction={editInstructionsValidInput?.values?.no}
                     />
 
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
@@ -1941,7 +1888,7 @@ const EditInstructions = (props) => {
 
                                             <div className="text-sm-end col-10" >
 
-                                                <Button onClick={toggleMsgModal} color="primary">
+                                                <Button onClick={toggleReplyModal} color="primary">
                                                     <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
                                                     {props.t("Reply")}
                                                 </Button>&nbsp;
@@ -2201,6 +2148,11 @@ const EditInstructions = (props) => {
 
                                         <div className="text-sm-end col-10" >
 
+                                            <Button onClick={toggleReplyModal} color="primary">
+                                                <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
+                                                {props.t("Reply")}
+                                            </Button>&nbsp;
+
                                             <Button
                                                 type="button"
                                                 className="btn btn-danger "
@@ -2245,7 +2197,7 @@ const EditInstructions = (props) => {
                                                                 return false;
                                                             }}
                                                         > */}
-                                                            {/* <div className="mb-2">
+                                                {/* <div className="mb-2">
                                                                 <div className="input-group">
                                                                     <div className="col-sm-12">
                                                                         <label>{props.t("Answer")}</label>
@@ -2271,9 +2223,9 @@ const EditInstructions = (props) => {
                                                                     </div>
                                                                 </div>
                                                             </div> */}
-                                                            {/* <div className="mb-1">
+                                                {/* <div className="mb-1">
                                                             <div className="mb-3 col-sm-12"> */}
-                                                                    {/* <label>{props.t("Attached Files")}</label>
+                                                {/* <label>{props.t("Attached Files")}</label>
                                                                     <div className="kb-file-upload">
                                                                         <div className="file-upload-box">
                                                                             <input
@@ -2289,13 +2241,13 @@ const EditInstructions = (props) => {
                                                                             />
                                                                         </div>
                                                                     </div> */}
-                                                               
-                                                                    {/* <div className="kb-attach-box mb-3">
+
+                                                {/* <div className="kb-attach-box mb-3">
                                                                         {replyValidInput.values.files &&
                                                                             Array.from(replyValidInput.values.files).map((file, index) => (
                                                                                 <div className="file-atc-box" key={index}>
                                                                                     {/* Display file details here */}
-                                                                                    {/* <div className="file-detail">
+                                                {/* <div className="file-detail">
                                                                                         <span>
                                                                                             <i className="fas fa-paperclip" />
                                                                                             &nbsp;{file.name}
@@ -2311,22 +2263,22 @@ const EditInstructions = (props) => {
                                                                                             }}
                                                                                         />
                                                                                     </div> */}
-                                                                                {/* </div>
+                                                {/* </div>
                                                                             ))}
                                                                         <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                                                                     </div> */}
-                                                            {/* </div>
+                                                {/* </div>
                                                             </div> */}
-                                                            {/* <div className="text-sm-end col-12">
+                                                {/* <div className="text-sm-end col-12">
                                                                 <button type="submit" className="btn btn-primary ms-1">
                                                                     <i className="mdi mdi-send align-middle me-2" />
                                                                     {props.t("Reply")}
                                                                 </button>
                                                             </div> */}
-                                                        {/* </Form>
+                                                {/* </Form>
                                                     </div>
                                                 </div> */}
-                                              
+
                                                 {/* <Row>
                                                     <hr />
                                                 </Row> */}
