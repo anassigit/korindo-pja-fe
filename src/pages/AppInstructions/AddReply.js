@@ -129,7 +129,7 @@ const AddReply = (props) => {
     }, [msgSaveReply]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle}>
             <MsgModal
                 modal={addReplyMsgModal}
                 toggle={toggleMsgModal}
@@ -148,6 +148,7 @@ const AddReply = (props) => {
                             <label>{props.t("Answer")}</label>
                             <Input
                                 style={{
+                                    width: "100%",
                                     minHeight: "10em",
                                 }}
                                 maxLength={400}
