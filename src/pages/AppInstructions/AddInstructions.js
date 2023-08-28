@@ -121,6 +121,8 @@ const AddInstructions = (props) => {
 
         }
     });
+    
+    const refCleanser = useRef(null)
 
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
@@ -515,6 +517,11 @@ const AddInstructions = (props) => {
         }
     }, [getOwnerList, langType])
 
+    useEffect(() => {
+        refCleanser.current.value = ""
+        SetSelectedFile([])
+    }, [props.appAddInstructions])
+
     return (
         <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
 
@@ -543,7 +550,7 @@ const AddInstructions = (props) => {
                                     <Row>
                                         <Col md="6">
 
-                                            <div className="mb-3 col-sm-8">
+                                            <div className="mb-3 col-sm-10">
                                                 <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     onKeyPress={noEnterAllowed}
@@ -561,7 +568,7 @@ const AddInstructions = (props) => {
                                                 ) : null}
                                             </div>
 
-                                            <div className="mb-3 col-sm-8">
+                                            <div className="mb-3 col-sm-10">
                                                 <Label>
                                                     {props.t("Instruction Date")}{" "}
                                                     <span style={{ color: "red" }}>* </span>
@@ -591,7 +598,7 @@ const AddInstructions = (props) => {
 
                                             </div>
 
-                                            <div className="mb-3 col-sm-8" style={{ display: "none" }}>
+                                            <div className="mb-3 col-sm-10" style={{ display: "none" }}>
                                                 <Label> {props.t("Status")} <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
                                                     type="select"
@@ -615,12 +622,12 @@ const AddInstructions = (props) => {
                                                 ) : null}
                                             </div>
 
-                                            <div className="mb-3 col-sm-8">
+                                            <div className="mb-3 col-sm-10">
                                                 <Label className="col-sm-5" style={{ marginTop: "15px" }}>{props.t("Descriptions")} </Label>
                                                 <Input
                                                     name="description"
                                                     type="textarea"
-                                                    rows="5"
+                                                    rows="12"
                                                     onChange={addInstructionsValidInput.handleChange}
                                                     value={
                                                         addInstructionsValidInput.values.description ||
@@ -645,7 +652,7 @@ const AddInstructions = (props) => {
 
                                         <Col md="6">
                                             <div className="mb-3 col-sm-8">
-                                                <Label> {props.t("Choose Owners")} </Label>
+                                                <Label> {props.t("Owner")} </Label>
                                                 <Select
                                                     isOptionDisabled={() => selectedMulti.length >= 1}
                                                     value={selectedMulti}
@@ -663,7 +670,7 @@ const AddInstructions = (props) => {
                                             </div>
 
                                             <div className="mb-3 col-sm-8">
-                                                <label>{props.t("Choose Managers")} </label>
+                                                <label>{props.t("Managers")} </label>
                                                 <Select
                                                     //id="user"
                                                     value={selectedMulti2}
@@ -710,6 +717,7 @@ const AddInstructions = (props) => {
                                                                     type="file"
                                                                     id="fileuploadAdd"
                                                                     className="form-control"
+                                                                    ref={refCleanser}
                                                                     onChange={InputChange}
                                                                     name="removeFile"
                                                                     multiple

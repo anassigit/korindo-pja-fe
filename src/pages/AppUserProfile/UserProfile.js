@@ -66,6 +66,7 @@ const UserProfile = (props) => {
       appUserProfilepValidInput.setFieldValue("gname", getDetailProfile?.data?.member?.gname)
       appUserProfilepValidInput.setFieldValue("hp", getDetailProfile?.data?.member?.hp)
       appUserProfilepValidInput.setFieldValue("id", getDetailProfile?.data?.member?.id)
+      appUserProfilepValidInput.setFieldValue("email", getDetailProfile?.data?.member?.email)
     }
   }, [getDetailProfile])
 
@@ -98,6 +99,7 @@ const UserProfile = (props) => {
       gname: '',
       hp: '',
       id: '',
+      email: '',
 
     },
 
@@ -257,7 +259,7 @@ const UserProfile = (props) => {
                             </div>
 
                             <div className="mb-3 col-sm-8">
-                              <Label>{props.t("ID (Email)")}</Label>
+                              <Label>{props.t("ID")}</Label>
                               <Input
                                 name="id"
                                 type="text"
@@ -270,6 +272,23 @@ const UserProfile = (props) => {
                               />
                               {appUserProfilepValidInput.touched.id && appUserProfilepValidInput.errors.id ? (
                                 <FormFeedback type="invalid">{appUserProfilepValidInput.errors.id}</FormFeedback>
+                              ) : null}
+                            </div>
+
+                            <div className="mb-3 col-sm-8">
+                              <Label>{props.t("Email")}</Label>
+                              <Input
+                                name="email"
+                                type="email"
+                                disabled
+                                onChange={appUserProfilepValidInput.handleChange}
+                                value={appUserProfilepValidInput.values.email || ""}
+                                invalid={
+                                  appUserProfilepValidInput.touched.email && appUserProfilepValidInput.errors.email ? true : false
+                                }
+                              />
+                              {appUserProfilepValidInput.touched.email && appUserProfilepValidInput.errors.email ? (
+                                <FormFeedback type="invalid">{appUserProfilepValidInput.errors.email}</FormFeedback>
                               ) : null}
                             </div>
 

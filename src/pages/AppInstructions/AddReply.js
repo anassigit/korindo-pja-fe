@@ -4,21 +4,21 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, La
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import { saveMembers } from 'store/actions';
+import { saveReplys } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { editMembers, getMembersData, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { getReplysData, getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 import { withTranslation } from "react-i18next"
 
-const EditMember = (props) => {
+const AddReply = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
-    const [editMemberSpinner, setEditMemberSpinner] = useState(false)
+    const [addReplySpinner, setAddReplySpinner] = useState(false)
 
-    const [editMemberMsg, setEditMemberMsg] = useState(false)
+    const [addReplyMsg, setAddReplyMsg] = useState(false)
 
-    const editMemberMessage = useSelector(state => {
-        return state.settingReducer.msgEdit;
+    const addReplyMessage = useSelector(state => {
+        return state.settingReducer.msgAdd;
     });
 
     const appRankListData = useSelector(state => {
@@ -38,55 +38,37 @@ const EditMember = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const editMemberValidInput = useFormik({
+    const addReplyValidInput = useFormik({
         enableReinitialize: true,
 
         initialValues: {
             id: '',
-            email: '',
             rank: '',
             hp: '',
             permission: '',
+            pw: '',
             name: '',
             bgColor: '',
         },
 
         validationSchema: Yup.object().shape({
             id: Yup.string()
-                .required(props.t('Please enter ID')),
-            email: Yup.string()
-                .email(props.t('Email must be a valid email address'))
-                .required(props.t("Please enter Email")),
-            name: Yup.string().required(props.t('Please enter Name')),
+                .email("Email must be a valid email address")
+                .required("Email is required"),
+            name: Yup.string().required("Name is required"),
         }),
 
         onSubmit: (value) => {
-            setEditMemberSpinner(true)
-            dispatch(editMembers(value));
+
+            setAddReplySpinner(true)
+            dispatch(saveReplys(value));
             toggleMsgModal()
         }
     })
 
-
     useEffect(() => {
-        if (props.data) {
-            editMemberValidInput.setFieldValue('id', props.data.id);
-            editMemberValidInput.setFieldValue('email', props.data.email);
-            editMemberValidInput.setFieldValue('hp', props.data.hp);
-            editMemberValidInput.setFieldValue('name', props.data.name);
-            editMemberValidInput.setFieldValue('bgColor', props.data.bgcolor);
-
-            const filteredRankOption = (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).find(option => option.label === props.data.rname);
-            const filteredPermissionOption = (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).find(option => option.label === props.data.pname);
-
-            if (filteredRankOption) {
-                editMemberValidInput.setFieldValue('rank', filteredRankOption.value);
-            }
-            if (filteredPermissionOption) {
-                editMemberValidInput.setFieldValue('permission', filteredPermissionOption.value);
-            }
-        }
-    }, [props.data]);
+        addReplyValidInput.resetForm();
+    }, [props.toggle]);
 
     /* HP Validation */
     const handleKeyPress = (event) => {
@@ -131,81 +113,67 @@ const EditMember = (props) => {
         label: name_kor,
     }))
 
-    const [editMemberMsgModal, setEditMemberMsgModal] = useState(false)
-    const [editmemberContentModal, setEditMemberContentModal] = useState("")
+    const [addReplyMsgModal, setAddReplyMsgModal] = useState(false)
+    const [addmemberContentModal, setAddReplyContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        setEditMemberMsgModal(!editMemberMsgModal)
+        setAddReplyMsgModal(!addReplyMsgModal)
 
-        if (editMemberMsg.status === "1") {
+        if (addReplyMsg.status === "1") {
             props.toggle()
-            setEditMemberMsg('')
-            dispatch(getMembersData(props.appMembersTabelSearch))
+            setAddReplyMsg('')
+            dispatch(getReplysData(props.appReplysTabelSearch))
         }
     }
 
     useEffect(() => {
-        if (editMemberMessage.status == "1") {
-            setEditMemberMsg(editMemberMessage)
+        if (addReplyMessage.status == "1") {
+
+            setAddReplyMsg(addReplyMessage)
         }
-        setEditMemberContentModal(editMemberMessage.message);
-        setEditMemberSpinner(false)
-    }, [editMemberMessage]);
+        setAddReplyContentModal(addReplyMessage.message);
+        setAddReplySpinner(false)
+    }, [addReplyMessage]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
+        <Modal isOpen={props.modal} toggle={props.toggle}>
             <MsgModal
-                modal={editMemberMsgModal}
+                modal={addReplyMsgModal}
                 toggle={toggleMsgModal}
-                message={editmemberContentModal}
+                message={addmemberContentModal}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
-                editMemberValidInput.handleSubmit();
+                addReplyValidInput.handleSubmit();
                 return false
             }}>
-                <ModalHeader toggle={props.toggle}>Edit Member</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Add New Reply")}</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>Name <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Name")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 type="text"
                                 name="name"
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.name}
+                                onChange={addReplyValidInput.handleChange}
+                                value={addReplyValidInput.values.name || ''}
                             />
-                            {editMemberValidInput.errors.name && editMemberValidInput.touched.name && (
-                                <div style={{ color: 'red' }}>{editMemberValidInput.errors.name}</div>
+                            {addReplyValidInput.errors.name && addReplyValidInput.touched.name && (
+                                <div style={{ color: 'red' }}>{addReplyValidInput.errors.name}</div>
                             )}
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>ID <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Email")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
-                                disabled
-                                type="text"
-                                name="id"
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.id}
-                            />
-                            {editMemberValidInput.errors.id && editMemberValidInput.touched.id && (
-                                <div style={{ color: 'red' }}>{editMemberValidInput.errors.id}</div>
-                            )}
-                        </div>
-
-                        <div className="mb-3 mx-3">
-                            <Label>Email <span style={{ color: "red" }}>*</span></Label>
-                            <Input
-                                disabled
                                 type="email"
                                 name="id"
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.email}
+                                onChange={addReplyValidInput.handleChange}
+                                value={addReplyValidInput.values.id || ''}
                             />
-                            {editMemberValidInput.errors.email && editMemberValidInput.touched.email && (
-                                <div style={{ color: 'red' }}>{editMemberValidInput.errors.email}</div>
+                            {addReplyValidInput.errors.id && addReplyValidInput.touched.id && (
+                                <div style={{ color: 'red' }}>{addReplyValidInput.errors.id}</div>
                             )}
                         </div>
 
@@ -216,18 +184,18 @@ const EditMember = (props) => {
                                 name="hp"
                                 maxLength={12}
                                 onKeyPress={handleKeyPress}
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.hp}
+                                onChange={addReplyValidInput.handleChange}
+                                value={addReplyValidInput.values.hp || ''}
                             />
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>Rank</Label>
+                            <Label>{props.t("Rank")}</Label>
                             <Input
                                 type="select"
                                 name="rank"
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.rank}
+                                onChange={addReplyValidInput.handleChange}
+                                value={addReplyValidInput.values.rank || ''}
                             >
                                 <option value="">{props.t("Select Rank")}</option>
                                 {
@@ -240,12 +208,12 @@ const EditMember = (props) => {
                             </Input>
                         </div>
                         <div className="mb-3 mx-3">
-                            <Label>Permission</Label>
+                            <Label>{props.t("Permission")}</Label>
                             <Input
                                 type="select"
                                 name="permission"
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.permission}
+                                onChange={addReplyValidInput.handleChange}
+                                value={addReplyValidInput.values.permission || ''}
                             >
                                 <option value="">{props.t("Select Permission")}</option>
                                 {
@@ -257,25 +225,25 @@ const EditMember = (props) => {
                             </Input>
                         </div>
 
-                        <div className="mb-3 mx-3" hidden={editMemberValidInput?.values?.permission !== '2'}>
-                            <Label>Background Color</Label>
+                        <div className="mb-3 mx-3" hidden={addReplyValidInput?.values?.permission !== '2'}>
+                            <Label>{props.t("Background Color")}</Label>
                             <Input
                                 type="color"
                                 name="bgColor"
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.bgColor || '#000'}
+                                onChange={addReplyValidInput.handleChange}
+                                value={addReplyValidInput.values.bgColor || '#000'}
                             />
                         </div>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color={editMemberSpinner ? "primary disabled" : "primary"}>
+                    <Button type="submit" color={addReplySpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        Save
-                        <Spinner style={{ display: editMemberSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+                        {props.t("Save")}
+                        <Spinner style={{ display: addReplySpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                        Close
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>
@@ -283,12 +251,12 @@ const EditMember = (props) => {
     );
 };
 
-EditMember.propTypes = {
+AddReply.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
-    data: PropTypes.any,
-    appMembersTabelSearch: PropTypes.any,
+    appReplysTabelSearch: PropTypes.any,
+    location: PropTypes.object,
     t: PropTypes.any
 };
 
-export default withTranslation()(EditMember);
+export default withTranslation()(AddReply);

@@ -1638,6 +1638,25 @@ const EditInstructions = (props) => {
         onSubmit,
     });
 
+    const [replyModal, setReplyModal] = useState(false)
+    const [replyContentModal, setReplyContentModal] = useState(
+        <>
+            <div>
+                <Label>
+                    Answer
+                </Label>
+                <Input
+                    type="text"
+                />
+            </div>
+        </>
+    );
+
+    const toggleReplyModal = () => {
+        setReplyModal(!replyModal)
+    }
+
+
     /*********************************** ENDS HERE ***********************************/
 
     return (
@@ -1663,7 +1682,12 @@ const EditInstructions = (props) => {
                         modal={downloadMsgModal}
                         toggle={toggleMsgModal}
                         message={downloadContentModal}
+                    />
 
+                    <MsgModal
+                        modal={replyModal}
+                        toggle={toggleReplyModal}
+                        message={replyContentModal}
                     />
 
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
@@ -1806,7 +1830,7 @@ const EditInstructions = (props) => {
 
                                                     <Col md="6">
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> {props.t("Choose Owners")} </Label>
+                                                            <Label> {props.t("Owner")} </Label>
                                                             <Select
                                                                 isDisabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                 value={selectedMulti}
@@ -1825,7 +1849,7 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <label>{props.t("Choose Managers")} </label>
+                                                            <label>{props.t("Managers")} </label>
                                                             <Select
                                                                 isDisabled={getDetailInstructionData?.data?.instruction?.edit === "STATUS"}
                                                                 value={selectedMulti2}
@@ -1916,6 +1940,11 @@ const EditInstructions = (props) => {
                                             </FormGroup>
 
                                             <div className="text-sm-end col-10" >
+
+                                                <Button onClick={toggleMsgModal} color="primary">
+                                                    <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
+                                                    {props.t("Reply")}
+                                                </Button>&nbsp;
 
                                                 <Button type="submit" color="primary">
                                                     <i className="mdi mdi-check-circle fs-5 align-middle me-2"></i>
@@ -2067,7 +2096,7 @@ const EditInstructions = (props) => {
 
                                                     <Col md="6">
                                                         <div className="mb-3 col-sm-8">
-                                                            <Label> {props.t("Choose Owners")} </Label>
+                                                            <Label> {props.t("Owner")} </Label>
 
                                                             <Select
                                                                 isDisabled
@@ -2087,7 +2116,7 @@ const EditInstructions = (props) => {
                                                         </div>
 
                                                         <div className="mb-3 col-sm-8">
-                                                            <label>{props.t("Choose Managers")} </label>
+                                                            <label>{props.t("Managers")} </label>
                                                             <Select
                                                                 isDisabled
                                                                 value={selectedMulti2}

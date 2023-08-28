@@ -43,6 +43,7 @@ const AddMember = (props) => {
 
         initialValues: {
             id: '',
+            email: '',
             rank: '',
             hp: '',
             permission: '',
@@ -53,9 +54,11 @@ const AddMember = (props) => {
 
         validationSchema: Yup.object().shape({
             id: Yup.string()
-                .email("Email must be a valid email address")
-                .required("Email is required"),
-            name: Yup.string().required("Name is required"),
+                .required(props.t('Please enter ID')),
+            email: Yup.string()
+                .email(props.t('Email must be a valid email address'))
+                .required(props.t("Please enter Email")),
+            name: Yup.string().required(props.t('Please enter Name')),
         }),
 
         onSubmit: (value) => {
@@ -165,15 +168,28 @@ const AddMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>{props.t("Email")} <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("ID")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
-                                type="email"
+                                type="text"
                                 name="id"
                                 onChange={addMemberValidInput.handleChange}
                                 value={addMemberValidInput.values.id || ''}
                             />
                             {addMemberValidInput.errors.id && addMemberValidInput.touched.id && (
                                 <div style={{ color: 'red' }}>{addMemberValidInput.errors.id}</div>
+                            )}
+                        </div>
+
+                        <div className="mb-3 mx-3">
+                            <Label>{props.t("Email")} <span style={{ color: "red" }}>*</span></Label>
+                            <Input
+                                type="email"
+                                name="email"
+                                onChange={addMemberValidInput.handleChange}
+                                value={addMemberValidInput.values.email || ''}
+                            />
+                            {addMemberValidInput.errors.email && addMemberValidInput.touched.email && (
+                                <div style={{ color: 'red' }}>{addMemberValidInput.errors.email}</div>
                             )}
                         </div>
 

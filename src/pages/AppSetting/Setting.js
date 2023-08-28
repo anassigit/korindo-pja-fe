@@ -150,7 +150,14 @@ const Setting = (props) => {
         },
         {
             dataField: "id",
-            text: "ID (Email)",
+            text: props.t("ID"),
+            sort: true,
+            align: "left",
+            headerStyle: { textAlign: 'center' },
+        },
+        {
+            dataField: "email",
+            text: props.t("Email"),
             sort: true,
             align: "left",
             headerStyle: { textAlign: 'center' },
@@ -602,7 +609,8 @@ const Setting = (props) => {
                                                             <table className="table table-hover">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th className="text-center" scope="col">{props.t("Name (Email)")}</th>
+                                                                        <th className="text-center" scope="col">{props.t("ID")}</th>
+                                                                        <th className="text-center" scope="col">{props.t("Name")}</th>
                                                                         <th className="text-center" scope="col">{props.t("Edit")}</th>
                                                                         <th className="text-center" scope="col">{props.t("Delete")}</th>
                                                                     </tr>
@@ -611,6 +619,7 @@ const Setting = (props) => {
                                                                     {filteredMembers?.map((member) => (
                                                                         <tr key={member.memberId}>
                                                                             <td style={{ minWidth: "300px" }}>{member.memberId}</td>
+                                                                            <td style={{ minWidth: "300px" }}>{member.memberName}</td>
                                                                             <td>
                                                                                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                                                                                     <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => appGroupMappingPreEdit(member)} />

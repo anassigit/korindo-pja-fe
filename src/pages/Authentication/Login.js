@@ -107,7 +107,7 @@ const Login = props => {
                         <Input
                           name="id"
                           className="form-control"
-                          placeholder="이메일을 입력하세요"
+                          placeholder="아이디를 입력해주세요"
                           type="text"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
@@ -126,7 +126,7 @@ const Login = props => {
                           name="pw"
                           value={validation.values.pw || ""}
                           type="password"
-                          placeholder="비밀번호를 입력하세요"
+                          placeholder="비밀번호를 입력해주세요"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           invalid={

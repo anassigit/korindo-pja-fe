@@ -49,8 +49,7 @@
     "Attached Files": "Berkas Terlampir",
     "Back": "Kembali",
     "by": "oleh",
-    "Choose Managers": "Pilih Manajer",
-    "Choose Owners": "Pilih Pemilik",
+    "Managers": "Manajer",
     "Delete": "Hapus",
     "Descriptions": "Deskripsi",
     "Input Answer": "Silakan Masukkan Jawaban Anda di Sini...",
@@ -72,6 +71,7 @@
     "Group": "Grup",
     "HP": "HP",
     "ID (Email)": "ID (Email)",
+    "ID": "ID",
     "Password": "Kata sandi",
     "Position": "Posisi",
     "Save": "Simpan",
@@ -80,7 +80,7 @@
     "Apply": "Terapkan",
     "Background Color": "Warna Latar",
     "Edit": "Ubah",
-    "Email": "Surel (Email)",
+    "Email": "Email",
     "Name": "Nama",
     "Permission": "Posisi",
     "Select Permission": "Pilih posisi",
@@ -112,6 +112,10 @@
     "Skip": "Lewati",
     "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "Tipe Berkas Diizinkan: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt",
     "Are you sure to delete this?" : "Apakah Anda yakin ingin menghapus ini?",
+    "Please enter ID": "Silakan masukkan ID",
+    "Please enter Email": "Silakan masukkan Email",
+    "Please enter Name": "Silakan masukkan Nama",
+    "Email must be a valid email address": "Email harus berupa alamat email yang valid",
     "Please enter content": "Mohon isi konten"
 
   }

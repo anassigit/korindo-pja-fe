@@ -13,9 +13,12 @@ import logoKorindo2 from "../../assets/images/logotitle.png";
 const Sidebar = props => {
   return (
     <React.Fragment>
-      <div  className="vertical-menu">
-        <div style={{borderRight: "2px solid #D9D1D1"}} className="navbar-brand-box">
-          <a href="/AppInstructions" className="logo logo-dark" onClick={ () => window.location.reload()}>
+      <div className="vertical-menu">
+        <div style={{ borderRight: "2px solid #D9D1D1" }} className="navbar-brand-box">
+          <a href="/AppInstructions" className="logo logo-dark" onClick={() => {
+            window.location.reload()
+            localStorage.setItem('appFileManagementData', '');
+          }}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
             </span>
@@ -24,7 +27,10 @@ const Sidebar = props => {
             </span>
           </a>
 
-          <a href="/AppInstructions" className="logo logo-light" onClick={ () => window.location.reload()}>
+          <a href="/AppInstructions" className="logo logo-light" onClick={() =>{
+            window.location.reload()
+            localStorage.setItem('appFileManagementData', '');
+          }}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
             </span>
@@ -33,16 +39,16 @@ const Sidebar = props => {
             </span>
           </a>
 
-          
+
         </div>
-        
-        <div style={{borderRight: "2px solid #D9D1D1"}} data-simplebar className="h-100">
-          {props.type !== "condensed" ? <SidebarContent/> : <SidebarContent/>}
+
+        <div style={{ borderRight: "2px solid #D9D1D1" }} data-simplebar className="h-100">
+          {props.type !== "condensed" ? <SidebarContent /> : <SidebarContent />}
         </div>
-        
+
         <div className="sidebar-background"></div>
       </div>
-      
+
     </React.Fragment>
   )
 }

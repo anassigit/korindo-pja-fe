@@ -49,8 +49,7 @@
   "Attached Files": "Attached Files",
   "Back": "Back",
   "by": "by",
-  "Choose Managers": "Choose Managers",
-  "Choose Owners": "Choose Owners",
+  "Managers": "Managers",
   "Delete": "Delete",
   "Descriptions": "Descriptions",
   "Input Answer": "Input Answer",
@@ -72,6 +71,7 @@
   "Group": "Group",
   "HP": "Mobile",
   "ID (Email)": "ID (Email)",
+  "ID": "ID",
   "Password": "Password",
   "Position": "Position",
   "Save": "Save",
@@ -112,5 +112,9 @@
   "Skip": "Skip",
   "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt",
   "Are you sure to delete this?": "Are you sure to delete this?",
+  "Please enter ID": "Please enter ID",
+  "Please enter Email": "Please enter Email",
+  "Please enter Name": "Please enter Name",
+  "Email must be a valid email address": "Email must be a valid email address",
   "Please enter content": "Please enter content"
 }

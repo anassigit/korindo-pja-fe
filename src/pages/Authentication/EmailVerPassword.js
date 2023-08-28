@@ -76,7 +76,7 @@ const EmailVerPassword = props => {
                   <Row>
                     <Col xs={12}>
                       <div className="text-primary p-4">
-                        <h2 className="text-primary text-left" >이메일을 입력하세요</h2>
+                        <h2 className="text-primary text-left" >아이디를 입력해주세요</h2>
                       </div>
                     </Col>
                   </Row>
@@ -99,7 +99,7 @@ const EmailVerPassword = props => {
                         <Input
                           name="id"
                           className="form-control"
-                          placeholder="이메일을 입력하세요"
+                          placeholder="아이디를 입력해주세요"
                           type="text"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}

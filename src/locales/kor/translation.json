@@ -49,8 +49,7 @@
   "Attached Files": "첨부된 파일",
   "Back": "뒤로",
   "by": "작성자:",
-  "Choose Managers": "담당자",
-  "Choose Owners": "지시자",
+  "Managers": "담당자",
   "Delete": "삭제",
   "Descriptions": "세부 내용",
   "Input Answer": "여기에 답변을 입력하세요.",
@@ -72,6 +71,7 @@
   "Group": "그룹",
   "HP": "휴대폰",
   "ID (Email)": "아이디 (이메일)",
+  "ID": "아이디",
   "Password": "비밀번호",
   "Position": "직책",
   "Save": "확인",
@@ -112,5 +112,9 @@
   "Skip": "건너뛰기",
   "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "사용 가능한 확장자: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt",
   "Are you sure to delete this?": "삭제하시겠습니까?",
+  "Please enter ID": "아이디를 입력해주세요",
+  "Please enter Email": "이메일을 입력해주세요",
+  "Please enter Name": "이름을 입력해주세요",
+  "Email must be a valid email address": "이메일은 유효한 이메일 주소여야 합니다",
   "Please enter content": "답변을 입력해주세요"
 }

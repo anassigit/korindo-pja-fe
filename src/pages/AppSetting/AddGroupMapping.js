@@ -82,7 +82,6 @@ const AddGroupMapping = (props) => {
     }
 
     useEffect(() => {
-        debugger
         if (props.modal === true) {
             dispatch(getMembersData2({
                 page: 1, limit: 10000, offset: 0, sort: "id", order: "desc", search: {

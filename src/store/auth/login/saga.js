@@ -25,6 +25,7 @@ function* loginUser({ payload: { user, history } }) {
       ReactSession.set("authUser", response.data.KOR_TOKEN);
       ReactSession.set("user", JSON.stringify(response.data.user));
       ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
+      localStorage.setItem('appFileManagementData', '')
 
       history.push({ pathname: '/' });
       yield put(loginSuccess(response));
