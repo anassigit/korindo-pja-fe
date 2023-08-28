@@ -15,6 +15,7 @@ const AddMember = (props) => {
     const dispatch = useDispatch();
     const [addMemberSpinner, setAddMemberSpinner] = useState(false)
 
+    const [successClose, setSuccessClose] = useState(false)
     const [addMemberMsg, setAddMemberMsg] = useState(false)
 
     const addMemberMessage = useSelector(state => {
@@ -131,8 +132,10 @@ const AddMember = (props) => {
 
     useEffect(() => {
         if (addMemberMessage.status == "1") {
-
             setAddMemberMsg(addMemberMessage)
+            setSuccessClose(true)
+        } else {
+            setSuccessClose(false)
         }
         setAddMemberContentModal(addMemberMessage.message);
         setAddMemberSpinner(false)
@@ -144,6 +147,7 @@ const AddMember = (props) => {
                 modal={addMemberMsgModal}
                 toggle={toggleMsgModal}
                 message={addmemberContentModal}
+                successClose={successClose}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();

@@ -416,6 +416,7 @@ const EditInstructions = (props) => {
     const insert = async (values) => {
 
         await dispatch(editInstructions(values))
+        setLoadingSpinner(true)
     };
 
     const validationMessages = {
@@ -449,90 +450,95 @@ const EditInstructions = (props) => {
 
         onSubmit: (values) => {
 
-            var bodyForm = new FormData();
+            if (getDetailInstructionData?.data?.instruction?.comment === false) {
+                var bodyForm = new FormData();
 
-            bodyForm.append('num', values.no);
-            bodyForm.append('title', editInstructionsValidInput.values.title);
+                bodyForm.append('num', values.no);
+                bodyForm.append('title', editInstructionsValidInput.values.title);
 
-            bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
-            bodyForm.append('description', values.description);
-
-
-            //remove/add - Owner & Manager//
-
-            const uniqueAddUser = new Set(addUser);
-            const uniqueRemoveUser = new Set(removeUser);
-
-            const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
-            const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
-
-            filteredAddUser.forEach(user => {
-                bodyForm.append('addUser', user);
-            });
-
-            filteredRemoveUser.forEach(user => {
-                bodyForm.append('removeUser', user);
-            });
-
-            //end//
-
-            //status//
-
-            let statusId = null
-            statusId = statusData?.data?.statusList.map((item, index) => {
-                if (item.name == values.status) {
-                    bodyForm.append('status', item.no)
-                }
-            })
-
-            //end status//
-
-            //attach files//
-
-            if (selectedfile.length > 0) {
-
-                var getFileNm = selectedfile[0].filename;
-
-                getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
-
-                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+                bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
+                bodyForm.append('description', values.description);
 
 
-                    for (let index = 0; index < selectedfile.length; index++) {
-                        let a = selectedfile[index];
+                //remove/add - Owner & Manager//
 
-                        bodyForm.append('file' + index, selectedfile[index].fileori);
+                const uniqueAddUser = new Set(addUser);
+                const uniqueRemoveUser = new Set(removeUser);
 
-                        console.log(a);
-                        SetSelectedFile([]);
-                        SetFiles([...Files, a]);
+                const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
+                const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
 
-                    }
-
-
-                } else {
-
-                    alert("Files type are not allowed to upload or not supported.");
-                }
-            }
-
-            if (removeFile.length > 0) {
-                removeFile.forEach(files => {
-                    bodyForm.append('removeFile', files);
+                filteredAddUser.forEach(user => {
+                    bodyForm.append('addUser', user);
                 });
-            }
+
+                filteredRemoveUser.forEach(user => {
+                    bodyForm.append('removeUser', user);
+                });
+
+                //end//
+
+                //status//
+
+                let statusId = null
+                statusId = statusData?.data?.statusList.map((item, index) => {
+                    if (item.name == values.status) {
+                        bodyForm.append('status', item.no)
+                    }
+                })
+
+                //end status//
+
+                //attach files//
+
+                if (selectedfile.length > 0) {
+
+                    var getFileNm = selectedfile[0].filename;
+
+                    getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+
+                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
 
 
-            //end//
+                        for (let index = 0; index < selectedfile.length; index++) {
+                            let a = selectedfile[index];
+
+                            bodyForm.append('file' + index, selectedfile[index].fileori);
+
+                            console.log(a);
+                            SetSelectedFile([]);
+                            SetFiles([...Files, a]);
+
+                        }
 
 
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
+                    } else {
+
+                        alert("Files type are not allowed to upload or not supported.");
+                    }
                 }
+
+                if (removeFile.length > 0) {
+                    removeFile.forEach(files => {
+                        bodyForm.append('removeFile', files);
+                    });
+                }
+
+
+                //end//
+
+
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+                insert(bodyForm, config);
+            } else {
+                setLoadingSpinner(false)
+                toggleReplyModal()
             }
-            insert(bodyForm, config);
-            //alert('Add description success.')
+
         }
 
     });
@@ -1226,6 +1232,92 @@ const EditInstructions = (props) => {
         if (msgSaveReply.status == '0') {
         }
         if (msgSaveReply.status == '1') {
+            debugger
+
+            var bodyForm = new FormData();
+
+            bodyForm.append('num', editInstructionsValidInput.values.no);
+            bodyForm.append('title', editInstructionsValidInput.values.title);
+
+            bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
+            bodyForm.append('description', editInstructionsValidInput.values.description);
+
+
+            //remove/add - Owner & Manager//
+
+            const uniqueAddUser = new Set(addUser);
+            const uniqueRemoveUser = new Set(removeUser);
+
+            const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
+            const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
+
+            filteredAddUser.forEach(user => {
+                bodyForm.append('addUser', user);
+            });
+
+            filteredRemoveUser.forEach(user => {
+                bodyForm.append('removeUser', user);
+            });
+
+            //end//
+
+            //status//
+
+            let statusId = null
+            statusId = statusData?.data?.statusList.map((item, index) => {
+                if (item.name == editInstructionsValidInput.values.status) {
+                    bodyForm.append('status', item.no)
+                }
+            })
+
+            //end status//
+
+            //attach files//
+
+            if (selectedfile.length > 0) {
+
+                var getFileNm = selectedfile[0].filename;
+
+                getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+
+                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+
+
+                    for (let index = 0; index < selectedfile.length; index++) {
+                        let a = selectedfile[index];
+
+                        bodyForm.append('file' + index, selectedfile[index].fileori);
+
+                        console.log(a);
+                        SetSelectedFile([]);
+                        SetFiles([...Files, a]);
+
+                    }
+
+
+                } else {
+
+                    alert("Files type are not allowed to upload or not supported.");
+                }
+            }
+
+            if (removeFile.length > 0) {
+                removeFile.forEach(files => {
+                    bodyForm.append('removeFile', files);
+                });
+            }
+
+
+            //end//
+
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            insert(bodyForm, config)
+
             dispatch(getReply({
                 search: {
                     "num": num,
@@ -1316,13 +1408,12 @@ const EditInstructions = (props) => {
                 state: { setAppInstructionsMsg: editInstructionsMessage }
             });
         }
+        setLoadingSpinner(false)
         setAppEditInstructionsMsg(editInstructionsMessage)
     }, [editInstructionsMessage])
 
     const updateReply = async (values) => {
-
         await dispatch(editReply(values));
-        setLoadingSpinner(true)
     };
 
     const handleEditReply = (reply_num, editedContent) => {
@@ -1408,7 +1499,6 @@ const EditInstructions = (props) => {
 
     /* DELETE INSTRUCTION */
     useEffect(() => {
-
         const handleDeleteInstructions = async () => {
             try {
                 const map = {
@@ -1425,9 +1515,8 @@ const EditInstructions = (props) => {
         if (isYes === true) {
             handleDeleteInstructions();
             setConfirmModal(!confirmModal);
+            setLoadingSpinner(false)
         }
-
-
     }, [isYes]);
 
 
@@ -1566,7 +1655,6 @@ const EditInstructions = (props) => {
     }, [numTemp])
 
     useEffect(() => {
-        debugger
         if (downloadMsg?.status === "0") {
             setDownloadMsg(downloadMessage);
             toggleMsgModal()
@@ -1586,23 +1674,10 @@ const EditInstructions = (props) => {
     /* REPLY VALID INPUT */
 
     const [replyModal, setReplyModal] = useState(false)
-    const [replyContentModal, setReplyContentModal] = useState(
-        <>
-            <div>
-                <Label>
-                    Answer
-                </Label>
-                <Input
-                    type="text"
-                />
-            </div>
-        </>
-    );
 
     const toggleReplyModal = () => {
         setReplyModal(!replyModal)
     }
-
 
     /*********************************** ENDS HERE ***********************************/
 
@@ -1633,7 +1708,6 @@ const EditInstructions = (props) => {
                     <AddReply
                         modal={replyModal}
                         toggle={toggleReplyModal}
-                        message={replyContentModal}
                         idInstruction={editInstructionsValidInput?.values?.no}
                     />
 
@@ -1893,7 +1967,7 @@ const EditInstructions = (props) => {
                                                     {props.t("Reply")}
                                                 </Button>&nbsp;
 
-                                                <Button type="submit" color="primary">
+                                                <Button type="submit" color="primary" onClick={() => setLoadingSpinner(true)}>
                                                     <i className="mdi mdi-check-circle fs-5 align-middle me-2"></i>
                                                     {props.t("Update")}
                                                 </Button>&nbsp;
