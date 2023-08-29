@@ -4,10 +4,12 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, La
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import { saveReply, saveReplys } from 'store/actions';
+import { editInstructions, saveReply, saveReplys } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
 import { getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
+import { format } from 'date-fns';
 import { withTranslation } from "react-i18next"
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const AddReply = (props) => {
 
@@ -15,6 +17,7 @@ const AddReply = (props) => {
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [addReplySpinner, setAddReplySpinner] = useState(false)
+    const history = useHistory()
 
     const [addReplyMsg, setAddReplyMsg] = useState(false)
 
@@ -55,6 +58,8 @@ const AddReply = (props) => {
     });
 
     const onSubmit = (values) => {
+        
+        props.setLoadingSpinner(true)
         if (values.content !== '') {
             var bodyForm = new FormData();
 
@@ -105,7 +110,7 @@ const AddReply = (props) => {
             event.preventDefault();
         }
     }
-    
+
     const [addReplyMsgModal, setAddReplyMsgModal] = useState(false)
     const [addmemberContentModal, setAddReplyContentModal] = useState("")
 
@@ -120,13 +125,113 @@ const AddReply = (props) => {
     }
 
     useEffect(() => {
+        debugger
         if (msgSaveReply.status == "1") {
+
             setAddReplyMsg(msgSaveReply)
             props.toggle()
+            if (props.getDetailInstructionData?.data?.instruction?.comment) {
+                var bodyForm = new FormData();
+
+                bodyForm.append('num', props.idInstruction);
+                bodyForm.append('title', props.titleInstruction);
+
+                bodyForm.append('insDate', format(props.dateInstruction, "yyyy-MM-dd"));
+                bodyForm.append('description', props.descriptionInstruction);
+
+
+                //remove/add - Owner & Manager//
+
+                const uniqueAddUser = new Set(props.addUser);
+                const uniqueRemoveUser = new Set(props.removeUser);
+
+                const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
+                const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
+
+                filteredAddUser.forEach(user => {
+                    bodyForm.append('addUser', user);
+                });
+
+                filteredRemoveUser.forEach(user => {
+                    bodyForm.append('removeUser', user);
+                });
+
+                //end//
+
+                //status//
+
+                let statusId = null
+                statusId = props.statusData?.data?.statusList.map((item, index) => {
+                    if (item.name == props.statusInstruction) {
+                        bodyForm.append('status', item.no)
+                    }
+                })
+
+                //end status//
+
+                //attach files//
+
+                if (props.selectedfile.length > 0) {
+
+                    var getFileNm = selectedfile[0].filename;
+
+                    getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+
+                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+
+
+                        for (let index = 0; index < props.selectedfile?.length; index++) {
+                            let a = selectedfile[index];
+
+                            bodyForm.append('file' + index, selectedfile[index].fileori);
+
+                            console.log(a);
+                            SetSelectedFile([]);
+                            SetFiles([...Files, a]);
+
+                        }
+
+
+                    } else {
+
+                        alert("Files type are not allowed to upload or not supported.");
+                    }
+                }
+
+                if (props.removeFile.length > 0) {
+                    props.removeFile.forEach(files => {
+                        bodyForm.append('removeFile', files);
+                    });
+                }
+
+
+                //end//
+
+
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+                insert(bodyForm, config)
+                debugger
+                history.push({
+                    pathname: '/AppInstructions',
+                    state: { setAppInstructionsMsg: props.editInstructionsMessage }
+                })
+            }
         }
         setAddReplyContentModal(msgSaveReply.message);
         setAddReplySpinner(false)
-    }, [msgSaveReply]);
+        props.setLoadingSpinner(false)
+    }, [msgSaveReply])
+
+    const insert = async (values) => {
+
+        await dispatch(editInstructions(values))
+        props.setLoadingSpinner(true)
+
+    };
 
     return (
         <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle}>
@@ -149,7 +254,7 @@ const AddReply = (props) => {
                             <Input
                                 style={{
                                     width: "100%",
-                                    minHeight: "10em",
+                                    minHeight: "26em",
                                 }}
                                 maxLength={400}
                                 placeholder={props.t("Please input your answer here")}
@@ -233,6 +338,20 @@ AddReply.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idInstruction: PropTypes.any,
+    titleInstruction: PropTypes.any,
+    dateInstruction: PropTypes.any,
+    statusInstruction: PropTypes.any,
+    descriptionInstruction: PropTypes.any,
+    addUser: PropTypes.any,
+    removeUser: PropTypes.any,
+    removeFile: PropTypes.any,
+    statusData: PropTypes.any,
+    Files: PropTypes.any,
+    selectedfile: PropTypes.any,
+    setLoadingSpinner: PropTypes.any,
+    SetFiles: PropTypes.any,
+    getDetailInstructionData: PropTypes.any,
+    editInstructionsMessage: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

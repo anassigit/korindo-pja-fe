@@ -120,9 +120,10 @@ const EditInstructions = (props) => {
         return state.instructionsReducer.respGetStatus;
     })
 
-    const msgEditInstruction = useSelector(state => {
+    const editInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgEdit;
-    })
+    });
+
 
     const msgDeleteInstruction = useSelector(state => {
         return state.instructionsReducer.msgDelete;
@@ -296,7 +297,6 @@ const EditInstructions = (props) => {
 
     }, [props.t, langType])
 
-
     useEffect(() => {
 
         /** OWNER SELECT **/
@@ -413,11 +413,6 @@ const EditInstructions = (props) => {
         }
     }, [replyNum], [])
 
-    const insert = async (values) => {
-
-        await dispatch(editInstructions(values))
-        setLoadingSpinner(true)
-    };
 
     const validationMessages = {
         eng: {
@@ -535,14 +530,101 @@ const EditInstructions = (props) => {
                 }
                 insert(bodyForm, config);
             } else {
+                var bodyForm = new FormData();
+
+                bodyForm.append('num', values.no);
+                bodyForm.append('title', editInstructionsValidInput.values.title);
+
+                bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
+                bodyForm.append('description', values.description);
+
+
+                //remove/add - Owner & Manager//
+
+                const uniqueAddUser = new Set(addUser);
+                const uniqueRemoveUser = new Set(removeUser);
+
+                const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
+                const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
+
+                filteredAddUser.forEach(user => {
+                    bodyForm.append('addUser', user);
+                });
+
+                filteredRemoveUser.forEach(user => {
+                    bodyForm.append('removeUser', user);
+                });
+
+                //end//
+
+                //status//
+
+                let statusId = null
+                statusId = statusData?.data?.statusList.map((item, index) => {
+                    if (item.name == values.status) {
+                        bodyForm.append('status', item.no)
+                    }
+                })
+
+                //end status//
+
+                //attach files//
+
+                if (selectedfile.length > 0) {
+
+                    var getFileNm = selectedfile[0].filename;
+
+                    getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+
+                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+
+
+                        for (let index = 0; index < selectedfile.length; index++) {
+                            let a = selectedfile[index];
+
+                            bodyForm.append('file' + index, selectedfile[index].fileori);
+
+                            console.log(a);
+                            SetSelectedFile([]);
+                            SetFiles([...Files, a]);
+
+                        }
+
+
+                    } else {
+
+                        alert("Files type are not allowed to upload or not supported.");
+                    }
+                }
+
+                if (removeFile.length > 0) {
+                    removeFile.forEach(files => {
+                        bodyForm.append('removeFile', files);
+                    });
+                }
+
+
+                //end//
+
+
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+                insert(bodyForm, config);
                 setLoadingSpinner(false)
-                toggleReplyModal()
             }
 
         }
 
     });
 
+    const insert = async (values) => {
+
+        await dispatch(editInstructions(values))
+        setLoadingSpinner(true)
+    };
 
     const deleteInstructionsMessage = useSelector(state => {
         return state.instructionsReducer.msgDelete;
@@ -558,11 +640,6 @@ const EditInstructions = (props) => {
         }
         // setAppEditInstructionsMsg(deleteInstructionsMessage)
     }, [deleteInstructionsMessage])
-
-
-    const editInstructionsMessage = useSelector(state => {
-        return state.instructionsReducer.msgEdit;
-    });
 
     const insertUploadFileEdit = async (values) => {
 
@@ -605,7 +682,6 @@ const EditInstructions = (props) => {
     function DeleteFileAttached(FileNo) {
 
         if (SetFiles.length > 0) {
-            debugger
 
             for (let index = 0; index < SetFiles.length; index++) {
 
@@ -1232,91 +1308,6 @@ const EditInstructions = (props) => {
         if (msgSaveReply.status == '0') {
         }
         if (msgSaveReply.status == '1') {
-            debugger
-
-            var bodyForm = new FormData();
-
-            bodyForm.append('num', editInstructionsValidInput.values.no);
-            bodyForm.append('title', editInstructionsValidInput.values.title);
-
-            bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
-            bodyForm.append('description', editInstructionsValidInput.values.description);
-
-
-            //remove/add - Owner & Manager//
-
-            const uniqueAddUser = new Set(addUser);
-            const uniqueRemoveUser = new Set(removeUser);
-
-            const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
-            const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
-
-            filteredAddUser.forEach(user => {
-                bodyForm.append('addUser', user);
-            });
-
-            filteredRemoveUser.forEach(user => {
-                bodyForm.append('removeUser', user);
-            });
-
-            //end//
-
-            //status//
-
-            let statusId = null
-            statusId = statusData?.data?.statusList.map((item, index) => {
-                if (item.name == editInstructionsValidInput.values.status) {
-                    bodyForm.append('status', item.no)
-                }
-            })
-
-            //end status//
-
-            //attach files//
-
-            if (selectedfile.length > 0) {
-
-                var getFileNm = selectedfile[0].filename;
-
-                getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
-
-                if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
-
-
-                    for (let index = 0; index < selectedfile.length; index++) {
-                        let a = selectedfile[index];
-
-                        bodyForm.append('file' + index, selectedfile[index].fileori);
-
-                        console.log(a);
-                        SetSelectedFile([]);
-                        SetFiles([...Files, a]);
-
-                    }
-
-
-                } else {
-
-                    alert("Files type are not allowed to upload or not supported.");
-                }
-            }
-
-            if (removeFile.length > 0) {
-                removeFile.forEach(files => {
-                    bodyForm.append('removeFile', files);
-                });
-            }
-
-
-            //end//
-
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-            insert(bodyForm, config)
 
             dispatch(getReply({
                 search: {
@@ -1402,11 +1393,13 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
-        if (editInstructionsMessage.status == "1") {
+        if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment) {
+            toggleReplyModal()
+        } else if (editInstructionsMessage.status == "1") {
             history.push({
                 pathname: '/AppInstructions',
                 state: { setAppInstructionsMsg: editInstructionsMessage }
-            });
+            })
         }
         setLoadingSpinner(false)
         setAppEditInstructionsMsg(editInstructionsMessage)
@@ -1682,7 +1675,7 @@ const EditInstructions = (props) => {
     /*********************************** ENDS HERE ***********************************/
 
     return (
-        <RootPageCustom msgStateGet={appEditInstructionsMsg.message} msgStateSet={setAppEditInstructionsMsg}
+        <RootPageCustom msgStateGet={appEditInstructionsMsg.status == 1 ? null : appEditInstructionsMsg.message} msgStateSet={setAppEditInstructionsMsg}
             componentJsx={
                 <>
 
@@ -1705,10 +1698,26 @@ const EditInstructions = (props) => {
                         toggle={toggleMsgModal}
                         message={downloadContentModal}
                     />
+
                     <AddReply
                         modal={replyModal}
                         toggle={toggleReplyModal}
                         idInstruction={editInstructionsValidInput?.values?.no}
+                        titleInstruction={editInstructionsValidInput?.values?.title}
+                        dateInstruction={editInstructionsValidInput?.values?.insDate}
+                        statusInstruction={editInstructionsValidInput?.values?.status}
+                        descriptionInstruction={editInstructionsValidInput?.values?.description}
+                        addUser={addUser}
+                        removeUser={removeUser}
+                        removeFile={removeFile}
+                        statusData={statusData}
+                        selectedfile={selectedfile}
+                        Files={Files}
+                        setLoadingSpinner={setLoadingSpinner}
+                        SetSelectedFile={SetSelectedFile}
+                        SetFiles={SetFiles}
+                        getDetailInstructionData={getDetailInstructionData}
+                        editInstructionsMessage={editInstructionsMessage}
                     />
 
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
@@ -1959,10 +1968,9 @@ const EditInstructions = (props) => {
 
 
                                             </FormGroup>
-
                                             <div className="text-sm-end col-10" >
 
-                                                <Button onClick={toggleReplyModal} color="primary">
+                                                <Button hidden={!getDetailInstructionData?.data?.instruction?.reply} onClick={toggleReplyModal} color="primary">
                                                     <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
                                                     {props.t("Reply")}
                                                 </Button>&nbsp;
@@ -2222,7 +2230,7 @@ const EditInstructions = (props) => {
 
                                         <div className="text-sm-end col-10" >
 
-                                            <Button onClick={toggleReplyModal} color="primary">
+                                            <Button hidden={!getDetailInstructionData?.data?.instruction?.reply} onClick={toggleReplyModal} color="primary">
                                                 <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
                                                 {props.t("Reply")}
                                             </Button>&nbsp;
@@ -2360,172 +2368,176 @@ const EditInstructions = (props) => {
                                                     <Col md="12">
                                                         <Row>
                                                             {
-                                                                replyData?.data?.replyList?.length > 0 && replyData?.data?.replyList.map((row, reply_num) => (
-                                                                    <div
-                                                                        key={reply_num}
-                                                                        className="reply-row my-1 p-3"
-                                                                        style={{
-                                                                            backgroundColor: "#EEE",
-                                                                            display: "flex",
-                                                                            alignItems: "flex-start",
-                                                                            justifyContent: "space-between",
-                                                                        }}
-                                                                    >
-                                                                        <div className="reply-num" style={{ width: "0.01%" }}>
-                                                                            {reply_num + 1}
-                                                                        </div>
-                                                                        <div className="reply-fill" style={{ width: "90%" }}>
-                                                                            <div className="reply-content d-flex align-items-start mb-1">
-                                                                                <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                replyData?.data?.replyList?.length > 0 && replyData?.data?.replyList.map((row, index) => {
+                                                                    const reply_num = replyData?.data?.replyList.length - index;
+                                                                    return (
+                                                                        <div
+                                                                            key={reply_num}
+                                                                            className="reply-row my-1 p-3"
+                                                                            style={{
+                                                                                backgroundColor: "#EEE",
+                                                                                display: "flex",
+                                                                                alignItems: "flex-start",
+                                                                                justifyContent: "space-between",
+                                                                            }}
+                                                                        >
+                                                                            <div className="reply-num" style={{ width: "0.01%" }}>
+                                                                                {reply_num}
+                                                                            </div>
+                                                                            <div className="reply-fill" style={{ width: "90%" }}>
+                                                                                <div className="reply-content d-flex align-items-start mb-1">
+                                                                                    <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
 
+                                                                                    {selectedRowIndex === reply_num ? (
+                                                                                        <Input
+                                                                                            maxLength={1900}
+                                                                                            style={{ maxWidth: "82%", height: "10em" }}
+                                                                                            name="content"
+                                                                                            type="textarea"
+                                                                                            value={editedContent}
+                                                                                            onChange={(e) => setEditedContent(e.target.value)}
+                                                                                        />
+                                                                                    ) : (
+
+
+                                                                                        <b
+                                                                                            style={{
+                                                                                                whiteSpace: "pre-wrap",
+                                                                                                overflowWrap: "break-word",
+                                                                                                wordWrap: "break-word",
+                                                                                                wordBreak: "break-word",
+                                                                                            }}
+                                                                                        >{row.content}</b>
+
+                                                                                    )}
+                                                                                </div>
                                                                                 {selectedRowIndex === reply_num ? (
-                                                                                    <Input
-                                                                                        maxLength={1900}
-                                                                                        style={{ maxWidth: "82%", height: "10em" }}
-                                                                                        name="content"
-                                                                                        type="textarea"
-                                                                                        value={editedContent}
-                                                                                        onChange={(e) => setEditedContent(e.target.value)}
-                                                                                    />
+                                                                                    tempAttachReply2.map((file, index) => (
+                                                                                        <React.Fragment key={index}>
+                                                                                            <div className="reply-attachment d-flex align-items-start mb-1">
+                                                                                                <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                                <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadCheckFileInst(file.num, file.name)} />
+                                                                                                <u
+                                                                                                    style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                                                                                                    onClick={() => downloadCheckFileInst(file.num, file.name)}
+                                                                                                >
+                                                                                                    {file.name}
+                                                                                                </u>
+                                                                                                &nbsp;
+                                                                                                <i
+                                                                                                    style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
+                                                                                                    className="mdi mdi-download"
+                                                                                                    onClick={() => downloadCheckFileInst(file.num, file.name)}
+                                                                                                />
+                                                                                                {selectedRowIndex === reply_num && (
+                                                                                                    <i
+                                                                                                        style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px", marginLeft: "10px" }}
+                                                                                                        className="mdi mdi-close"
+                                                                                                        onClick={() => handleDeleteAttachedReplyRow(file.num, file.name)}
+                                                                                                    />
+                                                                                                )}
+                                                                                                <br />
+                                                                                            </div>
+                                                                                        </React.Fragment>
+                                                                                    ))
                                                                                 ) : (
+                                                                                    row.attachFileList.map((file, index) => (
+                                                                                        <React.Fragment key={index}>
+                                                                                            <div className="reply-attachment d-flex align-items-start mb-1">
+                                                                                                <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                                <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadCheckFileInst(file.num, file.name)} />
+                                                                                                <u
+                                                                                                    style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                                                                                                    onClick={() => downloadCheckFileInst(file.num, file.name)}
+                                                                                                >
+                                                                                                    {file.name}
+                                                                                                </u>
+                                                                                                &nbsp;
+                                                                                                <i
+                                                                                                    style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
+                                                                                                    className="mdi mdi-download"
+                                                                                                    onClick={() => downloadCheckFileInst(file.num, file.name)}
+                                                                                                />
+                                                                                                <br />
+                                                                                            </div>
+                                                                                        </React.Fragment>
+                                                                                    ))
+                                                                                )}
 
+                                                                                <Row style={{ paddingLeft: "24px" }}>
+                                                                                    <Col sm="10">
+                                                                                        <div className="col-sm-12">
 
-                                                                                    <b
-                                                                                        style={{
-                                                                                            whiteSpace: "pre-wrap",
-                                                                                            overflowWrap: "break-word",
-                                                                                            wordWrap: "break-word",
-                                                                                            wordBreak: "break-word",
-                                                                                        }}
-                                                                                    >{row.content}</b>
+                                                                                            <Form onSubmit={FileUploadSubmitR2}>
+                                                                                                <div className="kb-file-upload">
 
+                                                                                                    {selectedRowIndex === reply_num && (
+                                                                                                        <div className="file-upload-box">
+                                                                                                            <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR2} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt" />
+                                                                                                        </div>
+                                                                                                    )}
+                                                                                                </div>
+                                                                                                &nbsp;
+                                                                                                <div className="kb-attach-box">
+                                                                                                    {selectedRowIndex === reply_num && selectedfileR2.map((data, index) => {
+                                                                                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                                                                                        return (
+                                                                                                            <div className="file-atc-box" key={id}>
+                                                                                                                {filename.match(/\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i) ? (
+                                                                                                                    <div className="file-image"></div>
+                                                                                                                ) : (
+                                                                                                                    <div className="file-image"></div>
+                                                                                                                )}
+                                                                                                                <div className="file-detail">
+                                                                                                                    <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
+                                                                                                                    &nbsp;&nbsp;&nbsp;
+                                                                                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFileR2(id)} />
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        );
+                                                                                                    })}
+                                                                                                </div>
+                                                                                            </Form>
+                                                                                        </div>
+                                                                                    </Col>
+                                                                                </Row>
+                                                                                <div className="reply-history d-flex align-items-start">
+                                                                                    <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
+                                                                                    <i>{row.write_time}</i>&nbsp; {props.t("by")} {row.name}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="reply-actions" style={{ width: "7%", display: "flex", justifyContent: "end" }}>
+                                                                                {row.edit ? (
+                                                                                    <a className="text-primary" onClick={() => {
+                                                                                        if (selectedRowIndex === reply_num) {
+                                                                                            handleEditReply(reply_num, editedContent);
+                                                                                            setSelectedRowIndex(null);
+                                                                                        } else {
+                                                                                            setSelectedRowIndex(reply_num);
+                                                                                            setEditedContent(row.content);
+                                                                                        }
+                                                                                    }}>
+                                                                                        {selectedRowIndex === reply_num ?
+                                                                                            <span className="mdi mdi-check-bold" style={{ fontSize: "18px" }}></span>
+                                                                                            :
+                                                                                            <span className="mdi mdi-pencil-outline" style={{ fontSize: "18px" }}></span>
+                                                                                        }
+                                                                                    </a>
+                                                                                ) : ('')}
+
+                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                {row.delete ? (
+                                                                                    <a className="text-primary" onClick={() => confirmToggle2(row)}>
+                                                                                        <span className="mdi mdi-trash-can-outline text-danger" style={{ fontSize: "18px" }}></span>
+                                                                                    </a>
+                                                                                ) : (
+                                                                                    ""
                                                                                 )}
                                                                             </div>
-                                                                            {selectedRowIndex === reply_num ? (
-                                                                                tempAttachReply2.map((file, index) => (
-                                                                                    <React.Fragment key={index}>
-                                                                                        <div className="reply-attachment d-flex align-items-start mb-1">
-                                                                                            <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadCheckFileInst(file.num, file.name)} />
-                                                                                            <u
-                                                                                                style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
-                                                                                            >
-                                                                                                {file.name}
-                                                                                            </u>
-                                                                                            &nbsp;
-                                                                                            <i
-                                                                                                style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
-                                                                                                className="mdi mdi-download"
-                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
-                                                                                            />
-                                                                                            {selectedRowIndex === reply_num && (
-                                                                                                <i
-                                                                                                    style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px", marginLeft: "10px" }}
-                                                                                                    className="mdi mdi-close"
-                                                                                                    onClick={() => handleDeleteAttachedReplyRow(file.num, file.name)}
-                                                                                                />
-                                                                                            )}
-                                                                                            <br />
-                                                                                        </div>
-                                                                                    </React.Fragment>
-                                                                                ))
-                                                                            ) : (
-                                                                                row.attachFileList.map((file, index) => (
-                                                                                    <React.Fragment key={index}>
-                                                                                        <div className="reply-attachment d-flex align-items-start mb-1">
-                                                                                            <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                            <i className="mdi mdi-paperclip" style={{ cursor: "pointer", verticalAlign: "middle" }} onClick={() => downloadCheckFileInst(file.num, file.name)} />
-                                                                                            <u
-                                                                                                style={{ cursor: "pointer", display: "inline-block", maxWidth: "80%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
-                                                                                            >
-                                                                                                {file.name}
-                                                                                            </u>
-                                                                                            &nbsp;
-                                                                                            <i
-                                                                                                style={{ cursor: "pointer", fontSize: "20px", marginTop: "-4px" }}
-                                                                                                className="mdi mdi-download"
-                                                                                                onClick={() => downloadCheckFileInst(file.num, file.name)}
-                                                                                            />
-                                                                                            <br />
-                                                                                        </div>
-                                                                                    </React.Fragment>
-                                                                                ))
-                                                                            )}
-
-                                                                            <Row style={{ paddingLeft: "24px" }}>
-                                                                                <Col sm="10">
-                                                                                    <div className="col-sm-12">
-
-                                                                                        <Form onSubmit={FileUploadSubmitR2}>
-                                                                                            <div className="kb-file-upload">
-
-                                                                                                {selectedRowIndex === reply_num && (
-                                                                                                    <div className="file-upload-box">
-                                                                                                        <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR2} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt" />
-                                                                                                    </div>
-                                                                                                )}
-                                                                                            </div>
-                                                                                            &nbsp;
-                                                                                            <div className="kb-attach-box">
-                                                                                                {selectedRowIndex === reply_num && selectedfileR2.map((data, index) => {
-                                                                                                    const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                                                    return (
-                                                                                                        <div className="file-atc-box" key={id}>
-                                                                                                            {filename.match(/\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i) ? (
-                                                                                                                <div className="file-image"></div>
-                                                                                                            ) : (
-                                                                                                                <div className="file-image"></div>
-                                                                                                            )}
-                                                                                                            <div className="file-detail">
-                                                                                                                <span><i className="fas fa-paperclip" />&nbsp;{filename}</span>
-                                                                                                                &nbsp;&nbsp;&nbsp;
-                                                                                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFileR2(id)} />
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    );
-                                                                                                })}
-                                                                                            </div>
-                                                                                        </Form>
-                                                                                    </div>
-                                                                                </Col>
-                                                                            </Row>
-                                                                            <div className="reply-history d-flex align-items-start">
-                                                                                <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
-                                                                                <i>{row.write_time}</i>&nbsp; {props.t("by")} {row.name}
-                                                                            </div>
                                                                         </div>
-                                                                        <div className="reply-actions" style={{ width: "7%", display: "flex", justifyContent: "end" }}>
-                                                                            {row.edit ? (
-                                                                                <a className="text-primary" onClick={() => {
-                                                                                    if (selectedRowIndex === reply_num) {
-                                                                                        handleEditReply(reply_num, editedContent);
-                                                                                        setSelectedRowIndex(null);
-                                                                                    } else {
-                                                                                        setSelectedRowIndex(reply_num);
-                                                                                        setEditedContent(row.content);
-                                                                                    }
-                                                                                }}>
-                                                                                    {selectedRowIndex === reply_num ?
-                                                                                        <span className="mdi mdi-check-bold" style={{ fontSize: "18px" }}></span>
-                                                                                        :
-                                                                                        <span className="mdi mdi-pencil-outline" style={{ fontSize: "18px" }}></span>
-                                                                                    }
-                                                                                </a>
-                                                                            ) : ('')}
-
-                                                                            &nbsp;&nbsp;&nbsp;
-                                                                            {row.delete ? (
-                                                                                <a className="text-primary" onClick={() => confirmToggle2(row)}>
-                                                                                    <span className="mdi mdi-trash-can-outline text-danger" style={{ fontSize: "18px" }}></span>
-                                                                                </a>
-                                                                            ) : (
-                                                                                ""
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-                                                                ))
+                                                                    )
+                                                                }
+                                                                )
                                                             }
 
                                                         </Row>
