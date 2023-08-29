@@ -17,20 +17,13 @@ const AddReply = (props) => {
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [addReplySpinner, setAddReplySpinner] = useState(false)
+
     const history = useHistory()
 
     const [addReplyMsg, setAddReplyMsg] = useState(false)
 
     const msgSaveReply = useSelector(state => {
         return state.instructionsReducer.msgAddReply;
-    })
-
-    const appRankListData = useSelector(state => {
-        return state.settingReducer.respGetRankList;
-    });
-
-    const appPermissionListData = useSelector(state => {
-        return state.settingReducer.respGetPermissionList;
     })
 
     useEffect(() => {
@@ -58,7 +51,7 @@ const AddReply = (props) => {
     });
 
     const onSubmit = (values) => {
-        
+
         props.setLoadingSpinner(true)
         if (values.content !== '') {
             var bodyForm = new FormData();
@@ -102,14 +95,6 @@ const AddReply = (props) => {
         replyValidInput.resetForm();
     }, [props.toggle]);
 
-    /* HP Validation */
-    const handleKeyPress = (event) => {
-        const keyCode = event.which || event.keyCode;
-
-        if (keyCode < 48 || keyCode > 57) {
-            event.preventDefault();
-        }
-    }
 
     const [addReplyMsgModal, setAddReplyMsgModal] = useState(false)
     const [addmemberContentModal, setAddReplyContentModal] = useState("")
@@ -125,12 +110,12 @@ const AddReply = (props) => {
     }
 
     useEffect(() => {
-        debugger
+
         if (msgSaveReply.status == "1") {
 
             setAddReplyMsg(msgSaveReply)
             props.toggle()
-            if (props.getDetailInstructionData?.data?.instruction?.comment) {
+            if (props.getDetailInstructionData?.data?.instruction?.comment && props.onlyReply === false) {
                 var bodyForm = new FormData();
 
                 bodyForm.append('num', props.idInstruction);
@@ -204,9 +189,7 @@ const AddReply = (props) => {
                     });
                 }
 
-
                 //end//
-
 
                 const config = {
                     headers: {
@@ -214,13 +197,13 @@ const AddReply = (props) => {
                     }
                 }
                 insert(bodyForm, config)
-                debugger
                 history.push({
                     pathname: '/AppInstructions',
                     state: { setAppInstructionsMsg: props.editInstructionsMessage }
                 })
             }
         }
+        props.setOnlyReply(false)
         setAddReplyContentModal(msgSaveReply.message);
         setAddReplySpinner(false)
         props.setLoadingSpinner(false)
@@ -325,7 +308,17 @@ const AddReply = (props) => {
                         {props.t("Save")}
                         <Spinner style={{ display: addReplySpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
-                    <Button color="danger" onClick={props.toggle}>
+                    <Button color="danger" onClick={() => {
+                        props.toggle()
+                        debugger
+                        if (!props.onlyReply) {
+                            history.push({
+                                pathname: '/AppInstructions',
+                                state: { setAppInstructionsMsg: props.editInstructionsMessage }
+                            })
+                        }
+                    }}
+                    >
                         {props.t("Close")}
                     </Button>
                 </ModalFooter>
@@ -352,6 +345,8 @@ AddReply.propTypes = {
     SetFiles: PropTypes.any,
     getDetailInstructionData: PropTypes.any,
     editInstructionsMessage: PropTypes.any,
+    setOnlyReply: PropTypes.any,
+    onlyReply: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

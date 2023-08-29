@@ -39,6 +39,9 @@ export const MSGDOWNLOAD = "MSGDOWNLOAD"
 export const GET_REPLY = "GET_REPLY"
 export const RESP_GET_REPLY = "RESP_GET_REPLY"
 
+export const GET_SELECTED_REPLY = "GET_SELECTED_REPLY"
+export const RESP_GET_SELECTED_REPLY = "RESP_GET_SELECTED_REPLY"
+
 export const SAVE_REPLY = "SAVE_REPLY"
 
 export const EDIT_REPLY = "EDIT_REPLY"

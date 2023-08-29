@@ -40,6 +40,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { withTranslation } from "react-i18next";
 import MsgModal from "components/Common/MsgModal";
 import AddReply from "./AddReply";
+import EditReply from "./EditReply";
 
 
 const EditInstructions = (props) => {
@@ -99,6 +100,8 @@ const EditInstructions = (props) => {
 
     const [downloadMsgModal, setDownloadMsgModal] = useState(false)
     const [downloadContentModal, setDownloadContentModal] = useState("")
+
+    const [onlyReply, setOnlyReply] = useState(false);
 
     /* MULTI SELECT OPTIONS */
 
@@ -1394,7 +1397,7 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment) {
-            toggleReplyModal()
+            toggleAddReplyModal()
         } else if (editInstructionsMessage.status == "1") {
             history.push({
                 pathname: '/AppInstructions',
@@ -1664,12 +1667,20 @@ const EditInstructions = (props) => {
     }, [downloadMessage])
 
 
-    /* REPLY VALID INPUT */
+    /* REPLY MODAL */
 
-    const [replyModal, setReplyModal] = useState(false)
+    const [addReplyModal, setAddReplyModal] = useState(false)
 
-    const toggleReplyModal = () => {
-        setReplyModal(!replyModal)
+    const toggleAddReplyModal = () => {
+        setAddReplyModal(!addReplyModal)
+    }
+
+    const [editReplyModal, setEditReplyModal] = useState(false)
+    const [rowReply, setRowReply] = useState()
+
+    const toggleEditReplyModal = (row) => {
+        setEditReplyModal(!editReplyModal)
+        setRowReply(row)
     }
 
     /*********************************** ENDS HERE ***********************************/
@@ -1700,8 +1711,8 @@ const EditInstructions = (props) => {
                     />
 
                     <AddReply
-                        modal={replyModal}
-                        toggle={toggleReplyModal}
+                        modal={addReplyModal}
+                        toggle={toggleAddReplyModal}
                         idInstruction={editInstructionsValidInput?.values?.no}
                         titleInstruction={editInstructionsValidInput?.values?.title}
                         dateInstruction={editInstructionsValidInput?.values?.insDate}
@@ -1718,6 +1729,21 @@ const EditInstructions = (props) => {
                         SetFiles={SetFiles}
                         getDetailInstructionData={getDetailInstructionData}
                         editInstructionsMessage={editInstructionsMessage}
+                        setOnlyReply={setOnlyReply}
+                        onlyReply={onlyReply}
+                    />
+
+                    <EditReply
+                        modal={editReplyModal}
+                        toggle={toggleEditReplyModal}
+                        idInstruction={editInstructionsValidInput?.values?.no}
+                        replyData={rowReply}
+                        setLoadingSpinner={setLoadingSpinner}
+                        getDetailInstructionData={getDetailInstructionData}
+                        editInstructionsMessage={editInstructionsMessage}
+                        setOnlyReply={setOnlyReply}
+                        onlyReply={onlyReply}
+                        editedContent={editedContent}
                     />
 
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
@@ -1970,7 +1996,13 @@ const EditInstructions = (props) => {
                                             </FormGroup>
                                             <div className="text-sm-end col-10" >
 
-                                                <Button hidden={!getDetailInstructionData?.data?.instruction?.reply} onClick={toggleReplyModal} color="primary">
+                                                <Button
+                                                    hidden={!getDetailInstructionData?.data?.instruction?.reply}
+                                                    onClick={() => {
+                                                        toggleAddReplyModal()
+                                                        setOnlyReply(true)
+                                                    }}
+                                                    color="primary">
                                                     <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
                                                     {props.t("Reply")}
                                                 </Button>&nbsp;
@@ -2167,35 +2199,6 @@ const EditInstructions = (props) => {
                                                         <div className="mb-3 col-sm-8">
                                                             <label>{props.t("Attached Files")} </label>
 
-                                                            {/* <Form onSubmit={FileUploadSubmit}>
-                                                                <div className="kb-file-upload">
-
-                                                                    <div className="file-upload-box">
-                                                                        <input disabled type="file" id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"/>
-                                                                    </div>
-                                                                </div>
-                                                                &nbsp;&nbsp;&nbsp;
-                                                                <div className="kb-attach-box mb-3">
-                                                                    {
-                                                                        selectedfile.map((data, index) => {
-                                                                            const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                                                            return (
-                                                                                <div className="file-atc-box" key={id}>
-                                                                                    <div className="file-detail">
-                                                                                        <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
-                                                                                        &nbsp;&nbsp;&nbsp;
-
-                                                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
-
-                                                                                        <p />
-                                                                                    </div>
-                                                                                </div>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                </div>
-
-                                                            </Form> */}
                                                             {Files.length > 0 ?
                                                                 <div className="kb-attach-box">
 
@@ -2230,7 +2233,14 @@ const EditInstructions = (props) => {
 
                                         <div className="text-sm-end col-10" >
 
-                                            <Button hidden={!getDetailInstructionData?.data?.instruction?.reply} onClick={toggleReplyModal} color="primary">
+                                            <Button
+                                                hidden={!getDetailInstructionData?.data?.instruction?.reply}
+                                                onClick={() => {
+                                                    toggleAddReplyModal()
+                                                    setOnlyReply(true)
+                                                }}
+                                                color="primary"
+                                            >
                                                 <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
                                                 {props.t("Reply")}
                                             </Button>&nbsp;
@@ -2268,108 +2278,13 @@ const EditInstructions = (props) => {
 
                                     <CardBody hidden={isHiddenReply}>
                                         <React.Fragment>
-                                            <FormGroup className="mb-0">
-
-                                                {/* <div className="row col-8">
-                                                    <div className="col">
-                                                        <Form
-                                                            onSubmit={(e) => {
-                                                                e.preventDefault();
-                                                                replyValidInput.handleSubmit();
-                                                                return false;
-                                                            }}
-                                                        > */}
-                                                {/* <div className="mb-2">
-                                                                <div className="input-group">
-                                                                    <div className="col-sm-12">
-                                                                        <label>{props.t("Answer")}</label>
-                                                                        <Input
-                                                                            style={{
-                                                                                minHeight: "10em",
-                                                                            }}
-                                                                            maxLength={400}
-                                                                            placeholder={props.t("Please input your answer here")}
-                                                                            name="content"
-                                                                            type="textarea"
-                                                                            onChange={(event) => {
-                                                                                replyValidInput.handleChange(event);
-                                                                            }}
-                                                                            value={replyValidInput.values.content || ""}
-                                                                            invalid={
-                                                                                replyValidInput.touched.content && replyValidInput.errors.content ? true : false
-                                                                            }
-                                                                        />
-                                                                        {replyValidInput.touched.content && replyValidInput.errors.content && (
-                                                                            <div className="invalid-feedback">{replyValidInput.errors.content}</div>
-                                                                        )}
-                                                                    </div>
-                                                                </div>
-                                                            </div> */}
-                                                {/* <div className="mb-1">
-                                                            <div className="mb-3 col-sm-12"> */}
-                                                {/* <label>{props.t("Attached Files")}</label>
-                                                                    <div className="kb-file-upload">
-                                                                        <div className="file-upload-box">
-                                                                            <input
-                                                                                type="file"
-                                                                                id="fileupload3"
-                                                                                className="form-control"
-                                                                                ref={refCleanser}
-                                                                                multiple
-                                                                                accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
-                                                                                onChange={(event) => {
-                                                                                    replyValidInput.setFieldValue('files', event.currentTarget.files);
-                                                                                }}
-                                                                            />
-                                                                        </div>
-                                                                    </div> */}
-
-                                                {/* <div className="kb-attach-box mb-3">
-                                                                        {replyValidInput.values.files &&
-                                                                            Array.from(replyValidInput.values.files).map((file, index) => (
-                                                                                <div className="file-atc-box" key={index}>
-                                                                                    {/* Display file details here */}
-                                                {/* <div className="file-detail">
-                                                                                        <span>
-                                                                                            <i className="fas fa-paperclip" />
-                                                                                            &nbsp;{file.name}
-                                                                                        </span>
-                                                                                        &nbsp;&nbsp;&nbsp;
-                                                                                        <i
-                                                                                            className="mdi mdi-close"
-                                                                                            style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
-                                                                                            onClick={() => {
-                                                                                                const newFiles = Array.from(replyValidInput.values.files);
-                                                                                                newFiles.splice(index, 1);
-                                                                                                replyValidInput.setFieldValue('files', newFiles);
-                                                                                            }}
-                                                                                        />
-                                                                                    </div> */}
-                                                {/* </div>
-                                                                            ))}
-                                                                        <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
-                                                                    </div> */}
-                                                {/* </div>
-                                                            </div> */}
-                                                {/* <div className="text-sm-end col-12">
-                                                                <button type="submit" className="btn btn-primary ms-1">
-                                                                    <i className="mdi mdi-send align-middle me-2" />
-                                                                    {props.t("Reply")}
-                                                                </button>
-                                                            </div> */}
-                                                {/* </Form>
-                                                    </div>
-                                                </div> */}
-
-                                                {/* <Row>
-                                                    <hr />
-                                                </Row> */}
-                                                <Row style={{ marginTop: "15px" }}>
+                                            <FormGroup>
+                                                <Row>
                                                     <Col md="12">
                                                         <Row>
                                                             {
                                                                 replyData?.data?.replyList?.length > 0 && replyData?.data?.replyList.map((row, index) => {
-                                                                    const reply_num = replyData?.data?.replyList.length - index;
+                                                                    const reply_num = replyData?.data?.replyList.length - index
                                                                     return (
                                                                         <div
                                                                             key={reply_num}
@@ -2381,36 +2296,24 @@ const EditInstructions = (props) => {
                                                                                 justifyContent: "space-between",
                                                                             }}
                                                                         >
-                                                                            <div className="reply-num" style={{ width: "0.01%" }}>
+                                                                            <div className="reply-num">
                                                                                 {reply_num}
                                                                             </div>
-                                                                            <div className="reply-fill" style={{ width: "90%" }}>
+                                                                            <div className="reply-fill" style={{ width: "95%" }}>
                                                                                 <div className="reply-content d-flex align-items-start mb-1">
                                                                                     <div className="vertical-line" style={{ borderLeft: "2px solid #919191", height: "16px", margin: "0 10px" }} />
 
-                                                                                    {selectedRowIndex === reply_num ? (
-                                                                                        <Input
-                                                                                            maxLength={1900}
-                                                                                            style={{ maxWidth: "82%", height: "10em" }}
-                                                                                            name="content"
-                                                                                            type="textarea"
-                                                                                            value={editedContent}
-                                                                                            onChange={(e) => setEditedContent(e.target.value)}
-                                                                                        />
-                                                                                    ) : (
+                                                                                    <b
+                                                                                        style={{
+                                                                                            whiteSpace: "pre-wrap",
+                                                                                            overflowWrap: "break-word",
+                                                                                            wordWrap: "break-word",
+                                                                                            wordBreak: "break-word",
+                                                                                        }}
+                                                                                    >{row.content}</b>
 
-
-                                                                                        <b
-                                                                                            style={{
-                                                                                                whiteSpace: "pre-wrap",
-                                                                                                overflowWrap: "break-word",
-                                                                                                wordWrap: "break-word",
-                                                                                                wordBreak: "break-word",
-                                                                                            }}
-                                                                                        >{row.content}</b>
-
-                                                                                    )}
                                                                                 </div>
+
                                                                                 {selectedRowIndex === reply_num ? (
                                                                                     tempAttachReply2.map((file, index) => (
                                                                                         <React.Fragment key={index}>
@@ -2469,14 +2372,6 @@ const EditInstructions = (props) => {
                                                                                         <div className="col-sm-12">
 
                                                                                             <Form onSubmit={FileUploadSubmitR2}>
-                                                                                                <div className="kb-file-upload">
-
-                                                                                                    {selectedRowIndex === reply_num && (
-                                                                                                        <div className="file-upload-box">
-                                                                                                            <input type="file" id="fileupload3" className="form-control" ref={refCleanser} onChange={InputChangeR2} name="removeFile" multiple accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt" />
-                                                                                                        </div>
-                                                                                                    )}
-                                                                                                </div>
                                                                                                 &nbsp;
                                                                                                 <div className="kb-attach-box">
                                                                                                     {selectedRowIndex === reply_num && selectedfileR2.map((data, index) => {
@@ -2506,16 +2401,12 @@ const EditInstructions = (props) => {
                                                                                     <i>{row.write_time}</i>&nbsp; {props.t("by")} {row.name}
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="reply-actions" style={{ width: "7%", display: "flex", justifyContent: "end" }}>
+                                                                            <div className="reply-actions" style={{ width: "5%", display: "flex", justifyContent: "end" }}>
                                                                                 {row.edit ? (
                                                                                     <a className="text-primary" onClick={() => {
-                                                                                        if (selectedRowIndex === reply_num) {
-                                                                                            handleEditReply(reply_num, editedContent);
-                                                                                            setSelectedRowIndex(null);
-                                                                                        } else {
-                                                                                            setSelectedRowIndex(reply_num);
-                                                                                            setEditedContent(row.content);
-                                                                                        }
+                                                                                        toggleEditReplyModal(row)
+                                                                                        setEditedContent(row.content);
+
                                                                                     }}>
                                                                                         {selectedRowIndex === reply_num ?
                                                                                             <span className="mdi mdi-check-bold" style={{ fontSize: "18px" }}></span>

@@ -39,7 +39,9 @@ import {
     GET_LOGS,
     RESP_GET_LOGS,
     GET_CHECK_DOWNLOAD,
-    RESP_GET_CHECK_DOWNLOAD
+    RESP_GET_CHECK_DOWNLOAD,
+    GET_SELECTED_REPLY,
+    RESP_GET_SELECTED_REPLY
 
 } from "./actionTypes"
 
@@ -191,6 +193,17 @@ export const respGetInstructions = resp => ({
 
   export const respGetReply = resp => ({
     type: RESP_GET_REPLY,
+    payload: resp,
+  })
+  
+
+  export const getSelectedReply = (req) => ({
+    type: GET_SELECTED_REPLY,
+    payload: req,
+  })
+
+  export const respGetSelectedReply = resp => ({
+    type: RESP_GET_SELECTED_REPLY,
     payload: resp,
   })
   

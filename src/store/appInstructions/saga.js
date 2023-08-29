@@ -19,7 +19,8 @@ import {
   EDIT_REPLY,
   GET_STATUS,
   GET_LOGS,
-  GET_CHECK_DOWNLOAD, // Added this import
+  GET_CHECK_DOWNLOAD,
+  GET_SELECTED_REPLY, // Added this import
 } from "./actionTypes";
 
 import {
@@ -41,6 +42,8 @@ import {
   respGetLogs,
   respGetStatus,
   respGetCheckDownload,
+  getSelectedReply,
+  respGetSelectedReply,
 } from "./actions";
 
 import {
@@ -248,6 +251,20 @@ function* fetchGetReply({ payload: req }) {
   }
 }
 
+function* fetchGetSelectedReply({ payload: req }) {
+  try {
+    const response = yield call(getSelectedReply, req)
+    if (response.status == 1) {
+      yield put(respGetSelectedReply(response))
+    } else {
+      yield put(respGetSelectedReply(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetSelectedReply({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
 function* fetchSaveReply({ payload: req }) {
   try {
     const response = yield call(saveReply, req)
@@ -332,6 +349,7 @@ function* instructionsSaga() {
   yield takeEvery(SAVE_DESCRIPTION, fetchSaveDescriptions)
   yield takeEvery(GET_CHECK_DOWNLOAD, fetchGetCheckDownload)
   yield takeEvery(GET_REPLY, fetchGetReply)
+  yield takeEvery(GET_SELECTED_REPLY, fetchGetSelectedReply)
   yield takeEvery(SAVE_REPLY, fetchSaveReply)
   yield takeEvery(DOWNLOAD_FILES, fetchDownloadfiles)
   yield takeEvery(DELETE_REPLY, fetchDeleteReply)

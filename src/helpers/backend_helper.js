@@ -128,6 +128,8 @@ export const deleteInstructions = req => postWithParam("/rest/InstructionRest/De
 
 export const getReply = req => post("rest/InstructionRest/SelectReplyList", req)
 
+export const getSelectedReply = req => post("rest/InstructionRest/SelectReplyList", req)
+
 export const saveReply = req => postUpload("rest/InstructionRest/InsertReply", req)
 
 export const editReply = req => postUpload("rest/InstructionRest/UpdateReply", req)

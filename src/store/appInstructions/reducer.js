@@ -46,7 +46,9 @@ import {
   GET_LOGS,
   RESP_GET_LOGS,
   GET_CHECK_DOWNLOAD,
-  RESP_GET_CHECK_DOWNLOAD
+  RESP_GET_CHECK_DOWNLOAD,
+  GET_SELECTED_REPLY,
+  RESP_GET_SELECTED_REPLY
 
 } from "./actionTypes"
 
@@ -58,6 +60,7 @@ const INIT_STATE = {
   respGetSelectedManager: {},
   respGetInstructions2: {},
   respGetReply: {},
+  respGetSelectedReply: {},
   respGetCheckDownload: {},
   msgEditReply: "",
   msgDeleteReply: "",
@@ -206,6 +209,16 @@ const instructionsReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetReply: action.payload,
+      }
+
+    case GET_SELECTED_REPLY:
+      return {
+        ...state,
+      }
+    case RESP_GET_SELECTED_REPLY:
+      return {
+        ...state,
+        respGetSelectedReply: action.payload,
       }
 
     case SAVE_REPLY:
