@@ -90,7 +90,7 @@ debugger
     }, [createRespMsg]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" keyboard={false}>
             <MsgModal
                 modal={createMsgModal}
                 toggle={toggleMsgModal}

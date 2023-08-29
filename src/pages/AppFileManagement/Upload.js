@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner } from 'reactstrap';
 import { useFormik } from 'formik';
@@ -121,47 +121,45 @@ const Upload = (props) => {
         setUploadSpinner(false)
     }, [uploadRespMsg]);
 
+    const refCleanser = useRef(null)
+
     const InputChange = (e) => {
-        // debugger
+        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i
+        const selectedFiles = Array.from(e.target.files)
 
-        let images = [];
-        for (let i = 0; i < e.target.files.length; i++) {
-            images.push((e.target.files[i]));
-            let reader = new FileReader();
-            let file = e.target.files[i];
+        const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
+        const invalidFiles = selectedFiles.filter((file) => !allowedFileExtensions.test(file.name))
 
-            let fileNm = e.target.files[i].name;
-            fileNm = fileNm.substring(fileNm.lastIndexOf('.') + 1);
+        if (invalidFiles.length === 0 && validFiles.length > 0) {
+            const processedFiles = []
 
-            if (fileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
+            validFiles.forEach((file) => {
+                const reader = new FileReader()
+
                 reader.onloadend = () => {
-                    SetSelectedFile((preValue) => {
-                        return [
-                            ...preValue,
-                            {
-                                id: shortid.generate(),
-                                filename: e.target.files[i].name,
-                                filetype: e.target.files[i].type,
-                                fileimage: reader.result,
-                                fileori: file
-                            }
-                        ]
-                    });
-                    e.target.value = null
+                    processedFiles.push({
+                        id: shortid.generate(),
+                        filename: file.name,
+                        filetype: file.type,
+                        fileimage: reader.result,
+                        fileori: file,
+                    })
+
+                    if (processedFiles.length === validFiles.length) {
+                        // All files have been processed
+                        SetSelectedFile((prevValue) => [...prevValue, ...processedFiles])
+                    }
                 }
-                if (e.target.files[i]) {
-                    reader.readAsDataURL(file);
-                    
-                }
-                
-            } else {
-                
-                e.target.value = null
-                alert("Files type are not allowed to upload or not supported.");
-            }
+
+                reader.readAsDataURL(file)
+            })
+        } else if (e.target.files.length != 0) {
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            refCleanser.current.value = ""
+            e.target.value = ""
         }
 
-    }
+    };
 
 
     const DeleteSelectFile = (id) => {
@@ -199,7 +197,7 @@ const Upload = (props) => {
     }
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" modalOptions={{ dismissible: false }} keyboard={false}>
             <MsgModal
                 modal={uploadMsgModal}
                 toggle={toggleMsgModal}
@@ -234,7 +232,8 @@ const Upload = (props) => {
                                         .jpg,
                                         .jpeg,
                                         .png,
-                                        .gif"
+                                        .gif,
+                                        .svg"
                                         id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                     </div>
                                 </div>

@@ -102,7 +102,7 @@ const Rename = (props) => {
     }, [renameMsg]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" keyboard={false}>
             <MsgModal
                 modal={renameMsgModal}
                 toggle={toggleMsgModal}
