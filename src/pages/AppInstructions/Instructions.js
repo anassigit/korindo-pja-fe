@@ -68,10 +68,9 @@ const Instructions = (props) => {
         }
     })
 
-    // useEffect(() => {
-    //     debugger
-    //     setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
-    // }, [appInstructionsTabelSearch, localStorage]);
+    useEffect(() => {
+        getInstructionsData(appInstructionsTabelSearch)
+    }, [appInstructionsTabelSearch]);
 
     useEffect(() => {
         setAppInstructionsTabelSearch({
@@ -331,8 +330,8 @@ const Instructions = (props) => {
                 search: {
                     search: appInstructionsTabelSearch.search.search,
                     langType: appInstructionsTabelSearch.search.langType,
-                    status: appInstructionsTabelSearch.search.status, 
-                    from: convertedDate, 
+                    status: appInstructionsTabelSearch.search.status,
+                    from: convertedDate,
                     to: dateTo
                 }
             })
@@ -347,13 +346,12 @@ const Instructions = (props) => {
                 search: {
                     search: appInstructionsTabelSearch.search.search,
                     langType: appInstructionsTabelSearch.search.langType,
-                    status: appInstructionsTabelSearch.search.status, 
-                    from: dateFrom, 
+                    status: appInstructionsTabelSearch.search.status,
+                    from: dateFrom,
                     to: convertedDate
                 }
             })
         }
-
     };
 
     return (
@@ -388,32 +386,36 @@ const Instructions = (props) => {
                                                     </Row>
                                                 </Col>
 
-                                                <Col md="2" style={{ marginLeft: "-0px" }}>
-                                                    <DatePicker
-                                                        name="from"
-                                                        className="form-control"
-                                                        showMonthYearPicker
-                                                        dateFormat="MMMM yyyy"
-                                                        selected={new Date(dateFrom + '-01')}
-                                                        onChange={(date) => dateChanger('from', date)}
-                                                        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-                                                    />
+                                                <Col md="2">
+                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                        <DatePicker
+                                                            name="from"
+                                                            className="form-control"
+                                                            showMonthYearPicker
+                                                            dateFormat="MMMM yyyy"
+                                                            selected={new Date(dateFrom + '-01')}
+                                                            onChange={(date) => dateChanger('from', date)}
+                                                        />
+                                                        <div style={{ width: '120px', display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                            -
+                                                        </div>
+                                                    </div>
                                                 </Col>
 
-                                                <Col md="1" style={{ marginLeft: "-0px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                                    -
-                                                </Col>
+                                                <Col md="2">
+                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                        <DatePicker
+                                                            name="to"
+                                                            className="form-control"
+                                                            showMonthYearPicker
+                                                            dateFormat="MMMM yyyy"
+                                                            selected={new Date(dateTo + '-01')}
+                                                            onChange={(date) => dateChanger('to', date)}
+                                                        />
+                                                        <div style={{ width: '120px', display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-                                                <Col md="2" style={{ marginLeft: "-0px" }}>
-                                                    <DatePicker
-                                                        name="to"
-                                                        className="form-control"
-                                                        showMonthYearPicker
-                                                        dateFormat="MMMM yyyy"
-                                                        selected={new Date(dateTo + '-01')}
-                                                        onChange={(date) => dateChanger('to', date)}
-                                                        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-                                                    />
+                                                        </div>
+                                                    </div>
                                                 </Col>
 
                                                 <Col md="3">
