@@ -17,6 +17,7 @@ const EditReply = (props) => {
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [editReplySpinner, setEditReplySpinner] = useState(false)
+    const [preservedFiles, setPreservedFiles] = useState([]);
 
     const history = useHistory()
 
@@ -44,12 +45,12 @@ const EditReply = (props) => {
         props.setLoadingSpinner(true)
         if (values.content !== '') {
             // ----------------->> PENTING NIH <<----------------- //
-            const addedFiles = values.files.filter(file => (
+            const addedFiles = preservedFiles.filter(file => (
                 !props.replyData.attachFileList.some(existingFile => existingFile.num === file.num)
             ));
 
             const removedFiles = props.replyData.attachFileList.filter(file => (
-                !values.files.some(existingFile => existingFile.num === file.num)
+                !preservedFiles.some(existingFile => existingFile.num === file.num)
             ));
             debugger
             var bodyForm = new FormData();
@@ -97,12 +98,15 @@ const EditReply = (props) => {
 
     useEffect(() => {
         if (props.modal) {
+            debugger
             editReplyValidInput.setFieldValue('content', props.replyData?.content)
             editReplyValidInput.setFieldValue('files', props.replyData?.attachFileList)
+            setPreservedFiles(props.replyData?.attachFileList)
         } else {
+            setPreservedFiles([])
             setEditReplyMsg('')
         }
-    }, [props.toggle]);
+    }, [props.modal]);
 
     const [editReplyMsgModal, setEditReplyMsgModal] = useState(false)
     const [addmemberContentModal, setEditReplyContentModal] = useState("")
@@ -117,8 +121,9 @@ const EditReply = (props) => {
             debugger
             props.toggle()
             setEditReplyMsg('')
-        } else {
+        } else if (editReplyMessage.status === "0") {
             setEditReplyMsg(editReplyMessage)
+            editReplyValidInput.setFieldValue('content', props.replyData?.content)
         }
         setEditReplyContentModal(editReplyMessage.message);
         setEditReplySpinner(false)
@@ -178,37 +183,37 @@ const EditReply = (props) => {
                                         multiple
                                         accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
                                         onChange={(event) => {
-                                            const newFiles = Array.from(event.currentTarget.files);
-                                            const existingFiles = Array.from(editReplyValidInput.values.files);
-                                            const mergedFiles = [...existingFiles, ...newFiles];
-                                            editReplyValidInput.setFieldValue('files', mergedFiles);
+                                            const newFiles = Array.from(event.currentTarget.files)
+                                            const existingFiles = Array.from(preservedFiles)
+                                            const mergedFiles = [...existingFiles, ...newFiles]
+                                            setPreservedFiles([...mergedFiles])
                                         }}
                                     />
                                 </div>
                             </div>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
-                                {editReplyValidInput.values.files &&
-                                    Array.from(editReplyValidInput.values.files).map((file, index) => (
-                                        <div className="file-atc-box" key={index}>
-                                            <div className="file-detail">
-                                                <span>
-                                                    <i className="fas fa-paperclip" />
-                                                    &nbsp;{file.name}
-                                                </span>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <i
-                                                    className="mdi mdi-close"
-                                                    style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
-                                                    onClick={() => {
-                                                        const newFiles = Array.from(editReplyValidInput.values.files);
-                                                        newFiles.splice(index, 1);
-                                                        editReplyValidInput.setFieldValue('files', newFiles);
-                                                    }}
-                                                />
-                                            </div>
+                                {preservedFiles.map((file, index) => (
+                                    <div className="file-atc-box" key={index}>
+                                        {/* Display file details here */}
+                                        <div className="file-detail">
+                                            <span>
+                                                <i className="fas fa-paperclip" />
+                                                &nbsp;{file.name}
+                                            </span>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <i
+                                                className="mdi mdi-close"
+                                                style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
+                                                onClick={() => {
+                                                    const newPreservedFiles = [...preservedFiles];
+                                                    newPreservedFiles.splice(index, 1);
+                                                    setPreservedFiles(newPreservedFiles);
+                                                }}
+                                            />
                                         </div>
-                                    ))}
+                                    </div>
+                                ))}
                                 <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                             </div>
                         </div>

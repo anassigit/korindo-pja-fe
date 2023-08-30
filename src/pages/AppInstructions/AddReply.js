@@ -17,6 +17,8 @@ const AddReply = (props) => {
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const dispatch = useDispatch();
     const [addReplySpinner, setAddReplySpinner] = useState(false)
+    const [preservedFiles, setPreservedFiles] = useState([]);
+
 
     const history = useHistory()
 
@@ -55,22 +57,33 @@ const AddReply = (props) => {
             bodyForm.append('instruction_num', props.idInstruction);
             bodyForm.append('content', values.content);
 
-            if (values.files.length > 0) {
+            // if (values.files.length > 0) {
 
+            //     for (let index = 0; index < values.files.length; index++) {
+
+            //         const file = values.files[index];
+            //         bodyForm.append('file' + index, file);
+            //     }
+            // }
+
+            if (values.files.length > 0 || preservedFiles.length > 0) {
                 for (let index = 0; index < values.files.length; index++) {
-
                     const file = values.files[index];
                     bodyForm.append('file' + index, file);
                 }
+                
+                for (let index = 0; index < preservedFiles.length; index++) {
+                    const file = preservedFiles[index];
+                    bodyForm.append('file' + (index + values.files.length), file);
+                }
             }
-
+            
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
             }
 
-            // setEditInstructionsSpinner(true);
             insert3(bodyForm, config)
             refCleanser.current.value = ""
         } else {
@@ -89,6 +102,8 @@ const AddReply = (props) => {
     useEffect(() => {
         if (!props.modal) {
             setAddReplyMsg('')
+            setPreservedFiles([])
+            replyValidInput.setFieldValue('content', '')
         }
     }, [props.toggle]);
 
@@ -105,6 +120,7 @@ const AddReply = (props) => {
         if (msgSaveReply.status == "1") {
 
             props.toggle()
+            replyValidInput.resetForm();
             if (props.getDetailInstructionData?.data?.instruction?.comment && props.onlyReply === false) {
                 var bodyForm = new FormData();
 
@@ -192,8 +208,6 @@ const AddReply = (props) => {
                     state: { setAppInstructionsMsg: props.editInstructionsMessage }
                 })
             }
-
-            replyValidInput.resetForm();
         } else {
             debugger
             setAddReplyMsg(msgSaveReply);
@@ -210,7 +224,6 @@ const AddReply = (props) => {
 
     };
 
-    console.log(addReplyMsg)
     return (
         <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle}>
             <Form onSubmit={(e) => {
@@ -258,36 +271,63 @@ const AddReply = (props) => {
                                         ref={refCleanser}
                                         multiple
                                         accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                        // onChange={(event) => {
+                                        //     replyValidInput.setFieldValue('files', event.currentTarget.files);
+                                        // }}
                                         onChange={(event) => {
-                                            replyValidInput.setFieldValue('files', event.currentTarget.files);
+                                            debugger
+                                            const newFiles = Array.from(event.currentTarget.files);
+                                            setPreservedFiles([...preservedFiles, ...newFiles]);
                                         }}
                                     />
                                 </div>
                             </div>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
-                                {replyValidInput.values.files &&
-                                    Array.from(replyValidInput.values.files).map((file, index) => (
-                                        <div className="file-atc-box" key={index}>
-                                            {/* Display file details here */}
-                                            <div className="file-detail">
-                                                <span>
-                                                    <i className="fas fa-paperclip" />
-                                                    &nbsp;{file.name}
-                                                </span>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <i
-                                                    className="mdi mdi-close"
-                                                    style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
-                                                    onClick={() => {
-                                                        const newFiles = Array.from(replyValidInput.values.files);
-                                                        newFiles.splice(index, 1);
-                                                        replyValidInput.setFieldValue('files', newFiles);
-                                                    }}
-                                                />
-                                            </div>
+                                {/* {replyValidInput.values.files && */}
+                                {/* Array.from(replyValidInput.values.files).map((file, index) => ( */}
+                                {/* <div className="file-atc-box" key={index}> */}
+                                {/* Display file details here */}
+                                {/* <div className="file-detail"> */}
+                                {/* <span> */}
+                                {/* <i className="fas fa-paperclip" /> */}
+                                {/* &nbsp;{file.name} */}
+                                {/* </span> */}
+                                {/* &nbsp;&nbsp;&nbsp; */}
+                                {/* <i */}
+                                {/* className="mdi mdi-close" */}
+                                {/* style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} */}
+                                {/* onClick={() => { */}
+                                {/* const newFiles = Array.from(replyValidInput.values.files); */}
+                                {/* newFiles.splice(index, 1); */}
+                                {/* replyValidInput.setFieldValue('files', newFiles); */}
+                                {/* }} */}
+                                {/* /> */}
+                                {/* </div> */}
+                                {/* </div> */}
+                                {/* ))} */}
+                                {preservedFiles.map((file, index) => (
+                                    <div className="file-atc-box" key={index}>
+                                        {/* Display file details here */}
+                                        <div className="file-detail">
+                                            <span>
+                                                <i className="fas fa-paperclip" />
+                                                &nbsp;{file.name}
+                                            </span>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <i
+                                                className="mdi mdi-close"
+                                                style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
+                                                onClick={() => {
+                                                    const newPreservedFiles = [...preservedFiles];
+                                                    newPreservedFiles.splice(index, 1);
+                                                    setPreservedFiles(newPreservedFiles);
+                                                }}
+                                            />
                                         </div>
-                                    ))}
+                                    </div>
+                                ))}
+
                                 <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
                             </div>
                         </div>
@@ -301,7 +341,6 @@ const AddReply = (props) => {
                     </Button>
                     <Button color="danger" onClick={() => {
                         props.toggle()
-                        debugger
                         if (!props.onlyReply) {
                             history.push({
                                 pathname: '/AppInstructions',

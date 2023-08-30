@@ -63,7 +63,7 @@ const Instructions = (props) => {
     }, [dispatch])
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
-        page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
+        page: 1, limit: 10, offset: 0, sort: "ins_date", order: "desc", search: {
             search: "", langType: langType, status: selected, from: dateFrom, to: dateTo
         }
     })
@@ -367,10 +367,10 @@ const Instructions = (props) => {
                                     <Col sm="12">
                                         <div className="form-group m-0">
                                             <div className="input-group">
-                                                <Col md="4">
+                                                <Col md="3">
                                                     <Row className="mb-1 col-sm-10">
-                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")} </label>
-                                                        <div className="col-sm-7">
+                                                        <label className="col-sm-4" style={{ marginTop: "8px" }}>{props.t("Search")} </label>
+                                                        <div className="col-sm-8">
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -386,8 +386,8 @@ const Instructions = (props) => {
                                                     </Row>
                                                 </Col>
 
-                                                <Col md="2">
-                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                <Col md="3">
+                                                    <div style={{ width:'85%', display: "flex", alignItems: "center" }}>
                                                         <DatePicker
                                                             name="fromDate"
                                                             className="form-control"
@@ -397,14 +397,10 @@ const Instructions = (props) => {
                                                             onChange={(date) => dateChanger('from', date)}
                                                             placeholderText="yyyy-MM"
                                                         />
-                                                        <div style={{ width: '120px', display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+                                                        <div style={{ width: '240px', display: "flex", justifyContent: "center", alignItems: "center" }}>
                                                             -
                                                         </div>
-                                                    </div>
-                                                </Col>
-
-                                                <Col md="2">
-                                                    <div style={{ display: "flex", alignItems: "center" }}>
                                                         <DatePicker
                                                             name="toDate"
                                                             className="form-control"
@@ -414,21 +410,21 @@ const Instructions = (props) => {
                                                             onChange={(date) => dateChanger('to', date)}
                                                             placeholderText="yyyy-MM"
                                                         />
-                                                        <div style={{ width: '120px', display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                        <div style={{ width: '450px', display: "flex", justifyContent: "center", alignItems: "center" }}>
 
                                                         </div>
                                                     </div>
                                                 </Col>
 
-                                                <Col md="3">
+                                                <Col md="6">
                                                 </Col>
 
-                                                <Col md="4" style={{ marginLeft: "-0px" }}>
+                                                <Col md="3" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-10">
-                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                        <label className="col-sm-4" style={{ marginTop: "8px" }}>
                                                             Status{" "}
                                                         </label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                             <Input
                                                                 type="select"
                                                                 name="status"
