@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import { withTranslation } from "react-i18next"
 
 const ConfirmModal = ( props ) => {
 
@@ -20,10 +21,10 @@ const ConfirmModal = ( props ) => {
             <ModalBody>{props.message}</ModalBody>
             <ModalFooter>
                 <Button color="primary" onClick={toggleYes}>
-                    Yes
+                  {props.t("Yes")}
                 </Button>
                 <Button color="danger" onClick={toggleNo}>
-                    No
+                    {props.t("No")}
                 </Button>
             </ModalFooter>
         </Modal>
@@ -35,6 +36,8 @@ ConfirmModal.propTypes = {
     toggle: PropTypes.func,
     message: PropTypes.string,
     setIsYes: PropTypes.func,
+    location: PropTypes.object,
+    t: PropTypes.any
 };
 
-export default ConfirmModal;
+export default withTranslation()(ConfirmModal);
