@@ -46,20 +46,24 @@ const EmailVerPassword = props => {
       id: Yup.string().required("아이디를 입력해주세요"),
     }),
     onSubmit: (values) => {
+      ReactSession.set('emailMsg', '')
       dispatch(emailForgotPassword(values));
     }
-  });
+  })
 
   useEffect(() => {
-    setAppUserProfileMsg(error)
-    if (error.status == "1") {
-      ReactSession.set("emailMsg", error)
+    let sessionMsg = ReactSession.get('emailMsg')
+    debugger
+    if (error.status == "1" && sessionMsg !== 'goLogin') {
+      ReactSession.set('emailMsg', error)
       history.push('/login')
     }
+    setAppUserProfileMsg(error)
   }, [error])
 
   const appUserProfileCloseAllert = () => {
     setAppUserProfileMsg("")
+    ReactSession.set('emailMsg', '')
   }
 
   return (
@@ -131,10 +135,14 @@ const EmailVerPassword = props => {
                         <button
                           className="btn btn-light btn-block"
                           type="button"
-                          onClick={() =>
+                          onClick={() => {
+
+                            ReactSession.set('emailMsg', 'goLogin')
                             history.push({
                               pathname: '/login',
-                            })}
+                            })
+                          }
+                          }
                         >
                           뒤로 가기
                         </button>

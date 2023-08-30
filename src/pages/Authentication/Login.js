@@ -62,6 +62,7 @@ const Login = props => {
     if (isAuth) {
       props.history.push('/')
     }
+    ReactSession.set('emailMsg', '')
   }, [])
 
   useEffect(() => {
@@ -116,7 +117,7 @@ const Login = props => {
                           }}
                           color={errorMsg.status === '1' ? "success" : "danger"}
                         >
-                          {errorMsg?.message}
+                          {errorMsg?.message ? errorMsg?.message : errorMsg}
                         </UncontrolledAlert>
                       ) : null}
 
@@ -164,9 +165,16 @@ const Login = props => {
                         </button>
                       </div>
 
-                      <div className="mt-4 text-center">
+                      <div
+                        onClick={() => {
+                          ReactSession.set('emailMsg', 'goLogin')
+                          setErrorMsg('')
+                        }}
+                        className="mt-4 text-center">
                         <Link to="/emailPassword" className="text-muted">
-                          <i className="mdi mdi-lock me-1" />
+                          <i
+                            className="mdi mdi-lock me-1"
+                          />
                           비밀번호를 잊으셨나요?
                         </Link>
                       </div>

@@ -1966,7 +1966,6 @@ const EditInstructions = (props) => {
                                                             {Files.length > 0 ?
                                                                 <div className="kb-attach-box">
                                                                     <hr />
-                                                                    <h6>{props.t("Recent files uploaded")}</h6>
                                                                     {
                                                                         Files.map((data, index) => {
                                                                             //const { id, filename, filetype, fileimage, datetime, filesize, file_num } = data;

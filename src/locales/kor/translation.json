@@ -46,7 +46,7 @@
   "Instructions": "지시사항",
   "Answer": "조치사항",
   "Please input your answer here": "조치사항을 입력해주세요.",
-  "Attached Files": "첨부된 파일",
+  "Attached Files": "첨부 파일",
   "Back": "뒤로",
   "by": "작성자:",
   "Managers": "담당자",
@@ -54,7 +54,7 @@
   "Descriptions": "세부 내용",
   "Input Answer": "여기에 답변을 입력하세요.",
   "Instruction": "지시",
-  "Instruction Date": "지시 날짜",
+  "Instruction Date": "지시일",
   "Manager": "담당자",
   "New Instructions": "새 지시사항",
   "No": "아니요",
@@ -119,5 +119,5 @@
   "Email must be a valid email address": "이메일은 유효한 이메일 주소여야 합니다",
   "Please enter content": "답변을 입력해주세요",
   "Add New Reply": "조치사항 작성",
-  "Edit Reply": "댓글 편집"
+  "Edit Reply": "조치사항 수정"
 }

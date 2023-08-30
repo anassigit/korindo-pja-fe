@@ -24,6 +24,7 @@ import "../../assets/scss/custom/table/TableCustom.css"
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { withTranslation } from "react-i18next"
 import PropTypes from "prop-types"
+import DatePicker from "react-datepicker";
 
 
 const Instructions = (props) => {
@@ -43,6 +44,10 @@ const Instructions = (props) => {
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
 
+    const [dateFrom, setDateFrom] = useState(new Date().toISOString().substr(0, 7));
+    const [dateTo, setDateTo] = useState(new Date().toISOString().substr(0, 7));
+
+
     useEffect(() => {
         let temp = ReactSession.get('firstTime_Login')
         if (temp === "true") {
@@ -59,10 +64,10 @@ const Instructions = (props) => {
 
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
         page: 1, limit: 10, offset: 0, sort: "num", order: "desc", search: {
-            search: "", langType: langType, status: selected
+            search: "", langType: langType, status: selected, from: dateFrom, to: dateTo
         }
     })
-    
+
     // useEffect(() => {
     //     debugger
     //     setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
@@ -71,7 +76,7 @@ const Instructions = (props) => {
     useEffect(() => {
         setAppInstructionsTabelSearch({
             page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset, sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
-                search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status
+                search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo
             }
         });
     }, [props.t, langType])
@@ -186,7 +191,7 @@ const Instructions = (props) => {
                     appInstructionsPreEdit(appInstructionsData);
                 },
             },
-        },          
+        },
         {
             dataField: "insDate",
             text: props.t("Instruction Date"),
@@ -306,13 +311,50 @@ const Instructions = (props) => {
     const handleChange = event => {
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value }
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value, from: dateFrom, to: dateTo }
         })
         setAppInstructionsMsg("")
         console.log(event.target.value);
         setSelected(event.target.value);
     };
 
+    const dateChanger = (name, selectedDate) => {
+        let convertedDate = selectedDate.toISOString().substr(0, 7)
+        if (name === 'from') {
+            setDateFrom(convertedDate)
+            setAppInstructionsTabelSearch({
+                page: 1,
+                limit: appInstructionsTabelSearch.limit,
+                offset: 0,
+                sort: appInstructionsTabelSearch.sort,
+                order: appInstructionsTabelSearch.order,
+                search: {
+                    search: appInstructionsTabelSearch.search.search,
+                    langType: appInstructionsTabelSearch.search.langType,
+                    status: appInstructionsTabelSearch.search.status, 
+                    from: convertedDate, 
+                    to: dateTo
+                }
+            })
+        } else if (name === 'to') {
+            setDateTo(selectedDate.toISOString().substr(0, 7))
+            setAppInstructionsTabelSearch({
+                page: 1,
+                limit: appInstructionsTabelSearch.limit,
+                offset: 0,
+                sort: appInstructionsTabelSearch.sort,
+                order: appInstructionsTabelSearch.order,
+                search: {
+                    search: appInstructionsTabelSearch.search.search,
+                    langType: appInstructionsTabelSearch.search.langType,
+                    status: appInstructionsTabelSearch.search.status, 
+                    from: dateFrom, 
+                    to: convertedDate
+                }
+            })
+        }
+
+    };
 
     return (
         <RootPageCustom msgStateGet={null} msgStateSet={null}
@@ -338,7 +380,7 @@ const Instructions = (props) => {
                                                                 onChange={e => {
                                                                     setAppInstructionsTabelSearch({
                                                                         page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
-                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status }
+                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo }
                                                                     })
                                                                 }}
                                                             />
@@ -346,10 +388,41 @@ const Instructions = (props) => {
                                                     </Row>
                                                 </Col>
 
+                                                <Col md="2" style={{ marginLeft: "-0px" }}>
+                                                    <DatePicker
+                                                        name="from"
+                                                        className="form-control"
+                                                        showMonthYearPicker
+                                                        dateFormat="MMMM yyyy"
+                                                        selected={new Date(dateFrom + '-01')}
+                                                        onChange={(date) => dateChanger('from', date)}
+                                                        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+                                                    />
+                                                </Col>
+
+                                                <Col md="1" style={{ marginLeft: "-0px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                    -
+                                                </Col>
+
+                                                <Col md="2" style={{ marginLeft: "-0px" }}>
+                                                    <DatePicker
+                                                        name="to"
+                                                        className="form-control"
+                                                        showMonthYearPicker
+                                                        dateFormat="MMMM yyyy"
+                                                        selected={new Date(dateTo + '-01')}
+                                                        onChange={(date) => dateChanger('to', date)}
+                                                        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+                                                    />
+                                                </Col>
+
+                                                <Col md="3">
+                                                </Col>
+
                                                 <Col md="4" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-10">
                                                         <label className="col-sm-3" style={{ marginTop: "8px" }}>
-                                                            Status :{" "}
+                                                            Status{" "}
                                                         </label>
                                                         <div className="col-sm-7">
                                                             <Input
