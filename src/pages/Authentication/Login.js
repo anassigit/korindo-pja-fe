@@ -24,7 +24,7 @@ import logo from "assets/images/logotitle.png";
 
 const Login = props => {
   const dispatch = useDispatch();
-  const [errorMsg, setErrorMsg] = useState(null)
+  const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
     dispatch(resetMessage())
@@ -40,7 +40,7 @@ const Login = props => {
     initialValues: {
       id: '',
       pw: '',
-      langType: 'KOR', // 언어 유형: 한국어
+      langType: 'KOR',
     },
     validationSchema: Yup.object({
       id: Yup.string().required("아이디를 입력해주세요"),
@@ -53,6 +53,11 @@ const Login = props => {
   });
 
   useEffect(() => {
+    let emailMsg = ReactSession.get("emailMsg")
+    debugger
+    if (emailMsg) {
+      setErrorMsg(emailMsg)
+    }
     let isAuth = ReactSession.get('authUser')
     if (isAuth) {
       props.history.push('/')
@@ -60,10 +65,12 @@ const Login = props => {
   }, [])
 
   useEffect(() => {
+    debugger
     if (error) {
+      ReactSession.set("emailMsg", '')
       setErrorMsg(error)
     }
-  }, [error, errorMsg])
+  }, [error])
 
   return (
     <React.Fragment>
@@ -101,7 +108,17 @@ const Login = props => {
                         return false;
                       }}
                     >
-                      {errorMsg ? <Alert color="danger">{errorMsg}</Alert> : null}
+                      {errorMsg !== '' ? (
+                        <UncontrolledAlert
+                          toggle={() => {
+                            ReactSession.set("emailMsg", '');
+                            setErrorMsg('')
+                          }}
+                          color={errorMsg.status === '1' ? "success" : "danger"}
+                        >
+                          {errorMsg?.message}
+                        </UncontrolledAlert>
+                      ) : null}
 
                       <div className="mb-3">
                         <Input

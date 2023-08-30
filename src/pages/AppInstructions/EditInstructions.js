@@ -1741,7 +1741,6 @@ const EditInstructions = (props) => {
                         setLoadingSpinner={setLoadingSpinner}
                         getDetailInstructionData={getDetailInstructionData}
                         editInstructionsMessage={editInstructionsMessage}
-                        setOnlyReply={setOnlyReply}
                         onlyReply={onlyReply}
                         editedContent={editedContent}
                     />

@@ -97,7 +97,7 @@ const UpdatePassword = props => {
                   <Row>
                     <Col xs={12}>
                       <div className="text-primary p-4">
-                        <h2 className="text-primary text-left" >Enter your new password</h2>
+                        <h2 className="text-primary text-left" >새로운 비밀번호를 입력하세요</h2>
                       </div>
                     </Col>
                   </Row>
@@ -156,7 +156,7 @@ const UpdatePassword = props => {
                         <Input
                           name="newPassword"
                           type="password"
-                          placeholder="Enter New Password"
+                          placeholder="새로운 비밀번호를 입력하세요"
                           maxLength={100}
                           onChange={validation.handleChange}
                           value={validation.values.newPassword || ""}
@@ -174,7 +174,7 @@ const UpdatePassword = props => {
                         <Input
                           name="Password"
                           type="password"
-                          placeholder="Confirm New Password"
+                          placeholder="새로운 비밀번호를 다시 입력하세요"
                           maxLength={100}
                           onChange={validation.handleChange}
                           value={validation.values.Password || ""}
@@ -190,7 +190,7 @@ const UpdatePassword = props => {
                       <div className="mt-2 d-grid">
                         <Button color="primary" className="ms-1" onClick={() => { updatePass() }}>
 
-                          Change
+                          적용
                           <Spinner style={{ display: updatePasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                         </Button>
                       </div>

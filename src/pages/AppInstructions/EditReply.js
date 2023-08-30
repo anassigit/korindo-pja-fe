@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner, Alert, UncontrolledAlert } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
@@ -99,6 +99,8 @@ const EditReply = (props) => {
         if (props.modal) {
             editReplyValidInput.setFieldValue('content', props.replyData?.content)
             editReplyValidInput.setFieldValue('files', props.replyData?.attachFileList)
+        } else {
+            setEditReplyMsg('')
         }
     }, [props.toggle]);
 
@@ -107,8 +109,6 @@ const EditReply = (props) => {
 
     const toggleMsgModal = () => {
         setEditReplyMsgModal(!editReplyMsgModal)
-
-
     }
 
     useEffect(() => {
@@ -117,8 +117,10 @@ const EditReply = (props) => {
             debugger
             props.toggle()
             setEditReplyMsg('')
+        } else {
+            setEditReplyMsg(editReplyMessage)
         }
-        setEditReplyContentModal(editReplyMsg.message);
+        setEditReplyContentModal(editReplyMessage.message);
         setEditReplySpinner(false)
         props.setLoadingSpinner(false)
     }, [editReplyMessage])
@@ -137,6 +139,7 @@ const EditReply = (props) => {
             }}>
                 <ModalHeader toggle={props.toggle}>{props.t("Edit Reply")}</ModalHeader>
                 <ModalBody>
+                    {editReplyMsg ? <UncontrolledAlert color="danger">{editReplyMsg.message}</UncontrolledAlert> : null}
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">

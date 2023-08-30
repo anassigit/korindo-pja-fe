@@ -13,6 +13,7 @@ import { withRouter, Link } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
+import { ReactSession } from 'react-client-session';
 // actions
 import { emailForgotPassword, msgEmailForgotPassword } from "../../store/appUserProfile/actions"
 
@@ -51,6 +52,10 @@ const EmailVerPassword = props => {
 
   useEffect(() => {
     setAppUserProfileMsg(error)
+    if (error.status == "1") {
+      ReactSession.set("emailMsg", error)
+      history.push('/login')
+    }
   }, [error])
 
   const appUserProfileCloseAllert = () => {
@@ -82,7 +87,7 @@ const EmailVerPassword = props => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
+                  {appUserProfileMsg.status == "0" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
                     {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null}
 
                   <div className="p-2">

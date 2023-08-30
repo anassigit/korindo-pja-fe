@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner, UncontrolledAlert } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,11 +25,6 @@ const AddReply = (props) => {
     const msgSaveReply = useSelector(state => {
         return state.instructionsReducer.msgAddReply;
     })
-
-    useEffect(() => {
-        dispatch(getRankListData())
-        dispatch(getPermissionListData())
-    }, [])
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -77,11 +72,10 @@ const AddReply = (props) => {
 
             // setEditInstructionsSpinner(true);
             insert3(bodyForm, config)
-            replyValidInput.setFieldValue('content', '')
-            replyValidInput.setFieldValue('files', [])
             refCleanser.current.value = ""
         } else {
             replyValidInput.setFieldError('content', props.t('Please enter content'))
+            props.setLoadingSpinner(false)
         }
 
     };
@@ -93,7 +87,9 @@ const AddReply = (props) => {
     });
 
     useEffect(() => {
-        replyValidInput.resetForm();
+        if (!props.modal) {
+            setAddReplyMsg('')
+        }
     }, [props.toggle]);
 
 
@@ -102,19 +98,12 @@ const AddReply = (props) => {
 
     const toggleMsgModal = () => {
         setAddReplyMsgModal(!addReplyMsgModal)
-
-        if (addReplyMsg.status === "1") {
-            props.toggle()
-            setAddReplyMsg('')
-            dispatch()
-        }
     }
 
     useEffect(() => {
 
         if (msgSaveReply.status == "1") {
 
-            setAddReplyMsg(msgSaveReply)
             props.toggle()
             if (props.getDetailInstructionData?.data?.instruction?.comment && props.onlyReply === false) {
                 var bodyForm = new FormData();
@@ -203,8 +192,12 @@ const AddReply = (props) => {
                     state: { setAppInstructionsMsg: props.editInstructionsMessage }
                 })
             }
+
+            replyValidInput.resetForm();
+        } else {
+            debugger
+            setAddReplyMsg(msgSaveReply);
         }
-        props.setOnlyReply(false)
         setAddReplyContentModal(msgSaveReply.message);
         setAddReplySpinner(false)
         props.setLoadingSpinner(false)
@@ -217,13 +210,9 @@ const AddReply = (props) => {
 
     };
 
+    console.log(addReplyMsg)
     return (
         <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle}>
-            <MsgModal
-                modal={addReplyMsgModal}
-                toggle={toggleMsgModal}
-                message={addmemberContentModal}
-            />
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 replyValidInput.handleSubmit();
@@ -231,6 +220,7 @@ const AddReply = (props) => {
             }}>
                 <ModalHeader toggle={props.toggle}>{props.t("Add New Reply")}</ModalHeader>
                 <ModalBody>
+                    {addReplyMsg != '' ? <UncontrolledAlert color="danger">{addReplyMsg.message}</UncontrolledAlert> : null}
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
