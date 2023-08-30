@@ -54,6 +54,7 @@ const AddReply = (props) => {
 
         props.setLoadingSpinner(true)
         if (values.content !== '') {
+            debugger
             var bodyForm = new FormData();
 
             bodyForm.append('instruction_num', props.idInstruction);

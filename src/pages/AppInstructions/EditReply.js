@@ -52,22 +52,19 @@ const EditReply = (props) => {
                 !values.files.some(existingFile => existingFile.num === file.num)
             ));
             debugger
-            console.log(addedFiles)
-            console.log(removedFiles)
             var bodyForm = new FormData();
 
             bodyForm.append('reply_num', props.replyData.num);
             bodyForm.append('content', values.content);
 
             if (addedFiles.length > 0) {
-                addedFiles.forEach(element => {
-                    bodyForm.append('file', element);
-                })
+                addedFiles.forEach((element, index) => {
+                    bodyForm.append('file' + index, element);
+                });
             }
 
             if (removedFiles.length > 0) {
                 removedFiles.forEach(element => {
-                    debugger
                     bodyForm.append('removeFile', element.num.toString());
                 })
             }
@@ -111,7 +108,7 @@ const EditReply = (props) => {
     const toggleMsgModal = () => {
         setEditReplyMsgModal(!editReplyMsgModal)
 
-      
+
     }
 
     useEffect(() => {
