@@ -29,7 +29,9 @@ import MsgModal from 'components/Common/MsgModal';
 import "../../assets/scss/contextmenu.scss"
 import "../../assets/scss/custom.scss"
 
-import folder from '../../assets/images/file_management/folder.png'
+//icon images//
+
+import folder2 from '../../assets/images/file_management/folder2.png'
 import doc from '../../assets/images/file_management/doc.png'
 import xls from '../../assets/images/file_management/xls.png'
 import ppt from '../../assets/images/file_management/ppt.png'
@@ -495,7 +497,7 @@ const FileManagement = (props) => {
                                       <a style={{ userSelect: "none" }} className="text-body fs-6" id={`folderTooltip_${key}`}>
                                         {myfiles.type === "FOLDER" ? (
                                           <>
-                                            <img src={folder} style={{ maxWidth: "35px", maxHeight: "auto", verticalAlign: "middle" }} alt="Folder Icon" />
+                                            <img src={folder2} style={{ maxWidth: "30px", maxHeight: "30px", verticalAlign: "middle" }} alt="Folder Icon" />
                                             &nbsp;&nbsp;&nbsp;{myfiles.name}
                                           </>
                                         ) : (
