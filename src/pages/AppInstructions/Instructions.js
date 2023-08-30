@@ -44,8 +44,8 @@ const Instructions = (props) => {
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
 
-    const [dateFrom, setDateFrom] = useState(new Date().toISOString().substr(0, 7));
-    const [dateTo, setDateTo] = useState(new Date().toISOString().substr(0, 7));
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTo, setDateTo] = useState('');
 
 
     useEffect(() => {
@@ -389,12 +389,13 @@ const Instructions = (props) => {
                                                 <Col md="2">
                                                     <div style={{ display: "flex", alignItems: "center" }}>
                                                         <DatePicker
-                                                            name="from"
+                                                            name="fromDate"
                                                             className="form-control"
                                                             showMonthYearPicker
-                                                            dateFormat="MMMM yyyy"
-                                                            selected={new Date(dateFrom + '-01')}
+                                                            dateFormat="yyyy-MM"
+                                                            selected={dateFrom ? new Date(dateFrom + '-01') : null}
                                                             onChange={(date) => dateChanger('from', date)}
+                                                            placeholderText="yyyy-MM"
                                                         />
                                                         <div style={{ width: '120px', display: "flex", justifyContent: "center", alignItems: "center" }}>
                                                             -
@@ -405,12 +406,13 @@ const Instructions = (props) => {
                                                 <Col md="2">
                                                     <div style={{ display: "flex", alignItems: "center" }}>
                                                         <DatePicker
-                                                            name="to"
+                                                            name="toDate"
                                                             className="form-control"
                                                             showMonthYearPicker
-                                                            dateFormat="MMMM yyyy"
-                                                            selected={new Date(dateTo + '-01')}
+                                                            dateFormat="yyyy-MM"
+                                                            selected={dateTo ? new Date(dateTo + '-01') : null}
                                                             onChange={(date) => dateChanger('to', date)}
+                                                            placeholderText="yyyy-MM"
                                                         />
                                                         <div style={{ width: '120px', display: "flex", justifyContent: "center", alignItems: "center" }}>
 
