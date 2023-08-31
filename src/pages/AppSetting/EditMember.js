@@ -16,6 +16,7 @@ const EditMember = (props) => {
     const [editMemberSpinner, setEditMemberSpinner] = useState(false)
 
     const [editMemberMsg, setEditMemberMsg] = useState(false)
+    const [successClose, setSuccessClose] = useState(false)
 
     const editMemberMessage = useSelector(state => {
         return state.settingReducer.msgEdit;
@@ -77,11 +78,12 @@ const EditMember = (props) => {
             editMemberValidInput.setFieldValue('bgColor', props.data.bgcolor);
 
             const filteredRankOption = (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).find(option => option.label === props.data.rname);
-            const filteredPermissionOption = (langType === 'eng' ? rankOptionsEng : (langType === 'idr' ? rankOptionsIdr : rankOptionsKor)).find(option => option.label === props.data.pname);
+            const filteredPermissionOption = (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).find(option => option.label === props.data.pname);
 
             if (filteredRankOption) {
                 editMemberValidInput.setFieldValue('rank', filteredRankOption.value);
             }
+            debugger
             if (filteredPermissionOption) {
                 editMemberValidInput.setFieldValue('permission', filteredPermissionOption.value);
             }
@@ -147,6 +149,9 @@ const EditMember = (props) => {
     useEffect(() => {
         if (editMemberMessage.status == "1") {
             setEditMemberMsg(editMemberMessage)
+            setSuccessClose(true)
+        } else {
+            setSuccessClose(false)
         }
         setEditMemberContentModal(editMemberMessage.message);
         setEditMemberSpinner(false)
@@ -158,6 +163,7 @@ const EditMember = (props) => {
                 modal={editMemberMsgModal}
                 toggle={toggleMsgModal}
                 message={editmemberContentModal}
+                successClose={successClose}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();

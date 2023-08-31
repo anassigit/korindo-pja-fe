@@ -355,15 +355,15 @@ const Instructions = (props) => {
     }
 
     const handleKeyDown = (e) => {
-            e.preventDefault();
+        e.preventDefault();
     };
-    
+
     const handleMouseDown = (e) => {
         if (e.button !== 0) {
             e.preventDefault();
         }
     };
-    
+
 
     return (
         <RootPageCustom msgStateGet={null} msgStateSet={null}
@@ -400,17 +400,18 @@ const Instructions = (props) => {
                                                 <Col md="3">
                                                     <div style={{ width: '89%', display: "flex", alignItems: "center" }}>
                                                         <DatePicker
-                                                        name="fromDate"
-                                                        className="form-control"
-                                                        showMonthYearPicker
-                                                        dateFormat="yyyy-MM"
-                                                        selected={dateFrom ? new Date(dateFrom + '-01') : null}
-                                                        onChange={(date) => dateChanger('from', date)}
-                                                        placeholderText="yyyy-MM"
-                                                        onKeyDown={(e) => handleKeyDown(e)}
-                                                        onMouseDown={(e) => handleMouseDown(e)}
-                                                        onClick={(e) => e.preventDefault()}
-                                                    />
+                                                            name="fromDate"
+                                                            className="form-control"
+                                                            showMonthYearPicker
+                                                            dateFormat="yyyy-MM"
+                                                            selected={dateFrom ? new Date(dateFrom + '-01') : null}
+                                                            onChange={(date) => dateChanger('from', date)}
+                                                            placeholderText="yyyy-MM"
+                                                            onKeyDown={(e) => handleKeyDown(e)}
+                                                            onMouseDown={(e) => handleMouseDown(e)}
+                                                            onClick={(e) => e.preventDefault()}
+                                                            inputStyle={{ textAlign: 'center' }}
+                                                        />
 
                                                         <div style={{ width: '240px', display: "flex", justifyContent: "center", alignItems: "center" }}>
                                                             -
@@ -426,6 +427,7 @@ const Instructions = (props) => {
                                                             onKeyDown={(e) => handleKeyDown(e)}
                                                             onMouseDown={(e) => handleMouseDown(e)}
                                                             onClick={(e) => e.preventDefault()}
+                                                            inputStyle={{ textAlign: 'center' }}
                                                         />
                                                         <div style={{ width: '400px', display: "flex", justifyContent: "center", alignItems: "center" }}>
 

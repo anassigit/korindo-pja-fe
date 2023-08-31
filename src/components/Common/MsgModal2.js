@@ -15,9 +15,16 @@ const MsgModal2 = (props) => {
             <ModalHeader toggle={props.toggle}>Message</ModalHeader>
             <ModalBody>{props.message}</ModalBody>
             <ModalFooter>
-                <Button color="danger" onClick={toggleClose}>
-                    Close
-                </Button>
+                {
+                    props.successClose === true ?
+                        <Button color="primary" onClick={toggleClose}>
+                            Ok
+                        </Button>
+                        :
+                        <Button color="danger" onClick={toggleClose}>
+                            Close
+                        </Button>
+                }
             </ModalFooter>
         </Modal>
     );
@@ -28,6 +35,7 @@ MsgModal2.propTypes = {
     toggle: PropTypes.func,
     message: PropTypes.string,
     setIsClosed: PropTypes.func,
+    successClose: PropTypes.any,
 };
 
 export default MsgModal2;

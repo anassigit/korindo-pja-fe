@@ -14,6 +14,7 @@ const AddGroupMapping = (props) => {
     const dispatch = useDispatch();
     let langType = localStorage.getItem("I18N_LANGUAGE")
     const [addGroupMappingSpinner, setAddGroupMappingSpinner] = useState(false)
+    const [successClose, setSuccessClose] = useState(false)
 
     const [isClosed, setIsClosed] = useState(false)
 
@@ -44,11 +45,12 @@ const AddGroupMapping = (props) => {
         },
 
         validationSchema: Yup.object().shape({
-            member_id: Yup.string().required("Name is required"),
-            group_id: Yup.string().required("Group is required"),
+            member_id: Yup.string().required(props.t("Please select member")),
+            group_id: Yup.string().required(props.t("Please select group")),
         }),
 
         onSubmit: (value) => {
+            debugger
             setAddGroupMappingSpinner(true)
             dispatch(saveGroupMapping(value));
             toggleMsgModal()
@@ -59,9 +61,9 @@ const AddGroupMapping = (props) => {
         addGroupMappingValidInput.resetForm();
     }, [props.toggle]);
 
-    const memberOption = (appMembersData2?.data?.memberList || []).map(({ id, index }) => ({
+    const memberOption = (appMembersData2?.data?.memberList || []).map(({ name, id, index }) => ({
         value: id,
-        label: id,
+        label: name + " (" + id + ")",
     }))
 
     const groupOption = (appGroupListData?.data?.groupList || []).map(({ num, name }) => ({
@@ -93,7 +95,10 @@ const AddGroupMapping = (props) => {
 
     useEffect(() => {
         if (addGroupMappingMessage.status == "1") {
+            setSuccessClose(true)
             setAddGroupMappingMsg(addGroupMappingMessage)
+        } else {
+            setSuccessClose(false)
         }
         setAddGroupMappingContentModal(addGroupMappingMessage.message);
         setAddGroupMappingSpinner(false)
@@ -106,6 +111,7 @@ const AddGroupMapping = (props) => {
                 toggle={toggleMsgModal}
                 message={addgroupmappingContentModal}
                 setIsClosed={setIsClosed}
+                successClose={successClose}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -131,6 +137,9 @@ const AddGroupMapping = (props) => {
                                     </option>
                                 ))}
                             </Input>
+                            {addGroupMappingValidInput.errors.member_id && addGroupMappingValidInput.touched.member_id && (
+                                <div style={{ color: 'red' }}>{addGroupMappingValidInput.errors.member_id}</div>
+                            )}
                         </div>
 
                         <div className="mb-3 mx-3">
@@ -148,6 +157,9 @@ const AddGroupMapping = (props) => {
                                     </option>
                                 ))}
                             </Input>
+                            {addGroupMappingValidInput.errors.group_id && addGroupMappingValidInput.touched.group_id && (
+                                <div style={{ color: 'red' }}>{addGroupMappingValidInput.errors.group_id}</div>
+                            )}
                         </div>
 
                     </FormGroup>

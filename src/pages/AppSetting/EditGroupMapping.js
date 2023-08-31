@@ -17,6 +17,7 @@ const EditGroupMapping = (props) => {
     const [editGroupMappingSpinner, setEditGroupMappingSpinner] = useState(false)
 
     const [isClosed, setIsClosed] = useState(false)
+    const [successClose, setSuccessClose] = useState(false)
 
     const [editGroupMappingMsg, setEditGroupMappingMsg] = useState(false)
 
@@ -46,8 +47,8 @@ const EditGroupMapping = (props) => {
         },
 
         validationSchema: Yup.object().shape({
-            member_id: Yup.string().required("Name is required"),
-            group_id: Yup.string().required("Group is required"),
+            member_id: Yup.string().required(props.t("Please select member")),
+            group_id: Yup.string().required(props.t("Please select group")),
         }),
 
         onSubmit: (value) => {
@@ -90,8 +91,10 @@ const EditGroupMapping = (props) => {
 
     useEffect(() => {
         if (editGroupMappingMessage.status == "1") {
-          
+            setSuccessClose(true)
             setEditGroupMappingMsg(editGroupMappingMessage)
+        } else {
+            setSuccessClose(false)
         }
         setEditGroupMappingContentModal(editGroupMappingMessage.message);
         setEditGroupMappingSpinner(false)
@@ -110,6 +113,7 @@ const EditGroupMapping = (props) => {
                 toggle={toggleMsgModal}
                 message={editgroupmappingContentModal}
                 setIsClosed={setIsClosed}
+                successClose={successClose}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -130,6 +134,9 @@ const EditGroupMapping = (props) => {
                                 value={editGroupMappingValidInput.values.member_id || ''}
                             >
                             </Input>
+                            {editGroupMappingValidInput.errors.member_id && editGroupMappingValidInput.touched.member_id && (
+                                <div style={{ color: 'red' }}>{editGroupMappingValidInput.errors.member_id}</div>
+                            )}
                         </div>
 
                         <div className="mb-3 mx-3">
@@ -147,6 +154,9 @@ const EditGroupMapping = (props) => {
                                     </option>
                                 ))}
                             </Input>
+                                {editGroupMappingValidInput.errors.group_id && editGroupMappingValidInput.touched.group_id && (
+                                    <div style={{ color: 'red' }}>{editGroupMappingValidInput.errors.group_id}</div>
+                                )}
                         </div>
 
                     </FormGroup>

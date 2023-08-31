@@ -63,6 +63,8 @@ const Setting = (props) => {
     const [addGroupMappingModal, setAddGroupMappingModal] = useState(false)
     const [editGroupMappingModal, setEditGroupMappingModal] = useState(false)
 
+    const [successClose, setSuccessClose] = useState(false)
+
     const appSettingData = useSelector(state => {
         return state.settingReducer.respGetSetting;
     });
@@ -292,9 +294,11 @@ const Setting = (props) => {
     const handleSaveGeneral = () => {
         dispatch(editGeneralSetting({ ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3 }))
         if (appSettingData.message != "Fail") {
-            setGeneralContentModal("Update Success")
+            setSuccessClose(true)
+            setGeneralContentModal("Success")
         } else {
-            setGeneralContentModal("Update Failed")
+            setSuccessClose(false)
+            setGeneralContentModal("Failed")
         }
         toggleMsgModal()
     }
@@ -390,20 +394,21 @@ const Setting = (props) => {
                     <ConfirmModal
                         modal={confirmModal}
                         toggle={confirmToggle}
-                        message={"Are you sure to delete this?"}
+                        message={props.t("Are you sure to delete this?")}
                         setIsYes={setIsYes}
                     />
                     {/* DELETE RELATION */}
                     <ConfirmModal
                         modal={confirmModal2}
                         toggle={confirmToggle2}
-                        message={"Are you sure to delete this?"}
+                        message={props.t("Are you sure to delete this?")}
                         setIsYes={setIsYes2}
                     />
                     <MsgModal
                         modal={generalMsgModal}
                         toggle={toggleMsgModal}
                         message={generalContentModal}
+                        successClose={successClose}
                     />
                     <AddMember
                         modal={addMemberModal}
@@ -609,8 +614,7 @@ const Setting = (props) => {
                                                             <table className="table table-hover">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th className="text-center" scope="col">{props.t("ID")}</th>
-                                                                        <th className="text-center" scope="col">{props.t("Name")}</th>
+                                                                        <th className="text-center" scope="col">{props.t("Name (ID)")}</th>
                                                                         <th className="text-center" scope="col">{props.t("Edit")}</th>
                                                                         <th className="text-center" scope="col">{props.t("Delete")}</th>
                                                                     </tr>
@@ -618,8 +622,7 @@ const Setting = (props) => {
                                                                 <tbody>
                                                                     {filteredMembers?.map((member) => (
                                                                         <tr key={member.memberId}>
-                                                                            <td style={{ minWidth: "300px" }}>{member.memberId}</td>
-                                                                            <td style={{ minWidth: "300px" }}>{member.memberName}</td>
+                                                                            <td style={{ minWidth: "300px" }}>{member.memberName + " (" + member.memberId + ")"}</td>
                                                                             <td>
                                                                                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                                                                                     <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => appGroupMappingPreEdit(member)} />
