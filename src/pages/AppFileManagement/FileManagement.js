@@ -82,6 +82,12 @@ const FileManagement = (props) => {
   const [successClose, setSuccessClose] = useState(false)
   const [appFileManagementData, setAppFileManagementData] = useState(null);
 
+    // folder left-right click
+    const [isContextMenuOpen, setContextMenuOpen] = useState(false);
+    const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
+
+  const contextMenuRef = useRef(null);
+
   const toggleRenameModal = (idT, nmT, tpT) => {
 
     setIdNowLoc(currFolder)
@@ -153,6 +159,7 @@ const FileManagement = (props) => {
     }
 
     dispatch(resetMessage());
+    
     if (storedData !== null) {
       dispatch(getSelectFile({ 'folder_num': storedData }))
     } else {
@@ -321,9 +328,7 @@ const FileManagement = (props) => {
   }
 
 
-  // State to manage the open/closed state of both menus
-  const [isContextMenuOpen, setContextMenuOpen] = useState(false);
-  const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
+  // folder left-right click
 
   const handleContextMenuOpen = (e) => {
     debugger
@@ -337,6 +342,23 @@ const FileManagement = (props) => {
     setDropdownMenuOpen(!isDropdownMenuOpen);
     setContextMenuOpen(false);
   };
+
+    // files
+    const [isContextMenuOpen2, setContextMenuOpen2] = useState(false);
+    const [isDropdownMenuOpen2, setDropdownMenuOpen2] = useState(false);
+  
+    const handleContextMenuOpen2 = (e) => {
+      debugger
+      e.preventDefault(); 
+      setContextMenuOpen2(true);
+      setDropdownMenuOpen2(false); 
+    };
+  
+    const handleDropdownMenuToggle2 = () => {
+      debugger
+      setDropdownMenuOpen2(!isDropdownMenuOpen2);
+      setContextMenuOpen2(false);
+    };
   
 
   return (
@@ -486,6 +508,7 @@ const FileManagement = (props) => {
                                 <Card className="shadow-none border" onContextMenu={handleContextMenuOpen}>
                                   <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
                                     {/* Menu Dropdown */}
+                                   
                                     <div className="float-end">
                                       <UncontrolledDropdown >
                                         <DropdownToggle
@@ -514,6 +537,7 @@ const FileManagement = (props) => {
                                         )}
                                       </UncontrolledDropdown>
                                     </div>
+                                   
                                     {/* End Drop Down */}
                                     <div className="text-truncate align-middle">
                                       <a style={{ userSelect: "none" }} className="text-body fs-6" id={`folderTooltip_${key}`}>
@@ -537,8 +561,9 @@ const FileManagement = (props) => {
                                 </Card>
                               </ContextMenuTrigger>
                                 {/* ContextMenu */}
-                                {isContextMenuOpen && (
+                                
                               <div className="float-end">
+                                {isContextMenuOpen && (
                               <ContextMenu id={`rightMenu${key}`} >
                                 <MenuItem
                                   onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
@@ -563,8 +588,9 @@ const FileManagement = (props) => {
                                   {props.t("Remove")}
                                 </MenuItem>
                               </ContextMenu>
-                              </div>
                                 )}
+                              </div>
+                              
                             
                             </Col>
                             : ''
@@ -587,19 +613,19 @@ const FileManagement = (props) => {
 
                           <Col md={2} key={key}>
                             <ContextMenuTrigger id={`rightMenu${key}`}>
-                              <Card className="shadow-none border bg-light" onContextMenu={handleContextMenuOpen}>
+                              <Card className="shadow-none border bg-light">
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
 
-                                        {/* DropdownMenu */}
-                                        {isDropdownMenuOpen && (
+                                  
+                                       
 
                                       <div className="float-end">
                                       <UncontrolledDropdown>
                                         <DropdownToggle
                                           className="fs-6 text-muted"
                                           tag="a"
-                                          onClick={handleDropdownMenuToggle}
+                                          
                                         >
                                           <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                         </DropdownToggle>
@@ -625,8 +651,8 @@ const FileManagement = (props) => {
                                         </DropdownMenu>
                                       </UncontrolledDropdown>
                                     </div>
-                                        )}
-                                    {/* End DropdownMenu */}
+                                      
+                             
                                     <div className="text-truncate mb-1 text-center">
                                       <a className="text-body fs-6" id={`nameTooltip_${key}`}>
                                         {myfiles.name}
@@ -701,7 +727,7 @@ const FileManagement = (props) => {
                                 </CardBody>
                               </Card>
                             </ContextMenuTrigger>
-                            {isContextMenuOpen && (
+                           
                             <div className="float-end">
                             <ContextMenu id={`rightMenu${key}`}>
                               <MenuItem
@@ -735,7 +761,7 @@ const FileManagement = (props) => {
                               </MenuItem>
                             </ContextMenu>
                             </div>
-                            )}
+                        
                           </Col>
 
 
