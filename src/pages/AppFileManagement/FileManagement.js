@@ -321,6 +321,24 @@ const FileManagement = (props) => {
   }
 
 
+  // State to manage the open/closed state of both menus
+  const [isContextMenuOpen, setContextMenuOpen] = useState(false);
+  const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
+
+  const handleContextMenuOpen = (e) => {
+    debugger
+    e.preventDefault(); 
+    setContextMenuOpen(true);
+    setDropdownMenuOpen(false); 
+  };
+
+  const handleDropdownMenuToggle = () => {
+    debugger
+    setDropdownMenuOpen(!isDropdownMenuOpen);
+    setContextMenuOpen(false);
+  };
+  
+
   return (
     <RootPageCustom
       componentJsx={
@@ -464,8 +482,8 @@ const FileManagement = (props) => {
                           myfiles.type === "FOLDER" || myfiles > 0 ?
 
                             <Col md={2} key={key}>
-                              <ContextMenuTrigger id={`rightMenu${key}`} >
-                                <Card className="shadow-none border">
+                              <ContextMenuTrigger id={`rightMenu${key}`}>
+                                <Card className="shadow-none border" onContextMenu={handleContextMenuOpen}>
                                   <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
                                     {/* Menu Dropdown */}
                                     <div className="float-end">
@@ -473,11 +491,12 @@ const FileManagement = (props) => {
                                         <DropdownToggle
                                           className="fs-6 text-muted"
                                           tag="a"
-                                          
+                                          onClick={handleDropdownMenuToggle}
                                         >
                                           <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                         </DropdownToggle>
-                                        <DropdownMenu className="dropdown-menu-end">
+                                        {isDropdownMenuOpen && (
+                                        <DropdownMenu className="dropdown-menu-end" >
                                           <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
                                             <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
                                             {props.t("Rename")}
@@ -492,6 +511,7 @@ const FileManagement = (props) => {
                                             {props.t("Remove")}
                                           </DropdownItem>
                                         </DropdownMenu>
+                                        )}
                                       </UncontrolledDropdown>
                                     </div>
                                     {/* End Drop Down */}
@@ -517,7 +537,7 @@ const FileManagement = (props) => {
                                 </Card>
                               </ContextMenuTrigger>
                                 {/* ContextMenu */}
-                        
+                                {isContextMenuOpen && (
                               <div className="float-end">
                               <ContextMenu id={`rightMenu${key}`} >
                                 <MenuItem
@@ -544,6 +564,7 @@ const FileManagement = (props) => {
                                 </MenuItem>
                               </ContextMenu>
                               </div>
+                                )}
                             
                             </Col>
                             : ''
@@ -566,16 +587,19 @@ const FileManagement = (props) => {
 
                           <Col md={2} key={key}>
                             <ContextMenuTrigger id={`rightMenu${key}`}>
-                              <Card className="shadow-none border bg-light">
+                              <Card className="shadow-none border bg-light" onContextMenu={handleContextMenuOpen}>
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
 
                                         {/* DropdownMenu */}
+                                        {isDropdownMenuOpen && (
+
                                       <div className="float-end">
                                       <UncontrolledDropdown>
                                         <DropdownToggle
                                           className="fs-6 text-muted"
                                           tag="a"
+                                          onClick={handleDropdownMenuToggle}
                                         >
                                           <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                         </DropdownToggle>
@@ -601,6 +625,7 @@ const FileManagement = (props) => {
                                         </DropdownMenu>
                                       </UncontrolledDropdown>
                                     </div>
+                                        )}
                                     {/* End DropdownMenu */}
                                     <div className="text-truncate mb-1 text-center">
                                       <a className="text-body fs-6" id={`nameTooltip_${key}`}>
@@ -676,6 +701,7 @@ const FileManagement = (props) => {
                                 </CardBody>
                               </Card>
                             </ContextMenuTrigger>
+                            {isContextMenuOpen && (
                             <div className="float-end">
                             <ContextMenu id={`rightMenu${key}`}>
                               <MenuItem
@@ -709,6 +735,7 @@ const FileManagement = (props) => {
                               </MenuItem>
                             </ContextMenu>
                             </div>
+                            )}
                           </Col>
 
 
