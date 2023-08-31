@@ -2025,7 +2025,7 @@ const EditInstructions = (props) => {
                                                     {props.t("Reply")}
                                                 </Button>&nbsp;
 
-                                                <Button type="submit" color="primary" onClick={() => setLoadingSpinner(true)}>
+                                                <Button type="submit" color="primary" onClick={() => !editInstructionsValidInput.errors ? setLoadingSpinner(true) : null}>
                                                     <i className="mdi mdi-check-circle fs-5 align-middle me-2"></i>
                                                     {props.t("Update")}
                                                 </Button>&nbsp;
