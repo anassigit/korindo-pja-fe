@@ -616,52 +616,55 @@ const FileManagement = (props) => {
                                       <div className="avatar-title bg-transparent rounded">
 
                                         {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
-                                          <div className="thumbnail-container">
-                                            <img className="thumbnail" src={doc} />
+                                          <div className="thumbnail-container thumbnail">
+                                            <img src={doc} />
 
                                           </div>
                                         ) :
                                           myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
-                                            // <div className="main">
-                                            <div className="thumbnail-container">
+                                          
+                                            <div className="thumbnail-container thumbnail">
+                                          
+
                                               <img
                                                 src={new URL(myfiles.url)}
-                                                className="thumbnail"
+                                              
                                               />
+                                             
                                             </div>
-                                            // </div>
+                                           
                                           )
                                             : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
-                                              <div className="thumbnail-container">
-                                                <img className="thumbnail" src={xls} />
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={xls} />
 
                                               </div>
 
 
                                             )
                                               : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
-                                                <div className="thumbnail-container">
-                                                  <img className="thumbnail" src={ppt} />
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={ppt} />
 
                                                 </div>
 
                                               )
                                                 : myfiles.name.endsWith("pdf") ? (
-                                                  <div className="thumbnail-container">
-                                                    <img className="thumbnail" src={pdf} />
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img src={pdf} />
 
                                                   </div>
                                                 )
                                                   : myfiles.name.endsWith("txt") ? (
-                                                    <div className="thumbnail-container">
-                                                      <img className="thumbnail" src={txt} />
+                                                    <div className="thumbnail-container thumbnail">
+                                                      <img src={txt} />
 
                                                     </div>
                                                   )
                                                     :
                                                     (
-                                                      <div className="thumbnail-container">
-                                                        <img className="thumbnail" src={unknown} />
+                                                      <div className="thumbnail-container thumbnail">
+                                                        <img src={unknown} />
 
                                                       </div>
                                                     )}
