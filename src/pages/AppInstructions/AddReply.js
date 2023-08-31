@@ -273,7 +273,7 @@ const AddReply = (props) => {
                     {addReplyMsg != '' ? <UncontrolledAlert color="danger">{addReplyMsg.message}</UncontrolledAlert> : null}
                     <FormGroup className="mb-0">
 
-                        <div className="mb-3 mx-3">
+                        <div className="mb-3 mx-3" hidden={props.getDetailInstructionData?.data?.instruction?.comment && props.onlyReply === true}>
                             <Label>
                                 {props.t("Status")} <span style={{ color: "red" }}>*</span>
                             </Label>
