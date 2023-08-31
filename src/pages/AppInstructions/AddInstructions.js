@@ -768,7 +768,7 @@ const AddInstructions = (props) => {
 
                                         <Button type="submit" color="primary" disabled={addInstructionsSpinner} className="ms-1">
 
-                                            <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
+                                            <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Add")}
 
                                         </Button>&nbsp;
 

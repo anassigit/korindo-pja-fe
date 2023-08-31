@@ -30,8 +30,9 @@ const Sidebar = props => {
           </a>
 
           <a href="/AppInstructions" className="logo logo-light" onClick={() =>{
-            window.location.reload()
             localStorage.setItem('appFileManagementData', '');
+            ReactSession.remove("appInstructionsTabelSearch")
+            window.location.reload()
           }}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />

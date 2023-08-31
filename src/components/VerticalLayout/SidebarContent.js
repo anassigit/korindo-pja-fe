@@ -110,6 +110,7 @@ const SidebarContent = props => {
               <a
                 onClick={() => {
                   localStorage.setItem('appFileManagementData', '');
+                  ReactSession.remove("appInstructionsTabelSearch")
                 }}
                 href="/AppInstructions"
                 to="/AppInstructions"
