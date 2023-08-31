@@ -105,7 +105,7 @@ const AddGroupMapping = (props) => {
     }, [addGroupMappingMessage]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal2
                 modal={addGroupMappingMsgModal}
                 toggle={toggleMsgModal}

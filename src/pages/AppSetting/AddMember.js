@@ -142,7 +142,7 @@ const AddMember = (props) => {
     }, [addMemberMessage]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
                 modal={addMemberMsgModal}
                 toggle={toggleMsgModal}

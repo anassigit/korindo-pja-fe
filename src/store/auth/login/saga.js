@@ -43,7 +43,8 @@ function* reloginUser({ payload: { user, history } }) {
     if (response.status == 1) {
       ReactSession.set("authUser", response.data.KOR_TOKEN);
       ReactSession.set("user", JSON.stringify(response.data.user));
-      yield put(reloginSuccess(response));
+      yield put(reloginSuccess(response))
+      window.location.reload()
       document.getElementById("reloginForm").style.display = "none";
       yield put(apiError(''))
     } else {

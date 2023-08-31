@@ -107,7 +107,7 @@ const EditGroupMapping = (props) => {
     }, [isClosed])
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal2
                 modal={editGroupMappingMsgModal}
                 toggle={toggleMsgModal}

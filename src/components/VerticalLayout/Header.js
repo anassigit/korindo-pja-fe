@@ -136,17 +136,17 @@ const Header = props => {
               <div style={{ backgroundColor: '#fefefe', border: '2px solid rgb(0 0 0 / 22%)', margin: 'auto', padding: '50px', width: '450px', height: '480px' }}>
                 <div className="modal-header">
                   <h5 className="modal-title mt-0">
-                    Re - Login
+                    재로그인
                   </h5>
                 </div>
                 <div className="modal-body">
                   {error ? <Alert color="danger">{error}</Alert> : null}
                   <div className="mb-3">
-                    <Label className="form-label">Email</Label>
+                    <Label className="form-label">아이디</Label>
                     <Input
                       name="id"
                       className="form-control"
-                      placeholder="Enter email"
+                      placeholder="아이디를 입력해주세요"
                       type="text"
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
@@ -161,12 +161,12 @@ const Header = props => {
                   </div>
 
                   <div className="mb-3">
-                    <Label className="form-label">Password</Label>
+                    <Label className="form-label">비밀번호</Label>
                     <Input
                       name="pw"
                       value={validation.values.pw || ""}
                       type="password"
-                      placeholder="Enter pw"
+                      placeholder="비밀번호를 입력해주세요"
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                       invalid={
@@ -183,7 +183,7 @@ const Header = props => {
                       className="btn btn-primary btn-block"
                       type="submit"
                     >
-                      Log In
+                      로그인하기
                     </button>
                   </div>
                 </div>
@@ -249,7 +249,7 @@ const Header = props => {
               </div>
             </div>
 */}
-            <LanguageDropdown /> 
+            <LanguageDropdown />
 
             {/* <Dropdown
               className="d-none d-lg-inline-block ms-1"
@@ -347,7 +347,7 @@ const Header = props => {
                 <i className="fas fa-sync" style={{ color: "#7BAE40"  }} />
               </button>
             </div> */}
-          
+
             {/* <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"

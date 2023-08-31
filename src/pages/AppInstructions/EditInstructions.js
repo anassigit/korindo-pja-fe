@@ -1398,7 +1398,7 @@ const EditInstructions = (props) => {
 
         if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment) {
             toggleAddReplyModal()
-        } else if (editInstructionsMessage.status == "1") {
+        } else if (editInstructionsMessage.status == "1" && !onlyReply) {
             history.push({
                 pathname: '/AppInstructions',
                 state: { setAppInstructionsMsg: editInstructionsMessage }
@@ -1731,6 +1731,7 @@ const EditInstructions = (props) => {
                         editInstructionsMessage={editInstructionsMessage}
                         setOnlyReply={setOnlyReply}
                         onlyReply={onlyReply}
+                        handleChange={editInstructionsValidInput.handleChange}
                     />
 
                     <EditReply

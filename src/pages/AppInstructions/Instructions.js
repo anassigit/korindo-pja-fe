@@ -25,7 +25,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { withTranslation } from "react-i18next"
 import PropTypes from "prop-types"
 import DatePicker from "react-datepicker";
-import '../../assets/scss/custom/components/custom-datepicker.css'
+import '../../assets/scss/custom/components/custom-datepicker.scss'
 
 
 const Instructions = (props) => {

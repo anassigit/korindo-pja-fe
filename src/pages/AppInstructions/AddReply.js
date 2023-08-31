@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner, UncontrolledAlert } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner, UncontrolledAlert, FormFeedback } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,6 +39,7 @@ const AddReply = (props) => {
     };
 
     const initialValues = {
+        status: '',
         content: '',
         files: [],
     };
@@ -71,13 +72,13 @@ const AddReply = (props) => {
                     const file = values.files[index];
                     bodyForm.append('file' + index, file);
                 }
-                
+
                 for (let index = 0; index < preservedFiles.length; index++) {
                     const file = preservedFiles[index];
                     bodyForm.append('file' + (index + values.files.length), file);
                 }
             }
-            
+
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
@@ -85,6 +86,19 @@ const AddReply = (props) => {
             }
 
             insert3(bodyForm, config)
+
+            // STATUS UPDATION
+            let currentStatus = props.getDetailInstructionData?.data?.instruction?.status
+            let prevStatus = props.statusData?.data?.statusList?.filter((value) => value.name == currentStatus)
+            let selectedStatus = props.statusData?.data?.statusList?.filter((value) => value.name == values.status)
+            if (selectedStatus[0].no !== prevStatus[0].no) {
+                var bodyForm2 = new FormData();
+
+                bodyForm2.append('num', props.idInstruction);
+                bodyForm2.append('status', selectedStatus[0].no);
+                insert(bodyForm2, config)
+            }
+
             refCleanser.current.value = ""
         } else {
             replyValidInput.setFieldError('content', props.t('Please enter content'))
@@ -121,6 +135,7 @@ const AddReply = (props) => {
 
             props.toggle()
             replyValidInput.resetForm();
+            debugger
             if (props.getDetailInstructionData?.data?.instruction?.comment && props.onlyReply === false) {
                 var bodyForm = new FormData();
 
@@ -209,7 +224,6 @@ const AddReply = (props) => {
                 })
             }
         } else {
-            debugger
             setAddReplyMsg(msgSaveReply);
         }
         setAddReplyContentModal(msgSaveReply.message);
@@ -225,7 +239,7 @@ const AddReply = (props) => {
     };
 
     return (
-        <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle}>
+        <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 replyValidInput.handleSubmit();
@@ -235,6 +249,41 @@ const AddReply = (props) => {
                 <ModalBody>
                     {addReplyMsg != '' ? <UncontrolledAlert color="danger">{addReplyMsg.message}</UncontrolledAlert> : null}
                     <FormGroup className="mb-0">
+
+                        <div className="mb-3 mx-3">
+                            <Label>
+                                {props.t("Status")} <span style={{ color: "red" }}>*</span>
+                            </Label>
+                            <Input
+                                disabled={props.getDetailInstructionData?.data?.instruction?.edit !== "STATUS" && props.getDetailInstructionData?.data?.instruction?.edit !== "ALL"}
+                                name="status"
+                                type="select"
+                                onChange={(e) => {
+                                    replyValidInput.handleChange(e)
+                                    props.handleChange(e)
+                                }}
+                                value={props.statusInstruction}
+                                invalid={replyValidInput.touched.status && replyValidInput.errors.status}
+                            >
+                                {props.statusData?.data?.statusList.map((value, key) => {
+                                    if (value.use) {
+                                        return (
+                                            <option key={key} value={value.name}>
+                                                {value.name}
+                                            </option>
+                                        );
+                                    }
+                                    return (
+                                        <option style={{ backgroundColor: "#DDDDDD" }} disabled key={key} value={value.name}>
+                                            {value.name}
+                                        </option>
+                                    )
+                                })}
+                            </Input>
+                            {replyValidInput.touched.status && replyValidInput.errors.status ? (
+                                <FormFeedback type="invalid">{replyValidInput.errors.status}</FormFeedback>
+                            ) : null}
+                        </div>
 
                         <div className="mb-3 mx-3">
                             <label>{props.t("Answer")}</label>
@@ -284,28 +333,6 @@ const AddReply = (props) => {
                             </div>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
-                                {/* {replyValidInput.values.files && */}
-                                {/* Array.from(replyValidInput.values.files).map((file, index) => ( */}
-                                {/* <div className="file-atc-box" key={index}> */}
-                                {/* Display file details here */}
-                                {/* <div className="file-detail"> */}
-                                {/* <span> */}
-                                {/* <i className="fas fa-paperclip" /> */}
-                                {/* &nbsp;{file.name} */}
-                                {/* </span> */}
-                                {/* &nbsp;&nbsp;&nbsp; */}
-                                {/* <i */}
-                                {/* className="mdi mdi-close" */}
-                                {/* style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} */}
-                                {/* onClick={() => { */}
-                                {/* const newFiles = Array.from(replyValidInput.values.files); */}
-                                {/* newFiles.splice(index, 1); */}
-                                {/* replyValidInput.setFieldValue('files', newFiles); */}
-                                {/* }} */}
-                                {/* /> */}
-                                {/* </div> */}
-                                {/* </div> */}
-                                {/* ))} */}
                                 {preservedFiles.map((file, index) => (
                                     <div className="file-atc-box" key={index}>
                                         {/* Display file details here */}
@@ -377,6 +404,7 @@ AddReply.propTypes = {
     editInstructionsMessage: PropTypes.any,
     setOnlyReply: PropTypes.any,
     onlyReply: PropTypes.any,
+    handleChange: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

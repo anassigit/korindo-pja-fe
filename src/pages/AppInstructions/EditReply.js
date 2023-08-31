@@ -131,7 +131,7 @@ const EditReply = (props) => {
     }, [editReplyMessage])
 
     return (
-        <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle}>
+        <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
                 modal={editReplyMsgModal}
                 toggle={toggleMsgModal}
