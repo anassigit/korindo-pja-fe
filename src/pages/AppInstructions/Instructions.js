@@ -25,6 +25,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { withTranslation } from "react-i18next"
 import PropTypes from "prop-types"
 import DatePicker from "react-datepicker";
+import '../../assets/scss/custom/components/custom-datepicker.css'
 
 
 const Instructions = (props) => {
@@ -400,6 +401,7 @@ const Instructions = (props) => {
                                                 <Col md="3">
                                                     <div style={{ width: '89%', display: "flex", alignItems: "center" }}>
                                                         <DatePicker
+                                                            wrapperClassName="customDatePicker"
                                                             name="fromDate"
                                                             className="form-control"
                                                             showMonthYearPicker
@@ -413,10 +415,11 @@ const Instructions = (props) => {
                                                             inputStyle={{ textAlign: 'center' }}
                                                         />
 
-                                                        <div style={{ width: '240px', display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                        <div style={{ width: '150px', display: "flex", justifyContent: "center", alignItems: "center" }}>
                                                             -
                                                         </div>
                                                         <DatePicker
+                                                            wrapperClassName="customDatePicker"
                                                             name="toDate"
                                                             className="form-control"
                                                             showMonthYearPicker

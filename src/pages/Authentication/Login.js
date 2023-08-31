@@ -67,11 +67,12 @@ const Login = props => {
 
   useEffect(() => {
     debugger
+    setErrorMsg('')
     if (error) {
       ReactSession.set("emailMsg", '')
       setErrorMsg(error)
     }
-  }, [error])
+  }, [error, errorMsg])
 
   return (
     <React.Fragment>

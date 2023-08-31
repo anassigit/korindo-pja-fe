@@ -1,0 +1,6 @@
+.customDatePicker input {
+    text-align: center;
+}
+.customDatePicker input::placeholder {
+    color: #495057;
+}
