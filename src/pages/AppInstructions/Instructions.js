@@ -63,15 +63,39 @@ const Instructions = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState({
-        page: 1, limit: 10, offset: 0, sort: "ins_date", order: "desc", search: {
-            search: "", langType: langType, status: selected, from: dateFrom, to: dateTo
+    const [sessionAppInstructionsTabelSearch, setSessionAppInstructionsTabelSearch] = useState(
+        ReactSession.get("appInstructionsTabelSearch") || {}
+    );
+
+    const defaultAppInstructionsTabelSearch = {
+        page: 1,
+        limit: 10,
+        offset: 0,
+        sort: "ins_date",
+        order: "desc",
+        search: {
+            search: "",
+            langType: langType,
+            status: selected,
+            from: dateFrom,
+            to: dateTo
         }
-    })
+    };
+
+    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState(
+        ReactSession.get("appInstructionsTabelSearch") ? sessionAppInstructionsTabelSearch : defaultAppInstructionsTabelSearch
+    );
 
     useEffect(() => {
         getInstructionsData(appInstructionsTabelSearch)
-    }, [appInstructionsTabelSearch]);
+        ReactSession.set("appInstructionsTabelSearch", appInstructionsTabelSearch)
+    }, [appInstructionsTabelSearch])
+
+    useEffect(() => {
+        if (!sessionAppInstructionsTabelSearch) {
+            setSessionAppInstructionsTabelSearch(appInstructionsTabelSearch)
+        }
+    }, [sessionAppInstructionsTabelSearch])
 
     useEffect(() => {
         setAppInstructionsTabelSearch({

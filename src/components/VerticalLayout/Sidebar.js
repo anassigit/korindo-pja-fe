@@ -9,6 +9,7 @@ import SidebarContent from "./SidebarContent";
 import { Link } from "react-router-dom";
 import logoKorindo from "../../assets/images/Korindo.png";
 import logoKorindo2 from "../../assets/images/logotitle.png";
+import { ReactSession } from 'react-client-session';
 
 const Sidebar = props => {
   return (
@@ -17,7 +18,8 @@ const Sidebar = props => {
         <div style={{ borderRight: "2px solid #D9D1D1" }} className="navbar-brand-box">
           <a href="/AppInstructions" className="logo logo-dark" onClick={() => {
             window.location.reload()
-            localStorage.setItem('appFileManagementData', '');
+            localStorage.setItem('appFileManagementData', '')
+            ReactSession.remove("appInstructionsTabelSearch")
           }}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
