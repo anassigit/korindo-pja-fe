@@ -408,7 +408,7 @@ const Instructions = (props) => {
                                                             dateFormat="yyyy-MM"
                                                             selected={dateFrom ? new Date(dateFrom + '-01') : null}
                                                             onChange={(date) => dateChanger('from', date)}
-                                                            placeholderText="yyyy-MM"
+                                                            placeholderText="YYYY-MM"
                                                             onKeyDown={(e) => handleKeyDown(e)}
                                                             onMouseDown={(e) => handleMouseDown(e)}
                                                             onClick={(e) => e.preventDefault()}
@@ -426,7 +426,7 @@ const Instructions = (props) => {
                                                             dateFormat="yyyy-MM"
                                                             selected={dateTo ? new Date(dateTo + '-01') : null}
                                                             onChange={(date) => dateChanger('to', date)}
-                                                            placeholderText="yyyy-MM"
+                                                            placeholderText="YYYY-MM"
                                                             onKeyDown={(e) => handleKeyDown(e)}
                                                             onMouseDown={(e) => handleMouseDown(e)}
                                                             onClick={(e) => e.preventDefault()}

@@ -87,24 +87,33 @@ const AddReply = (props) => {
 
             insert3(bodyForm, config)
 
-            // STATUS UPDATION
-            let currentStatus = props.getDetailInstructionData?.data?.instruction?.status
-            let prevStatus = props.statusData?.data?.statusList?.filter((value) => value.name == currentStatus)
-            let selectedStatus = props.statusData?.data?.statusList?.filter((value) => value.name == values.status)
-            if (selectedStatus[0].no !== prevStatus[0].no) {
-                var bodyForm2 = new FormData();
+            const currentStatus = props.getDetailInstructionData?.data?.instruction?.status;
+            const prevStatus = props.statusData?.data?.statusList.find(value => value.name === currentStatus);
+            const selectedStatus = props.statusData?.data?.statusList.find(value => value.name === values.status);
+            const selectedStatusWhenValuesBlank = props.statusData?.data?.statusList.find(value => value.name === props.statusInstruction);
+
+            if (selectedStatus && selectedStatus.no !== prevStatus?.no) {
+                const bodyForm2 = new FormData();
 
                 bodyForm2.append('num', props.idInstruction);
-                bodyForm2.append('status', selectedStatus[0].no);
-                insert(bodyForm2, config)
+                bodyForm2.append('status', selectedStatus.no);
+
+                insert(bodyForm2, config);
+            } else if (prevStatus?.no !== selectedStatusWhenValuesBlank?.no) {
+                const bodyForm2 = new FormData();
+
+                bodyForm2.append('num', props.idInstruction);
+                bodyForm2.append('status', selectedStatusWhenValuesBlank.no);
+
+                insert(bodyForm2, config);
             }
 
-            refCleanser.current.value = ""
+            refCleanser.current.value = "";
         } else {
-            replyValidInput.setFieldError('content', props.t('Please enter content'))
-            props.setLoadingSpinner(false)
+            replyValidInput.setFieldError('content', props.t('Please enter content'));
         }
 
+        props.setLoadingSpinner(false);
     };
 
     const replyValidInput = useFormik({
@@ -134,6 +143,12 @@ const AddReply = (props) => {
         if (msgSaveReply.status == "1") {
             const storedData = localStorage.getItem('appInstructionsData');
             let parsedData = null
+
+            if (storedData) {
+                parsedData = JSON.parse(storedData);
+                props.setAppInstructionsData(parsedData);
+            }
+
             let num = parsedData?.num.toString()
             dispatch(getDetailInstruction({
                 search: {
@@ -413,6 +428,7 @@ AddReply.propTypes = {
     setOnlyReply: PropTypes.any,
     onlyReply: PropTypes.any,
     handleChange: PropTypes.any,
+    setAppInstructionsData: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

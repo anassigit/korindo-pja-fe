@@ -1396,8 +1396,9 @@ const EditInstructions = (props) => {
     }, [replyTabelListData])
 
     useEffect(() => {
+        debugger
 
-        if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment) {
+        if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment && addReplyModal) {
             toggleAddReplyModal()
         } else if (editInstructionsMessage.status == "1" && !onlyReply) {
             history.push({
@@ -1405,6 +1406,14 @@ const EditInstructions = (props) => {
                 state: { setAppInstructionsMsg: editInstructionsMessage }
             })
         } else if (editInstructionsMessage.status == "1"){
+            const storedData = localStorage.getItem('appInstructionsData');
+            let parsedData = null
+    
+            if (storedData) {
+                parsedData = JSON.parse(storedData);
+                setAppInstructionsData(parsedData);
+            }
+    
             let num = parsedData?.num.toString()
             dispatch(getDetailInstruction({
                 search: {
@@ -1741,6 +1750,7 @@ const EditInstructions = (props) => {
                         setOnlyReply={setOnlyReply}
                         onlyReply={onlyReply}
                         handleChange={editInstructionsValidInput.handleChange}
+                        setAppInstructionsData={setAppInstructionsData}
                     />
 
                     <EditReply

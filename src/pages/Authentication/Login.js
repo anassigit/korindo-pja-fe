@@ -176,7 +176,7 @@ const Login = props => {
                           <i
                             className="mdi mdi-lock me-1"
                           />
-                          비밀번호를 잊으셨나요?
+                          비밀번호 찾기
                         </Link>
                       </div>
                     </Form>

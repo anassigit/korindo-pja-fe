@@ -268,8 +268,24 @@ const EditMember = (props) => {
                             <Input
                                 type="color"
                                 name="bgColor"
-                                onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.bgColor || '#000'}
+                                onChange={event => {
+                                    const selectedColor = event.target.value;
+                                    const isWhite = selectedColor === '#000000'; // Check if selected color is white
+
+                                    if (isWhite) {
+                                        // You can set a default color or another color here
+                                        // For example, setting it to red (#ff0000)
+                                        editMemberValidInput.handleChange({
+                                            target: {
+                                                name: 'bgColor',
+                                                value: '#FFFFFF' // Change this to the color you want
+                                            }
+                                        });
+                                    } else {
+                                        editMemberValidInput.handleChange(event);
+                                    }
+                                }}
+                                value={editMemberValidInput.values.bgColor || '#FFFFFF'}
                             />
                         </div>
                     </FormGroup>
