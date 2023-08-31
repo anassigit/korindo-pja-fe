@@ -566,7 +566,7 @@ const FileManagement = (props) => {
 
                           <Col md={2} key={key}>
                             <ContextMenuTrigger id={`rightMenu${key}`}>
-                              <Card className="shadow-none border">
+                              <Card className="shadow-none border bg-light">
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
 
