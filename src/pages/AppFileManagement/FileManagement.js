@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import RootPageCustom from '../../common/RootPageCustom';
 import PropTypes, { any } from 'prop-types';
 import '../../config';
@@ -26,6 +26,8 @@ import ConfirmModal from "components/Common/ConfirmModal";
 import { downloadFileFolder } from "helpers/backend_helper";
 import { withTranslation } from "react-i18next"
 import MsgModal from 'components/Common/MsgModal';
+
+//css//
 import "../../assets/scss/contextmenu.scss"
 import "../../assets/scss/custom.scss"
 
@@ -79,7 +81,6 @@ const FileManagement = (props) => {
   const [downloadContentModal, setDownloadContentModal] = useState("")
   const [successClose, setSuccessClose] = useState(false)
   const [appFileManagementData, setAppFileManagementData] = useState(null);
-
 
   const toggleRenameModal = (idT, nmT, tpT) => {
 
@@ -463,7 +464,7 @@ const FileManagement = (props) => {
                           myfiles.type === "FOLDER" || myfiles > 0 ?
 
                             <Col md={2} key={key}>
-                              <ContextMenuTrigger id={`rightMenu${key}`}>
+                              <ContextMenuTrigger id={`rightMenu${key}`} >
                                 <Card className="shadow-none border">
                                   <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
                                     {/* Menu Dropdown */}
@@ -472,6 +473,7 @@ const FileManagement = (props) => {
                                         <DropdownToggle
                                           className="fs-6 text-muted"
                                           tag="a"
+                                          
                                         >
                                           <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                         </DropdownToggle>
@@ -514,7 +516,8 @@ const FileManagement = (props) => {
                                   </CardBody>
                                 </Card>
                               </ContextMenuTrigger>
-                              {/* ContextMenu */}
+                                {/* ContextMenu */}
+                        
                               <div className="float-end">
                               <ContextMenu id={`rightMenu${key}`} >
                                 <MenuItem
@@ -541,7 +544,7 @@ const FileManagement = (props) => {
                                 </MenuItem>
                               </ContextMenu>
                               </div>
-                              {/* End ContextMenu */}
+                            
                             </Col>
                             : ''
 
@@ -565,9 +568,51 @@ const FileManagement = (props) => {
                             <ContextMenuTrigger id={`rightMenu${key}`}>
                               <Card className="shadow-none border">
                                 <CardBody className="p-2">
-                                  <div className="mb-3">
+                                  <div className="pb-2 pt-2">
 
-                                    <div className="mb-3">
+                                        {/* DropdownMenu */}
+                                      <div className="float-end">
+                                      <UncontrolledDropdown>
+                                        <DropdownToggle
+                                          className="fs-6 text-muted"
+                                          tag="a"
+                                        >
+                                          <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
+                                        </DropdownToggle>
+
+                                        <DropdownMenu className="dropdown-menu-end">
+                                          <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                            <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Rename")}
+                                          </DropdownItem>
+                                          <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                            <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Move")}
+                                          </DropdownItem>
+                                          <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Download")}
+                                          </DropdownItem>
+                                          <div className="dropdown-divider"></div>
+                                          <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                            <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Remove")}
+                                          </DropdownItem>
+                                        </DropdownMenu>
+                                      </UncontrolledDropdown>
+                                    </div>
+                                    {/* End DropdownMenu */}
+                                    <div className="text-truncate mb-1 text-center">
+                                      <a className="text-body fs-6" id={`nameTooltip_${key}`}>
+                                        {myfiles.name}
+
+                                        <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                          {myfiles.name}
+                                        </UncontrolledTooltip>
+                                      </a>
+                                    </div>
+
+                                    <div className="pt-2">
                                       <div className="avatar-title bg-transparent rounded">
 
                                         {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
@@ -623,47 +668,7 @@ const FileManagement = (props) => {
 
                                       </div>
                                     </div>
-                                    {/* DropdownMenu */}
-                                    <div className="float-end">
-                                      <UncontrolledDropdown>
-                                        <DropdownToggle
-                                          className="fs-6 text-muted"
-                                          tag="a"
-                                        >
-                                          <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
-                                        </DropdownToggle>
 
-                                        <DropdownMenu className="dropdown-menu-end">
-                                          <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                            <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Rename")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                            <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Move")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Download")}
-                                          </DropdownItem>
-                                          <div className="dropdown-divider"></div>
-                                          <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                            <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Remove")}
-                                          </DropdownItem>
-                                        </DropdownMenu>
-                                      </UncontrolledDropdown>
-                                    </div>
-                                    {/* End DropdownMenu */}
-                                    <div className="text-truncate mb-1 text-center">
-                                      <a className="text-body fs-6" id={`nameTooltip_${key}`}>
-                                        {myfiles.name}
-
-                                        <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                          {myfiles.name}
-                                        </UncontrolledTooltip>
-                                      </a>
-                                    </div>
                                   </div>
                                 </CardBody>
                               </Card>
