@@ -41,6 +41,7 @@ import { withTranslation } from "react-i18next";
 import MsgModal from "components/Common/MsgModal";
 import AddReply from "./AddReply";
 import EditReply from "./EditReply";
+import e from "cors";
 
 
 const EditInstructions = (props) => {
@@ -1403,6 +1404,14 @@ const EditInstructions = (props) => {
                 pathname: '/AppInstructions',
                 state: { setAppInstructionsMsg: editInstructionsMessage }
             })
+        } else if (editInstructionsMessage.status == "1"){
+            let num = parsedData?.num.toString()
+            dispatch(getDetailInstruction({
+                search: {
+                    "num": num,
+                    "langType": langType
+                }
+            }))
         }
         setLoadingSpinner(false)
         setAppEditInstructionsMsg(editInstructionsMessage)

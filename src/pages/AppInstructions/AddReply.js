@@ -4,7 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, La
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import { editInstructions, saveReply, saveReplys } from 'store/actions';
+import { editInstructions, getDetailInstruction, saveReply, saveReplys } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
 import { getPermissionListData, getRankListData, resetMessage } from 'store/appSetting/actions';
 import { format } from 'date-fns';
@@ -132,7 +132,15 @@ const AddReply = (props) => {
     useEffect(() => {
 
         if (msgSaveReply.status == "1") {
-
+            const storedData = localStorage.getItem('appInstructionsData');
+            let parsedData = null
+            let num = parsedData?.num.toString()
+            dispatch(getDetailInstruction({
+                search: {
+                    "num": num,
+                    "langType": langType
+                }
+            }))
             props.toggle()
             replyValidInput.resetForm();
             debugger
