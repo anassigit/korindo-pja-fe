@@ -340,44 +340,33 @@ const Instructions = (props) => {
         setAppInstructionsMsg("")
         console.log(event.target.value);
         setSelected(event.target.value);
-    };
+    }
+
+    const [applyClicked, setApplyClicked] = useState(false);
 
     const dateChanger = (name, selectedDate) => {
-        let convertedDate = selectedDate.toISOString().substr(0, 7)
+        let convertedDate = selectedDate.toISOString().substr(0, 7);
         if (name === 'from') {
-            setDateFrom(convertedDate)
-            setAppInstructionsTabelSearch({
-                page: 1,
-                limit: appInstructionsTabelSearch.limit,
-                offset: 0,
-                sort: appInstructionsTabelSearch.sort,
-                order: appInstructionsTabelSearch.order,
-                search: {
-                    search: appInstructionsTabelSearch.search.search,
-                    langType: appInstructionsTabelSearch.search.langType,
-                    status: appInstructionsTabelSearch.search.status,
-                    from: convertedDate,
-                    to: dateTo
-                }
-            })
+            setDateFrom(convertedDate);
         } else if (name === 'to') {
-            setDateTo(selectedDate.toISOString().substr(0, 7))
-            setAppInstructionsTabelSearch({
-                page: 1,
-                limit: appInstructionsTabelSearch.limit,
-                offset: 0,
-                sort: appInstructionsTabelSearch.sort,
-                order: appInstructionsTabelSearch.order,
-                search: {
-                    search: appInstructionsTabelSearch.search.search,
-                    langType: appInstructionsTabelSearch.search.langType,
-                    status: appInstructionsTabelSearch.search.status,
-                    from: dateFrom,
-                    to: convertedDate
-                }
-            })
+            setDateTo(convertedDate);
         }
-    }
+        setApplyClicked(true);
+    };
+
+    const handleApply = () => {
+        if (applyClicked) {
+            setAppInstructionsTabelSearch((prevSearch) => ({
+                ...prevSearch,
+                search: {
+                    ...prevSearch.search,
+                    from: dateFrom,
+                    to: dateTo,
+                },
+            }));
+            setApplyClicked(false);
+        }
+    };
 
     const handleKeyDown = (e) => {
         e.preventDefault();
@@ -422,8 +411,8 @@ const Instructions = (props) => {
                                                     </Row>
                                                 </Col>
 
-                                                <Col md="3">
-                                                    <div style={{ width: '89%', display: "flex", alignItems: "center" }}>
+                                                <Col md="6" style={{ display: "flex", alignItems: "center" }}>
+                                                    <div style={{ width: '27%', display: "flex", alignItems: "center" }}>
                                                         <DatePicker
                                                             wrapperClassName="customDatePicker"
                                                             name="fromDate"
@@ -439,7 +428,7 @@ const Instructions = (props) => {
                                                             inputStyle={{ textAlign: 'center' }}
                                                         />
 
-                                                        <div style={{ width: '150px', display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                        <div style={{ width: '50px', display: "flex", justifyContent: "center", alignItems: "center" }}>
                                                             -
                                                         </div>
                                                         <DatePicker
@@ -456,13 +445,33 @@ const Instructions = (props) => {
                                                             onClick={(e) => e.preventDefault()}
                                                             inputStyle={{ textAlign: 'center' }}
                                                         />
-                                                        <div style={{ width: '400px', display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-                                                        </div>
+                                                    </div>
+
+                                                    <div style={{ marginLeft: '12px' }}>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-danger "
+                                                            onClick={() => {
+                                                                setDateTo(null)
+                                                                setDateFrom(null)
+                                                            }}
+                                                        >
+                                                            {props.t("Reset")}
+                                                        </button>
+                                                    </div>
+                                                    <div style={{ marginLeft: '12px' }}>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary "
+                                                            onClick={() => { handleApply() }}
+                                                        >
+                                                            {props.t("Apply")}
+                                                        </button>
                                                     </div>
                                                 </Col>
 
-                                                <Col md="6">
+                                                <Col md="3">
                                                 </Col>
 
                                                 <Col md="3" style={{ marginLeft: "-0px" }}>

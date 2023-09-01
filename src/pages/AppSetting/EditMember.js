@@ -293,11 +293,11 @@ const EditMember = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={editMemberSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        Save
+                        {props.t("Save")}
                         <Spinner style={{ display: editMemberSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>
-                        Close
+                        {props.t("Close")}
                     </Button>
                 </ModalFooter>
             </Form>

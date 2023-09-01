@@ -147,6 +147,8 @@ export const getSetting = req => post("/rest/SettingRest/SelectSetting", req)
 
 export const getMembers = req => post("/rest/SettingRest/SelectMemeberList", req)
 
+export const getMembersForMapping = req => post("/rest/SettingRest/SelectMemberListForMapping", req)
+
 export const getRankList = req => post("/rest/SettingRest/SelectRankList", req)
 
 export const getPermissionList = req => post("/rest/SettingRest/SelectPermissionList", req)

@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMembers } from 'store/actions';
 import MsgModal from 'components/Common/MsgModal';
-import { getMembersData, getMembersData2, getPermissionListData, getRankListData, resetMessage, saveGroupMapping } from 'store/appSetting/actions';
+import { getMembersData, getMembersData2, getMembersMapping, getPermissionListData, getRankListData, resetMessage, saveGroupMapping } from 'store/appSetting/actions';
 import MsgModal2 from 'components/Common/MsgModal2';
 import { withTranslation } from 'react-i18next';
 
@@ -25,7 +25,7 @@ const AddGroupMapping = (props) => {
     });
 
     const appMembersData2 = useSelector(state => {
-        return state.settingReducer.respGetMembers2;
+        return state.settingReducer.respGetMembersMapping;
     });
 
     const appGroupListData = useSelector(state => {
@@ -85,7 +85,7 @@ const AddGroupMapping = (props) => {
 
     useEffect(() => {
         if (props.modal === true) {
-            dispatch(getMembersData2({
+            dispatch(getMembersMapping({
                 page: 1, limit: 10000, offset: 0, sort: "id", order: "desc", search: {
                     any: "", langType: langType
                 }
@@ -167,7 +167,7 @@ const AddGroupMapping = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={addGroupMappingSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        {props.t("Save")}
+                        {props.t("Add")}
                         <Spinner style={{ display: addGroupMappingSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>

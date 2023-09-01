@@ -4,7 +4,7 @@ import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_S
 
 import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping, respGetMembers2 } from "./actions"
 
-import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getPermissionList, getRankList, getRelationList, getSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
+import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getMembersForMapping, getPermissionList, getRankList, getRelationList, getSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
 
 function* fetchGetAllSetting({ payload: req }) {
   try {
@@ -191,7 +191,7 @@ function* fetchDeleteGroupMapping({ payload: req }) {
 
 function* fetchGetAllMembersMapping({ payload: req }) {
   try {
-    const response = yield call(getMembers, req)
+    const response = yield call(getMembersForMapping, req)
     if (response.status == 1) {
       yield put(respGetMembersMapping(response))
     } else {
