@@ -348,23 +348,24 @@ const Instructions = (props) => {
         let convertedDate = selectedDate.toISOString().substr(0, 7);
         if (name === 'from') {
             setDateFrom(convertedDate);
+            setAppInstructionsTabelSearch((prevSearch) => ({
+                ...prevSearch,
+                search: {
+                    ...prevSearch.search,
+                    from: convertedDate,
+                    to: dateTo,
+                },
+            }));
         } else if (name === 'to') {
             setDateTo(convertedDate);
-        }
-        setApplyClicked(true);
-    };
-
-    const handleApply = () => {
-        if (applyClicked) {
             setAppInstructionsTabelSearch((prevSearch) => ({
                 ...prevSearch,
                 search: {
                     ...prevSearch.search,
                     from: dateFrom,
-                    to: dateTo,
+                    to: convertedDate,
                 },
             }));
-            setApplyClicked(false);
         }
     };
 
@@ -455,18 +456,17 @@ const Instructions = (props) => {
                                                             onClick={() => {
                                                                 setDateTo(null)
                                                                 setDateFrom(null)
+                                                                setAppInstructionsTabelSearch((prevSearch) => ({
+                                                                    ...prevSearch,
+                                                                    search: {
+                                                                        ...prevSearch.search,
+                                                                        from: null,
+                                                                        to: null,
+                                                                    },
+                                                                }));
                                                             }}
                                                         >
                                                             {props.t("Reset")}
-                                                        </button>
-                                                    </div>
-                                                    <div style={{ marginLeft: '12px' }}>
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-primary "
-                                                            onClick={() => { handleApply() }}
-                                                        >
-                                                            {props.t("Apply")}
                                                         </button>
                                                     </div>
                                                 </Col>
