@@ -26,6 +26,7 @@ import { withTranslation } from "react-i18next"
 import PropTypes from "prop-types"
 import DatePicker from "react-datepicker";
 import '../../assets/scss/custom/components/custom-datepicker.scss'
+import CustomDatePicker from "../../common/CustomDatePicker.js"
 
 
 const Instructions = (props) => {
@@ -413,61 +414,41 @@ const Instructions = (props) => {
                                                 </Col>
 
                                                 <Col md="6" style={{ display: "flex", alignItems: "center" }}>
-                                                    <div style={{ width: '27%', display: "flex", alignItems: "center" }}>
-                                                        <DatePicker
-                                                            wrapperClassName="customDatePicker"
-                                                            name="fromDate"
-                                                            className="form-control"
-                                                            showMonthYearPicker
-                                                            dateFormat="yyyy-MM"
+                                                    <div style={{ width: '30%', display: "flex", alignItems: "center" }}>
+                                                        <CustomDatePicker
                                                             selected={dateFrom ? new Date(dateFrom + '-01') : null}
                                                             onChange={(date) => dateChanger('from', date)}
-                                                            placeholderText="YYYY-MM"
-                                                            onKeyDown={(e) => handleKeyDown(e)}
-                                                            onMouseDown={(e) => handleMouseDown(e)}
-                                                            onClick={(e) => e.preventDefault()}
-                                                            inputStyle={{ textAlign: 'center' }}
-                                                        />
-
-                                                        <div style={{ width: '50px', display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                                            -
-                                                        </div>
-                                                        <DatePicker
-                                                            wrapperClassName="customDatePicker"
-                                                            name="toDate"
-                                                            className="form-control"
-                                                            showMonthYearPicker
-                                                            dateFormat="yyyy-MM"
-                                                            selected={dateTo ? new Date(dateTo + '-01') : null}
-                                                            onChange={(date) => dateChanger('to', date)}
-                                                            placeholderText="YYYY-MM"
-                                                            onKeyDown={(e) => handleKeyDown(e)}
-                                                            onMouseDown={(e) => handleMouseDown(e)}
-                                                            onClick={(e) => e.preventDefault()}
-                                                            inputStyle={{ textAlign: 'center' }}
-                                                        />
-
-                                                    </div>
-
-                                                    <div style={{ marginLeft: '12px' }}>
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-danger "
-                                                            onClick={() => {
-                                                                setDateTo(null)
-                                                                setDateFrom(null)
+                                                            onClear={() => {
+                                                                setDateFrom('');
                                                                 setAppInstructionsTabelSearch((prevSearch) => ({
                                                                     ...prevSearch,
                                                                     search: {
                                                                         ...prevSearch.search,
                                                                         from: null,
+                                                                        to: dateTo,
+                                                                    },
+                                                                }));
+                                                            }}
+                                                        />
+
+                                                        <div style={{ width: '50px', display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                            -
+                                                        </div>
+                                                        <CustomDatePicker
+                                                            selected={dateTo ? new Date(dateTo + '-01') : null}
+                                                            onChange={(date) => dateChanger('to', date)}
+                                                            onClear={() => {
+                                                                setDateTo('');
+                                                                setAppInstructionsTabelSearch((prevSearch) => ({
+                                                                    ...prevSearch,
+                                                                    search: {
+                                                                        ...prevSearch.search,
+                                                                        from: dateFrom,
                                                                         to: null,
                                                                     },
                                                                 }));
                                                             }}
-                                                        >
-                                                            {props.t("Reset")}
-                                                        </button>
+                                                        />
                                                     </div>
                                                 </Col>
 
