@@ -189,9 +189,9 @@ const Instructions = (props) => {
             align: "left",
             headerStyle: { textAlign: 'center' },
             style: {
-                width: "150px",
-                minWidth: "150px",
-                maxWidth: "150px",
+                width: "250px",
+                minWidth: "250px",
+                maxWidth: "250px",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis"
