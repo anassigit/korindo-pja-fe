@@ -14,30 +14,33 @@ const TableCustom = (props) => {
 
     const [lastPage, setLastPage] = useState(0);
 
+    // Custom handler for table change (pagination and sorting)
     const customHandleTableChange = (type, { page, sortField, sortOrder, sizePerPage }) => {
         if (type === "sort") {
+            // Handle sorting change
             props.searchSet({ page: 1, limit: sizePerPage, offset: 0, sort: sortField, order: sortOrder, search: props.searchGet.search });
         }
         if (type === "pagination") {
+            // Handle pagination change
             props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search });
             history.push(`?page=${page}`);
         }
     };
 
     useEffect(() => {
+        // Parse page parameter from the URL
         const urlParams = new URLSearchParams(location.search);
         const pageParam = urlParams.get("page");
         const currentPage = parseInt(pageParam);
 
+        debugger
         if (!isNaN(currentPage) && currentPage !== props.searchGet.page) {
-            // Calculate the previous page
             customHandleTableChange("pagination", {
                 page: currentPage,
                 sortField: props.searchGet.sort,
                 sortOrder: props.searchGet.order,
                 sizePerPage: props.searchGet.limit,
             });
-            // Replace the current URL with the new one, preventing additional clicks of the back button
             history.replace(`?page=${currentPage}`);
         } else if (isNaN(currentPage)) {
             customHandleTableChange("pagination", {
@@ -46,18 +49,21 @@ const TableCustom = (props) => {
                 sortOrder: props.searchGet.order,
                 sizePerPage: props.searchGet.limit,
             });
-            // Replace the current URL with the new one, preventing additional clicks of the back button
             history.replace("?page=1");
         }
     }, [location.search, props.searchGet, customHandleTableChange, history]);
 
     useEffect(() => {
-        // Check if the page has changed
-        if (props.searchGet.page !== lastPage) {
+        debugger
+        if(props.searchGet?.page == 1) {
+            dispatch(props.redukCall(props.searchGet));
+            history.replace("?page=1");
+        } else if (props.searchGet.page !== lastPage) {
+            // Dispatch the Redux action to fetch data when the page changes
             dispatch(props.redukCall(props.searchGet));
             setLastPage(props.searchGet.page);
         }
-    }, [props.searchGet, lastPage, dispatch]);
+    }, [props.searchGet, lastPage]);
 
     return (
         <Card className="m-0 p-0">
