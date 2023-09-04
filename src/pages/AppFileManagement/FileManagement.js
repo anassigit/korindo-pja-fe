@@ -82,9 +82,9 @@ const FileManagement = (props) => {
   const [successClose, setSuccessClose] = useState(false)
   const [appFileManagementData, setAppFileManagementData] = useState(null);
 
-    // folder left-right click
-    const [isContextMenuOpen, setContextMenuOpen] = useState(false);
-    const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
+  // folder left-right click
+  const [isContextMenuOpen, setContextMenuOpen] = useState(false);
+  const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
 
   const contextMenuRef = useRef(null);
 
@@ -159,7 +159,7 @@ const FileManagement = (props) => {
     }
 
     dispatch(resetMessage());
-    
+
     if (storedData !== null) {
       dispatch(getSelectFile({ 'folder_num': storedData }))
     } else {
@@ -190,7 +190,7 @@ const FileManagement = (props) => {
   })
 
   useEffect(() => {
-   
+
   }, [realFileList])
 
   useEffect(() => {
@@ -330,36 +330,34 @@ const FileManagement = (props) => {
 
   // folder left-right click
 
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+
+
   const handleContextMenuOpen = (e) => {
     debugger
-    e.preventDefault(); 
+    e.preventDefault();
+
+    const xPos = e.clientX;
+    const yPos = e.clientY;
+
     setContextMenuOpen(true);
-    setDropdownMenuOpen(false); 
+    setDropdownMenuOpen(false);
+    setContextMenuPosition({ x: xPos, y: yPos });
   };
 
   const handleDropdownMenuToggle = () => {
     debugger
-    setDropdownMenuOpen(!isDropdownMenuOpen);
+    setDropdownMenuOpen(true);
     setContextMenuOpen(false);
   };
 
-    // files
-    const [isContextMenuOpen2, setContextMenuOpen2] = useState(false);
-    const [isDropdownMenuOpen2, setDropdownMenuOpen2] = useState(false);
-  
-    const handleContextMenuOpen2 = (e) => {
-      debugger
-      e.preventDefault(); 
-      setContextMenuOpen2(true);
-      setDropdownMenuOpen2(false); 
-    };
-  
-    const handleDropdownMenuToggle2 = () => {
-      debugger
-      setDropdownMenuOpen2(!isDropdownMenuOpen2);
-      setContextMenuOpen2(false);
-    };
-  
+
+  useEffect(() => {
+    debugger
+    if (!isDropdownMenuOpen) {
+      setContextMenuOpen(true);
+    }
+  }, [isContextMenuOpen])
 
   return (
     <RootPageCustom
@@ -505,10 +503,15 @@ const FileManagement = (props) => {
 
                             <Col md={2} key={key}>
                               <ContextMenuTrigger id={`rightMenu${key}`}>
-                                <Card className="shadow-none border" onContextMenu={handleContextMenuOpen}>
+                                <Card className="shadow-none border"
+                                  onContextMenu={(e) => {
+                                    e.preventDefault(); // Prevent the default context menu
+                                    handleContextMenuOpen(e);
+                                  }}
+                                >
                                   <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
                                     {/* Menu Dropdown */}
-                                   
+
                                     <div className="float-end">
                                       <UncontrolledDropdown >
                                         <DropdownToggle
@@ -519,25 +522,25 @@ const FileManagement = (props) => {
                                           <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                         </DropdownToggle>
                                         {isDropdownMenuOpen && (
-                                        <DropdownMenu className="dropdown-menu-end" >
-                                          <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                            <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Rename")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                            <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Move")}
-                                          </DropdownItem>
-                                          <div className="dropdown-divider"></div>
-                                          <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                            <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Remove")}
-                                          </DropdownItem>
-                                        </DropdownMenu>
+                                          <DropdownMenu className="dropdown-menu-end" >
+                                            <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                              <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                              {props.t("Rename")}
+                                            </DropdownItem>
+                                            <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                              <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                              {props.t("Move")}
+                                            </DropdownItem>
+                                            <div className="dropdown-divider"></div>
+                                            <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                              <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                              {props.t("Remove")}
+                                            </DropdownItem>
+                                          </DropdownMenu>
                                         )}
                                       </UncontrolledDropdown>
                                     </div>
-                                   
+
                                     {/* End Drop Down */}
                                     <div className="text-truncate align-middle">
                                       <a style={{ userSelect: "none" }} className="text-body fs-6" id={`folderTooltip_${key}`}>
@@ -560,38 +563,39 @@ const FileManagement = (props) => {
                                   </CardBody>
                                 </Card>
                               </ContextMenuTrigger>
-                                {/* ContextMenu */}
-                                
+                              {/* ContextMenu */}
+
                               <div className="float-end">
-                                {isContextMenuOpen && (
-                              <ContextMenu id={`rightMenu${key}`} >
-                                <MenuItem
-                                  onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
-                                  className="contextmenu-item"
-                                >
-                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Rename")}
-                                </MenuItem>
-                                <MenuItem
-                                  onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
-
-                                >
-                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Move")}
-                                </MenuItem>
-                                <div className="dropdown-divider"></div>
-                                <MenuItem
-                                  onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
-
-                                >
-                                  <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Remove")}
-                                </MenuItem>
-                              </ContextMenu>
+                              {(isContextMenuOpen || !isDropdownMenuOpen) && (
+                                  <ContextMenu
+                                    id={`rightMenu${key}`}
+                                    style={{ position: 'fixed', left: contextMenuPosition.x, top: contextMenuPosition.y }}
+                                  >
+                                    <MenuItem
+                                      onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+                                      className="contextmenu-item"
+                                    >
+                                      <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                      {props.t("Rename")}
+                                    </MenuItem>
+                                    <MenuItem
+                                      onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+                                    >
+                                      <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                      {props.t("Move")}
+                                    </MenuItem>
+                                    <div className="dropdown-divider"></div>
+                                    <MenuItem
+                                      onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+                                    >
+                                      <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                      {props.t("Remove")}
+                                    </MenuItem>
+                                  </ContextMenu>
                                 )}
                               </div>
-                              
-                            
+
+
                             </Col>
                             : ''
 
@@ -617,15 +621,15 @@ const FileManagement = (props) => {
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
 
-                                  
-                                       
 
-                                      <div className="float-end">
+
+
+                                    <div className="float-end">
                                       <UncontrolledDropdown>
                                         <DropdownToggle
                                           className="fs-6 text-muted"
                                           tag="a"
-                                          
+
                                         >
                                           <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                         </DropdownToggle>
@@ -651,8 +655,8 @@ const FileManagement = (props) => {
                                         </DropdownMenu>
                                       </UncontrolledDropdown>
                                     </div>
-                                      
-                             
+
+
                                     <div className="text-truncate mb-1 text-center">
                                       <a className="text-body fs-6" id={`nameTooltip_${key}`}>
                                         {myfiles.name}
@@ -673,17 +677,17 @@ const FileManagement = (props) => {
                                           </div>
                                         ) :
                                           myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
-                                          
+
                                             <div className="thumbnail-container thumbnail">
-                                          
+
 
                                               <img
                                                 src={new URL(myfiles.url)}
-                                              
+
                                               />
-                                             
+
                                             </div>
-                                           
+
                                           )
                                             : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
                                               <div className="thumbnail-container thumbnail">
@@ -727,41 +731,41 @@ const FileManagement = (props) => {
                                 </CardBody>
                               </Card>
                             </ContextMenuTrigger>
-                           
+
                             <div className="float-end">
-                            <ContextMenu id={`rightMenu${key}`}>
-                              <MenuItem
-                                onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+                              <ContextMenu id={`rightMenu${key}`}>
+                                <MenuItem
+                                  onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
 
-                              >
-                                <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                {props.t("Rename")}
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+                                >
+                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                  {props.t("Rename")}
+                                </MenuItem>
+                                <MenuItem
+                                  onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
 
-                              >
-                                <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                {props.t("Move")}
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
+                                >
+                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                  {props.t("Move")}
+                                </MenuItem>
+                                <MenuItem
+                                  onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
 
-                              >
-                                <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                {props.t("Download")}
-                              </MenuItem>
-                              <div className="dropdown-divider"></div>
-                              <MenuItem
-                                onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+                                >
+                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                  {props.t("Download")}
+                                </MenuItem>
+                                <div className="dropdown-divider"></div>
+                                <MenuItem
+                                  onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
 
-                              >
-                                <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                {props.t("Remove")}
-                              </MenuItem>
-                            </ContextMenu>
+                                >
+                                  <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                  {props.t("Remove")}
+                                </MenuItem>
+                              </ContextMenu>
                             </div>
-                        
+
                           </Col>
 
 
