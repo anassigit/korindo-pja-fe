@@ -86,6 +86,10 @@ const FileManagement = (props) => {
   const [isContextMenuOpen, setContextMenuOpen] = useState(false);
   const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
 
+  // file left-right click
+  const [isContextMenuOpen2, setContextMenuOpen2] = useState(false);
+  const [isDropdownMenuOpen2, setDropdownMenuOpen2] = useState(false);
+
   const contextMenuRef = useRef(null);
 
   const toggleRenameModal = (idT, nmT, tpT) => {
@@ -351,13 +355,39 @@ const FileManagement = (props) => {
     setContextMenuOpen(false);
   };
 
+  // file left-right click
+
+  const [contextMenuPosition2, setContextMenuPosition2] = useState({ x: 0, y: 0 });
+
+
+  const handleContextMenuOpen2 = (e) => {
+    debugger
+    e.preventDefault();
+
+    const xPos2 = e.clientX;
+    const yPos2 = e.clientY;
+
+    setContextMenuOpen2(true);
+    setDropdownMenuOpen2(false);
+    setContextMenuPosition2({ x: xPos2, y: yPos2 });
+  };
+
+  const handleDropdownMenuToggle2 = () => {
+    debugger
+    setDropdownMenuOpen2(true);
+    setContextMenuOpen2(false);
+  };
+
 
   useEffect(() => {
     debugger
-    if (!isDropdownMenuOpen) {
-      setContextMenuOpen(true);
+    if (!isDropdownMenuOpen2) {
+      setContextMenuOpen2(true);
     }
-  }, [isContextMenuOpen])
+  }, [isContextMenuOpen2])
+
+
+
 
   return (
     <RootPageCustom
@@ -566,7 +596,7 @@ const FileManagement = (props) => {
                               {/* ContextMenu */}
 
                               <div className="float-end">
-                              {(isContextMenuOpen || !isDropdownMenuOpen) && (
+                                {(isContextMenuOpen || !isDropdownMenuOpen) && (
                                   <ContextMenu
                                     id={`rightMenu${key}`}
                                     style={{ position: 'fixed', left: contextMenuPosition.x, top: contextMenuPosition.y }}
@@ -617,23 +647,24 @@ const FileManagement = (props) => {
 
                           <Col md={2} key={key}>
                             <ContextMenuTrigger id={`rightMenu${key}`}>
-                              <Card className="shadow-none border bg-light">
+                              <Card className="shadow-none border bg-light"
+                                onContextMenu={(e) => {
+                                  e.preventDefault(); // Prevent the default context menu
+                                  handleContextMenuOpen2(e);
+                                }}
+                              >
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
-
-
-
-
                                     <div className="float-end">
                                       <UncontrolledDropdown>
                                         <DropdownToggle
                                           className="fs-6 text-muted"
                                           tag="a"
-
+                                          onClick={handleDropdownMenuToggle2}
                                         >
                                           <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                         </DropdownToggle>
-
+                                        {isDropdownMenuOpen2 && (
                                         <DropdownMenu className="dropdown-menu-end">
                                           <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
                                             <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
@@ -653,6 +684,7 @@ const FileManagement = (props) => {
                                             {props.t("Remove")}
                                           </DropdownItem>
                                         </DropdownMenu>
+                                        )}
                                       </UncontrolledDropdown>
                                     </div>
 
@@ -733,7 +765,10 @@ const FileManagement = (props) => {
                             </ContextMenuTrigger>
 
                             <div className="float-end">
-                              <ContextMenu id={`rightMenu${key}`}>
+                            {(isContextMenuOpen2 || !isDropdownMenuOpen2) && (
+                              <ContextMenu id={`rightMenu${key}`}
+                              style={{ position: 'fixed', left: contextMenuPosition2.x, top: contextMenuPosition2.y }}
+                              >
                                 <MenuItem
                                   onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
 
@@ -764,6 +799,7 @@ const FileManagement = (props) => {
                                   {props.t("Remove")}
                                 </MenuItem>
                               </ContextMenu>
+                            )}
                             </div>
 
                           </Col>
