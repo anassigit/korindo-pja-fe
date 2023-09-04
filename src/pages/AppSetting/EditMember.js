@@ -263,7 +263,7 @@ const EditMember = (props) => {
                             </Input>
                         </div>
 
-                        <div className="mb-3 mx-3" hidden={editMemberValidInput?.values?.permission !== '2'}>
+                        <div className="mb-3 mx-3" hidden={editMemberValidInput?.values?.permission !== 2 && editMemberValidInput?.values?.permission !== '2' }>
                             <Label>Background Color</Label>
                             <Input
                                 type="color"
