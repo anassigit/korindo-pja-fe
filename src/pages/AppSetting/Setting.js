@@ -189,8 +189,22 @@ const Setting = (props) => {
             dataField: "bgcolor",
             text: props.t("Background Color"),
             sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, data) => (
+                <>
+                    <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
+                        <i style={{
+                            width: "120px",
+                            height: "16px",
+                            borderRadius: "3px",
+                            backgroundColor: cellContent,
+                            display: "block",
+                        }}
+                        />
+                    </div>
+                </>
+            ),
         },
         {
             dataField: "edit",
@@ -225,56 +239,6 @@ const Setting = (props) => {
             ),
         },
     ]
-
-    // const appGroupp01Tabel = [
-    //     {
-    //         dataField: "memberId",
-    //         text: "Name (Email)",
-    //         sort: true,
-    //         align: "left",
-    //         headerStyle: { textAlign: 'center' },
-    //         // formatter: (cellContent, data) => {
-    //         //     console.log(cellContent)
-    //         //     let cell = cellContent
-    //         //     return (
-    //         //         cell
-    //         //     )
-
-    //         // }
-    //     },
-    //     {
-    //         dataField: "edit",
-    //         isDummyField: true,
-    //         text: "Edit",
-    //         headerStyle: { textAlign: 'center' },
-    //         formatter: (cellContent, data) => (
-    //             <>
-    //                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-    //                     <i className="mdi mdi-pencil font-size-18  text-primary" id="edittooltip" onClick={() => app008p01PreEdit(data)} />
-    //                     <UncontrolledTooltip placement="top" target="edittooltip">
-    //                         Ubah
-    //                     </UncontrolledTooltip>
-    //                 </div>
-    //             </>
-    //         ),
-    //     },
-    //     {
-    //         dataField: "delete",
-    //         isDummyField: true,
-    //         text: "Delete",
-    //         headerStyle: { textAlign: 'center' },
-    //         formatter: (cellContent, data) => (
-    //             <>
-    //                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-    //                     <i className="mdi mdi-delete font-size-18 text-danger" id="deletetooltip" onClick={() => app008p01Delete(data)} />
-    //                     <UncontrolledTooltip placement="top" target="deletetooltip">
-    //                         Hapus
-    //                     </UncontrolledTooltip>
-    //                 </div>
-    //             </>
-    //         ),
-    //     },
-    // ]
 
     const handleRadioChange1 = (event) => {
         setRadioValue1(event.target.value)

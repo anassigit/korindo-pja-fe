@@ -204,9 +204,8 @@ const EditMember = (props) => {
                         <div className="mb-3 mx-3">
                             <Label>Email <span style={{ color: "red" }}>*</span></Label>
                             <Input
-                                disabled
                                 type="email"
-                                name="id"
+                                name="email"
                                 onChange={editMemberValidInput.handleChange}
                                 value={editMemberValidInput.values.email}
                             />
