@@ -2037,7 +2037,7 @@ const EditInstructions = (props) => {
                                                 <Button
                                                     type="button"
                                                     className="btn btn-danger "
-                                                    onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                    onClick={() => { history.go(-1); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                                 >
                                                     <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
                                                     {props.t("Back")}
@@ -2266,7 +2266,7 @@ const EditInstructions = (props) => {
                                             <Button
                                                 type="button"
                                                 className="btn btn-danger "
-                                                onClick={() => { history.push('/AppInstructions'); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                onClick={() => {  history.go(-1); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                             >
                                                 <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
                                                 {props.t("Back")}
