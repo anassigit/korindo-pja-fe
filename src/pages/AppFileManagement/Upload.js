@@ -268,7 +268,7 @@ const Upload = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={uploadSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        {props.t("Save")}
+                        {props.t("Add")}
                         <Spinner style={{ display: uploadSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger"  onClick={()=>{closeButton()}}>
