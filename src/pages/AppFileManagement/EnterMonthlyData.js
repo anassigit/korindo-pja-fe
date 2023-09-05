@@ -141,7 +141,7 @@ const EnterMonthlyData = (props) => {
           <ConfirmModal
             modal={confirmModalDelete}
             toggle={confirmToggleDelete}
-            message={props.t("Are you sure to delete this")}
+            message={props.t("Are you sure to delete this?")}
             setIsYes={setIsYes}
           />
 
@@ -239,7 +239,7 @@ const EnterMonthlyData = (props) => {
                                           ></span>
                                           <div
                                             style={{
-                                              width: items.count > 1 ? "85px" : '100%',
+                                              width: items.count > 1 ? "100px" : '100%',
                                               fontSize: "16px",
                                               whiteSpace: "nowrap",
                                               textOverflow: "ellipsis",
@@ -288,11 +288,13 @@ const EnterMonthlyData = (props) => {
                               overflow: "hidden",
                               fontSize: "16px",
                               fontWeight: "bold",
+                              marginLeft:"-2%", 
+                              marginBottom:"-5%"
                             }}>
                               {items.name}
                             </Col>
-                            <Col className="col-4">
-                              <Button style={{ paddingTop: "2px", paddingBottom: "2px" }}>Upload</Button>
+                            <Col className="col-4 d-flex justify-content-end">
+                              <Button style={{ marginRight:"-5%", marginBottom:"-5%", paddingTop: "2px", paddingBottom: "2px" }}>{props.t('Add')}</Button>
                             </Col>
                           </Row>
 
