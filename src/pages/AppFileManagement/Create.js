@@ -117,7 +117,7 @@ debugger
                 <ModalFooter>
                     <Button type="submit" color={createSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        {props.t("Save")}
+                        {props.t("New")}
                         <Spinner style={{ display: createSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={props.toggle}>

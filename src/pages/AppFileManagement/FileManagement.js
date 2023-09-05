@@ -443,7 +443,7 @@ const FileManagement = (props) => {
           <ConfirmModal
             modal={confirmModalDelete}
             toggle={confirmToggleDelete}
-            message={props.t("Are you sure to delete this")}
+            message={props.t("Are you sure to delete this?")}
             setIsYes={setIsYes}
           />
 
