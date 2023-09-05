@@ -15,7 +15,8 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
   CardTitle,
-  CardGroup
+  CardGroup,
+  Input
 } from "reactstrap"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile } from "../../store/appFileManagement/actions"
@@ -52,8 +53,8 @@ const EnterMonthlyData = (props) => {
   let tempIndex = null
 
   const dispatch = useDispatch();
-  const [fileManagementPage, setFileManagementPage] = useState(true)
-  const [fileManagementMsg, setFileManagementMsg] = useState("")
+  const [monthlyDataPage, setMonthlyDataPage] = useState(true)
+  const [monthlyDataMsg, setMonthlyDataMsg] = useState("")
   const [idParent, setIdParent] = useState(0)
   const [idChild, setIdChild] = useState(-1)
   const [idToggle, setIdToggle] = useState("")
@@ -227,7 +228,7 @@ const EnterMonthlyData = (props) => {
 
 
   const fileManagementCloseAlert = () => {
-    setFileManagementMsg("")
+    setMonthlyDataMsg("")
   }
 
   const getInsideFolder = (e, f, n) => {
@@ -423,58 +424,10 @@ const EnterMonthlyData = (props) => {
       componentJsx={
         <>
 
-          {fileManagementMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={fileManagementMsg.status == "1" ? "success" : "danger"}>
-            {typeof fileManagementMsg == 'string' ? null : fileManagementMsg.message}</UncontrolledAlert> : null}
+          {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
+            {typeof monthlyDataMsg == 'string' ? null : monthlyDataMsg.message}</UncontrolledAlert> : null}
 
-          <Rename
-            modal={renameModal}
-            toggle={toggleRenameModal}
-            idToggle={idToggle}
-            nmToggle={nmToggle}
-            nmToggleExt={nmToggleExt}
-            typeRename={typeRename}
-            idNowLoc={idNowLoc}
-          />
-
-          <Upload
-            modal={uploadModal}
-            toggle={toggleUploadModal}
-            idToggleUpload={idToggleUpload}
-            idNowLoc={idNowLoc}
-          />
-
-          <Create
-            modal={createModal}
-            toggle={toggleCreateModal}
-            idToggleCreate={idToggleCreate}
-            idNowLoc={idNowLoc}
-
-          />
-
-          <Move
-            modal={moveModal}
-            toggle={toggleMoveModal}
-            idNowLoc={idNowLoc}
-            fNum={fNum}
-            pNum={pNum}
-            fName={fName}
-          />
-
-          <ConfirmModal
-            modal={confirmModalDelete}
-            toggle={confirmToggleDelete}
-            message={props.t("Are you sure to delete this")}
-            setIsYes={setIsYes}
-          />
-
-          <MsgModal
-            modal={downloadMsgModal}
-            toggle={toggleMsgModal}
-            message={downloadContentModal}
-
-          />
-
-          <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: monthlyDataPage ? 'block' : 'none' }} fluid={true}>
             <Row>
               <Col>
                 <Row className="mb-2">
@@ -494,28 +447,30 @@ const EnterMonthlyData = (props) => {
                     <Col sm="12">
                       <div className="d-flex justify-content-end">
                         <Col md='1' className="d-flex justify-content-end">
-                          <Row className="mb-1" style={{width:"80%", marginRight:"-24%"}} >
-                            <DatePicker
-                              className="form-control text-center"
-                              dateFormat="yyyy-MM-dd"
-                              showYearPicker
-                              placeholderText="YYYY"
-                              // onChange={date => {
-                              //   handleChangeDate(date);
-                              //   editInstructionsValidInput.handleChange('insDate', date);
-                              // }}
-                              // selected={editInstructionsValidInput.values.insDate ? new Date(editInstructionsValidInput.values.insDate) : null}
-                            />
+                          <Row className="mb-1" style={{ width: "80%", marginRight: "-24%" }} >
+                            <Input
+                              name="year"
+                              type="select"
+                              placeholder="YYYY"
+                            //   onChange={(e) => {
+                            //     editInstructionsValidInput.handleChange(e)
+                            //   }}
+
+                            //   value={editInstructionsValidInput.values.status}
+                            //   invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
+                            >
+                            
+                            </Input>
                           </Row>
                         </Col>
                         &nbsp;
                         <Col md='1' className="d-flex justify-content-end ">
-                          <Row className="mb-1" style={{width:"80%"}}>
+                          <Row className="mb-1" style={{ width: "80%" }}>
                             <DatePicker
                               className="form-control text-center"
                               dateFormat="yyyy-MM-dd"
-                              // onChange={}
-                              // selected={editInstructionsValidInput.values.insDate ? new Date(editInstructionsValidInput.values.insDate) : null}
+                            // onChange={}
+                            // selected={editInstructionsValidInput.values.insDate ? new Date(editInstructionsValidInput.values.insDate) : null}
                             />
                           </Row>
                         </Col>
@@ -523,29 +478,6 @@ const EnterMonthlyData = (props) => {
                     </Col>
                   </Col>
                 </Row>
-                <Row className="mb-2">
-                  <Col sm="12">
-                    <Col md="6">
-                      <Row>
-                        <div className="align-baseline fs-6">
-                          <strong>
-                            {realFilePath?.map((breadcrumb, index) => {
-                              tempIndex = index
-                              return (
-                                <span key={index}>
-                                  {index > 0 && <i className="mdi mdi-chevron-right" />}
-                                  <a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num, breadcrumb.name)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
-                                </span>
-                              )
-                            })}
-                          </strong>
-                        </div>
-                      </Row>
-                    </Col>
-                  </Col>
-                </Row>
-                <p />
-                <p />
                 <Row className="mb-1 col-sm-10"><h6>{props.t("Monthly Data")}</h6></Row>
                 <p />
                 <p />
