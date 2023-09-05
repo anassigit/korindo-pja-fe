@@ -214,7 +214,7 @@ const EnterMonthlyData = (props) => {
                                     {items.fileList?.map((file, i) => (
                                       i < 3 ? (
 
-                                        <Col md='3' className="files" key={i}>
+                                        <Col className="files" key={i}>
                                           <span
                                             style={{
                                               fontSize: "50px",
@@ -224,7 +224,7 @@ const EnterMonthlyData = (props) => {
                                             }}
                                             className="mdi mdi-file-check-outline"
                                             onClick={() => window.open(new URL(file.url), '_blank')}
-                                            ></span>
+                                          ></span>
                                           <span
                                             style={{
                                               fontSize: "18px",
@@ -237,14 +237,22 @@ const EnterMonthlyData = (props) => {
                                             className="mdi mdi-close-circle"
                                             onClick={() => confirmToggleDelete(file.num)}
                                           ></span>
-                                          <div style={{
-                                            width: "70px",
-                                            fontSize: items.count !== 1 ? items.count === 3 ? "16px" : "20px" : "24px",
-                                            whiteSpace: "nowrap",
-                                            textOverflow: "ellipsis",
-                                            overflow: "hidden"
-                                          }}>{file.name}</div>
+                                          <div
+                                            style={{
+                                              width: items.count > 1 ? "85px" : '100%',
+                                              fontSize: "16px",
+                                              whiteSpace: "nowrap",
+                                              textOverflow: "ellipsis",
+                                              overflow: "hidden",
+                                              textAlign: "center", 
+                                              marginLeft: "50%",
+                                              transform: "translateX(-50%)"
+                                            }}
+                                          >
+                                            {file.name}
+                                          </div>
                                         </Col>
+
                                       )
                                         :
                                         (
@@ -268,7 +276,7 @@ const EnterMonthlyData = (props) => {
                                 (
                                   <Col className="nofile">
                                     <span style={{ fontSize: "50px", color: "#7BAE40", opacity: "0.75" }} className="mdi mdi-file-cancel-outline text-danger"></span>
-                                    <div style={{ fontSize: "24px" }}>{props.t('No File')}</div>
+                                    <div style={{ fontSize: "16px" }}>{props.t('No File')}</div>
                                   </Col>
                                 )
                             }
