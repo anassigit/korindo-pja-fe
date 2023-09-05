@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react"
@@ -13,6 +13,7 @@ import { Link } from "react-router-dom"
 import { withTranslation } from "react-i18next"
 import { ReactSession } from 'react-client-session';
 import { useSelector } from "react-redux"
+import { useLocation } from "react-router-dom/cjs/react-router-dom"
 
 
 const SidebarContent = props => {
@@ -20,6 +21,8 @@ const SidebarContent = props => {
   // const menu = JSON.parse(ReactSession.get("menu"))
 
   const ref = useRef();
+  const location = useLocation()
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
@@ -41,6 +44,29 @@ const SidebarContent = props => {
     }
   }, [props.location.pathname])
 
+  useEffect(() => {
+    const pathName = location.pathname
+    new MetisMenu("#side-menu")
+    let matchingMenuItem = null
+    const ul = document.getElementById("side-menu")
+    const items = ul.getElementsByTagName("a")
+
+    for (let i = 0; i < items.length; ++i) {
+      if (pathName === items[i].pathname) {
+        matchingMenuItem = items[i]
+        break
+      }
+    }
+
+    if (matchingMenuItem) {
+      activateParentDropdown(matchingMenuItem)
+    }
+
+    // Check if the current path matches one of the desired paths to open the dropdown
+    if (pathName === "/EnterMonthlyData" || pathName === "/AppFileManagement") {
+      setDropdownOpen(true)
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     ref.current.recalculate()
@@ -118,7 +144,41 @@ const SidebarContent = props => {
                 <i className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
               </a>
+
               <a
+                onClick={() => {
+                  setDropdownOpen(!dropdownOpen)
+                }}
+                className=""
+                style={{overflow:"visible"}}
+                >
+                <i className="fas fa-folder-open"></i>
+                <span style={{whiteSpace:"nowrap"}}>{props.t("File Management")}</span>
+                <i hidden={dropdownOpen} style={{fontSize:"16px", position:"absolute", right: "2%", top:"25%"}} className="fas fa-chevron-down dropdown-icon"></i>
+                <i hidden={!dropdownOpen} style={{fontSize:"16px", position:"absolute", right: "2%", top:"25%"}} className="fas fa-chevron-up dropdown-icon"></i>
+              </a>
+              <a
+                onClick={() => {
+                }}
+                className=""
+                hidden={!dropdownOpen}
+                href="/EnterMonthlyData"
+                to="/EnterMonthlyData"
+                >
+                <span style={{whiteSpace:"nowrap", paddingLeft:"16px"}}>{props.t("Enter Monthly Data")}</span>
+              </a>
+              <a
+                onClick={() => {
+                }}
+                className=""
+                hidden={!dropdownOpen}
+                href="/AppFileManagement"
+                to="/AppFileManagement"
+                >
+                <span style={{whiteSpace:"nowrap", paddingLeft:"16px"}}>{props.t("Data Inquiry")}</span>
+              </a>
+
+              {/* <a
                 onClick={() => {
                   localStorage.setItem('appFileManagementData', '');
                   ReactSession.remove("appInstructionsTabelSearch")
@@ -128,14 +188,14 @@ const SidebarContent = props => {
                 className="">
                 <i className="fas fa-folder-open"></i>
                 <span>{props.t("File Management")}</span>
-              </a>
+              </a> */}
               <a
                 onClick={() => {
                   localStorage.setItem('appFileManagementData', '');
                 }}
                 href="/AppSetting"
                 className=""
-                hidden={!getDetailProfile?.data?.admin}
+                // hidden={!getDetailProfile?.data?.admin}
               >
                 <i className="fas fa-cog"></i>
                 <span>{props.t("Settings")}</span>

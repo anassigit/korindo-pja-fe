@@ -353,6 +353,7 @@ const FileManagement = (props) => {
     debugger
     setDropdownMenuOpen(true);
     setContextMenuOpen(false);
+    setContextMenuOpen2(false);
   };
 
   // file left-right click
@@ -376,6 +377,7 @@ const FileManagement = (props) => {
     debugger
     setDropdownMenuOpen2(true);
     setContextMenuOpen2(false);
+    setContextMenuOpen(false);
   };
 
 
@@ -596,7 +598,7 @@ const FileManagement = (props) => {
                               {/* ContextMenu */}
 
                               <div className="float-end">
-                                {(isContextMenuOpen || !isDropdownMenuOpen) && (
+                                {(isContextMenuOpen && !isDropdownMenuOpen) && (
                                   <ContextMenu
                                     id={`rightMenu${key}`}
                                     style={{ position: 'fixed', left: contextMenuPosition.x, top: contextMenuPosition.y }}
