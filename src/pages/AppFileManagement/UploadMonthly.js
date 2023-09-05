@@ -153,7 +153,7 @@ const UploadMonthly = (props) => {
                 reader.readAsDataURL(file)
             })
         } else if (e.target.files.length != 0) {
-            alert("Allowed upload file type is PDF only.")
+            alert("Allowed File Types is pdf")
             refCleanser.current.value = ""
             e.target.value = ""
         }
@@ -224,7 +224,7 @@ const UploadMonthly = (props) => {
                                     </div>
                                 </div>
                                 &nbsp;
-                                <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed file type is PDF only.")}</span>
+                                <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types is pdf")}</span>
                                 &nbsp;&nbsp;&nbsp;
                                 <div className="kb-attach-box mb-3">
                                     {

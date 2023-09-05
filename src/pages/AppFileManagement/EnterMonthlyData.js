@@ -100,16 +100,16 @@ const EnterMonthlyData = (props) => {
 
   const toggleUploadModalMonthly = (folder_id) => {
     debugger
-   setUploadModalMonthly(!uploadModalMonthly)
-   setIdFolderUpload(folder_id)
-   setCurrMonth(selectedMonth)
-   setCurrYear(selectedYear)
+    setUploadModalMonthly(!uploadModalMonthly)
+    setIdFolderUpload(folder_id)
+    setCurrMonth(selectedMonth)
+    setCurrYear(selectedYear)
 
- }
+  }
 
- {
-   console.log("data", dashboardData)
- }
+  {
+    console.log("data", dashboardData)
+  }
 
   const confirmToggleDelete = (e) => {
 
@@ -161,7 +161,7 @@ const EnterMonthlyData = (props) => {
             idFolderUpload={idFolderUpload}
             currMonth={currMonth}
             currYear={currYear}
-          />    
+          />
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
             {typeof monthlyDataMsg == 'string' ? null : monthlyDataMsg.message}</UncontrolledAlert> : null}
@@ -232,60 +232,103 @@ const EnterMonthlyData = (props) => {
                                     {items.fileList?.map((file, i) => (
                                       i < 3 ? (
 
-                                        <Col className="files" key={i}>
-                                          <span
-                                            style={{
-                                              fontSize: "50px",
-                                              color: "#7BAE40",
-                                              opacity: "0.75",
-                                              cursor: "pointer"
-                                            }}
-                                            className="mdi mdi-file-check-outline"
-                                            onClick={() => window.open(new URL(file.url), '_blank')}
-                                          ></span>
-                                          <span
-                                            style={{
-                                              fontSize: "18px",
-                                              position: "absolute",
-                                              top: "12%",
-                                              left: "55%",
-                                              color: "#f46a6a",
-                                              cursor: "pointer"
-                                            }}
-                                            className="mdi mdi-close-circle"
-                                            onClick={() => confirmToggleDelete(file.num)}
-                                          ></span>
-                                          <div
-                                            style={{
-                                              width: items.count > 1 ? "100px" : '100%',
-                                              fontSize: "16px",
-                                              whiteSpace: "nowrap",
-                                              textOverflow: "ellipsis",
-                                              overflow: "hidden",
-                                              textAlign: "center", 
-                                              marginLeft: "50%",
-                                              transform: "translateX(-50%)"
-                                            }}
-                                          >
-                                            {file.name}
-                                          </div>
-                                        </Col>
-
-                                      )
-                                        :
-                                        (
-                                          <Col md='3' style={{ marginTop: "2%" }} className="files" key={i}>
-                                            <a
+                                        items.count > 1 ? (
+                                          <Col md={items.count > 3 ? '3' : '4'} className="files" key={i}>
+                                            <span
                                               style={{
                                                 fontSize: "50px",
                                                 color: "#7BAE40",
                                                 opacity: "0.75",
                                                 cursor: "pointer"
                                               }}
-                                              className="mdi mdi-dots-horizontal"
-                                              onClick={{}}
-                                            ></a>
+                                              className="mdi mdi-file-check-outline"
+                                              onClick={() => window.open(new URL(file.url), '_blank')}
+                                            ></span>
+                                            <span
+                                              style={{
+                                                fontSize: "18px",
+                                                position: "absolute",
+                                                top: "12%",
+                                                left: "55%",
+                                                color: "#f46a6a",
+                                                cursor: "pointer"
+                                              }}
+                                              className="mdi mdi-close-circle"
+                                              onClick={() => confirmToggleDelete(file.num)}
+                                            ></span>
+                                            <div
+                                              style={{
+                                                width: items.count > 3 ? "85px" : '100%',
+                                                fontSize: "16px",
+                                                whiteSpace: "nowrap",
+                                                textOverflow: "ellipsis",
+                                                overflow: "hidden",
+                                                textAlign: "center",
+                                                marginLeft: "50%",
+                                                transform: "translateX(-50%)"
+                                              }}
+                                            >
+                                              {file.name}
+                                            </div>
                                           </Col>
+                                        ) : (
+                                          <Col className="files" key={i}>
+                                            <span
+                                              style={{
+                                                fontSize: "50px",
+                                                color: "#7BAE40",
+                                                opacity: "0.75",
+                                                cursor: "pointer"
+                                              }}
+                                              className="mdi mdi-file-check-outline"
+                                              onClick={() => window.open(new URL(file.url), '_blank')}
+                                            ></span>
+                                            <span
+                                              style={{
+                                                fontSize: "18px",
+                                                position: "absolute",
+                                                top: "12%",
+                                                left: "55%",
+                                                color: "#f46a6a",
+                                                cursor: "pointer"
+                                              }}
+                                              className="mdi mdi-close-circle"
+                                              onClick={() => confirmToggleDelete(file.num)}
+                                            ></span>
+                                            <div
+                                              style={{
+                                                width: items.count > 1 ? "100px" : '100%',
+                                                fontSize: "16px",
+                                                whiteSpace: "nowrap",
+                                                textOverflow: "ellipsis",
+                                                overflow: "hidden",
+                                                textAlign: "center",
+                                                marginLeft: "50%",
+                                                transform: "translateX(-50%)"
+                                              }}
+                                            >
+                                              {file.name}
+                                            </div>
+                                          </Col>
+                                        )
+
+                                      )
+                                        :
+                                        (
+                                          i > 4 ? (
+                                            <Col style={{ marginTop: "2%" }} className="files" key={i}>
+                                              <a
+                                                style={{
+                                                  fontSize: "50px",
+                                                  color: "#7BAE40",
+                                                  opacity: "0.75",
+                                                  cursor: "pointer"
+                                                }}
+                                                className="mdi mdi-dots-horizontal"
+                                                onClick={{}}
+                                              ></a>
+                                            </Col>
+                                          ) : null 
                                         )
                                     ))}
                                   </>
@@ -306,13 +349,13 @@ const EnterMonthlyData = (props) => {
                               overflow: "hidden",
                               fontSize: "16px",
                               fontWeight: "bold",
-                              marginLeft:"-2%", 
-                              marginBottom:"-5%"
+                              marginLeft: "-2%",
+                              marginBottom: "-5%"
                             }}>
                               {items.name}
                             </Col>
                             <Col className="col-4 d-flex justify-content-end">
-                              <Button style={{ marginRight:"-5%", marginBottom:"-5%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
+                              <Button style={{ marginRight: "-12%", marginBottom: "-15%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
                             </Col>
                           </Row>
 
