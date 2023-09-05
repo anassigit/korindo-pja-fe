@@ -661,6 +661,7 @@ const FileManagement = (props) => {
                                   e.preventDefault(); // Prevent the default context menu
                                   handleContextMenuOpen2(e);
                                 }}
+                                onDoubleClick={() => toggleShowModal(myfiles.url)}
                               >
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
