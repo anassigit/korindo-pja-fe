@@ -21,7 +21,7 @@ import {
   Button
 } from "reactstrap"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
-import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile, getYear, getMonth } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import Rename from "./Rename";
 import Upload from "./Upload";
@@ -36,17 +36,7 @@ import MsgModal from 'components/Common/MsgModal';
 import "../../assets/scss/contextmenu.scss"
 import "../../assets/scss/custom.scss"
 
-//icon images//
 
-import folder2 from '../../assets/images/file_management/folder2.png'
-import doc from '../../assets/images/file_management/doc.png'
-import xls from '../../assets/images/file_management/xls.png'
-import ppt from '../../assets/images/file_management/ppt.png'
-import pdf from '../../assets/images/file_management/pdf.png'
-import txt from '../../assets/images/file_management/txt.png'
-import unknown from '../../assets/images/file_management/unknown.png'
-import DatePicker from "react-datepicker";
-import CustomDatePicker from "common/CustomDatePicker";
 
 
 const EnterMonthlyData = (props) => {
@@ -58,37 +48,32 @@ const EnterMonthlyData = (props) => {
   const [monthlyDataPage, setMonthlyDataPage] = useState(true)
   const [monthlyDataMsg, setMonthlyDataMsg] = useState("")
 
+  const [selectedYear, setSelectedYear] = useState("")
+  const [selectedMonth, setSelectedMonth] = useState()
+
+  const yearData = useSelector(state => {
+    return state.fileManagementReducer.respGetYear;
+  })
+
+  const monthData = useSelector(state => {
+    return state.fileManagementReducer.respGetMonth;
+  })
 
   const handleSearchChange = (e) => {
     dispatch(getSearch({ "search": e.target.value }))
   }
 
+  useEffect(() => {
+    dispatch(getYear())
+  }, [])
 
-  const dateChanger = (name, selectedDate) => {
-    // let convertedDate = selectedDate.toISOString().substr(0, 7);
-    // if (name === 'from') {
-    //     setDateFrom(convertedDate);
-    //     setAppInstructionsTabelSearch((prevSearch) => ({
-    //         ...prevSearch,
-    //         search: {
-    //             ...prevSearch.search,
-    //             from: convertedDate,
-    //             to: dateTo,
-    //         },
-    //     }));
-    // } else if (name === 'to') {
-    //     setDateTo(convertedDate);
-    //     setAppInstructionsTabelSearch((prevSearch) => ({
-    //         ...prevSearch,
-    //         search: {
-    //             ...prevSearch.search,
-    //             from: dateFrom,
-    //             to: convertedDate,
-    //         },
-    //     }));
-    // }
+  useEffect(() => {
+    dispatch(getMonth({ year: selectedYear }))
+  }, [selectedYear])
+
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
   };
-
 
   const cardsData = [
     { id: 1, content: 'Short Card 1' },
@@ -101,7 +86,7 @@ const EnterMonthlyData = (props) => {
     { id: 8, content: 'Short Card 5' },
     { id: 9, content: 'Long Card 4' },
   ];
-
+  
 
   return (
     <RootPageCustom
@@ -133,17 +118,20 @@ const EnterMonthlyData = (props) => {
                         <Col md='1' className="d-flex justify-content-end">
                           <Row className="mb-1">
                             <Input
+                              style={{marginLeft:"50%"}}
                               name="year"
+                              className="year"
                               type="select"
                               placeholder="YYYY"
-                            //   onChange={(e) => {
-                            //     editInstructionsValidInput.handleChange(e)
-                            //   }}
-
-                            //   value={editInstructionsValidInput.values.status}
-                            //   invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
+                              value={selectedYear}
+                              onChange={handleYearChange}
                             >
-
+                              <option value="YYYY">YYYY</option>
+                              {yearData?.data?.yearList.map((value, key) => (
+                                <option key={key} value={value}>
+                                  {value}
+                                </option>
+                              ))}
                             </Input>
                           </Row>
                         </Col>
@@ -151,17 +139,15 @@ const EnterMonthlyData = (props) => {
                         <Col md='1' className="d-flex justify-content-end ">
                           <Row className="mb-1">
                             <Input
-                              name="year"
+                              name="month"
+                              className="month"
                               type="select"
-                              placeholder="YYYY"
-                            //   onChange={(e) => {
-                            //     editInstructionsValidInput.handleChange(e)
-                            //   }}
-
-                            //   value={editInstructionsValidInput.values.status}
-                            //   invalid={editInstructionsValidInput.touched.status && editInstructionsValidInput.errors.status}
                             >
-
+                              {monthData?.data?.monthList.map((value, key) => (
+                                <option key={key} value={value}>
+                                  {value}
+                                </option>
+                              ))}
                             </Input>
                           </Row>
                         </Col>
@@ -178,12 +164,12 @@ const EnterMonthlyData = (props) => {
                       <Card className="mb-2">
                         <CardBody>
                           <Row className="text-center justify-content-center">
-                            <span style={{fontSize: "62px", color: "#7BAE40", opacity:"0.75"}} className="mdi mdi-file-check-outline"></span>
-                            <span style={{fontSize: "24px", marginTop: "-2%"}}>test</span>
+                            <span style={{ fontSize: "62px", color: "#7BAE40", opacity: "0.75" }} className="mdi mdi-file-check-outline"></span>
+                            <span style={{ fontSize: "24px", marginTop: "-2%" }}>test</span>
                           </Row>
                           <Row>
                             <Col>
-                              <span style={{fontSize: "16px", fontWeight: "bold", whiteSpace: "nowrap" }}>Company Name</span>
+                              <span style={{ fontSize: "16px", fontWeight: "bold", whiteSpace: "nowrap" }}>Company Name</span>
                             </Col>
                             <Col className="text-end">
                               <Button
