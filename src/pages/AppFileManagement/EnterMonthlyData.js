@@ -41,8 +41,6 @@ import "../../assets/scss/custom.scss"
 
 const EnterMonthlyData = (props) => {
 
-  //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
-  let tempIndex = null
 
   const dispatch = useDispatch();
   const [monthlyDataPage, setMonthlyDataPage] = useState(true)
@@ -50,6 +48,10 @@ const EnterMonthlyData = (props) => {
 
   const [selectedYear, setSelectedYear] = useState("")
   const [selectedMonth, setSelectedMonth] = useState()
+
+  const [confirmModalDelete, setConfirmModalDelete] = useState(false)
+  const [tempIdDel, setTempIdDel] = useState()
+  const [isYes, setIsYes] = useState(false)
 
   const yearData = useSelector(state => {
     return state.fileManagementReducer.respGetYear;
@@ -62,6 +64,11 @@ const EnterMonthlyData = (props) => {
   const dashboardData = useSelector(state => {
     return state.fileManagementReducer.respGetMonthlyData;
   })
+
+  const msgDeleteFile = useSelector(state => {
+    return state.fileManagementReducer.msgDelete;
+  })
+
 
   const handleSearchChange = (e) => {
     dispatch(getSearch({ "search": e.target.value }))
@@ -87,10 +94,56 @@ const EnterMonthlyData = (props) => {
     setSelectedMonth(e.target.value);
   }
 
+  const toggleUploadModal = () => {
+
+    setIdNowLoc(currFolder)
+    setCreateModal(!createModal)
+    setIdToggleCreate(idChild)
+  }
+
+  const confirmToggleDelete = (e) => {
+
+    if (e) {
+      setTempIdDel(e)
+    }
+    setConfirmModalDelete(!confirmModalDelete)
+  }
+
+  useEffect(() => {
+    debugger
+    if (isYes) {
+      let num = null
+      num = tempIdDel
+      num.toString()
+
+      dispatch(deleteFileFolder(
+        {
+          'file_num': num
+        }
+      ))
+
+    }
+  }, [isYes])
+
+  useEffect(() => {
+    debugger
+    if (msgDeleteFile?.status == "1") {
+      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
+      setIsYes(!isYes)
+    }
+  }, [msgDeleteFile])
+
   return (
     <RootPageCustom
       componentJsx={
         <>
+
+          <ConfirmModal
+            modal={confirmModalDelete}
+            toggle={confirmToggleDelete}
+            message={props.t("Are you sure to delete this")}
+            setIsYes={setIsYes}
+          />
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
             {typeof monthlyDataMsg == 'string' ? null : monthlyDataMsg.message}</UncontrolledAlert> : null}
@@ -162,7 +215,16 @@ const EnterMonthlyData = (props) => {
                                       i < 3 ? (
 
                                         <Col md='3' className="files" key={i}>
-                                          <span style={{ fontSize: "50px", color: "#7BAE40", opacity: "0.75" }} className="mdi mdi-file-check-outline"></span>
+                                          <span
+                                            style={{
+                                              fontSize: "50px",
+                                              color: "#7BAE40",
+                                              opacity: "0.75",
+                                              cursor: "pointer"
+                                            }}
+                                            className="mdi mdi-file-check-outline"
+                                            onClick={() => window.open(new URL(file.url), '_blank')}
+                                            ></span>
                                           <span
                                             style={{
                                               fontSize: "18px",
@@ -173,9 +235,15 @@ const EnterMonthlyData = (props) => {
                                               cursor: "pointer"
                                             }}
                                             className="mdi mdi-close-circle"
-                                            onClick={{}}
+                                            onClick={() => confirmToggleDelete(file.num)}
                                           ></span>
-                                          <div style={{ width: "70px", fontSize: items.count !== 1 ? items.count === 3 ? "16px" : "20px" : "24px", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>{file.name}</div>
+                                          <div style={{
+                                            width: "70px",
+                                            fontSize: items.count !== 1 ? items.count === 3 ? "16px" : "20px" : "24px",
+                                            whiteSpace: "nowrap",
+                                            textOverflow: "ellipsis",
+                                            overflow: "hidden"
+                                          }}>{file.name}</div>
                                         </Col>
                                       )
                                         :
@@ -187,10 +255,10 @@ const EnterMonthlyData = (props) => {
                                                 color: "#7BAE40",
                                                 opacity: "0.75",
                                                 cursor: "pointer"
-                                              }} 
+                                              }}
                                               className="mdi mdi-dots-horizontal"
                                               onClick={{}}
-                                              ></a>
+                                            ></a>
                                           </Col>
                                         )
                                     ))}
