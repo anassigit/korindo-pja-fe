@@ -23,10 +23,6 @@ import {
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile, getYear, getMonth, getMonthlyData } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
-import Rename from "./Rename";
-import Upload from "./Upload";
-import Create from "./Create";
-import Move from "./Move";
 import ConfirmModal from "components/Common/ConfirmModal";
 import { downloadFileFolder } from "helpers/backend_helper";
 import { withTranslation } from "react-i18next"
@@ -35,6 +31,8 @@ import MsgModal from 'components/Common/MsgModal';
 //css//
 import "../../assets/scss/contextmenu.scss"
 import "../../assets/scss/custom.scss"
+
+//js file//
 import UploadMonthly from "./UploadMonthly";
 
 
@@ -52,6 +50,8 @@ const EnterMonthlyData = (props) => {
 
   const [uploadModalMonthly, setUploadModalMonthly] = useState(false)
   const [idFolderUpload, setIdFolderUpload] = useState("")
+  const [currYear, setCurrYear] = useState("")
+  const [currMonth, setCurrMonth] = useState()
 
   const [confirmModalDelete, setConfirmModalDelete] = useState(false)
   const [tempIdDel, setTempIdDel] = useState()
@@ -102,6 +102,9 @@ const EnterMonthlyData = (props) => {
     debugger
    setUploadModalMonthly(!uploadModalMonthly)
    setIdFolderUpload(folder_id)
+   setCurrMonth(selectedMonth)
+   setCurrYear(selectedYear)
+
  }
 
  {
@@ -156,6 +159,8 @@ const EnterMonthlyData = (props) => {
             modal={uploadModalMonthly}
             toggle={toggleUploadModalMonthly}
             idFolderUpload={idFolderUpload}
+            currMonth={currMonth}
+            currYear={currYear}
           />    
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>

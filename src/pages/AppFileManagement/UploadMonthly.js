@@ -5,20 +5,20 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
-import { resetMessage, msgUpload, uploadFile, getSelectFile } from '../../store/appFileManagement/actions';
+import { resetMessage, msgUpload, uploadFile, getSelectFile, getMonthlyData } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
 import { withTranslation } from "react-i18next"
 
 const UploadMonthly = (props) => {
 
     const dispatch = useDispatch();
-    const [uploadSpinner, setUploadSpinner] = useState(false)
-    const [uploadMsg, setUploadMsg] = useState(false)
+    const [uploadMonthlySpinner, setUploadMonthlySpinner] = useState(false)
+    const [uploadMonthlyMsg, setUploadMonthlyMsg] = useState(false)
     const [selectedfile, SetSelectedFile] = useState([]);
     const [Files, SetFiles] = useState([]);
     const [successClose, setSuccessClose] = useState(false)
 
-    const uploadRespMsg = useSelector(state => {
+    const uploadMonthlyRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgUpload;
     })
 
@@ -30,7 +30,7 @@ const UploadMonthly = (props) => {
         enableReinitialize: true,
 
         initialValues: {
-            parent_num: props.idToggleUpload,
+            parent_num: props.idFolderUpload,
         },
 
         validationSchema: Yup.object().shape({
@@ -64,7 +64,7 @@ const UploadMonthly = (props) => {
             }
 
             bodyForm.append('parent_num', value.parent_num);
-            setUploadSpinner(true)
+            setUploadMonthlySpinner(true)
             insertUpload(bodyForm, config);
             toggleMsgModal()
             
@@ -93,31 +93,32 @@ const UploadMonthly = (props) => {
     const toggleMsgModal = () => {
         debugger
         setUploadMsgModal(!uploadMsgModal)
-        if (uploadMsg.status === "1") {
+        if (uploadMsgModal.status === "1") {
 
             props.toggle()
 
-            setUploadMsg("")
+            setUploadMsgModal("")
 
             SetSelectedFile([])
 
-            dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+            // dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+            dispatch(getMonthlyData({ month: props.currMonth, year: props.currYear }))
 
         }
     }
 
     useEffect(() => {
-        if (uploadRespMsg.status === "1") {
+        if (uploadMonthlyRespMsg.status === "1") {
 
        debugger
         setSuccessClose(true)
-            setUploadMsg(uploadRespMsg);
+            setUploadMsgModal(uploadMonthlyRespMsg);
             
 
         }
-        setUploadContentModal(uploadRespMsg.message)
-        setUploadSpinner(false)
-    }, [uploadRespMsg]);
+        setUploadContentModal(uploadMonthlyRespMsg.message)
+        setUploadMonthlySpinner(false)
+    }, [uploadMonthlyRespMsg]);
 
     const refCleanser = useRef(null)
 
@@ -264,10 +265,10 @@ const UploadMonthly = (props) => {
                
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color={uploadSpinner ? "primary disabled" : "primary"}>
+                    <Button type="submit" color={uploadMonthlySpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
                         {props.t("Add")}
-                        <Spinner style={{ display: uploadSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
+                        <Spinner style={{ display: uploadMonthlySpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger"  onClick={()=>{closeButton()}}>
                         {props.t("Close")}
@@ -283,8 +284,9 @@ const UploadMonthly = (props) => {
 UploadMonthly.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
-    idToggleUpload: PropTypes.any,
-    idNowLoc: PropTypes.any,
+    idFolderUpload: PropTypes.any,
+    currMonth: PropTypes.any,
+    currYear: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };
