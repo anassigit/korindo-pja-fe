@@ -662,6 +662,7 @@ const FileManagement = (props) => {
                                   handleContextMenuOpen2(e);
                                 }}
                                 onDoubleClick={() => toggleShowModal(myfiles.url)}
+                                style={{cursor:"pointer"}}
                               >
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
