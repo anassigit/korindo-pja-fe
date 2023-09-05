@@ -259,8 +259,8 @@ const EnterMonthlyData = (props) => {
                                             <div
                                               style={{
                                                 width: items.count > 3 ? "85px" : '100%',
-                                                fontSize: "16px",
-                                                whiteSpace: "nowrap",
+                                                height:"3em",
+                                                fontSize: "12px",
                                                 textOverflow: "ellipsis",
                                                 overflow: "hidden",
                                                 textAlign: "center",
