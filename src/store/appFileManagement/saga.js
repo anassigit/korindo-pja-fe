@@ -14,6 +14,9 @@ import {
     MOVE_FILES,
     CREATE_FOLDER,
     SEARCH_FILE,
+    GET_MONTHLY_DATA,
+    GET_MONTH,
+    GET_YEAR
 
 } from "./actionTypes"
 
@@ -24,6 +27,9 @@ import {
     respGetSelectFile,
     respSearchFile,
     respGetDownloadCheckFile,
+    respGetMonthlyData,
+    respGetMonth,
+    respGetYear,
     msgAdd,
     msgEdit,
     msgDelete,
@@ -46,6 +52,9 @@ import {
     moveFileFolder,
     createFolder,
     searchFile,
+    getMonthlyData,
+    getYear,
+    getMonth
 
 } from "helpers/backend_helper"
 
@@ -173,6 +182,48 @@ function* fetchGetSelectFolder({ payload: req }) {
     }
   }
 
+  function* fetchGetMonthlyData({ payload: req }) {
+    try {
+      const response = yield call(getMonthlyData, req)
+      if (response.status == 1) {
+        yield put(respGetMonthlyData(response))
+      } else {
+        yield put(respGetMonthlyData(response))
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(respGetMonthlyData({ "status": 0, "message": "Error Get Data" }))
+    }
+  }
+
+  function* fetchGetMonth({ payload: req }) {
+    try {
+      const response = yield call(getMonth, req)
+      if (response.status == 1) {
+        yield put(respGetMonth(response))
+      } else {
+        yield put(respGetMonth(response))
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(respGetMonth({ "status": 0, "message": "Error Get Data" }))
+    }
+  }
+
+  function* fetchGetYear({ payload: req }) {
+    try {
+      const response = yield call(getYear, req)
+      if (response.status == 1) {
+        yield put(respGetYear(response))
+      } else {
+        yield put(respGetYear(response))
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(respGetYear({ "status": 0, "message": "Error Get Data" }))
+    }
+  }
+
   function* fileManagementSaga() {
 
     yield takeEvery(GET_SELECT, fetchGetSelectFolder)
@@ -186,7 +237,9 @@ function* fetchGetSelectFolder({ payload: req }) {
     yield takeEvery(MOVE_FILES, fetchMovefiles)
     yield takeEvery(CREATE_FOLDER, fetchCretaeFolder)
     yield takeEvery(SEARCH_FILE, fetchGetSearchFile)
-    
+    yield takeEvery(GET_MONTHLY_DATA, fetchGetMonthlyData)
+    yield takeEvery(GET_MONTH, fetchGetMonth)
+    yield takeEvery(GET_YEAR, fetchGetYear)
 
   }
 

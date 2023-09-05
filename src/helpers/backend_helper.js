@@ -200,3 +200,9 @@ export const moveFileFolder = req => postWithParam("/rest/FileManagementRest/Mov
 export const createFolder = req => postWithParam("/rest/FileManagementRest/CreateNewFolder", req)
 
 export const searchFile = req => postWithParam("/rest/FileManagementRest/Search", req)
+
+export const getYear = req => postWithParam("/rest/FileManagementRest/SelectYear", req)
+
+export const getMonth= req => postWithParam("/rest/FileManagementRest/SelectMonth", req)
+
+export const getMonthlyData= req => postWithParam("/rest/FileManagementRest/SelectDashboard", req)

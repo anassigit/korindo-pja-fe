@@ -25,7 +25,13 @@ import {
     MSGADD,
     MSGEDIT,
     MSGDELETE,
-    MSGRENAME
+    MSGRENAME,
+    GET_MONTHLY_DATA,
+    RESP_GET_MONTHLY_DATA,
+    GET_MONTH,
+    RESP_GET_MONTH,
+    GET_YEAR,
+    RESP_GET_YEAR
 
 } from "./actionTypes"
 
@@ -36,6 +42,9 @@ const INIT_STATE = {
     respGetSelectFile: {},
     respGetSearchFile: {},
     respGetDownloadCheck: {},
+    respGetMonthlyData: {},
+    respGetMonth: {},
+    respGetYear: {},
     msgDownloadCheck:"",
     msgAdd: "",
     msgEdit: "",
@@ -180,7 +189,33 @@ const fileManagementReducer = (state = INIT_STATE, action) => {
                         ...state,
                         msgDownloadCheck: action.payload,
                     }
-
+                    case GET_MONTHLY_DATA:
+                        return {
+                            ...state,
+                        }
+                    case RESP_GET_MONTHLY_DATA:
+                        return {
+                            ...state,
+                            respGetMonthlyData: action.payload,
+                        }
+                        case GET_MONTH:
+                            return {
+                                ...state,
+                            }
+                        case RESP_GET_MONTH:
+                            return {
+                                ...state,
+                                respGetMonth: action.payload,
+                            }
+                            case GET_YEAR:
+                                return {
+                                    ...state,
+                                }
+                            case RESP_GET_YEAR:
+                                return {
+                                    ...state,
+                                    respGetYear: action.payload,
+                                }
         default:
             return state
     }

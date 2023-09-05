@@ -16,6 +16,12 @@ import {
     CREATE_FOLDER,
     SEARCH_FILE,
     RESP_SEARCH_FILE,
+    GET_MONTHLY_DATA,
+    RESP_GET_MONTHLY_DATA,
+    GET_MONTH,
+    RESP_GET_MONTH,
+    GET_YEAR,
+    RESP_GET_YEAR,
     MSGDOWNLOADCHECK,
     MSGCREATE,
     MSGDOWNLOAD,
@@ -92,6 +98,36 @@ export const getSelectFile = (req) => ({
   export const createFolder = (req) => ({
     type: CREATE_FOLDER,
     payload: req,
+  })
+
+  export const getMonthlyData = (req) => ({
+    type: GET_MONTHLY_DATA,
+    payload: req,
+  })
+  
+  export const respGetMonthlyData = resp => ({
+    type: RESP_GET_MONTHLY_DATA,
+    payload: resp,
+  })
+
+  export const getMonth = (req) => ({
+    type: GET_MONTH,
+    payload: req,
+  })
+  
+  export const respGetMonth = resp => ({
+    type: RESP_GET_MONTH,
+    payload: resp,
+  })
+
+  export const getYear = (req) => ({
+    type: GET_YEAR,
+    payload: req,
+  })
+  
+  export const respGetYear = resp => ({
+    type: RESP_GET_YEAR,
+    payload: resp,
   })
 
   export const msgCreate = (req) => ({
