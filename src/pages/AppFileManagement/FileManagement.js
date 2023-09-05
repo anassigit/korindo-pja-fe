@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import RootPageCustom from '../../common/RootPageCustom';
 import PropTypes, { any } from 'prop-types';
 import '../../config';
@@ -109,8 +109,15 @@ const FileManagement = (props) => {
     setRenameModal(!renameModal)
   }
 
+  const toggleShowModal = (vUrl) => {
+
+    const pdfWindow = window.open();
+    pdfWindow.location.href = new URL(vUrl);
+
+  };
+
   const toggleUploadModal = () => {
-    debugger
+     
     setIdNowLoc(currFolder)
     setUploadModal(!uploadModal)
     setIdToggleUpload(idChild)
@@ -124,7 +131,7 @@ const FileManagement = (props) => {
   }
 
   const toggleMoveModal = (Fid, Pid) => {
-    debugger
+     
     setFnum(Fid)
     setPnum(Pid)
     setFName(fNem)
@@ -144,7 +151,7 @@ const FileManagement = (props) => {
   }
 
   const confirmToggleDelete = (e, typeFolder) => {
-    debugger
+     
     if (e) {
       setTempIdDel(e)
       setIsTypeFolder(typeFolder)
@@ -263,14 +270,14 @@ const FileManagement = (props) => {
   const [fileNmTemp, setFileNmTemp] = useState()
 
   const downloadCheckFile1 = (num, fileNm) => {
-    debugger
+     
     setNumTemp(num)
     setFileNmTemp(fileNm)
     setDownloadFlag(true)
   }
 
   const downloadCheckFile2 = (num, fileNm) => {
-    debugger
+     
     setDownloadFlag(true)
 
   };
@@ -287,7 +294,7 @@ const FileManagement = (props) => {
   };
 
   useEffect(() => {
-    debugger
+     
     if (downloadFlag) {
 
       const indexed_array = {
@@ -314,7 +321,7 @@ const FileManagement = (props) => {
   };
 
   useEffect(() => {
-    debugger
+     
     if (downloadRespMsg.status === "0") {
       setDownloadMsg(downloadRespMsg);
       toggleMsgModal()
@@ -338,7 +345,7 @@ const FileManagement = (props) => {
 
 
   const handleContextMenuOpen = (e) => {
-    debugger
+     
     e.preventDefault();
 
     const xPos = e.clientX;
@@ -350,7 +357,7 @@ const FileManagement = (props) => {
   };
 
   const handleDropdownMenuToggle = () => {
-    debugger
+     
     setDropdownMenuOpen(true);
     setContextMenuOpen(false);
     setContextMenuOpen2(false);
@@ -362,7 +369,7 @@ const FileManagement = (props) => {
 
 
   const handleContextMenuOpen2 = (e) => {
-    debugger
+     
     e.preventDefault();
 
     const xPos2 = e.clientX;
@@ -374,7 +381,7 @@ const FileManagement = (props) => {
   };
 
   const handleDropdownMenuToggle2 = () => {
-    debugger
+     
     setDropdownMenuOpen2(true);
     setContextMenuOpen2(false);
     setContextMenuOpen(false);
@@ -382,7 +389,7 @@ const FileManagement = (props) => {
 
 
   useEffect(() => {
-    debugger
+     
     if (!isDropdownMenuOpen2) {
       setContextMenuOpen2(true);
     }
@@ -668,6 +675,10 @@ const FileManagement = (props) => {
                                         </DropdownToggle>
                                         {isDropdownMenuOpen2 && (
                                         <DropdownMenu className="dropdown-menu-end">
+                                          <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                            <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Preview")}
+                                          </DropdownItem>
                                           <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
                                             <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
                                             {props.t("Rename")}
