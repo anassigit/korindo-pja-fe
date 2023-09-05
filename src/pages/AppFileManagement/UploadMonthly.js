@@ -123,7 +123,7 @@ const UploadMonthly = (props) => {
     const refCleanser = useRef(null)
 
     const InputChange = (e) => {
-        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i
+        const allowedFileExtensions = /(pdf)$/i
         const selectedFiles = Array.from(e.target.files)
 
         const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
@@ -153,7 +153,7 @@ const UploadMonthly = (props) => {
                 reader.readAsDataURL(file)
             })
         } else if (e.target.files.length != 0) {
-            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            alert("Allowed upload file type is PDF only.")
             refCleanser.current.value = ""
             e.target.value = ""
         }
@@ -219,25 +219,12 @@ const UploadMonthly = (props) => {
                                     <div className="file-upload-box">
                                         <input 
                                         type="file" 
-                                        accept="
-                                        .docx,
-                                        .doc,
-                                        .xls,
-                                        .xlsx,
-                                        .ppt,
-                                        .pptx,
-                                        .pdf,
-                                        .txt,
-                                        .jpg,
-                                        .jpeg,
-                                        .png,
-                                        .gif,
-                                        .svg"
+                                        accept=".pdf"
                                         id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                     </div>
                                 </div>
                                 &nbsp;
-                                <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed file type is PDF only.")}</span>
                                 &nbsp;&nbsp;&nbsp;
                                 <div className="kb-attach-box mb-3">
                                     {
