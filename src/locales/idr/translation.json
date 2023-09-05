@@ -63,7 +63,7 @@
     "Recent files uploaded": "Berkas yang telah diunggah",
     "Replies": "Balasan",
     "Reply": "Balas",
-    "Search": "Cari :",
+    "Search": "Cari",
     "Status": "Status :",
     "Update": "Perbarui",
     "Profile": "Profil",
@@ -122,6 +122,11 @@
     "Please select member": "Silahkan pilih anggota",
     "Add": "Tambah",
     "Please select group": "Silahkan pilih grup",
+    "Monthly Data": "Data Bulanan",
+    "No File": "File Tidak Ada",
+    "Enter Data Monthly": "Isi Data Bulanan",
+    "Enter Monthly Data": "Isi Data Bulanan",
+    "Data Inquiry": "Penyelidikan Data",
     "Preview": "Lihat"
 
   }

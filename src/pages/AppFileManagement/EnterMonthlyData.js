@@ -21,7 +21,7 @@ import {
   Button
 } from "reactstrap"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
-import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile, getYear, getMonth } from "../../store/appFileManagement/actions"
+import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile, getYear, getMonth, getMonthlyData } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import Rename from "./Rename";
 import Upload from "./Upload";
@@ -59,6 +59,10 @@ const EnterMonthlyData = (props) => {
     return state.fileManagementReducer.respGetMonth;
   })
 
+  const dashboardData = useSelector(state => {
+    return state.fileManagementReducer.respGetMonthlyData;
+  })
+
   const handleSearchChange = (e) => {
     dispatch(getSearch({ "search": e.target.value }))
   }
@@ -71,22 +75,17 @@ const EnterMonthlyData = (props) => {
     dispatch(getMonth({ year: selectedYear }))
   }, [selectedYear])
 
+  useEffect(() => {
+    dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
+  }, [selectedMonth, selectedYear])
+
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
   };
 
-  const cardsData = [
-    { id: 1, content: 'Short Card 1' },
-    { id: 2, content: 'Short Card 2' },
-    { id: 3, content: 'Long Card 1' },
-    { id: 4, content: 'Short Card 3' },
-    { id: 5, content: 'Long Card 2' },
-    { id: 6, content: 'Short Card 4' },
-    { id: 7, content: 'Long Card 3' },
-    { id: 8, content: 'Short Card 5' },
-    { id: 9, content: 'Long Card 4' },
-  ];
-  
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
+  }
 
   return (
     <RootPageCustom
@@ -101,89 +100,132 @@ const EnterMonthlyData = (props) => {
               <Col>
                 <Row className="mb-2">
                   <Col sm="12">
-                    <Col md="4">
-                      <Row className="mb-1 col-sm-10">
-                        <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
-                        <div className="col-sm-7">
-                          <input
-                            type="text"
-                            className="form-control"
-                            onChange={handleSearchChange}
-                          />
-                        </div>
-                      </Row>
-                    </Col>
-                    <Col sm="12">
-                      <div className="d-flex justify-content-end" style={{ marginRight: "12px" }}>
-                        <Col md='1' className="d-flex justify-content-end">
-                          <Row className="mb-1">
-                            <Input
-                              style={{marginLeft:"50%"}}
-                              name="year"
-                              className="year"
-                              type="select"
-                              placeholder="YYYY"
-                              value={selectedYear}
-                              onChange={handleYearChange}
-                            >
-                              <option value="YYYY">YYYY</option>
-                              {yearData?.data?.yearList.map((value, key) => (
-                                <option key={key} value={value}>
-                                  {value}
-                                </option>
-                              ))}
-                            </Input>
-                          </Row>
-                        </Col>
-                        &nbsp;
-                        <Col md='1' className="d-flex justify-content-end ">
-                          <Row className="mb-1">
-                            <Input
-                              name="month"
-                              className="month"
-                              type="select"
-                            >
-                              {monthData?.data?.monthList.map((value, key) => (
-                                <option key={key} value={value}>
-                                  {value}
-                                </option>
-                              ))}
-                            </Input>
-                          </Row>
-                        </Col>
-                      </div>
-                    </Col>
+                    <Row className="mb-1">
+                      <Col>
+                        <input
+                          hidden
+                          type="text"
+                          className="form-control"
+                          placeholder={props.t('Search')}
+                          onChange={handleSearchChange}
+                        />
+                      </Col>
+                      <Col sm="1" className="d-flex justify-content-end">
+                        <Input
+                          name="year"
+                          className="year"
+                          type="select"
+                          value={selectedYear}
+                          onChange={handleYearChange}
+                        >
+                          <option value="YYYY">YYYY</option>
+                          {yearData?.data?.yearList.map((value, key) => (
+                            <option key={key} value={value}>
+                              {value}
+                            </option>
+                          ))}
+                        </Input>
+                      </Col>
+                      <Col sm="1" className="d-flex justify-content-end">
+                        <Input
+                          name="month"
+                          className="month"
+                          type="select"
+                          value={selectedMonth}
+                          onChange={handleMonthChange}
+                        >
+                          <option value="MM">MM</option>
+                          {monthData?.data?.monthList.map((value, key) => (
+                            <option key={key} value={value}>
+                              {value}
+                            </option>
+                          ))}
+                        </Input>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
                 <Row className="mb-1 col-sm-10"><h6>{props.t("Monthly Data")}</h6></Row>
                 <p />
-                <p />
-                <Row className="mb-2">
-                  {cardsData.map((card, index) => (
+                <p /><Row className="mb-2">
+                  {dashboardData?.data?.list.map((items, index) => (
                     <Col sm={12} md={6} lg={3} key={index}>
                       <Card className="mb-2">
                         <CardBody>
-                          <Row className="text-center justify-content-center">
-                            <span style={{ fontSize: "62px", color: "#7BAE40", opacity: "0.75" }} className="mdi mdi-file-check-outline"></span>
-                            <span style={{ fontSize: "24px", marginTop: "-2%" }}>test</span>
+                          <Row className="text-center justify-content-center" style={{ marginTop: "-5%" }}>
+
+                            {
+                              items.count > 0 ?
+                                (
+                                  <>
+                                    {items.fileList?.map((file, i) => (
+                                      i < 3 ? (
+
+                                        <Col md='3' className="files" key={i}>
+                                          <span style={{ fontSize: "50px", color: "#7BAE40", opacity: "0.75" }} className="mdi mdi-file-check-outline"></span>
+                                          <span
+                                            style={{
+                                              fontSize: "18px",
+                                              position: "absolute",
+                                              top: "12%",
+                                              left: "55%",
+                                              color: "#f46a6a",
+                                              cursor: "pointer"
+                                            }}
+                                            className="mdi mdi-close-circle"
+                                            onClick={{}}
+                                          ></span>
+                                          <div style={{ width: "70px", fontSize: items.count !== 1 ? items.count === 3 ? "16px" : "20px" : "24px", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>{file.name}</div>
+                                        </Col>
+                                      )
+                                        :
+                                        (
+                                          <Col md='3' style={{ marginTop: "2%" }} className="files" key={i}>
+                                            <a
+                                              style={{
+                                                fontSize: "50px",
+                                                color: "#7BAE40",
+                                                opacity: "0.75",
+                                                cursor: "pointer"
+                                              }} 
+                                              className="mdi mdi-dots-horizontal"
+                                              onClick={{}}
+                                              ></a>
+                                          </Col>
+                                        )
+                                    ))}
+                                  </>
+                                )
+                                :
+                                (
+                                  <Col className="nofile">
+                                    <span style={{ fontSize: "50px", color: "#7BAE40", opacity: "0.75" }} className="mdi mdi-file-cancel-outline text-danger"></span>
+                                    <div style={{ fontSize: "24px" }}>{props.t('No File')}</div>
+                                  </Col>
+                                )
+                            }
                           </Row>
-                          <Row>
-                            <Col>
-                              <span style={{ fontSize: "16px", fontWeight: "bold", whiteSpace: "nowrap" }}>Company Name</span>
+                          <Row className="align-items-center mt-3">
+                            <Col className="col-8" style={{
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              overflow: "hidden",
+                              fontSize: "16px",
+                              fontWeight: "bold",
+                            }}>
+                              {items.name}
                             </Col>
-                            <Col className="text-end">
-                              <Button
-                                style={{ paddingTop: "2px", paddingBottom: "2px" }}
-                              >
-                                Upload
-                              </Button>
+                            <Col className="col-4">
+                              <Button style={{ paddingTop: "2px", paddingBottom: "2px" }}>Upload</Button>
                             </Col>
                           </Row>
+
                         </CardBody>
                       </Card>
                     </Col>
                   ))}
                 </Row>
+
 
 
               </Col>
