@@ -35,6 +35,7 @@ import MsgModal from 'components/Common/MsgModal';
 //css//
 import "../../assets/scss/contextmenu.scss"
 import "../../assets/scss/custom.scss"
+import UploadMonthly from "./UploadMonthly";
 
 
 
@@ -48,6 +49,9 @@ const EnterMonthlyData = (props) => {
 
   const [selectedYear, setSelectedYear] = useState("")
   const [selectedMonth, setSelectedMonth] = useState()
+
+  const [uploadModalMonthly, setUploadModalMonthly] = useState(false)
+  const [idFolderUpload, setIdFolderUpload] = useState("")
 
   const [confirmModalDelete, setConfirmModalDelete] = useState(false)
   const [tempIdDel, setTempIdDel] = useState()
@@ -94,12 +98,15 @@ const EnterMonthlyData = (props) => {
     setSelectedMonth(e.target.value);
   }
 
-  const toggleUploadModal = () => {
+  const toggleUploadModalMonthly = (folder_id) => {
+    debugger
+   setUploadModalMonthly(!uploadModalMonthly)
+   setIdFolderUpload(folder_id)
+ }
 
-    setIdNowLoc(currFolder)
-    setCreateModal(!createModal)
-    setIdToggleCreate(idChild)
-  }
+ {
+   console.log("data", dashboardData)
+ }
 
   const confirmToggleDelete = (e) => {
 
@@ -144,6 +151,12 @@ const EnterMonthlyData = (props) => {
             message={props.t("Are you sure to delete this?")}
             setIsYes={setIsYes}
           />
+
+          <UploadMonthly
+            modal={uploadModalMonthly}
+            toggle={toggleUploadModalMonthly}
+            idFolderUpload={idFolderUpload}
+          />    
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
             {typeof monthlyDataMsg == 'string' ? null : monthlyDataMsg.message}</UncontrolledAlert> : null}
@@ -294,7 +307,7 @@ const EnterMonthlyData = (props) => {
                               {items.name}
                             </Col>
                             <Col className="col-4 d-flex justify-content-end">
-                              <Button style={{ marginRight:"-5%", marginBottom:"-5%", paddingTop: "2px", paddingBottom: "2px" }}>{props.t('Add')}</Button>
+                              <Button style={{ marginRight:"-5%", marginBottom:"-5%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
                             </Col>
                           </Row>
 
