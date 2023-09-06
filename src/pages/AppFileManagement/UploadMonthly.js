@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner } from 'reactstrap';
 import { useFormik } from 'formik';
@@ -38,14 +38,13 @@ const UploadMonthly = (props) => {
         }),
 
         onSubmit: (value) => {
-    debugger
             var bodyForm = new FormData();
-            
+
             const isParentUndefined = value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined;
 
             value.parent_num = isParentUndefined ? 0 : value.parent_num;
-            
-                debugger
+
+            debugger
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -62,23 +61,24 @@ const UploadMonthly = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }
+            props.setEnterMonthlyDataSpinner(true)
 
             bodyForm.append('parent_num', value.parent_num);
             setUploadMonthlySpinner(true)
             insertUpload(bodyForm, config);
             toggleMsgModal()
-            
-        
+
+
         }
     });
 
-    
+
     const insertUpload = async (value) => {
         debugger
-        
+
         await dispatch(uploadFile(value));
         // toggleMsgModal()
-        
+
     };
 
 
@@ -97,6 +97,7 @@ const UploadMonthly = (props) => {
 
             props.toggle()
 
+            props.setEnterMonthlyDataSpinner(false)
             setUploadMsgModal("")
 
             SetSelectedFile([])
@@ -110,10 +111,11 @@ const UploadMonthly = (props) => {
     useEffect(() => {
         if (uploadMonthlyRespMsg.status === "1") {
 
-       debugger
-        setSuccessClose(true)
+            debugger
+            props.setEnterMonthlyDataSpinner(false)
+            setSuccessClose(true)
             setUploadMsgModal(uploadMonthlyRespMsg);
-            
+
 
         }
         setUploadContentModal(uploadMonthlyRespMsg.message)
@@ -192,7 +194,7 @@ const UploadMonthly = (props) => {
 
         props.toggle();
         SetSelectedFile([])
-    
+
     }
 
     return (
@@ -210,15 +212,15 @@ const UploadMonthly = (props) => {
             }}>
                 <ModalHeader toggle={props.toggle}>{props.t("Upload New File")}</ModalHeader>
                 <ModalBody>
-                   
-                        <div className="mb-3">
-                            <label>{props.t("Choose files")} </label>
-                            <Form onSubmit={FileUploadSubmit}>
-                                <div className="kb-file-upload">
 
-                                    <div className="file-upload-box">
-                                        <input 
-                                        type="file" 
+                    <div className="mb-3">
+                        <label>{props.t("Choose files")} </label>
+                        <Form onSubmit={FileUploadSubmit}>
+                            <div className="kb-file-upload">
+
+                                <div className="file-upload-box">
+                                    <input
+                                        type="file"
                                         accept="
                                         .docx,
                                         .doc,
@@ -234,35 +236,35 @@ const UploadMonthly = (props) => {
                                         .gif,
                                         .svg"
                                         id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
-                                    </div>
                                 </div>
-                                &nbsp;
-                                <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
-                                &nbsp;&nbsp;&nbsp;
-                                <div className="kb-attach-box mb-3">
-                                    {
-                                        selectedfile.map((data, index) => {
-                                            const { id, filename, filetype, fileimage, datetime, filesize } = data;
-                                            return (
-                                                <div className="file-atc-box" key={id}>
-                                                    <div className="file-detail text-wrap">
-                                                        <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
-                                                        &nbsp;&nbsp;&nbsp;
+                            </div>
+                            &nbsp;
+                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                            &nbsp;&nbsp;&nbsp;
+                            <div className="kb-attach-box mb-3">
+                                {
+                                    selectedfile.map((data, index) => {
+                                        const { id, filename, filetype, fileimage, datetime, filesize } = data;
+                                        return (
+                                            <div className="file-atc-box" key={id}>
+                                                <div className="file-detail text-wrap">
+                                                    <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
+                                                    &nbsp;&nbsp;&nbsp;
 
-                                                        <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
+                                                    <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
 
-                                                    </div>
                                                 </div>
-                                            )
-                                        })
-                                    }
-                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
 
-           
-                            </Form>
-                        </div>
 
-               
+                        </Form>
+                    </div>
+
+
                 </ModalBody>
                 <ModalFooter>
                     <Button type="submit" color={uploadMonthlySpinner ? "primary disabled" : "primary"}>
@@ -270,7 +272,7 @@ const UploadMonthly = (props) => {
                         {props.t("Add")}
                         <Spinner style={{ display: uploadMonthlySpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
-                    <Button color="danger"  onClick={()=>{closeButton()}}>
+                    <Button color="danger" onClick={() => { closeButton() }}>
                         {props.t("Close")}
                     </Button>
                 </ModalFooter>
@@ -287,6 +289,7 @@ UploadMonthly.propTypes = {
     idFolderUpload: PropTypes.any,
     currMonth: PropTypes.any,
     currYear: PropTypes.any,
+    setEnterMonthlyDataSpinner: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

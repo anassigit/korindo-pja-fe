@@ -18,7 +18,8 @@ import {
   CardGroup,
   Input,
   CardDeck,
-  Button
+  Button,
+  Spinner
 } from "reactstrap"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile, getYear, getMonth, getMonthlyData } from "../../store/appFileManagement/actions"
@@ -36,11 +37,9 @@ import "../../assets/scss/custom.scss"
 import UploadMonthly from "./UploadMonthly";
 import FileTables from "./FileTables";
 
-
-
-
 const EnterMonthlyData = (props) => {
 
+  const [enterMonthlyDataSpinner, setEnterMonthlyDataSpinner] = useState(false);
   const dispatch = useDispatch();
   const [monthlyDataPage, setMonthlyDataPage] = useState(true)
   const [monthlyDataMsg, setMonthlyDataMsg] = useState("")
@@ -86,21 +85,27 @@ const EnterMonthlyData = (props) => {
   useEffect(() => {
     dispatch(getYear())
     dispatch(getMonthlyData({}))
+    setEnterMonthlyDataSpinner(true)
   }, [])
 
   useEffect(() => {
     dispatch(getMonth({ year: selectedYear }))
+    setEnterMonthlyDataSpinner(true)
   }, [selectedYear])
 
   useEffect(() => {
     debugger
     setSelectedMonth(dashboardData?.data?.month)
     setSelectedYear(dashboardData?.data?.year)
+    if (dashboardData.status === '1') {
+      setEnterMonthlyDataSpinner(false)
+    }
   }, [dashboardData])
 
   useEffect(() => {
     if (selectedMonth && selectedYear) {
       dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
+      setEnterMonthlyDataSpinner(true)
     }
   }, [selectedMonth, selectedYear])
 
@@ -143,6 +148,7 @@ const EnterMonthlyData = (props) => {
       num = tempIdDel
       num.toString()
 
+      setEnterMonthlyDataSpinner(true);
       dispatch(deleteFileFolder(
         {
           'file_num': num
@@ -156,6 +162,7 @@ const EnterMonthlyData = (props) => {
     if (msgDeleteFile?.status == "1") {
       dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
       setIsYes(!isYes)
+      setEnterMonthlyDataSpinner(false);
     }
   }, [msgDeleteFile])
 
@@ -177,6 +184,7 @@ const EnterMonthlyData = (props) => {
             idFolderUpload={idFolderUpload}
             currMonth={currMonth}
             currYear={currYear}
+            setEnterMonthlyDataSpinner={setEnterMonthlyDataSpinner}
           />
 
           <FileTables
@@ -442,6 +450,9 @@ const EnterMonthlyData = (props) => {
             </Row>
           </Container>
 
+          <div className="spinner-wrapper" style={{ display: enterMonthlyDataSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+            <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+          </div>
         </>
       }
     />
