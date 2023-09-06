@@ -419,7 +419,7 @@ const EditInstructions = (props) => {
     };
 
     const validationSchema = Yup.object().shape({
-        title: Yup.string().required(validationMessages[langType].title),
+        title: Yup.string().required(validationMessages[langType]?.title),
     })
 
     const editInstructionsValidInput = useFormik({
