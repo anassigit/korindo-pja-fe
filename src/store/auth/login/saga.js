@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 window.onpopstate = function (event) {
   const currentPath = event?.currentTarget?.location?.pathname;
-  const authUser = ReactSession.get("authUser");
+  const authUser = localStorage.getItem("authUser");
 
   if (currentPath === '/login' && authUser !== null) {
     ReactSession.remove("appInstructionsTabelSearch")
@@ -20,11 +20,12 @@ window.onpopstate = function (event) {
 
 function* loginUser({ payload: { user, history } }) {
   try {
+    debugger
     const response = yield call(login, user);
     if (response.status == 1) {
 
-      ReactSession.set("authUser", response.data.KOR_TOKEN);
-      ReactSession.set("user", JSON.stringify(response.data.user));
+      localStorage.setItem("authUser", response.data.KOR_TOKEN);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
       localStorage.setItem('appFileManagementData', '')
 
@@ -41,9 +42,10 @@ function* loginUser({ payload: { user, history } }) {
 function* reloginUser({ payload: { user, history } }) {
   try {
     const response = yield call(login, user);
+    debugger
     if (response.status == 1) {
-      ReactSession.set("authUser", response.data.KOR_TOKEN);
-      ReactSession.set("user", JSON.stringify(response.data.user));
+      localStorage.setItem("authUser", response.data.KOR_TOKEN);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       yield put(reloginSuccess(response))
       window.location.reload()
       document.getElementById("reloginForm").style.display = "none";
@@ -58,8 +60,9 @@ function* reloginUser({ payload: { user, history } }) {
 
 function* logoutUser({ payload: { history } }) {
   try {
-    ReactSession.set("authUser", "");
-    ReactSession.set("user", "");
+    debugger
+    localStorage.removeItem("authUser");
+    localStorage.removeItem("user");
     history.push("/login");
     yield put(apiError(""))
   } catch (error) {

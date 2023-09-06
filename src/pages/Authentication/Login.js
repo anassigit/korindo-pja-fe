@@ -58,7 +58,7 @@ const Login = props => {
     if (emailMsg) {
       setErrorMsg(emailMsg)
     }
-    let isAuth = ReactSession.get('authUser')
+    let isAuth = localStorage.getItem("authUser");
     if (isAuth) {
       props.history.push('/')
     }
@@ -66,7 +66,6 @@ const Login = props => {
   }, [])
 
   useEffect(() => {
-    debugger
     setErrorMsg('')
     if (error) {
       ReactSession.set("emailMsg", '')

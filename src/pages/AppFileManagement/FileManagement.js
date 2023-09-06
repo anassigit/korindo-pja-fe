@@ -13,7 +13,8 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  UncontrolledDropdown
+  UncontrolledDropdown,
+  Spinner
 } from "reactstrap"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile } from "../../store/appFileManagement/actions"
@@ -82,6 +83,8 @@ const FileManagement = (props) => {
   const [successClose, setSuccessClose] = useState(false)
   const [appFileManagementData, setAppFileManagementData] = useState(null);
 
+  const [enterMonthlyDataSpinner, setEnterMonthlyDataSpinner] = useState(false);
+
   // folder left-right click
   const [isContextMenuOpen, setContextMenuOpen] = useState(false);
   const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
@@ -117,7 +120,7 @@ const FileManagement = (props) => {
   };
 
   const toggleUploadModal = () => {
-     
+
     setIdNowLoc(currFolder)
     setUploadModal(!uploadModal)
     setIdToggleUpload(idChild)
@@ -131,7 +134,7 @@ const FileManagement = (props) => {
   }
 
   const toggleMoveModal = (Fid, Pid) => {
-     
+
     setFnum(Fid)
     setPnum(Pid)
     setFName(fNem)
@@ -151,7 +154,7 @@ const FileManagement = (props) => {
   }
 
   const confirmToggleDelete = (e, typeFolder) => {
-     
+
     if (e) {
       setTempIdDel(e)
       setIsTypeFolder(typeFolder)
@@ -179,6 +182,7 @@ const FileManagement = (props) => {
     dispatch(getSearch({
       "search": ""
     }))
+    setEnterMonthlyDataSpinner(true)
   }, [])
 
 
@@ -210,12 +214,14 @@ const FileManagement = (props) => {
     if (getFileSelect) {
       setRealFileList(getFileSelect?.data?.childList)
       setRealFilePath(getFileSelect?.data?.path);
+      setEnterMonthlyDataSpinner(false)
     }
   }, [getFileSelect])
 
   useEffect(() => {
 
 
+    setEnterMonthlyDataSpinner(false)
     if (getSearchFile?.data !== null) {
       setRealFileList(getSearchFile?.data?.searchList)
     } else if (getSearchFile?.data === null) {
@@ -237,6 +243,8 @@ const FileManagement = (props) => {
 
     setCurrFolder(e)
     localStorage.setItem('appFileManagementData', JSON.stringify(e));
+    
+    setEnterMonthlyDataSpinner(true)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
     setIdChild(e)
@@ -248,6 +256,7 @@ const FileManagement = (props) => {
   useEffect(() => {
 
     if (isYes) {
+      setEnterMonthlyDataSpinner(true)
       let num = null
       num = tempIdDel
       num.toString()
@@ -263,6 +272,7 @@ const FileManagement = (props) => {
         setIsYes(!isYes)
       }
     }
+    setEnterMonthlyDataSpinner(false)
   }, [isYes, msgDeleteFile])
 
 
@@ -270,14 +280,14 @@ const FileManagement = (props) => {
   const [fileNmTemp, setFileNmTemp] = useState()
 
   const downloadCheckFile1 = (num, fileNm) => {
-     
+
     setNumTemp(num)
     setFileNmTemp(fileNm)
     setDownloadFlag(true)
   }
 
   const downloadCheckFile2 = (num, fileNm) => {
-     
+
     setDownloadFlag(true)
 
   };
@@ -294,7 +304,7 @@ const FileManagement = (props) => {
   };
 
   useEffect(() => {
-     
+
     if (downloadFlag) {
 
       const indexed_array = {
@@ -321,7 +331,7 @@ const FileManagement = (props) => {
   };
 
   useEffect(() => {
-     
+
     if (downloadRespMsg.status === "0") {
       setDownloadMsg(downloadRespMsg);
       toggleMsgModal()
@@ -345,7 +355,7 @@ const FileManagement = (props) => {
 
 
   const handleContextMenuOpen = (e) => {
-     
+
     e.preventDefault();
 
     const xPos = e.clientX;
@@ -357,7 +367,7 @@ const FileManagement = (props) => {
   };
 
   const handleDropdownMenuToggle = () => {
-     
+
     setDropdownMenuOpen(true);
     setContextMenuOpen(false);
     setContextMenuOpen2(false);
@@ -369,7 +379,7 @@ const FileManagement = (props) => {
 
 
   const handleContextMenuOpen2 = (e) => {
-     
+
     e.preventDefault();
 
     const xPos2 = e.clientX;
@@ -381,7 +391,7 @@ const FileManagement = (props) => {
   };
 
   const handleDropdownMenuToggle2 = () => {
-     
+
     setDropdownMenuOpen2(true);
     setContextMenuOpen2(false);
     setContextMenuOpen(false);
@@ -389,7 +399,7 @@ const FileManagement = (props) => {
 
 
   useEffect(() => {
-     
+
     if (!isDropdownMenuOpen2) {
       setContextMenuOpen2(true);
     }
@@ -662,7 +672,7 @@ const FileManagement = (props) => {
                                   handleContextMenuOpen2(e);
                                 }}
                                 onDoubleClick={() => toggleShowModal(myfiles.url)}
-                                style={{cursor:"pointer"}}
+                                style={{ cursor: "pointer" }}
                               >
                                 <CardBody className="p-2">
                                   <div className="pb-2 pt-2">
@@ -677,53 +687,53 @@ const FileManagement = (props) => {
                                         </DropdownToggle>
                                         {isDropdownMenuOpen2 && (
 
-                                        <DropdownMenu className="dropdown-menu-end">
-                                        {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf")  ? (
-                                          <>
-                                          <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
-                                            <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Preview")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                            <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Rename")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                            <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Move")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Download")}
-                                          </DropdownItem>
-                                          <div className="dropdown-divider"></div>
-                                          <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                            <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Remove")}
-                                          </DropdownItem>
-                                          </>
-                                        ):(
-                                          <>
-                                            <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                            <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Rename")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                            <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Move")}
-                                          </DropdownItem>
-                                          <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Download")}
-                                          </DropdownItem>
-                                          <div className="dropdown-divider"></div>
-                                          <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                            <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
-                                            {props.t("Remove")}
-                                          </DropdownItem>
-                                          </>
-                                        )}
-                                        </DropdownMenu>
+                                          <DropdownMenu className="dropdown-menu-end">
+                                            {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                              <>
+                                                <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                                  <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Preview")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Rename")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Move")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Download")}
+                                                </DropdownItem>
+                                                <div className="dropdown-divider"></div>
+                                                <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                                  <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Remove")}
+                                                </DropdownItem>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Rename")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Move")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Download")}
+                                                </DropdownItem>
+                                                <div className="dropdown-divider"></div>
+                                                <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                                  <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Remove")}
+                                                </DropdownItem>
+                                              </>
+                                            )}
+                                          </DropdownMenu>
                                         )}
                                       </UncontrolledDropdown>
                                     </div>
@@ -805,84 +815,84 @@ const FileManagement = (props) => {
                             </ContextMenuTrigger>
 
                             <div className="float-end">
-                            {(isContextMenuOpen2 || !isDropdownMenuOpen2) && (
-                              <ContextMenu id={`rightMenu${key}`}
-                              style={{ position: 'fixed', left: contextMenuPosition2.x, top: contextMenuPosition2.y }}
-                              >
-                                {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf")  ? (
-                                  <>
-                                <MenuItem
-                                  onClick={() => toggleShowModal(myfiles.url)}
-
+                              {(isContextMenuOpen2 || !isDropdownMenuOpen2) && (
+                                <ContextMenu id={`rightMenu${key}`}
+                                  style={{ position: 'fixed', left: contextMenuPosition2.x, top: contextMenuPosition2.y }}
                                 >
-                                  <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Preview")}
-                                </MenuItem>
-                                <MenuItem
-                                  onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+                                  {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                    <>
+                                      <MenuItem
+                                        onClick={() => toggleShowModal(myfiles.url)}
 
-                                >
-                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Rename")}
-                                </MenuItem>
-                                <MenuItem
-                                  onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+                                      >
+                                        <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Preview")}
+                                      </MenuItem>
+                                      <MenuItem
+                                        onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
 
-                                >
-                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Move")}
-                                </MenuItem>
-                                <MenuItem
-                                  onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
+                                      >
+                                        <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Rename")}
+                                      </MenuItem>
+                                      <MenuItem
+                                        onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
 
-                                >
-                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Download")}
-                                </MenuItem>
-                                <div className="dropdown-divider"></div>
-                                <MenuItem
-                                  onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+                                      >
+                                        <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Move")}
+                                      </MenuItem>
+                                      <MenuItem
+                                        onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
 
-                                >
-                                  <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Remove")}
-                                </MenuItem>
-                                </>
-                                ) : (
-                                  <>
-                                                                  <MenuItem
-                                  onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+                                      >
+                                        <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Download")}
+                                      </MenuItem>
+                                      <div className="dropdown-divider"></div>
+                                      <MenuItem
+                                        onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
 
-                                >
-                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Rename")}
-                                </MenuItem>
-                                <MenuItem
-                                  onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+                                      >
+                                        <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Remove")}
+                                      </MenuItem>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <MenuItem
+                                        onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
 
-                                >
-                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Move")}
-                                </MenuItem>
-                                <MenuItem
-                                  onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
+                                      >
+                                        <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Rename")}
+                                      </MenuItem>
+                                      <MenuItem
+                                        onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
 
-                                >
-                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Download")}
-                                </MenuItem>
-                                <div className="dropdown-divider"></div>
-                                <MenuItem
-                                  onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+                                      >
+                                        <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Move")}
+                                      </MenuItem>
+                                      <MenuItem
+                                        onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
 
-                                >
-                                  <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                  {props.t("Remove")}
-                                </MenuItem>
-                                  </>
-                                )}
-                              </ContextMenu>
-                            )}
+                                      >
+                                        <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Download")}
+                                      </MenuItem>
+                                      <div className="dropdown-divider"></div>
+                                      <MenuItem
+                                        onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+
+                                      >
+                                        <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                        {props.t("Remove")}
+                                      </MenuItem>
+                                    </>
+                                  )}
+                                </ContextMenu>
+                              )}
                             </div>
 
                           </Col>
@@ -897,7 +907,11 @@ const FileManagement = (props) => {
                 </Row>
               </Col>
             </Row>
+            <div className="spinner-wrapper" style={{ display: enterMonthlyDataSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+              <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+            </div>
           </Container>
+
 
         </>
       }

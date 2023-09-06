@@ -53,7 +53,7 @@ const UpdatePassword = props => {
       const queryParameters = new URLSearchParams(window.location.search)
       const type = queryParameters.get("KOR_TOKEN")
 
-      ReactSession.set("authUser", type);
+      localStorage.setItem("authUser", type);
       var map = {
         "newPassword": validation.values.newPassword
 

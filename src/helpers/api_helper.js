@@ -28,7 +28,7 @@ export async function postLogin(url, data, config = {}) {
 }
 
 export async function get(url, data, config ={}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   return await axiosApi.get(url, data, { ...config })
   .then(function (response) {
     return responseError(response);
@@ -36,7 +36,7 @@ export async function get(url, data, config ={}) {
 }
 
 export async function getWithParam(url, data, config ={responseType: 'blob'}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   return await axiosApi.get(url+"?"+$.param(data), { ...config })
   .then(function (response) {
     return responseError(response);
@@ -45,7 +45,7 @@ export async function getWithParam(url, data, config ={responseType: 'blob'}) {
 
 export async function postWithParam(url, data ,config ={}
 ) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   return await axiosApi.post(url+"?"+$.param(data), { ...config })
   .then(function (response) {
     return responseError(response);
@@ -53,7 +53,7 @@ export async function postWithParam(url, data ,config ={}
 }
 
 export async function post(url, data, config = {}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   return axiosApi
     .post(url, { ...data }, { ...config },)
     .then(function (response) {
@@ -88,7 +88,7 @@ function responseError(response){
 }
 
 export async function getWithXls(url, data, config ={responseType: 'blob'}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   let token = ReactSession.get("authUser"); 
   debugger
   return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
@@ -114,7 +114,7 @@ export async function getWithXls(url, data, config ={responseType: 'blob'}) {
 }
 
 export async function getWithPdf(url, data, config ={responseType: 'blob'}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   let token = ReactSession.get("authUser"); 
   return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
@@ -133,7 +133,7 @@ export async function getWithPdf(url, data, config ={responseType: 'blob'}) {
 }
 
 export async function postUpload(url, data, config ={}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   
   return axiosApi
     .post(url, data, { ...config },)
@@ -146,7 +146,7 @@ export async function postUpload(url, data, config ={}) {
 export async function postDownload(url, data, config ={responseType: 'blob'}) {
   
   console.log(data)
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   let token = ReactSession.get("authUser"); 
   return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   //return await axiosApi.post(url, { ...data }, { ...config },)
@@ -172,7 +172,7 @@ export async function postDownload(url, data, config ={responseType: 'blob'}) {
 // export async function postDownload(url, getFiles, config ={responseType: 'blob'}) {
 //   debugger
 //   console.log(getFiles)
-//   axiosApi.defaults.headers.common["KOR_TOKEN"] = ReactSession.get('authUser');
+//   axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
 //   let token = ReactSession.get("authUser"); 
 //   return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(getFiles), { ...config })
 //   // return await axiosApi.post(url, { ...data }, { ...config },)
