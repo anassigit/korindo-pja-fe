@@ -3,6 +3,8 @@ import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
 import { ReactSession } from 'react-client-session';
 
+const currentURL = window.location.href;
+
 const Authmiddleware = ({
   component: Component,
   layout: Layout,
@@ -13,6 +15,10 @@ const Authmiddleware = ({
     {...rest}
     render={props => {
       if (isAuthProtected && !localStorage.getItem("authUser")) {
+        debugger
+        if (!currentURL.endsWith('/login')) {
+          localStorage.setItem("currentURL", currentURL)
+        }
         return (
           <Redirect
             to={{ pathname: "/login", state: { from: props.location } }}

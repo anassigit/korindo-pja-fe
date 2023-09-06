@@ -104,6 +104,9 @@ const EditInstructions = (props) => {
 
     const [onlyReply, setOnlyReply] = useState(false);
 
+    const queryParameters = new URLSearchParams(window.location.search)
+    const queryNum = queryParameters.get("num")
+
     /* MULTI SELECT OPTIONS */
 
     const getOwnerList = useSelector(state => {
@@ -169,16 +172,7 @@ const EditInstructions = (props) => {
         setEditInstructionsFirstRenderDone(true);
         dispatch(resetMessage());
 
-        /* Get Last Data For Reload by Sigit */
-        const storedData = localStorage.getItem('appInstructionsData');
-        let parsedData = null
-
-        if (storedData) {
-            parsedData = JSON.parse(storedData);
-            setAppInstructionsData(parsedData);
-        }
-
-        let num = parsedData?.num.toString()
+        let num = queryNum.toString()
         dispatch(getDetailInstruction({
             search: {
                 "num": num,
@@ -236,15 +230,8 @@ const EditInstructions = (props) => {
     }, [])
 
     useEffect(() => {
-        const storedData = localStorage.getItem('appInstructionsData');
-        let parsedData = null
-
-        if (storedData) {
-            parsedData = JSON.parse(storedData);
-            setAppInstructionsData(parsedData);
-        }
-
-        let num = parsedData?.num.toString()
+       
+        let num = queryNum.toString()
         dispatch(getDetailInstruction({
             search: {
                 "num": num,
@@ -368,22 +355,20 @@ const EditInstructions = (props) => {
         }
 
         /* useEffect field here */
-        const storedData = localStorage.getItem('appInstructionsData');
-        let parsedData = null
-        if (storedData) {
-            parsedData = JSON.parse(storedData);
+
+        editInstructionsValidInput.setFieldValue("no", queryNum)
+        editInstructionsValidInput.setFieldValue("title", getDetailInstructionData?.data?.instruction?.title)
+
+        const inputDateString = getDetailInstructionData?.data?.instruction?.insDate.toString();
+        debugger
+
+        if (inputDateString) {
+            const inputDate = new Date(inputDateString);
+            const timeZoneOffset = 7 * 60;
+            const adjustedDate = new Date(inputDate.getTime() + timeZoneOffset * 60 * 1000)
+
+            editInstructionsValidInput.setFieldValue("insDate", adjustedDate)
         }
-
-        editInstructionsValidInput.setFieldValue("no", parsedData?.num)
-        editInstructionsValidInput.setFieldValue("title", parsedData?.title)
-
-        const inputDateString = parsedData?.insDate;
-
-        const inputDate = new Date(inputDateString);
-        const timeZoneOffset = 7 * 60;
-        const adjustedDate = new Date(inputDate.getTime() + timeZoneOffset * 60 * 1000)
-
-        editInstructionsValidInput.setFieldValue("insDate", adjustedDate)
         editInstructionsValidInput.setFieldValue("status", getDetailInstructionData?.data?.instruction?.status)
         editInstructionsValidInput.setFieldValue("description", getDetailInstructionData?.data?.instruction?.description)
 
@@ -1301,13 +1286,7 @@ const EditInstructions = (props) => {
     const [loadingSpinner, setLoadingSpinner] = useState(false)
 
     useEffect(() => {
-        const storedData = localStorage.getItem('appInstructionsData');
-        let parsedData = null
-        if (storedData) {
-            parsedData = JSON.parse(storedData);
-        }
-
-        let num = parsedData?.num
+        let num = queryNum
         num = num.toString()
         if (msgSaveReply.status == '0') {
         }
@@ -1328,13 +1307,8 @@ const EditInstructions = (props) => {
     }, [msgSaveReply])
 
     useEffect(() => {
-        const storedData = localStorage.getItem('appInstructionsData');
-        let parsedData = null
-        if (storedData) {
-            parsedData = JSON.parse(storedData);
-        }
-
-        let num = parsedData?.num
+       
+        let num = queryNum
         num = num.toString()
         if (msgEditReply.status == '1') {
             dispatch(getReply({
@@ -1352,13 +1326,8 @@ const EditInstructions = (props) => {
     }, [msgEditReply])
 
     useEffect(() => {
-        const storedData = localStorage.getItem('appInstructionsData');
-        let parsedData = null
-        if (storedData) {
-            parsedData = JSON.parse(storedData);
-        }
 
-        let num = parsedData?.num
+        let num = queryNum
         num = num.toString()
         if (msgDeleteReply.status == '1') {
             dispatch(getReply({
@@ -1375,9 +1344,7 @@ const EditInstructions = (props) => {
         setLoadingSpinner(false)
     }, [msgDeleteReply])
 
-    /*********************************** SIGIT MADE FROM HERE ***********************************/
-    /*********************************** SIGIT MADE FROM HERE ***********************************/
-    /*********************************** SIGIT MADE FROM HERE ***********************************/
+    /** SIGIT MADE FROM HERE **/
 
     const [isHiddenReply, setIsHiddenReply] = useState(false)
     const [isHiddenLogs, setIsHiddenLogs] = useState(true)
@@ -1396,7 +1363,6 @@ const EditInstructions = (props) => {
     }, [replyTabelListData])
 
     useEffect(() => {
-        debugger
 
         if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment && addReplyModal) {
             toggleAddReplyModal()
@@ -1405,16 +1371,9 @@ const EditInstructions = (props) => {
                 pathname: '/AppInstructions',
                 state: { setAppInstructionsMsg: editInstructionsMessage }
             })
-        } else if (editInstructionsMessage.status == "1"){
-            const storedData = localStorage.getItem('appInstructionsData');
-            let parsedData = null
-    
-            if (storedData) {
-                parsedData = JSON.parse(storedData);
-                setAppInstructionsData(parsedData);
-            }
-    
-            let num = parsedData?.num.toString()
+        } else if (editInstructionsMessage.status == "1") {
+           
+            let num = queryNum.toString()
             dispatch(getDetailInstruction({
                 search: {
                     "num": num,
@@ -2266,7 +2225,7 @@ const EditInstructions = (props) => {
                                             <Button
                                                 type="button"
                                                 className="btn btn-danger "
-                                                onClick={() => {  history.go(-1); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                onClick={() => { history.go(-1); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
                                             >
                                                 <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
                                                 {props.t("Back")}

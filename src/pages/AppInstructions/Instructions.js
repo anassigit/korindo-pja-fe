@@ -51,9 +51,18 @@ const Instructions = (props) => {
 
 
     useEffect(() => {
+        const lastURL = localStorage.getItem('currentURL');
         let temp = ReactSession.get('firstTime_Login')
         if (temp === "true") {
             history.push('/FirstLogin')
+        } else if (lastURL) {
+            debugger
+            // Parse the lastURL to extract the path part
+            const urlParts = lastURL.split('/');
+            const path = urlParts[urlParts.length - 1];
+
+            history.replace(`/${path}`);
+            localStorage.removeItem('currentURL');
         }
         setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
         console.log(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
@@ -324,14 +333,22 @@ const Instructions = (props) => {
     }
 
     const appInstructionsPreEdit = (appInstructionsData) => {
-        localStorage.setItem('appInstructionsData', JSON.stringify(appInstructionsData));
-        history.push('/AppEditInstruction');
-        setAppInstructionsMsg("")
-        setInstructionsData(appInstructionsData)
-        setAppInstructionsPage(false)
-        setEditInstructions(true)
-    }
+        const num = appInstructionsData?.num;
+        const searchParams = new URLSearchParams();
+        searchParams.append("num", num);
 
+        // Construct the URL with the search parameters
+        const urlWithParams = '/AppEditInstruction?' + searchParams.toString();
+
+        // Use history.push() to navigate to the new URL
+        history.replace(urlWithParams);
+
+        // Rest of your code
+        setAppInstructionsMsg("");
+        setInstructionsData(appInstructionsData);
+        setAppInstructionsPage(false);
+        setEditInstructions(true);
+    }
 
     const handleChange = event => {
         setAppInstructionsTabelSearch({

@@ -31,6 +31,9 @@ const FirstLogin = (props) => {
 
   useEffect(() => {
     let temp = ReactSession.get('firstTime_Login')
+    if (!localStorage.getItem("I18N_LANGUAGE")) {
+      localStorage.setItem("I18N_LANGUAGE", "eng")
+    }
     if (temp !== "true") {
       history.push('/')
     }
@@ -41,7 +44,7 @@ const FirstLogin = (props) => {
   const validationMessages = {
     eng: {
       currentPassword: "Please enter your current password.",
-      Password1: {
+      password1: {
         required: "Please enter a new password.",
         min: "Password must be at least 8 characters long.",
         test: "Password must include at least two different characters.",
@@ -53,7 +56,7 @@ const FirstLogin = (props) => {
     },
     kor: {
       currentPassword: "현재 비밀번호를 입력하세요.",
-      Password1: {
+      password1: {
         required: "새로운 비밀번호를 입력하세요.",
         min: "비밀번호는 최소 8자 이상이어야 합니다.",
         test: "비밀번호는 적어도 두 가지 다른 문자를 포함해야 합니다.",
@@ -65,7 +68,7 @@ const FirstLogin = (props) => {
     },
     idr: {
       currentPassword: "Silakan masukkan kata sandi saat ini.",
-      Password1: {
+      password1: {
         required: "Silakan masukkan kata sandi baru.",
         min: "Kata sandi harus terdiri dari setidaknya 8 karakter.",
         test: "Kata sandi harus mengandung setidaknya dua karakter yang berbeda.",
@@ -88,11 +91,11 @@ const FirstLogin = (props) => {
 
     validationSchema: Yup.object().shape({
       password1: Yup.string()
-        .required(validationMessages[langType].Password1.required)
-        .min(8, validationMessages[langType].Password1.min)
+        .required(validationMessages[langType]?.password1?.required || 'Password is required')
+        .min(8, validationMessages[langType]?.password1?.min || 'Password must be at least 8 characters')
         .test(
           "has-at-least-two-different-types",
-          validationMessages[langType].Password1.test,
+          validationMessages[langType]?.password1?.test || 'Password must have at least two different character types',
           (value) => {
             const characterTypes = {
               digit: /\d/,
@@ -100,18 +103,18 @@ const FirstLogin = (props) => {
               uppercase: /[A-Z]/,
               special: /[\W_]/,
             };
-
+  
             const typeCount = Object.values(characterTypes).reduce(
               (count, regex) => (regex.test(value) ? count + 1 : count),
               0
             );
-
+  
             return typeCount >= 2;
           }
         ),
       newPassword: Yup.string()
-        .required(props.t("Enter your new password again"))
-        .oneOf([Yup.ref('password1')], validationMessages[langType].newPassword.oneOf),
+        .required('Enter your new password again')
+        .oneOf([Yup.ref('password1')], validationMessages[langType]?.newPassword?.oneOf || 'Passwords must match'),
     }),
 
     onSubmit: (values) => {
