@@ -10,7 +10,8 @@ import {
     Spinner,
     Row,
     Label,
-    Input
+    Input,
+    UncontrolledTooltip
 } from 'reactstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
@@ -76,26 +77,26 @@ const FileTables = (props) => {
 
         const previewFile = window.open();
         previewFile.location.href = new URL(pUrl);
-    
-      };
 
-      const [numTemp, setNumTemp] = useState()
-      const [fileNmTemp, setFileNmTemp] = useState()
-      const [downloadFlag, setDownloadFlag] = useState(false)
-      
+    };
 
-      const downloadFile = async (pNum, pName) => {
+    const [numTemp, setNumTemp] = useState()
+    const [fileNmTemp, setFileNmTemp] = useState()
+    const [downloadFlag, setDownloadFlag] = useState(false)
+
+
+    const downloadFile = async (pNum, pName) => {
         try {
-    
-          const indexed_array = {
-            file_num: pNum,
-            file_nm: pName
-          };
-          dispatch(downloadFileFolder(indexed_array))
+
+            const indexed_array = {
+                file_num: pNum,
+                file_nm: pName
+            };
+            dispatch(downloadFileFolder(indexed_array))
         } catch (error) {
-          console.log(error)
+            console.log(error)
         }
-      };
+    };
 
 
 
@@ -135,22 +136,26 @@ const FileTables = (props) => {
 
                                                 <tr key={key}>
                                                     <td scope="row">{key + 1}</td>
-                                                    <td style= {{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} 
-                                                    onClick={
-                                                        item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
-                                                        ? 
-                                                        () => handlePreview(item.url) 
-                                                        :
-                                                        () => downloadFile(item.num, item.name)
+                                                    <td style={{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+                                                        onClick={
+                                                            item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
+                                                                ?
+                                                                () => handlePreview(item.url)
+                                                                :
+                                                                () => downloadFile(item.num, item.name)
+                                                                
                                                         }
+                                                        title={item.name}
+                                                        
                                                     >
                                                         {item.name.endsWith("docx") || item.name.endsWith("doc") ? (
-                                                            <>
-                                                                <img src={doc} />{" "}
-                                                                <div style= {{ Width: "20px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                                                    {item.name}
-                                                                    </div>
-                                                            </>
+                                                        <>
+                                                        <img src={doc} />
+                                                        <div style={{ width: "20px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                            {item.name}
+
+                                                        </div>
+                                                    </>
                                                         ) : (
                                                             item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") ? (
                                                                 <>
