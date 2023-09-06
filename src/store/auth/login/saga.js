@@ -20,7 +20,6 @@ window.onpopstate = function (event) {
 
 function* loginUser({ payload: { user, history } }) {
   try {
-    debugger
     const response = yield call(login, user);
     if (response.status == 1) {
 
@@ -42,7 +41,6 @@ function* loginUser({ payload: { user, history } }) {
 function* reloginUser({ payload: { user, history } }) {
   try {
     const response = yield call(login, user);
-    debugger
     if (response.status == 1) {
       localStorage.setItem("authUser", response.data.KOR_TOKEN);
       localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -60,7 +58,6 @@ function* reloginUser({ payload: { user, history } }) {
 
 function* logoutUser({ payload: { history } }) {
   try {
-    debugger
     localStorage.removeItem("authUser");
     localStorage.removeItem("user");
     history.push("/login");

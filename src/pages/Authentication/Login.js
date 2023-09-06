@@ -54,7 +54,6 @@ const Login = props => {
 
   useEffect(() => {
     let emailMsg = ReactSession.get("emailMsg")
-    debugger
     if (emailMsg) {
       setErrorMsg(emailMsg)
     }
