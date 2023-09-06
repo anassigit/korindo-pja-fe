@@ -27,6 +27,8 @@ import PropTypes from "prop-types"
 import DatePicker from "react-datepicker";
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import CustomDatePicker from "../../common/CustomDatePicker.js"
+import e from "cors";
+import { ContextMenu } from "react-contextmenu";
 
 
 const Instructions = (props) => {
@@ -397,6 +399,20 @@ const Instructions = (props) => {
         }
     };
 
+    // buat test doang
+    // const [clicked, setClicked] = useState(false);
+    // const [points, setPoints] = useState({
+    //     x: 0,
+    //     y: 0,
+    // });
+
+    // useEffect(() => {
+    //     const handleClick = () => setClicked(false);
+    //     window.addEventListener("click", handleClick);
+    //     return () => {
+    //         window.removeEventListener("click", handleClick);
+    //     };
+    // }, []);
 
     return (
         <RootPageCustom msgStateGet={null} msgStateSet={null}
@@ -404,9 +420,45 @@ const Instructions = (props) => {
                 <>
                     {appInstructionsMsg !== "" ? <UncontrolledAlert toggle={() => { setAppInstructionsMsg(""); setIsClosed(true) }} color={appInstructionsMsg.status == "1" ? "success" : "danger"}>
                         {typeof appInstructionsMsg == 'string' ? null : appInstructionsMsg.message}</UncontrolledAlert> : null}
-                    <Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
+                    < Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
                         <Row>
                             <Col>
+                                {/* <div
+                                    className="p-5"
+                                    onContextMenu={(e) => {
+                                        e.preventDefault();
+                                        setClicked(true);
+                                        setPoints({
+                                            x: e.pageX,
+                                            y: e.pageY,
+                                        });
+                                    }}
+                                    style={{
+                                        backgroundColor: "grey",
+                                    }}
+                                >
+                                    <div>
+                                        {clicked && (
+                                            <div
+                                                style={{
+                                                    position: "fixed",
+                                                    top: `${points?.y}px`,
+                                                    left: `${points?.x}px`,
+                                                    backgroundColor: "white",
+                                                    border: "1px solid black",
+                                                    padding: "5px",
+                                                }}
+                                            >
+                                                <ul>
+                                                    <li>Edit</li>
+                                                    <li>Copy</li>
+                                                    <li>Delete</li>
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div> */}
+
                                 <Row className="mb-2">
                                     <Col sm="12">
                                         <div className="form-group m-0">
@@ -528,7 +580,7 @@ const Instructions = (props) => {
                                 </Row>
                             </Col>
                         </Row>
-                    </Container>
+                    </Container >
 
                     <AddInstructions
                         appAddInstructions={appAddInstructions}
