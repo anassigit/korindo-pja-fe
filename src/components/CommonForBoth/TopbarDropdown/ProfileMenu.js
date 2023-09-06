@@ -39,7 +39,7 @@ const ProfileMenu = props => {
   }, [])
 
   useEffect(() => {
-    if (ReactSession.get("user")) {
+    if (localStorage.getItem("user")) {
         const u = getDetailProfile?.data?.member?.name
         setusername(u)
     }
