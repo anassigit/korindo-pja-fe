@@ -269,7 +269,7 @@ const FileTables = (props) => {
                         <Spinner style={{ display: detailSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button> */}
                     <Button color="danger" onClick={() => { closeButton() }} className='align-middle me-2'>
-                        <i className="mdi mdi-window-close fs-5 align-middle me-2"></i>{" "}
+
                         {props.t("Close")}
                     </Button>
                 </ModalFooter>
