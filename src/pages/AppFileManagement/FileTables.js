@@ -143,19 +143,19 @@ const FileTables = (props) => {
                                                                 () => handlePreview(item.url)
                                                                 :
                                                                 () => downloadFile(item.num, item.name)
-                                                                
+
                                                         }
-                                                        title={item.name}
-                                                        
+                                                        id={`nameTooltip_${key}`}
+
                                                     >
                                                         {item.name.endsWith("docx") || item.name.endsWith("doc") ? (
-                                                        <>
-                                                        <img src={doc} />
-                                                        <div style={{ width: "20px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                                            {item.name}
+                                                            <>
+                                                                <img src={doc} />
+                                                                <div style={{ width: "20px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                                    {item.name}
 
-                                                        </div>
-                                                    </>
+                                                                </div>
+                                                            </>
                                                         ) : (
                                                             item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") ? (
                                                                 <>
@@ -168,7 +168,9 @@ const FileTables = (props) => {
                                                                         }}
 
                                                                     />{" "}{item.name}
-
+                                                                    <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                                                        {item.name}
+                                                                    </UncontrolledTooltip>
 
                                                                 </>
                                                             ) : (
@@ -181,6 +183,9 @@ const FileTables = (props) => {
                                                                                 alignItems: "unset"
                                                                             }}
                                                                         />{" "}{item.name}
+                                                                        <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                                                            {item.name}
+                                                                        </UncontrolledTooltip>
                                                                     </>
                                                                 ) :
                                                                     (item.name.endsWith("ppt") || item.name.endsWith("pptx") ? (
@@ -192,6 +197,9 @@ const FileTables = (props) => {
                                                                                     alignItems: "unset"
                                                                                 }}
                                                                             />{" "}{item.name}
+                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                                                                {item.name}
+                                                                            </UncontrolledTooltip>
                                                                         </>
                                                                     ) : (item.name.endsWith("pdf") ? (
                                                                         <>
@@ -202,6 +210,9 @@ const FileTables = (props) => {
                                                                                     alignItems: "unset"
                                                                                 }}
                                                                             />{" "}{item.name}
+                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                                                                {item.name}
+                                                                            </UncontrolledTooltip>
 
                                                                         </>
                                                                     ) : (item.name.endsWith("txt") ? (
@@ -213,6 +224,9 @@ const FileTables = (props) => {
                                                                                     alignItems: "unset"
                                                                                 }}
                                                                             />{" "}{item.name}
+                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                                                                {item.name}
+                                                                            </UncontrolledTooltip>
                                                                         </>
                                                                     ) : (
                                                                         <>
@@ -223,6 +237,9 @@ const FileTables = (props) => {
                                                                                     alignItems: "unset"
                                                                                 }}
                                                                             />{" "}{item.name}
+                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                                                                {item.name}
+                                                                            </UncontrolledTooltip>
                                                                         </>
                                                                     ))
 
