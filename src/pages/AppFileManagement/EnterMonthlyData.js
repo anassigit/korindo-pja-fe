@@ -34,12 +34,12 @@ import "../../assets/scss/custom.scss"
 
 //js file//
 import UploadMonthly from "./UploadMonthly";
+import FileTables from "./FileTables";
 
 
 
 
 const EnterMonthlyData = (props) => {
-
 
   const dispatch = useDispatch();
   const [monthlyDataPage, setMonthlyDataPage] = useState(true)
@@ -52,6 +52,11 @@ const EnterMonthlyData = (props) => {
   const [idFolderUpload, setIdFolderUpload] = useState("")
   const [currYear, setCurrYear] = useState("")
   const [currMonth, setCurrMonth] = useState()
+
+  const [detailModalMonthly, setDetailModalMonthly] = useState(false)
+  const [idFolderDetail, setIdFolderDetail] = useState("")
+  const [currYearDetail, setCurrYearDetail] = useState("")
+  const [currMonthDetail, setCurrMonthDetail] = useState()
 
   const [confirmModalDelete, setConfirmModalDelete] = useState(false)
   const [tempIdDel, setTempIdDel] = useState()
@@ -115,8 +120,13 @@ const EnterMonthlyData = (props) => {
 
   }
 
-  {
-    console.log("data", dashboardData)
+  const toggleDetailModalMonthly = (folder_id) => {
+    debugger
+    setDetailModalMonthly(!detailModalMonthly)
+    setIdFolderDetail(folder_id)
+    setCurrMonth(selectedMonth)
+    setCurrYear(selectedYear)
+
   }
 
   const confirmToggleDelete = (e) => {
@@ -165,6 +175,14 @@ const EnterMonthlyData = (props) => {
             modal={uploadModalMonthly}
             toggle={toggleUploadModalMonthly}
             idFolderUpload={idFolderUpload}
+            currMonth={currMonth}
+            currYear={currYear}
+          />
+
+          <FileTables
+            modal={detailModalMonthly}
+            toggle={toggleDetailModalMonthly}
+            idFolderDetail={idFolderDetail}
             currMonth={currMonth}
             currYear={currYear}
           />
@@ -331,7 +349,7 @@ const EnterMonthlyData = (props) => {
                                                   cursor: "pointer"
                                                 }}
                                                 className="mdi mdi-dots-horizontal"
-                                                onClick={{}}
+                                                onClick={() => toggleDetailModalMonthly(items.num)}
                                               ></a>
                                             </Col>
                                           ) : null
