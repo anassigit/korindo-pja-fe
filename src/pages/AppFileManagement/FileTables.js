@@ -19,6 +19,13 @@ import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, getMonthlyData } from '../../store/appFileManagement/actions';
 import { withTranslation } from "react-i18next"
 
+import doc from '../../assets/images/file_management/doc.png'
+import xls from '../../assets/images/file_management/xls.png'
+import ppt from '../../assets/images/file_management/ppt.png'
+import pdf from '../../assets/images/file_management/pdf.png'
+import txt from '../../assets/images/file_management/txt.png'
+import unknown from '../../assets/images/file_management/unknown.png'
+
 const FileTables = (props) => {
 
 
@@ -36,7 +43,7 @@ const FileTables = (props) => {
 
     const dashboardData = useSelector(state => {
         return state.fileManagementReducer.respGetMonthlyData;
-      })
+    })
 
     const moveRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgMove;
@@ -44,7 +51,7 @@ const FileTables = (props) => {
 
     useEffect(() => {
         dispatch(getMonthlyData({ month: props.currMonth, year: props.currYear }))
-      }, [props.currMonth, props.currYear])
+    }, [props.currMonth, props.currYear])
 
 
     useEffect(() => {
@@ -57,9 +64,12 @@ const FileTables = (props) => {
 
         props.toggle();
         dispatch(getMonthlyData({ month: props.currMonth, year: props.currYear }))
-    
+
     }
 
+    {
+        console.log("data", dashboardData?.data?.list)
+    }
 
     return (
 
@@ -78,30 +88,121 @@ const FileTables = (props) => {
             }}>
                 <ModalHeader toggle={props.toggle}>{props.t("List files")}</ModalHeader>
                 <ModalBody>
-                    <Row><h6><i className="mdi mdi-folder align-middle fs-5" /> {"  "}{props.t("Folders")}</h6></Row>
-                    
+                    {/* <Row><h6><i className="mdi mdi-folder align-middle fs-5" /> {"  "}{props.t("Folders")}</h6></Row> */}
+
                     <Row>
-                        {dashboardData?.data?.list.map((myfiles, key) => (
-                            myfiles.type === "FOLDER" ?
 
-                                    <div >
-                                            <ul className="list-group" key={key}>
-                                                <li className="list-group-item border-0 py-1 fs-6 align-baseline" onClick={() => { }} style={{ cursor: "pointer" }}>
-                                                    <i className="fa fa-solid fa-folder fs-6 align-baseline" style={{ color: "#7bae40" }}></i> {myfiles.name}
-                                                </li>
-                                            </ul>
+                        <div >
+                            <table className="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">File name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {dashboardData?.data?.list.map((myfiles, index) => (
+                                        myfiles.num === props.idFolderDetail ? (
+                                            myfiles.fileList.map((item, key) => (
 
-                                      
+                                                <tr key={key}>
+                                                    <th scope="row">{key + 1}</th>
+                                                    <td style= {{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                        {item.name.endsWith("docx") || item.name.endsWith("doc") ? (
+                                                            <>
+                                                                <img src={doc} />{" "}
+                                                                <div style= {{ Width: "20px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                                    {item.name}
+                                                                    </div>
+                                                            </>
+                                                        ) : (
+                                                            item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") ? (
+                                                                <>
+                                                                    <img
+                                                                        src={new URL(item.url)}
+                                                                        style={{
+                                                                            height: "15px",
+                                                                            width: "15px",
+                                                                            alignItems: "unset"
+                                                                        }}
 
-                                    </div>
+                                                                    />{" "}{item.name}
 
-                                : ''
 
-                        ))}
+                                                                </>
+                                                            ) : (
+                                                                item.name.endsWith("xls") || item.name.endsWith("xlsx") || item.name.endsWith("csv") ? (
+                                                                    <>
+                                                                        <img src={xls}
+                                                                            style={{
+                                                                                height: "15px",
+                                                                                width: "15px",
+                                                                                alignItems: "unset"
+                                                                            }}
+                                                                        />{" "}{item.name}
+                                                                    </>
+                                                                ) :
+                                                                    (item.name.endsWith("ppt") || item.name.endsWith("pptx") ? (
+                                                                        <>
+                                                                            <img src={ppt}
+                                                                                style={{
+                                                                                    height: "15px",
+                                                                                    width: "15px",
+                                                                                    alignItems: "unset"
+                                                                                }}
+                                                                            />{" "}{item.name}
+                                                                        </>
+                                                                    ) : (item.name.endsWith("pdf") ? (
+                                                                        <>
+                                                                            <img src={pdf}
+                                                                                style={{
+                                                                                    height: "15px",
+                                                                                    width: "15px",
+                                                                                    alignItems: "unset"
+                                                                                }}
+                                                                            />{" "}{item.name}
+
+                                                                        </>
+                                                                    ) : (item.name.endsWith("txt") ? (
+                                                                        <>
+                                                                            <img src={txt}
+                                                                                style={{
+                                                                                    height: "15px",
+                                                                                    width: "15px",
+                                                                                    alignItems: "unset"
+                                                                                }}
+                                                                            />{" "}{item.name}
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <img src={unknown}
+                                                                                style={{
+                                                                                    height: "15px",
+                                                                                    width: "15px",
+                                                                                    alignItems: "unset"
+                                                                                }}
+                                                                            />{" "}{item.name}
+                                                                        </>
+                                                                    ))
+
+                                                                    ))))}
+
+                                                    </td>
+
+                                                </tr>
+
+                                            ))
+                                        ) : null
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+
                     </Row>
 
 
-                  
+
                 </ModalBody>
                 <ModalFooter>
                     <Button type="submit" color={detailSpinner ? "primary disabled" : "primary"}>
@@ -109,7 +210,7 @@ const FileTables = (props) => {
                         {props.t("Move")}
                         <Spinner style={{ display: detailSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
-                    <Button color="danger" onClick={()=>{closeButton()}} className='align-middle me-2'>
+                    <Button color="danger" onClick={() => { closeButton() }} className='align-middle me-2'>
                         <i className="mdi mdi-window-close fs-5 align-middle me-2"></i>{" "}
                         {props.t("Close")}
                     </Button>
