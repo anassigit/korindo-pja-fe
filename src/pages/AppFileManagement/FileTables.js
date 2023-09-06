@@ -126,7 +126,7 @@ const FileTables = (props) => {
                                 <thead>
                                     <tr>
                                         <th scope="col">No.</th>
-                                        <th scope="col">File name</th>
+                                        <th scope="col">{props.t("Files name")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
