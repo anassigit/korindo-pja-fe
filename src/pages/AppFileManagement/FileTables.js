@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, getMonthlyData } from '../../store/appFileManagement/actions';
 import { withTranslation } from "react-i18next"
+import { downloadFileFolder } from "helpers/backend_helper";
 
 import doc from '../../assets/images/file_management/doc.png'
 import xls from '../../assets/images/file_management/xls.png'
@@ -71,6 +72,33 @@ const FileTables = (props) => {
         console.log("data", dashboardData?.data?.list)
     }
 
+    const handlePreview = (pUrl) => {
+
+        const previewFile = window.open();
+        previewFile.location.href = new URL(pUrl);
+    
+      };
+
+      const [numTemp, setNumTemp] = useState()
+      const [fileNmTemp, setFileNmTemp] = useState()
+      const [downloadFlag, setDownloadFlag] = useState(false)
+      
+
+      const downloadFile = async (pNum, pName) => {
+        try {
+    
+          const indexed_array = {
+            file_num: pNum,
+            file_nm: pName
+          };
+          dispatch(downloadFileFolder(indexed_array))
+        } catch (error) {
+          console.log(error)
+        }
+      };
+
+
+
     return (
 
         <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static" keyboard={false}>
@@ -106,8 +134,16 @@ const FileTables = (props) => {
                                             myfiles.fileList.map((item, key) => (
 
                                                 <tr key={key}>
-                                                    <th scope="row">{key + 1}</th>
-                                                    <td style= {{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                    <td scope="row">{key + 1}</td>
+                                                    <td style= {{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} 
+                                                    onClick={
+                                                        item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
+                                                        ? 
+                                                        () => handlePreview(item.url) 
+                                                        :
+                                                        () => downloadFile(item.num, item.name)
+                                                        }
+                                                    >
                                                         {item.name.endsWith("docx") || item.name.endsWith("doc") ? (
                                                             <>
                                                                 <img src={doc} />{" "}
@@ -205,11 +241,11 @@ const FileTables = (props) => {
 
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color={detailSpinner ? "primary disabled" : "primary"}>
+                    {/* <Button type="submit" color={detailSpinner ? "primary disabled" : "primary"}>
                         <i className="mdi mdi-check fs-5 align-middle me-2"></i>{" "}
                         {props.t("Move")}
                         <Spinner style={{ display: detailSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
-                    </Button>
+                    </Button> */}
                     <Button color="danger" onClick={() => { closeButton() }} className='align-middle me-2'>
                         <i className="mdi mdi-window-close fs-5 align-middle me-2"></i>{" "}
                         {props.t("Close")}
