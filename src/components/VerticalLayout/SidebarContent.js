@@ -195,7 +195,7 @@ const SidebarContent = props => {
                 }}
                 href="/AppSetting"
                 className=""
-                // hidden={!getDetailProfile?.data?.admin}
+                hidden={!getDetailProfile?.data?.admin}
               >
                 <i className="fas fa-cog"></i>
                 <span>{props.t("Settings")}</span>
