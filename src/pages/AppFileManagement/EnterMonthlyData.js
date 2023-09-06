@@ -80,6 +80,7 @@ const EnterMonthlyData = (props) => {
 
   useEffect(() => {
     dispatch(getYear())
+    dispatch(getMonthlyData({}))
   }, [])
 
   useEffect(() => {
@@ -87,7 +88,15 @@ const EnterMonthlyData = (props) => {
   }, [selectedYear])
 
   useEffect(() => {
-    dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
+    debugger
+    setSelectedMonth(dashboardData?.data?.month)
+    setSelectedYear(dashboardData?.data?.year)
+  }, [dashboardData])
+
+  useEffect(() => {
+    if (selectedMonth && selectedYear) {
+      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
+    }
   }, [selectedMonth, selectedYear])
 
   const handleYearChange = (e) => {
@@ -99,7 +108,6 @@ const EnterMonthlyData = (props) => {
   }
 
   const toggleUploadModalMonthly = (folder_id) => {
-    debugger
     setUploadModalMonthly(!uploadModalMonthly)
     setIdFolderUpload(folder_id)
     setCurrMonth(selectedMonth)
@@ -120,7 +128,6 @@ const EnterMonthlyData = (props) => {
   }
 
   useEffect(() => {
-    debugger
     if (isYes) {
       let num = null
       num = tempIdDel
@@ -136,7 +143,6 @@ const EnterMonthlyData = (props) => {
   }, [isYes])
 
   useEffect(() => {
-    debugger
     if (msgDeleteFile?.status == "1") {
       dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
       setIsYes(!isYes)
@@ -233,7 +239,7 @@ const EnterMonthlyData = (props) => {
                                       i < 3 ? (
 
                                         items.count > 1 ? (
-                                          <Col md={items.count > 3 ? '3' : '4'} className="files" key={i}>
+                                          <Col md={items.count > 3 ? '3' : '4'} style={{height:"12vh"}} className="files" key={i}>
                                             <span
                                               style={{
                                                 fontSize: "50px",
@@ -258,9 +264,9 @@ const EnterMonthlyData = (props) => {
                                             ></span>
                                             <div
                                               style={{
-                                                width: items.count > 3 ? "85px" : '100%',
-                                                height:"3em",
-                                                fontSize: "12px",
+                                                width: '100%',
+                                                height: "3em",
+                                                fontSize: "16px",
                                                 textOverflow: "ellipsis",
                                                 overflow: "hidden",
                                                 textAlign: "center",
@@ -272,7 +278,7 @@ const EnterMonthlyData = (props) => {
                                             </div>
                                           </Col>
                                         ) : (
-                                          <Col className="files" key={i}>
+                                          <Col className="files" style={{height:"12vh"}} key={i}>
                                             <span
                                               style={{
                                                 fontSize: "50px",
@@ -297,7 +303,7 @@ const EnterMonthlyData = (props) => {
                                             ></span>
                                             <div
                                               style={{
-                                                width: items.count > 1 ? "100px" : '100%',
+                                                width: '100%',
                                                 fontSize: "16px",
                                                 whiteSpace: "nowrap",
                                                 textOverflow: "ellipsis",
@@ -315,7 +321,7 @@ const EnterMonthlyData = (props) => {
                                       )
                                         :
                                         (
-                                          i > 4 ? (
+                                          i === 4 ? (
                                             <Col style={{ marginTop: "2%" }} className="files" key={i}>
                                               <a
                                                 style={{
@@ -328,16 +334,47 @@ const EnterMonthlyData = (props) => {
                                                 onClick={{}}
                                               ></a>
                                             </Col>
-                                          ) : null 
+                                          ) : null
                                         )
                                     ))}
                                   </>
                                 )
                                 :
                                 (
-                                  <Col className="nofile">
-                                    <span style={{ fontSize: "50px", color: "#7BAE40", opacity: "0.75" }} className="mdi mdi-file-cancel-outline text-danger"></span>
-                                    <div style={{ fontSize: "16px" }}>{props.t('No File')}</div>
+                                  <Col className="nofile" style={{height:"12vh"}}>
+                                    <span
+                                      style={{
+                                        fontSize: "50px",
+                                        color: "#7BAE40",
+                                        opacity: "0.75",
+                                      }}
+                                      className="mdi mdi-file-cancel-outline text-danger"
+                                    ></span>
+                                    <span
+                                      hidden
+                                      style={{
+                                        fontSize: "18px",
+                                        position: "absolute",
+                                        top: "12%",
+                                        left: "55%",
+                                        color: "#f46a6a",
+                                        cursor: "pointer"
+                                      }}
+                                      className="mdi mdi-close-circle"
+                                    ></span>
+                                    <div
+                                      style={{
+                                        fontSize: "16px",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
+                                        overflow: "hidden",
+                                        textAlign: "center",
+                                        marginLeft: "50%",
+                                        transform: "translateX(-50%)"
+                                      }}
+                                    >
+                                      {props.t('No File')}
+                                    </div>
                                   </Col>
                                 )
                             }
@@ -355,7 +392,7 @@ const EnterMonthlyData = (props) => {
                               {items.name}
                             </Col>
                             <Col className="col-4 d-flex justify-content-end">
-                              <Button style={{ marginRight: "-12%", marginBottom: "-15%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
+                              <Button style={{ marginRight: "-18%", marginBottom: "-15%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
                             </Col>
                           </Row>
 
