@@ -491,6 +491,7 @@ const Instructions = (props) => {
                                                         <CustomDatePicker
                                                             selected={dateFrom ? new Date(dateFrom + '-01') : null}
                                                             onChange={(date) => dateChanger('from', date)}
+                                                            type='from'
                                                             onClear={() => {
                                                                 setDateFrom('');
                                                                 setAppInstructionsTabelSearch((prevSearch) => ({
@@ -511,6 +512,7 @@ const Instructions = (props) => {
                                                         <CustomDatePicker
                                                             selected={dateTo ? new Date(dateTo + '-01') : null}
                                                             onChange={(date) => dateChanger('to', date)}
+                                                            type='to'
                                                             onClear={() => {
                                                                 setDateTo('');
                                                                 setAppInstructionsTabelSearch((prevSearch) => ({

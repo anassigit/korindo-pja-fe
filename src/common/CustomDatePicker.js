@@ -36,6 +36,9 @@ function CustomDatePicker({ selected, onChange, onClear, type }) {
         onChange={handleDateChange}
         dateFormat="yyyy-MM"
         showMonthYearPicker
+        minDate={type === 'to' ? 
+        new Date()
+        : null}
         customInput={
           <div className="date-picker-input">
             <input
