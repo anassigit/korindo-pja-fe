@@ -68,7 +68,7 @@ const Create = (props) => {
     const toggleMsgModal = () => {
         setCreateMsgModal(!createMsgModal)
         if (createMsg.status === "1") {
-debugger
+            debugger
             props.toggle()
             setCreateMsg("")
 
@@ -107,7 +107,7 @@ debugger
 
                         <div className="mb-3 mx-3">
                             <Label>{props.t("Input folder name")} <span style={{ color: "red" }}>*</span></Label>
-                            <Input type="text" name="folder_name" onChange={createFileFolderValidInput.handleChange} value={createFileFolderValidInput.values.folder_name} />
+                            <Input type="text" name="folder_name" onChange={createFileFolderValidInput.handleChange} value={createFileFolderValidInput.values.folder_name} id="newFolderNm"/>
                             {createFileFolderValidInput.errors.folder_name && createFileFolderValidInput.touched.folder_name && (
                                 <div style={{ color: 'red' }}>{createFileFolderValidInput.errors.folder_name}</div>
                             )}

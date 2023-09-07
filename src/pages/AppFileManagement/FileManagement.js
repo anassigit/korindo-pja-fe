@@ -138,6 +138,13 @@ const FileManagement = (props) => {
     setIdNowLoc(currFolder)
     setCreateModal(!createModal)
     setIdToggleCreate(idChild)
+
+    setTimeout(() => {
+      var inputFolderNm = document.getElementById("newFolderNm");
+      if (inputFolderNm) {
+        inputFolderNm.focus();
+      }
+  }, 0);
   }
 
   const toggleMoveModal = (Fid, Pid) => {
@@ -580,12 +587,12 @@ const FileManagement = (props) => {
 
                               <div
                                 onContextMenu={handleContextMenu}
-                                onClick={hideContextMenu}
+                                onMouseDown={hideContextMenu}
                               
                               >
                                 {/* Your component content */}
 
-                             
+                                {/* <ContextMenuTrigger id={`rightMenu${key}`}> */}
                                 <Card className="shadow-none border"
                                   onContextMenu={(e) => {
                                     e.preventDefault(); // Prevent the default context menu
@@ -645,11 +652,37 @@ const FileManagement = (props) => {
                                     </div>
                                   </CardBody>
                                 </Card>
-                               
+                                {/* </ContextMenuTrigger> */}
                                 {/* ContextMenu */}
 
                                 <div className="float-end">
-                                  
+                                  {/* {(isContextMenuOpen && !isDropdownMenuOpen) && (
+                                  <ContextMenu
+                                    id={`rightMenu${key}`}
+                                    style={{ position: 'fixed', left: contextMenuPosition.x, top: contextMenuPosition.y }}
+                                  >
+                                    <MenuItem
+                                      onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+                                      className="contextmenu-item"
+                                    >
+                                      <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                      {props.t("Rename")}
+                                    </MenuItem>
+                                    <MenuItem
+                                      onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+                                    >
+                                      <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                      {props.t("Move")}
+                                    </MenuItem>
+                                    <div className="dropdown-divider"></div>
+                                    <MenuItem
+                                      onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+                                    >
+                                      <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                      {props.t("Remove")}
+                                    </MenuItem>
+                                  </ContextMenu>
+                                )} */}
                                   {/* Custom context menu */}
                                   {isContextMenuVisible && (
                                     <div
