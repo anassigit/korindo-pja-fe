@@ -10,6 +10,7 @@ import { getPermissionListData, getRankListData, resetMessage } from 'store/appS
 import { format } from 'date-fns';
 import { withTranslation } from "react-i18next"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { ReactSession } from 'react-client-session';
 
 const AddReply = (props) => {
 
@@ -52,7 +53,6 @@ const AddReply = (props) => {
 
         props.setLoadingSpinner(true)
         if (values.content !== '') {
-            debugger
             var bodyForm = new FormData();
 
             bodyForm.append('instruction_num', props.idInstruction);
@@ -158,7 +158,6 @@ const AddReply = (props) => {
             }))
             props.toggle()
             replyValidInput.resetForm();
-            debugger
             if (props.getDetailInstructionData?.data?.instruction?.comment && props.onlyReply === false) {
                 var bodyForm = new FormData();
 
@@ -241,10 +240,11 @@ const AddReply = (props) => {
                     }
                 }
                 insert(bodyForm, config)
+                debugger
                 history.push({
                     pathname: '/AppInstructions',
-                    state: { setAppInstructionsMsg: props.editInstructionsMessage }
                 })
+                ReactSession.set('appEditInstructionsMsg', props.appEditInstructionsMsg)
             }
         } else {
             setAddReplyMsg(msgSaveReply);
@@ -347,7 +347,6 @@ const AddReply = (props) => {
                                         //     replyValidInput.setFieldValue('files', event.currentTarget.files);
                                         // }}
                                         onChange={(event) => {
-                                            debugger
                                             const newFiles = Array.from(event.currentTarget.files);
                                             setPreservedFiles([...preservedFiles, ...newFiles]);
                                         }}
@@ -394,8 +393,8 @@ const AddReply = (props) => {
                         if (!props.onlyReply) {
                             history.push({
                                 pathname: '/AppInstructions',
-                                state: { setAppInstructionsMsg: props.editInstructionsMessage }
                             })
+                            ReactSession.set('appEditInstructionsMsg', props.appEditInstructionsMsg)
                         }
                     }}
                     >
@@ -425,6 +424,7 @@ AddReply.propTypes = {
     SetFiles: PropTypes.any,
     getDetailInstructionData: PropTypes.any,
     editInstructionsMessage: PropTypes.any,
+    appEditInstructionsMsg: PropTypes.any,
     setOnlyReply: PropTypes.any,
     onlyReply: PropTypes.any,
     handleChange: PropTypes.any,

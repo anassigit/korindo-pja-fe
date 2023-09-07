@@ -33,7 +33,6 @@ const TableCustom = (props) => {
         const pageParam = urlParams.get("page");
         const currentPage = parseInt(pageParam);
 
-        debugger
         if (!isNaN(currentPage) && currentPage !== props.searchGet.page) {
             customHandleTableChange("pagination", {
                 page: currentPage,
@@ -54,7 +53,6 @@ const TableCustom = (props) => {
     }, [location.search, props.searchGet, customHandleTableChange, history]);
 
     useEffect(() => {
-        debugger
         if(props.searchGet?.page == 1) {
             dispatch(props.redukCall(props.searchGet));
             history.replace("?page=1");

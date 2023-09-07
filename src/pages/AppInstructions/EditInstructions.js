@@ -46,7 +46,7 @@ import e from "cors";
 
 const EditInstructions = (props) => {
 
-    
+
     let langType = localStorage.getItem("I18N_LANGUAGE")
     if (!langType) {
         localStorage.setItem("I18N_LANGUAGE", "eng")
@@ -175,7 +175,7 @@ const EditInstructions = (props) => {
         setEditInstructionsFirstRenderDone(true);
         dispatch(resetMessage());
 
-        let num = queryNum.toString()
+        let num = queryNum?.toString()
         dispatch(getDetailInstruction({
             search: {
                 "num": num,
@@ -233,8 +233,8 @@ const EditInstructions = (props) => {
     }, [])
 
     useEffect(() => {
-       
-        let num = queryNum.toString()
+
+        let num = queryNum?.toString()
         dispatch(getDetailInstruction({
             search: {
                 "num": num,
@@ -362,7 +362,7 @@ const EditInstructions = (props) => {
         editInstructionsValidInput.setFieldValue("no", queryNum)
         editInstructionsValidInput.setFieldValue("title", getDetailInstructionData?.data?.instruction?.title)
 
-        const inputDateString = getDetailInstructionData?.data?.instruction?.insDate.toString();
+        const inputDateString = getDetailInstructionData?.data?.instruction?.insDate?.toString();
         debugger
 
         if (inputDateString) {
@@ -522,6 +522,7 @@ const EditInstructions = (props) => {
                 }
                 insert(bodyForm, config);
             } else {
+                debugger
                 var bodyForm = new FormData();
 
                 bodyForm.append('num', values.no);
@@ -627,8 +628,8 @@ const EditInstructions = (props) => {
         if (deleteInstructionsMessage.status == "1") {
             history.push({
                 pathname: '/AppInstructions',
-                state: { setAppInstructionsMsg: deleteInstructionsMessage }
             });
+            ReactSession.set('appEditInstructionsMsg', deleteInstructionsMessage)
         }
         // setAppEditInstructionsMsg(deleteInstructionsMessage)
     }, [deleteInstructionsMessage])
@@ -1290,7 +1291,7 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         let num = queryNum
-        num = num.toString()
+        num = num?.toString()
         if (msgSaveReply.status == '0') {
         }
         if (msgSaveReply.status == '1') {
@@ -1310,9 +1311,9 @@ const EditInstructions = (props) => {
     }, [msgSaveReply])
 
     useEffect(() => {
-       
+
         let num = queryNum
-        num = num.toString()
+        num = num?.toString()
         if (msgEditReply.status == '1') {
             dispatch(getReply({
                 search: {
@@ -1331,7 +1332,7 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         let num = queryNum
-        num = num.toString()
+        num = num?.toString()
         if (msgDeleteReply.status == '1') {
             dispatch(getReply({
                 search: {
@@ -1367,16 +1368,18 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
-        if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment && addReplyModal) {
+        debugger
+        if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment && !addReplyModal) {
             toggleAddReplyModal()
+            ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         } else if (editInstructionsMessage.status == "1" && !onlyReply) {
             history.push({
                 pathname: '/AppInstructions',
-                state: { setAppInstructionsMsg: editInstructionsMessage }
             })
+            ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         } else if (editInstructionsMessage.status == "1") {
-           
-            let num = queryNum.toString()
+
+            let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {
                     "num": num,
@@ -1709,6 +1712,7 @@ const EditInstructions = (props) => {
                         SetFiles={SetFiles}
                         getDetailInstructionData={getDetailInstructionData}
                         editInstructionsMessage={editInstructionsMessage}
+                        appEditInstructionsMsg={appEditInstructionsMsg}
                         setOnlyReply={setOnlyReply}
                         onlyReply={onlyReply}
                         handleChange={editInstructionsValidInput.handleChange}

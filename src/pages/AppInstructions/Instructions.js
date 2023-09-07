@@ -58,7 +58,6 @@ const Instructions = (props) => {
         if (temp === "true") {
             history.push('/FirstLogin')
         } else if (lastURL) {
-            debugger
             // Parse the lastURL to extract the path part
             const urlParts = lastURL.split('/');
             const path = urlParts[urlParts.length - 1];
@@ -122,16 +121,19 @@ const Instructions = (props) => {
     });
 
     useEffect(() => {
+        debugger
         if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
         }
-        if (history.location.state != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
-            setAppInstructionsMsg(history.location.state?.setAppInstructionsMsg)
+        if (ReactSession.get('appEditInstructionsMsg') != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
+            setAppInstructionsMsg(ReactSession.get('appEditInstructionsMsg'))
+            ReactSession.set('appEditInstructionsMsg', null);
         }
     }, [appInstructionsData])
 
     useEffect(() => {
         if (isClosed == true) {
+            debugger
             history.push({
                 state: {
                     setAppInstructionsMsg: ""
@@ -150,7 +152,6 @@ const Instructions = (props) => {
             classes: "custom-num-column",
             events: {
                 onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
-                    // debugger
                     appInstructionsPreEdit(appInstructionsData);
                 },
             },
