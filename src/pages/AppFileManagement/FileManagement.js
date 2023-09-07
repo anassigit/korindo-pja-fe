@@ -107,7 +107,7 @@ const FileManagement = (props) => {
       if (extNm1 !== -1) {
         var extNm = nmT.slice(extNm1 + 1);
         setNmToggleExt(extNm)
-        
+
       } else {
         console.log("No file extension found.");
       }
@@ -250,7 +250,7 @@ const FileManagement = (props) => {
 
     setCurrFolder(e)
     localStorage.setItem('appFileManagementData', JSON.stringify(e));
-    
+
     setEnterMonthlyDataSpinner(true)
     dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
@@ -412,7 +412,24 @@ const FileManagement = (props) => {
     }
   }, [isContextMenuOpen2])
 
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+  const [contextMenuPosition0, setIsContextMenuVisible0] = useState({ x: 0, y: 0 });
 
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+
+    const xPos = e.clientX;
+    const yPos = e.clientY;
+
+    setIsContextMenuVisible(true)
+    setIsContextMenuVisible0({ x: xPos, y: yPos })
+
+  };
+
+  const hideContextMenu = () => {
+
+    setIsContextMenuVisible(false)
+  };
 
 
   return (
@@ -558,7 +575,17 @@ const FileManagement = (props) => {
                           myfiles.type === "FOLDER" || myfiles > 0 ?
 
                             <Col md={2} key={key}>
-                              <ContextMenuTrigger id={`rightMenu${key}`}>
+
+
+
+                              <div
+                                onContextMenu={handleContextMenu}
+                                onClick={hideContextMenu}
+                              
+                              >
+                                {/* Your component content */}
+
+                             
                                 <Card className="shadow-none border"
                                   onContextMenu={(e) => {
                                     e.preventDefault(); // Prevent the default context menu
@@ -618,37 +645,44 @@ const FileManagement = (props) => {
                                     </div>
                                   </CardBody>
                                 </Card>
-                              </ContextMenuTrigger>
-                              {/* ContextMenu */}
+                               
+                                {/* ContextMenu */}
 
-                              <div className="float-end">
-                                {(isContextMenuOpen && !isDropdownMenuOpen) && (
-                                  <ContextMenu
-                                    id={`rightMenu${key}`}
-                                    style={{ position: 'fixed', left: contextMenuPosition.x, top: contextMenuPosition.y }}
-                                  >
-                                    <MenuItem
-                                      onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
-                                      className="contextmenu-item"
+                                <div className="float-end">
+                                  
+                                  {/* Custom context menu */}
+                                  {isContextMenuVisible && (
+                                    <div
+                                      className="custom-context-menu"
+
+                                      style={{
+                                        position: 'fixed',
+                                        left: contextMenuPosition0.x + 'px',
+                                        top: contextMenuPosition0.y + 'px',
+                                      }}
                                     >
-                                      <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                      {props.t("Rename")}
-                                    </MenuItem>
-                                    <MenuItem
-                                      onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
-                                    >
-                                      <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                      {props.t("Move")}
-                                    </MenuItem>
-                                    <div className="dropdown-divider"></div>
-                                    <MenuItem
-                                      onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
-                                    >
-                                      <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                      {props.t("Remove")}
-                                    </MenuItem>
-                                  </ContextMenu>
-                                )}
+                                        <li className="custom-context-menu-li"
+                                          onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+                                        >
+                                          <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                          {props.t("Rename")}
+                                        </li>
+                                        <li className="custom-context-menu-li"
+                                        onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+                                        >
+                                          <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                          {props.t("Move")}
+                                        </li>
+                                        <div className="dropdown-divider"></div>
+                                        <li className="custom-context-menu-li"
+                                        onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+                                        >
+                                          <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                          {props.t("Remove")}
+                                        </li> 
+                                    </div>
+                                  )}
+                                </div>
                               </div>
 
 
@@ -757,67 +791,67 @@ const FileManagement = (props) => {
                                     </div>
 
                                     <div className="pt-2">
-  <div className="avatar-title bg-transparent rounded">
-    {(() => {
-      // Convert file name to lowercase
-      var fileNameLowerCase = myfiles.name.toLowerCase();
+                                      <div className="avatar-title bg-transparent rounded">
+                                        {(() => {
+                                          // Convert file name to lowercase
+                                          var fileNameLowerCase = myfiles.name.toLowerCase();
 
-      // Check for file extensions (case-insensitive)
-      if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
-        return (
-          <div className="thumbnail-container thumbnail">
-            <img src={doc} />
-          </div>
-        );
-      } else if (
-        fileNameLowerCase.endsWith("jpg") ||
-        fileNameLowerCase.endsWith("jpeg") ||
-        fileNameLowerCase.endsWith("gif") ||
-        fileNameLowerCase.endsWith("png")
-      ) {
-        return (
-          <div className="thumbnail-container thumbnail">
-            <img src={new URL(myfiles.url)} />
-          </div>
-        );
-      } else if (
-        fileNameLowerCase.endsWith("xls") ||
-        fileNameLowerCase.endsWith("xlsx") ||
-        fileNameLowerCase.endsWith("csv")
-      ) {
-        return (
-          <div className="thumbnail-container thumbnail">
-            <img src={xls} />
-          </div>
-        );
-      } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
-        return (
-          <div className="thumbnail-container thumbnail">
-            <img src={ppt} />
-          </div>
-        );
-      } else if (fileNameLowerCase.endsWith("pdf")) {
-        return (
-          <div className="thumbnail-container thumbnail">
-            <img src={pdf} />
-          </div>
-        );
-      } else if (fileNameLowerCase.endsWith("txt")) {
-        return (
-          <div className="thumbnail-container thumbnail">
-            <img src={txt} />
-          </div>
-        );
-      } else {
-        return (
-          <div className="thumbnail-container thumbnail">
-            <img src={unknown} />
-          </div>
-        );
-      }
-    })()}
-  </div>
-</div>
+                                          // Check for file extensions (case-insensitive)
+                                          if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
+                                            return (
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={doc} />
+                                              </div>
+                                            );
+                                          } else if (
+                                            fileNameLowerCase.endsWith("jpg") ||
+                                            fileNameLowerCase.endsWith("jpeg") ||
+                                            fileNameLowerCase.endsWith("gif") ||
+                                            fileNameLowerCase.endsWith("png")
+                                          ) {
+                                            return (
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={new URL(myfiles.url)} />
+                                              </div>
+                                            );
+                                          } else if (
+                                            fileNameLowerCase.endsWith("xls") ||
+                                            fileNameLowerCase.endsWith("xlsx") ||
+                                            fileNameLowerCase.endsWith("csv")
+                                          ) {
+                                            return (
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={xls} />
+                                              </div>
+                                            );
+                                          } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
+                                            return (
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={ppt} />
+                                              </div>
+                                            );
+                                          } else if (fileNameLowerCase.endsWith("pdf")) {
+                                            return (
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={pdf} />
+                                              </div>
+                                            );
+                                          } else if (fileNameLowerCase.endsWith("txt")) {
+                                            return (
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={txt} />
+                                              </div>
+                                            );
+                                          } else {
+                                            return (
+                                              <div className="thumbnail-container thumbnail">
+                                                <img src={unknown} />
+                                              </div>
+                                            );
+                                          }
+                                        })()}
+                                      </div>
+                                    </div>
 
 
                                   </div>

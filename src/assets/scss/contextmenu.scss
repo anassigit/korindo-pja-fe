@@ -1,6 +1,6 @@
   /* Context menu css --- vin */
 
-  nav.react-contextmenu {
+  .custom-context-menu{
     animation-name: DropDownSlide;
     animation-duration: .3s;
     animation-fill-mode: both;
@@ -13,7 +13,6 @@
     background-color: #fff;
     padding: 10px 0;
     z-index: 1000;
-    box-shadow: 0 0 20px rgba(0,0,0,.2);
     cursor: pointer;
     
 }
@@ -27,15 +26,15 @@
   }
 }
 
-.react-contextmenu .react-contextmenu-item:hover{
+.custom-context-menu-li .custom-context-menu-li:hover{
   background: #cccccc;
 }
 
-.react-contextmenu-item:hover:not(.react-contextmenu-item--disabled) {
+.custom-context-menu-li:hover:not(.custom-context-menu-li--disabled) {
   background-color: #f1f1f1;
 }
 
-.react-contextmenu-item{
+.custom-context-menu-li{
   display: block;
   width: 100%;
   padding: 0.20rem 1.5rem;
@@ -46,10 +45,11 @@
   white-space: nowrap;
   background-color: transparent;
   border: 0;
+  cursor: pointer;
 }
-.react-contextmenu-item span{
+.custom-context-menu-li span{
   margin-left: 10px;
 }
-.react-contextmenu-item svg{
+.custom-context-menu-li svg{
   font-size: 16.25px;
 }
