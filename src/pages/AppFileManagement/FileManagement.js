@@ -757,64 +757,68 @@ const FileManagement = (props) => {
                                     </div>
 
                                     <div className="pt-2">
-                                      <div className="avatar-title bg-transparent rounded">
+  <div className="avatar-title bg-transparent rounded">
+    {(() => {
+      // Convert file name to lowercase
+      var fileNameLowerCase = myfiles.name.toLowerCase();
 
-                                        {myfiles.name.endsWith("docx") || myfiles.name.endsWith("doc") ? (
-                                          <div className="thumbnail-container thumbnail">
-                                            <img src={doc} />
+      // Check for file extensions (case-insensitive)
+      if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
+        return (
+          <div className="thumbnail-container thumbnail">
+            <img src={doc} />
+          </div>
+        );
+      } else if (
+        fileNameLowerCase.endsWith("jpg") ||
+        fileNameLowerCase.endsWith("jpeg") ||
+        fileNameLowerCase.endsWith("gif") ||
+        fileNameLowerCase.endsWith("png")
+      ) {
+        return (
+          <div className="thumbnail-container thumbnail">
+            <img src={new URL(myfiles.url)} />
+          </div>
+        );
+      } else if (
+        fileNameLowerCase.endsWith("xls") ||
+        fileNameLowerCase.endsWith("xlsx") ||
+        fileNameLowerCase.endsWith("csv")
+      ) {
+        return (
+          <div className="thumbnail-container thumbnail">
+            <img src={xls} />
+          </div>
+        );
+      } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
+        return (
+          <div className="thumbnail-container thumbnail">
+            <img src={ppt} />
+          </div>
+        );
+      } else if (fileNameLowerCase.endsWith("pdf")) {
+        return (
+          <div className="thumbnail-container thumbnail">
+            <img src={pdf} />
+          </div>
+        );
+      } else if (fileNameLowerCase.endsWith("txt")) {
+        return (
+          <div className="thumbnail-container thumbnail">
+            <img src={txt} />
+          </div>
+        );
+      } else {
+        return (
+          <div className="thumbnail-container thumbnail">
+            <img src={unknown} />
+          </div>
+        );
+      }
+    })()}
+  </div>
+</div>
 
-                                          </div>
-                                        ) :
-                                          myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
-
-                                            <div className="thumbnail-container thumbnail">
-
-
-                                              <img
-                                                src={new URL(myfiles.url)}
-
-                                              />
-
-                                            </div>
-
-                                          )
-                                            : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
-                                              <div className="thumbnail-container thumbnail">
-                                                <img src={xls} />
-
-                                              </div>
-
-
-                                            )
-                                              : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
-                                                <div className="thumbnail-container thumbnail">
-                                                  <img src={ppt} />
-
-                                                </div>
-
-                                              )
-                                                : myfiles.name.endsWith("pdf") ? (
-                                                  <div className="thumbnail-container thumbnail">
-                                                    <img src={pdf} />
-
-                                                  </div>
-                                                )
-                                                  : myfiles.name.endsWith("txt") ? (
-                                                    <div className="thumbnail-container thumbnail">
-                                                      <img src={txt} />
-
-                                                    </div>
-                                                  )
-                                                    :
-                                                    (
-                                                      <div className="thumbnail-container thumbnail">
-                                                        <img src={unknown} />
-
-                                                      </div>
-                                                    )}
-
-                                      </div>
-                                    </div>
 
                                   </div>
                                 </CardBody>
