@@ -1375,12 +1375,13 @@ const EditInstructions = (props) => {
     useEffect(() => {
 
         debugger
-        if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment && !addReplyModal) {
+        let tempMsg = ReactSession.get('appEditInstructionsMsg')
+        if (editInstructionsMessage.status === "1" && getDetailInstructionData?.data?.instruction?.comment && !addReplyModal && tempMsg == "") {
             history.push({
                 pathname: '/AppInstructions',
             })
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
-        } else if (editInstructionsMessage.status == "1" && !onlyReply) {
+        } else if (editInstructionsMessage.status == "1" && !onlyReply && ReactSession.get('appEditInstructionsMsg')?.status !== "1" && tempMsg == "") {
             history.push({
                 pathname: '/AppInstructions',
             })

@@ -307,7 +307,7 @@ const AddReply = (props) => {
                                     width: "100%",
                                     minHeight: "26em",
                                 }}
-                                maxLength={400}
+                                maxLength={4500}
                                 placeholder={props.t("Please input your answer here")}
                                 name="content"
                                 type="textarea"
