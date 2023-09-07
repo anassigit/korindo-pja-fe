@@ -485,12 +485,11 @@ const Instructions = (props) => {
                                                 </Col>
 
                                                 <Col md="6" style={{ display: "flex", alignItems: "center" }}>
-                                                    <i className="mdi mdi-calendar fs-4 col-sm-1" /> 
+                                                    
                                                     <div style={{ width: '35%', display: "flex", alignItems: "center" }}>
                                                       
                                                         <CustomDatePicker
                                                             selected={dateFrom ? new Date(dateFrom + '-01') : null}
-                                                            type="from"
                                                             onChange={(date) => dateChanger('from', date)}
                                                             onClear={() => {
                                                                 setDateFrom('');
@@ -511,7 +510,6 @@ const Instructions = (props) => {
                                                         </div>
                                                         <CustomDatePicker
                                                             selected={dateTo ? new Date(dateTo + '-01') : null}
-                                                            type="to"
                                                             onChange={(date) => dateChanger('to', date)}
                                                             onClear={() => {
                                                                 setDateTo('');

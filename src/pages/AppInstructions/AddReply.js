@@ -29,6 +29,7 @@ const AddReply = (props) => {
         return state.instructionsReducer.msgAddReply;
     })
 
+
     useEffect(() => {
         dispatch(resetMessage());
     }, [dispatch])
@@ -124,6 +125,7 @@ const AddReply = (props) => {
 
     useEffect(() => {
         if (!props.modal) {
+
             setAddReplyMsg('')
             setPreservedFiles([])
             replyValidInput.setFieldValue('content', '')
@@ -303,6 +305,7 @@ const AddReply = (props) => {
                         <div className="mb-3 mx-3">
                             <label>{props.t("Answer")}</label>
                             <Input
+                        
                                 style={{
                                     width: "100%",
                                     minHeight: "26em",
@@ -310,6 +313,7 @@ const AddReply = (props) => {
                                 maxLength={4500}
                                 placeholder={props.t("Please input your answer here")}
                                 name="content"
+                                id="cntnt"
                                 type="textarea"
                                 onChange={(event) => {
                                     replyValidInput.handleChange(event);

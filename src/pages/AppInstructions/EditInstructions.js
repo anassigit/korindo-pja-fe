@@ -1675,6 +1675,12 @@ const EditInstructions = (props) => {
 
     const toggleAddReplyModal = () => {
         setAddReplyModal(!addReplyModal)
+        setTimeout(() => {
+            var inputField = document.getElementById("cntnt");
+            if (inputField) {
+                inputField.focus();
+            }
+        }, 0);
     }
 
     const [editReplyModal, setEditReplyModal] = useState(false)
@@ -1713,6 +1719,7 @@ const EditInstructions = (props) => {
                     />
 
                     <AddReply
+          
                         modal={addReplyModal}
                         toggle={toggleAddReplyModal}
                         idInstruction={editInstructionsValidInput?.values?.no}
