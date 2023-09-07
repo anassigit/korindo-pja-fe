@@ -47,7 +47,6 @@ const TableCustom = (props) => {
                 sortOrder: props.searchGet.order,
                 sizePerPage: props.searchGet.limit,
             });
-            history.push('/AppInstructions?page=' + currentPageFromURL)
             setCurrentPage(currentPageFromURL)
         }
     }, [currentPageFromURL]);
@@ -57,10 +56,9 @@ const TableCustom = (props) => {
         if (location.pathname === "/AppInstructions" && !location.search) {
             history.replace("/AppInstructions?page=1");
         }
-        debugger
-        if (props.searchGet.page === 1) {
-            dispatch(props.redukCall(props.searchGet));
-        } else if (props.searchGet.page !== currentPageFromURL) {
+
+        // Conditionally dispatch based on the page
+        if (location.pathname === "/AppInstructions") {
             dispatch(props.redukCall(props.searchGet));
         }
     }, [location.pathname, location.search, props.searchGet]);

@@ -62,7 +62,7 @@ const Instructions = (props) => {
             const urlParts = lastURL.split('/');
             const path = urlParts[urlParts.length - 1];
 
-            history.replace(`/${path}`);
+            history.push(`/${path}`);
             localStorage.removeItem('currentURL');
         }
         setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
@@ -343,7 +343,7 @@ const Instructions = (props) => {
         const urlWithParams = '/AppEditInstruction?' + searchParams.toString();
 
         // Use history.push() to navigate to the new URL
-        history.replace(urlWithParams);
+        history.push(urlWithParams);
 
         // Rest of your code
         setAppInstructionsMsg("");
