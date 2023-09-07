@@ -98,12 +98,19 @@ const FileManagement = (props) => {
   const toggleRenameModal = (idT, nmT, tpT) => {
 
     setIdNowLoc(currFolder)
+    debugger
     setIdToggle(idT)
     if (tpT === "FILE") {
       var realNm = nmT.split('.').slice(0, -1).join('.')
       setNmToggle(realNm)
-      var extNm = nmT.split('.').pop();
-      setNmToggleExt(extNm)
+      var extNm1 = nmT.lastIndexOf('.')
+      if (extNm1 !== -1) {
+        var extNm = nmT.slice(extNm1 + 1);
+        setNmToggleExt(extNm)
+        
+      } else {
+        console.log("No file extension found.");
+      }
       setTypeRename(tpT)
     } else {
       setNmToggle(nmT)
