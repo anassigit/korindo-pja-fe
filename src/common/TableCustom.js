@@ -5,14 +5,19 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { useDispatch } from "react-redux";
 import { Card } from "reactstrap";
 import { useHistory, useLocation } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
 
 const TableCustom = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
 
-    const [lastPage, setLastPage] = useState(0);
+    // Parse page parameter from the URL
+    const urlParams = new URLSearchParams(location.search);
+    const pageParam = urlParams.get("page");
+    const currentPageFromURL = parseInt(pageParam);
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [tempDispatch, setTempDispatch] = useState(0);
 
     // Custom handler for table change (pagination and sorting)
     const customHandleTableChange = (type, { page, sortField, sortOrder, sizePerPage }) => {
@@ -23,45 +28,42 @@ const TableCustom = (props) => {
         if (type === "pagination") {
             // Handle pagination change
             props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search });
+
             history.push(`?page=${page}`);
         }
-    };
+        debugger
+        if (type === "link") {
+            props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search });
+        }
+    }
 
     useEffect(() => {
-        // Parse page parameter from the URL
-        const urlParams = new URLSearchParams(location.search);
-        const pageParam = urlParams.get("page");
-        const currentPage = parseInt(pageParam);
 
-        if (!isNaN(currentPage) && currentPage !== props.searchGet.page) {
-            customHandleTableChange("pagination", {
-                page: currentPage,
+        debugger
+        if (props.searchGet.page !== currentPageFromURL) {
+            customHandleTableChange("link", {
+                page: currentPageFromURL,
                 sortField: props.searchGet.sort,
                 sortOrder: props.searchGet.order,
                 sizePerPage: props.searchGet.limit,
             });
-            history.replace(`?page=${currentPage}`);
-        } else if (isNaN(currentPage)) {
-            customHandleTableChange("pagination", {
-                page: 1,
-                sortField: props.searchGet.sort,
-                sortOrder: props.searchGet.order,
-                sizePerPage: props.searchGet.limit,
-            });
-            history.replace("?page=1");
+            history.push('/AppInstructions?page=' + currentPageFromURL)
+            setCurrentPage(currentPageFromURL)
         }
-    }, [location.search, props.searchGet, customHandleTableChange, history]);
+    }, [currentPageFromURL]);
 
     useEffect(() => {
-        if(props.searchGet?.page == 1) {
-            dispatch(props.redukCall(props.searchGet));
-            history.replace("?page=1");
-        } else if (props.searchGet.page !== lastPage) {
-            // Dispatch the Redux action to fetch data when the page changes
-            dispatch(props.redukCall(props.searchGet));
-            setLastPage(props.searchGet.page);
+        // Check if the current route is /AppInstructions
+        if (location.pathname === "/AppInstructions" && !location.search) {
+            history.replace("/AppInstructions?page=1");
         }
-    }, [props.searchGet, lastPage]);
+        debugger
+        if (props.searchGet.page === 1) {
+            dispatch(props.redukCall(props.searchGet));
+        } else if (props.searchGet.page !== currentPageFromURL) {
+            dispatch(props.redukCall(props.searchGet));
+        }
+    }, [location.pathname, location.search, props.searchGet]);
 
     return (
         <Card className="m-0 p-0">

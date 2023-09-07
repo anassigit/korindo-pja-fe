@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 
-function CustomDatePicker({ selected, onChange, onClear }) {
+function CustomDatePicker({ selected, onChange, onClear, type }) {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
 
@@ -41,7 +41,7 @@ function CustomDatePicker({ selected, onChange, onClear }) {
             <input
               ref={inputRef}
               className="form-control"
-              placeholderText="YYYY-MM"
+              placeholder={type}
               value={selected ? selected.toISOString().slice(0, 7) : ''}
               onClick={handleInputClick}
               onKeyDown={handleInputKeyDown}
@@ -67,6 +67,7 @@ function CustomDatePicker({ selected, onChange, onClear }) {
 
 CustomDatePicker.propTypes = {
   selected: PropTypes.any,
+  type: PropTypes.any,
   onChange: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
 };

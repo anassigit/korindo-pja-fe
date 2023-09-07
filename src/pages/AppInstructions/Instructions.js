@@ -121,7 +121,6 @@ const Instructions = (props) => {
     });
 
     useEffect(() => {
-        debugger
         if (appInstructionsData.status == "0") {
             setAppInstructionsMsg(appInstructionsData)
         }
@@ -473,6 +472,7 @@ const Instructions = (props) => {
                                                                 className="form-control"
                                                                 value={appInstructionsTabelSearch.search.search}
                                                                 onChange={e => {
+                                                                    debugger
                                                                     setAppInstructionsTabelSearch({
                                                                         page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
                                                                         sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo }
@@ -487,6 +487,7 @@ const Instructions = (props) => {
                                                     <div style={{ width: '30%', display: "flex", alignItems: "center" }}>
                                                         <CustomDatePicker
                                                             selected={dateFrom ? new Date(dateFrom + '-01') : null}
+                                                            type="from"
                                                             onChange={(date) => dateChanger('from', date)}
                                                             onClear={() => {
                                                                 setDateFrom('');
@@ -506,6 +507,7 @@ const Instructions = (props) => {
                                                         </div>
                                                         <CustomDatePicker
                                                             selected={dateTo ? new Date(dateTo + '-01') : null}
+                                                            type="to"
                                                             onChange={(date) => dateChanger('to', date)}
                                                             onClear={() => {
                                                                 setDateTo('');
