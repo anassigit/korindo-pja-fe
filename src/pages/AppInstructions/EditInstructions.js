@@ -176,6 +176,7 @@ const EditInstructions = (props) => {
         dispatch(resetMessage());
 
         let num = queryNum?.toString()
+        debugger
         dispatch(getDetailInstruction({
             search: {
                 "num": num,
@@ -522,91 +523,9 @@ const EditInstructions = (props) => {
                 }
                 insert(bodyForm, config);
             } else {
-                debugger
-                var bodyForm = new FormData();
-
-                bodyForm.append('num', values.no);
-                bodyForm.append('title', editInstructionsValidInput.values.title);
-
-                bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
-                bodyForm.append('description', values.description);
-
-
-                //remove/add - Owner & Manager//
-
-                const uniqueAddUser = new Set(addUser);
-                const uniqueRemoveUser = new Set(removeUser);
-
-                const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
-                const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
-
-                filteredAddUser.forEach(user => {
-                    bodyForm.append('addUser', user);
-                });
-
-                filteredRemoveUser.forEach(user => {
-                    bodyForm.append('removeUser', user);
-                });
-
-                //end//
-
-                //status//
-
-                let statusId = null
-                statusId = statusData?.data?.statusList.map((item, index) => {
-                    if (item.name == values.status) {
-                        bodyForm.append('status', item.no)
-                    }
-                })
-
-                //end status//
-
-                //attach files//
-
-                if (selectedfile.length > 0) {
-
-                    var getFileNm = selectedfile[0].filename;
-
-                    getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
-
-                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
-
-
-                        for (let index = 0; index < selectedfile.length; index++) {
-                            let a = selectedfile[index];
-
-                            bodyForm.append('file' + index, selectedfile[index].fileori);
-
-                            console.log(a);
-                            SetSelectedFile([]);
-                            SetFiles([...Files, a]);
-
-                        }
-
-
-                    } else {
-
-                        alert("Files type are not allowed to upload or not supported.");
-                    }
+                if (getDetailInstructionData?.data?.instruction?.comment && !addReplyModal) {
+                    toggleAddReplyModal()
                 }
-
-                if (removeFile.length > 0) {
-                    removeFile.forEach(files => {
-                        bodyForm.append('removeFile', files);
-                    });
-                }
-
-
-                //end//
-
-
-                const config = {
-                    headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                }
-                insert(bodyForm, config);
-                setLoadingSpinner(false)
             }
 
         }
@@ -1295,6 +1214,93 @@ const EditInstructions = (props) => {
         if (msgSaveReply.status == '0') {
         }
         if (msgSaveReply.status == '1') {
+            debugger
+            if (getDetailInstructionData?.data?.instruction?.comment && addReplyModal && !onlyReply) {
+                var bodyForm = new FormData();
+
+                bodyForm.append('num', num);
+                bodyForm.append('title', editInstructionsValidInput.values.title);
+
+                bodyForm.append('insDate', format(editInstructionsValidInput.values.insDate, "yyyy-MM-dd"));
+                bodyForm.append('description', editInstructionsValidInput.values.description);
+
+
+                //remove/add - Owner & Manager//
+
+                const uniqueAddUser = new Set(addUser);
+                const uniqueRemoveUser = new Set(removeUser);
+
+                const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
+                const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
+
+                filteredAddUser.forEach(user => {
+                    bodyForm.append('addUser', user);
+                });
+
+                filteredRemoveUser.forEach(user => {
+                    bodyForm.append('removeUser', user);
+                });
+
+                //end//
+
+                //status//
+
+                let statusId = null
+                statusId = statusData?.data?.statusList.map((item, index) => {
+                    if (item.name == editInstructionsValidInput.values.status) {
+                        bodyForm.append('status', item.no)
+                    }
+                })
+
+                //end status//
+
+                //attach files//
+
+                if (selectedfile.length > 0) {
+
+                    var getFileNm = selectedfile[0].filename;
+
+                    getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
+
+                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+
+
+                        for (let index = 0; index < selectedfile.length; index++) {
+                            let a = selectedfile[index];
+
+                            bodyForm.append('file' + index, selectedfile[index].fileori);
+
+                            console.log(a);
+                            SetSelectedFile([]);
+                            SetFiles([...Files, a]);
+
+                        }
+
+
+                    } else {
+
+                        alert("Files type are not allowed to upload or not supported.");
+                    }
+                }
+
+                if (removeFile.length > 0) {
+                    removeFile.forEach(files => {
+                        bodyForm.append('removeFile', files);
+                    });
+                }
+
+
+                //end//
+
+
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+                insert(bodyForm, config);
+                setLoadingSpinner(false)
+            }
 
             dispatch(getReply({
                 search: {
@@ -1370,7 +1376,9 @@ const EditInstructions = (props) => {
 
         debugger
         if (editInstructionsMessage.status == "1" && getDetailInstructionData?.data?.instruction?.comment && !addReplyModal) {
-            toggleAddReplyModal()
+            history.push({
+                pathname: '/AppInstructions',
+            })
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         } else if (editInstructionsMessage.status == "1" && !onlyReply) {
             history.push({
@@ -1378,7 +1386,6 @@ const EditInstructions = (props) => {
             })
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         } else if (editInstructionsMessage.status == "1") {
-
             let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {

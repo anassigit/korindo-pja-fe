@@ -141,15 +141,11 @@ const AddReply = (props) => {
     useEffect(() => {
 
         if (msgSaveReply.status == "1") {
-            const storedData = localStorage.getItem('appInstructionsData');
-            let parsedData = null
 
-            if (storedData) {
-                parsedData = JSON.parse(storedData);
-                props.setAppInstructionsData(parsedData);
-            }
-
-            let num = parsedData?.num.toString()
+            const queryParameters = new URLSearchParams(window.location.search)
+            const queryNum = queryParameters.get("num")
+            
+            let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {
                     "num": num,
@@ -240,10 +236,6 @@ const AddReply = (props) => {
                     }
                 }
                 insert(bodyForm, config)
-                debugger
-                history.push({
-                    pathname: '/AppInstructions',
-                })
                 ReactSession.set('appEditInstructionsMsg', props.appEditInstructionsMsg)
             }
         } else {
