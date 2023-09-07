@@ -22,7 +22,7 @@ const SidebarContent = props => {
 
   const ref = useRef();
   const location = useLocation()
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(true)
 
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
