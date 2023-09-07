@@ -484,7 +484,9 @@ const Instructions = (props) => {
                                                 </Col>
 
                                                 <Col md="6" style={{ display: "flex", alignItems: "center" }}>
-                                                    <div style={{ width: '30%', display: "flex", alignItems: "center" }}>
+                                                    <i className="mdi mdi-calendar fs-4 col-sm-1" /> 
+                                                    <div style={{ width: '35%', display: "flex", alignItems: "center" }}>
+                                                      
                                                         <CustomDatePicker
                                                             selected={dateFrom ? new Date(dateFrom + '-01') : null}
                                                             type="from"
@@ -500,6 +502,7 @@ const Instructions = (props) => {
                                                                     },
                                                                 }));
                                                             }}
+                                                         
                                                         />
 
                                                         <div style={{ width: '50px', display: "flex", justifyContent: "center", alignItems: "center" }}>
