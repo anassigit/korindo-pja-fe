@@ -1207,15 +1207,17 @@ const EditInstructions = (props) => {
     const [replyClicked, setReplyClicked] = useState(false)
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
+    const [updateNoReply, setUpdateNoReply] = useState(false)
 
     useEffect(() => {
         let num = queryNum
         num = num?.toString()
         if (msgSaveReply.status == '0') {
         }
-        if (msgSaveReply.status == '1') {
-            debugger
-            if (getDetailInstructionData?.data?.instruction?.comment && addReplyModal && !onlyReply) {
+        debugger
+        if (msgSaveReply.status == '1' || updateNoReply) {
+            setUpdateNoReply(false)
+            if (getDetailInstructionData?.data?.instruction?.comment && !onlyReply) {
                 var bodyForm = new FormData();
 
                 bodyForm.append('num', num);
@@ -1314,7 +1316,7 @@ const EditInstructions = (props) => {
         }
         setReplyClicked(!replyClicked)
         setLoadingSpinner(false)
-    }, [msgSaveReply])
+    }, [msgSaveReply, updateNoReply])
 
     useEffect(() => {
 
@@ -1386,14 +1388,19 @@ const EditInstructions = (props) => {
                 pathname: '/AppInstructions',
             })
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
-        } else if (editInstructionsMessage.status == "1") {
+        } else if (editInstructionsMessage.status == "1" && tempMsg == null) {
             let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {
                     "num": num,
                     "langType": langType
                 }
-            }))
+            })) 
+            history.push({
+                pathname: '/AppInstructions',
+            })
+            
+            ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         }
         setLoadingSpinner(false)
         setAppEditInstructionsMsg(editInstructionsMessage)
@@ -1725,6 +1732,7 @@ const EditInstructions = (props) => {
                         onlyReply={onlyReply}
                         handleChange={editInstructionsValidInput.handleChange}
                         setAppInstructionsData={setAppInstructionsData}
+                        setUpdateNoReply={setUpdateNoReply}
                     />
 
                     <EditReply

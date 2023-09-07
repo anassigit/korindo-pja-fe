@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
-import 'react-datepicker/dist/react-datepicker.css';
+// import 'react-datepicker/dist/react-datepicker.css';
 
 function CustomDatePicker({ selected, onChange, onClear, type }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,7 @@ function CustomDatePicker({ selected, onChange, onClear, type }) {
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ zIndex:"2" }}>
       <DatePicker
         selected={selected}
         onChange={handleDateChange}

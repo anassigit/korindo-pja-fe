@@ -381,13 +381,8 @@ const AddReply = (props) => {
                         <Spinner style={{ display: addReplySpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={() => {
+                        props.setUpdateNoReply(true)
                         props.toggle()
-                        if (!props.onlyReply) {
-                            history.push({
-                                pathname: '/AppInstructions',
-                            })
-                            ReactSession.set('appEditInstructionsMsg', props.appEditInstructionsMsg)
-                        }
                     }}
                     >
                         {props.t("Close")}
@@ -421,6 +416,7 @@ AddReply.propTypes = {
     onlyReply: PropTypes.any,
     handleChange: PropTypes.any,
     setAppInstructionsData: PropTypes.any,
+    setUpdateNoReply: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };
