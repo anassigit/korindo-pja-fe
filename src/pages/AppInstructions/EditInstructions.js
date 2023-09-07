@@ -438,6 +438,7 @@ const EditInstructions = (props) => {
 
         onSubmit: (values) => {
 
+            localStorage.setItem('tempSelect', true)
             if (getDetailInstructionData?.data?.instruction?.comment === false) {
                 var bodyForm = new FormData();
 
@@ -1378,6 +1379,7 @@ const EditInstructions = (props) => {
 
         debugger
         let tempMsg = ReactSession.get('appEditInstructionsMsg')
+        let tempSelect = localStorage.getItem('tempSelect')
         if (editInstructionsMessage.status === "1" && getDetailInstructionData?.data?.instruction?.comment && !addReplyModal && tempMsg == "") {
             history.push({
                 pathname: '/AppInstructions',
@@ -1388,7 +1390,7 @@ const EditInstructions = (props) => {
                 pathname: '/AppInstructions',
             })
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
-        } else if (editInstructionsMessage.status == "1" && tempMsg == null) {
+        } else if (editInstructionsMessage.status == "1" && tempSelect) {
             let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {
@@ -1402,6 +1404,8 @@ const EditInstructions = (props) => {
             
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         }
+        
+        localStorage.removeItem('tempSelect')
         setLoadingSpinner(false)
         setAppEditInstructionsMsg(editInstructionsMessage)
     }, [editInstructionsMessage])

@@ -341,6 +341,7 @@ const Instructions = (props) => {
 
         // Construct the URL with the search parameters
         const urlWithParams = '/AppEditInstruction?' + searchParams.toString();
+        localStorage.setItem('tempSelect', true)
 
         // Use history.push() to navigate to the new URL
         history.push(urlWithParams);
