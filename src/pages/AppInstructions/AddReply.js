@@ -237,6 +237,7 @@ const AddReply = (props) => {
                         'content-type': 'multipart/form-data'
                     }
                 }
+                props.setUpdateNoReply(true)
                 insert(bodyForm, config)
                 ReactSession.set('appEditInstructionsMsg', props.appEditInstructionsMsg)
             }

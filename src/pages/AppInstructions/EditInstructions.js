@@ -110,6 +110,8 @@ const EditInstructions = (props) => {
     const queryParameters = new URLSearchParams(window.location.search)
     const queryNum = queryParameters.get("num")
 
+    const [submitClicked, setSubmitClicked] = useState(false)
+
     /* MULTI SELECT OPTIONS */
 
     const getOwnerList = useSelector(state => {
@@ -437,8 +439,7 @@ const EditInstructions = (props) => {
         validationSchema: validationSchema,
 
         onSubmit: (values) => {
-
-            localStorage.setItem('tempSelect', true)
+            setSubmitClicked(true)
             if (getDetailInstructionData?.data?.instruction?.comment === false) {
                 var bodyForm = new FormData();
 
@@ -1315,7 +1316,7 @@ const EditInstructions = (props) => {
                 refCleanser.current.value = ""
             }
         }
-        setReplyClicked(!replyClicked)
+        setReplyClicked(false)
         setLoadingSpinner(false)
     }, [msgSaveReply, updateNoReply])
 
@@ -1390,7 +1391,7 @@ const EditInstructions = (props) => {
                 pathname: '/AppInstructions',
             })
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
-        } else if (editInstructionsMessage.status == "1" && tempSelect) {
+        } else if (editInstructionsMessage.status == "1" && submitClicked) {
             let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {
@@ -1404,6 +1405,7 @@ const EditInstructions = (props) => {
             
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         }
+        setSubmitClicked(false)
         
         localStorage.removeItem('tempSelect')
         setLoadingSpinner(false)
