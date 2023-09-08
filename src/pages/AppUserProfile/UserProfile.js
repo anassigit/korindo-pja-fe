@@ -105,9 +105,13 @@ const UserProfile = (props) => {
 
     validationSchema: Yup.object().shape({
       hp: Yup.string()
-        .matches(/^(08[0-9]{8,10})$/, "Invalid mobile phone number.")
-        .required("Please enter a mobile phone number."),
+        .matches(/^(08[0-9]{8,10})$/, props.t('Invalid mobile phone number'))
+        .required(props.t('Please enter a mobile phone number')),
     }),
+
+    onSubmit : (values) => {
+      updateHp()
+    }
 
   });
 
@@ -301,7 +305,7 @@ const UserProfile = (props) => {
                             <span style={{ fontStyle: "italic" }}> {props.t("Please click button 'Change Password' for change the password")}</span>
                           </Col>
                         </Row>
-                        <Button color="primary" className="ms-1" onClick={(e) => { updateHp() }}>
+                        <Button type="submit" color="primary" className="ms-1">
                           <i className="mdi mdi-check fs-5 align-middle" />{" "}{props.t("Save")}
                         </Button>
                       </FormGroup>

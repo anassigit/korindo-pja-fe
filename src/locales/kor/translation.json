@@ -131,5 +131,7 @@
   "Data Inquiry": "자료조회",
   "Preview": "미리보기",
   "List files": "목록",
-  "Files name": "파일명"
+  "Files name": "파일명",
+  "Please enter a mobile phone number": "휴대 전화 번호를 입력하세요",
+  "Invalid mobile phone number": "유효하지 않은 휴대전화 번호입니다"
 }

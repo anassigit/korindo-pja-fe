@@ -97,7 +97,7 @@
     "Don't Send Notifications": "Jangan kirim pemberitahuan",
     "Notification Settings 2": "Kirim pemberitahuan ke",
     "Both": "Keduanya",
-    "Please enter your current password": "Masukkan kata sandi saat ini",
+    "Please enter your current password": "Harap masukkan kata sandi saat ini",
     "Enter your new password": "Masukkan kata sandi baru",
     "The password must be at least 8 characters long": "Kata sandi harus minimal 8 karakter",
     "The password must contain at least two different characters": "Kata sandi harus memiliki setidaknya 2 karakter berbeda",
@@ -113,9 +113,9 @@
     "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "Tipe Berkas Diizinkan: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt",
     "Allowed File Types is pdf" : "Tipe Berkas Diizinkan: pdf",
     "Are you sure to delete this?" : "Apakah Anda yakin ingin menghapus ini?",
-    "Please enter ID": "Silakan masukkan ID",
-    "Please enter Email": "Silakan masukkan Email",
-    "Please enter Name": "Silakan masukkan Nama",
+    "Please enter ID": "Harap masukkan ID",
+    "Please enter Email": "Harap masukkan Email",
+    "Please enter Name": "Harap masukkan Nama",
     "Email must be a valid email address": "Email harus berupa alamat email yang valid",
     "Please enter content": "Mohon isi konten",
     "Add New Reply": "Tambah Balasan Baru",
@@ -130,6 +130,7 @@
     "Data Inquiry": "Penyelidikan Data",
     "Preview": "Lihat",
     "List files": "Daftar file",
-    "Files name": "Nama file"
-
+    "Files name": "Nama file",
+    "Please enter a mobile phone number": "Harap masukkan nomor telepon seluler",
+    "Invalid mobile phone number": "Nomor telepon seluler tidak valid"
   }
