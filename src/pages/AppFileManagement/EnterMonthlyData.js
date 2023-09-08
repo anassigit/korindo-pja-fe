@@ -192,7 +192,6 @@ const EnterMonthlyData = (props) => {
             idFolderDetail={idFolderDetail}
             currMonth={currMonth}
             currYear={currYear}
-            setEnterMonthlyDataSpinner={setEnterMonthlyDataSpinner}
           />
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
