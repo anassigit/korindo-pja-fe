@@ -27,6 +27,7 @@ import ppt from '../../assets/images/file_management/ppt.png'
 import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
 import unknown from '../../assets/images/file_management/unknown.png'
+import { ReactSession } from 'react-client-session';
 
 const FileTables = (props) => {
 
@@ -41,7 +42,6 @@ const FileTables = (props) => {
     const [numF, setNumF] = useState("")
     const [numP, setNumP] = useState(0)
     const [nem, setNem] = useState("")
-
 
     const dashboardData = useSelector(state => {
         return state.fileManagementReducer.respGetMonthlyData;
@@ -79,25 +79,6 @@ const FileTables = (props) => {
         previewFile.location.href = new URL(pUrl);
 
     };
-
-    const [numTemp, setNumTemp] = useState()
-    const [fileNmTemp, setFileNmTemp] = useState()
-    const [downloadFlag, setDownloadFlag] = useState(false)
-
-
-    const downloadFile = async (pNum, pName) => {
-        try {
-
-            const indexed_array = {
-                file_num: pNum,
-                file_nm: pName
-            };
-            dispatch(downloadFileFolder(indexed_array))
-        } catch (error) {
-            console.log(error)
-        }
-    };
-
 
 
     return (
@@ -142,7 +123,7 @@ const FileTables = (props) => {
                                                                 ?
                                                                 () => handlePreview(item.url)
                                                                 :
-                                                                () => downloadFile(item.num, item.name)
+                                                                () => window.open(new URL(item.url), '_blank')
 
                                                         }
                                                         id={`nameTooltip_${key}`}
@@ -288,6 +269,7 @@ FileTables.propTypes = {
     idFolderDetail: PropTypes.any,
     currMonth: PropTypes.any,
     currYear: PropTypes.any,
+    setEnterMonthlyDataSpinner: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };
