@@ -94,7 +94,6 @@ const EnterMonthlyData = (props) => {
   }, [selectedYear])
 
   useEffect(() => {
-    debugger
     setSelectedMonth(dashboardData?.data?.month)
     setSelectedYear(dashboardData?.data?.year)
     if (dashboardData.status === '1') {
@@ -193,6 +192,7 @@ const EnterMonthlyData = (props) => {
             idFolderDetail={idFolderDetail}
             currMonth={currMonth}
             currYear={currYear}
+            setEnterMonthlyDataSpinner={setEnterMonthlyDataSpinner}
           />
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
@@ -353,8 +353,10 @@ const EnterMonthlyData = (props) => {
                                             overflow: "hidden",
                                             textAlign: "center",
                                             marginLeft: "50%",
-                                            transform: "translateX(-50%)"
+                                            transform: "translateX(-50%)",
+                                            cursor: "pointer"
                                           }}
+                                          onClick={() => window.open(new URL(file.url), '_blank')}
                                         >
                                           {file.name}
                                         </div>
