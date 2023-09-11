@@ -69,9 +69,6 @@ const FileTables = (props) => {
 
     }
 
-    {
-        console.log("data", dashboardData?.data?.list)
-    }
 
     const handlePreview = (pUrl) => {
 

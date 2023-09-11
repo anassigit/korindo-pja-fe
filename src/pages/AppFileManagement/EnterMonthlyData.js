@@ -39,6 +39,9 @@ import FileTables from "./FileTables";
 
 const EnterMonthlyData = (props) => {
 
+  const storedMonth = localStorage.getItem("selectedMonth");
+  const storedYear = localStorage.getItem("selectedYear");
+
   const [enterMonthlyDataSpinner, setEnterMonthlyDataSpinner] = useState(false);
   const dispatch = useDispatch();
   const [monthlyDataPage, setMonthlyDataPage] = useState(true)
@@ -102,18 +105,24 @@ const EnterMonthlyData = (props) => {
   }, [dashboardData])
 
   useEffect(() => {
-    if (selectedMonth && selectedYear) {
-      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
-      setEnterMonthlyDataSpinner(true)
+    if (storedMonth && storedYear) {
+      dispatch(getMonthlyData({ month: storedMonth, year: storedYear }));
+    } else if (selectedMonth && selectedYear) {
+      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }));
+      setEnterMonthlyDataSpinner(true);
     }
-  }, [selectedMonth, selectedYear])
+  }, [selectedMonth, selectedYear]);
 
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
+    localStorage.setItem("selectedYear", e.target.value);
+    localStorage.setItem("selectedMonth", selectedMonth);
   };
 
   const handleMonthChange = (e) => {
     setSelectedMonth(e.target.value);
+    localStorage.setItem("selectedYear", selectedYear);
+    localStorage.setItem("selectedMonth", e.target.value);
   }
 
   const toggleUploadModalMonthly = (folder_id) => {
@@ -451,7 +460,7 @@ const EnterMonthlyData = (props) => {
             </Row>
           </Container>
 
-        
+
         </>
       }
     />
