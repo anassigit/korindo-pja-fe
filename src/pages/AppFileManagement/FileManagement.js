@@ -380,6 +380,7 @@ const FileManagement = (props) => {
     const yPos = e.clientY;
 
     setIsContextMenuVisible(true)
+    setIsContextMenuVisible2(false);
     setContextMenuPosition({ x: xPos, y: yPos })
 
   };
@@ -392,6 +393,7 @@ const FileManagement = (props) => {
     const yPos = e.clientY;
 
     setContextMenuOpen(true);
+    setContextMenuOpen2(false);
     setDropdownMenuOpen(false);
     setContextMenuPosition({ x: xPos, y: yPos });
   };
@@ -420,6 +422,7 @@ const FileManagement = (props) => {
     const yPos2 = e.clientY;
 
     setIsContextMenuVisible2(true)
+    setIsContextMenuVisible(false);
     setContextMenuPosition2({ x: xPos2, y: yPos2 })
 
   };
@@ -432,6 +435,7 @@ const FileManagement = (props) => {
     const yPos2 = e.clientY;
 
     setContextMenuOpen2(true);
+    setContextMenuOpen(false);
     setDropdownMenuOpen2(false);
     setContextMenuPosition2({ x: xPos2, y: yPos2 });
   };
@@ -439,6 +443,7 @@ const FileManagement = (props) => {
   const hideContextMenu2 = () => {
 
     setIsContextMenuVisible2(false)
+
   };
 
   const handleDropdownMenuToggle2 = () => {
@@ -583,6 +588,7 @@ const FileManagement = (props) => {
                 <Row className="mb-1 col-sm-10"><h6><i className="mdi mdi-folder align-baseline fs-5" />{"   "}{props.t("Folders")}</h6></Row>
                 <p />
                 <p />
+                <div onClick={() => { hideContextMenu(); hideContextMenu2(); }}>
                 <Row className="mb-2">
                   <Col sm="12">
 
@@ -604,6 +610,7 @@ const FileManagement = (props) => {
                                     e.preventDefault();
                                     handleContextMenuOpen(e);
                                   }}
+                              
                                 >
                                   <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
 
@@ -729,7 +736,7 @@ const FileManagement = (props) => {
 
                               onDoubleClick={() => toggleShowModal(myfiles.url)}
                               style={{ cursor: "pointer" }}
-                              target="_self"
+                              target={myfiles.url.endsWith(".xlsx") ? "_self" : "_blank"}
                             >
                               <CardBody className="p-2">
                                 <div className="pb-2 pt-2">
@@ -971,6 +978,7 @@ const FileManagement = (props) => {
                     </Row>
                   </Col>
                 </Row>
+                </div>
               </Col>
             </Row>
             <div className="spinner-wrapper" style={{ display: enterMonthlyDataSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
