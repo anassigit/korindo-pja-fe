@@ -46,7 +46,7 @@ const AddInstructions = (props) => {
 
     const [addInstructionMsgModal, setAddInstructionMsgModal] = useState(false)
 
-    const langType = localStorage.getItem("I18N_LANGUAGE") || "eng";
+    const langType = localStorage.getItem("I18N_LANGUAGE") || "kor";
     const validationMessages = {
         eng: {
             title: "Please enter instructions.",

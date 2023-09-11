@@ -49,7 +49,7 @@ const EditInstructions = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
     if (!langType) {
-        localStorage.setItem("I18N_LANGUAGE", "eng")
+        localStorage.setItem("I18N_LANGUAGE", "kor")
     }
     const history = useHistory()
     const dispatch = useDispatch();

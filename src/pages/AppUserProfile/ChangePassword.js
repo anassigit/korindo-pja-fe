@@ -30,7 +30,7 @@ const ChangePassword = (props) => {
 
   const dispatch = useDispatch();
 
-  const langType = localStorage.getItem("I18N_LANGUAGE") || "eng";
+  const langType = localStorage.getItem("I18N_LANGUAGE") || "kor";
   const validationMessages = {
     eng: {
       currentPassword: "Please enter your current password.",

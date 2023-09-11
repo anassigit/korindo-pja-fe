@@ -32,7 +32,7 @@ const FirstLogin = (props) => {
   useEffect(() => {
     let temp = ReactSession.get('firstTime_Login')
     if (!localStorage.getItem("I18N_LANGUAGE")) {
-      localStorage.setItem("I18N_LANGUAGE", "eng")
+      localStorage.setItem("I18N_LANGUAGE", "kor")
     }
     if (temp !== "true") {
       history.push('/')
@@ -40,7 +40,7 @@ const FirstLogin = (props) => {
     validation.setFieldValue('currentPassword', '1111')
   }, [])
 
-  const langType = localStorage.getItem("I18N_LANGUAGE") || "eng";
+  const langType = localStorage.getItem("I18N_LANGUAGE") || "kor";
   const validationMessages = {
     eng: {
       currentPassword: "Please enter your current password.",

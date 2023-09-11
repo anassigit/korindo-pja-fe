@@ -18,7 +18,7 @@ const Authmiddleware = ({
         debugger
         if (!currentURL.endsWith('/login')) {
           if (!localStorage.getItem("I18N_LANGUAGE")) {
-          localStorage.setItem("I18N_LANGUAGE", "eng")
+          localStorage.setItem("I18N_LANGUAGE", "kor")
           }
           localStorage.setItem("currentURL", currentURL)
         }
