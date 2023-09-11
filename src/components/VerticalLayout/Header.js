@@ -84,8 +84,8 @@ const Header = props => {
       pw: "" || '',
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Enter your Email"),
-      pw: Yup.string().required("Enter your Password"),
+      id: Yup.string().required("아이디를 입력해주세요"),
+      pw: Yup.string().required("비밀번호를 입력해주세요"),
     }),
     onSubmit: (values) => {
       dispatch(reloginUser(values, props.history));
