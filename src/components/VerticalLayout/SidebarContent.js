@@ -150,22 +150,25 @@ const SidebarContent = props => {
                   setDropdownOpen(!dropdownOpen)
                 }}
                 className=""
-                style={{overflow:"visible"}}
-                >
+                style={{ overflow: "visible" }}
+              >
                 <i className="fas fa-folder-open"></i>
-                <span style={{whiteSpace:"nowrap"}}>{props.t("File Management")}</span>
-                <i hidden={dropdownOpen} style={{fontSize:"16px", position:"absolute", right: "2%", top:"25%"}} className="fas fa-chevron-down dropdown-icon"></i>
-                <i hidden={!dropdownOpen} style={{fontSize:"16px", position:"absolute", right: "2%", top:"25%"}} className="fas fa-chevron-up dropdown-icon"></i>
+                <span style={{ whiteSpace: "nowrap" }}>{props.t("File Management")}</span>
+                <i hidden={dropdownOpen} style={{ fontSize: "16px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-down dropdown-icon"></i>
+                <i hidden={!dropdownOpen} style={{ fontSize: "16px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-up dropdown-icon"></i>
               </a>
               <a
                 onClick={() => {
+
+                  localStorage.removeItem("selectedYear");
+                  localStorage.removeItem("selectedMonth");
                 }}
                 className=""
                 hidden={!dropdownOpen}
                 href="/EnterMonthlyData"
                 to="/EnterMonthlyData"
-                >
-                <span style={{whiteSpace:"nowrap", paddingLeft:"16px"}}>{props.t("Enter Monthly Data")}</span>
+              >
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "16px" }}>{props.t("Enter Monthly Data")}</span>
               </a>
               <a
                 onClick={() => {
@@ -174,8 +177,8 @@ const SidebarContent = props => {
                 hidden={!dropdownOpen}
                 href="/AppFileManagement"
                 to="/AppFileManagement"
-                >
-                <span style={{whiteSpace:"nowrap", paddingLeft:"16px"}}>{props.t("Data Inquiry")}</span>
+              >
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "16px" }}>{props.t("Data Inquiry")}</span>
               </a>
 
               {/* <a
