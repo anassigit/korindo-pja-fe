@@ -451,9 +451,7 @@ const EnterMonthlyData = (props) => {
             </Row>
           </Container>
 
-          <div className="spinner-wrapper" style={{ display: enterMonthlyDataSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
-            <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
-          </div>
+        
         </>
       }
     />
