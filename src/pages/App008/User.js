@@ -165,7 +165,7 @@ const User = () => {
       sort: true,
       headerStyle: { textAlign: 'center' },
     },
-   
+
 
     {
       dataField: "action",
@@ -532,7 +532,7 @@ const User = () => {
       <div className="page-content">
         <MetaTags>
           <title>
-            Korindo App
+            DMLS
           </title>
         </MetaTags>
 
@@ -622,7 +622,7 @@ const User = () => {
 
         {/* //p02 */}
         <Container style={{ display: app008p02Page ? 'block' : 'none' }} fluid={true}>
-          <Breadcrumbs title="Forms" breadcrumbItem="Maintain User" pageNow={setApp008p02Page} pageBefore={setApp008p01Page} message={setApp008setMsg}/>
+          <Breadcrumbs title="Forms" breadcrumbItem="Maintain User" pageNow={setApp008p02Page} pageBefore={setApp008p01Page} message={setApp008setMsg} />
 
           <Row>
             <Col lg={12}>
@@ -809,7 +809,7 @@ const User = () => {
 
         {/* //p03 */}
         <Container style={{ display: app008p03Page ? 'block' : 'none' }} fluid={true}>
-          <Breadcrumbs title="Forms" breadcrumbItem="Maintain User" pageNow={setApp008p03Page} pageBefore={setApp008p01Page} message={setApp008setMsg}/>
+          <Breadcrumbs title="Forms" breadcrumbItem="Maintain User" pageNow={setApp008p03Page} pageBefore={setApp008p01Page} message={setApp008setMsg} />
 
           <Row>
             <Col lg={12}>
@@ -915,7 +915,7 @@ const User = () => {
                         </Col>
 
                         <Col md="5">
-                        {/* <div className="mb-3 col-sm-8">
+                          {/* <div className="mb-3 col-sm-8">
                         <label> Plant <span style={{ color: "red" }}>* </span></label>
                           <Lovv2 
                             title="Plant"
@@ -936,18 +936,18 @@ const User = () => {
                           </div> */}
 
                           <div className="mb-3 col-sm-8">
-                          <Input
-                            name="wilayahCd"
-                            type="text"
-                            hidden={true}
-                            onChange={app008p03ValidInput.handleChange}
-                            value={app008p03ValidInput.values.wilayahCd || ""}
-                            invalid={
-                              app008p03ValidInput.touched.wilayahCd && app008p03ValidInput.errors.wilayahCd ? true : false
-                            }
-                          />
+                            <Input
+                              name="wilayahCd"
+                              type="text"
+                              hidden={true}
+                              onChange={app008p03ValidInput.handleChange}
+                              value={app008p03ValidInput.values.wilayahCd || ""}
+                              invalid={
+                                app008p03ValidInput.touched.wilayahCd && app008p03ValidInput.errors.wilayahCd ? true : false
+                              }
+                            />
                           </div>
-                          
+
                           {/* <div className="mb-3 col-sm-8">
                           <label> Wilayah <span style={{ color: "red" }}>* </span></label>
                           <Lovv2 

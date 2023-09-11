@@ -75,7 +75,7 @@ const Login = props => {
   return (
     <React.Fragment>
       <MetaTags>
-        <title>Korindo App</title>
+        <title>DMLS</title>
       </MetaTags>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
@@ -91,7 +91,8 @@ const Login = props => {
                   <Row>
                     <Col xs={12}>
                       <div className="text-primary p-4">
-                        <h2 className="text-primary text-center text-white" >PROJECT A</h2>
+                        <h2 className="text-primary text-center text-white" >DMLS</h2>
+                        <h5 className="text-primary text-center text-white" >(Digital Meeting Log System)</h5>
                       </div>
                     </Col>
                   </Row>

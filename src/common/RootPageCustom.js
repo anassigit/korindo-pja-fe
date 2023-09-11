@@ -8,24 +8,23 @@ const RootPageCustom = props => {
         <React.Fragment>
             <div className="page-content">
                 <MetaTags>
-                <title>
-                    Korindo App
-                </title>
+                    <title>
+                        DMLS
+                    </title>
                 </MetaTags>
-                <AlertCust msg ={props.msgStateGet} stateData={props.msgStateSet}/>
+                <AlertCust msg={props.msgStateGet} stateData={props.msgStateSet} />
                 {props.componentJsx}
-            </div>   
-            
-        </React.Fragment>
-        
-    )
-  }
-  
-  RootPageCustom.propTypes = {
-    componentJsx: PropTypes.any,
-    msgStateGet : PropTypes.any,
-    msgStateSet : PropTypes.any,
-  }
+            </div>
 
-  export default RootPageCustom;
-  
+        </React.Fragment>
+
+    )
+}
+
+RootPageCustom.propTypes = {
+    componentJsx: PropTypes.any,
+    msgStateGet: PropTypes.any,
+    msgStateSet: PropTypes.any,
+}
+
+export default RootPageCustom;

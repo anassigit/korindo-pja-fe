@@ -682,7 +682,7 @@ const Role = () => {
       <div className="page-content">
         <MetaTags>
           <title>
-            Korindo App
+            DMLS
           </title>
         </MetaTags>
 

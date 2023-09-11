@@ -15,7 +15,7 @@ const Dashboard = () => {
         <>
           <React.Fragment>
             <MetaTags>
-              <title>Korindo App</title>
+              <title>DMLS</title>
             </MetaTags>
             <Container fluid={true}>
               <h4>Dashboard</h4>

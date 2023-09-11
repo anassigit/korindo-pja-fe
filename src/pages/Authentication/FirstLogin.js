@@ -103,12 +103,12 @@ const FirstLogin = (props) => {
               uppercase: /[A-Z]/,
               special: /[\W_]/,
             };
-  
+
             const typeCount = Object.values(characterTypes).reduce(
               (count, regex) => (regex.test(value) ? count + 1 : count),
               0
             );
-  
+
             return typeCount >= 2;
           }
         ),
@@ -141,7 +141,7 @@ const FirstLogin = (props) => {
   return (
     <React.Fragment>
       <MetaTags>
-        <title>Korindo App</title>
+        <title>DMLS</title>
       </MetaTags>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
@@ -157,7 +157,8 @@ const FirstLogin = (props) => {
                   <Row>
                     <Col xs={12}>
                       <div className="text-primary p-4">
-                        <h2 className="text-primary text-center text-white" style={{ marginBottom: "-1px" }}>PROJECT A</h2>
+                        <h2 className="text-primary text-center text-white" >DMLS</h2>
+                        <h5 className="text-primary text-center text-white" >(Digital Meeting Log System)</h5>
                       </div>
                     </Col>
                   </Row>

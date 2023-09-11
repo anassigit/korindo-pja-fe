@@ -81,7 +81,7 @@ const UpdatePassword = props => {
   return (
     <React.Fragment>
       <MetaTags>
-        <title>Korindo App</title>
+        <title>DMLS</title>
       </MetaTags>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
