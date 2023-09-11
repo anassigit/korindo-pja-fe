@@ -172,6 +172,7 @@ const SidebarContent = props => {
               </a>
               <a
                 onClick={() => {
+                  localStorage.setItem('appFileManagementData', '')
                 }}
                 className=""
                 hidden={!dropdownOpen}
