@@ -443,7 +443,7 @@ const Instructions = (props) => {
 
                                                 <Col md="4" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-12">
-                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                        <label className="col-sm-1" style={{ marginTop: "8px" }}>
                                                             <i className="mdi mdi-calendar-month" />
                                                         </label>
                                                         <div className="col-sm-4">
@@ -461,13 +461,9 @@ const Instructions = (props) => {
                                                                 showIcon
                                                             />
                                                         </div>
-                                                    </Row>
-                                                </Col>
-
-                                                <Col md="4" style={{ marginLeft: "-0px" }}>
-                                                    <Row className="mb-1 col-sm-12">
-                                                        <label className="col-sm-5" style={{ marginTop: "8px" }}>
-                                                            <i className="mdi mdi-calendar-month" />
+                                                   
+                                                        <label className="col-sm-1" style={{ marginTop: "8px" }}>
+                                                            -
                                                         </label>
                                                         <div className="col-sm-4">
                                                             <DatePicker
@@ -492,21 +488,16 @@ const Instructions = (props) => {
                                     </Col>
                                 </Row>
 
-                                <Row className="mb-3">
-                                    <Col col-sm="12">
-
-
-
-                                        <Col sm="10">
-
-                                            <div className="form-group m-0">
-                                                <div className="input-group">
-                                                    <Col md="5">
-                                                        <Row className="mb-1 col-sm-12">
-                                                            <label className="col-sm-2" style={{ marginTop: "8px" }}>
+                                <Row className="mb-2">
+                                    <Col sm="12">
+                                        <div className="form-group m-0">
+                                            <div className="input-group">
+                                                    <Col md="4">
+                                                        <Row className="mb-1 col-sm-10">
+                                                            <label className="col-sm-3" style={{ marginTop: "8px" }}>
                                                                 Status{" "}
                                                             </label>
-                                                            <div className="col-sm-5">
+                                                            <div className="col-sm-7">
                                                                 <Input
                                                                     type="select"
                                                                     name="status"
@@ -524,9 +515,8 @@ const Instructions = (props) => {
                                                             </div>
                                                         </Row>
                                                     </Col>
-                                                </div>
-                                            </div>
-                                        </Col>
+
+                                       
 
                                         <Col sm="12">
                                             <div className="text-sm-end">
@@ -540,7 +530,8 @@ const Instructions = (props) => {
                                                 </button>
                                             </div>
                                         </Col>
-
+</div>
+</div>
                                     </Col>
                                 </Row>
                                 <Row className="mb-5">
