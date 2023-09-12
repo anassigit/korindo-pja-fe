@@ -282,8 +282,9 @@ const EnterMonthlyData = (props) => {
                                               cursor: "pointer"
                                             }}
                                             className="mdi mdi-file-check-outline"
-                                            onClick={() => window.open(new URL(file.url), '_blank')}
+                                            onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
                                           ></span>
+                                          {items.edit ? 
                                           <span
                                             style={{
                                               fontSize: "18px",
@@ -297,7 +298,7 @@ const EnterMonthlyData = (props) => {
                                             }}
                                             className="mdi mdi-close-circle"
                                             onClick={() => confirmToggleDelete(file.num)}
-                                          ></span>
+                                          ></span> : null}
                                         </div>
                                         <div
                                           id={`fileName_${index}_${i}`}
@@ -315,7 +316,7 @@ const EnterMonthlyData = (props) => {
                                             cursor: 'pointer',
                                             margin: '0 auto',
                                           }}
-                                          onClick={() => window.open(new URL(file.url), '_blank')}
+                                          onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
                                         >
                                           {file.name}
                                         </div>
@@ -334,9 +335,9 @@ const EnterMonthlyData = (props) => {
                                               cursor: "pointer"
                                             }}
                                             className="mdi mdi-file-check-outline"
-                                            onClick={() => window.open(new URL(file.url), '_blank')}
+                                            onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
                                           ></span>
-                                          <span
+                                          {items.edit ? <span
                                             style={{
                                               fontSize: "18px",
                                               position: "absolute",
@@ -349,7 +350,7 @@ const EnterMonthlyData = (props) => {
                                             }}
                                             className="mdi mdi-close-circle"
                                             onClick={() => confirmToggleDelete(file.num)}
-                                          ></span>
+                                          ></span> : null}
                                         </div>
                                         <div
                                           id={`fileName_${index}_${i}`} // Unique ID for each tooltip
@@ -364,7 +365,7 @@ const EnterMonthlyData = (props) => {
                                             transform: "translateX(-50%)",
                                             cursor: "pointer"
                                           }}
-                                          onClick={() => window.open(new URL(file.url), '_blank')}
+                                          onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
                                         >
                                           {file.name}
                                         </div>
@@ -444,7 +445,7 @@ const EnterMonthlyData = (props) => {
                               {items.name}
                             </Col>
                             <Col className="col-4 d-flex justify-content-end">
-                              <Button style={{ marginRight: "-18%", marginBottom: "-15%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
+                              <Button disabled={!items.edit} style={{ marginRight: "-18%", marginBottom: "-15%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
                             </Col>
                           </Row>
                         </CardBody>

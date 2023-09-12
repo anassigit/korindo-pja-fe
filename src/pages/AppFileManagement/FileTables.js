@@ -135,12 +135,12 @@ const FileTables = (props) => {
                                                     <td scope="row">{key + 1}</td>
                                                     <td style={{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
                                                         onClick={
-                                                            item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
+                                                            myfiles.edit ? item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
                                                                 ?
                                                                 () => handlePreview(item.url)
                                                                 :
                                                                 () => downloadFile(item.num, item.name)
-
+                                                                : null
                                                         }
                                                         id={`nameTooltip_${key}`}
 
