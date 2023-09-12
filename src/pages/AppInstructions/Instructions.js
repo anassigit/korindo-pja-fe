@@ -442,7 +442,7 @@ const Instructions = (props) => {
                                                 </Col>
 
                                                 <Col md="4" style={{ marginLeft: "-0px" }}>
-                                                    <Row className="mb-1 col-sm-12">
+                                                    <Row className="mb-1 col-sm-10">
                                                         <label className="col-sm-1" style={{ marginTop: "8px" }}>
                                                             <i className="mdi mdi-calendar-month" />
                                                         </label>
@@ -451,7 +451,7 @@ const Instructions = (props) => {
                                                                 className="form-control"
                                                                 showMonthYearPicker
                                                                 dateFormat="MM-yyyy"
-                                                                
+                                                                maxDate={new Date(dateTo)}
                                                                 selected={dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null}
                                                                 minDate={new Date("2023")}
                                                                 onChange={(tglMulai) =>
