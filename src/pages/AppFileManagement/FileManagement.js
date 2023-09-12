@@ -613,9 +613,7 @@ const FileManagement = (props) => {
                               
                                 >
                                   <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
-
-
-                                    <div className="float-end">
+                                  <div className="float-end">
                                       <UncontrolledDropdown >
                                         <DropdownToggle
                                           className="fs-6 text-muted"
@@ -721,7 +719,7 @@ const FileManagement = (props) => {
                       {realFileList?.map((myfiles, key) => (
                         myfiles.type === "FILE" || myfiles > 0 ?
 
-                          <Col md={2} key={key}>
+                          <Col md={1} key={key}>
                             <div
                               onContextMenu={(e) => { handleContextMenu2(e) }}
                               onClick={hideContextMenu2}
