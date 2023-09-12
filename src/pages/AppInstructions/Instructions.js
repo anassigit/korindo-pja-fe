@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import '../../config';
 import RootPageCustom from '../../common/RootPageCustom';
@@ -29,6 +29,8 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import CustomDatePicker from "../../common/CustomDatePicker.js"
 import e from "cors";
 import { ContextMenu } from "react-contextmenu";
+import { date } from "yup";
+import moment from "moment";
 
 
 const Instructions = (props) => {
@@ -365,31 +367,6 @@ const Instructions = (props) => {
 
     const [applyClicked, setApplyClicked] = useState(false);
 
-    const dateChanger = (name, selectedDate) => {
-        let convertedDate = selectedDate.toISOString().substr(0, 7);
-        if (name === 'from') {
-            setDateFrom(convertedDate);
-            setAppInstructionsTabelSearch((prevSearch) => ({
-                ...prevSearch,
-                search: {
-                    ...prevSearch.search,
-                    from: convertedDate,
-                    to: dateTo,
-                },
-            }));
-        } else if (name === 'to') {
-            setDateTo(convertedDate);
-            setAppInstructionsTabelSearch((prevSearch) => ({
-                ...prevSearch,
-                search: {
-                    ...prevSearch.search,
-                    from: dateFrom,
-                    to: convertedDate,
-                },
-            }));
-        }
-    };
-
     const handleKeyDown = (e) => {
         e.preventDefault();
     };
@@ -400,20 +377,35 @@ const Instructions = (props) => {
         }
     };
 
-    // buat test doang
-    // const [clicked, setClicked] = useState(false);
-    // const [points, setPoints] = useState({
-    //     x: 0,
-    //     y: 0,
-    // });
+    const dateChanger = (name, selectedDate) => {
+        debugger
 
-    // useEffect(() => {
-    //     const handleClick = () => setClicked(false);
-    //     window.addEventListener("click", handleClick);
-    //     return () => {
-    //         window.removeEventListener("click", handleClick);
-    //     };
-    // }, []);
+        if (name === 'from') {
+            debugger
+
+            setDateFrom(selectedDate);
+            setAppInstructionsTabelSearch((prevSearch) => ({
+                ...prevSearch,
+                search: {
+                    ...prevSearch.search,
+                    from: selectedDate,
+                    to: dateTo,
+                },
+            }));
+
+        } else if (name === 'to') {
+            setDateTo(selectedDate);
+            setAppInstructionsTabelSearch((prevSearch) => ({
+                ...prevSearch,
+                search: {
+                    ...prevSearch.search,
+                    from: dateFrom,
+                    to: selectedDate,
+                },
+            }));
+        }
+    };
+
 
     return (
         <RootPageCustom msgStateGet={null} msgStateSet={null}
@@ -424,50 +416,15 @@ const Instructions = (props) => {
                     < Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
                         <Row>
                             <Col>
-                                {/* <div
-                                    className="p-5"
-                                    onContextMenu={(e) => {
-                                        e.preventDefault();
-                                        setClicked(true);
-                                        setPoints({
-                                            x: e.pageX,
-                                            y: e.pageY,
-                                        });
-                                    }}
-                                    style={{
-                                        backgroundColor: "grey",
-                                    }}
-                                >
-                                    <div>
-                                        {clicked && (
-                                            <div
-                                                style={{
-                                                    position: "fixed",
-                                                    top: `${points?.y}px`,
-                                                    left: `${points?.x}px`,
-                                                    backgroundColor: "white",
-                                                    border: "1px solid black",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                <ul>
-                                                    <li>Edit</li>
-                                                    <li>Copy</li>
-                                                    <li>Delete</li>
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div> */}
 
                                 <Row className="mb-2">
                                     <Col sm="12">
                                         <div className="form-group m-0">
                                             <div className="input-group">
-                                                <Col md="3">
+                                                <Col md="4">
                                                     <Row className="mb-1 col-sm-10">
-                                                        <label className="col-sm-4" style={{ marginTop: "8px" }}>{props.t("Search")} </label>
-                                                        <div className="col-sm-8">
+                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
+                                                        <div className="col-sm-7">
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -484,91 +441,106 @@ const Instructions = (props) => {
                                                     </Row>
                                                 </Col>
 
-                                                <Col md="6" style={{ display: "flex", alignItems: "center" }}>
-                                                    
-                                                    <div style={{ width: '35%', display: "flex", alignItems: "center" }}>
-                                                      
-                                                        <CustomDatePicker
-                                                            selected={dateFrom ? new Date(dateFrom + '-01') : null}
-                                                            onChange={(date) => dateChanger('from', date)}
-                                                            type='from'
-                                                            onClear={() => {
-                                                                setDateFrom('');
-                                                                setAppInstructionsTabelSearch((prevSearch) => ({
-                                                                    ...prevSearch,
-                                                                    search: {
-                                                                        ...prevSearch.search,
-                                                                        from: null,
-                                                                        to: dateTo,
-                                                                    },
-                                                                }));
-                                                            }}
-                                                         
-                                                        />
-
-                                                        <div style={{ width: '50px', display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                                            -
-                                                        </div>
-                                                        <CustomDatePicker
-                                                            selected={dateTo ? new Date(dateTo + '-01') : null}
-                                                            onChange={(date) => dateChanger('to', date)}
-                                                            type='to'
-                                                            onClear={() => {
-                                                                setDateTo('');
-                                                                setAppInstructionsTabelSearch((prevSearch) => ({
-                                                                    ...prevSearch,
-                                                                    search: {
-                                                                        ...prevSearch.search,
-                                                                        from: dateFrom,
-                                                                        to: null,
-                                                                    },
-                                                                }));
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </Col>
-
-                                                <Col md="3">
-                                                </Col>
-
-                                                <Col md="3" style={{ marginLeft: "-0px" }}>
-                                                    <Row className="mb-1 col-sm-10">
-                                                        <label className="col-sm-4" style={{ marginTop: "8px" }}>
-                                                            Status{" "}
+                                                <Col md="4" style={{ marginLeft: "-0px" }}>
+                                                    <Row className="mb-1 col-sm-12">
+                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                            <i className="mdi mdi-calendar-month" />
                                                         </label>
-                                                        <div className="col-sm-8">
-                                                            <Input
-                                                                type="select"
-                                                                name="status"
-                                                                onChange={handleChange}
-                                                                value={selected}
-                                                            >
-                                                                <option id="" value={""}>{props.t("All")}</option>
-                                                                <option id="1" value={"1"}>{props.t("Not Started")}</option>
-                                                                <option id="2" value={"2"}>{props.t("In Process")}</option>
-                                                                <option id="3" value={"3"}>{props.t("Action Completed")}</option>
-                                                                <option id="4" value={"4"}>{props.t("Rejected")}</option>
-                                                                <option id="5" value={"5"}>{props.t("Completed")}</option>
-
-                                                            </Input>
+                                                        <div className="col-sm-4">
+                                                            <DatePicker
+                                                                className="form-control"
+                                                                showMonthYearPicker
+                                                                dateFormat="MM-yyyy"
+                                                                placeholderText="from"
+                                                                selected={dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null}
+                                                                minDate={new Date("2023")}
+                                                                onChange={(tglMulai) =>
+                                                                    dateChanger('from', tglMulai ? moment(tglMulai).format('yyyy-MM') : null)
+                                                                }
+                                                                isClearable
+                                                                showIcon
+                                                            />
                                                         </div>
                                                     </Row>
                                                 </Col>
 
-                                                <Col sm="12">
-                                                    <div className="text-sm-end">
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-primary "
-                                                            onClick={() => { appInstructionsPreAdd() }}
-                                                        >
-                                                            <i className="mdi mdi-plus fs-5 align-middle" />{" "}
-                                                            {props.t("New Instructions")}
-                                                        </button>
-                                                    </div>
+                                                <Col md="4" style={{ marginLeft: "-0px" }}>
+                                                    <Row className="mb-1 col-sm-12">
+                                                        <label className="col-sm-5" style={{ marginTop: "8px" }}>
+                                                            <i className="mdi mdi-calendar-month" />
+                                                        </label>
+                                                        <div className="col-sm-4">
+                                                            <DatePicker
+                                                                className="form-control"
+                                                                showMonthYearPicker
+                                                                dateFormat="MM-yyyy"
+                                                                placeholderText="to"
+                                                                minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null)}
+                                                                maxDate={new Date()}
+                                                                selected={dateTo ? moment(dateTo, 'yyyy-MM').toDate() : null}
+                                                                onChange={(tglSelesai) =>
+                                                                    dateChanger('to', tglSelesai ? moment(tglSelesai).format('yyyy-MM') : null)
+                                                                }
+                                                                disabled={!dateFrom}
+                                                                isClearable
+                                                            />
+                                                        </div>
+                                                    </Row>
                                                 </Col>
                                             </div>
                                         </div>
+                                    </Col>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Col col-sm="12">
+
+
+
+                                        <Col sm="10">
+
+                                            <div className="form-group m-0">
+                                                <div className="input-group">
+                                                    <Col md="5">
+                                                        <Row className="mb-1 col-sm-12">
+                                                            <label className="col-sm-2" style={{ marginTop: "8px" }}>
+                                                                Status{" "}
+                                                            </label>
+                                                            <div className="col-sm-5">
+                                                                <Input
+                                                                    type="select"
+                                                                    name="status"
+                                                                    onChange={handleChange}
+                                                                    value={selected}
+                                                                >
+                                                                    <option id="" value={""}>{props.t("All")}</option>
+                                                                    <option id="1" value={"1"}>{props.t("Not Started")}</option>
+                                                                    <option id="2" value={"2"}>{props.t("In Process")}</option>
+                                                                    <option id="3" value={"3"}>{props.t("Action Completed")}</option>
+                                                                    <option id="4" value={"4"}>{props.t("Rejected")}</option>
+                                                                    <option id="5" value={"5"}>{props.t("Completed")}</option>
+
+                                                                </Input>
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                </div>
+                                            </div>
+                                        </Col>
+
+                                        <Col sm="12">
+                                            <div className="text-sm-end">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-primary "
+                                                    onClick={() => { appInstructionsPreAdd() }}
+                                                >
+                                                    <i className="mdi mdi-plus fs-5 align-middle" />{" "}
+                                                    {props.t("New Instructions")}
+                                                </button>
+                                            </div>
+                                        </Col>
+
                                     </Col>
                                 </Row>
                                 <Row className="mb-5">
