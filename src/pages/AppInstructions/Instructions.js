@@ -495,7 +495,7 @@ const Instructions = (props) => {
                                                     <Col md="4">
                                                         <Row className="mb-1 col-sm-10">
                                                             <label className="col-sm-3" style={{ marginTop: "8px" }}>
-                                                                {props.t("Status")}
+                                                            {props.t("Status")}
                                                             </label>
                                                             <div className="col-sm-7">
                                                                 <Input
