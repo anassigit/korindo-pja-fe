@@ -451,14 +451,14 @@ const Instructions = (props) => {
                                                                 className="form-control"
                                                                 showMonthYearPicker
                                                                 dateFormat="MM-yyyy"
-                                                                placeholderText="from"
+                                                                
                                                                 selected={dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null}
                                                                 minDate={new Date("2023")}
                                                                 onChange={(tglMulai) =>
                                                                     dateChanger('from', tglMulai ? moment(tglMulai).format('yyyy-MM') : null)
                                                                 }
                                                                 isClearable
-                                                                showIcon
+                                                                
                                                             />
                                                         </div>
                                                    
@@ -470,14 +470,14 @@ const Instructions = (props) => {
                                                                 className="form-control"
                                                                 showMonthYearPicker
                                                                 dateFormat="MM-yyyy"
-                                                                placeholderText="to"
+                                                                
                                                                 minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null)}
-                                                                maxDate={new Date()}
+                                                                // maxDate={new Date()}
                                                                 selected={dateTo ? moment(dateTo, 'yyyy-MM').toDate() : null}
                                                                 onChange={(tglSelesai) =>
                                                                     dateChanger('to', tglSelesai ? moment(tglSelesai).format('yyyy-MM') : null)
                                                                 }
-                                                                disabled={!dateFrom}
+                                                                // disabled={!dateFrom}
                                                                 isClearable
                                                             />
                                                         </div>
