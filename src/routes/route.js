@@ -16,12 +16,11 @@ const Authmiddleware = ({
     render={props => {
       const queryParameters = new URLSearchParams(window.location.search)
       const korToken = queryParameters.get("KOR_TOKEN")
-      if (korToken) {
+      if (korToken && !localStorage.getItem("authUser")) {
         localStorage.setItem('authUser', korToken)
       }
       debugger
       if (isAuthProtected && !localStorage.getItem("authUser")) {
-        debugger
         if (!currentURL.endsWith('/login')) {
           if (!localStorage.getItem("I18N_LANGUAGE")) {
             localStorage.setItem("I18N_LANGUAGE", "kor")

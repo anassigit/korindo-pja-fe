@@ -155,7 +155,6 @@ const EnterMonthlyData = (props) => {
       let num = null
       num = tempIdDel
       num.toString()
-
       setEnterMonthlyDataSpinner(true);
       dispatch(deleteFileFolder(
         {
@@ -167,7 +166,9 @@ const EnterMonthlyData = (props) => {
   }, [isYes])
 
   useEffect(() => {
+    setMonthlyDataMsg('')
     if (msgDeleteFile?.status == "1") {
+      setMonthlyDataMsg(msgDeleteFile)
       dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
       setIsYes(!isYes)
       setEnterMonthlyDataSpinner(false);
@@ -284,21 +285,21 @@ const EnterMonthlyData = (props) => {
                                             className="mdi mdi-file-check-outline"
                                             onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
                                           ></span>
-                                          {items.edit ? 
-                                          <span
-                                            style={{
-                                              fontSize: "18px",
-                                              position: "absolute",
-                                              top: "0",
-                                              left: "2em",
-                                              right: "0",
-                                              textAlign: "center",
-                                              color: "#f46a6a",
-                                              cursor: "pointer"
-                                            }}
-                                            className="mdi mdi-close-circle"
-                                            onClick={() => confirmToggleDelete(file.num)}
-                                          ></span> : null}
+                                          {items.edit ?
+                                            <span
+                                              style={{
+                                                fontSize: "18px",
+                                                position: "absolute",
+                                                top: "0",
+                                                left: "2em",
+                                                right: "0",
+                                                textAlign: "center",
+                                                color: "#f46a6a",
+                                                cursor: "pointer"
+                                              }}
+                                              className="mdi mdi-close-circle"
+                                              onClick={() => confirmToggleDelete(file.num)}
+                                            ></span> : null}
                                         </div>
                                         <div
                                           id={`fileName_${index}_${i}`}
@@ -445,7 +446,21 @@ const EnterMonthlyData = (props) => {
                               {items.name}
                             </Col>
                             <Col className="col-4 d-flex justify-content-end">
-                              <Button disabled={!items.edit} style={{ marginRight: "-18%", marginBottom: "-15%", paddingTop: "2px", paddingBottom: "2px" }} onClick={() => toggleUploadModalMonthly(items.num)} >{props.t('Add')}</Button>
+                              <Button
+                                className=""
+                                disabled={!items.edit}
+                                style={{
+                                  background: !items.edit ? "#b5b5b5" : null,
+                                  marginRight: "-18%",
+                                  marginBottom: "-15%",
+                                  paddingTop: "2px",
+                                  paddingBottom: "2px",
+                                  outline: "none"
+                                }}
+                                onClick={() => toggleUploadModalMonthly(items.num)}
+                              >
+                                {props.t('Add')}
+                              </Button>
                             </Col>
                           </Row>
                         </CardBody>
