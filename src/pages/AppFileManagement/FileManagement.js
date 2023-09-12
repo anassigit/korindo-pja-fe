@@ -598,7 +598,7 @@ const FileManagement = (props) => {
 
                           myfiles.type === "FOLDER" || myfiles > 0 ?
 
-                            <Col md={2} key={key}>
+                            <Col xs="1" sm="1" md="2" key={key}>
 
                               <div
                                 onContextMenu={(e) => { handleContextMenu(e) }}
@@ -719,7 +719,7 @@ const FileManagement = (props) => {
                       {realFileList?.map((myfiles, key) => (
                         myfiles.type === "FILE" || myfiles > 0 ?
 
-                          <Col md={1} key={key}>
+                          <Col md="2" key={key}>
                             <div
                               onContextMenu={(e) => { handleContextMenu2(e) }}
                               onClick={hideContextMenu2}
@@ -734,10 +734,11 @@ const FileManagement = (props) => {
 
                               onDoubleClick={() => toggleShowModal(myfiles.url)}
                               style={{ cursor: "pointer" }}
-                              target={myfiles.url.endsWith(".xlsx") ? "_self" : "_blank"}
+                              // target={myfiles.url.endsWith(".xlsx") ? "_self" : "_blank"}
+
                             >
-                              <CardBody className="p-2">
-                                <div className="pb-2 pt-2">
+                              <CardBody className="p-1">
+                                <div className="pb-1 pt-1">
                                   <div className="float-end">
                                     <UncontrolledDropdown>
                                       <DropdownToggle
