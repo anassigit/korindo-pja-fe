@@ -185,7 +185,7 @@ const FileManagement = (props) => {
   }
 
   const confirmToggleDelete = (e, typeFolder) => {
-debugger
+    debugger
     if (e) {
       setTempIdDel(e)
       setIsTypeFolder(typeFolder)
@@ -390,8 +390,8 @@ debugger
   /// [Folder --- Context Menu & Dropdown Menu] ///
 
 
-  const handleContextMenu = (e,noFolder,parFolder,nmFolder,tpFolder) => {
-debugger
+  const handleContextMenu = (e, noFolder, parFolder, nmFolder, tpFolder) => {
+    debugger
     e.preventDefault();
 
     const xPos = e.clientX;
@@ -436,8 +436,8 @@ debugger
 
   /// [File --- Context Menu & Dropdown Menu] ///
 
-  const handleContextMenu2 = (e,noFile,parFile,nmFile,tpFile) => {
-debugger
+  const handleContextMenu2 = (e, noFile, parFile, nmFile, tpFile) => {
+    debugger
     e.preventDefault();
 
     const xPos2 = e.clientX;
@@ -587,7 +587,7 @@ debugger
                                     {props.t("Upload New File")}
                                   </DropdownItem>
                                 </DropdownMenu>
-                                
+
                               </UncontrolledDropdown>
                               :
                               <button
@@ -872,7 +872,16 @@ debugger
                                             if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  <img src={doc} />
+                                                  <img style={{
+                                                    position: 'absolute',
+                                                    top: '37.5%',
+                                                    left: '37.5%',
+                                                    width: '25%',
+                                                    height: '25%',
+                                                    objectFit: 'cover',
+                                                  }}
+                                                    src={doc}
+                                                  />
                                                 </div>
                                               );
                                             } else if (
@@ -884,6 +893,15 @@ debugger
                                               return (
                                                 <div className="thumbnail-container thumbnail">
                                                   <img src={new URL(myfiles.url)} />
+
+                                                  <img style={{
+                                                    position: 'absolute',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    objectFit: 'cover',
+                                                  }}
+                                                    src={new URL(myfiles.url)}
+                                                  />
                                                 </div>
                                               );
                                             } else if (
@@ -893,31 +911,78 @@ debugger
                                             ) {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  <img src={xls} />
+                                                  
+                                                  <img style={{
+                                                    position: 'absolute',
+                                                    top: '37.5%',
+                                                    left: '37.5%',
+                                                    width: '25%',
+                                                    height: '25%',
+                                                    objectFit: 'cover',
+                                                  }}
+                                                    src={xls}
+                                                  />
                                                 </div>
                                               );
                                             } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  <img src={ppt} />
+                                                  <img style={{
+                                                    position: 'absolute',
+                                                    top: '37.5%',
+                                                    left: '37.5%',
+                                                    width: '25%',
+                                                    height: '25%',
+                                                    objectFit: 'cover',
+                                                  }}
+                                                    src={ppt}
+                                                  />
                                                 </div>
                                               );
                                             } else if (fileNameLowerCase.endsWith("pdf")) {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  <img src={pdf} />
+                                                  <img style={{
+                                                    position: 'absolute',
+                                                    top: '37.5%',
+                                                    left: '37.5%',
+                                                    width: '25%',
+                                                    height: '25%',
+                                                    objectFit: 'cover',
+                                                  }}
+                                                    src={pdf}
+                                                  />
                                                 </div>
                                               );
                                             } else if (fileNameLowerCase.endsWith("txt")) {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  <img src={txt} />
+                                                  <img style={{
+                                                    position: 'absolute',
+                                                    top: '37.5%',
+                                                    left: '37.5%',
+                                                    width: '25%',
+                                                    height: '25%',
+                                                    objectFit: 'cover',
+                                                  }}
+                                                    src={txt}
+                                                  />
                                                 </div>
                                               );
                                             } else {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  <img src={unknown} />
+                                                  
+                                                  <img style={{
+                                                    position: 'absolute',
+                                                    top: '37.5%',
+                                                    left: '37.5%',
+                                                    width: '25%',
+                                                    height: '25%',
+                                                    objectFit: 'cover',
+                                                  }}
+                                                    src={unknown}
+                                                  />
                                                 </div>
                                               );
                                             }
@@ -983,7 +1048,7 @@ debugger
                                       ) : (
                                         <>
                                           <li className="custom-context-menu-li"
-                                             onClick={() => toggleRenameModal(numberFiles, nameFiles, typeFiles)}
+                                            onClick={() => toggleRenameModal(numberFiles, nameFiles, typeFiles)}
 
                                           >
                                             <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
