@@ -135,7 +135,7 @@ const FileTables = (props) => {
                                                     <td scope="row">{key + 1}</td>
                                                     <td style={{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
                                                         onClick={
-                                                            myfiles.edit ? item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
+                                                            myfiles.open ? item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
                                                                 ?
                                                                 () => handlePreview(item.url)
                                                                 :

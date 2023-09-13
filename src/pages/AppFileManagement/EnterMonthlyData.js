@@ -282,7 +282,7 @@ const EnterMonthlyData = (props) => {
                                               cursor: "pointer"
                                             }}
                                             className="mdi mdi-file-check-outline"
-                                            onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
+                                            onClick={items.open ? () => window.open(new URL(file.url), '_blank') : null}
                                           ></span>
                                           {items.edit ?
                                             <span
@@ -316,7 +316,7 @@ const EnterMonthlyData = (props) => {
                                             cursor: 'pointer',
                                             margin: '0 auto',
                                           }}
-                                          onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
+                                          onClick={items.open ? () => window.open(new URL(file.url), '_blank') : null}
                                         >
                                           {file.name}
                                         </div>
@@ -335,7 +335,7 @@ const EnterMonthlyData = (props) => {
                                               cursor: "pointer"
                                             }}
                                             className="mdi mdi-file-check-outline"
-                                            onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
+                                            onClick={items.open ? () => window.open(new URL(file.url), '_blank') : null}
                                           ></span>
                                           {items.edit ? <span
                                             style={{
@@ -365,7 +365,7 @@ const EnterMonthlyData = (props) => {
                                             transform: "translateX(-50%)",
                                             cursor: "pointer"
                                           }}
-                                          onClick={items.edit ? () => window.open(new URL(file.url), '_blank') : null}
+                                          onClick={items.open ? () => window.open(new URL(file.url), '_blank') : null}
                                         >
                                           {file.name}
                                         </div>

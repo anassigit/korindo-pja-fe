@@ -371,30 +371,33 @@ const Instructions = (props) => {
 
         if (name === 'from') {
             setDateFrom(selectedDate);
-            setAppInstructionsTabelSearch((prevSearch) => ({
-                ...prevSearch,
-                search: {
-                    ...prevSearch.search,
-                    from: selectedDate,
-                    to: dateTo,
-                },
-            }));
 
         } else if (name === 'to') {
             debugger
 
             setDateTo(selectedDate);
-            setAppInstructionsTabelSearch((prevSearch) => ({
-                ...prevSearch,
-                search: {
-                    ...prevSearch.search,
-                    from: dateFrom,
-                    to: selectedDate,
-                },
-            }));
         }
     };
 
+    useEffect(() => {
+        if(dateFrom === null) {
+            setDateFrom('')
+            setDateTo('')
+        }
+        if(dateTo === null) {
+            setDateTo('')
+        }
+        
+        setAppInstructionsTabelSearch((prevSearch) => ({
+            ...prevSearch,
+            search: {
+                ...prevSearch.search,
+                from: dateFrom,
+                to: dateTo,
+            },
+        }));
+        
+    }, [dateFrom, dateTo])
 
     return (
         <RootPageCustom msgStateGet={null} msgStateSet={null}
@@ -442,11 +445,13 @@ const Instructions = (props) => {
                                                                 dateFormat="yyyy-MM"
                                                                 maxDate={new Date(dateTo)}
                                                                 selected={dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null}
-                                                                minDate={new Date("2023")}
                                                                 onChange={(tglMulai) =>
                                                                     dateChanger('from', tglMulai ? moment(tglMulai).format('yyyy-MM') : null)
                                                                 }
-                                                                isClearable
+                                                                onKeyDown={(e) => {
+                                                                   e.preventDefault();
+                                                                }}
+                                                                isClearable={dateFrom !== ""}
                                                                 
                                                             />
                                                         </div>
@@ -460,13 +465,14 @@ const Instructions = (props) => {
                                                                 showMonthYearPicker
                                                                 dateFormat="yyyy-MM"
                                                                 
-                                                                minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : new Date("2023"))}
-                                                                // maxDate={new Date()}
+                                                                minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : new Date())}
                                                                 selected={dateTo ? moment(dateTo, 'yyyy-MM').toDate() : null}
                                                                 onChange={(tglSelesai) =>
                                                                     dateChanger('to', tglSelesai ? moment(tglSelesai).format('yyyy-MM') : null)
                                                                 }
-                                                                // disabled={!dateFrom}
+                                                                onKeyDown={(e) => {
+                                                                   e.preventDefault();
+                                                                }}
                                                                 isClearable
                                                             />
                                                         </div>
