@@ -111,6 +111,9 @@ const FileManagement = (props) => {
   const [typeFiles, setTypeFiles] = useState("")
 
   const contextMenuRef = useRef(null);
+  
+  const queryParameters = new URLSearchParams(window.location.search)
+  const queryFolderNum = queryParameters.get("folder_num")
 
   const toggleRenameModal = (idT, nmT, tpT) => {
 

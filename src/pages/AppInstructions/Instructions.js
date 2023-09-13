@@ -382,7 +382,6 @@ const Instructions = (props) => {
     useEffect(() => {
         if(dateFrom === null) {
             setDateFrom('')
-            setDateTo('')
         }
         if(dateTo === null) {
             setDateTo('')
@@ -435,8 +434,8 @@ const Instructions = (props) => {
 
                                                 <Col md="4" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-10">
-                                                        <label className="col-sm-1" style={{ marginTop: "8px" }}>
-                                                            <i className="mdi mdi-calendar-month" />
+                                                        <label className="col-sm-1">
+                                                            <i style={{ position: "absolute", fontSize:"18px", top:'0.25em'}} className="mdi mdi-calendar-month opacity-75" />
                                                         </label>
                                                         <div className="col-sm-4">
                                                             <DatePicker
@@ -451,7 +450,7 @@ const Instructions = (props) => {
                                                                 onKeyDown={(e) => {
                                                                    e.preventDefault();
                                                                 }}
-                                                                isClearable={dateFrom !== ""}
+                                                                isClearable
                                                                 
                                                             />
                                                         </div>
@@ -465,7 +464,7 @@ const Instructions = (props) => {
                                                                 showMonthYearPicker
                                                                 dateFormat="yyyy-MM"
                                                                 
-                                                                minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : new Date())}
+                                                                minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : '')}
                                                                 selected={dateTo ? moment(dateTo, 'yyyy-MM').toDate() : null}
                                                                 onChange={(tglSelesai) =>
                                                                     dateChanger('to', tglSelesai ? moment(tglSelesai).format('yyyy-MM') : null)
