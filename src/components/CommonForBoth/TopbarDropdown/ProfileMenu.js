@@ -39,9 +39,12 @@ const ProfileMenu = props => {
   }, [])
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-        const u = getDetailProfile?.data?.member?.name
-        setusername(u)
+    const u = getDetailProfile?.data?.member?.name
+    setusername(u)
+    if(getDetailProfile.status === '1') {
+      localStorage.setItem("user", getDetailProfile?.data?.member?.name)
+    } else {
+      localStorage.removeItem("user")
     }
   }, [getDetailProfile])
 
@@ -65,16 +68,16 @@ const ProfileMenu = props => {
             alt="Header Avatar"
           />
           <span className="d-none d-xl-inline-block ms-2 me-1">{username} </span>
-          <i className="mdi mdi-chevron-down d-none d-xl-inline-block"/>
+          <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <Link to="/AppUserProfile" className="dropdown-item">
-            <i className="mdi mdi-account-box fs-4 align-middle me-1"/>
+            <i className="mdi mdi-account-box fs-4 align-middle me-1" />
             <span>{props.t("Profile")}</span>
           </Link>
-          <div className="dropdown-divider"/>
+          <div className="dropdown-divider" />
           <Link to="/logout" className="dropdown-item">
-            <i className="mdi mdi-power fs-4 align-middle me-1 text-danger"/>
+            <i className="mdi mdi-power fs-4 align-middle me-1 text-danger" />
             <span>{props.t("Log Out")}</span>
           </Link>
         </DropdownMenu>

@@ -19,7 +19,6 @@ const Authmiddleware = ({
       if (korToken && !localStorage.getItem("authUser")) {
         localStorage.setItem('authUser', korToken)
       }
-      debugger
       if (isAuthProtected && !localStorage.getItem("authUser")) {
         if (!currentURL.endsWith('/login')) {
           if (!localStorage.getItem("I18N_LANGUAGE")) {

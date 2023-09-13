@@ -134,7 +134,6 @@ const EnterMonthlyData = (props) => {
   }
 
   const toggleDetailModalMonthly = (folder_id) => {
-    debugger
     setDetailModalMonthly(!detailModalMonthly)
     setIdFolderDetail(folder_id)
     setCurrMonth(selectedMonth)
@@ -446,21 +445,35 @@ const EnterMonthlyData = (props) => {
                               {items.name}
                             </Col>
                             <Col className="col-4 d-flex justify-content-end">
-                              <Button
-                                className=""
-                                disabled={!items.edit}
-                                style={{
-                                  background: !items.edit ? "#b5b5b5" : null,
-                                  marginRight: "-18%",
-                                  marginBottom: "-15%",
-                                  paddingTop: "2px",
-                                  paddingBottom: "2px",
-                                  outline: "none"
-                                }}
-                                onClick={() => toggleUploadModalMonthly(items.num)}
-                              >
-                                {props.t('Add')}
-                              </Button>
+                              {items.edit ?
+                                <Button
+                                  className=""
+                                  style={{
+                                    marginRight: "-18%",
+                                    marginBottom: "-15%",
+                                    paddingTop: "2px",
+                                    paddingBottom: "2px",
+                                    outline: "none"
+                                  }}
+                                  onClick={() => toggleUploadModalMonthly(items.num)}
+                                >
+                                  {props.t('Add')}
+                                </Button>
+                                :
+                                <button
+                                  className="btn btn-dark opacity-25"
+                                  disabled
+                                  style={{
+                                    marginRight: "-18%",
+                                    marginBottom: "-15%",
+                                    paddingTop: "2px",
+                                    paddingBottom: "2px",
+                                  }}
+                                  onClick={() => toggleUploadModalMonthly(items.num)}
+                                >
+                                  {props.t('Add')}
+                                </button>
+                              }
                             </Col>
                           </Row>
                         </CardBody>
