@@ -794,7 +794,7 @@ const FileManagement = (props) => {
                               >
 
                                 <Card className="shadow-none border bg-light"
-                                  {...(myfiles.open === true && {
+                                  {...(myfiles.open === true && myfiles.edit === true && myfiles.open === false && {
                                     onContextMenu: (e) => {
                                       e.preventDefault();
                                       handleContextMenuOpen2(e);
@@ -807,17 +807,28 @@ const FileManagement = (props) => {
                                     <div className="pb-1 pt-1">
                                       <div className="float-end">
                                         <UncontrolledDropdown>
-                                          {myfiles.edit === true && (
+
+                                          {myfiles.edit === true && myfiles.open === true ? (
                                             <DropdownToggle
                                               className="fs-6 text-muted"
                                               tag="a"
                                               onClick={handleDropdownMenuToggle2}
                                             >
-
                                               <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                             </DropdownToggle>
+                                          ) : (
+                                            myfiles.edit === false && myfiles.open === true ? (
+                                              <DropdownToggle
+                                                className="fs-6 text-muted"
+                                                tag="a"
+                                                onClick={handleDropdownMenuToggle2}
+                                              >
+                                                <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
+                                              </DropdownToggle>
+                                            ) : null
                                           )}
-                                          {isDropdownMenuOpen2 && (
+
+                                          {isDropdownMenuOpen2 && myfiles.edit === true && myfiles.open === true && (
 
                                             <DropdownMenu className="dropdown-menu-end">
                                               {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
@@ -866,7 +877,36 @@ const FileManagement = (props) => {
                                                 </>
                                               )}
                                             </DropdownMenu>
-                                          )}
+
+                                            )}
+
+                                            {isDropdownMenuOpen2 && myfiles.edit === false && myfiles.open === true && (
+
+                                              <DropdownMenu className="dropdown-menu-end">
+                                              {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                                <>
+                                                  <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                                    <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Preview")}
+                                                  </DropdownItem>
+                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Download")}
+                                                  </DropdownItem>
+
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Download")}
+                                                  </DropdownItem>
+                                                </>
+                                              )}
+                                            </DropdownMenu>
+
+                                            )}
+                                          
                                         </UncontrolledDropdown>
                                       </div>
 
@@ -930,7 +970,7 @@ const FileManagement = (props) => {
                                             ) {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  
+
                                                   <img style={{
                                                     position: 'absolute',
                                                     top: '37.5%',
@@ -991,7 +1031,7 @@ const FileManagement = (props) => {
                                             } else {
                                               return (
                                                 <div className="thumbnail-container thumbnail">
-                                                  
+
                                                   <img style={{
                                                     position: 'absolute',
                                                     top: '37.5%',
