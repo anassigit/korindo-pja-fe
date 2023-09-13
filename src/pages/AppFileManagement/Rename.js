@@ -74,7 +74,6 @@ const Rename = (props) => {
     const [renameContentModal, setRenameContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        debugger
         setRenameMsgModal(!renameMsgModal)
         if (renameFFMsg.status === "1") {
 
@@ -87,7 +86,6 @@ const Rename = (props) => {
     }
 
     useEffect(() => {
-        debugger
         if (renameMsg.status === "1") {
             // debugger
             setSuccessClose(true)

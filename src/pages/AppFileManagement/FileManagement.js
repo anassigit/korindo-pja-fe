@@ -42,6 +42,7 @@ import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
 import unknown from '../../assets/images/file_management/unknown.png'
 import { getProfile } from "store/actions";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 
 const FileManagement = (props) => {
@@ -49,6 +50,7 @@ const FileManagement = (props) => {
   //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
   let tempIndex = null
 
+  const history = useHistory();
   const dispatch = useDispatch();
   const [fileManagementPage, setFileManagementPage] = useState(true)
   const [fileManagementMsg, setFileManagementMsg] = useState("")
@@ -111,14 +113,13 @@ const FileManagement = (props) => {
   const [typeFiles, setTypeFiles] = useState("")
 
   const contextMenuRef = useRef(null);
-  
+
   const queryParameters = new URLSearchParams(window.location.search)
   const queryFolderNum = queryParameters.get("folder_num")
 
   const toggleRenameModal = (idT, nmT, tpT) => {
 
     setIdNowLoc(currFolder)
-    debugger
     setIdToggle(idT)
     if (tpT === "FILE") {
       var realNm = nmT.split('.').slice(0, -1).join('.')
@@ -188,7 +189,6 @@ const FileManagement = (props) => {
   }
 
   const confirmToggleDelete = (e, typeFolder) => {
-    debugger
     if (e) {
       setTempIdDel(e)
       setIsTypeFolder(typeFolder)
@@ -198,21 +198,15 @@ const FileManagement = (props) => {
 
   useEffect(() => {
 
-    const storedData = localStorage.getItem('appFileManagementData');
-    let parsedData = null
-
-    if (storedData) {
-      parsedData = JSON.parse(storedData);
-      setCurrFolder(parsedData);
-    }
-
     dispatch(resetMessage());
 
-    if (storedData !== null) {
-      dispatch(getSelectFile({ 'folder_num': storedData }))
+    if (queryFolderNum) {
+      setCurrFolder(queryFolderNum)
+      dispatch(getSelectFile({ 'folder_num': queryFolderNum }))
     } else {
       dispatch(getSelectFile())
     }
+
     dispatch(getSearch({
       "search": ""
     }))
@@ -283,10 +277,10 @@ const FileManagement = (props) => {
   const getInsideFolder = (e, f, n) => {
 
     setCurrFolder(e)
-    localStorage.setItem('appFileManagementData', JSON.stringify(e));
+    history.push(`?folder_num=${e}`);
 
     setEnterMonthlyDataSpinner(true)
-    dispatch(getSelectFile({ 'folder_num': e }))
+    // dispatch(getSelectFile({ 'folder_num': e }))
     setIdFolderTemp(e)
     setIdChild(e)
     setIdParentTemp(f)
@@ -394,7 +388,6 @@ const FileManagement = (props) => {
 
 
   const handleContextMenu = (e, noFolder, parFolder, nmFolder, tpFolder) => {
-    debugger
     e.preventDefault();
 
     const xPos = e.clientX;
@@ -440,7 +433,6 @@ const FileManagement = (props) => {
   /// [File --- Context Menu & Dropdown Menu] ///
 
   const handleContextMenu2 = (e, noFile, parFile, nmFile, tpFile) => {
-    debugger
     e.preventDefault();
 
     const xPos2 = e.clientX;
@@ -488,6 +480,12 @@ const FileManagement = (props) => {
 
   let isAdmin = getDetailProfile?.data?.member?.id
 
+  useEffect(() => {
+    if (queryFolderNum) {
+      setCurrFolder(queryFolderNum)
+    }
+    dispatch(getSelectFile({ 'folder_num': queryFolderNum }))
+  }, [queryFolderNum])
 
   return (
     <RootPageCustom
@@ -881,11 +879,11 @@ const FileManagement = (props) => {
                                               )}
                                             </DropdownMenu>
 
-                                            )}
+                                          )}
 
-                                            {isDropdownMenuOpen2 && myfiles.edit === false && myfiles.open === true && (
+                                          {isDropdownMenuOpen2 && myfiles.edit === false && myfiles.open === true && (
 
-                                              <DropdownMenu className="dropdown-menu-end">
+                                            <DropdownMenu className="dropdown-menu-end">
                                               {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
                                                 <>
                                                   <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
@@ -908,8 +906,8 @@ const FileManagement = (props) => {
                                               )}
                                             </DropdownMenu>
 
-                                            )}
-                                          
+                                          )}
+
                                         </UncontrolledDropdown>
                                       </div>
 

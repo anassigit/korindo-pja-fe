@@ -380,13 +380,13 @@ const Instructions = (props) => {
     };
 
     useEffect(() => {
-        if(dateFrom === null) {
+        if (dateFrom === null) {
             setDateFrom('')
         }
-        if(dateTo === null) {
+        if (dateTo === null) {
             setDateTo('')
         }
-        
+
         setAppInstructionsTabelSearch((prevSearch) => ({
             ...prevSearch,
             search: {
@@ -395,7 +395,7 @@ const Instructions = (props) => {
                 to: dateTo,
             },
         }));
-        
+
     }, [dateFrom, dateTo])
 
     return (
@@ -435,7 +435,7 @@ const Instructions = (props) => {
                                                 <Col md="4" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-10">
                                                         <label className="col-sm-1">
-                                                            <i style={{ position: "absolute", fontSize:"18px", top:'0.25em'}} className="mdi mdi-calendar-month opacity-75" />
+                                                            <i style={{ position: "absolute", fontSize: "18px", top: '0.25em' }} className="mdi mdi-calendar-month opacity-75" />
                                                         </label>
                                                         <div className="col-sm-4">
                                                             <DatePicker
@@ -448,13 +448,13 @@ const Instructions = (props) => {
                                                                     dateChanger('from', tglMulai ? moment(tglMulai).format('yyyy-MM') : null)
                                                                 }
                                                                 onKeyDown={(e) => {
-                                                                   e.preventDefault();
+                                                                    e.preventDefault();
                                                                 }}
                                                                 isClearable
-                                                                
+
                                                             />
                                                         </div>
-                                                   
+
                                                         <label className="col-sm-1" style={{ marginTop: "8px" }}>
                                                             -
                                                         </label>
@@ -463,14 +463,14 @@ const Instructions = (props) => {
                                                                 className="form-control"
                                                                 showMonthYearPicker
                                                                 dateFormat="yyyy-MM"
-                                                                
+
                                                                 minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : '')}
                                                                 selected={dateTo ? moment(dateTo, 'yyyy-MM').toDate() : null}
                                                                 onChange={(tglSelesai) =>
                                                                     dateChanger('to', tglSelesai ? moment(tglSelesai).format('yyyy-MM') : null)
                                                                 }
                                                                 onKeyDown={(e) => {
-                                                                   e.preventDefault();
+                                                                    e.preventDefault();
                                                                 }}
                                                                 isClearable
                                                             />
@@ -486,46 +486,46 @@ const Instructions = (props) => {
                                     <Col sm="12">
                                         <div className="form-group m-0">
                                             <div className="input-group">
-                                                    <Col md="4">
-                                                        <Row className="mb-1 col-sm-10">
-                                                            <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                <Col md="4">
+                                                    <Row className="mb-1 col-sm-10">
+                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
                                                             {props.t("Status")}
-                                                            </label>
-                                                            <div className="col-sm-7">
-                                                                <Input
-                                                                    type="select"
-                                                                    name="status"
-                                                                    onChange={handleChange}
-                                                                    value={selected}
-                                                                >
-                                                                    <option id="" value={""}>{props.t("All")}</option>
-                                                                    <option id="1" value={"1"}>{props.t("Not Started")}</option>
-                                                                    <option id="2" value={"2"}>{props.t("In Process")}</option>
-                                                                    <option id="3" value={"3"}>{props.t("Action Completed")}</option>
-                                                                    <option id="4" value={"4"}>{props.t("Rejected")}</option>
-                                                                    <option id="5" value={"5"}>{props.t("Completed")}</option>
+                                                        </label>
+                                                        <div className="col-sm-7">
+                                                            <Input
+                                                                type="select"
+                                                                name="status"
+                                                                onChange={handleChange}
+                                                                value={selected}
+                                                            >
+                                                                <option id="" value={""}>{props.t("All")}</option>
+                                                                <option id="1" value={"1"}>{props.t("Not Started")}</option>
+                                                                <option id="2" value={"2"}>{props.t("In Process")}</option>
+                                                                <option id="3" value={"3"}>{props.t("Action Completed")}</option>
+                                                                <option id="4" value={"4"}>{props.t("Rejected")}</option>
+                                                                <option id="5" value={"5"}>{props.t("Completed")}</option>
 
-                                                                </Input>
-                                                            </div>
-                                                        </Row>
-                                                    </Col>
+                                                            </Input>
+                                                        </div>
+                                                    </Row>
+                                                </Col>
 
-                                       
 
-                                        <Col sm="12">
-                                            <div className="text-sm-end">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-primary "
-                                                    onClick={() => { appInstructionsPreAdd() }}
-                                                >
-                                                    <i className="mdi mdi-plus fs-5 align-middle" />{" "}
-                                                    {props.t("New Instructions")}
-                                                </button>
+
+                                                <Col sm="12">
+                                                    <div className="text-sm-end">
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary "
+                                                            onClick={() => { appInstructionsPreAdd() }}
+                                                        >
+                                                            <i className="mdi mdi-plus fs-5 align-middle" />{" "}
+                                                            {props.t("New Instructions")}
+                                                        </button>
+                                                    </div>
+                                                </Col>
                                             </div>
-                                        </Col>
-</div>
-</div>
+                                        </div>
                                     </Col>
                                 </Row>
                                 <Row className="mb-5">
