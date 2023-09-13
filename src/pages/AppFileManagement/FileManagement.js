@@ -649,7 +649,7 @@ const FileManagement = (props) => {
                               <Col xs="1" sm="1" md="2" key={key}>
 
                                 <div
-                                  {...(myfiles.edit === true && {
+                                  {...(myfiles.edit === true && myfiles.open === true && {
                                     onContextMenu: (e) => {
                                       handleContextMenu(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
                                     },
@@ -658,22 +658,25 @@ const FileManagement = (props) => {
                                 >
                                   <Card className="shadow-none border"
 
-                                    onContextMenu={(e) => {
-                                      e.preventDefault();
-                                      handleContextMenuOpen(e);
-                                    }}
+                                    {...(myfiles.open === true && myfiles.edit === true && {
+                                      onContextMenu: (e) => {
+                                        e.preventDefault();
+                                        handleContextMenuOpen(e);
+                                      },
+                                      style: { cursor: "pointer" },
+                                    })}
 
                                   >
                                     <CardBody className="p-2" style={{ cursor: "pointer" }}
                                       onDoubleClick={() => {
-                                        if (myfiles.open === true) {
+                                        if (myfiles.open === true && myfiles.edit === true) {
                                           getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name)
                                         }
                                       }}
                                     >
                                       <div className="float-end">
                                         <UncontrolledDropdown>
-                                          {myfiles.edit === true && (
+                                          {myfiles.edit === true && myfiles.open === true && (
                                             <DropdownToggle
                                               className="fs-6 text-muted"
                                               tag="a"
@@ -736,14 +739,12 @@ const FileManagement = (props) => {
                                         }}
                                       >
                                         <li className="custom-context-menu-li"
-                                          // onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
                                           onClick={() => toggleRenameModal(numberFolders, nameFolders, typeFolders)}
                                         >
                                           <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
                                           {props.t("Rename")}
                                         </li>
                                         <li className="custom-context-menu-li"
-                                          // onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
                                           onClick={() => toggleMoveModal(numberFolders, parentFolders)}
                                         >
                                           <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
@@ -751,7 +752,6 @@ const FileManagement = (props) => {
                                         </li>
                                         <div className="dropdown-divider"></div>
                                         <li className="custom-context-menu-li"
-                                          // onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
                                           onClick={() => confirmToggleDelete(numberFolders, typeFolders)}
                                         >
                                           <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
@@ -785,7 +785,14 @@ const FileManagement = (props) => {
 
                             <Col md="2" key={key}>
                               <div
-                                {...(myfiles.edit === true && {
+                                {...(myfiles.open === true && myfiles.edit === true &&{
+                                  onContextMenu: (e) => {
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
+                                  },
+                                  onClick: hideContextMenu2,
+                                })}
+
+                                {...(myfiles.open === true && myfiles.edit === false &&{
                                   onContextMenu: (e) => {
                                     handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
                                   },
@@ -795,7 +802,16 @@ const FileManagement = (props) => {
                               >
 
                                 <Card className="shadow-none border bg-light"
-                                  {...(myfiles.open === true && myfiles.edit === true && myfiles.open === false && {
+                                  {...(myfiles.open === true && myfiles.edit === true && {
+                                    onContextMenu: (e) => {
+                                      e.preventDefault();
+                                      handleContextMenuOpen2(e);
+                                    },
+                                    onDoubleClick: () => toggleShowModal(myfiles.url),
+                                    style: { cursor: "pointer" },
+                                  })}
+
+                                  {...(myfiles.open === true && myfiles.edit === false && {
                                     onContextMenu: (e) => {
                                       e.preventDefault();
                                       handleContextMenuOpen2(e);
@@ -1054,7 +1070,7 @@ const FileManagement = (props) => {
                                 </Card>
 
                                 <div className="float-end">
-                                  {isContextMenuVisible2 && (
+                                  {isContextMenuVisible2 && myfiles.open === true && myfiles.edit === true && (
                                     <div
                                       className="custom-context-menu"
 
@@ -1133,6 +1149,46 @@ const FileManagement = (props) => {
                                           >
                                             <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
                                             {props.t("Remove")}
+                                          </li>
+                                        </>
+                                      )}
+                                    </div>
+                                  )}
+                                  {isContextMenuVisible2 && myfiles.open === true && myfiles.edit === false && (
+                                    <div
+                                      className="custom-context-menu"
+
+                                      style={{
+                                        position: 'fixed',
+                                        left: contextMenuPosition2.x + 'px',
+                                        top: contextMenuPosition2.y + 'px',
+                                      }}
+                                    >
+                                      {nameFiles.endsWith("jpg") || nameFiles.endsWith("jpeg") || nameFiles.endsWith("gif") || nameFiles.endsWith("png") || nameFiles.endsWith("pdf") ? (
+                                        <>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => toggleShowModal(myfiles.url)}
+
+                                          >
+                                            <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Preview")}
+                                          </li>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => downloadCheckFile1(numberFiles, nameFiles)}
+
+                                          >
+                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Download")}
+                                          </li>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => downloadCheckFile1(numberFiles, nameFiles)}
+
+                                          >
+                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Download")}
                                           </li>
                                         </>
                                       )}
