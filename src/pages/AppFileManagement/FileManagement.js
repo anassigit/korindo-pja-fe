@@ -41,6 +41,7 @@ import ppt from '../../assets/images/file_management/ppt.png'
 import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
 import unknown from '../../assets/images/file_management/unknown.png'
+import { getProfile } from "store/actions";
 
 
 const FileManagement = (props) => {
@@ -203,6 +204,13 @@ const FileManagement = (props) => {
       "search": ""
     }))
     setEnterMonthlyDataSpinner(true)
+
+    dispatch(getProfile({
+      "search": {
+        "langType": "eng"
+      }
+    }))
+
   }, [])
 
 
@@ -453,6 +461,11 @@ const FileManagement = (props) => {
 
   };
 
+  const getDetailProfile = useSelector(state => {
+    return state.userProfileReducer.respGetProfile;
+  })
+
+  let isAdmin = getDetailProfile?.data?.member?.id
 
 
   return (
@@ -531,28 +544,44 @@ const FileManagement = (props) => {
                     <Col sm="12">
                       <div className="text-sm-end">
                         <div className="float-end ms-1">
-                          <UncontrolledDropdown className="mb-2">
-                            <DropdownToggle className="font-size-16 text-muted" tag="a">
+                          {
+                            isAdmin === 'admin'
+                              ?
+                              <UncontrolledDropdown className="mb-2">
+
+                                <DropdownToggle className="font-size-16 text-muted" tag="a">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                  >
+                                    <i className="mdi mdi-plus fs-4" style={{ verticalAlign: 'middle' }}></i>{' '}
+                                    {props.t("New")}
+                                  </button>
+                                </DropdownToggle>
+
+                                <DropdownMenu className="dropdown-menu-end">
+                                  <DropdownItem onClick={() => toggleCreateModal()}>
+                                    <i className="mdi mdi-folder align-middle fs-4 mb-2" /> {"  "}
+                                    {props.t("Add New Folder")}
+                                  </DropdownItem>
+                                  <DropdownItem onClick={() => toggleUploadModal()}>
+                                    <i className="mdi mdi-file align-middle fs-4 mb-2" /> {"  "}
+                                    {props.t("Upload New File")}
+                                  </DropdownItem>
+                                </DropdownMenu>
+                                
+                              </UncontrolledDropdown>
+                              :
                               <button
+                                disabled
                                 type="button"
-                                className="btn btn-primary"
+                                className="btn btn-dark opacity-25"
                               >
                                 <i className="mdi mdi-plus fs-4" style={{ verticalAlign: 'middle' }}></i>{' '}
                                 {props.t("New")}
                               </button>
-                            </DropdownToggle>
+                          }
 
-                            <DropdownMenu className="dropdown-menu-end">
-                              <DropdownItem onClick={() => toggleCreateModal()}>
-                                <i className="mdi mdi-folder align-middle fs-4 mb-2" /> {"  "}
-                                {props.t("Add New Folder")}
-                              </DropdownItem>
-                              <DropdownItem onClick={() => toggleUploadModal()}>
-                                <i className="mdi mdi-file align-middle fs-4 mb-2" /> {"  "}
-                                {props.t("Upload New File")}
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
                         </div>
                       </div>
                     </Col>
@@ -589,394 +618,394 @@ const FileManagement = (props) => {
                 <p />
                 <p />
                 <div onClick={() => { hideContextMenu(); hideContextMenu2(); }}>
-                <Row className="mb-2">
-                  <Col sm="12">
+                  <Row className="mb-2">
+                    <Col sm="12">
 
-                    <Row>
-                      {
-                        realFileList?.map((myfiles, key) => (
+                      <Row>
+                        {
+                          realFileList?.map((myfiles, key) => (
 
-                          myfiles.type === "FOLDER" || myfiles > 0 ?
+                            myfiles.type === "FOLDER" || myfiles > 0 ?
 
-                            <Col xs="1" sm="1" md="2" key={key}>
+                              <Col xs="1" sm="1" md="2" key={key}>
 
+                                <div
+                                  onContextMenu={(e) => { handleContextMenu(e) }}
+                                  onClick={hideContextMenu}
+
+                                >
+                                  <Card className="shadow-none border"
+                                    onContextMenu={(e) => {
+                                      e.preventDefault();
+                                      handleContextMenuOpen(e);
+                                    }}
+
+                                  >
+                                    <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
+                                      <div className="float-end">
+                                        <UncontrolledDropdown >
+                                          <DropdownToggle
+                                            className="fs-6 text-muted"
+                                            tag="a"
+                                            onClick={handleDropdownMenuToggle}
+                                          >
+                                            <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
+                                          </DropdownToggle>
+                                          {isDropdownMenuOpen && (
+                                            <DropdownMenu className="dropdown-menu-end" >
+                                              <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                                <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                                {props.t("Rename")}
+                                              </DropdownItem>
+                                              <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                                <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                                {props.t("Move")}
+                                              </DropdownItem>
+                                              <div className="dropdown-divider"></div>
+                                              <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                                <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                                {props.t("Remove")}
+                                              </DropdownItem>
+                                            </DropdownMenu>
+                                          )}
+                                        </UncontrolledDropdown>
+                                      </div>
+
+
+                                      <div className="text-truncate align-middle">
+                                        <a style={{ userSelect: "none" }} className="text-body fs-6" id={`folderTooltip_${key}`}>
+                                          {myfiles.type === "FOLDER" ? (
+                                            <>
+                                              <img src={folder2} style={{ maxWidth: "30px", maxHeight: "30px", verticalAlign: "middle" }} alt="Folder Icon" />
+                                              &nbsp;&nbsp;&nbsp;{myfiles.name}
+                                            </>
+                                          ) : (
+                                            <>
+                                              <i className="fa fa-solid fa-file fs-1" style={{ color: "#7bae40" }} ></i>
+                                              {myfiles.name}
+                                            </>
+                                          )}
+                                          <UncontrolledTooltip placement="bottom" target={`folderTooltip_${key}`}>
+                                            {myfiles.name}
+                                          </UncontrolledTooltip>
+                                        </a>
+                                      </div>
+                                    </CardBody>
+                                  </Card>
+
+                                  <div className="float-end">
+                                    {isContextMenuVisible && (
+                                      <div
+                                        className="custom-context-menu"
+
+                                        style={{
+                                          position: 'fixed',
+                                          left: contextMenuPosition.x + 'px',
+                                          top: contextMenuPosition.y + 'px',
+                                        }}
+                                      >
+                                        <li className="custom-context-menu-li"
+                                          onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+                                        >
+                                          <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                          {props.t("Rename")}
+                                        </li>
+                                        <li className="custom-context-menu-li"
+                                          onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+                                        >
+                                          <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                          {props.t("Move")}
+                                        </li>
+                                        <div className="dropdown-divider"></div>
+                                        <li className="custom-context-menu-li"
+                                          onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+                                        >
+                                          <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                          {props.t("Remove")}
+                                        </li>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+
+
+                              </Col>
+                              : ''
+
+                          ))}
+                      </Row>
+
+                    </Col>
+                  </Row>
+                  <p />
+                  <p />
+                  <Row className="mb-1 col-sm-10"><h6><i className="mdi mdi-file align-baseline fs-5" />{"   "}{props.t("Files")}</h6></Row>
+                  <p />
+                  <Row className="mb-2">
+                    <Col sm="12">
+                      <Row>
+
+                        {realFileList?.map((myfiles, key) => (
+                          myfiles.type === "FILE" || myfiles > 0 ?
+
+                            <Col md="2" key={key}>
                               <div
-                                onContextMenu={(e) => { handleContextMenu(e) }}
-                                onClick={hideContextMenu}
+                                onContextMenu={(e) => { handleContextMenu2(e) }}
+                                onClick={hideContextMenu2}
 
                               >
-                                <Card className="shadow-none border"
+
+                                <Card className="shadow-none border bg-light"
                                   onContextMenu={(e) => {
                                     e.preventDefault();
-                                    handleContextMenuOpen(e);
+                                    handleContextMenuOpen2(e);
                                   }}
-                              
+
+                                  onDoubleClick={() => toggleShowModal(myfiles.url)}
+                                  style={{ cursor: "pointer" }}
+                                // target={myfiles.url.endsWith(".xlsx") ? "_self" : "_blank"}
+
                                 >
-                                  <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
-                                  <div className="float-end">
-                                      <UncontrolledDropdown >
-                                        <DropdownToggle
-                                          className="fs-6 text-muted"
-                                          tag="a"
-                                          onClick={handleDropdownMenuToggle}
-                                        >
-                                          <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
-                                        </DropdownToggle>
-                                        {isDropdownMenuOpen && (
-                                          <DropdownMenu className="dropdown-menu-end" >
-                                            <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                              <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                              {props.t("Rename")}
-                                            </DropdownItem>
-                                            <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                              <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                              {props.t("Move")}
-                                            </DropdownItem>
-                                            <div className="dropdown-divider"></div>
-                                            <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                              <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                              {props.t("Remove")}
-                                            </DropdownItem>
-                                          </DropdownMenu>
-                                        )}
-                                      </UncontrolledDropdown>
-                                    </div>
+                                  <CardBody className="p-1">
+                                    <div className="pb-1 pt-1">
+                                      <div className="float-end">
+                                        <UncontrolledDropdown>
+                                          <DropdownToggle
+                                            className="fs-6 text-muted"
+                                            tag="a"
+                                            onClick={handleDropdownMenuToggle2}
+                                          >
+                                            <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
+                                          </DropdownToggle>
+                                          {isDropdownMenuOpen2 && (
+
+                                            <DropdownMenu className="dropdown-menu-end">
+                                              {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                                <>
+                                                  <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                                    <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Preview")}
+                                                  </DropdownItem>
+                                                  <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                                    <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Rename")}
+                                                  </DropdownItem>
+                                                  <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                                    <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Move")}
+                                                  </DropdownItem>
+                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Download")}
+                                                  </DropdownItem>
+                                                  <div className="dropdown-divider"></div>
+                                                  <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                                    <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Remove")}
+                                                  </DropdownItem>
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                                    <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Rename")}
+                                                  </DropdownItem>
+                                                  <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                                    <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Move")}
+                                                  </DropdownItem>
+                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Download")}
+                                                  </DropdownItem>
+                                                  <div className="dropdown-divider"></div>
+                                                  <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                                    <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
+                                                    {props.t("Remove")}
+                                                  </DropdownItem>
+                                                </>
+                                              )}
+                                            </DropdownMenu>
+                                          )}
+                                        </UncontrolledDropdown>
+                                      </div>
 
 
-                                    <div className="text-truncate align-middle">
-                                      <a style={{ userSelect: "none" }} className="text-body fs-6" id={`folderTooltip_${key}`}>
-                                        {myfiles.type === "FOLDER" ? (
-                                          <>
-                                            <img src={folder2} style={{ maxWidth: "30px", maxHeight: "30px", verticalAlign: "middle" }} alt="Folder Icon" />
-                                            &nbsp;&nbsp;&nbsp;{myfiles.name}
-                                          </>
-                                        ) : (
-                                          <>
-                                            <i className="fa fa-solid fa-file fs-1" style={{ color: "#7bae40" }} ></i>
-                                            {myfiles.name}
-                                          </>
-                                        )}
-                                        <UncontrolledTooltip placement="bottom" target={`folderTooltip_${key}`}>
+                                      <div className="text-truncate mb-1 text-center">
+                                        <a className="text-body fs-6" id={`nameTooltip_${key}`}>
                                           {myfiles.name}
-                                        </UncontrolledTooltip>
-                                      </a>
+
+                                          <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                            {myfiles.name}
+                                          </UncontrolledTooltip>
+                                        </a>
+                                      </div>
+
+                                      <div className="pt-2">
+                                        <div className="avatar-title bg-transparent rounded">
+                                          {(() => {
+
+                                            var fileNameLowerCase = myfiles.name.toLowerCase();
+
+
+                                            if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
+                                              return (
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={doc} />
+                                                </div>
+                                              );
+                                            } else if (
+                                              fileNameLowerCase.endsWith("jpg") ||
+                                              fileNameLowerCase.endsWith("jpeg") ||
+                                              fileNameLowerCase.endsWith("gif") ||
+                                              fileNameLowerCase.endsWith("png")
+                                            ) {
+                                              return (
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={new URL(myfiles.url)} />
+                                                </div>
+                                              );
+                                            } else if (
+                                              fileNameLowerCase.endsWith("xls") ||
+                                              fileNameLowerCase.endsWith("xlsx") ||
+                                              fileNameLowerCase.endsWith("csv")
+                                            ) {
+                                              return (
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={xls} />
+                                                </div>
+                                              );
+                                            } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
+                                              return (
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={ppt} />
+                                                </div>
+                                              );
+                                            } else if (fileNameLowerCase.endsWith("pdf")) {
+                                              return (
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={pdf} />
+                                                </div>
+                                              );
+                                            } else if (fileNameLowerCase.endsWith("txt")) {
+                                              return (
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={txt} />
+                                                </div>
+                                              );
+                                            } else {
+                                              return (
+                                                <div className="thumbnail-container thumbnail">
+                                                  <img src={unknown} />
+                                                </div>
+                                              );
+                                            }
+                                          })()}
+                                        </div>
+                                      </div>
+
+
                                     </div>
                                   </CardBody>
                                 </Card>
 
                                 <div className="float-end">
-                                  {isContextMenuVisible && (
+                                  {isContextMenuVisible2 && (
                                     <div
                                       className="custom-context-menu"
 
                                       style={{
                                         position: 'fixed',
-                                        left: contextMenuPosition.x + 'px',
-                                        top: contextMenuPosition.y + 'px',
+                                        left: contextMenuPosition2.x + 'px',
+                                        top: contextMenuPosition2.y + 'px',
                                       }}
                                     >
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
-                                      >
-                                        <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Rename")}
-                                      </li>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
-                                      >
-                                        <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Move")}
-                                      </li>
-                                      <div className="dropdown-divider"></div>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
-                                      >
-                                        <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Remove")}
-                                      </li>
+                                      {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                        <>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => toggleShowModal(myfiles.url)}
+
+                                          >
+                                            <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Preview")}
+                                          </li>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+
+                                          >
+                                            <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Rename")}
+                                          </li>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+
+                                          >
+                                            <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Move")}
+                                          </li>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
+
+                                          >
+                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Download")}
+                                          </li>
+                                          <div className="dropdown-divider"></div>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+
+                                          >
+                                            <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Remove")}
+                                          </li>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
+
+                                          >
+                                            <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Rename")}
+                                          </li>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
+
+                                          >
+                                            <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Move")}
+                                          </li>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
+
+                                          >
+                                            <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Download")}
+                                          </li>
+                                          <div className="dropdown-divider"></div>
+                                          <li className="custom-context-menu-li"
+                                            onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
+
+                                          >
+                                            <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
+                                            {props.t("Remove")}
+                                          </li>
+                                        </>
+                                      )}
                                     </div>
                                   )}
                                 </div>
                               </div>
-
-
                             </Col>
+
+
                             : ''
-
                         ))}
-                    </Row>
-
-                  </Col>
-                </Row>
-                <p />
-                <p />
-                <Row className="mb-1 col-sm-10"><h6><i className="mdi mdi-file align-baseline fs-5" />{"   "}{props.t("Files")}</h6></Row>
-                <p />
-                <Row className="mb-2">
-                  <Col sm="12">
-                    <Row>
-
-                      {realFileList?.map((myfiles, key) => (
-                        myfiles.type === "FILE" || myfiles > 0 ?
-
-                          <Col md="2" key={key}>
-                            <div
-                              onContextMenu={(e) => { handleContextMenu2(e) }}
-                              onClick={hideContextMenu2}
-
-                            >
-
-                            <Card className="shadow-none border bg-light"
-                              onContextMenu={(e) => {
-                                e.preventDefault();
-                                handleContextMenuOpen2(e);
-                              }}
-
-                              onDoubleClick={() => toggleShowModal(myfiles.url)}
-                              style={{ cursor: "pointer" }}
-                              // target={myfiles.url.endsWith(".xlsx") ? "_self" : "_blank"}
-
-                            >
-                              <CardBody className="p-1">
-                                <div className="pb-1 pt-1">
-                                  <div className="float-end">
-                                    <UncontrolledDropdown>
-                                      <DropdownToggle
-                                        className="fs-6 text-muted"
-                                        tag="a"
-                                        onClick={handleDropdownMenuToggle2}
-                                      >
-                                        <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
-                                      </DropdownToggle>
-                                      {isDropdownMenuOpen2 && (
-
-                                        <DropdownMenu className="dropdown-menu-end">
-                                          {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
-                                            <>
-                                              <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
-                                                <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Preview")}
-                                              </DropdownItem>
-                                              <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                                <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Rename")}
-                                              </DropdownItem>
-                                              <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                                <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Move")}
-                                              </DropdownItem>
-                                              <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                                <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Download")}
-                                              </DropdownItem>
-                                              <div className="dropdown-divider"></div>
-                                              <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                                <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Remove")}
-                                              </DropdownItem>
-                                            </>
-                                          ) : (
-                                            <>
-                                              <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                                <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Rename")}
-                                              </DropdownItem>
-                                              <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                                <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Move")}
-                                              </DropdownItem>
-                                              <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                                <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Download")}
-                                              </DropdownItem>
-                                              <div className="dropdown-divider"></div>
-                                              <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                                <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
-                                                {props.t("Remove")}
-                                              </DropdownItem>
-                                            </>
-                                          )}
-                                        </DropdownMenu>
-                                      )}
-                                    </UncontrolledDropdown>
-                                  </div>
 
 
-                                  <div className="text-truncate mb-1 text-center">
-                                    <a className="text-body fs-6" id={`nameTooltip_${key}`}>
-                                      {myfiles.name}
-
-                                      <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                        {myfiles.name}
-                                      </UncontrolledTooltip>
-                                    </a>
-                                  </div>
-
-                                  <div className="pt-2">
-                                    <div className="avatar-title bg-transparent rounded">
-                                      {(() => {
-                                        
-                                        var fileNameLowerCase = myfiles.name.toLowerCase();
-
-                                        
-                                        if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
-                                          return (
-                                            <div className="thumbnail-container thumbnail">
-                                              <img src={doc} />
-                                            </div>
-                                          );
-                                        } else if (
-                                          fileNameLowerCase.endsWith("jpg") ||
-                                          fileNameLowerCase.endsWith("jpeg") ||
-                                          fileNameLowerCase.endsWith("gif") ||
-                                          fileNameLowerCase.endsWith("png")
-                                        ) {
-                                          return (
-                                            <div className="thumbnail-container thumbnail">
-                                              <img src={new URL(myfiles.url)} />
-                                            </div>
-                                          );
-                                        } else if (
-                                          fileNameLowerCase.endsWith("xls") ||
-                                          fileNameLowerCase.endsWith("xlsx") ||
-                                          fileNameLowerCase.endsWith("csv")
-                                        ) {
-                                          return (
-                                            <div className="thumbnail-container thumbnail">
-                                              <img src={xls} />
-                                            </div>
-                                          );
-                                        } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
-                                          return (
-                                            <div className="thumbnail-container thumbnail">
-                                              <img src={ppt} />
-                                            </div>
-                                          );
-                                        } else if (fileNameLowerCase.endsWith("pdf")) {
-                                          return (
-                                            <div className="thumbnail-container thumbnail">
-                                              <img src={pdf} />
-                                            </div>
-                                          );
-                                        } else if (fileNameLowerCase.endsWith("txt")) {
-                                          return (
-                                            <div className="thumbnail-container thumbnail">
-                                              <img src={txt} />
-                                            </div>
-                                          );
-                                        } else {
-                                          return (
-                                            <div className="thumbnail-container thumbnail">
-                                              <img src={unknown} />
-                                            </div>
-                                          );
-                                        }
-                                      })()}
-                                    </div>
-                                  </div>
-
-
-                                </div>
-                              </CardBody>
-                            </Card>
-
-                            <div className="float-end">
-                              {isContextMenuVisible2 && (
-                                <div
-                                  className="custom-context-menu"
-
-                                  style={{
-                                    position: 'fixed',
-                                    left: contextMenuPosition2.x + 'px',
-                                    top: contextMenuPosition2.y + 'px',
-                                  }}
-                                >
-                                  {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
-                                    <>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => toggleShowModal(myfiles.url)}
-
-                                      >
-                                        <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Preview")}
-                                      </li>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
-
-                                      >
-                                        <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Rename")}
-                                      </li>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
-
-                                      >
-                                        <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Move")}
-                                      </li>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
-
-                                      >
-                                        <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Download")}
-                                      </li>
-                                      <div className="dropdown-divider"></div>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
-
-                                      >
-                                        <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Remove")}
-                                      </li>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}
-
-                                      >
-                                        <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Rename")}
-                                      </li>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}
-
-                                      >
-                                        <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Move")}
-                                      </li>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}
-
-                                      >
-                                        <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Download")}
-                                      </li>
-                                      <div className="dropdown-divider"></div>
-                                      <li className="custom-context-menu-li"
-                                        onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}
-
-                                      >
-                                        <i className="mdi mdi-folder-remove align-middle fs-4 mb-2" /> {"  "}
-                                        {props.t("Remove")}
-                                      </li>
-                                    </>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                            </div>
-                          </Col>
-
-
-                          : ''
-                      ))}
-
-
-                    </Row>
-                  </Col>
-                </Row>
+                      </Row>
+                    </Col>
+                  </Row>
                 </div>
               </Col>
             </Row>
