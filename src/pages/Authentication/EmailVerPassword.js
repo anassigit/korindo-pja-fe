@@ -46,6 +46,7 @@ const EmailVerPassword = props => {
       id: Yup.string().required("아이디를 입력해주세요"),
     }),
     onSubmit: (values) => {
+      setEmailPasswordSpinner(true)
       ReactSession.set('emailMsg', '')
       dispatch(emailForgotPassword(values));
     }
@@ -59,6 +60,7 @@ const EmailVerPassword = props => {
       history.push('/login')
     }
     setAppUserProfileMsg(error)
+    setEmailPasswordSpinner(false)
   }, [error])
 
   const appUserProfileCloseAllert = () => {
@@ -128,7 +130,6 @@ const EmailVerPassword = props => {
                           type="submit"
                         >
                           이메일로 전송하기
-                          <Spinner style={{ display: emailPasswordSpinner ? "block" : "none", marginTop: '-30px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                         </button>
                       </div>
                       <div className="mt-2 d-grid">
@@ -159,6 +160,10 @@ const EmailVerPassword = props => {
               </Card>
             </Col>
           </Row>
+
+          <div className="spinner-wrapper" style={{ display: emailPasswordSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+            <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+          </div>
         </Container>
       </div>
     </React.Fragment>

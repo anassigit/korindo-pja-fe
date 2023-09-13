@@ -569,7 +569,7 @@ const Setting = (props) => {
                                                 appGroupListData?.data?.groupList.map((item, index) => {
                                                     // Filter the members based on groupName matching item.name
                                                     const filteredMembers = appRelationListData?.data?.relationList.filter(
-                                                        (member) => member.groupName === item.name
+                                                        (member) => member.groupId === item.num
                                                     );
 
                                                     return (

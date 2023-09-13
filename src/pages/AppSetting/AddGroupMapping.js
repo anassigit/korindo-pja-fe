@@ -123,7 +123,7 @@ const AddGroupMapping = (props) => {
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>{props.t("Name (Email)")} <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Name (ID)")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 type="select"
                                 name="member_id"
