@@ -365,24 +365,9 @@ const Instructions = (props) => {
         setSelected(event.target.value);
     }
 
-    const [applyClicked, setApplyClicked] = useState(false);
-
-    const handleKeyDown = (e) => {
-        e.preventDefault();
-    };
-
-    const handleMouseDown = (e) => {
-        if (e.button !== 0) {
-            e.preventDefault();
-        }
-    };
-
     const dateChanger = (name, selectedDate) => {
-        debugger
 
         if (name === 'from') {
-            debugger
-
             setDateFrom(selectedDate);
             setAppInstructionsTabelSearch((prevSearch) => ({
                 ...prevSearch,
