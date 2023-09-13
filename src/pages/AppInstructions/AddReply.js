@@ -203,7 +203,7 @@ const AddReply = (props) => {
 
                     getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
 
-                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i)) {
 
 
                         for (let index = 0; index < props.selectedfile?.length; index++) {
@@ -339,7 +339,7 @@ const AddReply = (props) => {
                                         className="form-control"
                                         ref={refCleanser}
                                         multiple
-                                        accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                        accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .avi, .mov, .mp4, .mkv, .flv"
                                         // onChange={(event) => {
                                         //     replyValidInput.setFieldValue('files', event.currentTarget.files);
                                         // }}
@@ -374,7 +374,7 @@ const AddReply = (props) => {
                                     </div>
                                 ))}
 
-                                <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
                             </div>
                         </div>
                     </FormGroup>

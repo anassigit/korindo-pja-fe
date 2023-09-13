@@ -487,7 +487,7 @@ const EditInstructions = (props) => {
 
                     getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
 
-                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i)) {
 
 
                         for (let index = 0; index < selectedfile.length; index++) {
@@ -572,7 +572,7 @@ const EditInstructions = (props) => {
 
             getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
 
-            if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i)) {
+            if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i)) {
 
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -626,7 +626,7 @@ const EditInstructions = (props) => {
     const refCleanser = useRef(null)
 
     const InputChange = (e) => {
-        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i
+        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i
         const selectedFiles = Array.from(e.target.files)
 
         const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
@@ -656,7 +656,7 @@ const EditInstructions = (props) => {
                 reader.readAsDataURL(file)
             })
         } else if (e.target.files.length != 0) {
-            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")
             refCleanser.current.value = ""
             e.target.value = ""
         }
@@ -1082,7 +1082,7 @@ const EditInstructions = (props) => {
 
     const InputChangeR = (e) => {
         const files = e.target.files;
-        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i;
+        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i;
         const validFiles = [];
         const invalidFiles = [];
 
@@ -1094,7 +1094,7 @@ const EditInstructions = (props) => {
             }
         }
         if (invalidFiles.length > 0 && e.target.files.length != 0) {
-            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")
             refCleanser.current.value = ""
         } else {
 
@@ -1127,7 +1127,7 @@ const EditInstructions = (props) => {
 
     const InputChangeR2 = (e) => {
         const files = e.target.files;
-        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i;
+        const allowedExtensions = /\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i;
         const validFiles = [];
         const invalidFiles = [];
 
@@ -1139,7 +1139,7 @@ const EditInstructions = (props) => {
             }
         }
         if (invalidFiles.length > 0 && e.target.files.length != 0) {
-            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")
             refCleanser.current.value = ""
         } else {
 
@@ -1266,7 +1266,7 @@ const EditInstructions = (props) => {
 
                     getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
 
-                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+                    if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i)) {
 
 
                         for (let index = 0; index < selectedfile.length; index++) {
@@ -1445,7 +1445,7 @@ const EditInstructions = (props) => {
 
             getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
 
-            if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|csv)$/i)) {
+            if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i)) {
 
                 for (let index = 0; index < selectedfileR2.length; index++) {
                     let a = selectedfileR2[index];
@@ -1953,7 +1953,7 @@ const EditInstructions = (props) => {
                                                                             onChange={InputChange}
                                                                             name="removeFile"
                                                                             multiple
-                                                                            accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                                                            accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .avi, .mov, .mov, .mp4, .mkv, .flv"
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -2000,7 +2000,7 @@ const EditInstructions = (props) => {
                                                                     }
                                                                 </div>
                                                                 : ''}
-                                                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -2236,7 +2236,7 @@ const EditInstructions = (props) => {
                                                                 </div>
                                                                 : ''}
                                                         </div>
-                                                        <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                                        <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
                                                     </Col>
                                                 </Row>
 
@@ -2391,7 +2391,7 @@ const EditInstructions = (props) => {
                                                                                                         const { id, filename, filetype, fileimage, datetime, filesize } = data;
                                                                                                         return (
                                                                                                             <div className="file-atc-box" key={id}>
-                                                                                                                {filename.match(/\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i) ? (
+                                                                                                                {filename.match(/\.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i) ? (
                                                                                                                     <div className="file-image"></div>
                                                                                                                 ) : (
                                                                                                                     <div className="file-image"></div>

@@ -149,7 +149,7 @@ const Upload = (props) => {
                 reader.readAsDataURL(file)
             })
         } else if (e.target.files.length != 0) {
-            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")
+            alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")
             refCleanser.current.value = ""
             e.target.value = ""
         }
@@ -220,7 +220,7 @@ const Upload = (props) => {
                                 </div>
                             </div>
                             &nbsp;
-                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
                                 {

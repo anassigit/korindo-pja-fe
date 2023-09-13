@@ -110,7 +110,7 @@
     "Show password": "Tampilkan kata sandi",
     "Confirm": "Konfirmasi",
     "Skip": "Lewati",
-    "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt" : "Tipe Berkas Diizinkan: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt",
+    "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv" : "Tipe Berkas Diizinkan: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv",
     "Allowed File Types is pdf" : "Tipe Berkas Diizinkan: pdf",
     "Are you sure to delete this?" : "Apakah Anda yakin ingin menghapus ini?",
     "Please enter ID": "Harap masukkan ID",

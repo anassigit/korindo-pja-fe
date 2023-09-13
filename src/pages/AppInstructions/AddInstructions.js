@@ -203,7 +203,7 @@ const AddInstructions = (props) => {
     const [Files, SetFiles] = useState([]);
 
     const InputChange = (e) => {
-        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/i
+        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i;
         const selectedFiles = Array.from(e.target.files)
 
         const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
@@ -729,11 +729,11 @@ const AddInstructions = (props) => {
                                                                     onChange={InputChange}
                                                                     name="removeFile"
                                                                     multiple
-                                                                    accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                                                    accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .avi, .mov, .mp4, .mkv, .flv"
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                                        <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
                                                         &nbsp;&nbsp;&nbsp;
                                                     </div>
 
@@ -751,7 +751,7 @@ const AddInstructions = (props) => {
                                                                     <div className="file-atc-box" key={id}>
 
                                                                         {
-                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf)$/i) ?
+                                                                            filename.match(/.(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i) ?
                                                                                 <div className="file-image"></div> :
                                                                                 <div className="file-image"></div>
                                                                         }

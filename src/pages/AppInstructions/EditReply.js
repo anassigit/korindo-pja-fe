@@ -181,7 +181,7 @@ const EditReply = (props) => {
                                         className="form-control"
                                         ref={refCleanser}
                                         multiple
-                                        accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt"
+                                        accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .avi, .mov, .mp4, .mkv, .flv"
                                         onChange={(event) => {
                                             const newFiles = Array.from(event.currentTarget.files)
                                             const existingFiles = Array.from(preservedFiles)
@@ -214,7 +214,7 @@ const EditReply = (props) => {
                                         </div>
                                     </div>
                                 ))}
-                                <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt")}</span>
+                                <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
                             </div>
                         </div>
                     </FormGroup>
