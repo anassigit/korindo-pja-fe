@@ -648,27 +648,39 @@ const FileManagement = (props) => {
                               <Col xs="1" sm="1" md="2" key={key}>
 
                                 <div
-                                  onContextMenu={(e) => { handleContextMenu(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type) }}
-                                  onClick={hideContextMenu}
-
+                                  {...(myfiles.edit === true && {
+                                    onContextMenu: (e) => {
+                                      handleContextMenu(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
+                                    },
+                                    onClick: hideContextMenu,
+                                  })}
                                 >
                                   <Card className="shadow-none border"
+
                                     onContextMenu={(e) => {
                                       e.preventDefault();
                                       handleContextMenuOpen(e);
                                     }}
 
                                   >
-                                    <CardBody className="p-2" style={{ cursor: "pointer" }} onDoubleClick={() => { getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name) }}>
+                                    <CardBody className="p-2" style={{ cursor: "pointer" }}
+                                      onDoubleClick={() => {
+                                        if (myfiles.open === true) {
+                                          getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name)
+                                        }
+                                      }}
+                                    >
                                       <div className="float-end">
-                                        <UncontrolledDropdown >
-                                          <DropdownToggle
-                                            className="fs-6 text-muted"
-                                            tag="a"
-                                            onClick={handleDropdownMenuToggle}
-                                          >
-                                            <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
-                                          </DropdownToggle>
+                                        <UncontrolledDropdown>
+                                          {myfiles.edit === true && (
+                                            <DropdownToggle
+                                              className="fs-6 text-muted"
+                                              tag="a"
+                                              onClick={handleDropdownMenuToggle}
+                                            >
+                                              <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
+                                            </DropdownToggle>
+                                          )}
                                           {isDropdownMenuOpen && (
                                             <DropdownMenu className="dropdown-menu-end" >
                                               <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
@@ -772,32 +784,39 @@ const FileManagement = (props) => {
 
                             <Col md="2" key={key}>
                               <div
-                                onContextMenu={(e) => { handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type) }}
-                                onClick={hideContextMenu2}
+                                {...(myfiles.edit === true && {
+                                  onContextMenu: (e) => {
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
+                                  },
+                                  onClick: hideContextMenu2,
+                                })}
 
                               >
 
                                 <Card className="shadow-none border bg-light"
-                                  onContextMenu={(e) => {
-                                    e.preventDefault();
-                                    handleContextMenuOpen2(e);
-                                  }}
-
-                                  onDoubleClick={() => toggleShowModal(myfiles.url)}
-                                  style={{ cursor: "pointer" }}
-
+                                  {...(myfiles.open === true && {
+                                    onContextMenu: (e) => {
+                                      e.preventDefault();
+                                      handleContextMenuOpen2(e);
+                                    },
+                                    onDoubleClick: () => toggleShowModal(myfiles.url),
+                                    style: { cursor: "pointer" },
+                                  })}
                                 >
                                   <CardBody className="p-1">
                                     <div className="pb-1 pt-1">
                                       <div className="float-end">
                                         <UncontrolledDropdown>
-                                          <DropdownToggle
-                                            className="fs-6 text-muted"
-                                            tag="a"
-                                            onClick={handleDropdownMenuToggle2}
-                                          >
-                                            <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
-                                          </DropdownToggle>
+                                          {myfiles.edit === true && (
+                                            <DropdownToggle
+                                              className="fs-6 text-muted"
+                                              tag="a"
+                                              onClick={handleDropdownMenuToggle2}
+                                            >
+
+                                              <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
+                                            </DropdownToggle>
+                                          )}
                                           {isDropdownMenuOpen2 && (
 
                                             <DropdownMenu className="dropdown-menu-end">
@@ -989,8 +1008,6 @@ const FileManagement = (props) => {
                                           })()}
                                         </div>
                                       </div>
-
-
                                     </div>
                                   </CardBody>
                                 </Card>
@@ -1006,7 +1023,7 @@ const FileManagement = (props) => {
                                         top: contextMenuPosition2.y + 'px',
                                       }}
                                     >
-                                      {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                      {nameFiles.endsWith("jpg") || nameFiles.endsWith("jpeg") || nameFiles.endsWith("gif") || nameFiles.endsWith("png") || nameFiles.endsWith("pdf") ? (
                                         <>
                                           <li className="custom-context-menu-li"
                                             onClick={() => toggleShowModal(myfiles.url)}
