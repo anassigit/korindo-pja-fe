@@ -117,7 +117,7 @@ const Setting = (props) => {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(getGroupListData({langType: langType}))
+        dispatch(getGroupListData({ search: {langType: langType}}))
         dispatch(getSettingData(appMembersTabelSearch))
         dispatch(getRelationListData())
     }, [])
@@ -129,7 +129,7 @@ const Setting = (props) => {
                 any: appMembersTabelSearch.search, langType: langType
             }
         })
-        dispatch(getGroupListData({langType: langType}))
+        dispatch(getGroupListData({ search: {langType: langType}}))
     }, [props.t, langType])
 
     useEffect(() => {
