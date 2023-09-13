@@ -18,7 +18,6 @@ const Sidebar = props => {
         <div style={{ borderRight: "2px solid #D9D1D1" }} className="navbar-brand-box">
           <a href="/AppInstructions" className="logo logo-dark" onClick={() => {
             window.location.reload()
-            localStorage.setItem('appFileManagementData', '')
             ReactSession.remove("appInstructionsTabelSearch")
           }}>
             <span className="logo-sm">
@@ -30,7 +29,6 @@ const Sidebar = props => {
           </a>
 
           <a href="/AppInstructions" className="logo logo-light" onClick={() =>{
-            localStorage.setItem('appFileManagementData', '');
             ReactSession.remove("appInstructionsTabelSearch")
             window.location.reload()
           }}>

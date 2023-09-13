@@ -13,6 +13,7 @@ const Logout = props => {
 
   useEffect(() => {
     dispatch(logoutUser(props.history))
+    localStorage.removeItem('appFileManagementData')
   }, [dispatch])
 
   return <></>

@@ -135,7 +135,6 @@ const SidebarContent = props => {
             <li hidden={firstTimeLogin === "true"}>
               <a
                 onClick={() => {
-                  localStorage.setItem('appFileManagementData', '');
                   ReactSession.remove("appInstructionsTabelSearch")
                 }}
                 href="/AppInstructions"
@@ -172,7 +171,7 @@ const SidebarContent = props => {
               </a>
               <a
                 onClick={() => {
-                  localStorage.setItem('appFileManagementData', '')
+                  localStorage.removeItem('appFileManagementData')
                 }}
                 className=""
                 hidden={!dropdownOpen}
@@ -195,7 +194,6 @@ const SidebarContent = props => {
               </a> */}
               <a
                 onClick={() => {
-                  localStorage.setItem('appFileManagementData', '');
                 }}
                 href="/AppSetting"
                 className=""
