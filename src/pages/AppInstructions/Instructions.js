@@ -50,8 +50,8 @@ const Instructions = (props) => {
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
 
-    const [dateFrom, setDateFrom] = useState('');
-    const [dateTo, setDateTo] = useState('');
+    const [dateFrom, setDateFrom] = useState("");
+    const [dateTo, setDateTo] = useState("");
 
 
     useEffect(() => {
@@ -367,6 +367,8 @@ const Instructions = (props) => {
 
     const dateChanger = (name, selectedDate) => {
 
+        debugger
+
         if (name === 'from') {
             setDateFrom(selectedDate);
             setAppInstructionsTabelSearch((prevSearch) => ({
@@ -379,6 +381,8 @@ const Instructions = (props) => {
             }));
 
         } else if (name === 'to') {
+            debugger
+
             setDateTo(selectedDate);
             setAppInstructionsTabelSearch((prevSearch) => ({
                 ...prevSearch,
@@ -435,7 +439,7 @@ const Instructions = (props) => {
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
-                                                                dateFormat="MM-yyyy"
+                                                                dateFormat="yyyy-MM"
                                                                 maxDate={new Date(dateTo)}
                                                                 selected={dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null}
                                                                 minDate={new Date("2023")}
@@ -454,9 +458,9 @@ const Instructions = (props) => {
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
-                                                                dateFormat="MM-yyyy"
+                                                                dateFormat="yyyy-MM"
                                                                 
-                                                                minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : null)}
+                                                                minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : new Date("2023"))}
                                                                 // maxDate={new Date()}
                                                                 selected={dateTo ? moment(dateTo, 'yyyy-MM').toDate() : null}
                                                                 onChange={(tglSelesai) =>
