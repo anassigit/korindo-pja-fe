@@ -147,11 +147,16 @@ const FileTables = (props) => {
                                                     >
                                                         {item.name.endsWith("docx") || item.name.endsWith("doc") ? (
                                                             <>
-                                                                <img src={doc} />
-                                                                <div style={{ width: "20px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                                <img
+                                                                    style={{
+                                                                        height: "15px",
+                                                                        width: "15px",
+                                                                        alignItems: "unset"
+                                                                    }}
+                                                                    src={doc} />{" "}{item.name}
+                                                                <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
                                                                     {item.name}
-
-                                                                </div>
+                                                                </UncontrolledTooltip>
                                                             </>
                                                         ) : (
                                                             item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") ? (

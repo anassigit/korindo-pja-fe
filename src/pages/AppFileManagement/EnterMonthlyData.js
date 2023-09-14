@@ -36,6 +36,7 @@ import "../../assets/scss/custom.scss"
 //js file//
 import UploadMonthly from "./UploadMonthly";
 import FileTables from "./FileTables";
+import { min } from "lodash";
 
 const EnterMonthlyData = (props) => {
 
@@ -259,7 +260,7 @@ const EnterMonthlyData = (props) => {
                 <p /><Row className="mb-2">
                   {dashboardData?.data?.list.map((items, index) => (
                     <Col sm={12} md={6} lg={3} key={index}>
-                      <Card className="mb-2">
+                      <Card className="mb-2" style={{ backgroundColor: items.open ? null : "#E8E8E8", borderRadius:"0.5em" }}>
                         <CardBody>
                           <Row className="text-center justify-content-center" style={{ marginTop: "-5%" }}>
                             {items.count > 0 ? (
@@ -383,10 +384,10 @@ const EnterMonthlyData = (props) => {
                                             fontSize: "50px",
                                             color: "#7BAE40",
                                             opacity: "0.75",
-                                            cursor: "pointer"
+                                            cursor: items.open ? "pointer" : "default"
                                           }}
                                           className="mdi mdi-dots-horizontal"
-                                          onClick={() => toggleDetailModalMonthly(items.num)}
+                                          onClick={items.open ? () => toggleDetailModalMonthly(items.num) : null}
                                         ></a>
                                       </Col>
                                     ) : null
