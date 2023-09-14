@@ -1097,7 +1097,7 @@ const FileManagement = (props) => {
                                                         left: '37.5%',
                                                         width: '25%',
                                                         height: '25%',
-                                                        objectFit: 'cover',
+                                                        objectFit: 'cover'
                                                       }}
                                                         src={doc}
                                                       />
