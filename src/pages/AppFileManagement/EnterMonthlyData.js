@@ -278,7 +278,7 @@ const EnterMonthlyData = (props) => {
                                           <span
                                             style={{
                                               fontSize: "50px",
-                                              color: "#7BAE40",
+                                              color: items.open ? "#7BAE40" : "#BBBCBE",
                                               opacity: "0.75",
                                               cursor: "pointer"
                                             }}
@@ -331,7 +331,7 @@ const EnterMonthlyData = (props) => {
                                           <span
                                             style={{
                                               fontSize: "50px",
-                                              color: "#7BAE40",
+                                              color: items.open ? "#7BAE40" : "#BBBCBE",
                                               opacity: "0.75",
                                               cursor: "pointer"
                                             }}
@@ -382,7 +382,7 @@ const EnterMonthlyData = (props) => {
                                         <a
                                           style={{
                                             fontSize: "50px",
-                                            color: "#7BAE40",
+                                            color: items.open ? "#7BAE40" : "#BBBCBE",
                                             opacity: "0.75",
                                             cursor: items.open ? "pointer" : "default"
                                           }}
