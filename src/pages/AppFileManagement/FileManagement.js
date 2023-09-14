@@ -283,7 +283,7 @@ const FileManagement = (props) => {
     history.push(`?folder_num=${e}`);
 
     setEnterMonthlyDataSpinner(true)
-    if (currFolder.toString() === e.toString()) {
+    if (currFolder?.toString() === e?.toString()) {
       setEnterMonthlyDataSpinner(false)
     }
     setIdFolderTemp(e)
