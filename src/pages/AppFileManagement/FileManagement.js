@@ -965,10 +965,10 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={doc}
@@ -1005,10 +1005,10 @@ const FileManagement = (props) => {
 
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={xls}
@@ -1020,10 +1020,10 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={ppt}
@@ -1035,10 +1035,10 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={pdf}
@@ -1050,10 +1050,10 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={txt}
@@ -1066,10 +1066,10 @@ const FileManagement = (props) => {
 
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={unknown}
@@ -1094,18 +1094,18 @@ const FileManagement = (props) => {
                                               if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
-                                                    <div className='mask' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+                                                  
                                                       <img style={{
                                                         position: 'absolute',
-                                                        top: '37.5%',
-                                                        left: '37.5%',
-                                                        width: '25%',
-                                                        height: '25%',
-                                                        objectFit: 'cover',
+                                                        // top: '37.5%',
+                                                        // left: '37.5%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        objectFit: '',
                                                       }}
                                                         src={doc}
                                                       />
-                                                    </div>
+                                                   
                                                   </div>
                                                 );
                                               } else if (
@@ -1137,10 +1137,10 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={ppt}
@@ -1152,10 +1152,10 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={pdf}
@@ -1167,10 +1167,10 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={txt}
@@ -1183,10 +1183,10 @@ const FileManagement = (props) => {
 
                                                     <img style={{
                                                       position: 'absolute',
-                                                      top: '37.5%',
-                                                      left: '37.5%',
-                                                      width: '25%',
-                                                      height: '25%',
+                                                      // top: '37.5%',
+                                                      // left: '37.5%',
+                                                      width: '100%',
+                                                      height: '100%',
                                                       objectFit: 'cover',
                                                     }}
                                                       src={unknown}
