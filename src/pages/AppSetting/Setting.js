@@ -117,7 +117,7 @@ const Setting = (props) => {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(getGroupListData({ search: {langType: langType}}))
+        dispatch(getGroupListData({ search: { langType: langType } }))
         dispatch(getSettingData(appMembersTabelSearch))
         dispatch(getRelationListData())
     }, [])
@@ -129,7 +129,7 @@ const Setting = (props) => {
                 any: appMembersTabelSearch.search, langType: langType
             }
         })
-        dispatch(getGroupListData({ search: {langType: langType}}))
+        dispatch(getGroupListData({ search: { langType: langType } }))
     }, [props.t, langType])
 
     useEffect(() => {
@@ -141,7 +141,11 @@ const Setting = (props) => {
     const [radioValue2, setRadioValue2] = useState("")
     const [radioValue3, setRadioValue3] = useState("")
 
+    const [radioValueFileManage1, setRadioValueFileManage1] = useState("")
+    const [radioValueFileManage2, setRadioValueFileManage2] = useState("")
+
     const [generalSetting, setGeneralSetting] = useState([radioValue1, radioValue2, radioValue3])
+    const [fileManageSetting, setFileManageSetting] = useState([radioValueFileManage1, radioValueFileManage2])
 
     const appMembersp01Tabel = [
         {
@@ -241,6 +245,8 @@ const Setting = (props) => {
         },
     ]
 
+    // general settings
+
     const handleRadioChange1 = (event) => {
         setRadioValue1(event.target.value)
         setGeneralSetting([event.target.value, radioValue2, radioValue3])
@@ -256,8 +262,20 @@ const Setting = (props) => {
         setGeneralSetting([radioValue1, radioValue2, event.target.value])
     };
 
+    // file manage setting
+
+    const handleRadioChangeFile1 = (event) => {
+        setRadioValueFileManage1(event.target.value)
+        setFileManageSetting([event.target.value, radioValueFileManage2])
+    };
+
+    const handleRadioChangeFile2 = (event) => {
+        setRadioValueFileManage2(event.target.value)
+        setFileManageSetting([radioValueFileManage1, event.target.value])
+    };
+
     const handleSaveGeneral = () => {
-        dispatch(editGeneralSetting({ ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3 }))
+        dispatch(editGeneralSetting({ ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3, file_edit_setting: radioValueFileManage1, file_access_setting: radioValueFileManage2 }))
         if (appSettingData.message != "Fail") {
             setSuccessClose(true)
             setGeneralContentModal("Success")
@@ -287,6 +305,10 @@ const Setting = (props) => {
                     setRadioValue2(setting.value.toString())
                 } else if (setting.id === "ins_notice2_setting") {
                     setRadioValue3(setting.value.toString())
+                } else if (setting.id === "file_edit_setting") {
+                    setRadioValueFileManage1(setting.value.toString())
+                } else if (setting.id === "file_access_setting") {
+                    setRadioValueFileManage2(setting.value.toString())
                 }
             });
         }
@@ -495,6 +517,64 @@ const Setting = (props) => {
                                                                 onChange={handleRadioChange3}
                                                             />
                                                             <span> </span>{props.t("Both")}
+                                                        </label>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                            {/* setting v2 */}
+                                            <Row>
+                                                <hr></hr>
+                                                <Col md="12" lg="4" >
+                                                    <Row className="mb-2">
+                                                        <b>{props.t("File Management Edit Permission")}</b>
+                                                    </Row>
+                                                    <Row>
+                                                        <label>
+                                                            <Input
+                                                                type="radio"
+                                                                name="file_edit_setting"
+                                                                value="0"
+                                                                checked={radioValueFileManage1 === "0"}
+                                                                onChange={handleRadioChangeFile1}
+                                                            />
+                                                            <span> </span>{props.t("All File Can Be Modified")}
+                                                        </label>
+                                                        <label>
+                                                            <Input
+                                                                type="radio"
+                                                                name="file_edit_setting"
+                                                                value="1"
+                                                                checked={radioValueFileManage1 === "1"}
+                                                                onChange={handleRadioChangeFile1}
+                                                            />
+                                                            <span> </span>{props.t("Only Your Own Group Can Be Modified")}
+                                                        </label>
+                                                    </Row>
+                                                </Col>
+                                                <Col md="12" lg="4">
+                                                    <Row className="mb-2">
+                                                        <b>{props.t("File Management Access Permission")}</b>
+                                                    </Row>
+                                                    <Row>
+                                                        <label>
+                                                            <Input
+                                                                type="radio"
+                                                                name="file_access_setting"
+                                                                value="0"
+                                                                checked={radioValueFileManage2 === "0"}
+                                                                onChange={handleRadioChangeFile2}
+                                                            />
+                                                            <span> </span>{props.t("All File Can Be Accessed")}
+                                                        </label>
+                                                        <label>
+                                                            <Input
+                                                                type="radio"
+                                                                name="file_access_setting"
+                                                                value="1"
+                                                                checked={radioValueFileManage2 === "1"}
+                                                                onChange={handleRadioChangeFile2}
+                                                            />
+                                                            <span> </span>{props.t("Only Your Own Group Can Be Accessed")}
                                                         </label>
                                                     </Row>
                                                 </Col>

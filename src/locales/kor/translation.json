@@ -40,7 +40,7 @@
   "Action Completed": "조치 완료",
   "Rejected": "반려",
   "Completed": "완료",
-  "Choose files": "파일 선택",	
+  "Choose files": "파일 선택",
   "Upload Attach Files": "첨부 파일 업로드",
   "Upload New File": "파일 업로드",
   "Instructions": "지시사항",
@@ -112,8 +112,8 @@
   "Show password": "비밀번호 보기",
   "Confirm": "변경",
   "Skip": "건너뛰기",
-  "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv" : "사용 가능한 확장자: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv",
-  "Allowed File Types is pdf" : "사용 가능한 확장자: pdf",
+  "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv": "사용 가능한 확장자: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv",
+  "Allowed File Types is pdf": "사용 가능한 확장자: pdf",
   "Please enter ID": "아이디를 입력해주세요",
   "Please enter Email": "이메일을 입력해주세요",
   "Please enter Name": "이름을 입력해주세요",
@@ -133,5 +133,11 @@
   "List files": "목록",
   "Files name": "파일명",
   "Please enter a mobile phone number": "휴대 전화 번호를 입력하세요",
-  "Invalid mobile phone number": "유효하지 않은 휴대전화 번호입니다"
+  "Invalid mobile phone number": "유효하지 않은 휴대전화 번호입니다",
+  "File Management Edit Permission": "파일 관리 편집 권한",
+  "File Management Access Permission": "파일 관리 액세스 권한",
+  "All File Can Be Modified": "모든 파일을 수정할 수 있습니다",
+  "Only Your Own Group Can Be Modified": "당신의 그룹만 수정할 수 있습니다",
+  "All File Can Be Accessed": "모든 파일에 액세스할 수 있습니다",
+  "Only Your Own Group Can Be Accessed": "당신의 그룹만 액세스할 수 있습니다"
 }

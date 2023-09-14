@@ -126,5 +126,12 @@
   "Preview": "Preview",
   "Enter Data Monthly": "Enter Data Monthly",
   "Enter Monthly Data": "Enter Monthly Data",
-  "Data Inquiry": "Data Inquiry"
+  "Data Inquiry": "Data Inquiry",
+  "File Management Edit Permission": "File Management Edit Permission",
+  "File Management Access Permission": "File Management Access Permission",
+  "All File Can Be Modified": "All File Can Be Modified",
+  "Only Your Own Group Can Be Modified": "Only Your Own Group Can Be Modified",
+  "All File Can Be Accessed": "All File Can Be Accessed",
+  "Only Your Own Group Can Be Accessed": "Only Your Own Group Can Be Accessed"
+
 }
