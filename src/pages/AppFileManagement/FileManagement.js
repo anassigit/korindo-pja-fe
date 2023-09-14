@@ -35,6 +35,7 @@ import "../../assets/scss/custom.scss"
 //icon images//
 
 import folder2 from '../../assets/images/file_management/folder2.png'
+import folder_disable from '../../assets/images/file_management/folder_disable.png'
 import doc from '../../assets/images/file_management/doc.png'
 import xls from '../../assets/images/file_management/xls.png'
 import ppt from '../../assets/images/file_management/ppt.png'
@@ -666,10 +667,16 @@ const FileManagement = (props) => {
                                       style: { cursor: "pointer" },
                                     })}
 
+                                    {...(myfiles.open === false && myfiles.edit === false && {
+                                      style: { backgroundColor: "#e8e8e8" },
+                                    })}
+
                                   >
                                     <CardBody className="p-2" style={{ cursor: "pointer" }}
                                       onDoubleClick={() => {
                                         if (myfiles.open === true && myfiles.edit === true) {
+                                          getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name)
+                                        } else if (myfiles.open === true) {
                                           getInsideFolder(myfiles.num, myfiles.parent_num, myfiles.name)
                                         }
                                       }}
@@ -708,16 +715,20 @@ const FileManagement = (props) => {
 
                                       <div className="text-truncate align-middle">
                                         <a style={{ userSelect: "none" }} className="text-body fs-6" id={`folderTooltip_${key}`}>
-                                          {myfiles.type === "FOLDER" ? (
+                                          {myfiles.type === "FOLDER" && myfiles.open === true ? (
+
                                             <>
                                               <img src={folder2} style={{ maxWidth: "30px", maxHeight: "30px", verticalAlign: "middle" }} alt="Folder Icon" />
                                               &nbsp;&nbsp;&nbsp;{myfiles.name}
                                             </>
+
                                           ) : (
+
                                             <>
-                                              <i className="fa fa-solid fa-file fs-1" style={{ color: "#7bae40" }} ></i>
-                                              {myfiles.name}
+                                              <img src={folder_disable} style={{ maxWidth: "30px", maxHeight: "30px", verticalAlign: "middle" }} alt="Folder Icon" />
+                                              &nbsp;&nbsp;&nbsp;{myfiles.name}
                                             </>
+
                                           )}
                                           <UncontrolledTooltip placement="bottom" target={`folderTooltip_${key}`}>
                                             {myfiles.name}
@@ -785,14 +796,14 @@ const FileManagement = (props) => {
 
                             <Col md="2" key={key}>
                               <div
-                                {...(myfiles.open === true && myfiles.edit === true &&{
+                                {...(myfiles.open === true && myfiles.edit === true && {
                                   onContextMenu: (e) => {
                                     handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
                                   },
                                   onClick: hideContextMenu2,
                                 })}
 
-                                {...(myfiles.open === true && myfiles.edit === false &&{
+                                {...(myfiles.open === true && myfiles.edit === false && {
                                   onContextMenu: (e) => {
                                     handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
                                   },
@@ -820,7 +831,7 @@ const FileManagement = (props) => {
                                     style: { cursor: "pointer" },
                                   })}
                                 >
-                                  <CardBody className="p-1">
+                                  <CardBody className="p-2">
                                     <div className="pb-1 pt-1">
                                       <div className="float-end">
                                         <UncontrolledDropdown>
@@ -937,134 +948,252 @@ const FileManagement = (props) => {
                                           </UncontrolledTooltip>
                                         </a>
                                       </div>
+                                      {myfiles.open === true && (
+                                        <div className="pt-2">
+                                          <div className="avatar-title bg-transparent rounded">
+                                            {(() => {
 
-                                      <div className="pt-2">
-                                        <div className="avatar-title bg-transparent rounded">
-                                          {(() => {
-
-                                            var fileNameLowerCase = myfiles.name.toLowerCase();
+                                              var fileNameLowerCase = myfiles.name.toLowerCase();
 
 
-                                            if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
-                                              return (
-                                                <div className="thumbnail-container thumbnail">
-                                                  <img style={{
-                                                    position: 'absolute',
-                                                    top: '37.5%',
-                                                    left: '37.5%',
-                                                    width: '25%',
-                                                    height: '25%',
-                                                    objectFit: 'cover',
-                                                  }}
-                                                    src={doc}
-                                                  />
-                                                </div>
-                                              );
-                                            } else if (
-                                              fileNameLowerCase.endsWith("jpg") ||
-                                              fileNameLowerCase.endsWith("jpeg") ||
-                                              fileNameLowerCase.endsWith("gif") ||
-                                              fileNameLowerCase.endsWith("png")
-                                            ) {
-                                              return (
-                                                <div className="thumbnail-container thumbnail">
-                                                  <img src={new URL(myfiles.url)} />
+                                              if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={doc}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (
+                                                fileNameLowerCase.endsWith("jpg") ||
+                                                fileNameLowerCase.endsWith("jpeg") ||
+                                                fileNameLowerCase.endsWith("gif") ||
+                                                fileNameLowerCase.endsWith("png")
+                                              ) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img src={new URL(myfiles.url)} />
 
-                                                  <img style={{
-                                                    position: 'absolute',
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    objectFit: 'cover',
-                                                  }}
-                                                    src={new URL(myfiles.url)}
-                                                  />
-                                                </div>
-                                              );
-                                            } else if (
-                                              fileNameLowerCase.endsWith("xls") ||
-                                              fileNameLowerCase.endsWith("xlsx") ||
-                                              fileNameLowerCase.endsWith("csv")
-                                            ) {
-                                              return (
-                                                <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      width: '100%',
+                                                      height: '100%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={new URL(myfiles.url)}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (
+                                                fileNameLowerCase.endsWith("xls") ||
+                                                fileNameLowerCase.endsWith("xlsx") ||
+                                                fileNameLowerCase.endsWith("csv")
+                                              ) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
 
-                                                  <img style={{
-                                                    position: 'absolute',
-                                                    top: '37.5%',
-                                                    left: '37.5%',
-                                                    width: '25%',
-                                                    height: '25%',
-                                                    objectFit: 'cover',
-                                                  }}
-                                                    src={xls}
-                                                  />
-                                                </div>
-                                              );
-                                            } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
-                                              return (
-                                                <div className="thumbnail-container thumbnail">
-                                                  <img style={{
-                                                    position: 'absolute',
-                                                    top: '37.5%',
-                                                    left: '37.5%',
-                                                    width: '25%',
-                                                    height: '25%',
-                                                    objectFit: 'cover',
-                                                  }}
-                                                    src={ppt}
-                                                  />
-                                                </div>
-                                              );
-                                            } else if (fileNameLowerCase.endsWith("pdf")) {
-                                              return (
-                                                <div className="thumbnail-container thumbnail">
-                                                  <img style={{
-                                                    position: 'absolute',
-                                                    top: '37.5%',
-                                                    left: '37.5%',
-                                                    width: '25%',
-                                                    height: '25%',
-                                                    objectFit: 'cover',
-                                                  }}
-                                                    src={pdf}
-                                                  />
-                                                </div>
-                                              );
-                                            } else if (fileNameLowerCase.endsWith("txt")) {
-                                              return (
-                                                <div className="thumbnail-container thumbnail">
-                                                  <img style={{
-                                                    position: 'absolute',
-                                                    top: '37.5%',
-                                                    left: '37.5%',
-                                                    width: '25%',
-                                                    height: '25%',
-                                                    objectFit: 'cover',
-                                                  }}
-                                                    src={txt}
-                                                  />
-                                                </div>
-                                              );
-                                            } else {
-                                              return (
-                                                <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={xls}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={ppt}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (fileNameLowerCase.endsWith("pdf")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={pdf}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (fileNameLowerCase.endsWith("txt")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={txt}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
 
-                                                  <img style={{
-                                                    position: 'absolute',
-                                                    top: '37.5%',
-                                                    left: '37.5%',
-                                                    width: '25%',
-                                                    height: '25%',
-                                                    objectFit: 'cover',
-                                                  }}
-                                                    src={unknown}
-                                                  />
-                                                </div>
-                                              );
-                                            }
-                                          })()}
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={unknown}
+                                                    />
+                                                  </div>
+                                                );
+                                              }
+                                            })()}
+                                          </div>
                                         </div>
-                                      </div>
+                                      )}
+                                      {myfiles.open === false && (
+                                        <div className="pt-2">
+
+                                          <div className="avatar-title bg-transparent rounded">
+
+                                            {(() => {
+
+                                              var fileNameLowerCase = myfiles.name.toLowerCase();
+
+
+                                              if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <div className='mask' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+                                                      <img style={{
+                                                        position: 'absolute',
+                                                        top: '37.5%',
+                                                        left: '37.5%',
+                                                        width: '25%',
+                                                        height: '25%',
+                                                        objectFit: 'cover',
+                                                      }}
+                                                        src={doc}
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                );
+                                              } else if (
+                                                fileNameLowerCase.endsWith("jpg") ||
+                                                fileNameLowerCase.endsWith("jpeg") ||
+                                                fileNameLowerCase.endsWith("gif") ||
+                                                fileNameLowerCase.endsWith("png")
+                                              ) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img src={new URL(myfiles.url)} />
+                                                  </div>
+                                                );
+                                              } else if (
+                                                fileNameLowerCase.endsWith("xls") ||
+                                                fileNameLowerCase.endsWith("xlsx") ||
+                                                fileNameLowerCase.endsWith("csv")
+                                              ) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+
+                                                    <img 
+                                                      src={xls}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={ppt}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (fileNameLowerCase.endsWith("pdf")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={pdf}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else if (fileNameLowerCase.endsWith("txt")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={txt}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '37.5%',
+                                                      left: '37.5%',
+                                                      width: '25%',
+                                                      height: '25%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={unknown}
+                                                    />
+                                                  </div>
+                                                );
+                                              }
+                                            })()}
+                                          </div>
+                                        </div>
+                                      )}
                                     </div>
                                   </CardBody>
                                 </Card>
