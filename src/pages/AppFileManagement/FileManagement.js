@@ -208,6 +208,7 @@ const FileManagement = (props) => {
       dispatch(getSelectFile())
     }
 
+    debugger
     dispatch(getSearch({
       "search": ""
     }))
@@ -277,11 +278,14 @@ const FileManagement = (props) => {
 
   const getInsideFolder = (e, f, n) => {
 
+    debugger
     setCurrFolder(e)
     history.push(`?folder_num=${e}`);
 
     setEnterMonthlyDataSpinner(true)
-    // dispatch(getSelectFile({ 'folder_num': e }))
+    if (currFolder.toString() === e.toString()) {
+      setEnterMonthlyDataSpinner(false)
+    }
     setIdFolderTemp(e)
     setIdChild(e)
     setIdParentTemp(f)
@@ -1097,7 +1101,7 @@ const FileManagement = (props) => {
                                                         left: '37.5%',
                                                         width: '25%',
                                                         height: '25%',
-                                                        objectFit: 'cover'
+                                                        objectFit: 'cover',
                                                       }}
                                                         src={doc}
                                                       />
@@ -1123,7 +1127,7 @@ const FileManagement = (props) => {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
 
-                                                    <img 
+                                                    <img
                                                       src={xls}
                                                     />
                                                   </div>
