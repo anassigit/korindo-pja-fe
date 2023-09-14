@@ -40,6 +40,7 @@ import { min } from "lodash";
 
 const EnterMonthlyData = (props) => {
 
+  let langType = localStorage.getItem("I18N_LANGUAGE")
   const storedMonth = localStorage.getItem("selectedMonth");
   const storedYear = localStorage.getItem("selectedYear");
 
@@ -109,10 +110,10 @@ const EnterMonthlyData = (props) => {
     if (storedMonth && storedYear) {
       dispatch(getMonthlyData({ month: storedMonth, year: storedYear }));
     } else if (selectedMonth && selectedYear) {
-      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }));
+      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear, langType: langType }));
       setEnterMonthlyDataSpinner(true);
     }
-  }, [selectedMonth, selectedYear]);
+  }, [selectedMonth, selectedYear, langType]);
 
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
@@ -400,10 +401,10 @@ const EnterMonthlyData = (props) => {
                                 <span
                                   style={{
                                     fontSize: "50px",
-                                    color: "#7BAE40",
+                                    color: items.open ? "#f46a6a" : "#BBBCBE",
                                     opacity: "0.75",
                                   }}
-                                  className="mdi mdi-file-cancel-outline text-danger"
+                                  className="mdi mdi-file-cancel-outline"
                                 ></span>
                                 <span
                                   hidden
