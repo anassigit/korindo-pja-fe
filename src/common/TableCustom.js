@@ -31,7 +31,6 @@ const TableCustom = (props) => {
 
             history.push(`?page=${page}`);
         }
-        debugger
         if (type === "link") {
             props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search });
         }
@@ -39,7 +38,6 @@ const TableCustom = (props) => {
 
     useEffect(() => {
 
-        debugger
         if (props.searchGet.page !== currentPageFromURL) {
             customHandleTableChange("link", {
                 page: currentPageFromURL,

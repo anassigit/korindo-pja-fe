@@ -14,6 +14,7 @@ import {
     Badge,
     Input,
     UncontrolledAlert,
+    Spinner,
 } from "reactstrap";
 import { getInstructionsData, getInstructionsData2, resetMessage } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
@@ -53,6 +54,7 @@ const Instructions = (props) => {
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
 
+    const [loadingSpinner, setLoadingSpinner] = useState(false)
 
     useEffect(() => {
         const lastURL = localStorage.getItem('currentURL');
@@ -111,6 +113,7 @@ const Instructions = (props) => {
     }, [sessionAppInstructionsTabelSearch])
 
     useEffect(() => {
+        setLoadingSpinner(true)
         setAppInstructionsTabelSearch({
             page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset, sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
                 search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo
@@ -130,6 +133,8 @@ const Instructions = (props) => {
             setAppInstructionsMsg(ReactSession.get('appEditInstructionsMsg'))
             ReactSession.set('appEditInstructionsMsg', null);
         }
+
+        setLoadingSpinner(false)
     }, [appInstructionsData])
 
     useEffect(() => {
@@ -356,6 +361,9 @@ const Instructions = (props) => {
     }
 
     const handleChange = event => {
+
+        setLoadingSpinner(true)
+
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
             sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value, from: dateFrom, to: dateTo }
@@ -366,8 +374,6 @@ const Instructions = (props) => {
     }
 
     const dateChanger = (name, selectedDate) => {
-
-        debugger
 
         if (name === 'from') {
             setDateFrom(selectedDate);
@@ -387,6 +393,7 @@ const Instructions = (props) => {
             setDateTo('')
         }
 
+        setLoadingSpinner(true)
         setAppInstructionsTabelSearch((prevSearch) => ({
             ...prevSearch,
             search: {
@@ -398,12 +405,28 @@ const Instructions = (props) => {
 
     }, [dateFrom, dateTo])
 
+    const [searchValue, setSearchValue] = useState('');
+
+    const handleSearch = () => {
+
+        setLoadingSpinner(true)
+        setAppInstructionsTabelSearch({
+            page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: searchValue, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo }
+        })
+    }
+
     return (
         <RootPageCustom msgStateGet={null} msgStateSet={null}
             componentJsx={
                 <>
                     {appInstructionsMsg !== "" ? <UncontrolledAlert toggle={() => { setAppInstructionsMsg(""); setIsClosed(true) }} color={appInstructionsMsg.status == "1" ? "success" : "danger"}>
                         {typeof appInstructionsMsg == 'string' ? null : appInstructionsMsg.message}</UncontrolledAlert> : null}
+
+                    <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+                        <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+                    </div>
+
                     < Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
                         <Row>
                             <Col>
@@ -413,31 +436,35 @@ const Instructions = (props) => {
                                         <div className="form-group m-0">
                                             <div className="input-group">
                                                 <Col md="4">
-                                                    <Row className="mb-1 col-sm-10">
+                                                    <Row className="mb-1 col-sm-11">
                                                         <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-6">
                                                             <input
-                                                                type="text"
+                                                                type="search"
                                                                 className="form-control"
-                                                                value={appInstructionsTabelSearch.search.search}
+                                                                value={searchValue}
                                                                 onChange={e => {
-                                                                    debugger
-                                                                    setAppInstructionsTabelSearch({
-                                                                        page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
-                                                                        sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: e.target.value, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo }
-                                                                    })
+                                                                    const inputValue = e.target.value;
+                                                                    setSearchValue(inputValue);
                                                                 }}
+                                                                onKeyDown={e => e.key === 'Enter' ? handleSearch() : null}
                                                             />
                                                         </div>
                                                     </Row>
                                                 </Col>
 
+                                                <Col md='1'>
+                                                    <button className="btn btn-primary" style={{ left: "-130%" }} onClick={() => handleSearch()}>
+                                                        {props.t("Search")}
+                                                    </button>
+                                                </Col>
+
                                                 <Col md="4" style={{ marginLeft: "-0px" }}>
-                                                    <Row className="mb-1 col-sm-10">
+                                                    <Row className="mb-1 col-sm-11">
                                                         <label className="col-sm-1">
                                                             <i style={{ position: "absolute", fontSize: "18px", top: '0.25em' }} className="mdi mdi-calendar-month opacity-75" />
                                                         </label>
-                                                        <div className="col-sm-4">
+                                                        <div className="col-sm-3">
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
@@ -458,7 +485,7 @@ const Instructions = (props) => {
                                                         <label className="col-sm-1" style={{ marginTop: "8px" }}>
                                                             -
                                                         </label>
-                                                        <div className="col-sm-4">
+                                                        <div className="col-sm-3">
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
@@ -487,11 +514,11 @@ const Instructions = (props) => {
                                         <div className="form-group m-0">
                                             <div className="input-group">
                                                 <Col md="4">
-                                                    <Row className="mb-1 col-sm-10">
+                                                    <Row className="mb-1 col-sm-11">
                                                         <label className="col-sm-3" style={{ marginTop: "8px" }}>
                                                             {props.t("Status")}
                                                         </label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-6">
                                                             <Input
                                                                 type="select"
                                                                 name="status"

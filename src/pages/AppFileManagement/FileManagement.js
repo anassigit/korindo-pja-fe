@@ -208,7 +208,6 @@ const FileManagement = (props) => {
       dispatch(getSelectFile())
     }
 
-    debugger
     dispatch(getSearch({
       "search": ""
     }))
@@ -256,14 +255,14 @@ const FileManagement = (props) => {
   }, [getFileSelect])
 
   useEffect(() => {
-
-
+  
     setEnterMonthlyDataSpinner(false)
     if (getSearchFile?.data !== null) {
       setRealFileList(getSearchFile?.data?.searchList)
     } else if (getSearchFile?.data === null) {
       setRealFileList(getFileSelect?.data?.childList)
     }
+
   }, [getSearchFile])
 
 
@@ -278,7 +277,6 @@ const FileManagement = (props) => {
 
   const getInsideFolder = (e, f, n) => {
 
-    debugger
     setCurrFolder(e)
     history.push(`?folder_num=${e}`);
 
@@ -384,9 +382,13 @@ const FileManagement = (props) => {
 
   }, [downloadRespMsg])
 
+  const [searchVal, setSearchVal] = useState()
+
   const handleSearchChange = (e) => {
-    dispatch(getSearch({ "search": e.target.value }))
+    setEnterMonthlyDataSpinner(true)
+    dispatch(getSearch({ "search": searchVal }))
   }
+
 
 
   /// [Folder --- Context Menu & Dropdown Menu] ///
@@ -554,14 +556,23 @@ const FileManagement = (props) => {
                 <Row className="mb-2">
                   <Col sm="12">
                     <Col md="4">
-                      <Row className="mb-1 col-sm-10">
+                      <Row className="mb-1 col-sm-12 align-items-center">
                         <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
-                        <div className="col-sm-7">
+                        <div className="col-sm-5">
                           <input
-                            type="text"
+                            type="search"
                             className="form-control"
-                            onChange={handleSearchChange}
+                            onChange={e => setSearchVal(e.target.value)}
+                            onKeyDown={e => e.key === 'Enter' ? handleSearchChange() : null}
                           />
+                        </div>
+                        <div className="col-sm-3">
+                          <button
+                            className="btn btn-primary btn-block"
+                            onClick={() => handleSearchChange()}
+                          >
+                            {props.t("Search")}
+                          </button>
                         </div>
                       </Row>
                     </Col>
@@ -1094,18 +1105,18 @@ const FileManagement = (props) => {
                                               if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
-                                                  
-                                                      <img style={{
-                                                        position: 'absolute',
-                                                        top: '27%',
-                                                        left: '37%',
-                                                        width: '50px',
-                                                        height: '50px',
-                                                        objectFit: 'cover',
-                                                      }}
-                                                        src={doc}
-                                                      />
-                                                   
+
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '27%',
+                                                      left: '37%',
+                                                      width: '50px',
+                                                      height: '50px',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={doc}
+                                                    />
+
                                                   </div>
                                                 );
                                               } else if (
@@ -1177,6 +1188,22 @@ const FileManagement = (props) => {
                                                     />
                                                   </div>
                                                 );
+                                              } else if (fileNameLowerCase.endsWith("mov") || fileNameLowerCase.endsWith("mp4") || fileNameLowerCase.endsWith("mkv") || fileNameLowerCase.endsWith("flv") || fileNameLowerCase.endsWith("mov")) {
+                                                return (
+                                                  <div className="thumbnail-container thumbnail">
+
+                                                    <img style={{
+                                                      position: 'absolute',
+                                                      top: '27%',
+                                                      left: '37%',
+                                                      width: '50px',
+                                                      height: '50px',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                      src={unknown}
+                                                    />
+                                                  </div>
+                                                )
                                               } else {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
@@ -1192,7 +1219,7 @@ const FileManagement = (props) => {
                                                       src={unknown}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               }
                                             })()}
                                           </div>
