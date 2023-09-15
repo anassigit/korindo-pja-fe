@@ -174,11 +174,14 @@ const EditInstructions = (props) => {
     })
 
     useEffect(() => {
+        dispatch(resetMessage());
+    }, [dispatch])
+
+    useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
         dispatch(resetMessage());
 
         let num = queryNum?.toString()
-        debugger
         dispatch(getDetailInstruction({
             search: {
                 "num": num,
@@ -366,7 +369,6 @@ const EditInstructions = (props) => {
         editInstructionsValidInput.setFieldValue("title", getDetailInstructionData?.data?.instruction?.title)
 
         const inputDateString = getDetailInstructionData?.data?.instruction?.insDate?.toString();
-        debugger
 
         if (inputDateString) {
             const inputDate = new Date(inputDateString);
@@ -552,7 +554,6 @@ const EditInstructions = (props) => {
             });
             ReactSession.set('appEditInstructionsMsg', deleteInstructionsMessage)
         }
-        // setAppEditInstructionsMsg(deleteInstructionsMessage)
     }, [deleteInstructionsMessage])
 
     const insertUploadFileEdit = async (values) => {
@@ -665,7 +666,6 @@ const EditInstructions = (props) => {
 
 
     const DeleteSelectFile = (id) => {
-        debugger
         const result = selectedfile.filter((data) => data.id !== id);
         SetSelectedFile(result);
     }
@@ -1216,7 +1216,6 @@ const EditInstructions = (props) => {
         num = num?.toString()
         if (msgSaveReply.status == '0') {
         }
-        debugger
         if (msgSaveReply.status == '1' || updateNoReply) {
             setUpdateNoReply(false)
             if (getDetailInstructionData?.data?.instruction?.comment && !onlyReply) {
@@ -1378,7 +1377,6 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
-        debugger
         let tempMsg = ReactSession.get('appEditInstructionsMsg')
         let tempSelect = localStorage.getItem('tempSelect')
         if (editInstructionsMessage.status === "1" && getDetailInstructionData?.data?.instruction?.comment && !addReplyModal && tempMsg == "") {
@@ -1398,15 +1396,15 @@ const EditInstructions = (props) => {
                     "num": num,
                     "langType": langType
                 }
-            })) 
+            }))
             history.push({
                 pathname: '/AppInstructions',
             })
-            
+
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         }
         setSubmitClicked(false)
-        
+
         localStorage.removeItem('tempSelect')
         setLoadingSpinner(false)
         setAppEditInstructionsMsg(editInstructionsMessage)
@@ -1649,6 +1647,7 @@ const EditInstructions = (props) => {
 
     // first
     useEffect(() => {
+        debugger
         if (numTemp) {
             dispatch(getCheckDownloadData({ file_num: numTemp }))
         }
@@ -1721,7 +1720,7 @@ const EditInstructions = (props) => {
                     />
 
                     <AddReply
-          
+
                         modal={addReplyModal}
                         toggle={toggleAddReplyModal}
                         idInstruction={editInstructionsValidInput?.values?.no}

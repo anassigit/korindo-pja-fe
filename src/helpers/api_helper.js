@@ -90,7 +90,6 @@ function responseError(response){
 export async function getWithXls(url, data, config ={responseType: 'blob'}) {
   axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
   let token = localStorage.getItem("authUser"); 
-  debugger
   return await axiosApi.get(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(data), { ...config })
   .then(
     response => {

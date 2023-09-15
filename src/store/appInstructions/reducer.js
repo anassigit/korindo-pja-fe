@@ -70,7 +70,6 @@ const INIT_STATE = {
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
-  // respGetUserList: {},
   respGetDetailInstruction: {},
   msgDownload: "",
 }
@@ -150,11 +149,25 @@ const instructionsReducer = (state = INIT_STATE, action) => {
     case RESET_MESSAGE:
       return {
         ...state,
+        respGetInstructions: {},
+        respGetManager: {},
+        respGetOwner: {},
+        respGetStatus: {},
+        respGetSelectedManager: {},
+        respGetInstructions2: {},
+        respGetReply: {},
+        respGetSelectedReply: {},
+        respGetCheckDownload: {},
+        msgEditReply: "",
+        msgDeleteReply: "",
+        msgAddReply: "",
+        respGetAttachment: {},
+        respGetLogs: {},
         msgAdd: "",
         msgEdit: "",
         msgDelete: "",
-        msgAddReply: "",
-        msgDeleteReply: "",
+        respGetDetailInstruction: {},
+        msgDownload: "",
       }
     case SAVE_INSTRUCTIONS:
       return {
