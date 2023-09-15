@@ -1609,6 +1609,7 @@ const EditInstructions = (props) => {
 
     // first
     const downloadCheckFileInst = (num, fileNm) => {
+        setLoadingSpinner(true)
         setNumTemp(num)
         setFileNmTemp(fileNm)
     }
@@ -1660,6 +1661,8 @@ const EditInstructions = (props) => {
         } else if (downloadMsg?.status === "1") {
             downloadAttach()
         }
+        
+        setLoadingSpinner(false)
         setDownloadContentModal(downloadMessage.message)
         setDownloadMsg("")
 

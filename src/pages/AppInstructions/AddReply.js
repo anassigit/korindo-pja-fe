@@ -146,7 +146,7 @@ const AddReply = (props) => {
 
             const queryParameters = new URLSearchParams(window.location.search)
             const queryNum = queryParameters.get("num")
-            
+
             let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {
@@ -258,6 +258,11 @@ const AddReply = (props) => {
 
     return (
         <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle} backdrop="static">
+
+            <div className="spinner-wrapper" style={{ display: addReplySpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+                <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+            </div>
+
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 replyValidInput.handleSubmit();
@@ -306,7 +311,7 @@ const AddReply = (props) => {
                         <div className="mb-3 mx-3">
                             <label>{props.t("Answer")}</label>
                             <Input
-                        
+
                                 style={{
                                     width: "100%",
                                     minHeight: "26em",
