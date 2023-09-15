@@ -143,6 +143,11 @@ const EnterMonthlyData = (props) => {
 
   }
 
+
+  const fileManagementCloseAlert = () => {
+    setMonthlyDataMsg("")
+  }
+
   const confirmToggleDelete = (e) => {
 
     if (e) {
