@@ -741,21 +741,21 @@ body[data-sidebar="colored"] {
 
 body[data-sidebar="winter"] {
   .vertical-menu {
-    background-image: linear-gradient(to right, #556ee6, #34c38f);
+    background-image: linear-gradient(to right, #556ee6, #7bae40);
     background-repeat: repeat-x;
   }
 
   &.vertical-collpsed {
     .vertical-menu {
       .navbar-brand-box {
-        background-image: linear-gradient(to right, #556ee6, #34c38f);
+        background-image: linear-gradient(to right, #556ee6, #7bae40);
         background-repeat: repeat-x;
       }
       #sidebar-menu {
         > ul {
           > li {
             &:hover > a {
-              background-image: linear-gradient(to right, #556ee6, #34c38f);
+              background-image: linear-gradient(to right, #556ee6, #7bae40);
               background-repeat: repeat-x;
             }
           }
@@ -766,7 +766,7 @@ body[data-sidebar="winter"] {
 
   &[data-sidebar-size="small"] {
     .menu-title {
-      background-image: linear-gradient(to right, #556ee6, #34c38f);
+      background-image: linear-gradient(to right, #556ee6, #7bae40);
     }
   }
 }
@@ -997,7 +997,7 @@ body[data-sidebar-image="img4"] {
   background-color: $primary;
 }
 .gradient-winter {
-  background-image: linear-gradient(to right, #556ee6, #34c38f);
+  background-image: linear-gradient(to right, #556ee6, #7bae40);
   background-repeat: repeat-x;
 }
 .gradient-lady-lip {
