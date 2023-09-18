@@ -54,7 +54,6 @@ const EmailVerPassword = props => {
 
   useEffect(() => {
     let sessionMsg = ReactSession.get('emailMsg')
-    debugger
     if (error.status == "1" && sessionMsg !== 'goLogin') {
       ReactSession.set('emailMsg', error)
       history.push('/login')

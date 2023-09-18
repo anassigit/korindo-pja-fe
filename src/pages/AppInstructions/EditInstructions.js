@@ -1377,7 +1377,6 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
-        debugger
 
         let tempMsg = ReactSession.get('appEditInstructionsMsg')
         let tempSelect = localStorage.getItem('tempSelect')

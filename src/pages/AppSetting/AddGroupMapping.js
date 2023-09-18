@@ -50,7 +50,6 @@ const AddGroupMapping = (props) => {
         }),
 
         onSubmit: (value) => {
-            debugger
             setAddGroupMappingSpinner(true)
             dispatch(saveGroupMapping(value));
             toggleMsgModal()

@@ -44,7 +44,6 @@ const UploadMonthly = (props) => {
 
             value.parent_num = isParentUndefined ? 0 : value.parent_num;
 
-            debugger
             if (selectedfile.length > 0) {
 
                 for (let index = 0; index < selectedfile.length; index++) {
@@ -74,7 +73,6 @@ const UploadMonthly = (props) => {
 
 
     const insertUpload = async (value) => {
-        debugger
 
         await dispatch(uploadFile(value));
         // toggleMsgModal()
@@ -91,7 +89,6 @@ const UploadMonthly = (props) => {
     const [uploadContentModal, setUploadContentModal] = useState("")
 
     const toggleMsgModal = () => {
-        debugger
         setUploadMsgModal(!uploadMsgModal)
         if (uploadMsgModal.status === "1") {
 
@@ -111,7 +108,6 @@ const UploadMonthly = (props) => {
     useEffect(() => {
         if (uploadMonthlyRespMsg.status === "1") {
 
-            debugger
             props.setEnterMonthlyDataSpinner(false)
             setSuccessClose(true)
             setUploadMsgModal(uploadMonthlyRespMsg);

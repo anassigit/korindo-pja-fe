@@ -42,7 +42,7 @@ const AddInstructions = (props) => {
     const [selectedMulti2, setselectedMulti2] = useState([]);
     const [optionOwner, setOptionOwner] = useState([]);
     const [optionManager, setOptionManager] = useState([]);
-    
+
 
     const [addInstructionMsgModal, setAddInstructionMsgModal] = useState(false)
 
@@ -122,7 +122,7 @@ const AddInstructions = (props) => {
 
         }
     });
-    
+
     const refCleanser = useRef(null)
 
     useEffect(() => {
@@ -133,12 +133,11 @@ const AddInstructions = (props) => {
                 "langType": langType
             }
         }))
-       
+
     }, [])
 
     useEffect(() => {
         if (props.appAddInstructions) {
-            debugger
             document.getElementById("tt").focus();
 
             addInstructionsValidInput.resetForm()
@@ -558,7 +557,7 @@ const AddInstructions = (props) => {
                                             <div className="mb-3 col-sm-10">
                                                 <Label>{props.t("Title")} <span style={{ color: "red" }}>* </span></Label>
                                                 <Input
-                                              
+
                                                     onKeyPress={noEnterAllowed}
                                                     maxLength={400}
                                                     name="title"
@@ -569,7 +568,7 @@ const AddInstructions = (props) => {
                                                     invalid={
                                                         addInstructionsValidInput.touched.title && addInstructionsValidInput.errors.title ? true : false
                                                     }
-                                                   
+
                                                 />
                                                 {addInstructionsValidInput.touched.title && addInstructionsValidInput.errors.title ? (
                                                     <FormFeedback type="invalid">{addInstructionsValidInput.errors.title}</FormFeedback>

@@ -160,8 +160,7 @@ const Instructions = (props) => {
 
     useEffect(() => {
         if (isClosed == true) {
-            debugger
-            history.push({
+                        history.push({
                 state: {
                     setAppInstructionsMsg: ""
                 }
@@ -400,8 +399,7 @@ const Instructions = (props) => {
             setDateFrom(selectedDate);
 
         } else if (name === 'to') {
-            debugger
-
+            
             setDateTo(selectedDate);
         }
     };

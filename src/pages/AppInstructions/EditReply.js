@@ -52,7 +52,6 @@ const EditReply = (props) => {
             const removedFiles = props.replyData.attachFileList.filter(file => (
                 !preservedFiles.some(existingFile => existingFile.num === file.num)
             ));
-            debugger
             var bodyForm = new FormData();
 
             bodyForm.append('reply_num', props.replyData.num);
@@ -98,7 +97,6 @@ const EditReply = (props) => {
 
     useEffect(() => {
         if (props.modal) {
-            debugger
             editReplyValidInput.setFieldValue('content', props.replyData?.content)
             editReplyValidInput.setFieldValue('files', props.replyData?.attachFileList)
             setPreservedFiles(props.replyData?.attachFileList)
@@ -118,7 +116,6 @@ const EditReply = (props) => {
     useEffect(() => {
 
         if (editReplyMessage.status === "1") {
-            debugger
             props.toggle()
             setEditReplyMsg('')
         } else if (editReplyMessage.status === "0") {

@@ -15,11 +15,11 @@ const Create = (props) => {
     const [createSpinner, setCreateSpinner] = useState(false)
     const [createMsg, setCreateMsg] = useState(false)
     const [successClose, setSuccessClose] = useState(false)
-    
+
 
     const createRespMsg = useSelector(state => {
         return state.fileManagementReducer.msgCreate;
-      })
+    })
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -39,8 +39,7 @@ const Create = (props) => {
         }),
 
         onSubmit: (value) => {
-            // debugger
-            if (value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined){
+            if (value.parent_num === -1 || value.parent_num === null || value.parent_num === undefined) {
 
                 value.parent_num = 0;
 
@@ -48,10 +47,10 @@ const Create = (props) => {
                 dispatch(createFolder(value));
                 toggleMsgModal()
 
-            }else {
-            setCreateSpinner(true)
-            dispatch(createFolder(value));
-            toggleMsgModal()
+            } else {
+                setCreateSpinner(true)
+                dispatch(createFolder(value));
+                toggleMsgModal()
 
             }
         }
@@ -68,15 +67,14 @@ const Create = (props) => {
     const toggleMsgModal = () => {
         setCreateMsgModal(!createMsgModal)
         if (createMsg.status === "1") {
-            debugger
             props.toggle()
             setCreateMsg("")
 
-            dispatch(getSelectFile({'folder_num': props.idNowLoc}))
+            dispatch(getSelectFile({ 'folder_num': props.idNowLoc }))
 
-            
-            
-        } 
+
+
+        }
     }
 
     useEffect(() => {
@@ -107,11 +105,11 @@ const Create = (props) => {
 
                         <div className="mb-3 mx-3">
                             <Label>{props.t("Input folder name")} <span style={{ color: "red" }}>*</span></Label>
-                            <Input type="text" name="folder_name" onChange={createFileFolderValidInput.handleChange} value={createFileFolderValidInput.values.folder_name} id="newFolderNm"/>
+                            <Input type="text" name="folder_name" onChange={createFileFolderValidInput.handleChange} value={createFileFolderValidInput.values.folder_name} id="newFolderNm" />
                             {createFileFolderValidInput.errors.folder_name && createFileFolderValidInput.touched.folder_name && (
                                 <div style={{ color: 'red' }}>{createFileFolderValidInput.errors.folder_name}</div>
                             )}
-                        </div>                       
+                        </div>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
