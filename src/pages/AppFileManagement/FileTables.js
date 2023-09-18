@@ -153,6 +153,8 @@ const FileTables = (props) => {
                                                 } else if (item.name.endsWith("txt")) {
                                                     icon = txt;
                                                     action = () => handlePreview(item.url);
+                                                } else {
+                                                    action = () =>  window.open(new URL(item.url));
                                                 }
 
                                                 return (
