@@ -13,11 +13,6 @@ window.onpopstate = function (event) {
   const authUser = localStorage.getItem("authUser");
 
   if (currentPath === '/login' && authUser !== null) {
-    ReactSession.remove("appInstructionsTabelSearch")
-    ReactSession.remove('selected')
-    ReactSession.remove('dateFrom')
-    ReactSession.remove('dateTo')
-    ReactSession.remove('searchValue')
     history.go(1);
   }
 };
@@ -31,6 +26,12 @@ function* loginUser({ payload: { user, history } }) {
       localStorage.setItem("user", JSON.stringify(response.data.user));
       ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
       localStorage.setItem('appFileManagementData', '')
+
+      ReactSession.remove("appInstructionsTabelSearch")
+      ReactSession.remove('selected')
+      ReactSession.remove('dateFrom')
+      ReactSession.remove('dateTo')
+      ReactSession.remove('searchValue')
 
       history.push({ pathname: '/' });
       yield put(loginSuccess(response));
