@@ -129,136 +129,65 @@ const FileTables = (props) => {
                                 <tbody>
                                     {dashboardData?.data?.list.map((myfiles, index) => (
                                         myfiles.num === props.idFolderDetail ? (
-                                            myfiles.fileList.map((item, key) => (
+                                            myfiles.fileList.map((item, key) => {
+                                                const fileExtension = item.name.slice(item.name.lastIndexOf(".") + 1).toLowerCase();
+                                                const allowedExtensions = ["jpg", "jpeg", "gif", "png", "pdf"];
+                                                let icon = unknown;
+                                                let action;
 
-                                                <tr key={key}>
-                                                    <td scope="row">{key + 1}</td>
-                                                    <td style={{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-                                                        onClick={
-                                                            myfiles.open
-                                                                ? (() => {
-                                                                    const fileExtension = item.name.slice(item.name.lastIndexOf(".") + 1).toLowerCase();
-                                                                    const allowedExtensions = ["jpg", "jpeg", "gif", "png", "pdf"];
-                                                                    if (allowedExtensions.includes(fileExtension)) {
-                                                                        return () => handlePreview(item.url);
-                                                                    } else {
-                                                                        return () => downloadFile(item.num, item.name);
-                                                                    }
-                                                                })()
-                                                                : null
-                                                        }
-                                                        id={`nameTooltip_${key}`}
-                                                    >
+                                                if (allowedExtensions.includes(fileExtension)) {
+                                                    icon = new URL(item.url);
+                                                    action = () => handlePreview(item.url);
+                                                } else if (item.name.endsWith("docx") || item.name.endsWith("doc")) {
+                                                    icon = doc;
+                                                    action = () => handlePreview(item.url);
+                                                } else if (item.name.endsWith("xls") || item.name.endsWith("xlsx") || item.name.endsWith("csv")) {
+                                                    icon = xls;
+                                                    action = () => handlePreview(item.url);
+                                                } else if (item.name.endsWith("ppt") || item.name.endsWith("pptx")) {
+                                                    icon = ppt;
+                                                    action = () => handlePreview(item.url);
+                                                } else if (item.name.endsWith("pdf")) {
+                                                    icon = pdf;
+                                                    action = () => handlePreview(item.url);
+                                                } else if (item.name.endsWith("txt")) {
+                                                    icon = txt;
+                                                    action = () => handlePreview(item.url);
+                                                }
 
-                                                        {item.name.endsWith("docx") || item.name.endsWith("doc") ? (
+                                                return (
+                                                    <tr key={key}>
+                                                        <td scope="row">{key + 1}</td>
+                                                        <td
+                                                            style={{
+                                                                maxWidth: "400px",
+                                                                whiteSpace: "nowrap",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis"
+                                                            }}
+                                                            onClick={myfiles.open ? action : null}
+                                                            id={`nameTooltip_${key}`}
+                                                        >
                                                             <>
                                                                 <img
+                                                                    src={icon}
                                                                     style={{
                                                                         height: "15px",
                                                                         width: "15px",
                                                                         alignItems: "unset"
                                                                     }}
-                                                                    src={doc} />{" "}{item.name}
+                                                                />{" "}{item.name}
                                                                 <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
                                                                     {item.name}
                                                                 </UncontrolledTooltip>
                                                             </>
-                                                        ) : (
-                                                            item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") ? (
-                                                                <>
-                                                                    <img
-                                                                        src={new URL(item.url)}
-                                                                        style={{
-                                                                            height: "15px",
-                                                                            width: "15px",
-                                                                            alignItems: "unset"
-                                                                        }}
-
-                                                                    />{" "}{item.name}
-                                                                    <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                                                        {item.name}
-                                                                    </UncontrolledTooltip>
-
-                                                                </>
-                                                            ) : (
-                                                                item.name.endsWith("xls") || item.name.endsWith("xlsx") || item.name.endsWith("csv") ? (
-                                                                    <>
-                                                                        <img src={xls}
-                                                                            style={{
-                                                                                height: "15px",
-                                                                                width: "15px",
-                                                                                alignItems: "unset"
-                                                                            }}
-                                                                        />{" "}{item.name}
-                                                                        <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                                                            {item.name}
-                                                                        </UncontrolledTooltip>
-                                                                    </>
-                                                                ) :
-                                                                    (item.name.endsWith("ppt") || item.name.endsWith("pptx") ? (
-                                                                        <>
-                                                                            <img src={ppt}
-                                                                                style={{
-                                                                                    height: "15px",
-                                                                                    width: "15px",
-                                                                                    alignItems: "unset"
-                                                                                }}
-                                                                            />{" "}{item.name}
-                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                                                                {item.name}
-                                                                            </UncontrolledTooltip>
-                                                                        </>
-                                                                    ) : (item.name.endsWith("pdf") ? (
-                                                                        <>
-                                                                            <img src={pdf}
-                                                                                style={{
-                                                                                    height: "15px",
-                                                                                    width: "15px",
-                                                                                    alignItems: "unset"
-                                                                                }}
-                                                                            />{" "}{item.name}
-                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                                                                {item.name}
-                                                                            </UncontrolledTooltip>
-
-                                                                        </>
-                                                                    ) : (item.name.endsWith("txt") ? (
-                                                                        <>
-                                                                            <img src={txt}
-                                                                                style={{
-                                                                                    height: "15px",
-                                                                                    width: "15px",
-                                                                                    alignItems: "unset"
-                                                                                }}
-                                                                            />{" "}{item.name}
-                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                                                                {item.name}
-                                                                            </UncontrolledTooltip>
-                                                                        </>
-                                                                    ) : (
-                                                                        <>
-                                                                            <img src={unknown}
-                                                                                style={{
-                                                                                    height: "15px",
-                                                                                    width: "15px",
-                                                                                    alignItems: "unset"
-                                                                                }}
-                                                                            />{" "}{item.name}
-                                                                            <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
-                                                                                {item.name}
-                                                                            </UncontrolledTooltip>
-                                                                        </>
-                                                                    ))
-
-                                                                    ))))}
-
-                                                    </td>
-
-                                                </tr>
-
-                                            ))
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
                                         ) : null
                                     ))}
+
                                 </tbody>
                             </table>
                         </div>
