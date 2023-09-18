@@ -1377,8 +1377,19 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
 
+        debugger
+
         let tempMsg = ReactSession.get('appEditInstructionsMsg')
         let tempSelect = localStorage.getItem('tempSelect')
+
+        let num = queryNum?.toString()
+        dispatch(getDetailInstruction({
+            search: {
+                "num": num,
+                "langType": langType
+            }
+        }))
+
         if (editInstructionsMessage.status === "1" && getDetailInstructionData?.data?.instruction?.comment && !addReplyModal && tempMsg == "") {
             history.push({
                 pathname: '/AppInstructions',
@@ -1390,19 +1401,13 @@ const EditInstructions = (props) => {
             })
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         } else if (editInstructionsMessage.status == "1" && submitClicked) {
-            let num = queryNum?.toString()
-            dispatch(getDetailInstruction({
-                search: {
-                    "num": num,
-                    "langType": langType
-                }
-            }))
             history.push({
                 pathname: '/AppInstructions',
             })
 
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         }
+
         setSubmitClicked(false)
 
         localStorage.removeItem('tempSelect')
@@ -1648,7 +1653,6 @@ const EditInstructions = (props) => {
 
     // first
     useEffect(() => {
-        debugger
         if (numTemp) {
             dispatch(getCheckDownloadData({ file_num: numTemp }))
         }
@@ -1661,7 +1665,7 @@ const EditInstructions = (props) => {
         } else if (downloadMsg?.status === "1") {
             downloadAttach()
         }
-        
+
         setLoadingSpinner(false)
         setDownloadContentModal(downloadMessage.message)
         setDownloadMsg("")
@@ -2026,7 +2030,6 @@ const EditInstructions = (props) => {
                                                     <i className="mdi mdi-check-circle fs-5 align-middle me-2"></i>
                                                     {props.t("Update")}
                                                 </Button>&nbsp;
-
                                                 <Button hidden={!getDetailInstructionData?.data?.instruction?.delete} color="danger" type="button" onClick={() => { confirmToggle() }}>
                                                     <i className="mdi mdi-delete-forever fs-5 align-middle me-2"></i>
                                                     {props.t("Delete")}
@@ -2258,6 +2261,11 @@ const EditInstructions = (props) => {
                                             >
                                                 <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
                                                 {props.t("Reply")}
+                                            </Button>&nbsp;
+
+                                            <Button hidden={!getDetailInstructionData?.data?.instruction?.delete} color="danger" type="button" onClick={() => { confirmToggle() }}>
+                                                <i className="mdi mdi-delete-forever fs-5 align-middle me-2"></i>
+                                                {props.t("Delete")}
                                             </Button>&nbsp;
 
                                             <Button

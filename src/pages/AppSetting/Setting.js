@@ -81,6 +81,10 @@ const Setting = (props) => {
         return state.settingReducer.respGetRelationList;
     });
 
+    const appEditMessage = useSelector(state => {
+        return state.settingReducer.msgEdit;
+    });
+
     const appDeleteMessage = useSelector(state => {
         return state.settingReducer.msgDelete;
     });
@@ -275,16 +279,44 @@ const Setting = (props) => {
     };
 
     const handleSaveGeneral = () => {
-        dispatch(editGeneralSetting({ ins_display_setting: radioValue1, ins_notice_setting: radioValue2, ins_notice2_setting: radioValue3, file_edit_setting: radioValueFileManage1, file_access_setting: radioValueFileManage2 }))
-        if (appSettingData.message != "Fail") {
-            setSuccessClose(true)
-            setGeneralContentModal("Success")
-        } else {
-            setSuccessClose(false)
-            setGeneralContentModal("Failed")
+        const updatedSettings = [];
+
+        // Check if radioValue1 is different from ins_display_setting
+        if (radioValue1 !== appSettingData?.data?.setting?.find(setting => setting.id === "ins_display_setting")?.value.toString()) {
+            updatedSettings.push({ ins_display_setting: radioValue1 });
         }
-        toggleMsgModal()
+
+        // Check if radioValue2 is different from ins_notice_setting
+        if (radioValue2 !== appSettingData?.data?.setting?.find(setting => setting.id === "ins_notice_setting")?.value.toString()) {
+            updatedSettings.push({ ins_notice_setting: radioValue2 });
+        }
+
+        // Check if radioValue3 is different from ins_notice2_setting
+        if (radioValue3 !== appSettingData?.data?.setting?.find(setting => setting.id === "ins_notice2_setting")?.value.toString()) {
+            updatedSettings.push({ ins_notice2_setting: radioValue3 });
+        }
+
+        // Check if radioValueFileManage1 is different from file_edit_setting
+        if (radioValueFileManage1 !== appSettingData?.data?.setting?.find(setting => setting.id === "file_edit_setting")?.value.toString()) {
+            updatedSettings.push({ file_edit_setting: radioValueFileManage1 });
+        }
+
+        // Check if radioValueFileManage2 is different from file_access_setting
+        if (radioValueFileManage2 !== appSettingData?.data?.setting?.find(setting => setting.id === "file_access_setting")?.value.toString()) {
+            updatedSettings.push({ file_access_setting: radioValueFileManage2 });
+        }
+
+        // If there are updated settings, dispatch them in a single action
+        if (updatedSettings.length > 0) {
+            const mergedSettings = Object.assign({}, ...updatedSettings);
+            dispatch(editGeneralSetting(mergedSettings));
+        } else {
+            setGeneralContentModal('No Request')
+        }
+
+        toggleMsgModal();
     }
+
 
     const appSettingPreEdit = (e) => {
         setSelectedMemberData(e)
@@ -370,6 +402,21 @@ const Setting = (props) => {
             window.location.reload()
         }
     }, [appDeleteMessage])
+
+    useEffect(() => {
+        if (appEditMessage.status === '1') {
+            setSuccessClose(true)
+            setGeneralContentModal(appEditMessage?.message)
+        } else if (appEditMessage.status === '0') {
+            setSuccessClose(false)
+            setGeneralContentModal(appEditMessage?.message)
+        } else {
+            setGeneralContentModal('No Request')
+        }
+        
+        dispatch(getSettingData(appMembersTabelSearch))
+
+    }, [appEditMessage])
 
     /* ENDED HERE */
 
