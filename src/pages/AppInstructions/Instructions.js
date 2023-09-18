@@ -483,7 +483,7 @@ const Instructions = (props) => {
                                                         <label className="col-sm-1">
                                                             <i style={{ position: "absolute", fontSize: "18px", top: '0.25em' }} className="mdi mdi-calendar-month opacity-75" />
                                                         </label>
-                                                        <div className="col-sm-4">
+                                                        <div className="col-sm-4" style={{width:"9em"}}>
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
@@ -504,7 +504,7 @@ const Instructions = (props) => {
                                                         <label className="col-sm-1" style={{ marginTop: "8px", marginLeft:"-2px", marginRight:"-2px" }}>
                                                             -
                                                         </label>
-                                                        <div className="col-sm-4">
+                                                        <div className="col-sm-4" style={{width:"9em"}}>
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker

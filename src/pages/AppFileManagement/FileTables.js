@@ -135,16 +135,21 @@ const FileTables = (props) => {
                                                     <td scope="row">{key + 1}</td>
                                                     <td style={{ maxWidth: "400px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
                                                         onClick={
-                                                            myfiles.open ? item.name.endsWith("jpg") || item.name.endsWith("jpeg") || item.name.endsWith("gif") || item.name.endsWith("png") || item.name.endsWith("pdf")
-                                                                ?
-                                                                () => handlePreview(item.url)
-                                                                :
-                                                                () => downloadFile(item.num, item.name)
+                                                            myfiles.open
+                                                                ? (() => {
+                                                                    const fileExtension = item.name.slice(item.name.lastIndexOf(".") + 1).toLowerCase();
+                                                                    const allowedExtensions = ["jpg", "jpeg", "gif", "png", "pdf"];
+                                                                    if (allowedExtensions.includes(fileExtension)) {
+                                                                        return () => handlePreview(item.url);
+                                                                    } else {
+                                                                        return () => downloadFile(item.num, item.name);
+                                                                    }
+                                                                })()
                                                                 : null
                                                         }
                                                         id={`nameTooltip_${key}`}
-
                                                     >
+
                                                         {item.name.endsWith("docx") || item.name.endsWith("doc") ? (
                                                             <>
                                                                 <img

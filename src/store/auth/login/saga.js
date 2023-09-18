@@ -14,6 +14,10 @@ window.onpopstate = function (event) {
 
   if (currentPath === '/login' && authUser !== null) {
     ReactSession.remove("appInstructionsTabelSearch")
+    ReactSession.remove('selected')
+    ReactSession.remove('dateFrom')
+    ReactSession.remove('dateTo')
+    ReactSession.remove('searchValue')
     history.go(1);
   }
 };
