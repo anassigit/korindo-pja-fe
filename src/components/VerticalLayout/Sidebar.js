@@ -19,6 +19,10 @@ const Sidebar = props => {
           <a href="/AppInstructions" className="logo logo-dark" onClick={() => {
             window.location.reload()
             ReactSession.remove("appInstructionsTabelSearch")
+            ReactSession.remove('selected')
+            ReactSession.remove('dateFrom')
+            ReactSession.remove('dateTo')
+            ReactSession.remove('searchValue')
           }}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
@@ -30,6 +34,10 @@ const Sidebar = props => {
 
           <a href="/AppInstructions" className="logo logo-light" onClick={() =>{
             ReactSession.remove("appInstructionsTabelSearch")
+            ReactSession.remove('selected')
+            ReactSession.remove('dateFrom')
+            ReactSession.remove('dateTo')
+            ReactSession.remove('searchValue')
             window.location.reload()
           }}>
             <span className="logo-sm">

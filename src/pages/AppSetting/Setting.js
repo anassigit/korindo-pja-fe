@@ -311,7 +311,8 @@ const Setting = (props) => {
             const mergedSettings = Object.assign({}, ...updatedSettings);
             dispatch(editGeneralSetting(mergedSettings));
         } else {
-            setGeneralContentModal('No Request')
+            setGeneralContentModal('There are no modifications')
+            setSuccessClose(false)
         }
 
         toggleMsgModal();
@@ -411,7 +412,8 @@ const Setting = (props) => {
             setSuccessClose(false)
             setGeneralContentModal(appEditMessage?.message)
         } else {
-            setGeneralContentModal('No Request')
+            setGeneralContentModal('There are no modifications')
+            setSuccessClose(false)
         }
         
         dispatch(getSettingData(appMembersTabelSearch))

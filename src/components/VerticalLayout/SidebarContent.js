@@ -136,6 +136,10 @@ const SidebarContent = props => {
               <a
                 onClick={() => {
                   ReactSession.remove("appInstructionsTabelSearch")
+                  ReactSession.remove('selected')
+                  ReactSession.remove('dateFrom')
+                  ReactSession.remove('dateTo')
+                  ReactSession.remove('searchValue')
                 }}
                 href="/AppInstructions"
                 to="/AppInstructions"

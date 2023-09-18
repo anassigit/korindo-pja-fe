@@ -54,6 +54,8 @@ const Instructions = (props) => {
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
 
+    const [searchValue, setSearchValue] = useState('');
+
     const [loadingSpinner, setLoadingSpinner] = useState(false)
 
     useEffect(() => {
@@ -71,8 +73,27 @@ const Instructions = (props) => {
         }
         setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
         console.log(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
-        // console.log(appInstructionsTabelSearch)
+        
+        let temp1 = ReactSession.get('selected')
+        let temp2 = ReactSession.get('dateFrom')
+        let temp3 = ReactSession.get('dateTo')
+        let temp4 = ReactSession.get('searchValue')
+        
+        setSelected(temp1)
+        setDateFrom(temp2)
+        setDateTo(temp3)
+        setSearchValue(temp4)
+        
     }, [])
+
+    useEffect(() => {
+
+        ReactSession.set('selected', selected)
+        ReactSession.set('dateFrom', dateFrom)
+        ReactSession.set('dateTo', dateTo)
+        ReactSession.set('searchValue', searchValue)
+
+    }, [selected, dateFrom, dateTo, searchValue])
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -405,8 +426,6 @@ const Instructions = (props) => {
 
     }, [dateFrom, dateTo])
 
-    const [searchValue, setSearchValue] = useState('');
-
     const handleSearch = () => {
 
         setLoadingSpinner(true)
@@ -464,7 +483,7 @@ const Instructions = (props) => {
                                                         <label className="col-sm-1">
                                                             <i style={{ position: "absolute", fontSize: "18px", top: '0.25em' }} className="mdi mdi-calendar-month opacity-75" />
                                                         </label>
-                                                        <div className="col-sm-3">
+                                                        <div className="col-sm-4">
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
@@ -482,10 +501,10 @@ const Instructions = (props) => {
                                                             />
                                                         </div>
 
-                                                        <label className="col-sm-1" style={{ marginTop: "8px" }}>
+                                                        <label className="col-sm-1" style={{ marginTop: "8px", marginLeft:"-2px", marginRight:"-2px" }}>
                                                             -
                                                         </label>
-                                                        <div className="col-sm-3">
+                                                        <div className="col-sm-4">
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
