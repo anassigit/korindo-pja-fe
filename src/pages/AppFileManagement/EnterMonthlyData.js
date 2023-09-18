@@ -143,11 +143,6 @@ const EnterMonthlyData = (props) => {
 
   }
 
-
-  const fileManagementCloseAlert = () => {
-    setMonthlyDataMsg("")
-  }
-
   const confirmToggleDelete = (e) => {
 
     if (e) {
@@ -167,12 +162,12 @@ const EnterMonthlyData = (props) => {
           'file_num': num
         }
       ))
+      setMonthlyDataMsg('')
 
     }
   }, [isYes])
 
   useEffect(() => {
-    setMonthlyDataMsg('')
     if (msgDeleteFile?.status == "1") {
       setMonthlyDataMsg(msgDeleteFile)
       dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
@@ -210,7 +205,7 @@ const EnterMonthlyData = (props) => {
             currYear={currYear}
           />
 
-          {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={fileManagementCloseAlert} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
+          {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={() => setMonthlyDataMsg('')} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
             {typeof monthlyDataMsg == 'string' ? null : monthlyDataMsg.message}</UncontrolledAlert> : null}
 
           <Container style={{ display: monthlyDataPage ? 'block' : 'none' }} fluid={true}>
