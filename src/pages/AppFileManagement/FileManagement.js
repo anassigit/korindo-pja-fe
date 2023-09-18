@@ -385,6 +385,7 @@ const FileManagement = (props) => {
   const [searchVal, setSearchVal] = useState()
 
   const handleSearchChange = (e) => {
+    debugger
     setEnterMonthlyDataSpinner(true)
     dispatch(getSearch({ "search": searchVal }))
   }
@@ -636,7 +637,6 @@ const FileManagement = (props) => {
                                 <span key={index}>
                                   {index > 0 && <i className="mdi mdi-chevron-right" />}
                                   < a onClick={() => getInsideFolder(breadcrumb.num, breadcrumb.parent_num, breadcrumb.name)} style={{ cursor: "pointer" }}><u>{breadcrumb.name}</u></a>
-                                  {/* <a onClick={() => { getIdPath(breadcrumb.num) }}>{breadcrumb.name}</a> */}
                                 </span>
                               )
                             }
@@ -994,7 +994,6 @@ const FileManagement = (props) => {
                                               ) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
-                                                    <img src={new URL(myfiles.url)} />
 
                                                     <img style={{
                                                       position: 'absolute',
