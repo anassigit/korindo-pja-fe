@@ -495,6 +495,45 @@ const FileManagement = (props) => {
     dispatch(getSelectFile({ 'folder_num': queryFolderNum }))
   }, [queryFolderNum])
 
+
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const toggleFullScreen = () => {
+    setIsFullScreen(!isFullScreen);
+  };
+
+  const containerStyle = {
+    position: 'relative',
+    width: '320px', // Set your preferred thumbnail width
+    height: '180px', // Set your preferred thumbnail height
+    cursor: 'pointer',
+    transition: 'transform 0.2s',
+    overflow: 'hidden', // Hide video overflow in thumbnail mode
+  };
+
+  const fullScreenContainerStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 999,
+    background: 'rgba(0, 0, 0, 0.8)', // Semi-transparent background for full screen
+  };
+
+  const thumbnailStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  };
+
+  const fullScreenVideoStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+  };
+
+
   return (
     <RootPageCustom
       componentJsx={
@@ -1025,7 +1064,9 @@ const FileManagement = (props) => {
                                                     />
                                                   </div>
                                                 );
-                                              } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
+                                              } else if (
+                                                fileNameLowerCase.endsWith("ppt") || 
+                                                fileNameLowerCase.endsWith("pptx")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
@@ -1070,7 +1111,29 @@ const FileManagement = (props) => {
                                                     />
                                                   </div>
                                                 );
-                                              } else {
+                                              } else if (
+                                                fileNameLowerCase.endsWith("mov") || 
+                                                fileNameLowerCase.endsWith("mp4") || 
+                                                fileNameLowerCase.endsWith("mkv") || 
+                                                fileNameLowerCase.endsWith("flv")) {
+                                                return (
+
+                                                  <div className="thumbnail-container thumbnail">
+                                                  <video
+                                                    controls
+                                                    style={{
+                                                      position: 'absolute',
+                                                      width: '100%',
+                                                      height: '100%',
+                                                      objectFit: 'cover',
+                                                    }}
+                                                  >
+                                                    <source src={new URL(myfiles.url)} type="video/mp4" />
+                                                    Your browser does not support the video tag.
+                                                  </video>
+                                                </div>
+                                                )
+                                                  } else {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
 
@@ -1142,7 +1205,9 @@ const FileManagement = (props) => {
                                                     />
                                                   </div>
                                                 );
-                                              } else if (fileNameLowerCase.endsWith("ppt") || fileNameLowerCase.endsWith("pptx")) {
+                                              } else if (
+                                                fileNameLowerCase.endsWith("ppt") || 
+                                                fileNameLowerCase.endsWith("pptx")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
                                                     <img style={{
@@ -1187,21 +1252,25 @@ const FileManagement = (props) => {
                                                     />
                                                   </div>
                                                 );
-                                              } else if (fileNameLowerCase.endsWith("mov") || fileNameLowerCase.endsWith("mp4") || fileNameLowerCase.endsWith("mkv") || fileNameLowerCase.endsWith("flv") || fileNameLowerCase.endsWith("mov")) {
+                                              } else if (
+                                                fileNameLowerCase.endsWith("mov") || 
+                                                fileNameLowerCase.endsWith("mp4") || 
+                                                fileNameLowerCase.endsWith("mkv") || 
+                                                fileNameLowerCase.endsWith("flv")) {
                                                 return (
-                                                  <div className="thumbnail-container thumbnail">
 
-                                                    <img style={{
-                                                      position: 'absolute',
-                                                      top: '27%',
-                                                      left: '37%',
-                                                      width: '50px',
-                                                      height: '50px',
-                                                      objectFit: 'cover',
+                                                  <div className="video-container">
+                                                  <video
+                                                    controls
+                                                    style={{
+                                                      width: '100%',
+                                                      height: '100%',
                                                     }}
-                                                      src={unknown}
-                                                    />
-                                                  </div>
+                                                  >
+                                                    <source src={new URL(myfiles.url)} type="video/mp4" /> {/* Replace with your video source */}
+                                                    Your browser does not support the video tag.
+                                                  </video>
+                                                </div>
                                                 )
                                               } else {
                                                 return (
