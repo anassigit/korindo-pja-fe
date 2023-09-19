@@ -421,6 +421,7 @@ const FileManagement = (props) => {
     setContextMenuOpen(true);
     setContextMenuOpen2(false);
     setDropdownMenuOpen(false);
+    setDropdownMenuOpen2(false);
     setContextMenuPosition({ x: xPos, y: yPos });
   };
 
@@ -466,6 +467,7 @@ const FileManagement = (props) => {
     setContextMenuOpen2(true);
     setContextMenuOpen(false);
     setDropdownMenuOpen2(false);
+    setDropdownMenuOpen(false);
     setContextMenuPosition2({ x: xPos2, y: yPos2 });
   };
 
