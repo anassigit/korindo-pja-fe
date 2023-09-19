@@ -23,6 +23,7 @@ import Rename from "./Rename";
 import Upload from "./Upload";
 import Create from "./Create";
 import Move from "./Move";
+import ImagePreview from "./ImagePreview";
 import ConfirmModal from "components/Common/ConfirmModal";
 import { downloadFileFolder } from "helpers/backend_helper";
 import { withTranslation } from "react-i18next"
@@ -113,6 +114,14 @@ const FileManagement = (props) => {
   const [nameFiles, setNameFiles] = useState()
   const [typeFiles, setTypeFiles] = useState("")
 
+  // image preview
+
+  const [imagePreviewModal, setImagePreviewModal] = useState(false)
+  const [idImage, setIdImage] = useState()
+  const [nmImage, setNmImage] = useState("")
+  const [URLImage, setURLImage] = useState("")
+  const [locImage, setLocImage] = useState()
+
   const contextMenuRef = useRef(null);
 
   const queryParameters = new URLSearchParams(window.location.search)
@@ -140,6 +149,20 @@ const FileManagement = (props) => {
     }
     setRenameModal(!renameModal)
   }
+
+  const togglePreviewModal = (imgUrl, imgNm) => {
+
+    try {
+      const urlImg = new URL(imgUrl);
+      setURLImage(urlImg);
+      setNmImage(imgNm);
+      setImagePreviewModal(!imagePreviewModal);
+    } catch (error) {
+      console.error("Invalid URL:", imgUrl);
+    }
+
+  }
+
 
   const toggleShowModal = (vUrl) => {
 
@@ -592,6 +615,15 @@ const FileManagement = (props) => {
 
           />
 
+          <ImagePreview
+            modal={imagePreviewModal}
+            toggle={togglePreviewModal}
+            idImage={idImage}
+            nmImage={nmImage}
+            URLImage={URLImage}
+            locImage={locImage}
+          />
+
           <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
             <Row>
               <Col>
@@ -875,6 +907,7 @@ const FileManagement = (props) => {
                                       handleContextMenuOpen2(e);
                                     },
                                     onDoubleClick: () => toggleShowModal(myfiles.url),
+                                    onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
                                     style: { cursor: "pointer" },
                                   })}
 
@@ -884,6 +917,7 @@ const FileManagement = (props) => {
                                       handleContextMenuOpen2(e);
                                     },
                                     onDoubleClick: () => toggleShowModal(myfiles.url),
+                                    onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
                                     style: { cursor: "pointer" },
                                   })}
                                 >
