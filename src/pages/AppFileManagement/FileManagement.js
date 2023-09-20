@@ -702,7 +702,7 @@ const FileManagement = (props) => {
                   <Col sm="12">
                     <Col md="6">
                       <Row>
-                        <div className="align-baseline fs-6 unselectable">
+                        <div className="align-baseline fs-6 unselectable-two">
                           <strong>
                             {realFilePath?.map((breadcrumb, index) => {
                               tempIndex = index
