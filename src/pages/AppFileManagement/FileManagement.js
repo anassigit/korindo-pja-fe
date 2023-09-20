@@ -1029,11 +1029,11 @@ const FileManagement = (props) => {
                                       </div>
 
 
-                                      <div className="text-truncate mb-1 text-center">
+                                      <div className="text-truncate mb-1 ms-3">
                                         <a className="text-body fs-6" id={`nameTooltip_${key}`}>
                                           {myfiles.name}
 
-                                          <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
+                                          <UncontrolledTooltip placement="top" target={`nameTooltip_${key}`}>
                                             {myfiles.name}
                                           </UncontrolledTooltip>
                                         </a>
