@@ -119,6 +119,7 @@ const FileManagement = (props) => {
   const [imagePreviewModal, setImagePreviewModal] = useState(false)
   const [idImage, setIdImage] = useState()
   const [nmImage, setNmImage] = useState("")
+  const [fileType, setFileType] = useState("")
   const [URLImage, setURLImage] = useState("")
   const [locImage, setLocImage] = useState()
 
@@ -151,17 +152,29 @@ const FileManagement = (props) => {
   }
 
   const togglePreviewModal = (imgUrl, imgNm) => {
+    // debugger
+    setImagePreviewModal(!imagePreviewModal);
 
     try {
+      const lastDotIndex = imgNm.lastIndexOf('.');
+
+      if (lastDotIndex !== -1) {
+        const flTypeReal = imgNm.slice(lastDotIndex + 1);
+        setFileType(flTypeReal);
+      } else {
+        console.log("No file extension found.");
+      }
+
       const urlImg = new URL(imgUrl);
+
       setURLImage(urlImg);
       setNmImage(imgNm);
-      setImagePreviewModal(!imagePreviewModal);
+
     } catch (error) {
       console.error("Invalid URL:", imgUrl);
     }
-
   }
+
 
 
   const toggleShowModal = (vUrl) => {
@@ -278,7 +291,7 @@ const FileManagement = (props) => {
   }, [getFileSelect])
 
   useEffect(() => {
-  
+
     setEnterMonthlyDataSpinner(false)
     if (getSearchFile?.data !== null) {
       setRealFileList(getSearchFile?.data?.searchList)
@@ -620,6 +633,7 @@ const FileManagement = (props) => {
             toggle={togglePreviewModal}
             idImage={idImage}
             nmImage={nmImage}
+            fileType={fileType}
             URLImage={URLImage}
             locImage={locImage}
           />
@@ -901,25 +915,55 @@ const FileManagement = (props) => {
                               >
 
                                 <Card className="shadow-none border bg-light"
-                                  {...(myfiles.open === true && myfiles.edit === true && {
-                                    onContextMenu: (e) => {
-                                      e.preventDefault();
-                                      handleContextMenuOpen2(e);
-                                    },
-                                    onDoubleClick: () => toggleShowModal(myfiles.url),
-                                    onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
-                                    style: { cursor: "pointer" },
-                                  })}
+                                  {...(function () {
+                                    const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
+                                    const allowedExtensions = ["jpg", "jpeg", "gif", "png","mp4","mkv","flv","mov"];
 
-                                  {...(myfiles.open === true && myfiles.edit === false && {
-                                    onContextMenu: (e) => {
-                                      e.preventDefault();
-                                      handleContextMenuOpen2(e);
-                                    },
-                                    onDoubleClick: () => toggleShowModal(myfiles.url),
-                                    onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
-                                    style: { cursor: "pointer" },
-                                  })}
+                                    if (myfiles.open === true && myfiles.edit === true && allowedExtensions.includes(fileExtension)) {
+                                      return {
+                                        onContextMenu: (e) => {
+                                          e.preventDefault();
+                                          handleContextMenuOpen2(e);
+                                        },
+                                        onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                        style: { cursor: "pointer" },
+                                      };
+                                    } else {
+                                      return {
+                                        onDoubleClick: () => toggleShowModal(myfiles.url),
+                                      };
+                                    }
+                                  })()}
+
+                                  {...(function () {
+                                    const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
+                                    const allowedExtensions = ["jpg", "jpeg", "gif", "png","mp4","mkv","flv","mov"];
+
+                                    if (myfiles.open === true && myfiles.edit === false && allowedExtensions.includes(fileExtension)) {
+                                      return {
+                                        onContextMenu: (e) => {
+                                          e.preventDefault();
+                                          handleContextMenuOpen2(e);
+                                        },
+                                        onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                        style: { cursor: "pointer" },
+                                      };
+                                    } else {
+                                      return {
+                                        onDoubleClick: () => toggleShowModal(myfiles.url),
+                                      };
+                                    }
+                                  })()}
+
+                                // {...(myfiles.open === true && myfiles.edit === false && {
+                                //   onContextMenu: (e) => {
+                                //     e.preventDefault();
+                                //     handleContextMenuOpen2(e);
+                                //   },
+                                //   onDoubleClick: () => toggleShowModal(myfiles.url),
+                                //   onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                //   style: { cursor: "pointer" },
+                                // })}
                                 >
                                   <CardBody className="p-2 unselectable">
                                     <div className="pb-1 pt-1">
@@ -1101,7 +1145,7 @@ const FileManagement = (props) => {
                                                   </div>
                                                 );
                                               } else if (
-                                                fileNameLowerCase.endsWith("ppt") || 
+                                                fileNameLowerCase.endsWith("ppt") ||
                                                 fileNameLowerCase.endsWith("pptx")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail unselectable">
@@ -1148,28 +1192,28 @@ const FileManagement = (props) => {
                                                   </div>
                                                 );
                                               } else if (
-                                                fileNameLowerCase.endsWith("mov") || 
-                                                fileNameLowerCase.endsWith("mp4") || 
-                                                fileNameLowerCase.endsWith("mkv") || 
+                                                fileNameLowerCase.endsWith("mov") ||
+                                                fileNameLowerCase.endsWith("mp4") ||
+                                                fileNameLowerCase.endsWith("mkv") ||
                                                 fileNameLowerCase.endsWith("flv")) {
                                                 return (
 
                                                   <div className="thumbnail-container thumbnail">
-                                                  <video
-                                                    controls
-                                                    style={{
-                                                      position: 'absolute',
-                                                      width: '100%',
-                                                      height: '100%',
-                                                      objectFit: 'cover',
-                                                    }}
-                                                  >
-                                                    <source src={new URL(myfiles.url)} type="video/mp4" />
-                                                    Your browser does not support the video tag.
-                                                  </video>
-                                                </div>
+                                                    <video
+                                                      controls
+                                                      style={{
+                                                        position: 'absolute',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        objectFit: 'cover',
+                                                      }}
+                                                    >
+                                                      <source src={new URL(myfiles.url)} type="video/mp4" />
+                                                      Your browser does not support the video tag.
+                                                    </video>
+                                                  </div>
                                                 )
-                                                  } else {
+                                              } else {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
 
@@ -1242,7 +1286,7 @@ const FileManagement = (props) => {
                                                   </div>
                                                 );
                                               } else if (
-                                                fileNameLowerCase.endsWith("ppt") || 
+                                                fileNameLowerCase.endsWith("ppt") ||
                                                 fileNameLowerCase.endsWith("pptx")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
@@ -1289,24 +1333,24 @@ const FileManagement = (props) => {
                                                   </div>
                                                 );
                                               } else if (
-                                                fileNameLowerCase.endsWith("mov") || 
-                                                fileNameLowerCase.endsWith("mp4") || 
-                                                fileNameLowerCase.endsWith("mkv") || 
+                                                fileNameLowerCase.endsWith("mov") ||
+                                                fileNameLowerCase.endsWith("mp4") ||
+                                                fileNameLowerCase.endsWith("mkv") ||
                                                 fileNameLowerCase.endsWith("flv")) {
                                                 return (
 
                                                   <div className="video-container">
-                                                  <video
-                                                    controls
-                                                    style={{
-                                                      width: '100%',
-                                                      height: '100%',
-                                                    }}
-                                                  >
-                                                    <source src={new URL(myfiles.url)} type="video/mp4" /> {/* Replace with your video source */}
-                                                    Your browser does not support the video tag.
-                                                  </video>
-                                                </div>
+                                                    <video
+                                                      controls
+                                                      style={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                      }}
+                                                    >
+                                                      <source src={new URL(myfiles.url)} type="video/mp4" /> {/* Replace with your video source */}
+                                                      Your browser does not support the video tag.
+                                                    </video>
+                                                  </div>
                                                 )
                                               } else {
                                                 return (

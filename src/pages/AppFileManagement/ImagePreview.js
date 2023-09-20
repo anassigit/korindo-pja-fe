@@ -17,27 +17,34 @@ const ImagePreview = (props) => {
             isOpen={props.modal}
             toggle={props.toggle}
             centered={true}
-            backdrop="true"
         >
+
             <ModalBody>
-
-
-                <img
-
-                    style={{
-                        maxHeight: "100%",
-                        width: "100%"
-                    }}
-
-
-                    src={props.URLImage}
-
-                />
-
-                <ModalFooter className="modal-footer">
-                    {props.nmImage}
-                </ModalFooter>
+                {["jpg", "jpeg", "gif", "png"].includes(props.fileType.toLowerCase()) && (
+                    <img
+                        style={{
+                            maxHeight: "100%",
+                            width: "100%",
+                        }}
+                        src={props.URLImage}
+                        alt={props.nmImage}
+                    />
+                )}
+                {["mp4", "mkv", "flv", "mov"].includes(props.fileType.toLowerCase()) && (
+                    <video
+                        controls
+                        style={{
+                            maxHeight: "100%",
+                            width: "100%",
+                        }}
+                        src={props.URLImage}
+                        alt={props.nmImage}
+                    />
+                )}
+                <ModalFooter className="modal-footer">{props.nmImage}</ModalFooter>
             </ModalBody>
+
+
 
         </Modal>
     );
@@ -49,6 +56,7 @@ ImagePreview.propTypes = {
     toggle: PropTypes.any,
     idImage: PropTypes.any,
     nmImage: PropTypes.any,
+    fileType: PropTypes.any,
     URLImage: PropTypes.any,
     locImage: PropTypes.any,
     location: PropTypes.object,
