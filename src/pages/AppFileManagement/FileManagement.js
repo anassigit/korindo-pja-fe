@@ -702,7 +702,7 @@ const FileManagement = (props) => {
                   <Col sm="12">
                     <Col md="6">
                       <Row>
-                        <div className="align-baseline fs-6">
+                        <div className="align-baseline fs-6 unselectable">
                           <strong>
                             {realFilePath?.map((breadcrumb, index) => {
                               tempIndex = index
@@ -722,7 +722,7 @@ const FileManagement = (props) => {
                 </Row>
                 <p />
                 <p />
-                <Row className="mb-1 col-sm-10"><h6><i className="mdi mdi-folder align-baseline fs-5" />{"   "}{props.t("Folders")}</h6></Row>
+                <Row className="mb-1 col-sm-10 unselectable"><h6><i className="mdi mdi-folder align-baseline fs-5" />{"   "}{props.t("Folders")}</h6></Row>
                 <p />
                 <p />
                 <div onClick={() => { hideContextMenu(); hideContextMenu2(); }}>
@@ -872,7 +872,7 @@ const FileManagement = (props) => {
                   </Row>
                   <p />
                   <p />
-                  <Row className="mb-1 col-sm-10"><h6><i className="mdi mdi-file align-baseline fs-5" />{"   "}{props.t("Files")}</h6></Row>
+                  <Row className="mb-1 col-sm-10 unselectable"><h6><i className="mdi mdi-file align-baseline fs-5" />{"   "}{props.t("Files")}</h6></Row>
                   <p />
                   <Row className="mb-2">
                     <Col sm="12">
@@ -921,7 +921,7 @@ const FileManagement = (props) => {
                                     style: { cursor: "pointer" },
                                   })}
                                 >
-                                  <CardBody className="p-2">
+                                  <CardBody className="p-2 unselectable">
                                     <div className="pb-1 pt-1">
                                       <div className="float-end">
                                         <UncontrolledDropdown>
@@ -1048,7 +1048,7 @@ const FileManagement = (props) => {
 
                                               if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
                                                 return (
-                                                  <div className="thumbnail-container thumbnail">
+                                                  <div className="thumbnail-container thumbnail unselectable">
                                                     <img style={{
                                                       position: 'absolute',
                                                       top: '27%',
@@ -1068,7 +1068,7 @@ const FileManagement = (props) => {
                                                 fileNameLowerCase.endsWith("png")
                                               ) {
                                                 return (
-                                                  <div className="thumbnail-container thumbnail">
+                                                  <div className="thumbnail-container thumbnail unselectable">
 
                                                     <img style={{
                                                       position: 'absolute',
@@ -1086,7 +1086,7 @@ const FileManagement = (props) => {
                                                 fileNameLowerCase.endsWith("csv")
                                               ) {
                                                 return (
-                                                  <div className="thumbnail-container thumbnail">
+                                                  <div className="thumbnail-container thumbnail unselectable">
 
                                                     <img style={{
                                                       position: 'absolute',
@@ -1104,7 +1104,7 @@ const FileManagement = (props) => {
                                                 fileNameLowerCase.endsWith("ppt") || 
                                                 fileNameLowerCase.endsWith("pptx")) {
                                                 return (
-                                                  <div className="thumbnail-container thumbnail">
+                                                  <div className="thumbnail-container thumbnail unselectable">
                                                     <img style={{
                                                       position: 'absolute',
                                                       top: '27%',
@@ -1119,7 +1119,7 @@ const FileManagement = (props) => {
                                                 );
                                               } else if (fileNameLowerCase.endsWith("pdf")) {
                                                 return (
-                                                  <div className="thumbnail-container thumbnail">
+                                                  <div className="thumbnail-container thumbnail unselectable">
                                                     <img style={{
                                                       position: 'absolute',
                                                       top: '27%',
