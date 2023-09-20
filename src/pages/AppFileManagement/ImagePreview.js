@@ -30,7 +30,7 @@ const ImagePreview = (props) => {
                         alt={props.nmImage}
                     />
                 )}
-                {["mp4", "mkv", "flv", "mov"].includes(props.fileType.toLowerCase()) && (
+                {["mp4", "mkv", "flv", "mov","avi"].includes(props.fileType.toLowerCase()) && (
                     <video
                         controls
                         style={{

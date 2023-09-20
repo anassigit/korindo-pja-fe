@@ -14,7 +14,8 @@ import {
   DropdownMenu,
   DropdownToggle,
   UncontrolledDropdown,
-  Spinner
+  Spinner,
+  CardHeader
 } from "reactstrap"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile } from "../../store/appFileManagement/actions"
@@ -42,6 +43,8 @@ import xls from '../../assets/images/file_management/xls.png'
 import ppt from '../../assets/images/file_management/ppt.png'
 import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
+import picture from '../../assets/images/file_management/picture.png'
+import film from '../../assets/images/file_management/film.png'
 import unknown from '../../assets/images/file_management/unknown.png'
 import { getProfile } from "store/actions";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -534,44 +537,6 @@ const FileManagement = (props) => {
   }, [queryFolderNum])
 
 
-  const [isFullScreen, setIsFullScreen] = useState(false);
-
-  const toggleFullScreen = () => {
-    setIsFullScreen(!isFullScreen);
-  };
-
-  const containerStyle = {
-    position: 'relative',
-    width: '320px', // Set your preferred thumbnail width
-    height: '180px', // Set your preferred thumbnail height
-    cursor: 'pointer',
-    transition: 'transform 0.2s',
-    overflow: 'hidden', // Hide video overflow in thumbnail mode
-  };
-
-  const fullScreenContainerStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 999,
-    background: 'rgba(0, 0, 0, 0.8)', // Semi-transparent background for full screen
-  };
-
-  const thumbnailStyle = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  };
-
-  const fullScreenVideoStyle = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  };
-
-
   return (
     <RootPageCustom
       componentJsx={
@@ -915,45 +880,48 @@ const FileManagement = (props) => {
                               >
 
                                 <Card className="shadow-none border bg-light"
-                                  {...(function () {
-                                    const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
-                                    const allowedExtensions = ["jpg", "jpeg", "gif", "png","mp4","mkv","flv","mov"];
+                                // {...(function () {
+                                //   const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
+                                //   const allowedExtensions = ["jpg","jpeg","gif","png","mp4","mkv","flv","mov","avi"];
 
-                                    if (myfiles.open === true && myfiles.edit === true && allowedExtensions.includes(fileExtension)) {
-                                      return {
-                                        onContextMenu: (e) => {
-                                          e.preventDefault();
-                                          handleContextMenuOpen2(e);
-                                        },
-                                        onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
-                                        style: { cursor: "pointer" },
-                                      };
-                                    } else {
-                                      return {
-                                        onDoubleClick: () => toggleShowModal(myfiles.url),
-                                      };
-                                    }
-                                  })()}
+                                //   if (myfiles.open === true && myfiles.edit === true && allowedExtensions.includes(fileExtension)) {
+                                //     return {
+                                //       onContextMenu: (e) => {
+                                //         e.preventDefault();
+                                //         handleContextMenuOpen2(e);
+                                //       },
+                                //       onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                //       style: { cursor: "pointer" },
+                                //     };
+                                //   } else {
+                                //     return {
+                                //       onDoubleClick: () => toggleShowModal(myfiles.url),
+                                //       style: { cursor: "pointer" },
+                                //     };
+                                //   }
+                                // })()}
 
-                                  {...(function () {
-                                    const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
-                                    const allowedExtensions = ["jpg", "jpeg", "gif", "png","mp4","mkv","flv","mov"];
+                                // {...(function () {
+                                //   const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
+                                //   const allowedExtensions = ["jpg","jpeg","gif","png","mp4","mkv","flv","mov","avi"];
 
-                                    if (myfiles.open === true && myfiles.edit === false && allowedExtensions.includes(fileExtension)) {
-                                      return {
-                                        onContextMenu: (e) => {
-                                          e.preventDefault();
-                                          handleContextMenuOpen2(e);
-                                        },
-                                        onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
-                                        style: { cursor: "pointer" },
-                                      };
-                                    } else {
-                                      return {
-                                        onDoubleClick: () => toggleShowModal(myfiles.url),
-                                      };
-                                    }
-                                  })()}
+                                //   if (myfiles.open === true && myfiles.edit === false && allowedExtensions.includes(fileExtension)) {
+                                //     return {
+                                //       onContextMenu: (e) => {
+                                //         e.preventDefault();
+                                //         handleContextMenuOpen2(e);
+                                //       },
+                                //       onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                //       style: { cursor: "pointer" },
+                                //     };
+                                //   } else {
+                                //     return {
+                                //       onDoubleClick: () => toggleShowModal(myfiles.url),
+                                //       style: { cursor: "pointer" },
+                                //     };
+                                //   }
+
+                                // })()}
 
                                 // {...(myfiles.open === true && myfiles.edit === false && {
                                 //   onContextMenu: (e) => {
@@ -965,12 +933,20 @@ const FileManagement = (props) => {
                                 //   style: { cursor: "pointer" },
                                 // })}
                                 >
-                                  <CardBody className="p-2 unselectable">
-                                    <div className="pb-1 pt-1">
-                                      <div className="float-end">
-                                        <UncontrolledDropdown>
+                                  <CardHeader className="unselectable" style={{ backgroundColor: "transparent", color: "#495057", fontWeight: "normal", paddingTop: "0.75rem", marginLeft: "0", marginRight: "3px", paddingBottom: "0" }}>
+                                    <div className="float-end" >
+                                      <UncontrolledDropdown>
 
-                                          {myfiles.edit === true && myfiles.open === true ? (
+                                        {myfiles.edit === true && myfiles.open === true ? (
+                                          <DropdownToggle
+                                            className="fs-6 text-muted"
+                                            tag="a"
+                                            onClick={handleDropdownMenuToggle2}
+                                          >
+                                            <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
+                                          </DropdownToggle>
+                                        ) : (
+                                          myfiles.edit === false && myfiles.open === true ? (
                                             <DropdownToggle
                                               className="fs-6 text-muted"
                                               tag="a"
@@ -978,112 +954,186 @@ const FileManagement = (props) => {
                                             >
                                               <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
                                             </DropdownToggle>
-                                          ) : (
-                                            myfiles.edit === false && myfiles.open === true ? (
-                                              <DropdownToggle
-                                                className="fs-6 text-muted"
-                                                tag="a"
-                                                onClick={handleDropdownMenuToggle2}
-                                              >
-                                                <i className="mdi mdi-dots-vertical fs-5 align-middle"></i>
-                                              </DropdownToggle>
-                                            ) : null
-                                          )}
+                                          ) : null
+                                        )}
 
-                                          {isDropdownMenuOpen2 && myfiles.edit === true && myfiles.open === true && (
+                                        {isDropdownMenuOpen2 && myfiles.edit === true && myfiles.open === true && (
 
-                                            <DropdownMenu className="dropdown-menu-end">
-                                              {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
-                                                <>
-                                                  <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
-                                                    <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Preview")}
-                                                  </DropdownItem>
-                                                  <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                                    <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Rename")}
-                                                  </DropdownItem>
-                                                  <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                                    <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Move")}
-                                                  </DropdownItem>
-                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Download")}
-                                                  </DropdownItem>
-                                                  <div className="dropdown-divider"></div>
-                                                  <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                                    <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Remove")}
-                                                  </DropdownItem>
-                                                </>
-                                              ) : (
-                                                <>
-                                                  <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
-                                                    <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Rename")}
-                                                  </DropdownItem>
-                                                  <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
-                                                    <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Move")}
-                                                  </DropdownItem>
-                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Download")}
-                                                  </DropdownItem>
-                                                  <div className="dropdown-divider"></div>
-                                                  <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
-                                                    <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Remove")}
-                                                  </DropdownItem>
-                                                </>
-                                              )}
-                                            </DropdownMenu>
+                                          <DropdownMenu className="dropdown-menu-end">
+                                            {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                              <>
+                                                <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                                  <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Preview")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Rename")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Move")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Download")}
+                                                </DropdownItem>
+                                                <div className="dropdown-divider"></div>
+                                                <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                                  <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Remove")}
+                                                </DropdownItem>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <DropdownItem onClick={() => toggleRenameModal(myfiles.num, myfiles.name, myfiles.type)}>
+                                                  <i className="mdi mdi-pencil align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Rename")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => toggleMoveModal(myfiles.num, myfiles.parent_num)}>
+                                                  <i className="mdi mdi-folder-move align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Move")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Download")}
+                                                </DropdownItem>
+                                                <div className="dropdown-divider"></div>
+                                                <DropdownItem onClick={() => confirmToggleDelete(myfiles.num, myfiles.type)}>
+                                                  <i className="mdi mdi-delete-forever align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Remove")}
+                                                </DropdownItem>
+                                              </>
+                                            )}
+                                          </DropdownMenu>
 
-                                          )}
+                                        )}
 
-                                          {isDropdownMenuOpen2 && myfiles.edit === false && myfiles.open === true && (
+                                        {isDropdownMenuOpen2 && myfiles.edit === false && myfiles.open === true && (
 
-                                            <DropdownMenu className="dropdown-menu-end">
-                                              {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
-                                                <>
-                                                  <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
-                                                    <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Preview")}
-                                                  </DropdownItem>
-                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Download")}
-                                                  </DropdownItem>
+                                          <DropdownMenu className="dropdown-menu-end">
+                                            {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
+                                              <>
+                                                <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                                  <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Preview")}
+                                                </DropdownItem>
+                                                <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Download")}
+                                                </DropdownItem>
 
-                                                </>
-                                              ) : (
-                                                <>
-                                                  <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
-                                                    <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
-                                                    {props.t("Download")}
-                                                  </DropdownItem>
-                                                </>
-                                              )}
-                                            </DropdownMenu>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <DropdownItem onClick={() => downloadCheckFile1(myfiles.num, myfiles.name)}>
+                                                  <i className="mdi mdi-download align-middle fs-4 mb-2" /> {"  "}
+                                                  {props.t("Download")}
+                                                </DropdownItem>
+                                              </>
+                                            )}
+                                          </DropdownMenu>
 
-                                          )}
+                                        )}
 
-                                        </UncontrolledDropdown>
+                                      </UncontrolledDropdown>
+                                    </div>
+
+                                    {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") ? (
+                                      <div className="float-start">
+                                        <img
+                                          style={{
+                                            height: "16.5px",
+                                            width: "16.5px"
+                                          }}
+                                          src={picture}
+                                        />
                                       </div>
 
+                                    ) : myfiles.name.endsWith("mov") || myfiles.name.endsWith("mp4") || myfiles.name.endsWith("mkv") || myfiles.name.endsWith("avi") || myfiles.name.endsWith("flv") ? (
+                                      <div className="float-start">
+                                        <img
+                                          style={{
+                                            height: "16.5px",
+                                            width: "16.5px"
+                                          }}
+                                          src={film}
+                                        />
+                                      </div>
 
-                                      <div className="text-truncate mb-1 ms-3">
-                                        <a className="text-body fs-6" id={`nameTooltip_${key}`}>
+                                    ) :
+
+                                      null
+                                    }
+
+
+
+
+                                    <div className="text-truncate mb-1 ms-4">
+                                      <a className="text-body fs-6" id={`nameTooltip_${key}`}>
+
+                                        {myfiles.name}
+
+                                        <UncontrolledTooltip placement="top" target={`nameTooltip_${key}`}>
                                           {myfiles.name}
+                                        </UncontrolledTooltip>
+                                      </a>
+                                    </div>
 
-                                          <UncontrolledTooltip placement="top" target={`nameTooltip_${key}`}>
-                                            {myfiles.name}
-                                          </UncontrolledTooltip>
-                                        </a>
-                                      </div>
+                                  </CardHeader>
+
+                                  <CardBody className="p-2 unselectable"
+
+                                    {...(function () {
+                                      const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
+                                      const allowedExtensions = ["jpg", "jpeg", "gif", "png", "mp4", "mkv", "flv", "mov", "avi"];
+
+                                      if (myfiles.open === true && myfiles.edit === true && allowedExtensions.includes(fileExtension)) {
+                                        return {
+                                          onContextMenu: (e) => {
+                                            e.preventDefault();
+                                            handleContextMenuOpen2(e);
+                                          },
+                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                          style: { cursor: "pointer" },
+                                        };
+                                      } else {
+                                        return {
+                                          onDoubleClick: () => toggleShowModal(myfiles.url),
+                                          style: { cursor: "pointer" },
+                                        };
+                                      }
+                                    })()}
+
+                                    {...(function () {
+                                      const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
+                                      const allowedExtensions = ["jpg", "jpeg", "gif", "png", "mp4", "mkv", "flv", "mov", "avi"];
+
+                                      if (myfiles.open === true && myfiles.edit === false && allowedExtensions.includes(fileExtension)) {
+                                        return {
+                                          onContextMenu: (e) => {
+                                            e.preventDefault();
+                                            handleContextMenuOpen2(e);
+                                          },
+                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                          style: { cursor: "pointer" },
+                                        };
+                                      } else {
+                                        return {
+                                          onDoubleClick: () => toggleShowModal(myfiles.url),
+                                          style: { cursor: "pointer" },
+                                        };
+                                      }
+
+                                    })()}
+
+
+
+                                  >
+                                    <div className="pb-1">
+
                                       {myfiles.open === true && (
-                                        <div className="pt-2">
+                                        <div className="">
                                           <div className="avatar-title bg-transparent rounded">
                                             {(() => {
 
@@ -1195,12 +1245,12 @@ const FileManagement = (props) => {
                                                 fileNameLowerCase.endsWith("mov") ||
                                                 fileNameLowerCase.endsWith("mp4") ||
                                                 fileNameLowerCase.endsWith("mkv") ||
+                                                fileNameLowerCase.endsWith("avi") ||
                                                 fileNameLowerCase.endsWith("flv")) {
                                                 return (
 
-                                                  <div className="thumbnail-container thumbnail">
+                                                  <div className="thumbnail-container thumbnail" style={{ position: 'relative' }}>
                                                     <video
-                                                      controls
                                                       style={{
                                                         position: 'absolute',
                                                         width: '100%',
@@ -1211,7 +1261,47 @@ const FileManagement = (props) => {
                                                       <source src={new URL(myfiles.url)} type="video/mp4" />
                                                       Your browser does not support the video tag.
                                                     </video>
+
+
+                                                    <button
+                                                      onClick={() =>
+                                                        togglePreviewModal(myfiles.url, myfiles.name)
+
+                                                      }
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '50%',
+                                                        width: '60px',
+                                                        height: '60px',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-play-circle fs-4" />
+                                                    </button>
+
                                                   </div>
+
+                                                  // <div className="thumbnail-container thumbnail">
+                                                  //   <video
+                                                  //     controls
+                                                  //     style={{
+                                                  //       position: 'absolute',
+                                                  //       width: '100%',
+                                                  //       height: '100%',
+                                                  //       objectFit: 'cover',
+                                                  //     }}
+                                                  //   >
+                                                  //     <source src={new URL(myfiles.url)} type="video/mp4" />
+                                                  //     Your browser does not support the video tag.
+                                                  //   </video>
+                                                  // </div>
                                                 )
                                               } else {
                                                 return (
@@ -1336,21 +1426,63 @@ const FileManagement = (props) => {
                                                 fileNameLowerCase.endsWith("mov") ||
                                                 fileNameLowerCase.endsWith("mp4") ||
                                                 fileNameLowerCase.endsWith("mkv") ||
+                                                fileNameLowerCase.endsWith("avi") ||
                                                 fileNameLowerCase.endsWith("flv")) {
                                                 return (
 
-                                                  <div className="video-container">
+
+
+                                                  <div className="thumbnail-container thumbnail" style={{ position: 'relative' }}>
                                                     <video
-                                                      controls
                                                       style={{
+                                                        position: 'absolute',
                                                         width: '100%',
                                                         height: '100%',
+                                                        objectFit: 'cover',
                                                       }}
                                                     >
-                                                      <source src={new URL(myfiles.url)} type="video/mp4" /> {/* Replace with your video source */}
+                                                      <source src={new URL(myfiles.url)} type="video/mp4" />
                                                       Your browser does not support the video tag.
                                                     </video>
+
+
+                                                    <button
+                                                      onClick={() =>
+                                                        togglePreviewModal(myfiles.url, myfiles.name)
+
+                                                      }
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '50%',
+                                                        width: '60px',
+                                                        height: '60px',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-play-circle fs-4" />
+                                                    </button>
+
                                                   </div>
+
+                                                  // <div className="video-container">
+                                                  //   <video
+                                                  //     controls
+                                                  //     style={{
+                                                  //       width: '100%',
+                                                  //       height: '100%',
+                                                  //     }}
+                                                  //   >
+                                                  //     <source src={new URL(myfiles.url)} type="video/mp4" /> 
+                                                  //     Your browser does not support the video tag.
+                                                  //   </video>
+                                                  // </div>
                                                 )
                                               } else {
                                                 return (
