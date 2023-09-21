@@ -187,7 +187,7 @@ const FileManagement = (props) => {
   const toggleShowModal = (vUrl) => {
 
     const pdfWindow = window.open();
-    pdfWindow.location.href = new URL(vUrl);
+    window.location.href = new URL(vUrl);
 
   };
 
@@ -1112,9 +1112,6 @@ const FileManagement = (props) => {
                                     ) : null
                                     }
 
-
-
-
                                     <div className="text-truncate mb-1 ms-4">
                                       <a className="text-body fs-6" id={`nameTooltip_${key}`}>
 
@@ -1395,6 +1392,25 @@ const FileManagement = (props) => {
                                                       src={doc}
                                                     />
 
+                                                    <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
+
                                                   </div>
                                                 );
                                               } else if (
@@ -1406,6 +1422,25 @@ const FileManagement = (props) => {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
                                                     <img src={new URL(myfiles.url)} />
+
+                                                    <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
                                                   </div>
                                                 );
                                               } else if (
@@ -1419,6 +1454,25 @@ const FileManagement = (props) => {
                                                     <img
                                                       src={xls}
                                                     />
+
+                                                    <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
                                                   </div>
                                                 );
                                               } else if (
@@ -1436,6 +1490,25 @@ const FileManagement = (props) => {
                                                     }}
                                                       src={ppt}
                                                     />
+
+                                                    <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
                                                   </div>
                                                 );
                                               } else if (fileNameLowerCase.endsWith("pdf")) {
@@ -1451,6 +1524,25 @@ const FileManagement = (props) => {
                                                     }}
                                                       src={pdf}
                                                     />
+
+                                                    <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
                                                   </div>
                                                 );
                                               } else if (fileNameLowerCase.endsWith("txt")) {
@@ -1466,6 +1558,25 @@ const FileManagement = (props) => {
                                                     }}
                                                       src={txt}
                                                     />
+
+                                                    <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
                                                   </div>
                                                 );
                                               } else if (
@@ -1491,8 +1602,26 @@ const FileManagement = (props) => {
                                                       Your browser does not support the video tag.
                                                     </video>
 
-
                                                     <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
+
+                                                    {/* <button
                                                       onClick={() =>
                                                         togglePreviewModal(myfiles.url, myfiles.name)
 
@@ -1513,7 +1642,7 @@ const FileManagement = (props) => {
                                                     >
 
                                                       <i className="mdi mdi-play-circle fs-4" />
-                                                    </button>
+                                                    </button> */}
 
                                                   </div>
 
@@ -1544,6 +1673,25 @@ const FileManagement = (props) => {
                                                     }}
                                                       src={unknown}
                                                     />
+
+                                                    <button
+                                                      style={{
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '0%',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                      }}
+                                                    >
+
+                                                      <i className="mdi mdi-eye-off fs-1" />
+                                                    </button>
                                                   </div>
                                                 )
                                               }
