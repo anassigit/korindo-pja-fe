@@ -42,6 +42,10 @@ import doc from '../../assets/images/file_management/doc.png'
 import xls from '../../assets/images/file_management/xls.png'
 import ppt from '../../assets/images/file_management/ppt.png'
 import pdf from '../../assets/images/file_management/pdf.png'
+import acrobat from '../../assets/images/file_management/acrobat.png'
+import powerpoint from '../../assets/images/file_management/powerpoint.png'
+import word from '../../assets/images/file_management/word.png'
+import excel from '../../assets/images/file_management/excel.png'
 import txt from '../../assets/images/file_management/txt.png'
 import picture from '../../assets/images/file_management/picture.png'
 import film from '../../assets/images/file_management/film.png'
@@ -933,7 +937,7 @@ const FileManagement = (props) => {
                                 //   style: { cursor: "pointer" },
                                 // })}
                                 >
-                                  <CardHeader className="unselectable" style={{ backgroundColor: "transparent", color: "#495057", fontWeight: "normal", paddingTop: "0.75rem", marginLeft: "0", marginRight: "3px", paddingBottom: "0" }}>
+                                  <CardHeader className="unselectable" style={{ backgroundColor: "transparent", color: "#495057", fontWeight: "normal", paddingTop: "0.75rem", marginLeft: "0", marginRight: "0px", paddingBottom: "0" }}>
                                     <div className="float-end" >
                                       <UncontrolledDropdown>
 
@@ -1061,9 +1065,51 @@ const FileManagement = (props) => {
                                         />
                                       </div>
 
-                                    ) :
+                                    ) : myfiles.name.endsWith("xls") || myfiles.name.endsWith("xlsx") || myfiles.name.endsWith("csv") ? (
+                                      <div className="float-start">
+                                        <img
+                                          style={{
+                                            height: "16.5px",
+                                            width: "16.5px"
+                                          }}
+                                          src={excel}
+                                        />
+                                      </div>
 
-                                      null
+                                    ) : myfiles.name.endsWith("doc") || myfiles.name.endsWith("docx") ? (
+                                      <div className="float-start">
+                                        <img
+                                          style={{
+                                            height: "16.5px",
+                                            width: "16.5px"
+                                          }}
+                                          src={word}
+                                        />
+                                      </div>
+
+                                    ) : myfiles.name.endsWith("pdf") ? (
+                                      <div className="float-start">
+                                        <img
+                                          style={{
+                                            height: "16.5px",
+                                            width: "16.5px"
+                                          }}
+                                          src={acrobat}
+                                        />
+                                      </div>
+
+                                    ) : myfiles.name.endsWith("ppt") || myfiles.name.endsWith("pptx") ? (
+                                      <div className="float-start">
+                                        <img
+                                          style={{
+                                            height: "16.5px",
+                                            width: "16.5px"
+                                          }}
+                                          src={powerpoint}
+                                        />
+                                      </div>
+
+                                    ) : null
                                     }
 
 
