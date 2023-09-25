@@ -47,6 +47,7 @@ import powerpoint from '../../assets/images/file_management/powerpoint.png'
 import word from '../../assets/images/file_management/word.png'
 import excel from '../../assets/images/file_management/excel.png'
 import txt from '../../assets/images/file_management/txt.png'
+import txtformat from '../../assets/images/file_management/txtformat.png'
 import picture from '../../assets/images/file_management/picture.png'
 import film from '../../assets/images/file_management/film.png'
 import unknown from '../../assets/images/file_management/unknown.png'
@@ -120,6 +121,8 @@ const FileManagement = (props) => {
   const [parentFiles, setParentFiles] = useState(0)
   const [nameFiles, setNameFiles] = useState()
   const [typeFiles, setTypeFiles] = useState("")
+  const [urlFiles, setUrlFiles] = useState("")
+  const [extFiles, setExtFiles] = useState("")
 
   // image preview
 
@@ -136,7 +139,7 @@ const FileManagement = (props) => {
   const queryFolderNum = queryParameters.get("folder_num")
 
   const toggleRenameModal = (idT, nmT, tpT) => {
-
+debugger
     setIdNowLoc(currFolder)
     setIdToggle(idT)
     if (tpT === "FILE") {
@@ -159,15 +162,18 @@ const FileManagement = (props) => {
   }
 
   const togglePreviewModal = (imgUrl, imgNm) => {
+
     // debugger
+
     setImagePreviewModal(!imagePreviewModal);
 
     try {
       const lastDotIndex = imgNm.lastIndexOf('.');
 
       if (lastDotIndex !== -1) {
-        const flTypeReal = imgNm.slice(lastDotIndex + 1);
+        var flTypeReal = imgNm.slice(lastDotIndex + 1);
         setFileType(flTypeReal);
+        console.log("ext", fileType)
       } else {
         console.log("No file extension found.");
       }
@@ -180,14 +186,22 @@ const FileManagement = (props) => {
     } catch (error) {
       console.error("Invalid URL:", imgUrl);
     }
+
+    if (flTypeReal === "pdf"){
+
+      const pdfWindow = window.open();
+      pdfWindow.location.href = new URL(imgUrl);
+      
+      setImagePreviewModal(false)
+      setContextMenuOpen2(false)
+    } 
+    
   }
-
-
 
   const toggleShowModal = (vUrl) => {
 
     const pdfWindow = window.open();
-    window.location.href = new URL(vUrl);
+    pdfWindow.location.href = new URL(vUrl);
 
   };
 
@@ -450,6 +464,8 @@ const FileManagement = (props) => {
     setTypeFolders(tpFolder);
     setIsContextMenuVisible(true)
     setIsContextMenuVisible2(false);
+    setDropdownMenuOpen(false);
+    setDropdownMenuOpen2(false);
     setContextMenuPosition({ x: xPos, y: yPos })
 
   };
@@ -477,14 +493,18 @@ const FileManagement = (props) => {
 
     setDropdownMenuOpen(true);
     setContextMenuOpen(false);
-
+    setContextMenuOpen2(false);
+    setIsContextMenuVisible(false);
+    setIsContextMenuVisible2(false);
   };
 
   ///  --- END --- ///
 
   /// [File --- Context Menu & Dropdown Menu] ///
 
-  const handleContextMenu2 = (e, noFile, parFile, nmFile, tpFile) => {
+  const handleContextMenu2 = (e, noFile, parFile, nmFile, tpFile, urlFile) => {
+
+    debugger
     e.preventDefault();
 
     const xPos2 = e.clientX;
@@ -494,8 +514,11 @@ const FileManagement = (props) => {
     setParentFiles(parFile);
     setNameFiles(nmFile);
     setTypeFiles(tpFile);
+    setUrlFiles(urlFile)
     setIsContextMenuVisible2(true)
     setIsContextMenuVisible(false);
+    setDropdownMenuOpen(false);
+    setDropdownMenuOpen2(false);
     setContextMenuPosition2({ x: xPos2, y: yPos2 })
 
   };
@@ -523,7 +546,10 @@ const FileManagement = (props) => {
   const handleDropdownMenuToggle2 = () => {
 
     setDropdownMenuOpen2(true);
+    setContextMenuOpen(false);
     setContextMenuOpen2(false);
+    setIsContextMenuVisible(false);
+    setIsContextMenuVisible2(false);
 
   };
 
@@ -869,14 +895,14 @@ const FileManagement = (props) => {
                               <div
                                 {...(myfiles.open === true && myfiles.edit === true && {
                                   onContextMenu: (e) => {
-                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles.url);
                                   },
                                   onClick: hideContextMenu2,
                                 })}
 
                                 {...(myfiles.open === true && myfiles.edit === false && {
                                   onContextMenu: (e) => {
-                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles.url);
                                   },
                                   onClick: hideContextMenu2,
                                 })}
@@ -966,7 +992,7 @@ const FileManagement = (props) => {
                                           <DropdownMenu className="dropdown-menu-end">
                                             {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
                                               <>
-                                                <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                                <DropdownItem onClick={() => togglePreviewModal(myfiles.url, myfiles.name)}>
                                                   <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
                                                   {props.t("Preview")}
                                                 </DropdownItem>
@@ -1018,7 +1044,7 @@ const FileManagement = (props) => {
                                           <DropdownMenu className="dropdown-menu-end">
                                             {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
                                               <>
-                                                <DropdownItem onClick={() => toggleShowModal(myfiles.url)}>
+                                                <DropdownItem onClick={() => togglePreviewModal(myfiles.url, myfiles.name)}>
                                                   <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
                                                   {props.t("Preview")}
                                                 </DropdownItem>
@@ -1109,6 +1135,17 @@ const FileManagement = (props) => {
                                         />
                                       </div>
 
+                                    ) : myfiles.name.endsWith("txt") ? (
+                                      <div className="float-start">
+                                        <img
+                                          style={{
+                                            height: "16.5px",
+                                            width: "16.5px"
+                                          }}
+                                          src={txtformat}
+                                        />
+                                      </div>
+
                                     ) : null
                                     }
 
@@ -1137,7 +1174,7 @@ const FileManagement = (props) => {
                                             e.preventDefault();
                                             handleContextMenuOpen2(e);
                                           },
-                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                          onClick: () => togglePreviewModal(urlFiles, nameFiles),
                                           style: { cursor: "pointer" },
                                         };
                                       } else {
@@ -1158,7 +1195,7 @@ const FileManagement = (props) => {
                                             e.preventDefault();
                                             handleContextMenuOpen2(e);
                                           },
-                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                          onClick: () => togglePreviewModal(urlFiles, nameFiles),
                                           style: { cursor: "pointer" },
                                         };
                                       } else {
@@ -1398,7 +1435,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1429,7 +1466,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1461,7 +1498,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1497,7 +1534,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1531,7 +1568,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1565,7 +1602,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1608,7 +1645,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1680,7 +1717,7 @@ const FileManagement = (props) => {
                                                         top: '50%',
                                                         left: '50%',
                                                         transform: 'translate(-50%, -50%)',
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
                                                         color: 'white',
                                                         border: 'none',
                                                         borderRadius: '0%',
@@ -1709,7 +1746,7 @@ const FileManagement = (props) => {
                                       className="custom-context-menu"
 
                                       style={{
-                                        position: 'fixed',
+                                        position: 'fixed',    
                                         left: contextMenuPosition2.x + 'px',
                                         top: contextMenuPosition2.y + 'px',
                                       }}
@@ -1717,7 +1754,7 @@ const FileManagement = (props) => {
                                       {nameFiles.endsWith("jpg") || nameFiles.endsWith("jpeg") || nameFiles.endsWith("gif") || nameFiles.endsWith("png") || nameFiles.endsWith("pdf") ? (
                                         <>
                                           <li className="custom-context-menu-li"
-                                            onClick={() => toggleShowModal(myfiles.url)}
+                                            onClick={() => togglePreviewModal(urlFiles, nameFiles)}
 
                                           >
                                             <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
@@ -1801,7 +1838,7 @@ const FileManagement = (props) => {
                                       {nameFiles.endsWith("jpg") || nameFiles.endsWith("jpeg") || nameFiles.endsWith("gif") || nameFiles.endsWith("png") || nameFiles.endsWith("pdf") ? (
                                         <>
                                           <li className="custom-context-menu-li"
-                                            onClick={() => toggleShowModal(myfiles.url)}
+                                            onClick={() => togglePreviewModal(urlFiles, nameFiles)}
 
                                           >
                                             <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
