@@ -1427,6 +1427,7 @@ debugger
                                                       width: '50px',
                                                       height: '50px',
                                                       objectFit: 'cover',
+                                                      filter: 'blur(5px)'
                                                     }}
                                                       src={doc}
                                                     />
@@ -1460,7 +1461,12 @@ debugger
                                               ) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
-                                                    <img src={new URL(myfiles.url)} />
+                                                    <img 
+                                                    style={{
+                                                      filter: 'blur(5px)'
+                                                    }}
+                                                    src={new URL(myfiles.url)} 
+                                                    />
 
                                                     <button
                                                       style={{
@@ -1491,6 +1497,9 @@ debugger
                                                   <div className="thumbnail-container thumbnail">
 
                                                     <img
+                                                                                                        style={{
+                                                                                                          filter: 'blur(5px)'
+                                                                                                        }}
                                                       src={xls}
                                                     />
 
@@ -1526,6 +1535,7 @@ debugger
                                                       width: '50px',
                                                       height: '50px',
                                                       objectFit: 'cover',
+                                                      filter: 'blur(5px)'
                                                     }}
                                                       src={ppt}
                                                     />
@@ -1560,6 +1570,7 @@ debugger
                                                       width: '50px',
                                                       height: '50px',
                                                       objectFit: 'cover',
+                                                      filter: 'blur(5px)'
                                                     }}
                                                       src={pdf}
                                                     />
@@ -1594,6 +1605,7 @@ debugger
                                                       width: '50px',
                                                       height: '50px',
                                                       objectFit: 'cover',
+                                                      filter: 'blur(5px)'
                                                     }}
                                                       src={txt}
                                                     />
@@ -1635,6 +1647,7 @@ debugger
                                                         width: '100%',
                                                         height: '100%',
                                                         objectFit: 'cover',
+                                                        filter: 'blur(5px)'
                                                       }}
                                                     >
                                                       <source src={new URL(myfiles.url)} type="video/mp4" />
@@ -1709,6 +1722,7 @@ debugger
                                                       width: '50px',
                                                       height: '50px',
                                                       objectFit: 'cover',
+                                                      filter: 'blur(5px)'
                                                     }}
                                                       src={unknown}
                                                     />
