@@ -163,7 +163,7 @@ debugger
 
   const togglePreviewModal = (imgUrl, imgNm) => {
 
-    // debugger
+    debugger
 
     setImagePreviewModal(!imagePreviewModal);
 
@@ -384,6 +384,7 @@ debugger
   }
 
   const downloadCheckFile2 = (num, fileNm) => {
+
 
     setDownloadFlag(true)
 
@@ -1176,7 +1177,7 @@ debugger
                                             e.preventDefault();
                                             handleContextMenuOpen2(e);
                                           },
-                                          onClick: () => togglePreviewModal(urlFiles, nameFiles),
+                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       } else {
@@ -1197,7 +1198,7 @@ debugger
                                             e.preventDefault();
                                             handleContextMenuOpen2(e);
                                           },
-                                          onClick: () => togglePreviewModal(urlFiles, nameFiles),
+                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       } else {
