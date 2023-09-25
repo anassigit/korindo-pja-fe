@@ -191,14 +191,16 @@ debugger
 
       const pdfWindow = window.open();
       pdfWindow.location.href = new URL(imgUrl);
-      
+
       setImagePreviewModal(false)
       setContextMenuOpen2(false)
     } 
     
   }
 
-  const toggleShowModal = (vUrl) => {
+  const toggleShowModal = (vUrl, vNm) => {
+
+// debugger
 
     const pdfWindow = window.open();
     pdfWindow.location.href = new URL(vUrl);
@@ -442,7 +444,7 @@ debugger
   const [searchVal, setSearchVal] = useState()
 
   const handleSearchChange = (e) => {
-    debugger
+    // debugger
     setEnterMonthlyDataSpinner(true)
     dispatch(getSearch({ "search": searchVal }))
   }
@@ -504,7 +506,7 @@ debugger
 
   const handleContextMenu2 = (e, noFile, parFile, nmFile, tpFile, urlFile) => {
 
-    debugger
+    // debugger
     e.preventDefault();
 
     const xPos2 = e.clientX;
@@ -1179,7 +1181,7 @@ debugger
                                         };
                                       } else {
                                         return {
-                                          onDoubleClick: () => toggleShowModal(myfiles.url),
+                                          onDoubleClick: () => toggleShowModal(myfiles.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       }
@@ -1200,7 +1202,7 @@ debugger
                                         };
                                       } else {
                                         return {
-                                          onDoubleClick: () => toggleShowModal(myfiles.url),
+                                          onDoubleClick: () => toggleShowModal(myfiles.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       }
