@@ -12,17 +12,28 @@ import { Link } from "react-router-dom"
 //i18n
 import { withTranslation } from "react-i18next"
 import { ReactSession } from 'react-client-session';
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useLocation } from "react-router-dom/cjs/react-router-dom"
+import { getMenuRuleData, getRuleData } from "store/appRule/actions"
 
 
 const SidebarContent = props => {
 
   // const menu = JSON.parse(ReactSession.get("menu"))
 
+  const dispatch = useDispatch()
   const ref = useRef();
   const location = useLocation()
   const [dropdownOpen, setDropdownOpen] = useState(true)
+  const [dropdownOpen2, setDropdownOpen2] = useState(true)
+
+  const getDetailProfile = useSelector(state => {
+    return state.userProfileReducer.respGetProfile;
+  })
+
+  const getMenu = useSelector(state => {
+    return state.ruleReducer.respGetMenuRule;
+  })
 
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
@@ -42,6 +53,9 @@ const SidebarContent = props => {
     if (matchingMenuItem) {
       activateParentDropdown(matchingMenuItem)
     }
+    dispatch(getMenuRuleData())
+    dispatch(getRuleData())
+
   }, [props.location.pathname])
 
   useEffect(() => {
@@ -119,21 +133,20 @@ const SidebarContent = props => {
 
   }
 
-  const getDetailProfile = useSelector(state => {
-    return state.userProfileReducer.respGetProfile;
-  })
+  console.log(getMenu)
+
 
   const firstTimeLogin = ReactSession.get("firstTime_Login");
 
   return (
     <React.Fragment>
-      <SimpleBar className="h-100" ref={ref}>
-        <div id="sidebar-menu" style={{ marginTop: "40px" }}>
+      <SimpleBar className="h-100" ref={ref} >
+        <div id="sidebar-menu">
 
           <ul className="metismenu list-unstyled" id="side-menu">
-            <li className="menu-title">{props.t("Menu")} </li>
             <li hidden={firstTimeLogin === "true"}>
               <a
+                style={{ fontSize: "16px" }}
                 onClick={() => {
                   ReactSession.remove("appInstructionsTabelSearch")
                   ReactSession.remove('selected')
@@ -153,14 +166,15 @@ const SidebarContent = props => {
                   setDropdownOpen(!dropdownOpen)
                 }}
                 className=""
-                style={{ overflow: "visible" }}
+                style={{ overflow: "visible", fontSize: "16px" }}
               >
                 <i className="fas fa-folder-open"></i>
                 <span style={{ whiteSpace: "nowrap" }}>{props.t("File Management")}</span>
-                <i hidden={dropdownOpen} style={{ fontSize: "16px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-down dropdown-icon"></i>
-                <i hidden={!dropdownOpen} style={{ fontSize: "16px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-up dropdown-icon"></i>
+                <i hidden={dropdownOpen} style={{ fontSize: "14px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-down dropdown-icon"></i>
+                <i hidden={!dropdownOpen} style={{ fontSize: "14px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-up dropdown-icon"></i>
               </a>
               <a
+                style={{ fontSize: "14px" }}
                 onClick={() => {
 
                   localStorage.removeItem("selectedYear");
@@ -171,9 +185,10 @@ const SidebarContent = props => {
                 href="/EnterMonthlyData"
                 to="/EnterMonthlyData"
               >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "16px" }}>{props.t("Enter Monthly Data")}</span>
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Enter Monthly Data")}</span>
               </a>
               <a
+                style={{ fontSize: "14px" }}
                 onClick={() => {
                   localStorage.removeItem('appFileManagementData')
                 }}
@@ -182,20 +197,47 @@ const SidebarContent = props => {
                 href="/AppFileManagement"
                 to="/AppFileManagement"
               >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "16px" }}>{props.t("Data Inquiry")}</span>
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Data Inquiry")}</span>
               </a>
 
-              {/* <a
+              <a
+                style={{ fontSize: "16px" }}
                 onClick={() => {
+                  setDropdownOpen2(!dropdownOpen2)
                   localStorage.setItem('appFileManagementData', '');
                   ReactSession.remove("appInstructionsTabelSearch")
                 }}
-                href="/AppFileManagement"
-                to="/AppFileManagement"
+                href="/AppRule"
+                to="/AppRule"
                 className="">
-                <i className="fas fa-folder-open"></i>
-                <span>{props.t("File Management")}</span>
-              </a> */}
+                <i className="fas fa-file-alt"></i>
+                <span>{props.t("Group Rule")}</span>
+                <i hidden={dropdownOpen2} style={{ fontSize: "14px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-down dropdown-icon"></i>
+                <i hidden={!dropdownOpen2} style={{ fontSize: "14px", position: "absolute", right: "2%", top: "25%" }} className="fas fa-chevron-up dropdown-icon"></i>
+              </a>
+
+              {
+                getMenu?.data?.list.map((item, index) => {
+                  debugger
+                  return (
+                    <a
+                    key={index}
+                    style={{ fontSize: "14px" }}
+                      onClick={() => {
+
+                        localStorage.removeItem("selectedYear");
+                        localStorage.removeItem("selectedMonth");
+                      }}
+                      hidden={!dropdownOpen}
+                    // href="/EnterMonthlyData"
+                    // to="/EnterMonthlyData"
+                    >
+                      <span style={{ whiteSpace: "nowrap", paddingLeft: "16px" }}>{item.name}</span>
+                    </a>
+                  )
+                })
+              }
+
               <a
                 onClick={() => {
                 }}

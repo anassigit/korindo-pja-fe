@@ -23,6 +23,7 @@ import EditInstructions from "pages/AppInstructions/EditInstructions"
 import FileManagement from "pages/AppFileManagement/FileManagement"
 import FirstLogin from "pages/Authentication/FirstLogin"
 import EnterMonthlyData from "pages/AppFileManagement/EnterMonthlyData"
+import Rule from "pages/AppRule/Rule"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -38,6 +39,7 @@ const authProtectedRoutes = [
   { path: "/AppFileManagement", component: FileManagement },
   { path: "/FirstLogin", component: FirstLogin },
   { path: "/EnterMonthlyData", component: EnterMonthlyData },
+  { path: "/AppRule", component: Rule },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

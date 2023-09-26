@@ -13,6 +13,7 @@ import instructionsSaga from "./appInstructions/saga"
 import userProfileSaga from "./appUserProfile/saga"
 import settingSaga from "./appSetting/saga"
 import fileManagementSaga from "./appFileManagement/saga"
+import ruleSaga from "./appRule/saga"
 // import langSaga from "./language/saga"
 
 export default function* rootSaga() {
@@ -29,6 +30,7 @@ export default function* rootSaga() {
     fork(userProfileSaga),
     fork(settingSaga),
     fork(fileManagementSaga),
+    fork(ruleSaga),
     // fork(langSaga),
   ])
 }

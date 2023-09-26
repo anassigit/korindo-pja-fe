@@ -16,6 +16,7 @@ import instructionsReducer from "./appInstructions/reducer"
 import userProfileReducer from "./appUserProfile/reducer"
 import settingReducer from "./appSetting/reducer"
 import fileManagementReducer from "./appFileManagement/reducer"
+import ruleReducer from "./appRule/reducer"
 // import langReducer from "./language/reducer"
 
 const rootReducer = combineReducers({
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   userProfileReducer,
   settingReducer,
   fileManagementReducer,
+  ruleReducer,
   // langReducer,
 })
 

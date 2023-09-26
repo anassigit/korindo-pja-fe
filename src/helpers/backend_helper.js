@@ -169,6 +169,12 @@ export const updateGroupMapping = req => postWithParam("/rest/SettingRest/Update
 
 export const deleteGroupMapping = req => postWithParam("/rest/SettingRest/DeleteRelation", req)
 
+/* App Rule */
+
+export const getSelectMenu = req => post("/rest/RuleRest/SelectMenu", req)
+
+export const getSelectRule = req => post("/rest/RuleRest/SelectRule", req)
+
 /* ATTACHMENTS */
 
 export const getAttachment = req => post("rest/InstructionRest/SelectAttachFileList", req)
