@@ -428,7 +428,7 @@ const Instructions = (props) => {
 
         setLoadingSpinner(true)
         setAppInstructionsTabelSearch({
-            page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset,
+            page: 1, limit: 10, offset: 0,
             sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: searchValue, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo }
         })
     }
