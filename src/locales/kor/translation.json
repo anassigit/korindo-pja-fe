@@ -139,5 +139,6 @@
   "All File Can Be Modified": "모든 사용자가 파일 수정 가능",
   "Only Your Own Group Can Be Modified": "소속 사업부 파일만 수정 가능",
   "All File Can Be Accessed": "모든 사용자가 파일 접근(open / download) 가능",
-  "Only Your Own Group Can Be Accessed": "소속 사업부 파일만 접근(open / download) 가능"
+  "Only Your Own Group Can Be Accessed": "소속 사업부 파일만 접근(open / download) 가능",
+  "Company Regulations": "그룹사규"
 }

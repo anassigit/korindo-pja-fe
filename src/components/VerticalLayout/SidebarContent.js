@@ -113,7 +113,7 @@ const SidebarContent = (props) => {
                 to="/AppInstructions"
                 className={location.pathname === "/AppInstructions" ? "active" : null}
               >
-                <i className="fas fa-list-ul"></i>
+              <i style={{ fontSize: "12px", position:"relative", right:"1.5%" }} className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
               </Link>
 
@@ -122,18 +122,18 @@ const SidebarContent = (props) => {
                   toggleDropdown("main");
                 }}
                 className=""
-                style={{ overflow: "visible", fontSize: "16px" }}
+                style={{ overflow: "visible", fontSize: "14px" }}
               >
-                <i className="fas fa-folder-open"></i>
+                <i style={{ fontSize: "14px", position:"relative", right:"1.5%" }} className="fas fa-folder-open"></i>
                 <span style={{ whiteSpace: "nowrap" }}>{props.t("File Management")}</span>
                 <i
                   hidden={!dropdownOpen.main}
-                  style={{ fontSize: "14px", position: "absolute", right: "0.5%", top: "25%" }}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-up dropdown-icon"
                 ></i>
                 <i
                   hidden={dropdownOpen.main}
-                  style={{ fontSize: "14px", position: "absolute", right: "0.5%", top: "25%" }}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-down dropdown-icon"
                 ></i>
               </a>
@@ -162,16 +162,16 @@ const SidebarContent = (props) => {
                   ReactSession.set("dropdownOpen", dropdownOpen)
                 }}
               >
-                <i style={{ fontSize: "16px" }} className="fas fa-file-alt"></i>
-                <span style={{ fontSize: "16px" }}>{props.t("Group Rule")}</span>
+                <i style={{ fontSize: "14px" }} className="fas fa-file-alt"></i>
+                <span style={{ fontSize: "14px", whiteSpace:"nowrap" }}>{props.t("Company Regulations")}</span>
                 <i
                   hidden={!dropdownOpen.rule}
-                  style={{ fontSize: "14px", position: "absolute", right: "0.5%", top: "25%" }}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-up dropdown-icon"
                 ></i>
                 <i
                   hidden={dropdownOpen.rule}
-                  style={{ fontSize: "14px", position: "absolute", right: "0.5%", top: "25%" }}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-down dropdown-icon"
                 ></i>
               </a>
@@ -193,12 +193,12 @@ const SidebarContent = (props) => {
                       <span style={{ whiteSpace: "nowrap", paddingLeft: "12px" }}>{item.name}</span>
                       <i
                         hidden={!dropdownOpen[`submenu-${index}`]}
-                        style={{ fontSize: "14px", position: "absolute", right: "0.5%", top: "25%" }}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                         className="fas fa-chevron-up dropdown-icon"
                       ></i>
                       <i
                         hidden={dropdownOpen[`submenu-${index}`]}
-                        style={{ fontSize: "14px", position: "absolute", right: "0.5%", top: "25%" }}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                         className="fas fa-chevron-down dropdown-icon"
                       ></i>
                     </a>
@@ -224,7 +224,7 @@ const SidebarContent = (props) => {
               <Link
                 to="/AppSetting"
                 hidden={!getDetailProfile?.data?.admin}
-                style={{ fontSize: "16px" }}
+                style={{ fontSize: "14px" }}
               >
                 <i className="fas fa-cog"></i>
                 <span>{props.t("Settings")}</span>
