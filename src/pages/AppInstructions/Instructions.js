@@ -73,17 +73,17 @@ const Instructions = (props) => {
         }
         setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
         console.log(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
-        
+
         let temp1 = ReactSession.get('selected')
         let temp2 = ReactSession.get('dateFrom')
         let temp3 = ReactSession.get('dateTo')
         let temp4 = ReactSession.get('searchValue')
-        
+
         setSelected(temp1)
         setDateFrom(temp2)
         setDateTo(temp3)
         setSearchValue(temp4)
-        
+
     }, [])
 
     useEffect(() => {
@@ -160,7 +160,7 @@ const Instructions = (props) => {
 
     useEffect(() => {
         if (isClosed == true) {
-                        history.push({
+            history.push({
                 state: {
                     setAppInstructionsMsg: ""
                 }
@@ -398,7 +398,7 @@ const Instructions = (props) => {
             setDateFrom(selectedDate);
 
         } else if (name === 'to') {
-            
+
             setDateTo(selectedDate);
         }
     };
@@ -467,20 +467,62 @@ const Instructions = (props) => {
                                                             />
                                                         </div>
                                                     </Row>
+                                                    <Row className="mb-1 col-sm-11">
+                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                            {props.t("Status")}
+                                                        </label>
+                                                        <div className="col-sm-6">
+                                                            <Input
+                                                                type="select"
+                                                                name="status"
+                                                                onChange={handleChange}
+                                                                value={selected}
+                                                            >
+                                                                <option id="" value={""}>{props.t("All")}</option>
+                                                                <option id="1" value={"1"}>{props.t("Not Started")}</option>
+                                                                <option id="2" value={"2"}>{props.t("In Process")}</option>
+                                                                <option id="3" value={"3"}>{props.t("Action Completed")}</option>
+                                                                <option id="4" value={"4"}>{props.t("Rejected")}</option>
+                                                                <option id="5" value={"5"}>{props.t("Completed")}</option>
+
+                                                            </Input>
+                                                        </div>
+                                                    </Row>
+                                                    <Col md='1'>
+                                                        <button className="btn btn-primary" style={{ position: "absolute", left: "22%", bottom: "55%" }} onClick={() => handleSearch()}>
+                                                            {props.t("Search")}
+                                                        </button>
+                                                    </Col>
                                                 </Col>
 
-                                                <Col md='1'>
-                                                    <button className="btn btn-primary" style={{ left: "-130%" }} onClick={() => handleSearch()}>
-                                                        {props.t("Search")}
-                                                    </button>
-                                                </Col>
 
                                                 <Col md="4" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-11">
-                                                        <label className="col-sm-1">
-                                                            <i style={{ position: "absolute", fontSize: "18px", top: '0.25em' }} className="mdi mdi-calendar-month opacity-75" />
+                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                            {props.t("Status")}
                                                         </label>
-                                                        <div className="col-sm-4" style={{width:"9em"}}>
+                                                        <div className="col-sm-6">
+                                                            <Input
+                                                                type="select"
+                                                                name="status"
+                                                                onChange={handleChange}
+                                                                value={selected}
+                                                            >
+                                                                <option id="" value={""}>{props.t("All")}</option>
+                                                                <option id="1" value={"1"}>{props.t("Not Started")}</option>
+                                                                <option id="2" value={"2"}>{props.t("In Process")}</option>
+                                                                <option id="3" value={"3"}>{props.t("Action Completed")}</option>
+                                                                <option id="4" value={"4"}>{props.t("Rejected")}</option>
+                                                                <option id="5" value={"5"}>{props.t("Completed")}</option>
+
+                                                            </Input>
+                                                        </div>
+                                                    </Row>
+                                                    <Row className="mb-1 col-sm-11" style={{ marginLeft:"2.7%" }}>
+                                                        <label className="col-sm-1">
+                                                            <i style={{ position: "absolute", fontSize: "18px", top: '0.25em', right:"25"}} className="mdi mdi-calendar-month opacity-75" />
+                                                        </label>
+                                                        <div className="col-sm-4" style={{ width: "9em" }}>
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
@@ -498,10 +540,10 @@ const Instructions = (props) => {
                                                             />
                                                         </div>
 
-                                                        <label className="col-sm-1" style={{ marginTop: "8px", marginLeft:"-2px", marginRight:"-2px" }}>
+                                                        <label className="col-sm-1" style={{ marginTop: "8px", marginLeft: "-2px", marginRight: "-2px" }}>
                                                             -
                                                         </label>
-                                                        <div className="col-sm-4" style={{width:"9em"}}>
+                                                        <div className="col-sm-4" style={{ width: "9em" }}>
                                                             <DatePicker
                                                                 className="form-control"
                                                                 showMonthYearPicker
@@ -529,32 +571,6 @@ const Instructions = (props) => {
                                     <Col sm="12">
                                         <div className="form-group m-0">
                                             <div className="input-group">
-                                                <Col md="4">
-                                                    <Row className="mb-1 col-sm-11">
-                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
-                                                            {props.t("Status")}
-                                                        </label>
-                                                        <div className="col-sm-6">
-                                                            <Input
-                                                                type="select"
-                                                                name="status"
-                                                                onChange={handleChange}
-                                                                value={selected}
-                                                            >
-                                                                <option id="" value={""}>{props.t("All")}</option>
-                                                                <option id="1" value={"1"}>{props.t("Not Started")}</option>
-                                                                <option id="2" value={"2"}>{props.t("In Process")}</option>
-                                                                <option id="3" value={"3"}>{props.t("Action Completed")}</option>
-                                                                <option id="4" value={"4"}>{props.t("Rejected")}</option>
-                                                                <option id="5" value={"5"}>{props.t("Completed")}</option>
-
-                                                            </Input>
-                                                        </div>
-                                                    </Row>
-                                                </Col>
-
-
-
                                                 <Col sm="12">
                                                     <div className="text-sm-end">
                                                         <button
