@@ -389,7 +389,6 @@ const Instructions = (props) => {
             sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value, from: dateFrom, to: dateTo }
         })
         setAppInstructionsMsg("")
-        console.log(event.target.value);
         setSelected(event.target.value);
     }
 

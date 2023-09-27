@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react"
 import { useDispatch } from "react-redux";
 import {
+    Card,
+    CardBody,
     Col,
     Container,
     Row
@@ -30,9 +32,16 @@ const Rule = (props) => {
                 <>
 
                     <Container style={{ display: appSettingPage ? 'block' : 'none' }} fluid={true}>
-                        <Row>
-                            <Col>
-                              
+                        <Row
+                        //  style={{ display: getDetailInstructionData?.data?.instruction?.edit == "ALL" || getDetailInstructionData?.data?.instruction?.edit == "STATUS" ? 'flex' : 'none' }}
+                         >
+                            <Col lg={12}>
+                                <Card>
+                                    <CardBody>
+                                        container
+                                    </CardBody>
+                                </Card>
+
                             </Col>
                         </Row>
                     </Container>

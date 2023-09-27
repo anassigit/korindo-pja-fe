@@ -374,3 +374,7 @@
   user-select: none;
   -o-user-select: none;
 }
+
+#sidebar-menu ul li a.active{
+  color: rgb(0, 0, 0) !important;
+}
