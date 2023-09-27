@@ -21,21 +21,20 @@ const SidebarContent = (props) => {
 
   const queryString = location.search;
   const startIndex = queryString.lastIndexOf('=') + 1;
-  const endIndex = queryString.indexOf('_');
-  const extractedValue = queryString.substring(startIndex, endIndex);
 
   const extractedValue2 = queryString.substring(startIndex);
 
+  const submenuLocalStorage = ReactSession.get("submenuKey")
+
   useEffect(() => {
     new MetisMenu("#side-menu");
-
-    if (extractedValue) {
-      setDropdownOpen({ [`submenu-${extractedValue - 1}`]: true }); // Use square brackets to create a dynamic key
+    debugger
+    if (submenuLocalStorage) {
+      setDropdownOpen({ [`submenu-${submenuLocalStorage}`]: true }); // Use square brackets to create a dynamic key
     }
 
     setActiveMenuItem(location.pathname);
     dispatch(getMenuRuleData());
-    dispatch(getRuleData());
   }, [location.pathname]);
 
   useEffect(() => {
@@ -82,6 +81,7 @@ const SidebarContent = (props) => {
   const firstTimeLogin = ReactSession.get("firstTime_Login");
 
   const toggleDropdown = (key) => {
+    debugger
     const updatedDropdownOpen = { ...dropdownOpen };
 
     // Close all other open submenus in ReactSession
@@ -110,10 +110,13 @@ const SidebarContent = (props) => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li hidden={firstTimeLogin === "true"}>
               <Link
+                onClick={()=> 
+                  ReactSession.remove("submenuKey")
+                }
                 to="/AppInstructions"
                 className={location.pathname === "/AppInstructions" ? "active" : null}
               >
-              <i style={{ fontSize: "12px", position:"relative", right:"1.5%" }} className="fas fa-list-ul"></i>
+                <i style={{ fontSize: "12px", position: "relative", right: "1.5%" }} className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
               </Link>
 
@@ -124,7 +127,7 @@ const SidebarContent = (props) => {
                 className=""
                 style={{ overflow: "visible", fontSize: "14px" }}
               >
-                <i style={{ fontSize: "14px", position:"relative", right:"1.5%" }} className="fas fa-folder-open"></i>
+                <i style={{ fontSize: "14px", position: "relative", right: "1.5%" }} className="fas fa-folder-open"></i>
                 <span style={{ whiteSpace: "nowrap" }}>{props.t("File Management")}</span>
                 <i
                   hidden={!dropdownOpen.main}
@@ -138,6 +141,9 @@ const SidebarContent = (props) => {
                 ></i>
               </a>
               <Link
+                onClick={()=> 
+                  ReactSession.remove("submenuKey")
+                }
                 style={{ fontSize: "14px" }}
                 to="/EnterMonthlyData"
                 hidden={dropdownOpen.main}
@@ -146,6 +152,9 @@ const SidebarContent = (props) => {
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Enter Monthly Data")}</span>
               </Link>
               <Link
+                onClick={()=> 
+                  ReactSession.remove("submenuKey")
+                }
                 style={{ fontSize: "14px" }}
                 to="/AppFileManagement"
                 hidden={dropdownOpen.main}
@@ -163,7 +172,7 @@ const SidebarContent = (props) => {
                 }}
               >
                 <i style={{ fontSize: "14px" }} className="fas fa-file-alt"></i>
-                <span style={{ fontSize: "14px", whiteSpace:"nowrap" }}>{props.t("Company Regulations")}</span>
+                <span style={{ fontSize: "14px", whiteSpace: "nowrap" }}>{props.t("Company Regulations")}</span>
                 <i
                   hidden={!dropdownOpen.rule}
                   style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
@@ -183,35 +192,38 @@ const SidebarContent = (props) => {
                       key={index}
                       style={{ fontSize: "14px" }}
                       onClick={() => {
-                        toggleDropdown(`submenu-${index}`);
+                        toggleDropdown(`submenu-${index+1}`);
                         localStorage.removeItem("selectedYear");
                         localStorage.removeItem("selectedMonth");
-                        ReactSession.set("dropdownOpen", dropdownOpen)
                       }}
                       hidden={dropdownOpen.rule}
                     >
                       <span style={{ whiteSpace: "nowrap", paddingLeft: "12px" }}>{item.name}</span>
                       <i
-                        hidden={!dropdownOpen[`submenu-${index}`]}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
+                        hidden={!dropdownOpen[`submenu-${index+1}`]}
+                        style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                         className="fas fa-chevron-up dropdown-icon"
                       ></i>
                       <i
-                        hidden={dropdownOpen[`submenu-${index}`]}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
+                        hidden={dropdownOpen[`submenu-${index+1}`]}
+                        style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                         className="fas fa-chevron-down dropdown-icon"
                       ></i>
                     </a>
-                    {dropdownOpen[`submenu-${index}`] &&
+                    {dropdownOpen[`submenu-${index+1}`] &&
                       item?.subList.map((subMenu, i) => {
+                        debugger
                         return (
                           <a
                             key={i}
-                            to={`/AppRule?v=${index + 1}_${i + 1}`}
-                            href={`/AppRule?v=${index + 1}_${i + 1}`}
-                            className={extractedValue2 === `${index+1}_${i+1}` ? "active" : null}
+                            to={`/AppRule?v=${subMenu.id}`}
+                            href={`/AppRule?v=${subMenu.id}`}
+                            className={parseInt(extractedValue2) === subMenu.id ? "active" : null}
                             style={{ fontSize: "14px" }}
                             hidden={dropdownOpen.rule}
+                            onClick={() => 
+                              ReactSession.set("submenuKey", subMenu?.parent_id)
+                            }
                           >
                             <span style={{ whiteSpace: "nowrap", paddingLeft: "12px" }}>{subMenu.name}</span>
                           </a>

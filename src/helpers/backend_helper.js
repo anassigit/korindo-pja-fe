@@ -173,7 +173,7 @@ export const deleteGroupMapping = req => postWithParam("/rest/SettingRest/Delete
 
 export const getSelectMenu = req => post("/rest/RuleRest/SelectMenu", req)
 
-export const getSelectRule = req => post("/rest/RuleRest/SelectRule", req)
+export const getSelectRule = req => postWithParam("/rest/RuleRest/SelectRule", req)
 
 /* ATTACHMENTS */
 
