@@ -8,11 +8,11 @@ const Footer = () => {
         <Container fluid={true}>
           <Row>
             <Col md={6}>
-              {/* ©Korindo {new Date().getFullYear()} */}
-            </Col> 
+              담당자 최원준(579)
+            </Col>
             <Col md={6}>
               <div className="text-sm-end d-none d-sm-block">
-              ©Korindo {new Date().getFullYear()}
+                ©Korindo {new Date().getFullYear()}
               </div>
             </Col>
           </Row>
