@@ -37,6 +37,10 @@ const SidebarContent = (props) => {
 
     setLoadingSpinner(true)
     setActiveMenuItem(location.pathname);
+    debugger
+    if (!submenuLocalStorage) {
+      setDropdownOpen({rule: true})
+    }
     dispatch(getMenuRuleData());
   }, [location.pathname]);
 

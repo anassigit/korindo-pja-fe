@@ -74,7 +74,6 @@ const Instructions = (props) => {
             localStorage.removeItem('currentURL');
         }
         setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
-        console.log(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
 
         let temp1 = ReactSession.get('selected')
         let temp2 = ReactSession.get('dateFrom')
@@ -295,11 +294,10 @@ const Instructions = (props) => {
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <span style={{
-                        fontWeight: appInstructionsData.status_id === 1 ? "bold" : "normal",
-                        color: appInstructionsData.status_id === 4 ? "red" : appInstructionsData.status_id === 1 ? "grey" : "inherit"
+                        fontWeight: appInstructionsData.status_id === 1 ? "normal" : "normal",
+                        color: appInstructionsData.status_id === 4 ? "red" : appInstructionsData.status_id === 5 ? "green" : appInstructionsData.status_id === 1 ? "#b8b8b8" : "inherit"
                     }}>
                         {cellContent}
-                        {console.log("appInstructionsData", appInstructionsData)}
                     </span>
                 </>
             ),
