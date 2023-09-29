@@ -131,8 +131,9 @@ useEffect(() => {
                 }
                 to="/AppInstructions"
                 className={location.pathname === "/AppInstructions" ? "active" : null}
+                style={{fontSize: "14px"}}
               >
-                <i style={{ fontSize: "12px", position: "relative", right: "1.5%" }} className="fas fa-list-ul"></i>
+                <i style={{fontSize: "12px", position: "relative", right: "1.5%" }} className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
               </Link>
 
