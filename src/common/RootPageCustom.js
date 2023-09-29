@@ -9,7 +9,7 @@ const RootPageCustom = props => {
             <div className="page-content">
                 <MetaTags>
                     <title>
-                        DMLS
+                        ::: DMLS :::
                     </title>
                 </MetaTags>
                 <AlertCust msg={props.msgStateGet} stateData={props.msgStateSet} />

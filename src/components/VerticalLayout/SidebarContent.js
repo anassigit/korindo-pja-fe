@@ -130,12 +130,12 @@ const SidebarContent = (props) => {
                 <i style={{ fontSize: "14px", position: "relative", right: "1.5%" }} className="fas fa-folder-open"></i>
                 <span style={{ whiteSpace: "nowrap" }}>{props.t("File Management")}</span>
                 <i
-                  hidden={!dropdownOpen.main}
+                  hidden={dropdownOpen.main}
                   style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-up dropdown-icon"
                 ></i>
                 <i
-                  hidden={dropdownOpen.main}
+                  hidden={!dropdownOpen.main}
                   style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-down dropdown-icon"
                 ></i>
@@ -174,12 +174,12 @@ const SidebarContent = (props) => {
                 <i style={{ fontSize: "14px" }} className="fas fa-file-alt"></i>
                 <span style={{ fontSize: "14px", whiteSpace: "nowrap" }}>{props.t("Company Regulations")}</span>
                 <i
-                  hidden={!dropdownOpen.rule}
+                  hidden={dropdownOpen.rule}
                   style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-up dropdown-icon"
                 ></i>
                 <i
-                  hidden={dropdownOpen.rule}
+                  hidden={!dropdownOpen.rule}
                   style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                   className="fas fa-chevron-down dropdown-icon"
                 ></i>
@@ -238,7 +238,7 @@ const SidebarContent = (props) => {
                 hidden={!getDetailProfile?.data?.admin}
                 style={{ fontSize: "14px" }}
               >
-                <i className="fas fa-cog"></i>
+                <i className="fas fa-cog" style={{paddingRight:"2%", marginLeft:"-1.5%"}}></i>
                 <span>{props.t("Settings")}</span>
               </Link>
             </li>

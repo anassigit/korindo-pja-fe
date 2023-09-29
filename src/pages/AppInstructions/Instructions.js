@@ -32,6 +32,7 @@ import e from "cors";
 import { ContextMenu } from "react-contextmenu";
 import { date } from "yup";
 import moment from "moment";
+import { getGroupListData } from "store/actions";
 
 
 const Instructions = (props) => {
@@ -47,6 +48,7 @@ const Instructions = (props) => {
     const [appInstructionsMsg2, setAppInstructionsMsg2] = useState("")
     const [instructionsData, setInstructionsData] = useState()
     const [selected, setSelected] = useState("");
+    const [selected2, setSelected2] = useState(null);
     const [getData, setGetData] = useState([]);
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
@@ -114,6 +116,7 @@ const Instructions = (props) => {
             langType: langType,
             status: selected,
             from: dateFrom,
+            group: selected2,
             to: dateTo
         }
     };
@@ -121,6 +124,10 @@ const Instructions = (props) => {
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState(
         ReactSession.get("appInstructionsTabelSearch") ? sessionAppInstructionsTabelSearch : defaultAppInstructionsTabelSearch
     );
+
+    const appGroupListData = useSelector(state => {
+        return state.settingReducer.respGetGroupList;
+    });
 
     useEffect(() => {
         getInstructionsData(appInstructionsTabelSearch)
@@ -137,9 +144,12 @@ const Instructions = (props) => {
         setLoadingSpinner(true)
         setAppInstructionsTabelSearch({
             page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset, sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
-                search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo
+                search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo,
+                group: appInstructionsTabelSearch.search.groupId,
             }
         });
+
+        dispatch(getGroupListData({ search: { langType: langType } }))
     }, [props.t, langType])
 
     const appInstructionsData = useSelector(state => {
@@ -155,6 +165,7 @@ const Instructions = (props) => {
             ReactSession.set('appEditInstructionsMsg', null);
         }
 
+        dispatch(getGroupListData({ search: { langType: langType } }))
         setLoadingSpinner(false)
     }, [appInstructionsData])
 
@@ -386,11 +397,31 @@ const Instructions = (props) => {
 
         setAppInstructionsTabelSearch({
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value, from: dateFrom, to: dateTo }
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
+                search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value, from: dateFrom, to: dateTo,
+                group: appInstructionsTabelSearch.search.groupId,
+            }
         })
         setAppInstructionsMsg("")
         setSelected(event.target.value);
     }
+
+    const handleChangeGroup = event => {
+
+        setLoadingSpinner(true)
+
+        setAppInstructionsTabelSearch({
+            page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
+                search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo,
+                group: event.target.value,
+            }
+        })
+        setAppInstructionsMsg("")
+        setSelected2(event.target.value);
+    }
+
+
 
     const dateChanger = (name, selectedDate) => {
 
@@ -428,7 +459,10 @@ const Instructions = (props) => {
         setLoadingSpinner(true)
         setAppInstructionsTabelSearch({
             page: 1, limit: 10, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: { search: searchValue, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo }
+            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
+                search: searchValue, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo,
+                group: appInstructionsTabelSearch.search.groupId,
+            }
         })
     }
 
@@ -451,9 +485,9 @@ const Instructions = (props) => {
                                     <Col sm="12">
                                         <div className="form-group m-0">
                                             <div className="input-group">
-                                                <Col md="4">
+                                                <Col md="5">
                                                     <Row className="mb-1 col-sm-11">
-                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
+                                                        <label className="col-sm-2" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
                                                         <div className="col-sm-6">
                                                             <input
                                                                 type="search"
@@ -468,7 +502,7 @@ const Instructions = (props) => {
                                                         </div>
                                                     </Row>
                                                     <Row className="mb-1 col-sm-11">
-                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                                                        <label className="col-sm-2" style={{ marginTop: "8px" }}>
                                                             {props.t("Status")}
                                                         </label>
                                                         <div className="col-sm-6">
@@ -489,42 +523,43 @@ const Instructions = (props) => {
                                                         </div>
                                                     </Row>
                                                     <Col md='1'>
-                                                        <button className="btn btn-primary" style={{ position: "absolute", left: "22%", bottom: "55%" }} onClick={() => handleSearch()}>
+                                                        <button className="btn btn-primary" style={{ position: "absolute", left: "25%", bottom: "54%" }} onClick={() => handleSearch()}>
                                                             {props.t("Search")}
                                                         </button>
                                                     </Col>
                                                 </Col>
 
 
-                                                <Col md="4" style={{ marginLeft: "-0px" }}>
+                                                <Col md="5" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-11">
-                                                        <label className="col-sm-3" style={{ marginTop: "8px" }}>
-                                                            {props.t("Status")}
+                                                        <label className="col-sm-2" style={{ marginTop: "8px" }}>
+                                                            {props.t("Group")}
                                                         </label>
                                                         <div className="col-sm-6">
                                                             <Input
                                                                 type="select"
-                                                                name="status"
-                                                                onChange={handleChange}
-                                                                value={selected}
+                                                                name="group"
+                                                                onChange={handleChangeGroup}
+                                                                value={selected2}
                                                             >
-                                                                <option id="" value={""}>{props.t("All")}</option>
-                                                                <option id="1" value={"1"}>{props.t("Not Started")}</option>
-                                                                <option id="2" value={"2"}>{props.t("In Process")}</option>
-                                                                <option id="3" value={"3"}>{props.t("Action Completed")}</option>
-                                                                <option id="4" value={"4"}>{props.t("Rejected")}</option>
-                                                                <option id="5" value={"5"}>{props.t("Completed")}</option>
-
+                                                                <option key="all" value="all">All</option>
+                                                                {appGroupListData?.data?.groupList.map((group) => (
+                                                                    <option key={group.num} value={group.num}>
+                                                                        {group.name}
+                                                                    </option>
+                                                                ))}
                                                             </Input>
                                                         </div>
+
                                                     </Row>
-                                                    <Row className="mb-1 col-sm-11" style={{ marginLeft:"2.7%" }}>
-                                                        <label className="col-sm-1">
-                                                            <i style={{ position: "absolute", fontSize: "18px", top: '0.25em', right:"25"}} className="mdi mdi-calendar-month opacity-75" />
+                                                    <Row className="mb-1 col-sm-11">
+                                                        <label className="col-sm-2 ">
+                                                            <i style={{ position: "absolute", fontSize: "18px", top: '0.25em', left: "24px" }} className="mdi mdi-calendar-month opacity-75" />
                                                         </label>
-                                                        <div className="col-sm-4" style={{ width: "9em" }}>
+                                                        <div className="col-sm-3" style={{ paddingRight: "-15%" }}>
                                                             <DatePicker
                                                                 className="form-control"
+                                                                wrapperClassName="customDatePicker"
                                                                 showMonthYearPicker
                                                                 dateFormat="yyyy-MM"
                                                                 maxDate={new Date(dateTo)}
@@ -540,15 +575,15 @@ const Instructions = (props) => {
                                                             />
                                                         </div>
 
-                                                        <label className="col-sm-1" style={{ marginTop: "8px", marginLeft: "-2px", marginRight: "-2px" }}>
+                                                        <label className="col-sm-1" style={{ marginTop: "8px", marginLeft: "-2.6%", marginRight: "-2.5%" }}>
                                                             -
                                                         </label>
-                                                        <div className="col-sm-4" style={{ width: "9em" }}>
+                                                        <div className="col-sm-3" style={{}}>
                                                             <DatePicker
                                                                 className="form-control"
+                                                                wrapperClassName="customDatePicker"
                                                                 showMonthYearPicker
                                                                 dateFormat="yyyy-MM"
-
                                                                 minDate={new Date(dateFrom ? moment(dateFrom, 'yyyy-MM').toDate() : '')}
                                                                 selected={dateTo ? moment(dateTo, 'yyyy-MM').toDate() : null}
                                                                 onChange={(tglSelesai) =>

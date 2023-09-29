@@ -1,6 +1,13 @@
-.customDatePicker input {
-    text-align: center;
+.react-datepicker-popper {
+    max-width: 70%;
 }
 .customDatePicker input::placeholder {
     color: #495057;
+}
+.customDatePicker input {
+    max-width: 86%;
+}
+.customDatePicker button {
+    position: absolute;
+    right: 1vw;
 }
