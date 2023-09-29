@@ -294,7 +294,7 @@ const Instructions = (props) => {
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <span style={{
-                        fontWeight: appInstructionsData.status_id === 1 ? "normal" : "normal",
+                        fontWeight: appInstructionsData.status_id === 4 ? "bold" : appInstructionsData.status_id === 5 ? "bold" : appInstructionsData.status_id === 1 ? "inherit" : "inherit",
                         color: appInstructionsData.status_id === 4 ? "red" : appInstructionsData.status_id === 5 ? "green" : appInstructionsData.status_id === 1 ? "#b8b8b8" : "inherit"
                     }}>
                         {cellContent}
