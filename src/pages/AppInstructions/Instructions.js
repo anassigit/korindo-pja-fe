@@ -292,6 +292,17 @@ const Instructions = (props) => {
                     appInstructionsPreEdit(appInstructionsData);
                 },
             },
+            formatter: (cellContent, appInstructionsData) => (
+                <>
+                    <span style={{
+                        fontWeight: appInstructionsData.status_id === 1 ? "bold" : "normal",
+                        color: appInstructionsData.status_id === 4 ? "red" : appInstructionsData.status_id === 1 ? "grey" : "inherit"
+                    }}>
+                        {cellContent}
+                        {console.log("appInstructionsData", appInstructionsData)}
+                    </span>
+                </>
+            ),
         },
         {
             dataField: "reply_count",

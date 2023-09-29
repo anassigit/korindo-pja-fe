@@ -8,6 +8,7 @@ import { ReactSession } from "react-client-session";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenuRuleData, getRuleData } from "store/appRule/actions";
 import "../../assets/scss/custom.scss"
+import { Spinner } from "reactstrap";
 
 const SidebarContent = (props) => {
   const dispatch = useDispatch();
@@ -26,13 +27,15 @@ const SidebarContent = (props) => {
 
   const submenuLocalStorage = ReactSession.get("submenuKey")
 
+  const [loadingSpinner, setLoadingSpinner] = useState(false)
+
   useEffect(() => {
     new MetisMenu("#side-menu");
-    debugger
     if (submenuLocalStorage) {
       setDropdownOpen({ [`submenu-${submenuLocalStorage}`]: true }); // Use square brackets to create a dynamic key
     }
 
+    setLoadingSpinner(true)
     setActiveMenuItem(location.pathname);
     dispatch(getMenuRuleData());
   }, [location.pathname]);
@@ -81,7 +84,7 @@ const SidebarContent = (props) => {
   const firstTimeLogin = ReactSession.get("firstTime_Login");
 
   const toggleDropdown = (key) => {
-    debugger
+    
     const updatedDropdownOpen = { ...dropdownOpen };
 
     // Close all other open submenus in ReactSession
@@ -102,15 +105,24 @@ const SidebarContent = (props) => {
     setDropdownOpen(updatedDropdownOpen);
   };
 
+useEffect(() => {
+  if (getMenu.status){
+    setLoadingSpinner(false)
+  }
+},[getMenu])
 
   return (
     <React.Fragment>
+
+      <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+        <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+      </div>
       <SimpleBar className="h-100" ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li hidden={firstTimeLogin === "true"}>
               <Link
-                onClick={()=> 
+                onClick={() =>
                   ReactSession.remove("submenuKey")
                 }
                 to="/AppInstructions"
@@ -141,7 +153,7 @@ const SidebarContent = (props) => {
                 ></i>
               </a>
               <Link
-                onClick={()=> 
+                onClick={() =>
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
@@ -152,7 +164,7 @@ const SidebarContent = (props) => {
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Enter Monthly Data")}</span>
               </Link>
               <Link
-                onClick={()=> 
+                onClick={() =>
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
@@ -190,9 +202,9 @@ const SidebarContent = (props) => {
                   <React.Fragment key={index}>
                     <a
                       key={index}
-                      style={{ fontSize: "14px" }}
+                      style={{ fontSize: "12px" }}
                       onClick={() => {
-                        toggleDropdown(`submenu-${index+1}`);
+                        toggleDropdown(`submenu-${index + 1}`);
                         localStorage.removeItem("selectedYear");
                         localStorage.removeItem("selectedMonth");
                       }}
@@ -200,28 +212,28 @@ const SidebarContent = (props) => {
                     >
                       <span style={{ whiteSpace: "nowrap", paddingLeft: "12px" }}>{item.name}</span>
                       <i
-                        hidden={!dropdownOpen[`submenu-${index+1}`]}
+                        hidden={!dropdownOpen[`submenu-${index + 1}`]}
                         style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                         className="fas fa-chevron-up dropdown-icon"
                       ></i>
                       <i
-                        hidden={dropdownOpen[`submenu-${index+1}`]}
+                        hidden={dropdownOpen[`submenu-${index + 1}`]}
                         style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
                         className="fas fa-chevron-down dropdown-icon"
                       ></i>
                     </a>
-                    {dropdownOpen[`submenu-${index+1}`] &&
+                    {dropdownOpen[`submenu-${index + 1}`] &&
                       item?.subList.map((subMenu, i) => {
-                        debugger
+                        
                         return (
                           <a
                             key={i}
                             to={`/AppRule?v=${subMenu.id}`}
                             href={`/AppRule?v=${subMenu.id}`}
                             className={parseInt(extractedValue2) === subMenu.id ? "active" : null}
-                            style={{ fontSize: "14px" }}
+                            style={{ fontSize: "12px", marginLeft: "5%" }}
                             hidden={dropdownOpen.rule}
-                            onClick={() => 
+                            onClick={() =>
                               ReactSession.set("submenuKey", subMenu?.parent_id)
                             }
                           >
@@ -238,7 +250,7 @@ const SidebarContent = (props) => {
                 hidden={!getDetailProfile?.data?.admin}
                 style={{ fontSize: "14px" }}
               >
-                <i className="fas fa-cog" style={{paddingRight:"2%", marginLeft:"-1.5%"}}></i>
+                <i className="fas fa-cog" style={{ paddingRight: "2%", marginLeft: "-1.5%" }}></i>
                 <span>{props.t("Settings")}</span>
               </Link>
             </li>
