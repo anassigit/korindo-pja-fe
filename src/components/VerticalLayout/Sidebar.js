@@ -20,6 +20,7 @@ const Sidebar = props => {
             window.location.reload()
             ReactSession.remove("appInstructionsTabelSearch")
             ReactSession.remove('selected')
+            ReactSession.remove('selected2')
             ReactSession.remove('dateFrom')
             ReactSession.remove('dateTo')
             ReactSession.remove('searchValue')
@@ -36,6 +37,7 @@ const Sidebar = props => {
           <a href="/AppInstructions" className="logo logo-light" onClick={() => {
             ReactSession.remove("appInstructionsTabelSearch")
             ReactSession.remove('selected')
+            ReactSession.remove('selected2')
             ReactSession.remove('dateFrom')
             ReactSession.remove('dateTo')
             ReactSession.remove('searchValue')

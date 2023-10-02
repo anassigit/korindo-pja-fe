@@ -128,6 +128,7 @@ const SidebarContent = (props) => {
                 onClick={() => {
                   ReactSession.remove("appInstructionsTabelSearch")
                   ReactSession.remove('selected')
+                  ReactSession.remove('selected2')
                   ReactSession.remove('dateFrom')
                   ReactSession.remove('dateTo')
                   ReactSession.remove('searchValue')
