@@ -124,9 +124,8 @@ const SidebarContent = (props) => {
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li hidden={firstTimeLogin === "true"}>
-              <Link
+              <a
                 onClick={() => {
-                  window.location.reload()
                   ReactSession.remove("appInstructionsTabelSearch")
                   ReactSession.remove('selected')
                   ReactSession.remove('dateFrom')
@@ -136,12 +135,13 @@ const SidebarContent = (props) => {
                   window.location.reload()
                 }}
                 to="/AppInstructions"
+                href="/AppInstructions"
                 className={location.pathname === "/AppInstructions" ? "active" : null}
                 style={{ fontSize: "14px" }}
               >
                 <i style={{ fontSize: "12px", position: "relative", right: "1.5%" }} className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
-              </Link>
+              </a>
 
               <a
                 onClick={() => {
