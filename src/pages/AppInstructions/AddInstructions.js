@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import '../../config';
@@ -127,7 +127,11 @@ const AddInstructions = (props) => {
 
     useEffect(() => {
         setAddInstructionsFirstRenderDone(true);
-        dispatch(getManager({}))
+        dispatch(getManager({
+            search: {
+                "langType": langType
+            }
+        }))
         dispatch(getOwner({
             search: {
                 "langType": langType
@@ -494,6 +498,12 @@ const AddInstructions = (props) => {
                 "langType": langType
             }
         }))
+
+        dispatch(getManager({
+            search: {
+                "langType": langType
+            }
+        }))
     }, [langType])
 
     useEffect(() => {
@@ -519,7 +529,42 @@ const AddInstructions = (props) => {
             }
             setOptionOwner(newOwners);
         }
-    }, [getOwnerList, langType])
+
+    }, [getOwnerList])
+
+    useEffect(() => {
+        if (getManagerList.data !== undefined) {
+            const managerList = getManagerList.data.managerList; // Store managerList in a variable for efficiency
+            const newManagers = []; // Array to collect new manager objects
+
+            // Map over selectedMulti to update it
+            const updatedSelectedMulti = selectedMulti2.map((item) => {
+                const matchingManager = managerList.find((data) => data.id === item.value);
+                if (matchingManager) {
+                    debugger
+                    return {
+                        value: matchingManager.id,
+                        label: matchingManager.name + (matchingManager.gname !== null ? ` (${matchingManager.gname})` : ''),
+                    };
+                }
+                return item; // Keep other items unchanged
+            });
+
+            setselectedMulti2(updatedSelectedMulti); // Update selectedMulti
+
+            managerList.forEach((data) => {
+                const newManager = {
+                    value: data.id,
+                    label: data.name + (data.gname !== null ? ` (${data.gname})` : ''),
+                };
+                newManagers.push(newManager); // Push the new manager into the array
+            });
+
+            setOptionManager(newManagers); // Set the array of new managers outside the loop
+        }
+    }, [getManagerList, langType]);
+
+    console.log(selectedMulti2);
 
     useEffect(() => {
         refCleanser.current.value = ""

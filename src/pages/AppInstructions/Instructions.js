@@ -147,7 +147,7 @@ const Instructions = (props) => {
         setAppInstructionsTabelSearch({
             page: appInstructionsTabelSearch.page, limit: appInstructionsTabelSearch.limit, offset: appInstructionsTabelSearch.offset, sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
                 search: appInstructionsTabelSearch.search.search, langType: langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo,
-                group: appInstructionsTabelSearch.search.groupId,
+                group: appInstructionsTabelSearch.search.group,
             }
         });
 
@@ -412,7 +412,7 @@ const Instructions = (props) => {
             page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
             sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
                 search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value, from: dateFrom, to: dateTo,
-                group: appInstructionsTabelSearch.search.groupId,
+                group: appInstructionsTabelSearch.search.group,
             }
         })
         setAppInstructionsMsg("")
@@ -474,7 +474,7 @@ const Instructions = (props) => {
             page: 1, limit: 10, offset: 0,
             sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
                 search: searchValue, langType: appInstructionsTabelSearch.search.langType, status: appInstructionsTabelSearch.search.status, from: dateFrom, to: dateTo,
-                group: appInstructionsTabelSearch.search.groupId,
+                group: appInstructionsTabelSearch.search.group,
             }
         })
     }

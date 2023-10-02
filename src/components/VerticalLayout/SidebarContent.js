@@ -38,7 +38,7 @@ const SidebarContent = (props) => {
     setLoadingSpinner(true)
     setActiveMenuItem(location.pathname);
     if (!submenuLocalStorage) {
-      setDropdownOpen({rule: true})
+      setDropdownOpen({ rule: true })
     }
     dispatch(getMenuRuleData());
   }, [location.pathname]);
@@ -87,7 +87,7 @@ const SidebarContent = (props) => {
   const firstTimeLogin = ReactSession.get("firstTime_Login");
 
   const toggleDropdown = (key) => {
-    
+
     const updatedDropdownOpen = { ...dropdownOpen };
 
     // Close all other open submenus in ReactSession
@@ -108,11 +108,11 @@ const SidebarContent = (props) => {
     setDropdownOpen(updatedDropdownOpen);
   };
 
-useEffect(() => {
-  if (getMenu.status){
-    setLoadingSpinner(false)
-  }
-},[getMenu])
+  useEffect(() => {
+    if (getMenu.status) {
+      setLoadingSpinner(false)
+    }
+  }, [getMenu])
 
   return (
     <React.Fragment>
@@ -125,14 +125,21 @@ useEffect(() => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li hidden={firstTimeLogin === "true"}>
               <Link
-                onClick={() =>
+                onClick={() => {
+                  window.location.reload()
+                  ReactSession.remove("appInstructionsTabelSearch")
+                  ReactSession.remove('selected')
+                  ReactSession.remove('dateFrom')
+                  ReactSession.remove('dateTo')
+                  ReactSession.remove('searchValue')
                   ReactSession.remove("submenuKey")
-                }
+                  window.location.reload()
+                }}
                 to="/AppInstructions"
                 className={location.pathname === "/AppInstructions" ? "active" : null}
-                style={{fontSize: "14px"}}
+                style={{ fontSize: "14px" }}
               >
-                <i style={{fontSize: "12px", position: "relative", right: "1.5%" }} className="fas fa-list-ul"></i>
+                <i style={{ fontSize: "12px", position: "relative", right: "1.5%" }} className="fas fa-list-ul"></i>
                 <span>{props.t("Instructions List")}</span>
               </Link>
 
@@ -228,7 +235,7 @@ useEffect(() => {
                     </a>
                     {dropdownOpen[`submenu-${index + 1}`] &&
                       item?.subList.map((subMenu, i) => {
-                        
+
                         return (
                           <a
                             key={i}
