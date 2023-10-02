@@ -78,17 +78,20 @@ const Instructions = (props) => {
         let temp2 = ReactSession.get('dateFrom')
         let temp3 = ReactSession.get('dateTo')
         let temp4 = ReactSession.get('searchValue')
+        let temp5 = ReactSession.get('selected2')
 
         setSelected(temp1)
         setDateFrom(temp2)
         setDateTo(temp3)
         setSearchValue(temp4)
+        setSelected2(temp5)
 
     }, [])
 
     useEffect(() => {
 
         ReactSession.set('selected', selected)
+        ReactSession.set('selected2', selected2)
         ReactSession.set('dateFrom', dateFrom)
         ReactSession.set('dateTo', dateTo)
         ReactSession.set('searchValue', searchValue)
