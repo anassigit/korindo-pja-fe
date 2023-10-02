@@ -41,7 +41,11 @@ import {
     GET_CHECK_DOWNLOAD,
     RESP_GET_CHECK_DOWNLOAD,
     GET_SELECTED_REPLY,
-    RESP_GET_SELECTED_REPLY
+    RESP_GET_SELECTED_REPLY,
+    GET_GROUP_LIST_INST,
+    RESP_GET_GROUP_LIST_INST,
+    GET_ALL_STATUS,
+    RESP_GET_ALL_STATUS
 
 } from "./actionTypes"
 
@@ -52,6 +56,26 @@ export const getInstructionsData = (req) => ({
 
 export const respGetInstructions = resp => ({
   type: RESP_GET_INSTRUCTIONS,
+  payload: resp,
+})
+
+export const getGroupListData = (req) => ({
+  type: GET_GROUP_LIST_INST,
+  payload: req,
+})
+
+  export const getAllStatusData = (req) => ({
+    type: GET_ALL_STATUS,
+    payload: req,
+  })
+
+  export const respGetAllStatus = resp => ({
+    type: RESP_GET_ALL_STATUS,
+    payload: resp,
+  })
+
+export const respGetGroupList = resp => ({
+  type: RESP_GET_GROUP_LIST_INST,
   payload: resp,
 })
 

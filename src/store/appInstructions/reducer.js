@@ -48,12 +48,18 @@ import {
   GET_CHECK_DOWNLOAD,
   RESP_GET_CHECK_DOWNLOAD,
   GET_SELECTED_REPLY,
-  RESP_GET_SELECTED_REPLY
+  RESP_GET_SELECTED_REPLY,
+  GET_GROUP_LIST_INST,
+  RESP_GET_GROUP_LIST_INST,
+  GET_ALL_STATUS,
+  RESP_GET_ALL_STATUS
 
 } from "./actionTypes"
 
 const INIT_STATE = {
   respGetInstructions: {},
+  respGetGroupList: {},
+  respGetAllStatus: {},
   respGetManager: {},
   respGetOwner: {},
   respGetStatus: {},
@@ -85,6 +91,24 @@ const instructionsReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetInstructions: action.payload,
+      }
+    case GET_GROUP_LIST_INST:
+      return {
+        ...state,
+      }
+    case RESP_GET_GROUP_LIST_INST:
+      return {
+        ...state,
+        respGetGroupList: action.payload,
+      }
+    case GET_ALL_STATUS:
+      return {
+        ...state,
+      }
+    case RESP_GET_ALL_STATUS:
+      return {
+        ...state,
+        respGetAllStatus: action.payload,
       }
     case GET_MANAGER:
       return {
@@ -150,6 +174,8 @@ const instructionsReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetInstructions: {},
+        respGetGroupList: {},
+        respGetAllStatus: {},
         respGetManager: {},
         respGetOwner: {},
         respGetStatus: {},

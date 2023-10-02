@@ -16,7 +16,7 @@ import {
     UncontrolledAlert,
     Spinner,
 } from "reactstrap";
-import { getInstructionsData, getInstructionsData2, resetMessage } from "../../store/appInstructions/actions"
+import { getInstructionsData, getInstructionsData2, resetMessage, getGroupListData, getStatus, getAllStatusData } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import AddInstructions from "./AddInstructions";
@@ -32,7 +32,6 @@ import e from "cors";
 import { ContextMenu } from "react-contextmenu";
 import { date } from "yup";
 import moment from "moment";
-import { getGroupListData } from "store/actions";
 
 
 const Instructions = (props) => {
@@ -125,7 +124,11 @@ const Instructions = (props) => {
     );
 
     const appGroupListData = useSelector(state => {
-        return state.settingReducer.respGetGroupList;
+        return state.instructionsReducer.respGetGroupList;
+    });
+
+    const appStatusData = useSelector(state => {
+        return state.instructionsReducer.respGetAllStatus;
     });
 
     useEffect(() => {
@@ -149,6 +152,7 @@ const Instructions = (props) => {
         });
 
         dispatch(getGroupListData({ search: { langType: langType } }))
+        dispatch(getAllStatusData({ search: { langType: langType } }))
     }, [props.t, langType])
 
     const appInstructionsData = useSelector(state => {
@@ -521,12 +525,13 @@ const Instructions = (props) => {
                                                                 onChange={handleChange}
                                                                 value={selected}
                                                             >
-                                                                <option id="" value={""}>{props.t("All")}</option>
-                                                                <option id="1" value={"1"}>{props.t("Not Started")}</option>
-                                                                <option id="2" value={"2"}>{props.t("In Process")}</option>
-                                                                <option id="3" value={"3"}>{props.t("Action Completed")}</option>
-                                                                <option id="4" value={"4"}>{props.t("Rejected")}</option>
-                                                                <option id="5" value={"5"}>{props.t("Completed")}</option>
+                                                                {appStatusData?.data?.statusList.map((status, index) => (
+
+                                                                    <option key={index} value={status.id}>
+                                                                        {status.name}
+                                                                    </option>
+
+                                                                ))}
 
                                                             </Input>
                                                         </div>
@@ -551,7 +556,6 @@ const Instructions = (props) => {
                                                                 onChange={handleChangeGroup}
                                                                 value={selected2}
                                                             >
-                                                                <option key="all" value="all">All</option>
                                                                 {appGroupListData?.data?.groupList.map((group) => (
                                                                     <option key={group.num} value={group.num}>
                                                                         {group.name}

@@ -20,7 +20,9 @@ import {
   GET_STATUS,
   GET_LOGS,
   GET_CHECK_DOWNLOAD,
-  GET_SELECTED_REPLY, // Added this import
+  GET_SELECTED_REPLY,
+  GET_GROUP_LIST_INST,
+  GET_ALL_STATUS, // Added this import
 } from "./actionTypes";
 
 import {
@@ -44,6 +46,8 @@ import {
   respGetCheckDownload,
   getSelectedReply,
   respGetSelectedReply,
+  respGetGroupList,
+  respGetAllStatus,
 } from "./actions";
 
 import {
@@ -65,7 +69,9 @@ import {
   editReply,
   getStatusList,
   getLogsList,
-  checkFileDownload, // Added this import
+  checkFileDownload,
+  getGroupListInstructions,
+  getAllStatus, // Added this import
 } from "helpers/backend_helper";
 
 function* fetchGetInstructions({ payload: req }) {
@@ -79,6 +85,21 @@ function* fetchGetInstructions({ payload: req }) {
   } catch (error) {
     console.log(error);
     yield put(respGetInstructions({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchGetGroupList({ payload: req }) {
+  try {
+    const response = yield call(getGroupListInstructions, req)
+    if (response.status == 1) {
+      yield put(
+        respGetGroupList(response))
+    } else {
+      yield put(respGetGroupList(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetGroupList({ "status": 0, "message": "Error Get Data" }))
   }
 }
 
@@ -204,6 +225,20 @@ function* fetchSaveDescriptions({ payload: req }) {
   } catch (error) {
     console.log(error);
     yield put(msgAdd({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchGetAllStatus({ payload: req }) {
+  try {
+    const response = yield call(getAllStatus, req)
+    if (response.status == 1) {
+      yield put(respGetAllStatus(response))
+    } else {
+      yield put(respGetAllStatus(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetAllStatus({ "status": 0, "message": "Error Get Data" }))
   }
 }
 
@@ -336,6 +371,8 @@ function* fetchGetLogs({ payload: req }) {
 function* instructionsSaga() {
 
   yield takeEvery(GET_INSTRUCTIONS, fetchGetInstructions)
+  yield takeEvery(GET_GROUP_LIST_INST, fetchGetGroupList)
+  yield takeEvery(GET_ALL_STATUS, fetchGetAllStatus)
   yield takeEvery(GET_MANAGER, fetchGetManager)
   yield takeEvery(GET_OWNER, fetchGetOwner)
   yield takeEvery(GET_SELECTED_MANAGER, fetchGetSelectedManager)
