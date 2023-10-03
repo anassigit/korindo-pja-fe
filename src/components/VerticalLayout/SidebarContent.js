@@ -187,7 +187,7 @@ const SidebarContent = (props) => {
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Data Inquiry")}</span>
               </Link>
 
-              {/* <a
+              <a
                 onClick={() => {
                   toggleDropdown("rule");
                   localStorage.setItem("appFileManagementData", "");
@@ -255,7 +255,7 @@ const SidebarContent = (props) => {
                       })}
                   </React.Fragment>
                 );
-              })} */}
+              })}
 
               <Link
                 to="/AppSetting"
