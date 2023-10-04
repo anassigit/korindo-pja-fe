@@ -165,9 +165,9 @@ const AddInstructions = (props) => {
                 });
             }
 
-            if (getManagerList.data !== undefined) {
+            if (getManagerList?.data !== undefined) {
 
-                getManagerList.data.managerList.map((data) => {
+                getManagerList?.data?.managerList.map((data) => {
                     const newManager = {
                         value: data.id,
                         label: data.name + (data.gname !== null ? ` (` + data.gname + `)` : ''),
@@ -533,13 +533,13 @@ const AddInstructions = (props) => {
     }, [getOwnerList])
 
     useEffect(() => {
-        if (getManagerList.data !== undefined) {
-            const managerList = getManagerList.data.managerList; // Store managerList in a variable for efficiency
+        if (getManagerList?.data !== undefined) {
+            const managerList = getManagerList?.data?.managerList; // Store managerList in a variable for efficiency
             const newManagers = []; // Array to collect new manager objects
 
             // Map over selectedMulti to update it
             const updatedSelectedMulti = selectedMulti2.map((item) => {
-                const matchingManager = managerList.find((data) => data.id === item.value);
+                const matchingManager = managerList?.find((data) => data.id === item.value);
                 if (matchingManager) {
                     debugger
                     return {
@@ -552,7 +552,7 @@ const AddInstructions = (props) => {
 
             setselectedMulti2(updatedSelectedMulti); // Update selectedMulti
 
-            managerList.forEach((data) => {
+            managerList?.forEach((data) => {
                 const newManager = {
                     value: data.id,
                     label: data.name + (data.gname !== null ? ` (${data.gname})` : ''),
