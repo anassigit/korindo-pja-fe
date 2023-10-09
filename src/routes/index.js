@@ -2,22 +2,55 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 
 // Authentication related pages
+import Login from "../pages/Authentication/Login"
+import Logout from "../pages/Authentication/Logout"
+import EmailVerPassword from "../pages/Authentication/EmailVerPassword"
+import UpdatePassword from "../pages/Authentication/UpdatePassword"
 
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
-import Sso from "pages/AppSso/Sso"
 
+import Menu from "../pages/App002/Menu"
+import Role from "../pages/App003/Role"
+import RoleAkses from "../pages/App004/RoleAkses"
+import User from "../pages/App008/User"
+import Instructions from "../pages/AppInstructions/Instructions"
+import UserProfile from "../pages/AppUserProfile/UserProfile"
+import ChangePassword from "../pages/AppUserProfile/ChangePassword"
+import Setting from "pages/AppSetting/Setting"
+import EditInstructions from "pages/AppInstructions/EditInstructions"
+import FileManagement from "pages/AppFileManagement/FileManagement"
+import FirstLogin from "pages/Authentication/FirstLogin"
+import EnterMonthlyData from "pages/AppFileManagement/EnterMonthlyData"
+import Rule from "pages/AppRule/Rule"
 
 const authProtectedRoutes = [
-  { path: "/", component: Sso },
+  { path: "/dashboard", component: Dashboard },
+  { path: "/app002", component: Menu },
+  { path: "/app003", component: Role },
+  { path: "/app004", component: RoleAkses },
+  { path: "/app008", component: User },
+  { path: "/AppInstructions", component: Instructions },
+  { path: "/AppEditInstruction", component: EditInstructions },
+  { path: "/AppSetting", component: Setting },
+  { path: "/AppUserProfile", component: UserProfile },
+  { path: "/changePassword", component: ChangePassword },
+  { path: "/AppFileManagement", component: FileManagement },
+  { path: "/FirstLogin", component: FirstLogin },
+  { path: "/EnterMonthlyData", component: EnterMonthlyData },
+  { path: "/AppRule", component: Rule },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
-  { path: "/", exact: true, component: () => <Redirect to="/" /> },
+  { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> },
 ]
 
 const publicRoutes = [
+  { path: "/logout", component: Logout },
+  { path: "/login", component: Login },
+  { path: "/emailPassword", component: EmailVerPassword },
+  { path: "/updatePassword", component: UpdatePassword },
 
 ]
 

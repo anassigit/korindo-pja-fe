@@ -74,39 +74,39 @@ const Layout = props => {
     
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(changeLayout("vertical"));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(changeLayout("vertical"));
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (leftSideBarTheme) {
-  //     dispatch(changeSidebarTheme(leftSideBarTheme));
-  //   }
-  // }, [leftSideBarTheme, dispatch]);
+  useEffect(() => {
+    if (leftSideBarTheme) {
+      dispatch(changeSidebarTheme(leftSideBarTheme));
+    }
+  }, [leftSideBarTheme, dispatch]);
 
-  // useEffect(() => {
-  //   if (leftSideBarThemeImage) {
-  //     dispatch(changeSidebarThemeImage(leftSideBarThemeImage));
-  //   }
-  // }, [leftSideBarThemeImage, dispatch]);
+  useEffect(() => {
+    if (leftSideBarThemeImage) {
+      dispatch(changeSidebarThemeImage(leftSideBarThemeImage));
+    }
+  }, [leftSideBarThemeImage, dispatch]);
 
-  // useEffect(() => {
-  //   if (layoutWidth) {
-  //     dispatch(changeLayoutWidth(layoutWidth));
-  //   }
-  // }, [layoutWidth, dispatch]);
+  useEffect(() => {
+    if (layoutWidth) {
+      dispatch(changeLayoutWidth(layoutWidth));
+    }
+  }, [layoutWidth, dispatch]);
 
-  // useEffect(() => {
-  //   if (leftSideBarType) {
-  //     dispatch(changeSidebarType(leftSideBarType));
-  //   }
-  // }, [leftSideBarType, dispatch]);
+  useEffect(() => {
+    if (leftSideBarType) {
+      dispatch(changeSidebarType(leftSideBarType));
+    }
+  }, [leftSideBarType, dispatch]);
 
-  // useEffect(() => {
-  //   if (topbarTheme) {
-  //     dispatch(changeTopbarTheme(topbarTheme));
-  //   }
-  // }, [topbarTheme, dispatch]);
+  useEffect(() => {
+    if (topbarTheme) {
+      dispatch(changeTopbarTheme(topbarTheme));
+    }
+  }, [topbarTheme, dispatch]);
 
   return (
     <React.Fragment>
@@ -124,18 +124,18 @@ const Layout = props => {
       </div>
         
       <div id="layout-wrapper">
-        {/* <Header toggleMenuCallback={toggleMenuCallback} />
+        <Header toggleMenuCallback={toggleMenuCallback} />
         
         <Sidebar
           theme={leftSideBarTheme}
           type={leftSideBarType}
           isMobile={isMobile}
-        /> */}
+        />
         
         <div className="main-content">{props.children}
         <Alert stack={{limit: 1}} />
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
 
     </React.Fragment>
