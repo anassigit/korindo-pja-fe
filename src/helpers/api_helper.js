@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import { ReactSession } from 'react-client-session';
 
 //apply base url for axios
-var API_URL = "http://localhost:9010/pja";
+var API_URL = "http://localhost:9012/sso";
 if(process.env.REACT_APP_APIKEY === "development"){
   API_URL = "http://192.168.0.29:9010/pja";
 }else if(process.env.REACT_APP_APIKEY === "production"){
