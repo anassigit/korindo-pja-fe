@@ -15,7 +15,7 @@ const Dashboard = () => {
         <>
           <React.Fragment>
             <MetaTags>
-              <title>::: DMLS :::</title>
+              <title>DMLS</title>
             </MetaTags>
             <Container fluid={true}>
               <h4>Dashboard</h4>

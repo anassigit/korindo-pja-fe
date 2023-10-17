@@ -898,14 +898,14 @@ debugger
                               <div
                                 {...(myfiles.open === true && myfiles.edit === true && {
                                   onContextMenu: (e) => {
-                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles.url);
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles?.url);
                                   },
                                   onClick: hideContextMenu2,
                                 })}
 
                                 {...(myfiles.open === true && myfiles.edit === false && {
                                   onContextMenu: (e) => {
-                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles.url);
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles?.url);
                                   },
                                   onClick: hideContextMenu2,
                                 })}
@@ -923,12 +923,12 @@ debugger
                                 //         e.preventDefault();
                                 //         handleContextMenuOpen2(e);
                                 //       },
-                                //       onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                //       onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                 //       style: { cursor: "pointer" },
                                 //     };
                                 //   } else {
                                 //     return {
-                                //       onDoubleClick: () => toggleShowModal(myfiles.url),
+                                //       onDoubleClick: () => toggleShowModal(myfiles?.url),
                                 //       style: { cursor: "pointer" },
                                 //     };
                                 //   }
@@ -944,12 +944,12 @@ debugger
                                 //         e.preventDefault();
                                 //         handleContextMenuOpen2(e);
                                 //       },
-                                //       onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                //       onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                 //       style: { cursor: "pointer" },
                                 //     };
                                 //   } else {
                                 //     return {
-                                //       onDoubleClick: () => toggleShowModal(myfiles.url),
+                                //       onDoubleClick: () => toggleShowModal(myfiles?.url),
                                 //       style: { cursor: "pointer" },
                                 //     };
                                 //   }
@@ -961,8 +961,8 @@ debugger
                                 //     e.preventDefault();
                                 //     handleContextMenuOpen2(e);
                                 //   },
-                                //   onDoubleClick: () => toggleShowModal(myfiles.url),
-                                //   onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                //   onDoubleClick: () => toggleShowModal(myfiles?.url),
+                                //   onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                 //   style: { cursor: "pointer" },
                                 // })}
                                 >
@@ -995,7 +995,7 @@ debugger
                                           <DropdownMenu className="dropdown-menu-end">
                                             {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
                                               <>
-                                                <DropdownItem onClick={() => togglePreviewModal(myfiles.url, myfiles.name)}>
+                                                <DropdownItem onClick={() => togglePreviewModal(myfiles?.url, myfiles.name)}>
                                                   <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
                                                   {props.t("Preview")}
                                                 </DropdownItem>
@@ -1047,7 +1047,7 @@ debugger
                                           <DropdownMenu className="dropdown-menu-end">
                                             {myfiles.name.endsWith("jpg") || myfiles.name.endsWith("jpeg") || myfiles.name.endsWith("gif") || myfiles.name.endsWith("png") || myfiles.name.endsWith("pdf") ? (
                                               <>
-                                                <DropdownItem onClick={() => togglePreviewModal(myfiles.url, myfiles.name)}>
+                                                <DropdownItem onClick={() => togglePreviewModal(myfiles?.url, myfiles.name)}>
                                                   <i className="mdi mdi-eye align-middle fs-4 mb-2" /> {"  "}
                                                   {props.t("Preview")}
                                                 </DropdownItem>
@@ -1177,12 +1177,12 @@ debugger
                                             e.preventDefault();
                                             handleContextMenuOpen2(e);
                                           },
-                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                          onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       } else {
                                         return {
-                                          onDoubleClick: () => toggleShowModal(myfiles.url, myfiles.name),
+                                          onDoubleClick: () => toggleShowModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       }
@@ -1198,12 +1198,12 @@ debugger
                                             e.preventDefault();
                                             handleContextMenuOpen2(e);
                                           },
-                                          onClick: () => togglePreviewModal(myfiles.url, myfiles.name),
+                                          onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       } else {
                                         return {
-                                          onDoubleClick: () => toggleShowModal(myfiles.url, myfiles.name),
+                                          onDoubleClick: () => toggleShowModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
                                         };
                                       }
@@ -1253,7 +1253,7 @@ debugger
                                                       height: '100%',
                                                       objectFit: 'cover',
                                                     }}
-                                                      src={new URL(myfiles.url)}
+                                                      src={myfiles?.url ? new URL(myfiles.url) : ''}
                                                     />
                                                   </div>
                                                 );
@@ -1341,14 +1341,14 @@ debugger
                                                         objectFit: 'cover',
                                                       }}
                                                     >
-                                                      <source src={new URL(myfiles.url)} type="video/mp4" />
+                                                      <source src={myfiles?.url ? new URL(myfiles.url) : ''} type="video/mp4" />
                                                       Your browser does not support the video tag.
                                                     </video>
 
 
                                                     <button
                                                       onClick={() =>
-                                                        togglePreviewModal(myfiles.url, myfiles.name)
+                                                        togglePreviewModal(myfiles?.url, myfiles.name)
 
                                                       }
                                                       style={{
@@ -1381,7 +1381,7 @@ debugger
                                                   //       objectFit: 'cover',
                                                   //     }}
                                                   //   >
-                                                  //     <source src={new URL(myfiles.url)} type="video/mp4" />
+                                                  //     <source src={myfiles?.url ? new URL(myfiles.url) : ''} type="video/mp4" />
                                                   //     Your browser does not support the video tag.
                                                   //   </video>
                                                   // </div>
@@ -1466,7 +1466,7 @@ debugger
                                                     style={{
                                                       filter: 'blur(5px)'
                                                     }}
-                                                    src={new URL(myfiles.url)} 
+                                                    src={myfiles?.url ? new URL(myfiles.url) : ''} 
                                                     />
 
                                                     <button
@@ -1651,7 +1651,7 @@ debugger
                                                         filter: 'blur(5px)'
                                                       }}
                                                     >
-                                                      <source src={new URL(myfiles.url)} type="video/mp4" />
+                                                      <source src={myfiles?.url ? new URL(myfiles.url) : ''} type="video/mp4" />
                                                       Your browser does not support the video tag.
                                                     </video>
 
@@ -1676,7 +1676,7 @@ debugger
 
                                                     {/* <button
                                                       onClick={() =>
-                                                        togglePreviewModal(myfiles.url, myfiles.name)
+                                                        togglePreviewModal(myfiles?.url, myfiles.name)
 
                                                       }
                                                       style={{
@@ -1707,7 +1707,7 @@ debugger
                                                   //       height: '100%',
                                                   //     }}
                                                   //   >
-                                                  //     <source src={new URL(myfiles.url)} type="video/mp4" /> 
+                                                  //     <source src={myfiles?.url ? new URL(myfiles.url) : ''} type="video/mp4" /> 
                                                   //     Your browser does not support the video tag.
                                                   //   </video>
                                                   // </div>
