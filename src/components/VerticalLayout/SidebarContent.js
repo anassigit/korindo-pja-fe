@@ -133,6 +133,7 @@ const SidebarContent = (props) => {
                   ReactSession.remove('dateTo')
                   ReactSession.remove('searchValue')
                   ReactSession.remove("submenuKey")
+                  ReactSession.remove('selectedArray')
                   window.location.reload()
                 }}
                 to="/AppInstructions"

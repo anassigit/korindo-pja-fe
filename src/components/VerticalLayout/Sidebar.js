@@ -25,6 +25,8 @@ const Sidebar = props => {
             ReactSession.remove('dateTo')
             ReactSession.remove('searchValue')
             ReactSession.remove("submenuKey")
+            ReactSession.remove('selectedArray')
+            window.location.reload()
           }}>
             <span className="logo-sm">
               <img src={logoKorindo2} alt="" height="22" />
@@ -42,6 +44,7 @@ const Sidebar = props => {
             ReactSession.remove('dateTo')
             ReactSession.remove('searchValue')
             ReactSession.remove("submenuKey")
+            ReactSession.remove('selectedArray')
             window.location.reload()
           }}>
             <span className="logo-sm">

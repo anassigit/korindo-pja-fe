@@ -24,7 +24,7 @@ import EditInstructions from "./EditInstructions";
 import "../../assets/scss/custom/table/TableCustom.css"
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { withTranslation } from "react-i18next"
-import PropTypes from "prop-types"
+import PropTypes, { string } from "prop-types"
 import DatePicker from "react-datepicker";
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import CustomDatePicker from "../../common/CustomDatePicker.js"
@@ -46,7 +46,11 @@ const Instructions = (props) => {
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
     const [appInstructionsMsg2, setAppInstructionsMsg2] = useState("")
     const [instructionsData, setInstructionsData] = useState()
-    const [selected, setSelected] = useState("");
+
+    const [selected, setSelected] = useState();
+    const [selectedStatusId, setSelectedStatusId] = useState([]);
+    const [selectedArray, setSelectedArray] = useState([]);
+
     const [selected2, setSelected2] = useState(null);
     const [getData, setGetData] = useState([]);
     const [getData2, setGetData2] = useState([]);
@@ -79,24 +83,27 @@ const Instructions = (props) => {
         let temp3 = ReactSession.get('dateTo')
         let temp4 = ReactSession.get('searchValue')
         let temp5 = ReactSession.get('selected2')
+        let temp6 = ReactSession.get('selectedArray') ? ReactSession.get('selectedArray') : []
 
         setSelected(temp1)
         setDateFrom(temp2)
         setDateTo(temp3)
         setSearchValue(temp4)
         setSelected2(temp5)
+        setSelectedArray(temp6)
 
     }, [])
 
     useEffect(() => {
 
         ReactSession.set('selected', selected)
+        ReactSession.set('selectedArray', selectedArray)
         ReactSession.set('selected2', selected2)
         ReactSession.set('dateFrom', dateFrom)
         ReactSession.set('dateTo', dateTo)
         ReactSession.set('searchValue', searchValue)
 
-    }, [selected, dateFrom, dateTo, searchValue])
+    }, [selected, dateFrom, dateTo, searchValue, selectedArray])
 
     useEffect(() => {
         dispatch(resetMessage());
@@ -407,21 +414,40 @@ const Instructions = (props) => {
         setEditInstructions(true);
     }
 
-    const handleChange = event => {
-
-        setLoadingSpinner(true)
-
-        setAppInstructionsTabelSearch({
-            page: 1, limit: appInstructionsTabelSearch.limit, offset: 0,
-            sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
-                search: appInstructionsTabelSearch.search.search, langType: appInstructionsTabelSearch.search.langType, status: event.target.value, from: dateFrom, to: dateTo,
-                group: appInstructionsTabelSearch.search.group,
+    const handleChange = (event) => {
+        debugger
+        const selectedValue = event.target.value;
+        const isChecked = event.target.checked;
+    
+        let updatedSelectedArray = [...selectedArray]
+        let stringArray = ''
+    
+        setSelectedArray((prevSelected) => {
+            if (isChecked) {
+                updatedSelectedArray.push(selectedValue);
+                stringArray = updatedSelectedArray.join(',')
+                return prevSelected?.length > 0 ? [...prevSelected, selectedValue] : [selectedValue];
+            } else {
+                updatedSelectedArray = prevSelected.filter((value) => value !== selectedValue);
+                stringArray = updatedSelectedArray.join(',');
+                return updatedSelectedArray;
             }
-        })
-        setAppInstructionsMsg("")
-        setSelected(event.target.value);
-    }
-
+        });
+    
+        setAppInstructionsTabelSearch((prevSearch) => ({
+            ...prevSearch,
+            page: 1,
+            offset: 0,
+            search: {
+                ...prevSearch.search,
+                status: stringArray,
+            },
+        }));
+    
+        setSelected(stringArray);
+        setAppInstructionsMsg("");
+    };
+    
     const handleChangeGroup = event => {
 
         setLoadingSpinner(true)
@@ -517,35 +543,33 @@ const Instructions = (props) => {
                                                             />
                                                         </div>
                                                     </Row>
-                                                    <Row className="mb-1 col-sm-11">
-                                                        <label className="col-sm-2" style={{ marginTop: "8px" }}>
+                                                    <Row className="mb-1 col-sm-12">
+                                                        <label className="col-sm-2" style={{ marginTop: "8px", width: "15%" }}>
                                                             {props.t("Status")}
                                                         </label>
-                                                        <div className="col-sm-6">
-                                                            <Input
-                                                                type="select"
-                                                                name="status"
-                                                                onChange={handleChange}
-                                                                value={selected}
-                                                            >
-                                                                {appStatusData?.data?.statusList.map((status, index) => (
-
-                                                                    <option key={index} value={status.id}>
-                                                                        {status.name}
-                                                                    </option>
-
-                                                                ))}
-
-                                                            </Input>
+                                                        <div className="col-sm-8" style={{ display: "flex", flexWrap: "wrap", marginTop: "8px" }}>
+                                                            {appStatusData?.data?.statusList.map((status, index) => (
+                                                                <div key={index} style={{ marginRight: "10px" }}>
+                                                                    <Input
+                                                                        type="checkbox"
+                                                                        name="status"
+                                                                        onChange={handleChange}
+                                                                        value={status.id}
+                                                                        id={`statusCheckbox${status.id}`}
+                                                                        checked={selectedArray?.includes(status.id.toString())} 
+                                                                    />
+                                                                    <label htmlFor={`statusCheckbox${status.id}`}>&nbsp;{status.name}</label>
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                     </Row>
+
                                                     <Col md='1'>
-                                                        <button className="btn btn-primary" style={{ position: "absolute", left: "25%", bottom: "54%" }} onClick={() => handleSearch()}>
+                                                        <button className="btn btn-primary" style={{ position: "absolute", left: "25%", top: 0 }} onClick={() => handleSearch()}>
                                                             {props.t("Search")}
                                                         </button>
                                                     </Col>
                                                 </Col>
-
 
                                                 <Col md="5" style={{ marginLeft: "-0px" }}>
                                                     <Row className="mb-1 col-sm-11">

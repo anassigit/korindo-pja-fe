@@ -563,9 +563,7 @@ const AddInstructions = (props) => {
             setOptionManager(newManagers); // Set the array of new managers outside the loop
         }
     }, [getManagerList, langType]);
-
-    console.log(selectedMulti2);
-
+    
     useEffect(() => {
         refCleanser.current.value = ""
         SetSelectedFile([])
