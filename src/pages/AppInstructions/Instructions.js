@@ -63,6 +63,43 @@ const Instructions = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
 
+
+    const [sessionAppInstructionsTabelSearch, setSessionAppInstructionsTabelSearch] = useState(
+        ReactSession.get("appInstructionsTabelSearch") || null
+    );
+
+    const defaultAppInstructionsTabelSearch = {
+        page: 1,
+        limit: 10,
+        offset: 0,
+        sort: "ins_date",
+        order: "desc",
+        search: {
+            search: "",
+            langType: langType,
+            status: selected ? selected : '1,2,3,4',
+            from: dateFrom,
+            group: selected2,
+            to: dateTo
+        }
+    };
+
+    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState(
+        ReactSession.get("appInstructionsTabelSearch") ? sessionAppInstructionsTabelSearch : defaultAppInstructionsTabelSearch
+    );
+    
+    useEffect(() => {
+        debugger
+        getInstructionsData(appInstructionsTabelSearch)
+        ReactSession.set("appInstructionsTabelSearch", appInstructionsTabelSearch)
+    }, [appInstructionsTabelSearch])
+
+    useEffect(() => {
+        if (!sessionAppInstructionsTabelSearch) {
+            setSessionAppInstructionsTabelSearch(appInstructionsTabelSearch)
+        }
+    }, [sessionAppInstructionsTabelSearch])
+
     useEffect(() => {
         const lastURL = localStorage.getItem('currentURL');
         let temp = ReactSession.get('firstTime_Login')
@@ -85,7 +122,9 @@ const Instructions = (props) => {
         let temp5 = ReactSession.get('selected2')
         let temp6 = ReactSession.get('selectedArray') ? ReactSession.get('selectedArray') : ['1','2','3','4']
 
-        setSelected(temp1)
+        let stringArray = ''
+        stringArray = temp6.join(',')
+        setSelected(stringArray)
         setDateFrom(temp2)
         setDateTo(temp3)
         setSearchValue(temp4)
@@ -93,6 +132,8 @@ const Instructions = (props) => {
         setSelectedArray(temp6)
 
     }, [])
+
+    console.log('appInstructionsTabelSearch', appInstructionsTabelSearch)
 
     useEffect(() => {
 
@@ -109,29 +150,7 @@ const Instructions = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-    const [sessionAppInstructionsTabelSearch, setSessionAppInstructionsTabelSearch] = useState(
-        ReactSession.get("appInstructionsTabelSearch") || {}
-    );
-
-    const defaultAppInstructionsTabelSearch = {
-        page: 1,
-        limit: 10,
-        offset: 0,
-        sort: "ins_date",
-        order: "desc",
-        search: {
-            search: "",
-            langType: langType,
-            status: selected,
-            from: dateFrom,
-            group: selected2,
-            to: dateTo
-        }
-    };
-
-    const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState(
-        ReactSession.get("appInstructionsTabelSearch") ? sessionAppInstructionsTabelSearch : defaultAppInstructionsTabelSearch
-    );
+  
 
     const appGroupListData = useSelector(state => {
         return state.instructionsReducer.respGetGroupList;
@@ -141,16 +160,7 @@ const Instructions = (props) => {
         return state.instructionsReducer.respGetAllStatus;
     });
 
-    useEffect(() => {
-        getInstructionsData(appInstructionsTabelSearch)
-        ReactSession.set("appInstructionsTabelSearch", appInstructionsTabelSearch)
-    }, [appInstructionsTabelSearch])
-
-    useEffect(() => {
-        if (!sessionAppInstructionsTabelSearch) {
-            setSessionAppInstructionsTabelSearch(appInstructionsTabelSearch)
-        }
-    }, [sessionAppInstructionsTabelSearch])
+ 
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -415,7 +425,6 @@ const Instructions = (props) => {
     }
 
     const handleChange = (event) => {
-        debugger
         const selectedValue = event.target.value;
         const isChecked = event.target.checked;
 
