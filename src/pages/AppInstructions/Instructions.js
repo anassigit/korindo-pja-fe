@@ -83,7 +83,7 @@ const Instructions = (props) => {
         let temp3 = ReactSession.get('dateTo')
         let temp4 = ReactSession.get('searchValue')
         let temp5 = ReactSession.get('selected2')
-        let temp6 = ReactSession.get('selectedArray') ? ReactSession.get('selectedArray') : []
+        let temp6 = ReactSession.get('selectedArray') ? ReactSession.get('selectedArray') : ['1','2','3','4']
 
         setSelected(temp1)
         setDateFrom(temp2)
@@ -418,10 +418,10 @@ const Instructions = (props) => {
         debugger
         const selectedValue = event.target.value;
         const isChecked = event.target.checked;
-    
+
         let updatedSelectedArray = [...selectedArray]
         let stringArray = ''
-    
+
         setSelectedArray((prevSelected) => {
             if (isChecked) {
                 updatedSelectedArray.push(selectedValue);
@@ -433,7 +433,7 @@ const Instructions = (props) => {
                 return updatedSelectedArray;
             }
         });
-    
+
         setAppInstructionsTabelSearch((prevSearch) => ({
             ...prevSearch,
             page: 1,
@@ -443,11 +443,11 @@ const Instructions = (props) => {
                 status: stringArray,
             },
         }));
-    
+
         setSelected(stringArray);
         setAppInstructionsMsg("");
     };
-    
+
     const handleChangeGroup = event => {
 
         setLoadingSpinner(true)
@@ -548,19 +548,23 @@ const Instructions = (props) => {
                                                             {props.t("Status")}
                                                         </label>
                                                         <div className="col-sm-8" style={{ display: "flex", flexWrap: "wrap", marginTop: "8px" }}>
-                                                            {appStatusData?.data?.statusList.map((status, index) => (
-                                                                <div key={index} style={{ marginRight: "10px" }}>
-                                                                    <Input
-                                                                        type="checkbox"
-                                                                        name="status"
-                                                                        onChange={handleChange}
-                                                                        value={status.id}
-                                                                        id={`statusCheckbox${status.id}`}
-                                                                        checked={selectedArray?.includes(status.id.toString())} 
-                                                                    />
-                                                                    <label htmlFor={`statusCheckbox${status.id}`}>&nbsp;{status.name}</label>
-                                                                </div>
-                                                            ))}
+                                                            {appStatusData?.data?.statusList.map((status, index) =>
+                                                                status.id !== 0 ?
+                                                                    (
+                                                                        <div key={index} style={{ marginRight: "10px" }}>
+                                                                            <Input
+                                                                                type="checkbox"
+                                                                                name="status"
+                                                                                onChange={handleChange}
+                                                                                value={status.id}
+                                                                                id={`statusCheckbox${status.id}`}
+                                                                                checked={selectedArray?.includes(status.id.toString())}
+                                                                            />
+                                                                            <label htmlFor={`statusCheckbox${status.id}`}>&nbsp;{status.name}</label>
+                                                                        </div>
+                                                                    ) :
+                                                                    null
+                                                            )}
                                                         </div>
                                                     </Row>
 
