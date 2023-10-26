@@ -37,6 +37,8 @@ import moment from "moment";
 const Instructions = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
+    const localSelected2 = ReactSession.get('selected2')
+
     const dispatch = useDispatch();
     const history = useHistory()
     const [appInstructionsPage, setAppInstructionsPage] = useState(true)
@@ -51,7 +53,7 @@ const Instructions = (props) => {
     const [selectedStatusId, setSelectedStatusId] = useState([]);
     const [selectedArray, setSelectedArray] = useState([]);
 
-    const [selected2, setSelected2] = useState(ReactSession.get('selected2') ? ReactSession.get('selected2') : null);
+    const [selected2, setSelected2] = useState(localSelected2 ? localSelected2 : null);
     const [getData, setGetData] = useState([]);
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
@@ -131,12 +133,7 @@ const Instructions = (props) => {
         setSelectedArray(temp6)
         getInstructionsData(appInstructionsTabelSearch)
 
-        console.log(temp2)
-
     }, [])
-
-    // console.log('appInstructionsTabelSearch', appInstructionsTabelSearch.search.from)
-    // console.log(sessionAppInstructionsTabelSearch)
 
     useEffect(() => {
 
@@ -473,6 +470,8 @@ const Instructions = (props) => {
         })
         setAppInstructionsMsg("")
         setSelected2(event.target.value);
+        ReactSession.set('selected2', event.target.value)
+
     }
 
 
