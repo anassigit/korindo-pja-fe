@@ -52,6 +52,10 @@ const EditInstructions = (props) => {
         localStorage.setItem("I18N_LANGUAGE", "kor")
     }
     const history = useHistory()
+    
+    const [loadingSpinner, setLoadingSpinner] = useState(false)
+    const [updateNoReply, setUpdateNoReply] = useState(false)
+
     const dispatch = useDispatch();
 
     const [appEditInstructionsMsg, setAppEditInstructionsMsg] = useState("")
@@ -179,6 +183,8 @@ const EditInstructions = (props) => {
 
     useEffect(() => {
         setEditInstructionsFirstRenderDone(true);
+        setLoadingSpinner(true)
+        
         dispatch(resetMessage());
 
         let num = queryNum?.toString()
@@ -1208,13 +1214,11 @@ const EditInstructions = (props) => {
 
     const [replyClicked, setReplyClicked] = useState(false)
 
-    const [loadingSpinner, setLoadingSpinner] = useState(false)
-    const [updateNoReply, setUpdateNoReply] = useState(false)
-
     useEffect(() => {
         let num = queryNum
         num = num?.toString()
         if (msgSaveReply.status == '0') {
+            setLoadingSpinner(false)
         }
         if (msgSaveReply.status == '1' || updateNoReply) {
             setUpdateNoReply(false)
@@ -1334,8 +1338,8 @@ const EditInstructions = (props) => {
             if (refCleanser.current != null) {
                 refCleanser.current.value = ""
             }
+            setLoadingSpinner(false)
         }
-        setLoadingSpinner(false)
     }, [msgEditReply])
 
     useEffect(() => {
@@ -1353,8 +1357,8 @@ const EditInstructions = (props) => {
             if (refCleanser.current != null) {
                 refCleanser.current.value = ""
             }
+            setLoadingSpinner(false)
         }
-        setLoadingSpinner(false)
     }, [msgDeleteReply])
 
     /** SIGIT MADE FROM HERE **/
@@ -1393,24 +1397,26 @@ const EditInstructions = (props) => {
             history.push({
                 pathname: '/AppInstructions',
             })
+            setLoadingSpinner(false)
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         } else if (editInstructionsMessage.status == "1" && !onlyReply && ReactSession.get('appEditInstructionsMsg')?.status !== "1" && tempMsg == "") {
             history.push({
                 pathname: '/AppInstructions',
             })
+            setLoadingSpinner(false)
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         } else if (editInstructionsMessage.status == "1" && submitClicked) {
             history.push({
                 pathname: '/AppInstructions',
             })
 
+            setLoadingSpinner(false)
             ReactSession.set('appEditInstructionsMsg', editInstructionsMessage)
         }
 
         setSubmitClicked(false)
 
         localStorage.removeItem('tempSelect')
-        setLoadingSpinner(false)
         setAppEditInstructionsMsg(editInstructionsMessage)
     }, [editInstructionsMessage])
 
@@ -2036,7 +2042,16 @@ const EditInstructions = (props) => {
                                                 <Button
                                                     type="button"
                                                     className="btn btn-danger "
-                                                    onClick={() => { history.go(-1); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                    onClick={() => {
+                                                        history.go(-1);
+                                                        setOptionManager0([]);
+                                                        setOptionOwner0([]);
+                                                        setOptionOwner([]);
+                                                        setOptionManager([]);
+                                                        setGetFiles([]);
+                                                        SetFiles([]);
+                                                        SetFiles2([])
+                                                    }}
                                                 >
                                                     <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
                                                     {props.t("Back")}
@@ -2270,7 +2285,16 @@ const EditInstructions = (props) => {
                                             <Button
                                                 type="button"
                                                 className="btn btn-danger "
-                                                onClick={() => { history.go(-1); setOptionManager0([]); setOptionOwner0([]); setOptionOwner([]); setOptionManager([]); setGetFiles([]); SetFiles([]); SetFiles2([]) }}
+                                                onClick={() => {
+                                                    history.go(-1);
+                                                    setOptionManager0([]);
+                                                    setOptionOwner0([]);
+                                                    setOptionOwner([]);
+                                                    setOptionManager([]);
+                                                    setGetFiles([]);
+                                                    SetFiles([]);
+                                                    SetFiles2([])
+                                                }}
                                             >
                                                 <i className="mdi mdi-keyboard-backspace fs-5 align-middle" />{" "}
                                                 {props.t("Back")}

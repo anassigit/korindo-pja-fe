@@ -51,15 +51,15 @@ const Instructions = (props) => {
     const [selectedStatusId, setSelectedStatusId] = useState([]);
     const [selectedArray, setSelectedArray] = useState([]);
 
-    const [selected2, setSelected2] = useState(null);
+    const [selected2, setSelected2] = useState(ReactSession.get('selected2') ? ReactSession.get('selected2') : null);
     const [getData, setGetData] = useState([]);
     const [getData2, setGetData2] = useState([]);
     const [isClosed, setIsClosed] = useState(false)
 
-    const [dateFrom, setDateFrom] = useState("");
-    const [dateTo, setDateTo] = useState("");
+    const [dateFrom, setDateFrom] = useState(ReactSession.get('dateFrom') ? ReactSession.get('dateFrom') : "");
+    const [dateTo, setDateTo] = useState(ReactSession.get('dateTo') ? ReactSession.get('dateTo') : "");
 
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState(ReactSession.get('searchValue') ? ReactSession.get('searchValue') : '');
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
 
@@ -87,9 +87,8 @@ const Instructions = (props) => {
     const [appInstructionsTabelSearch, setAppInstructionsTabelSearch] = useState(
         ReactSession.get("appInstructionsTabelSearch") ? sessionAppInstructionsTabelSearch : defaultAppInstructionsTabelSearch
     );
-    
+
     useEffect(() => {
-        debugger
         getInstructionsData(appInstructionsTabelSearch)
         ReactSession.set("appInstructionsTabelSearch", appInstructionsTabelSearch)
     }, [appInstructionsTabelSearch])
@@ -97,6 +96,7 @@ const Instructions = (props) => {
     useEffect(() => {
         if (!sessionAppInstructionsTabelSearch) {
             setSessionAppInstructionsTabelSearch(appInstructionsTabelSearch)
+            getInstructionsData(appInstructionsTabelSearch)
         }
     }, [sessionAppInstructionsTabelSearch])
 
@@ -113,14 +113,13 @@ const Instructions = (props) => {
             history.push(`/${path}`);
             localStorage.removeItem('currentURL');
         }
-        setAppInstructionsTabelSearch(JSON.parse(localStorage.getItem('appInstructionsTabelSearch')))
 
         let temp1 = ReactSession.get('selected')
         let temp2 = ReactSession.get('dateFrom')
         let temp3 = ReactSession.get('dateTo')
         let temp4 = ReactSession.get('searchValue')
         let temp5 = ReactSession.get('selected2')
-        let temp6 = ReactSession.get('selectedArray') ? ReactSession.get('selectedArray') : ['1','2','3','4']
+        let temp6 = ReactSession.get('selectedArray') ? ReactSession.get('selectedArray') : ['1', '2', '3', '4']
 
         let stringArray = ''
         stringArray = temp6.join(',')
@@ -130,10 +129,14 @@ const Instructions = (props) => {
         setSearchValue(temp4)
         setSelected2(temp5)
         setSelectedArray(temp6)
+        getInstructionsData(appInstructionsTabelSearch)
+
+        console.log(temp2)
 
     }, [])
 
-    console.log('appInstructionsTabelSearch', appInstructionsTabelSearch)
+    // console.log('appInstructionsTabelSearch', appInstructionsTabelSearch.search.from)
+    // console.log(sessionAppInstructionsTabelSearch)
 
     useEffect(() => {
 
@@ -150,7 +153,7 @@ const Instructions = (props) => {
         dispatch(resetMessage());
     }, [dispatch])
 
-  
+
 
     const appGroupListData = useSelector(state => {
         return state.instructionsReducer.respGetGroupList;
@@ -160,7 +163,7 @@ const Instructions = (props) => {
         return state.instructionsReducer.respGetAllStatus;
     });
 
- 
+
 
     useEffect(() => {
         setLoadingSpinner(true)
