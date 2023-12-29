@@ -11,7 +11,7 @@ const AlertCustom = props => {
   }
   return (
     props.msg ? <UncontrolledAlert toggle={AlertCustomCloseAlert} color={props.msg.status == "1" ? "success" : "danger"}>
-    {typeof props.msg == 'string' ? props.msg : props.msg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null
+    {typeof props.msg?.message == 'string' ? props.msg.message : props.msg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null
   )
 }
 

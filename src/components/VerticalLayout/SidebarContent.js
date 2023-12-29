@@ -32,13 +32,13 @@ const SidebarContent = (props) => {
   useEffect(() => {
     new MetisMenu("#side-menu");
     if (submenuLocalStorage) {
-      setDropdownOpen({ [`submenu-${submenuLocalStorage}`]: true }); // Use square brackets to create a dynamic key
+      setDropdownOpen({ [`submenu-${submenuLocalStorage}`]: true, kpi: true  }); 
     }
 
     setLoadingSpinner(true)
     setActiveMenuItem(location.pathname);
     if (!submenuLocalStorage) {
-      setDropdownOpen({ rule: true })
+      setDropdownOpen({ rule: true, kpi: true })
     }
     dispatch(getMenuRuleData());
   }, [location.pathname]);
@@ -257,6 +257,60 @@ const SidebarContent = (props) => {
                   </React.Fragment>
                 );
               })}
+
+              <a
+                onClick={() => {
+                  toggleDropdown("kpi");
+                }}
+                className=""
+                style={{ overflow: "visible", fontSize: "14px" }}
+              >
+                <i style={{ fontSize: "14px", position: "relative", right: "1.5%" }} className="fas fa-folder-open"></i>
+                <span style={{ whiteSpace: "nowrap" }}>{props.t("KPI")}</span>
+                <i
+                  hidden={dropdownOpen.kpi}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
+                  className="fas fa-chevron-up dropdown-icon"
+                ></i>
+                <i
+                  hidden={!dropdownOpen.kpi}
+                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
+                  className="fas fa-chevron-down dropdown-icon"
+                ></i>
+              </a>
+              <Link
+                onClick={() =>
+                  ReactSession.remove("submenuKey")
+                }
+                style={{ fontSize: "14px" }}
+                to="/AppKPI1"
+                hidden={dropdownOpen.kpi}
+                className={location.pathname === "/AppKPI1" ? "active" : null}
+              >
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("KPI1")}</span>
+              </Link>
+              <Link
+                onClick={() =>
+                  ReactSession.remove("submenuKey")
+                }
+                style={{ fontSize: "14px" }}
+                to="/AppKPI2"
+                hidden={dropdownOpen.kpi}
+                className={location.pathname === "/AppKPI2" ? "active" : null}
+              >
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("KPI2")}</span>
+              </Link>
+              <Link
+                onClick={() =>
+                  ReactSession.remove("submenuKey")
+                }
+                style={{ fontSize: "14px" }}
+                to="/AppKPI3"
+                hidden={dropdownOpen.kpi}
+                className={location.pathname === "/AppKPI3" ? "active" : null}
+              >
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("KPI3")}</span>
+              </Link>
 
               <Link
                 to="/AppSetting"

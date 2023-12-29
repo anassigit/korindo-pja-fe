@@ -216,3 +216,13 @@ export const getYear = req => postWithParam("/rest/FileManagementRest/SelectYear
 export const getMonth= req => postWithParam("/rest/FileManagementRest/SelectMonth", req)
 
 export const getMonthlyData= req => postWithParam("/rest/FileManagementRest/SelectDashboard", req)
+
+// KPI
+
+export const getYearListKPI = req => post("rest/KpiManagementRest/getYearList", req)
+
+export const getGroupListKPI = req => post("rest/KpiManagementRest/getGroupList", req)
+
+export const getCoorporationListKPI = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
+
+export const getPlanBE = req => postWithParam("rest/KpiManagementRest/getPlan", req)

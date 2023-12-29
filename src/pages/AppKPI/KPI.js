@@ -1,0 +1,225 @@
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { withTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Input,
+    Spinner
+} from "reactstrap";
+import { getCoorporationList, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions";
+import '../../assets/scss/custom/components/custom-datepicker.scss';
+import "../../assets/scss/custom/table/TableCustom.css";
+import RootPageCustom from '../../common/RootPageCustom';
+import '../../config';
+
+
+const KPI = (props) => {
+
+    let langType = localStorage.getItem("I18N_LANGUAGE")
+
+    const dispatch = useDispatch();
+
+    const appYearListData = useSelector((state) => {
+        return state.kpiReducer.respGetYearList
+    })
+
+    const appGroupListData = useSelector((state) => {
+        return state.kpiReducer.respGetGroupListKpi
+    })
+
+    const appCoorporationListData = useSelector((state) => {
+        return state.kpiReducer.respGetCoorporationList
+    })
+
+    const appPlanListData = useSelector((state) => {
+        return state.kpiReducer.respGetPlan
+    })
+
+    const [loadingSpinner, setLoadingSpinner] = useState(false)
+    const [appKPIPage, setAppKPIPage] = useState(true)
+
+    const [appKPIMsg, setAppKPIMsg] = useState("")
+
+    const [selectedYear, setSelectedYear] = useState("")
+    const [selectedGroupList, setSelectedGroupList] = useState("")
+    const [selectedCoorporationList, setSelectedCoorporationList] = useState("")
+
+    useEffect(() => {
+        dispatch(getYearList())
+        dispatch(getGroupListKPI())
+        setLoadingSpinner(true)
+    }, [])
+
+    useEffect(() => {
+        dispatch(resetMessage())
+    }, [dispatch])
+
+    useEffect(() => {
+        setLoadingSpinner(false)
+    }, [appYearListData])
+
+    useEffect(() => {
+        if (selectedGroupList) {
+            dispatch(getCoorporationList({
+                groupNum: selectedGroupList
+            }))
+        }
+    }, [selectedGroupList])
+
+    useEffect(() => {
+        if (selectedYear && selectedCoorporationList && selectedYear) {
+            dispatch(getPlan({
+                groupNum: selectedGroupList,
+                corporationId: selectedCoorporationList,
+                year: selectedYear,
+            }))
+        }
+    }, [selectedCoorporationList, selectedGroupList, selectedYear])
+
+    return (
+        <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
+            componentJsx={
+                <>
+                    {/* {appKPIMsg !== "" ? <UncontrolledAlert toggle={() => { setAppKPIMsg("") }} color={appKPIMsg.status == "1" ? "success" : "danger"}>
+                        {typeof appKPIMsg == 'string' ? null : appKPIMsg.message}</UncontrolledAlert> : null} */}
+
+                    <Card style={{ display: appKPIPage ? 'block' : 'none' }} fluid={true} >
+                        <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
+                            KPI 계획 설정
+                        </CardHeader>
+                        <CardBody>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    width: '30%',
+                                    gap: '.75vw'
+                                }}>
+                                <Input
+                                    type="select"
+                                    onChange={(e) => setSelectedYear(e.target.value)}
+                                >
+                                    {Array.isArray(appYearListData?.data?.list) ? (
+                                        <>
+                                            <option>Select Year</option>
+                                            {appYearListData?.data?.list.map((item, index) => (
+                                                <option key={index} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <option>
+                                            No Data
+                                        </option>
+                                    )}
+                                </Input>
+                                <Input
+                                    type="select"
+                                    onChange={(e) => setSelectedGroupList(e.target.value)}
+                                >
+                                    {Array.isArray(appGroupListData?.data?.list) ? (
+                                        <>
+                                            <option>Select Group</option>
+                                            {appGroupListData?.data?.list.map((item, index) => {
+                                                let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
+                                                return (
+                                                    <option key={index} value={item.num}>
+                                                        {nameLang}
+                                                    </option>
+                                                )
+                                            })}
+                                        </>
+                                    ) : (
+                                        <option>
+                                            No Data
+                                        </option>
+                                    )}
+                                </Input>
+                                <Input
+                                    type="select"
+                                    onChange={(e) => setSelectedCoorporationList(e.target.value)}
+                                >
+                                    {Array.isArray(appCoorporationListData?.data?.list) ? (
+                                        <>
+                                            <option>Select Coorporation</option>
+                                            {appCoorporationListData?.data?.list.map((item, index) => {
+                                                return (
+                                                    <option key={index} value={item.corporationId}>
+                                                        {item.corporationName}
+                                                    </option>
+                                                )
+                                            })}
+                                        </>
+                                    ) : (
+                                        <option>
+                                            No Data
+                                        </option>
+                                    )}
+                                </Input>
+                            </div>
+                            <table className="table my-3">
+                                <thead style={{ backgroundColor: 'transparent', }}>
+                                    <tr style={{ color: '#495057' }}>
+                                        <th style={{ textAlign: 'center' }} colSpan={2} scope="col">KPI 항목</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={2} scope="col">단위</th>
+                                        {
+                                            (() => {
+                                                const numberOfMonths = 12;
+                                                const thElements = [];
+
+                                                for (let month = 1; month <= numberOfMonths; month++) {
+                                                    thElements.push(
+                                                        <th key={month - 1} style={{ textAlign: 'center' }} scope="col">{`${month}월`}</th>
+                                                    );
+                                                }
+
+                                                return thElements;
+                                            })()
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        appPlanListData?.data?.list?.map((item, index) => (
+                                            <React.Fragment key={index}>
+                                                <tr>
+                                                    <td colSpan={1}>{item.item}</td>
+                                                    <td colSpan={1}>{item.item}</td>
+                                                    <td colSpan={1}>{item.unit}</td>
+                                                    <td colSpan={1}>{item.unit}</td>
+                                                    {
+                                                        item.plan.map((planValue, monthIndex) => (
+                                                            <td key={monthIndex}>{planValue}</td>
+                                                        ))
+                                                    }
+                                                </tr>
+                                            </React.Fragment>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </CardBody>
+                    </Card>
+
+                    <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
+                        <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+                    </div>
+
+                </>
+            }
+        />
+    );
+
+
+}
+
+KPI.propTypes = {
+    location: PropTypes.object,
+    t: PropTypes.any
+}
+
+export default withTranslation()(KPI)
