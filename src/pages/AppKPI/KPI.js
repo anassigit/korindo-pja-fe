@@ -9,7 +9,7 @@ import {
     Input,
     Spinner
 } from "reactstrap";
-import { getCoorporationList, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions";
+import { getCoorporationList, getGroupListKPI, getItemList, getPlan, getUnitList, getYearList, resetMessage } from "store/actions";
 import '../../assets/scss/custom/components/custom-datepicker.scss';
 import "../../assets/scss/custom/table/TableCustom.css";
 import RootPageCustom from '../../common/RootPageCustom';
@@ -38,8 +38,23 @@ const KPI = (props) => {
         return state.kpiReducer.respGetPlan
     })
 
+    const appItemListData = useSelector((state) => {
+        return state.kpiReducer.respGetItemList
+    })
+
+    const appUnitListData = useSelector((state) => {
+        return state.kpiReducer.respGetUnitList
+    })
+
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIPage, setAppKPIPage] = useState(true)
+
+    const [selectedItems, setSelectedItems] = useState({})
+    const [selectedItemsVal, setSelectedItemsVal] = useState([]);
+
+    const [selectedItems2, setSelectedItems2] = useState({})
+    const [selectedItemsVal2, setSelectedItemsVal2] = useState([]);
+
 
     const [appKPIMsg, setAppKPIMsg] = useState("")
 
@@ -66,6 +81,12 @@ const KPI = (props) => {
             dispatch(getCoorporationList({
                 groupNum: selectedGroupList
             }))
+            dispatch(getItemList({
+                groupNum: selectedGroupList
+            }))
+            dispatch(getUnitList({
+                groupNum: selectedGroupList
+            }))
         }
     }, [selectedGroupList])
 
@@ -78,6 +99,74 @@ const KPI = (props) => {
             }))
         }
     }, [selectedCoorporationList, selectedGroupList, selectedYear])
+
+    const handleCellClick = (index) => {
+        setSelectedItems({
+            ...selectedItems,
+            [index]: true, // Toggle the value
+        });
+    };
+
+    const handleCellBlur = (index) => {
+        setSelectedItems({
+            ...selectedItems,
+            [index]: false,
+        });
+    };
+
+    const updateSelectedItem = (index, newItem) => {
+        setSelectedItemsVal((prevSelectedItems) => {
+            const newSelectedItems = [...prevSelectedItems];
+            newSelectedItems[index] = newItem;
+            return newSelectedItems;
+        });
+    };
+
+    useEffect(() => {
+        if (appItemListData.status === '1' && appPlanListData?.data?.list) {
+            const planListItems = appPlanListData.data.list.map((item) => item.item);
+            const newSelectedItemsVal = appItemListData.data.list.map((item) => {
+                const isSelected = planListItems.includes(item);
+                return isSelected ? item : '';
+            });
+            setSelectedItemsVal(planListItems);
+        }
+    }, [appItemListData, appPlanListData]);
+
+    const handleCellClick2 = (index) => {
+        setSelectedItems2({
+            ...selectedItems2,
+            [index]: true, // Toggle the value
+        });
+    };
+
+    const handleCellBlur2 = (index) => {
+        setSelectedItems2({
+            ...selectedItems2,
+            [index]: false,
+        });
+    };
+
+    const updateSelectedItem2 = (index, newItem) => {
+        debugger
+        setSelectedItemsVal2((prevSelectedItems) => {
+            const newSelectedItems = [...prevSelectedItems];
+            newSelectedItems[index] = newItem;
+            return newSelectedItems;
+        });
+    };
+
+    useEffect(() => {
+        if (appUnitListData.status === '1' && appPlanListData?.data?.list) {
+            // debugger
+            const planListItems = appPlanListData.data.list.map((item) => item.unit);
+            const newSelectedItemsVal = appUnitListData.data.list.map((item) => {
+                const isSelected = planListItems.includes(item);
+                return isSelected ? item : '';
+            });
+            setSelectedItemsVal2(planListItems);
+        }
+    }, [appUnitListData, appPlanListData]);
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -161,7 +250,7 @@ const KPI = (props) => {
                                     )}
                                 </Input>
                             </div>
-                            <table className="table my-3">
+                            <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
                                         <th style={{ textAlign: 'center' }} colSpan={2} scope="col">KPI 항목</th>
@@ -188,9 +277,51 @@ const KPI = (props) => {
                                             <React.Fragment key={index}>
                                                 <tr>
                                                     <td colSpan={1}>{item.item}</td>
-                                                    <td colSpan={1}>{item.item}</td>
+                                                    <td colSpan={1} onClick={() => handleCellClick(index)} onBlur={() => handleCellBlur(index)}>
+                                                        {selectedItems[index] ? (
+                                                            <Input
+                                                                type="select"
+                                                                value={selectedItemsVal[index]}
+                                                                onChange={(e) => {
+                                                                    const newItem = e.target.value;
+                                                                    updateSelectedItem(index, newItem);
+                                                                }}
+                                                            >
+                                                                {appItemListData.data.list.map((row, i) => (
+                                                                    <option key={i} value={row}>
+                                                                        {row}
+                                                                    </option>
+                                                                ))}
+                                                            </Input>
+                                                        ) : (
+                                                            <>
+                                                                {selectedItemsVal[index]} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
+                                                            </>
+                                                        )}
+                                                    </td>
                                                     <td colSpan={1}>{item.unit}</td>
-                                                    <td colSpan={1}>{item.unit}</td>
+                                                    <td colSpan={1} onClick={() => handleCellClick2(index)} onBlur={() => handleCellBlur2(index)}>
+                                                        {selectedItems2[index] ? (
+                                                            <Input
+                                                                type="select"
+                                                                value={selectedItemsVal2[index]}
+                                                                onChange={(e) => {
+                                                                    const newItem = e.target.value;
+                                                                    updateSelectedItem2(index, newItem);
+                                                                }}
+                                                            >
+                                                                {appUnitListData.data.list.map((row, i) => (
+                                                                    <option key={i} value={row}>
+                                                                        {row}
+                                                                    </option>
+                                                                ))}
+                                                            </Input>
+                                                        ) : (
+                                                            <>
+                                                                {selectedItemsVal2[index]} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
+                                                            </>
+                                                        )}
+                                                    </td>
                                                     {
                                                         item.plan.map((planValue, monthIndex) => (
                                                             <td key={monthIndex}>{planValue}</td>

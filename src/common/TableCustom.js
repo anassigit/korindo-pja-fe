@@ -65,6 +65,7 @@ const TableCustom = (props) => {
         <Card className="m-0 p-0">
             <BootstrapTable
                 ref={props.refTable}
+                bordered={false}
                 wrapperClasses="table-responsive"
                 keyField={props.keyField}
                 rowClasses="text-nowrap"

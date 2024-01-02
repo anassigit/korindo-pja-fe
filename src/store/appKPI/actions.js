@@ -17,7 +17,11 @@ import {
     GET_COORPORATION_LIST,
     RESP_GET_COORPORATION_LIST,
     RESP_GET_PLAN,
-    GET_PLAN
+    GET_PLAN,
+    GET_UNIT_LIST,
+    RESP_GET_UNIT_LIST,
+    GET_ITEM_LIST,
+    RESP_GET_ITEM_LIST
 
 } from "./actionTypes"
 
@@ -58,6 +62,26 @@ import {
 
   export const respGetPlan = resp => ({
     type: RESP_GET_PLAN,
+    payload: resp,
+  })
+
+  export const getItemList = (req) => ({
+    type: GET_ITEM_LIST,
+    payload: req,
+  })
+
+  export const respGetItemList = resp => ({
+    type: RESP_GET_ITEM_LIST,
+    payload: resp,
+  })
+
+  export const getUnitList = (req) => ({
+    type: GET_UNIT_LIST,
+    payload: req,
+  })
+
+  export const respGetUnitList = resp => ({
+    type: RESP_GET_UNIT_LIST,
     payload: resp,
   })
 

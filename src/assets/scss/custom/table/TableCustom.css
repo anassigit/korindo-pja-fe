@@ -39,6 +39,9 @@
     color: #495057;
 }
 
+.table-bordered th {
+    border: 1 !important;
+}
 
 /* .text-nowrap .custom-owner-column {
     width: 180px !important;

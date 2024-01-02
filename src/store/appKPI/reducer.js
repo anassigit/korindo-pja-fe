@@ -1,12 +1,16 @@
 import {
   GET_COORPORATION_LIST,
   GET_GROUP_LIST_KPI,
+  GET_ITEM_LIST,
   GET_PLAN,
+  GET_UNIT_LIST,
   GET_YEAR_LIST,
   RESET_MESSAGE,
   RESP_GET_COORPORATION_LIST,
   RESP_GET_GROUP_LIST_KPI,
+  RESP_GET_ITEM_LIST,
   RESP_GET_PLAN,
+  RESP_GET_UNIT_LIST,
   RESP_GET_YEAR_LIST
 } from "./actionTypes"
 
@@ -16,6 +20,8 @@ const INIT_STATE = {
   respGetGroupListKpi: {},
   respGetCoorporationList: {},
   respGetPlan: {},
+  respGetItemList: {},
+  respGetUnitList: {},
   msgEdit: "",
 }
 
@@ -58,6 +64,24 @@ const kpiReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetPlan: action.payload,
+      }
+    case GET_ITEM_LIST:
+      return {
+        ...state,
+      }
+    case RESP_GET_ITEM_LIST:
+      return {
+        ...state,
+        respGetItemList: action.payload,
+      }
+    case GET_UNIT_LIST:
+      return {
+        ...state,
+      }
+    case RESP_GET_UNIT_LIST:
+      return {
+        ...state,
+        respGetUnitList: action.payload,
       }
     case RESET_MESSAGE:
       return {
