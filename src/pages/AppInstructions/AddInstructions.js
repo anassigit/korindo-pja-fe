@@ -570,7 +570,7 @@ const AddInstructions = (props) => {
     }, [props.appAddInstructions])
 
     return (
-        <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: props.appAddInstructions ? 'block' : 'none' }} fluid="true">
 
             {/* <MsgModal
                 modal={addInstructionMsgModal}

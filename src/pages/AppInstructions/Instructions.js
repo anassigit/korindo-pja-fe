@@ -530,7 +530,7 @@ const Instructions = (props) => {
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
 
-                    < Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid={true} >
+                    < Container style={{ display: appInstructionsPage ? 'block' : 'none' }} fluid="true" >
                         <Row>
                             <Col>
 

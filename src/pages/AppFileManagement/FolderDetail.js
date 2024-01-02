@@ -70,7 +70,7 @@ const FolderDetail = (props) => {
   
     return (
         <>
-            <Container style={{ display: props.insideFilePage ? 'block' : 'none' }} fluid={true}>
+            <Container style={{ display: props.insideFilePage ? 'block' : 'none' }} fluid="true">
             
 
                 <Row>

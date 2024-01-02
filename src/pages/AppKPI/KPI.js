@@ -49,6 +49,8 @@ const KPI = (props) => {
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIPage, setAppKPIPage] = useState(true)
 
+    const [appPlanState, setAppPlanState] = useState([])
+
     const [selectedItems, setSelectedItems] = useState({})
     const [selectedItemsVal, setSelectedItemsVal] = useState([]);
 
@@ -96,6 +98,12 @@ const KPI = (props) => {
                 groupNum: selectedGroupList,
                 corporationId: selectedCoorporationList,
                 year: selectedYear,
+            }))
+        } else {
+            dispatch(getPlan({
+                groupNum: '',
+                corporationId: '',
+                year: '',
             }))
         }
     }, [selectedCoorporationList, selectedGroupList, selectedYear])
@@ -148,7 +156,6 @@ const KPI = (props) => {
     };
 
     const updateSelectedItem2 = (index, newItem) => {
-        debugger
         setSelectedItemsVal2((prevSelectedItems) => {
             const newSelectedItems = [...prevSelectedItems];
             newSelectedItems[index] = newItem;
@@ -168,6 +175,43 @@ const KPI = (props) => {
         }
     }, [appUnitListData, appPlanListData]);
 
+    useEffect(() => {
+        if (appPlanListData.status === '1') {
+            setAppPlanState(appPlanListData.data.list)
+        } else {
+            setAppPlanState([])
+        }
+    }, [appPlanListData])
+
+    const handlerAdd = () => {
+        setAppPlanState((prevState) => ([
+            ...prevState,
+            {
+                "kpiId": null,
+                "groupNum": null,
+                "corporationId": null,
+                "year": null,
+                "item": null,
+                "unit": null,
+                "increase": null,
+                "plan": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                ]
+            }
+        ]))
+    }
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
@@ -175,7 +219,7 @@ const KPI = (props) => {
                     {/* {appKPIMsg !== "" ? <UncontrolledAlert toggle={() => { setAppKPIMsg("") }} color={appKPIMsg.status == "1" ? "success" : "danger"}>
                         {typeof appKPIMsg == 'string' ? null : appKPIMsg.message}</UncontrolledAlert> : null} */}
 
-                    <Card style={{ display: appKPIPage ? 'block' : 'none' }} fluid={true} >
+                    <Card style={{ display: appKPIPage ? 'block' : 'none' }} fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                             KPI 계획 설정
                         </CardHeader>
@@ -208,11 +252,13 @@ const KPI = (props) => {
                                 </Input>
                                 <Input
                                     type="select"
-                                    onChange={(e) => setSelectedGroupList(e.target.value)}
+                                    onChange={(e) => {
+                                        setSelectedGroupList(e.target.value)
+                                    }}
                                 >
                                     {Array.isArray(appGroupListData?.data?.list) ? (
                                         <>
-                                            <option>Select Group</option>
+                                            <option value={''}>Select Group</option>
                                             {appGroupListData?.data?.list.map((item, index) => {
                                                 let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
                                                 return (
@@ -234,7 +280,7 @@ const KPI = (props) => {
                                 >
                                     {Array.isArray(appCoorporationListData?.data?.list) ? (
                                         <>
-                                            <option>Select Coorporation</option>
+                                            <option value={''}>Select Coorporation</option>
                                             {appCoorporationListData?.data?.list.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item.corporationId}>
@@ -255,6 +301,7 @@ const KPI = (props) => {
                                     <tr style={{ color: '#495057' }}>
                                         <th style={{ textAlign: 'center' }} colSpan={2} scope="col">KPI 항목</th>
                                         <th style={{ textAlign: 'center' }} colSpan={2} scope="col">단위</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">실적 증가</th>
                                         {
                                             (() => {
                                                 const numberOfMonths = 12;
@@ -269,14 +316,25 @@ const KPI = (props) => {
                                                 return thElements;
                                             })()
                                         }
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Delete')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        appPlanListData?.data?.list?.map((item, index) => (
+                                        appPlanState.map((item, index) => (
                                             <React.Fragment key={index}>
                                                 <tr>
-                                                    <td colSpan={1}>{item.item}</td>
+                                                    <td colSpan={1}>{
+                                                        item.item ? (
+                                                            item.item
+                                                        ) :
+                                                            (
+                                                                <Input
+                                                                type="text"
+                                                                value={appPlanState[index].item}
+                                                                />
+                                                            )
+                                                    }</td>
                                                     <td colSpan={1} onClick={() => handleCellClick(index)} onBlur={() => handleCellBlur(index)}>
                                                         {selectedItems[index] ? (
                                                             <Input
@@ -299,7 +357,17 @@ const KPI = (props) => {
                                                             </>
                                                         )}
                                                     </td>
-                                                    <td colSpan={1}>{item.unit}</td>
+                                                    <td colSpan={1}>{
+                                                        item.unit ? (
+                                                            item.unit
+                                                        ) :
+                                                            (
+                                                                <Input
+                                                                type="text"
+                                                                value={appPlanState[index].unit}
+                                                                />
+                                                            )
+                                                    }</td>
                                                     <td colSpan={1} onClick={() => handleCellClick2(index)} onBlur={() => handleCellBlur2(index)}>
                                                         {selectedItems2[index] ? (
                                                             <Input
@@ -323,16 +391,29 @@ const KPI = (props) => {
                                                         )}
                                                     </td>
                                                     {
+                                                        item.increase === 1 ? (
+                                                            <td style={{ fontSize: '16px', verticalAlign: 'middle', lineHeight: '1', textAlign: 'center' }} colSpan={1}><span className="mdi mdi-check text-primary" /></td>
+                                                        ) :
+                                                            <td style={{ textAlign: 'center' }} colSpan={1}></td>
+                                                    }
+                                                    {
                                                         item.plan.map((planValue, monthIndex) => (
                                                             <td key={monthIndex}>{planValue}</td>
                                                         ))
                                                     }
+                                                    <td style={{ fontSize: '16px', lineHeight: '1', textAlign: 'center' }} colSpan={1}><span className="mdi mdi-delete text-danger" /></td>
+
                                                 </tr>
                                             </React.Fragment>
                                         ))
                                     }
                                 </tbody>
                             </table>
+                            {
+                                selectedCoorporationList && selectedGroupList && selectedItems && (
+                                    <a style={{ fontSize: '32px', verticalAlign: 'middle', lineHeight: '1', color: 'grey' }} className="mdi mdi-plus-box" onClick={handlerAdd} />
+                                )
+                            }
                         </CardBody>
                     </Card>
 

@@ -208,7 +208,7 @@ const EnterMonthlyData = (props) => {
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={() => setMonthlyDataMsg('')} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
             {typeof monthlyDataMsg == 'string' ? null : monthlyDataMsg.message}</UncontrolledAlert> : null}
 
-          <Container style={{ display: monthlyDataPage ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: monthlyDataPage ? 'block' : 'none' }} fluid="true">
             <Row>
               <Col>
                 <Row className="mb-2">

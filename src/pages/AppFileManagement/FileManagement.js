@@ -636,7 +636,7 @@ debugger
             locImage={locImage}
           />
 
-          <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: fileManagementPage ? 'block' : 'none' }} fluid="true">
             <Row>
               <Col>
                 <Row className="mb-2">

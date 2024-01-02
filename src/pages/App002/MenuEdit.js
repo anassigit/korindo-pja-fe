@@ -91,7 +91,7 @@ const MenuEdit = (props) => {
 
   return (
 
-    <Container style={{ display: props.app002p03Page ? 'block' : 'none' }} fluid={true}>
+    <Container style={{ display: props.app002p03Page ? 'block' : 'none' }} fluid="true">
       <Breadcrumbs title="Forms" breadcrumbItem="Maintain Menu" />
 
       <Row>

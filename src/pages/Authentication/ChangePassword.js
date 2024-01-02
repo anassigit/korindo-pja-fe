@@ -103,7 +103,7 @@ const ChangePassword = (props) => {
   }, [changePasswordMsg])
 
   return (
-    <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid={true} >
+    <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid="true" >
       <Card>
         <CardHeader><i className="bx bx-add-to-queue font-size-18 align-middle me-2"></i>Change Password</CardHeader>
         <CardBody>

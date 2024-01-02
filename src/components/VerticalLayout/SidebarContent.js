@@ -32,13 +32,16 @@ const SidebarContent = (props) => {
   useEffect(() => {
     new MetisMenu("#side-menu");
     if (submenuLocalStorage) {
-      setDropdownOpen({ [`submenu-${submenuLocalStorage}`]: true, kpi: true  }); 
+      setDropdownOpen({ [`submenu-${submenuLocalStorage}`]: true, kpi: true });
     }
 
     setLoadingSpinner(true)
     setActiveMenuItem(location.pathname);
     if (!submenuLocalStorage) {
       setDropdownOpen({ rule: true, kpi: true })
+    }
+    if (location.pathname.startsWith("/AppKPI")) {
+      setDropdownOpen((prevState) => ({ ...prevState, kpi: false }));
     }
     dispatch(getMenuRuleData());
   }, [location.pathname]);
@@ -287,7 +290,7 @@ const SidebarContent = (props) => {
                 hidden={dropdownOpen.kpi}
                 className={location.pathname === "/AppKPI1" ? "active" : null}
               >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("KPI1")}</span>
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Plan Setting")}</span>
               </Link>
               <Link
                 onClick={() =>
@@ -298,7 +301,7 @@ const SidebarContent = (props) => {
                 hidden={dropdownOpen.kpi}
                 className={location.pathname === "/AppKPI2" ? "active" : null}
               >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("KPI2")}</span>
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Actual Input")}</span>
               </Link>
               <Link
                 onClick={() =>

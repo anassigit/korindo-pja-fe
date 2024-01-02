@@ -251,7 +251,7 @@ const DetailInstructions = (props) => {
     }
 
     return (
-        <Container style={{ display: props.appDetailInstructions ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: props.appDetailInstructions ? 'block' : 'none' }} fluid="true">
 
             <Row>
                 <Col lg={12}>

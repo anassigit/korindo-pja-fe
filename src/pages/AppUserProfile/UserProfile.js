@@ -173,7 +173,7 @@ const UserProfile = (props) => {
           {appUserProfileMsg !== "" ? <UncontrolledAlert toggle={appUserProfileCloseAllert} color={appUserProfileMsg.status == "1" ? "success" : "danger"}>
             {typeof appUserProfileMsg == 'string' ? null : appUserProfileMsg.message}</UncontrolledAlert> : null}
 
-          <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: userProfilePage ? 'block' : 'none' }} fluid="true">
             <Row>
               <Col lg={12}>
                 <Card>

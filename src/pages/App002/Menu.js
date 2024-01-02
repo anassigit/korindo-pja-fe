@@ -174,7 +174,7 @@ const Menu = () => {
             onCloseClick={() => setApp002DeleteModal(false)}
           />
 
-          <Container style={{ display: app002p01Page ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: app002p01Page ? 'block' : 'none' }} fluid="true">
             <Breadcrumbs title="Forms" breadcrumbItem="Maintain Menu" />
 
             <Row>

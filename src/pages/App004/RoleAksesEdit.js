@@ -77,7 +77,7 @@ const RoleAksesEdit = (props) => {
   }, [app004p03Message])
 
   return (
-    <Container style={{ display: props.app004p03Page ? 'block' : 'none' }} fluid={true}>
+    <Container style={{ display: props.app004p03Page ? 'block' : 'none' }} fluid="true">
       <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Akses" />
 
       <Row>

@@ -467,7 +467,7 @@ const Setting = (props) => {
                         data={selectedMemberData}
                     />
 
-                    <Container style={{ display: appSettingPage ? 'block' : 'none' }} fluid={true}>
+                    <Container style={{ display: appSettingPage ? 'block' : 'none' }} fluid="true">
                         <Row>
                             <Col>
                                 <Card>

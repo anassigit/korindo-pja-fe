@@ -695,7 +695,7 @@ const Role = () => {
         {app003Msg !== "" ? <UncontrolledAlert toggle={app003CloseAllert} color={app003Msg.status == "1" ? "success" : "danger"}>
           {typeof app003Msg == 'string' ? app003Msg : app003Msg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null}
 
-        <Container style={{ display: app003p01Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app003p01Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Menu" />
 
           <Row>
@@ -771,7 +771,7 @@ const Role = () => {
         </Container>
 
         {/* //p02 */}
-        <Container style={{ display: app003p02Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app003p02Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Menu" />
 
           <Row>
@@ -869,7 +869,7 @@ const Role = () => {
         </Container>
 
         {/* //p03 */}
-        <Container style={{ display: app003p03Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app003p03Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Menu" />
 
           <Row>
@@ -984,7 +984,7 @@ const Role = () => {
           onCloseClick={() => setApp003p04DeleteModalUser(false)}
         />
 
-        <Container style={{ display: app003p04Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app003p04Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Menu" />
 
           <Row>
@@ -1172,7 +1172,7 @@ const Role = () => {
 
         {/* //p05 */}
 
-        <Container style={{ display: app003p05Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app003p05Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Menu" />
 
           <Row>
@@ -1253,7 +1253,7 @@ const Role = () => {
 
         {/* //p06 */}
 
-        <Container style={{ display: app003p06Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app003p06Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Menu" />
 
           <Row>

@@ -545,7 +545,7 @@ const User = () => {
         {app008Msg !== "" ? <UncontrolledAlert toggle={app008CloseAllert} color={app008Msg.status == "1" ? "success" : "danger"}>
           {typeof app008Msg == 'string' ? app008Msg : app008Msg.listmessage?.map((msg, key) => (<p key={key}>{"* " + msg}</p>))}</UncontrolledAlert> : null}
 
-        <Container style={{ display: app008p01Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app008p01Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain User" />
 
           <Row>
@@ -621,7 +621,7 @@ const User = () => {
         </Container>
 
         {/* //p02 */}
-        <Container style={{ display: app008p02Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app008p02Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain User" pageNow={setApp008p02Page} pageBefore={setApp008p01Page} message={setApp008setMsg} />
 
           <Row>
@@ -808,7 +808,7 @@ const User = () => {
         </Container>
 
         {/* //p03 */}
-        <Container style={{ display: app008p03Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: app008p03Page ? 'block' : 'none' }} fluid="true">
           <Breadcrumbs title="Forms" breadcrumbItem="Maintain User" pageNow={setApp008p03Page} pageBefore={setApp008p01Page} message={setApp008setMsg} />
 
           <Row>

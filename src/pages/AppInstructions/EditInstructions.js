@@ -1775,7 +1775,7 @@ const EditInstructions = (props) => {
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
 
-                    <Container fluid={true}>
+                    <Container fluid="true">
 
                         <Row style={{ display: getDetailInstructionData?.data?.instruction?.edit == "ALL" || getDetailInstructionData?.data?.instruction?.edit == "STATUS" ? 'flex' : 'none' }}>
                             <Col lg={12}>

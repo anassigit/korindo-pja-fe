@@ -17,7 +17,7 @@ const Dashboard = () => {
             <MetaTags>
               <title>DMLS</title>
             </MetaTags>
-            <Container fluid={true}>
+            <Container fluid="true">
               <h4>Dashboard</h4>
               <br /><br />
             </Container>

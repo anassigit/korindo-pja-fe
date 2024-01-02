@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <React.Fragment>
       <footer className="footer">
-        <Container fluid={true}>
+        <Container fluid="true">
           <Row>
             <Col md={6}>
               담당자 최원준(579)

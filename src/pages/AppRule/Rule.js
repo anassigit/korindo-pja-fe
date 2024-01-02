@@ -43,7 +43,7 @@ const Rule = (props) => {
             msgStateSet={setAppRuleMsg}
             componentJsx={
                 <>
-                    <Container style={{ display: appRulePage ? "block" : "none" }} fluid={true}>
+                    <Container style={{ display: appRulePage ? "block" : "none" }} fluid="true">
                         <Row>
                             <Col lg={12}>
                                 <Card>

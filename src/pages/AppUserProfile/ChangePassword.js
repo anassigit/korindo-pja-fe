@@ -190,7 +190,7 @@ const ChangePassword = (props) => {
       )}
 
 
-      <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid={true} >
+      <Container style={{ display: props.userProfilePassword ? 'block' : 'none' }} fluid="true" >
 
         <Row>
           <Card>

@@ -174,7 +174,7 @@ const RoleAkses = () => {
           />
 
 
-          <Container style={{ display: app004p01Page ? 'block' : 'none' }} fluid={true}>
+          <Container style={{ display: app004p01Page ? 'block' : 'none' }} fluid="true">
             <Breadcrumbs title="Forms" breadcrumbItem="Master Role Akses" />
 
             <Row>

@@ -99,7 +99,7 @@ const RoleAksesUserAdd = (props) => {
 
 
     return (
-        <Container style={{ display: props.app004p06Page ? 'block' : 'none' }} fluid={true}>
+        <Container style={{ display: props.app004p06Page ? 'block' : 'none' }} fluid="true">
             <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Akses" />
 
             <Row>

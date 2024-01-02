@@ -270,7 +270,7 @@ const RoleAksesDetail = (props) => {
                 onCloseClick={() => setApp004DeleteModal(false)}
             />
 
-            <Container style={{ display: props.app004p04Page ? 'block' : 'none' }} fluid={true}>
+            <Container style={{ display: props.app004p04Page ? 'block' : 'none' }} fluid="true">
                 <Breadcrumbs title="Forms" breadcrumbItem="Maintain Role Akses" />
 
                 <Row>
