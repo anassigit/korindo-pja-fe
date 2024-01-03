@@ -199,7 +199,7 @@ const SidebarContent = (props) => {
                   ReactSession.set("dropdownOpen", dropdownOpen)
                 }}
               >
-                <i style={{ fontSize: "14px" }} className="fas fa-file-alt"></i>
+                <i style={{ fontSize: "14px" }} className="mdi mdi-book-open-variant"></i>
                 <span style={{ fontSize: "14px", whiteSpace: "nowrap" }}>{props.t("Company Regulations")}</span>
                 <i
                   hidden={dropdownOpen.rule}

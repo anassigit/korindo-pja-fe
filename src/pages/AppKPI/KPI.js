@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    Button,
     Card,
     CardBody,
     CardHeader,
@@ -57,6 +58,9 @@ const KPI = (props) => {
     const [selectedItems2, setSelectedItems2] = useState({})
     const [selectedItemsVal2, setSelectedItemsVal2] = useState([]);
 
+    const [newItemVal, setNewItemVal] = useState([])
+    const [newUnitVal, setNewUnitVal] = useState([])
+    const [newPlanVal, setNewPlanVal] = useState([[]])
 
     const [appKPIMsg, setAppKPIMsg] = useState("")
 
@@ -184,6 +188,12 @@ const KPI = (props) => {
     }, [appPlanListData])
 
     const handlerAdd = () => {
+
+        // const firstIndexItem = appItemListData.data.list[appItemListData.data.list.length - 1]
+        // const firstIndexUnit = appUnitListData.data.list[appUnitListData.data.list - 1]
+        const firstIndexItem = props.t("Direct Input")
+        const firstIndexUnit = props.t("Direct Input")
+
         setAppPlanState((prevState) => ([
             ...prevState,
             {
@@ -191,8 +201,8 @@ const KPI = (props) => {
                 "groupNum": null,
                 "corporationId": null,
                 "year": null,
-                "item": null,
-                "unit": null,
+                "item": firstIndexItem,
+                "unit": firstIndexUnit,
                 "increase": null,
                 "plan": [
                     null,
@@ -321,97 +331,157 @@ const KPI = (props) => {
                                 </thead>
                                 <tbody>
                                     {
-                                        appPlanState.map((item, index) => (
-                                            <React.Fragment key={index}>
-                                                <tr>
-                                                    <td colSpan={1}>{
-                                                        item.item ? (
-                                                            item.item
-                                                        ) :
-                                                            (
-                                                                <Input
-                                                                type="text"
-                                                                value={appPlanState[index].item}
-                                                                />
-                                                            )
-                                                    }</td>
-                                                    <td colSpan={1} onClick={() => handleCellClick(index)} onBlur={() => handleCellBlur(index)}>
-                                                        {selectedItems[index] ? (
-                                                            <Input
-                                                                type="select"
-                                                                value={selectedItemsVal[index]}
-                                                                onChange={(e) => {
-                                                                    const newItem = e.target.value;
-                                                                    updateSelectedItem(index, newItem);
-                                                                }}
-                                                            >
-                                                                {appItemListData.data.list.map((row, i) => (
-                                                                    <option key={i} value={row}>
-                                                                        {row}
-                                                                    </option>
-                                                                ))}
-                                                                <option value={''}>
-                                                                    {props.t('Other')}
-                                                                </option>
-                                                            </Input>
-                                                        ) : (
-                                                            <>
-                                                                {selectedItemsVal[index]} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
-                                                            </>
-                                                        )}
-                                                    </td>
-                                                    <td colSpan={1}>{
-                                                        item.unit ? (
-                                                            item.unit
-                                                        ) :
-                                                            (
-                                                                <Input
-                                                                type="text"
-                                                                value={appPlanState[index].unit}
-                                                                />
-                                                            )
-                                                    }</td>
-                                                    <td colSpan={1} onClick={() => handleCellClick2(index)} onBlur={() => handleCellBlur2(index)}>
-                                                        {selectedItems2[index] ? (
-                                                            <Input
-                                                                type="select"
-                                                                value={selectedItemsVal2[index]}
-                                                                onChange={(e) => {
-                                                                    const newItem = e.target.value;
-                                                                    updateSelectedItem2(index, newItem);
-                                                                }}
-                                                            >
-                                                                {appUnitListData.data.list.map((row, i) => (
-                                                                    <option key={i} value={row}>
-                                                                        {row}
-                                                                    </option>
-                                                                ))}
-                                                                <option value={''}>
-                                                                    {props.t('Other')}
-                                                                </option>
-                                                            </Input>
-                                                        ) : (
-                                                            <>
-                                                                {selectedItemsVal2[index]} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
-                                                            </>
-                                                        )}
-                                                    </td>
-                                                    {
-                                                        item.increase === 1 ? (
-                                                            <td style={{ fontSize: '16px', verticalAlign: 'middle', lineHeight: '1', textAlign: 'center' }} colSpan={1}><span className="mdi mdi-check text-primary" /></td>
-                                                        ) :
-                                                            <td style={{ textAlign: 'center' }} colSpan={1}></td>
-                                                    }
-                                                    {
-                                                        item.plan.map((planValue, monthIndex) => (
-                                                            <td key={monthIndex}>{planValue}</td>
-                                                        ))
-                                                    }
-                                                    <td style={{ fontSize: '16px', lineHeight: '1', textAlign: 'center' }} colSpan={1}><span className="mdi mdi-delete text-danger" /></td>
+                                        appPlanState.map((item, index) => {
 
-                                                </tr>
-                                            </React.Fragment>
-                                        ))
+                                            return (
+                                                <React.Fragment key={index}>
+                                                    <tr>
+                                                        <td colSpan={1}>
+                                                            {
+                                                                item.item === props.t('Direct Input') ? (
+                                                                    (
+                                                                        <Input
+                                                                            type="text"
+                                                                            value={newItemVal[index]}
+                                                                            onChange={(e) => {
+                                                                                const updatedValues = [...newItemVal];
+                                                                                updatedValues[index] = e.target.value;
+                                                                                setNewItemVal(updatedValues);
+                                                                            }}
+                                                                        />
+                                                                    )
+                                                                ) :
+                                                                    item.item
+                                                            }
+                                                        </td>
+                                                        <td colSpan={1} onClick={() => handleCellClick(index)} onBlur={() => handleCellBlur(index)}>
+                                                            {selectedItems[index] ? (
+                                                                <Input
+                                                                    type="select"
+                                                                    value={item.item}
+                                                                    onChange={(e) => {
+                                                                        const newItem = e.target.value;
+                                                                        setAppPlanState((prevState) => {
+                                                                            const updatedState = [...prevState];
+                                                                            updatedState[index] = {
+                                                                                ...updatedState[index],
+                                                                                "item": newItem,
+                                                                            };
+                                                                            return updatedState;
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    {selectedItemsVal.map((row, i) => (
+                                                                        <option key={i} value={row}>
+                                                                            {row}
+                                                                        </option>
+                                                                    ))}
+                                                                    <option value={props.t('Direct Input')}>
+                                                                        {props.t('Direct Input')}
+                                                                    </option>
+                                                                </Input>
+                                                            ) : (
+                                                                <>
+                                                                    {item.item} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
+                                                                </>
+                                                            )}
+                                                        </td>
+                                                        <td colSpan={1}>
+                                                            {
+                                                                item.unit === props.t('Direct Input') ? (
+                                                                    (
+                                                                        <Input
+                                                                            type="text"
+                                                                            value={newUnitVal[index]}
+                                                                            onChange={(e) => {
+                                                                                const updatedValues = [...newUnitVal];
+                                                                                updatedValues[index] = e.target.value;
+                                                                                setNewUnitVal(updatedValues);
+                                                                            }}
+                                                                        />
+                                                                    )
+                                                                ) :
+                                                                    item.unit
+                                                            }
+                                                        </td>
+                                                        <td colSpan={1} onClick={() => handleCellClick2(index)} onBlur={() => handleCellBlur2(index)}>
+                                                            {selectedItems2[index] ? (
+                                                                <Input
+                                                                    type="select"
+                                                                    value={item.unit}
+                                                                    onChange={(e) => {
+                                                                        const newUnit = e.target.value;
+                                                                        setAppPlanState((prevState) => {
+                                                                            const updatedState = [...prevState];
+                                                                            updatedState[index] = {
+                                                                                ...updatedState[index],
+                                                                                "unit": newUnit,
+                                                                            };
+                                                                            return updatedState;
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    {selectedItemsVal2.map((row, i) => (
+                                                                        <option key={i} value={row}>
+                                                                            {row}
+                                                                        </option>
+                                                                    ))}
+                                                                    <option value={props.t('Direct Input')}>
+                                                                        {props.t('Direct Input')}
+                                                                    </option>
+                                                                </Input>
+                                                            ) : (
+                                                                <>
+                                                                    {item.unit} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
+                                                                </>
+                                                            )}
+                                                        </td>
+                                                        {
+                                                            item.increase === 1 ? (
+                                                                <td style={{ fontSize: '16px', verticalAlign: 'middle', lineHeight: '1', textAlign: 'center' }} colSpan={1}>
+                                                                    <span className="mdi mdi-check text-primary" />
+                                                                </td>
+                                                            ) : item.increase === null ? (
+                                                                // Nothing will be rendered when item.increase is null
+                                                                <td style={{ textAlign: 'center' }} colSpan={1}></td>
+                                                                // null
+                                                            ) : (
+                                                                <td style={{ textAlign: 'center' }} colSpan={1}></td>
+                                                            )
+                                                        }
+                                                        {
+                                                            item.plan.map((planValue, monthIndex) => {
+                                                                if (planValue !== null) {
+                                                                    return (
+                                                                        <td key={monthIndex}>{planValue}</td>
+                                                                    )
+                                                                } else {
+                                                                    return (
+                                                                        <td>
+                                                                            <Input
+                                                                                type="text"
+                                                                                value={(newPlanVal[index] && newPlanVal[index][monthIndex]) || ''}
+                                                                                onChange={(e) => {
+                                                                                    debugger
+                                                                                    const updatedValues = [...newPlanVal];
+                                                                                    if (!updatedValues[index]) {
+                                                                                        updatedValues[index] = [];
+                                                                                    }
+                                                                                    updatedValues[index][monthIndex] = e.target.value;
+                                                                                    setNewPlanVal(updatedValues);
+                                                                                }}
+                                                                            />
+                                                                        </td>
+                                                                    )
+                                                                }
+                                                            })
+                                                        }
+                                                        <td style={{ fontSize: '16px', lineHeight: '1', textAlign: 'center' }} colSpan={1}><span className="mdi mdi-delete text-danger" /></td>
+
+                                                    </tr>
+                                                </React.Fragment>
+                                            )
+                                        })
                                     }
                                 </tbody>
                             </table>
@@ -420,6 +490,14 @@ const KPI = (props) => {
                                     <a style={{ fontSize: '32px', verticalAlign: 'middle', lineHeight: '1', color: 'grey' }} className="mdi mdi-plus-box" onClick={handlerAdd} />
                                 )
                             }
+                            <div style={{ display: 'flex', gap: '8px', justifyContent: 'end' }}>
+                                <Button>
+                                    Save
+                                </Button>
+                                <Button className="btn-danger">
+                                    Cancel
+                                </Button>
+                            </div>
                         </CardBody>
                     </Card>
 
