@@ -350,6 +350,9 @@ const KPI = (props) => {
                                                                         {row}
                                                                     </option>
                                                                 ))}
+                                                                <option value={''}>
+                                                                    {props.t('Other')}
+                                                                </option>
                                                             </Input>
                                                         ) : (
                                                             <>
@@ -383,6 +386,9 @@ const KPI = (props) => {
                                                                         {row}
                                                                     </option>
                                                                 ))}
+                                                                <option value={''}>
+                                                                    {props.t('Other')}
+                                                                </option>
                                                             </Input>
                                                         ) : (
                                                             <>
