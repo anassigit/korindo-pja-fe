@@ -15,7 +15,7 @@ import "../../assets/scss/custom/table/TableCustom.css";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
 import { getColumnList, getCoorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions";
-
+import ReactEcharts from "echarts-for-react"
 
 const KPIDashboard = (props) => {
 
@@ -39,6 +39,10 @@ const KPIDashboard = (props) => {
         return state.kpiReducer.respGetColumnList
     })
 
+    const appDashboardListData = useSelector((state) => {
+        return state.kpiReducer.respGetDashboardKPI
+    })
+
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIPage, setAppKPIPage] = useState(true)
 
@@ -49,6 +53,8 @@ const KPIDashboard = (props) => {
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCoorporationList, setSelectedCoorporationList] = useState("")
     const [selectedColumnList, setSelectedColumnList] = useState([])
+
+    const [optionBar, setOptionBar] = useState({});
 
     useEffect(() => {
         dispatch(getYearList())
@@ -62,7 +68,7 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false);
-    }, [appYearListData, appGroupListData, appCoorporationListData, appColumnListData]);
+    }, [appYearListData, appGroupListData, appCoorporationListData, appColumnListData, appDashboardListData]);
 
     useEffect(() => {
         if (selectedGroupList) {
@@ -93,23 +99,112 @@ const KPIDashboard = (props) => {
     }, [selectedCoorporationList, selectedGroupList, selectedYear])
 
     useEffect(() => {
-        if (selectedYear && selectedCoorporationList && selectedYear && selectedColumnList.length > 0) {
-            debugger
+        if (selectedYear && selectedMonth && selectedCoorporationList && selectedGroupList) {
             dispatch(getDashboardKPI({
-                year: selectedYear,
-                month: selectedMonth,
-                groupNum: selectedGroupList,
-                corporationId: selectedCoorporationList,
-                column: selectedColumnList.join(','),
+                search: {
+                    year: selectedYear,
+                    month: selectedMonth,
+                    groupNum: selectedGroupList,
+                    corporationId: selectedCoorporationList,
+                    column: selectedColumnList.join(','),
+                }
             }))
+            let option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {},
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+
+                    type: 'category',
+                    data: ['Total', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                },
+                yAxis: {
+
+                },
+                series: {
+                    name: 'row.nama',
+                    type: 'bar',
+                    data: [
+                        1000,
+                        150.5,
+                        200.75,
+                        180.25,
+                        220.3,
+                        300.0,
+                        250.8,
+                        190.6,
+                        240.9,
+                        280.2,
+                        320.4,
+                        270.1,
+                        310.7
+                    ]
+                }
+            }
+            setOptionBar(option)
         } else {
             dispatch(getDashboardKPI({
-                groupNum: '',
-                corporationId: '',
-                year: '',
+                search: {
+                    groupNum: '',
+                    corporationId: '',
+                    year: '',
+                }
             }))
+            let option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {},
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+
+                    type: 'category',
+                    data: ['Total', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                },
+                yAxis: {
+
+                },
+                series: {
+                    name: 'row.nama',
+                    type: 'bar',
+                    data: [
+                        1000,
+                        150.5,
+                        200.75,
+                        180.25,
+                        220.3,
+                        300.0,
+                        250.8,
+                        190.6,
+                        240.9,
+                        280.2,
+                        320.4,
+                        270.1,
+                        310.7
+                    ]
+                }
+            }
+            setOptionBar(option)
         }
-    }, [selectedCoorporationList, selectedGroupList, selectedYear])
+    }, [selectedCoorporationList, selectedMonth, selectedGroupList, selectedYear])
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -141,6 +236,27 @@ const KPIDashboard = (props) => {
                                             return (
                                                 <option key={item}>{item}</option>
                                             )
+                                        })
+                                    }
+                                </Input>
+                                <Input
+                                    type="select"
+                                    style={{ width: 'auto' }}
+                                    value={selectedMonth}
+                                    onChange={(e) => {
+                                        setLoadingSpinner(true)
+                                        setSelectedMonth(e.target.value)
+                                    }}
+                                >
+                                    <option>Select Month</option>
+                                    {
+                                        Array.from({ length: 12 }, (_, index) => {
+                                            const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' });
+                                            return (
+                                                <option key={index} value={index + 1}>
+                                                    {month}
+                                                </option>
+                                            );
                                         })
                                     }
                                 </Input>
@@ -211,6 +327,10 @@ const KPIDashboard = (props) => {
                                     }
                                 </Input>
                             </div>
+                            <ReactEcharts
+                                option={optionBar}
+                                style={{ width: "100%", height: "400px", marginTop: "10px" }}
+                            ></ReactEcharts>
                         </CardBody>
                     </Card>
 
