@@ -40,7 +40,7 @@ const SidebarContent = (props) => {
     if (!submenuLocalStorage) {
       setDropdownOpen({ rule: true, kpi: true })
     }
-    if (location.pathname.startsWith("/AppKPI")) {
+    if (location.pathname === "/AppKPIDashboard" || location.pathname === "/AppPlanSetting" || location.pathname === "/AppActualInput") {
       setDropdownOpen((prevState) => ({ ...prevState, kpi: false }));
     }
     dispatch(getMenuRuleData());
@@ -286,9 +286,9 @@ const SidebarContent = (props) => {
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
-                to="/AppKPI1"
+                to="/AppPlanSetting"
                 hidden={dropdownOpen.kpi}
-                className={location.pathname === "/AppKPI1" ? "active" : null}
+                className={location.pathname === "/AppPlanSetting" ? "active" : null}
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Plan Setting")}</span>
               </Link>
@@ -297,9 +297,9 @@ const SidebarContent = (props) => {
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
-                to="/AppKPI2"
+                to="/AppActualInput"
                 hidden={dropdownOpen.kpi}
-                className={location.pathname === "/AppKPI2" ? "active" : null}
+                className={location.pathname === "/AppActualInput" ? "active" : null}
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Actual Input")}</span>
               </Link>
@@ -308,11 +308,11 @@ const SidebarContent = (props) => {
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
-                to="/AppKPI3"
+                to="/AppKPIDashboard"
                 hidden={dropdownOpen.kpi}
-                className={location.pathname === "/AppKPI3" ? "active" : null}
+                className={location.pathname === "/AppKPIDashboard" ? "active" : null}
               >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("KPI3")}</span>
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Dashboard")}</span>
               </Link>
 
               <Link

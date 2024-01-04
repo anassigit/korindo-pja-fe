@@ -1,10 +1,10 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
-import { GET_COORPORATION_LIST, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST } from "./actionTypes"
+import { GET_COLUMN_LIST, GET_COORPORATION_LIST, GET_DASHBOARD_KPI, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST } from "./actionTypes"
 
-import { respGetCoorporationList, respGetGroupListKpi, respGetItemList, respGetPlan, respGetUnitList, respGetYearList } from "./actions"
+import { respGetColumnList, respGetCoorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetPlan, respGetUnitList, respGetYearList } from "./actions"
 
-import { getCoorporationListKPI, getGroupListKPI, getItemBE, getPlanBE, getUnitBE, getYearListKPI } from "helpers/backend_helper"
+import { getColumnListKPI, getCoorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getPlanBE, getUnitBE, getYearListKPI } from "helpers/backend_helper"
 
 function* fetchGetYearList({ payload: req }) {
   try {
@@ -45,6 +45,20 @@ function* fetchGetCoorporationList({ payload: req }) {
   } catch (error) {
     console.log(error);
     yield put(respGetCoorporationList({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchGetColumnList({ payload: req }) {
+  try {
+    const response = yield call(getColumnListKPI, req)
+    if (response.status == 1) {
+      yield put(respGetColumnList(response))
+    } else {
+      yield put(respGetColumnList(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetColumnList({ "status": 0, "message": "Error Get Data" }))
   }
 }
 
@@ -90,14 +104,30 @@ function* fetchGetUnit({ payload: req }) {
   }
 }
 
+function* fetchGetDashboardKPI({ payload: req }) {
+  try {
+    const response = yield call(getDashboardKPIBE, req)
+    if (response.status == 1) {
+      yield put(respGetDashboardKPI(response))
+    } else {
+      yield put(respGetDashboardKPI(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetDashboardKPI({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
   function* kpiSaga() {
     
     yield takeEvery(GET_YEAR_LIST, fetchGetYearList)
     yield takeEvery(GET_GROUP_LIST_KPI, fetchGetGroupListKPI)
     yield takeEvery(GET_COORPORATION_LIST, fetchGetCoorporationList)
+    yield takeEvery(GET_COLUMN_LIST, fetchGetColumnList)
     yield takeEvery(GET_PLAN, fetchGetPlan)
     yield takeEvery(GET_ITEM_LIST, fetchGetItem)
     yield takeEvery(GET_UNIT_LIST, fetchGetUnit)
+    yield takeEvery(GET_DASHBOARD_KPI, fetchGetDashboardKPI)
    
   }
 

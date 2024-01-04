@@ -225,8 +225,12 @@ export const getGroupListKPI = req => post("rest/KpiManagementRest/getGroupList"
 
 export const getCoorporationListKPI = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
 
+export const getColumnListKPI = req => postWithParam("rest/KpiManagementRest/getColumList", req)
+
 export const getPlanBE = req => postWithParam("rest/KpiManagementRest/getPlan", req)
 
 export const getItemBE = req => postWithParam("rest/KpiManagementRest/getItemList", req)
 
 export const getUnitBE = req => postWithParam("rest/KpiManagementRest/getUnitList", req)
+
+export const getDashboardKPIBE = req => post("rest/KpiManagementRest/getDashboard", req)

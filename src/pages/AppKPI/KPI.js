@@ -49,6 +49,7 @@ const KPI = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIPage, setAppKPIPage] = useState(true)
+    const [appEditMode, setAppEditMode] = useState(false)
 
     const [appPlanState, setAppPlanState] = useState([])
 
@@ -94,10 +95,10 @@ const KPI = (props) => {
                 groupNum: selectedGroupList
             }))
         }
-    }, [selectedGroupList])
+    }, [selectedGroupList, selectedYear])
 
     useEffect(() => {
-        if (selectedYear && selectedCoorporationList && selectedYear) {
+        if (selectedYear && selectedCoorporationList && selectedGroupList) {
             dispatch(getPlan({
                 groupNum: selectedGroupList,
                 corporationId: selectedCoorporationList,
@@ -169,7 +170,6 @@ const KPI = (props) => {
 
     useEffect(() => {
         if (appUnitListData.status === '1' && appPlanListData?.data?.list) {
-            // debugger
             const planListItems = appPlanListData.data.list.map((item) => item.unit);
             const newSelectedItemsVal = appUnitListData.data.list.map((item) => {
                 const isSelected = planListItems.includes(item);
@@ -309,8 +309,8 @@ const KPI = (props) => {
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={2} scope="col">KPI 항목</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={2} scope="col">단위</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={appEditMode ? 2 : 1} scope="col">KPI 항목</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={appEditMode ? 2 : 1} scope="col">단위</th>
                                         <th style={{ textAlign: 'center' }} colSpan={1} scope="col">실적 증가</th>
                                         {
                                             (() => {
@@ -326,7 +326,12 @@ const KPI = (props) => {
                                                 return thElements;
                                             })()
                                         }
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Delete')}</th>
+                                        {
+                                            appEditMode &&
+                                            (
+                                                <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Delete')}</th>
+                                            )
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -338,7 +343,7 @@ const KPI = (props) => {
                                                     <tr>
                                                         <td colSpan={1}>
                                                             {
-                                                                item.item === props.t('Direct Input') ? (
+                                                                item.item === props.t('Direct Input') && appEditMode ? (
                                                                     (
                                                                         <Input
                                                                             type="text"
@@ -351,41 +356,48 @@ const KPI = (props) => {
                                                                         />
                                                                     )
                                                                 ) :
-                                                                    item.item
+                                                                    item.item === props.t('Direct Input') ? '' : item.item
                                                             }
                                                         </td>
-                                                        <td colSpan={1} onClick={() => handleCellClick(index)} onBlur={() => handleCellBlur(index)}>
-                                                            {selectedItems[index] ? (
-                                                                <Input
-                                                                    type="select"
-                                                                    value={item.item}
-                                                                    onChange={(e) => {
-                                                                        const newItem = e.target.value;
-                                                                        setAppPlanState((prevState) => {
-                                                                            const updatedState = [...prevState];
-                                                                            updatedState[index] = {
-                                                                                ...updatedState[index],
-                                                                                "item": newItem,
-                                                                            };
-                                                                            return updatedState;
-                                                                        });
-                                                                    }}
-                                                                >
-                                                                    {selectedItemsVal.map((row, i) => (
-                                                                        <option key={i} value={row}>
-                                                                            {row}
-                                                                        </option>
-                                                                    ))}
-                                                                    <option value={props.t('Direct Input')}>
-                                                                        {props.t('Direct Input')}
-                                                                    </option>
-                                                                </Input>
-                                                            ) : (
-                                                                <>
-                                                                    {item.item} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
-                                                                </>
-                                                            )}
-                                                        </td>
+                                                        {
+                                                            appEditMode ?
+                                                                (
+                                                                    <td colSpan={1} onClick={() => handleCellClick(index)} onBlur={() => handleCellBlur(index)}>
+                                                                        {selectedItems[index] ? (
+                                                                            <Input
+                                                                                type="select"
+                                                                                value={item.item}
+                                                                                onChange={(e) => {
+                                                                                    const newItem = e.target.value;
+                                                                                    setAppPlanState((prevState) => {
+                                                                                        const updatedState = [...prevState];
+                                                                                        updatedState[index] = {
+                                                                                            ...updatedState[index],
+                                                                                            "item": newItem,
+                                                                                        };
+                                                                                        return updatedState;
+                                                                                    });
+                                                                                }}
+                                                                            >
+                                                                                {selectedItemsVal.map((row, i) => (
+                                                                                    <option key={i} value={row}>
+                                                                                        {row}
+                                                                                    </option>
+                                                                                ))}
+                                                                                <option value={props.t('Direct Input')}>
+                                                                                    {props.t('Direct Input')}
+                                                                                </option>
+                                                                            </Input>
+                                                                        ) : (
+                                                                            <>
+                                                                                {item.item} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
+                                                                            </>
+                                                                        )}
+                                                                    </td>
+                                                                ) : (
+                                                                    null
+                                                                )
+                                                        }
                                                         <td colSpan={1}>
                                                             {
                                                                 item.unit === props.t('Direct Input') ? (
@@ -404,49 +416,73 @@ const KPI = (props) => {
                                                                     item.unit
                                                             }
                                                         </td>
-                                                        <td colSpan={1} onClick={() => handleCellClick2(index)} onBlur={() => handleCellBlur2(index)}>
-                                                            {selectedItems2[index] ? (
-                                                                <Input
-                                                                    type="select"
-                                                                    value={item.unit}
-                                                                    onChange={(e) => {
-                                                                        const newUnit = e.target.value;
-                                                                        setAppPlanState((prevState) => {
-                                                                            const updatedState = [...prevState];
-                                                                            updatedState[index] = {
-                                                                                ...updatedState[index],
-                                                                                "unit": newUnit,
-                                                                            };
-                                                                            return updatedState;
-                                                                        });
-                                                                    }}
-                                                                >
-                                                                    {selectedItemsVal2.map((row, i) => (
-                                                                        <option key={i} value={row}>
-                                                                            {row}
-                                                                        </option>
-                                                                    ))}
-                                                                    <option value={props.t('Direct Input')}>
-                                                                        {props.t('Direct Input')}
-                                                                    </option>
-                                                                </Input>
-                                                            ) : (
-                                                                <>
-                                                                    {item.unit} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
-                                                                </>
-                                                            )}
-                                                        </td>
                                                         {
-                                                            item.increase === 1 ? (
-                                                                <td style={{ fontSize: '16px', verticalAlign: 'middle', lineHeight: '1', textAlign: 'center' }} colSpan={1}>
-                                                                    <span className="mdi mdi-check text-primary" />
+                                                            appEditMode ? (
+                                                                <td colSpan={1} onClick={() => handleCellClick2(index)} onBlur={() => handleCellBlur2(index)}>
+                                                                    {selectedItems2[index] ? (
+                                                                        <Input
+                                                                            type="select"
+                                                                            value={item.unit}
+                                                                            onChange={(e) => {
+                                                                                const newUnit = e.target.value;
+                                                                                setAppPlanState((prevState) => {
+                                                                                    const updatedState = [...prevState];
+                                                                                    updatedState[index] = {
+                                                                                        ...updatedState[index],
+                                                                                        "unit": newUnit,
+                                                                                    };
+                                                                                    return updatedState;
+                                                                                });
+                                                                            }}
+                                                                        >
+                                                                            {selectedItemsVal2.map((row, i) => (
+                                                                                <option key={i} value={row}>
+                                                                                    {row}
+                                                                                </option>
+                                                                            ))}
+                                                                            <option value={props.t('Direct Input')}>
+                                                                                {props.t('Direct Input')}
+                                                                            </option>
+                                                                        </Input>
+                                                                    ) : (
+                                                                        <>
+                                                                            {item.unit} <span style={{ fontSize: '24px', verticalAlign: 'middle', lineHeight: '1' }} className="mdi mdi-menu-down" />
+                                                                        </>
+                                                                    )}
                                                                 </td>
-                                                            ) : item.increase === null ? (
-                                                                // Nothing will be rendered when item.increase is null
-                                                                <td style={{ textAlign: 'center' }} colSpan={1}></td>
-                                                                // null
                                                             ) : (
-                                                                <td style={{ textAlign: 'center' }} colSpan={1}></td>
+                                                                null
+                                                            )
+                                                        }
+                                                        {
+                                                            appEditMode ? (
+                                                                <td style={{ fontSize: '16px', verticalAlign: 'middle', lineHeight: '1', textAlign: 'center' }} colSpan={1}>
+                                                                    <Input
+                                                                        type="checkbox"
+                                                                        value={item.increase === 1 ? true : false}
+                                                                        checked={item.increase === 1 ? true : false}
+                                                                        onChange={(e) => {
+                                                                            let newValue = e.target.value === "true" ? 0 : 1
+                                                                            setAppPlanState((prevState) => {
+                                                                                debugger
+                                                                                let updatedState = [...prevState]
+                                                                                updatedState[index] = {
+                                                                                    ...updatedState[index],
+                                                                                    increase: newValue,
+                                                                                };
+                                                                                return updatedState;
+                                                                            })
+                                                                        }}
+                                                                    />
+                                                                </td>
+                                                            ) : (
+                                                                item.increase === 1 ? (
+                                                                    <td style={{ fontSize: '16px', verticalAlign: 'middle', lineHeight: '1', textAlign: 'center' }} colSpan={1}>
+                                                                        <span className="mdi mdi-check text-primary" />
+                                                                    </td>
+                                                                ) : (
+                                                                    <td style={{ textAlign: 'center' }} colSpan={1}></td>
+                                                                )
                                                             )
                                                         }
                                                         {
@@ -462,7 +498,6 @@ const KPI = (props) => {
                                                                                 type="text"
                                                                                 value={(newPlanVal[index] && newPlanVal[index][monthIndex]) || ''}
                                                                                 onChange={(e) => {
-                                                                                    debugger
                                                                                     const updatedValues = [...newPlanVal];
                                                                                     if (!updatedValues[index]) {
                                                                                         updatedValues[index] = [];
@@ -476,8 +511,30 @@ const KPI = (props) => {
                                                                 }
                                                             })
                                                         }
-                                                        <td style={{ fontSize: '16px', lineHeight: '1', textAlign: 'center' }} colSpan={1}><span className="mdi mdi-delete text-danger" /></td>
-
+                                                        {
+                                                            appEditMode &&
+                                                            (
+                                                                <td
+                                                                    style={{
+                                                                        fontSize: '16px',
+                                                                        lineHeight: '1',
+                                                                        textAlign: 'center'
+                                                                    }}
+                                                                    colSpan={1}
+                                                                >
+                                                                    <span
+                                                                        onClick={() => {
+                                                                            setAppPlanState((prevState) => {
+                                                                                let newState = [...prevState]
+                                                                                newState.splice(index, 1)
+                                                                                return newState
+                                                                            })
+                                                                        }}
+                                                                        className="mdi mdi-delete text-danger"
+                                                                    />
+                                                                </td>
+                                                            )
+                                                        }
                                                     </tr>
                                                 </React.Fragment>
                                             )
@@ -486,18 +543,33 @@ const KPI = (props) => {
                                 </tbody>
                             </table>
                             {
-                                selectedCoorporationList && selectedGroupList && selectedItems && (
+                                selectedCoorporationList && selectedGroupList && selectedItems && appEditMode && (
                                     <a style={{ fontSize: '32px', verticalAlign: 'middle', lineHeight: '1', color: 'grey' }} className="mdi mdi-plus-box" onClick={handlerAdd} />
                                 )
                             }
-                            <div style={{ display: 'flex', gap: '8px', justifyContent: 'end' }}>
-                                <Button>
-                                    Save
-                                </Button>
-                                <Button className="btn-danger">
-                                    Cancel
-                                </Button>
-                            </div>
+
+                            {
+                                appEditMode ? (
+                                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'end' }}>
+                                        <Button>
+                                            Save
+                                        </Button>
+                                        <Button className="btn-danger" onClick={() => setAppEditMode(false)}>
+                                            Cancel
+                                        </Button>
+                                    </div>
+                                ) :
+                                    selectedCoorporationList && selectedGroupList && selectedItems ?
+                                        (
+                                            <div style={{ display: 'flex', justifyContent: 'end' }}>
+                                                <Button
+                                                    onClick={() => setAppEditMode(true)}>
+                                                    Edit
+                                                </Button>
+                                            </div>
+                                        ) :
+                                        null
+                            }
                         </CardBody>
                     </Card>
 

@@ -25,6 +25,7 @@ import FirstLogin from "pages/Authentication/FirstLogin"
 import EnterMonthlyData from "pages/AppFileManagement/EnterMonthlyData"
 import Rule from "pages/AppRule/Rule"
 import KPI from "pages/AppKPI/KPI"
+import KPIDashboard from "pages/AppKPI/KPIDashboard"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -42,7 +43,8 @@ const authProtectedRoutes = [
   { path: "/EnterMonthlyData", component: EnterMonthlyData },
   { path: "/AppRule", component: Rule },
 
-  { path: "/AppKPI1", component: KPI },
+  { path: "/AppPlanSetting", component: KPI },
+  { path: "/AppKPIDashboard", component: KPIDashboard },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
