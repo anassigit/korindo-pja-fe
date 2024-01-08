@@ -83,6 +83,7 @@ const KPIDashboard = (props) => {
     }, [selectedGroupList, selectedYear])
 
     useEffect(() => {
+
         if (selectedYear && selectedCoorporationList && selectedGroupList) {
             dispatch(getColumnList({
                 groupNum: selectedGroupList,
@@ -96,6 +97,7 @@ const KPIDashboard = (props) => {
                 year: '',
             }))
         }
+
     }, [selectedCoorporationList, selectedGroupList, selectedYear])
 
     useEffect(() => {
@@ -131,25 +133,46 @@ const KPIDashboard = (props) => {
                 yAxis: {
 
                 },
-                series: {
-                    name: 'row.nama',
-                    type: 'bar',
-                    data: [
-                        1000,
-                        150.5,
-                        200.75,
-                        180.25,
-                        220.3,
-                        300.0,
-                        250.8,
-                        190.6,
-                        240.9,
-                        280.2,
-                        320.4,
-                        270.1,
-                        310.7
-                    ]
-                }
+                series: [
+                    {
+                        name: 'Bar Series',
+                        type: 'bar',
+                        data: [
+                            1000,
+                            150.5,
+                            200.75,
+                            180.25,
+                            220.3,
+                            300.0,
+                            250.8,
+                            190.6,
+                            240.9,
+                            280.2,
+                            320.4,
+                            270.1,
+                            310.7
+                        ]
+                    },
+                    {
+                        name: 'Line Series',
+                        type: 'line',
+                        data: [
+                            800,
+                            120.5,
+                            160.75,
+                            140.25,
+                            180.3,
+                            250.0,
+                            200.8,
+                            150.6,
+                            190.9,
+                            220.2,
+                            260.4,
+                            210.1,
+                            240.7
+                        ]
+                    }
+                ]
             }
             setOptionBar(option)
         } else {
@@ -160,6 +183,17 @@ const KPIDashboard = (props) => {
                     year: '',
                 }
             }))
+        }
+    }, [selectedCoorporationList, selectedMonth, selectedGroupList, selectedYear])
+
+    useEffect(() => {
+        // debugger
+        console.log(appDashboardListData)
+        if (appDashboardListData.status === '1') {
+            let result = appDashboardListData?.data?.resultList
+
+
+        } else {
             let option = {
                 tooltip: {
                     trigger: 'axis',
@@ -182,29 +216,50 @@ const KPIDashboard = (props) => {
                 yAxis: {
 
                 },
-                series: {
-                    name: 'row.nama',
-                    type: 'bar',
-                    data: [
-                        1000,
-                        150.5,
-                        200.75,
-                        180.25,
-                        220.3,
-                        300.0,
-                        250.8,
-                        190.6,
-                        240.9,
-                        280.2,
-                        320.4,
-                        270.1,
-                        310.7
-                    ]
-                }
+                series: [
+                    {
+                        name: 'Bar Series',
+                        type: 'bar',
+                        data: [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        name: 'Line Series',
+                        type: 'line',
+                        data: [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                ]
             }
             setOptionBar(option)
         }
-    }, [selectedCoorporationList, selectedMonth, selectedGroupList, selectedYear])
+    }, [appDashboardListData])
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -266,6 +321,7 @@ const KPIDashboard = (props) => {
                                     value={selectedGroupList}
                                     onChange={(e) => {
                                         setLoadingSpinner(true)
+                                        setSelectedCoorporationList('')
                                         setSelectedGroupList(e.target.value)
                                     }}
                                 >
@@ -327,10 +383,99 @@ const KPIDashboard = (props) => {
                                     }
                                 </Input>
                             </div>
-                            <ReactEcharts
-                                option={optionBar}
-                                style={{ width: "100%", height: "400px", marginTop: "10px" }}
-                            ></ReactEcharts>
+                            <h3 className="my-2">
+                                {appDashboardListData?.data?.resultList[0].corporationName}
+                            </h3>
+                            {
+                                appDashboardListData?.data?.resultList.map((item, index) => {
+
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <div className="mx-2">
+                                                <h5 style={{ marginTop: '1.25vh' }}>
+                                                    {item.item || "No Data"}
+                                                </h5>
+                                                <span className={item.plan >= item.result ? 'opacity-50' : null} style={{ color: item.plan >= item.result ? 'grey' : '#7F7EF7' }}>
+                                                    {item.plan} /
+                                                </span>
+                                                <span style={{ color: '#7F7EF7' }}>
+                                                    &nbsp;{item.result}
+                                                </span>
+                                                <div className="text-primary" style={{ fontSize: "16px" }}>
+                                                    {item.rate}
+                                                </div>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center'
+                                            }}>
+
+                                                <ReactEcharts
+                                                    option={{
+                                                        tooltip: {
+                                                            trigger: 'axis',
+                                                            axisPointer: {
+                                                                type: 'shadow'
+                                                            }
+                                                        },
+                                                        legend: {},
+                                                        grid: {
+                                                            left: '3%',
+                                                            right: '4%',
+                                                            bottom: '3%',
+                                                            containLabel: true
+                                                        },
+                                                        xAxis: {
+
+                                                            type: 'category',
+                                                            data: item?.details.map(item => item.month) || []
+                                                        },
+                                                        yAxis: {
+
+                                                        },
+                                                        series: [
+                                                            {
+                                                                name: 'Plan',
+                                                                type: 'bar',
+                                                                data: item?.details.map(e => e.plan) || []
+                                                            },
+                                                            {
+                                                                name: 'Result',
+                                                                type: 'line',
+                                                                data: item?.details.map(e => e.result) || []
+                                                            }
+                                                        ]
+                                                    }
+                                                    }
+                                                    style={{
+                                                        width: "49.5%",
+                                                        height: "400px",
+                                                        marginTop: "10px",
+                                                        backgroundColor: '#F7F7FF',
+                                                        padding: '1vw'
+                                                    }}
+                                                />
+                                                <div
+                                                    style={{
+                                                        width: "49.5%",
+                                                        height: "400px",
+                                                        marginTop: "10px",
+                                                        backgroundColor: '#F7F7FF',
+                                                        padding: '1vw',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                    }}
+                                                >
+                                                    <span>{ }</span>
+                                                </div>
+                                            </div>
+                                        </React.Fragment>
+                                    )
+                                })
+                            }
+
                         </CardBody>
                     </Card>
 
