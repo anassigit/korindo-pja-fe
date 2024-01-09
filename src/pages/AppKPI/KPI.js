@@ -10,7 +10,7 @@ import {
     Input,
     Spinner
 } from "reactstrap";
-import { getCoorporationList, getGroupListKPI, getItemList, getPlan, getUnitList, getYearList, resetMessage } from "store/actions";
+import { getCorporationList, getGroupListKPI, getItemList, getPlan, getUnitList, getYearList, resetMessage } from "store/actions";
 import '../../assets/scss/custom/components/custom-datepicker.scss';
 import "../../assets/scss/custom/table/TableCustom.css";
 import RootPageCustom from '../../common/RootPageCustom';
@@ -31,8 +31,8 @@ const KPI = (props) => {
         return state.kpiReducer.respGetGroupListKpi
     })
 
-    const appCoorporationListData = useSelector((state) => {
-        return state.kpiReducer.respGetCoorporationList
+    const appCorporationListData = useSelector((state) => {
+        return state.kpiReducer.respGetCorporationList
     })
 
     const appPlanListData = useSelector((state) => {
@@ -67,7 +67,7 @@ const KPI = (props) => {
 
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
-    const [selectedCoorporationList, setSelectedCoorporationList] = useState("")
+    const [selectedCorporationList, setSelectedCorporationList] = useState("")
 
     useEffect(() => {
         dispatch(getYearList())
@@ -85,7 +85,7 @@ const KPI = (props) => {
 
     useEffect(() => {
         if (selectedGroupList) {
-            dispatch(getCoorporationList({
+            dispatch(getCorporationList({
                 groupNum: selectedGroupList
             }))
             dispatch(getItemList({
@@ -98,10 +98,10 @@ const KPI = (props) => {
     }, [selectedGroupList, selectedYear])
 
     useEffect(() => {
-        if (selectedYear && selectedCoorporationList && selectedGroupList) {
+        if (selectedYear && selectedCorporationList && selectedGroupList) {
             dispatch(getPlan({
                 groupNum: selectedGroupList,
-                corporationId: selectedCoorporationList,
+                corporationId: selectedCorporationList,
                 year: selectedYear,
             }))
         } else {
@@ -111,7 +111,7 @@ const KPI = (props) => {
                 year: '',
             }))
         }
-    }, [selectedCoorporationList, selectedGroupList, selectedYear])
+    }, [selectedCorporationList, selectedGroupList, selectedYear])
 
     const handleCellClick = (index) => {
         setSelectedItems({
@@ -286,12 +286,12 @@ const KPI = (props) => {
                                 </Input>
                                 <Input
                                     type="select"
-                                    onChange={(e) => setSelectedCoorporationList(e.target.value)}
+                                    onChange={(e) => setSelectedCorporationList(e.target.value)}
                                 >
-                                    {Array.isArray(appCoorporationListData?.data?.list) ? (
+                                    {Array.isArray(appCorporationListData?.data?.list) ? (
                                         <>
-                                            <option value={''}>Select Coorporation</option>
-                                            {appCoorporationListData?.data?.list.map((item, index) => {
+                                            <option value={''}>Select Corporation</option>
+                                            {appCorporationListData?.data?.list.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item.corporationId}>
                                                         {item.corporationName}
@@ -543,7 +543,7 @@ const KPI = (props) => {
                                 </tbody>
                             </table>
                             {
-                                selectedCoorporationList && selectedGroupList && selectedItems && appEditMode && (
+                                selectedCorporationList && selectedGroupList && selectedItems && appEditMode && (
                                     <a style={{ fontSize: '32px', verticalAlign: 'middle', lineHeight: '1', color: 'grey' }} className="mdi mdi-plus-box" onClick={handlerAdd} />
                                 )
                             }
@@ -559,7 +559,7 @@ const KPI = (props) => {
                                         </Button>
                                     </div>
                                 ) :
-                                    selectedCoorporationList && selectedGroupList && selectedItems ?
+                                    selectedCorporationList && selectedGroupList && selectedItems ?
                                         (
                                             <div style={{ display: 'flex', justifyContent: 'end' }}>
                                                 <Button

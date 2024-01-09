@@ -223,7 +223,7 @@ export const getYearListKPI = req => post("rest/KpiManagementRest/getYearList", 
 
 export const getGroupListKPI = req => post("rest/KpiManagementRest/getGroupList", req)
 
-export const getCoorporationListKPI = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
+export const getCorporationListKPI = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
 
 export const getColumnListKPI = req => postWithParam("rest/KpiManagementRest/getColumList", req)
 

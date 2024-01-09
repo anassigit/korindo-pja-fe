@@ -1,6 +1,6 @@
 import {
   GET_COLUMN_LIST,
-  GET_COORPORATION_LIST,
+  GET_CORPORATION_LIST,
   GET_DASHBOARD_KPI,
   GET_GROUP_LIST_KPI,
   GET_ITEM_LIST,
@@ -9,7 +9,7 @@ import {
   GET_YEAR_LIST,
   RESET_MESSAGE,
   RESP_GET_COLUMN_LIST,
-  RESP_GET_COORPORATION_LIST,
+  RESP_GET_CORPORATION_LIST,
   RESP_GET_DASHBOARD_KPI,
   RESP_GET_GROUP_LIST_KPI,
   RESP_GET_ITEM_LIST,
@@ -22,7 +22,7 @@ const INIT_STATE = {
 
   respGetYearList: {},
   respGetGroupListKpi: {},
-  respGetCoorporationList: {},
+  respGetCorporationList: {},
   respGetColumnList: {},
   respGetPlan: {},
   respGetItemList: {},
@@ -53,14 +53,14 @@ const kpiReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetGroupListKpi: action.payload,
       }
-    case GET_COORPORATION_LIST:
+    case GET_CORPORATION_LIST:
       return {
         ...state,
       }
-    case RESP_GET_COORPORATION_LIST:
+    case RESP_GET_CORPORATION_LIST:
       return {
         ...state,
-        respGetCoorporationList: action.payload,
+        respGetCorporationList: action.payload,
       }
     case GET_COLUMN_LIST:
       return {

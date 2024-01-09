@@ -14,8 +14,8 @@ import {
     RESP_GET_YEAR_LIST,
     GET_GROUP_LIST_KPI,
     RESP_GET_GROUP_LIST_KPI,
-    GET_COORPORATION_LIST,
-    RESP_GET_COORPORATION_LIST,
+    GET_CORPORATION_LIST,
+    RESP_GET_CORPORATION_LIST,
     RESP_GET_PLAN,
     GET_PLAN,
     GET_UNIT_LIST,
@@ -49,13 +49,13 @@ import {
     payload: resp,
   })
 
-  export const getCoorporationList = (req) => ({
-    type: GET_COORPORATION_LIST,
+  export const getCorporationList = (req) => ({
+    type: GET_CORPORATION_LIST,
     payload: req,
   })
 
-  export const respGetCoorporationList = resp => ({
-    type: RESP_GET_COORPORATION_LIST,
+  export const respGetCorporationList = resp => ({
+    type: RESP_GET_CORPORATION_LIST,
     payload: resp,
   })
 

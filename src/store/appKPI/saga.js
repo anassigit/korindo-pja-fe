@@ -1,10 +1,10 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
-import { GET_COLUMN_LIST, GET_COORPORATION_LIST, GET_DASHBOARD_KPI, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST } from "./actionTypes"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST } from "./actionTypes"
 
-import { respGetColumnList, respGetCoorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetPlan, respGetUnitList, respGetYearList } from "./actions"
+import { respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetPlan, respGetUnitList, respGetYearList } from "./actions"
 
-import { getColumnListKPI, getCoorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getPlanBE, getUnitBE, getYearListKPI } from "helpers/backend_helper"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getPlanBE, getUnitBE, getYearListKPI } from "helpers/backend_helper"
 
 function* fetchGetYearList({ payload: req }) {
   try {
@@ -34,17 +34,17 @@ function* fetchGetGroupListKPI({ payload: req }) {
   }
 }
 
-function* fetchGetCoorporationList({ payload: req }) {
+function* fetchGetCorporationList({ payload: req }) {
   try {
-    const response = yield call(getCoorporationListKPI, req)
+    const response = yield call(getCorporationListKPI, req)
     if (response.status == 1) {
-      yield put(respGetCoorporationList(response))
+      yield put(respGetCorporationList(response))
     } else {
-      yield put(respGetCoorporationList(response))
+      yield put(respGetCorporationList(response))
     }
   } catch (error) {
     console.log(error);
-    yield put(respGetCoorporationList({ "status": 0, "message": "Error Get Data" }))
+    yield put(respGetCorporationList({ "status": 0, "message": "Error Get Data" }))
   }
 }
 
@@ -122,7 +122,7 @@ function* fetchGetDashboardKPI({ payload: req }) {
     
     yield takeEvery(GET_YEAR_LIST, fetchGetYearList)
     yield takeEvery(GET_GROUP_LIST_KPI, fetchGetGroupListKPI)
-    yield takeEvery(GET_COORPORATION_LIST, fetchGetCoorporationList)
+    yield takeEvery(GET_CORPORATION_LIST, fetchGetCorporationList)
     yield takeEvery(GET_COLUMN_LIST, fetchGetColumnList)
     yield takeEvery(GET_PLAN, fetchGetPlan)
     yield takeEvery(GET_ITEM_LIST, fetchGetItem)

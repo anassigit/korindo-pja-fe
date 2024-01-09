@@ -14,7 +14,7 @@ import '../../assets/scss/custom/components/custom-datepicker.scss';
 import "../../assets/scss/custom/table/TableCustom.css";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { getColumnList, getCoorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions";
+import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions";
 import ReactEcharts from "echarts-for-react"
 
 const KPIDashboard = (props) => {
@@ -31,8 +31,8 @@ const KPIDashboard = (props) => {
         return state.kpiReducer.respGetGroupListKpi
     })
 
-    const appCoorporationListData = useSelector((state) => {
-        return state.kpiReducer.respGetCoorporationList
+    const appCorporationListData = useSelector((state) => {
+        return state.kpiReducer.respGetCorporationList
     })
 
     const appColumnListData = useSelector((state) => {
@@ -51,7 +51,7 @@ const KPIDashboard = (props) => {
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedMonth, setSelectedMonth] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
-    const [selectedCoorporationList, setSelectedCoorporationList] = useState("")
+    const [selectedCorporationList, setSelectedCorporationList] = useState("")
     const [selectedColumnList, setSelectedColumnList] = useState([])
 
     const [optionBar, setOptionBar] = useState({});
@@ -68,15 +68,15 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false);
-    }, [appYearListData, appGroupListData, appCoorporationListData, appColumnListData, appDashboardListData]);
+    }, [appYearListData, appGroupListData, appCorporationListData, appColumnListData, appDashboardListData]);
 
     useEffect(() => {
         if (selectedGroupList) {
-            dispatch(getCoorporationList({
+            dispatch(getCorporationList({
                 groupNum: selectedGroupList
             }))
         } else {
-            dispatch(getCoorporationList({
+            dispatch(getCorporationList({
                 groupNum: ''
             }))
         }
@@ -84,10 +84,10 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
 
-        if (selectedYear && selectedCoorporationList && selectedGroupList) {
+        if (selectedYear && selectedCorporationList && selectedGroupList) {
             dispatch(getColumnList({
                 groupNum: selectedGroupList,
-                corporationId: selectedCoorporationList,
+                corporationId: selectedCorporationList,
                 year: selectedYear,
             }))
         } else {
@@ -98,16 +98,16 @@ const KPIDashboard = (props) => {
             }))
         }
 
-    }, [selectedCoorporationList, selectedGroupList, selectedYear])
+    }, [selectedCorporationList, selectedGroupList, selectedYear])
 
     useEffect(() => {
-        if (selectedYear && selectedMonth && selectedCoorporationList && selectedGroupList) {
+        if (selectedYear && selectedMonth && selectedCorporationList && selectedGroupList) {
             dispatch(getDashboardKPI({
                 search: {
                     year: selectedYear,
                     month: selectedMonth,
                     groupNum: selectedGroupList,
-                    corporationId: selectedCoorporationList,
+                    corporationId: selectedCorporationList,
                     column: selectedColumnList.join(','),
                 }
             }))
@@ -184,7 +184,7 @@ const KPIDashboard = (props) => {
                 }
             }))
         }
-    }, [selectedCoorporationList, selectedMonth, selectedGroupList, selectedYear])
+    }, [selectedCorporationList, selectedMonth, selectedGroupList, selectedYear])
 
     useEffect(() => {
         // debugger
@@ -321,7 +321,7 @@ const KPIDashboard = (props) => {
                                     value={selectedGroupList}
                                     onChange={(e) => {
                                         setLoadingSpinner(true)
-                                        setSelectedCoorporationList('')
+                                        setSelectedCorporationList('')
                                         setSelectedGroupList(e.target.value)
                                     }}
                                 >
@@ -340,18 +340,18 @@ const KPIDashboard = (props) => {
                                 <Input
                                     type="select"
                                     style={{ width: 'auto' }}
-                                    value={selectedCoorporationList}
+                                    value={selectedCorporationList}
                                     onChange={(e) => {
                                         setLoadingSpinner(true)
-                                        setSelectedCoorporationList(e.target.value)
+                                        setSelectedCorporationList(e.target.value)
                                     }}
                                 >
                                     {
-                                        appCoorporationListData?.data?.list?.length > 0 ? (
+                                        appCorporationListData?.data?.list?.length > 0 ? (
                                             <>
                                                 <option value={''}>Select Group</option>
                                                 {
-                                                    appCoorporationListData?.data?.list.map((item, index) => {
+                                                    appCorporationListData?.data?.list.map((item, index) => {
                                                         return (
                                                             <option key={index} value={item.corporationId}>
                                                                 {item.corporationName}
@@ -384,7 +384,7 @@ const KPIDashboard = (props) => {
                                 </Input>
                             </div>
                             <h3 className="my-2">
-                                {appDashboardListData?.data?.resultList[0].corporationName}
+                                {Array.isArray(appDashboardListData?.data?.resultList) && appDashboardListData?.data?.resultList.length > 0 ? appDashboardListData?.data?.resultList[0].corporationName : ''}
                             </h3>
                             {
                                 appDashboardListData?.data?.resultList.map((item, index) => {
@@ -438,12 +438,12 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Plan',
                                                                 type: 'bar',
-                                                                data: item?.details.map(e => e.plan) || []
+                                                                data: item?.details.map(e => e.result) || []
                                                             },
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
-                                                                data: item?.details.map(e => e.result) || []
+                                                                data: item?.details.map(e => e.plan) || []
                                                             }
                                                         ]
                                                     }
