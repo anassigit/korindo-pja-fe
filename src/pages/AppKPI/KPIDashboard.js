@@ -417,7 +417,8 @@ const KPIDashboard = (props) => {
                                                             trigger: 'axis',
                                                             axisPointer: {
                                                                 type: 'shadow'
-                                                            }
+                                                            },
+
                                                         },
                                                         legend: {},
                                                         grid: {
@@ -438,12 +439,29 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Plan',
                                                                 type: 'bar',
-                                                                data: item?.details.map(e => e.result) || []
+                                                                data: item?.details.map(e => {
+                                                                    return ({
+                                                                        value: e.result,
+                                                                        itemStyle: {
+                                                                            color: e.chose ? '#7F7EF7' : 'grey',
+                                                                        },
+                                                                    })
+                                                                }) || []
                                                             },
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
                                                                 data: item?.details.map(e => e.plan) || []
+                                                            },
+                                                            {
+                                                                name: 'Note',
+                                                                type: 'scatter',
+                                                                data: item?.details.map(e => ({
+                                                                    name: e.month,
+                                                                    value: e.note,
+                                                                    symbol: 'circle',
+                                                                    symbolSize: 10,
+                                                                })) || []
                                                             }
                                                         ]
                                                     }
@@ -458,6 +476,7 @@ const KPIDashboard = (props) => {
                                                 />
                                                 <div
                                                     style={{
+                                                        position: 'relative',
                                                         width: "49.5%",
                                                         height: "400px",
                                                         marginTop: "10px",
@@ -466,9 +485,37 @@ const KPIDashboard = (props) => {
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center',
+                                                        fontSize: '18px'
                                                     }}
                                                 >
-                                                    <span>{ }</span>
+                                                    <span style={{
+                                                        position: 'absolute',
+                                                        top: '10%',
+                                                        fontWeight: 'bold',
+                                                    }}>
+                                                        {item.corporationName}
+                                                    </span>
+                                                    <div style={{
+                                                        position: 'absolute',
+                                                        top: '25%'
+                                                    }}>
+                                                        <span className="text-primary">
+                                                            {item.totalPlan} /
+                                                        </span>
+                                                        <span style={{ color: 'grey', opacity: '50%' }}>
+                                                            &nbsp;{item.totalResult}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className="bg-primary"
+                                                        style={{
+                                                            padding: '12px 42px 12px 42px',
+                                                            position: 'absolute',
+                                                            top: '35%',
+                                                            color: '#fff',
+                                                        }}>
+                                                        {item.totalRate}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </React.Fragment>
