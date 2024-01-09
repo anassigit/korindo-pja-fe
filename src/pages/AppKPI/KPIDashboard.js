@@ -6,8 +6,13 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
     Input,
     InputGroup,
+    Label,
     Spinner
 } from "reactstrap";
 import '../../assets/scss/custom/components/custom-datepicker.scss';
@@ -16,6 +21,7 @@ import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
 import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions";
 import ReactEcharts from "echarts-for-react"
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const KPIDashboard = (props) => {
 
@@ -53,6 +59,8 @@ const KPIDashboard = (props) => {
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
     const [selectedColumnList, setSelectedColumnList] = useState([])
+
+    const [filterColumn, setFilterColumn] = useState(false)
 
     const [optionBar, setOptionBar] = useState({});
 
@@ -101,80 +109,22 @@ const KPIDashboard = (props) => {
     }, [selectedCorporationList, selectedGroupList, selectedYear])
 
     useEffect(() => {
-        if (selectedYear && selectedMonth && selectedCorporationList && selectedGroupList) {
+        debugger
+        if (selectedYear && selectedMonth && selectedGroupList) {
+
+            const trueColumns = selectedColumnList
+                .filter(columnObj => Object.values(columnObj)[0])
+                .map(columnObj => Object.keys(columnObj)[0])
+                .join(',')
             dispatch(getDashboardKPI({
                 search: {
                     year: selectedYear,
                     month: selectedMonth,
                     groupNum: selectedGroupList,
                     corporationId: selectedCorporationList,
-                    column: selectedColumnList.join(','),
+                    column: trueColumns
                 }
             }))
-            let option = {
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                legend: {},
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: {
-
-                    type: 'category',
-                    data: ['Total', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                },
-                yAxis: {
-
-                },
-                series: [
-                    {
-                        name: 'Bar Series',
-                        type: 'bar',
-                        data: [
-                            1000,
-                            150.5,
-                            200.75,
-                            180.25,
-                            220.3,
-                            300.0,
-                            250.8,
-                            190.6,
-                            240.9,
-                            280.2,
-                            320.4,
-                            270.1,
-                            310.7
-                        ]
-                    },
-                    {
-                        name: 'Line Series',
-                        type: 'line',
-                        data: [
-                            800,
-                            120.5,
-                            160.75,
-                            140.25,
-                            180.3,
-                            250.0,
-                            200.8,
-                            150.6,
-                            190.9,
-                            220.2,
-                            260.4,
-                            210.1,
-                            240.7
-                        ]
-                    }
-                ]
-            }
-            setOptionBar(option)
         } else {
             dispatch(getDashboardKPI({
                 search: {
@@ -184,82 +134,35 @@ const KPIDashboard = (props) => {
                 }
             }))
         }
-    }, [selectedCorporationList, selectedMonth, selectedGroupList, selectedYear])
+        setLoadingSpinner(true)
+    }, [selectedCorporationList, selectedMonth, selectedGroupList, selectedYear, selectedColumnList])
 
     useEffect(() => {
-        // debugger
-        console.log(appDashboardListData)
-        if (appDashboardListData.status === '1') {
-            let result = appDashboardListData?.data?.resultList
+        if (appColumnListData.status === '1') {
+            const initialCheckboxesState = appColumnListData?.data?.list.map((e) => {
+                return (
+                    { [e]: false }
+                )
+            }) || [];
 
-
+            setSelectedColumnList(initialCheckboxesState)
         } else {
-            let option = {
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                legend: {},
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: {
-
-                    type: 'category',
-                    data: ['Total', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                },
-                yAxis: {
-
-                },
-                series: [
-                    {
-                        name: 'Bar Series',
-                        type: 'bar',
-                        data: [
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0
-                        ]
-                    },
-                    {
-                        name: 'Line Series',
-                        type: 'line',
-                        data: [
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0
-                        ]
-                    }
-                ]
-            }
-            setOptionBar(option)
+            setSelectedColumnList([])
         }
-    }, [appDashboardListData])
+
+    }, [appColumnListData])
+
+    const handleCheckboxChange = (index) => {
+        const newCheckboxes = [...selectedColumnList]
+        const columnName = appColumnListData?.data?.list[index]
+
+        newCheckboxes[index] = {
+            ...newCheckboxes[index],
+            [columnName]: !newCheckboxes[index]?.[columnName]
+        };
+
+        setSelectedColumnList(newCheckboxes);
+    }
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -285,7 +188,7 @@ const KPIDashboard = (props) => {
                                         setSelectedYear(e.target.value)
                                     }}
                                 >
-                                    <option>Select Year</option>
+                                    <option>{props.t('Select Year')}</option>
                                     {
                                         appYearListData?.data?.list.map((item, index) => {
                                             return (
@@ -303,13 +206,13 @@ const KPIDashboard = (props) => {
                                         setSelectedMonth(e.target.value)
                                     }}
                                 >
-                                    <option>Select Month</option>
+                                    <option>{props.t('Select Month')}</option>
                                     {
                                         Array.from({ length: 12 }, (_, index) => {
                                             const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' });
                                             return (
                                                 <option key={index} value={index + 1}>
-                                                    {month}
+                                                    {langType === 'kor' ? index + 1 + "월" : month}
                                                 </option>
                                             );
                                         })
@@ -322,10 +225,11 @@ const KPIDashboard = (props) => {
                                     onChange={(e) => {
                                         setLoadingSpinner(true)
                                         setSelectedCorporationList('')
+                                        setSelectedColumnList([])
                                         setSelectedGroupList(e.target.value)
                                     }}
                                 >
-                                    <option value={''}>Select Group</option>
+                                    <option value={''}>{props.t('Select Group')}</option>
                                     {
                                         appGroupListData?.data?.list.map((item, index) => {
                                             let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
@@ -344,12 +248,13 @@ const KPIDashboard = (props) => {
                                     onChange={(e) => {
                                         setLoadingSpinner(true)
                                         setSelectedCorporationList(e.target.value)
+                                        setSelectedColumnList([])
                                     }}
                                 >
                                     {
                                         appCorporationListData?.data?.list?.length > 0 ? (
                                             <>
-                                                <option value={''}>Select Group</option>
+                                                <option value={''}>{props.t('Select Group')}</option>
                                                 {
                                                     appCorporationListData?.data?.list.map((item, index) => {
                                                         return (
@@ -361,27 +266,63 @@ const KPIDashboard = (props) => {
                                                 }
                                             </>
                                         ) : (
-                                            <option value={''}>No Data</option>
+                                            <option value={''}>{props.t('No Data')}</option>
                                         )
                                     }
                                 </Input>
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedYear}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedYear(e.target.value)
-                                    }}
+                                <Dropdown
+                                    isOpen={filterColumn}
+                                    toggle={() => setFilterColumn(!filterColumn)}
+                                    className="d-inline-block"
                                 >
-                                    {
-                                        appYearListData?.data?.list.map((item, index) => {
-                                            return (
-                                                <option key={item}>{item}</option>
-                                            )
-                                        })
-                                    }
-                                </Input>
+                                    <DropdownToggle
+                                        className="btn header-item "
+                                        id="page-header-user-dropdown"
+                                        tag="button"
+                                    >
+                                        <span
+                                            style={{ fontSize: '24px' }}
+                                            className="mdi mdi-filter"
+                                        />
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-end">
+                                        {Array.isArray(appColumnListData?.data?.list) && appColumnListData?.data?.list.length > 0 ? (
+                                            appColumnListData?.data?.list.map((columnName, index) => (
+                                                <div
+                                                    key={index}
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        flexDirection: 'column'
+                                                    }}
+                                                >
+                                                    <a
+                                                        className="dropdown-item"
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'left',
+                                                        }}
+                                                        onClick={() => handleCheckboxChange(index)}
+                                                    >
+                                                        <Input
+                                                            type="checkbox"
+                                                            id={`checkbox${index + 1}`}
+                                                            checked={selectedColumnList[index]?.[columnName] || false}
+                                                            onClick={() => handleCheckboxChange(index)}
+                                                        />
+                                                        <a onClick={() => handleCheckboxChange(index)} style={{ marginBottom: '0' }}>
+                                                            &nbsp;{columnName}
+                                                        </a>
+                                                    </a>
+                                                    {index < appColumnListData.data.list.length - 1 && <div className="dropdown-divider" />}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <DropdownItem>{props.t('No Data')}</DropdownItem>
+                                        )}
+                                    </DropdownMenu>
+                                </Dropdown>
                             </div>
                             <h3 className="my-2">
                                 {Array.isArray(appDashboardListData?.data?.resultList) && appDashboardListData?.data?.resultList.length > 0 ? appDashboardListData?.data?.resultList[0].corporationName : ''}
@@ -393,7 +334,7 @@ const KPIDashboard = (props) => {
                                         <React.Fragment key={index}>
                                             <div className="mx-2">
                                                 <h5 style={{ marginTop: '1.25vh' }}>
-                                                    {item.item || "No Data"}
+                                                    {item.item || "{props.t('No Data')}"}
                                                 </h5>
                                                 <span style={{ color: '#D4D4FD' }}>
                                                     {item.plan.toLocaleString()} /
@@ -418,7 +359,16 @@ const KPIDashboard = (props) => {
                                                             axisPointer: {
                                                                 type: 'shadow'
                                                             },
-
+                                                            confine: true, // Ensure the tooltip is confined within the chart container
+                                                            width: '25vw', // Set the maximum width of the tooltip to 50%
+                                                            formatter: function (params) {
+                                                                // Use a formatter function to enable word wrapping
+                                                                var content = params[0].name + '<br>';
+                                                                params.forEach(function (item) {
+                                                                    content += item.marker + ' ' + item.seriesName + ': ' + item.value + '<br>';
+                                                                });
+                                                                return content;
+                                                            },
                                                         },
                                                         legend: {},
                                                         grid: {
@@ -443,10 +393,10 @@ const KPIDashboard = (props) => {
                                                                     return ({
                                                                         value: e.plan,
                                                                         itemStyle: {
-                                                                            color: e.chose ? '#7F7EF7' : '#D4D4FD',
+                                                                            color: e.chose ? '#AAD9BB' : '#D4D4FD',
                                                                         },
                                                                     })
-                                                                }) || []
+                                                                }) || [],
                                                             },
                                                             {
                                                                 name: 'Result',
@@ -513,7 +463,7 @@ const KPIDashboard = (props) => {
                                                             position: 'absolute',
                                                             top: '40%',
                                                             color: '#0EAB3D',
-                                                            backgroundColor:'#BEE7BF',
+                                                            backgroundColor: '#BEE7BF',
                                                         }}>
                                                         {item.totalRate}
                                                     </div>
@@ -528,14 +478,14 @@ const KPIDashboard = (props) => {
                                                             backgroundColor: '#D4D4FD',
                                                         }}>
                                                         <div
-                                                            style={{ 
-                                                                position:'absolute',
-                                                                left:'0',
-                                                                top:'0',
-                                                                height:'100%',
-                                                                width: '60%',
-                                                             backgroundColor: '#7F7EF7',
-                                                         }}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                left: '0',
+                                                                top: '0',
+                                                                height: '100%',
+                                                                width: parseFloat(item.totalRate.replace('%', '')) > 100 ? "100%" : item.totalRate,
+                                                                backgroundColor: '#7F7EF7',
+                                                            }}
                                                         >
                                                         </div>
                                                     </div>
