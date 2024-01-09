@@ -441,7 +441,7 @@ const KPIDashboard = (props) => {
                                                                 type: 'bar',
                                                                 data: item?.details.map(e => {
                                                                     return ({
-                                                                        value: e.result,
+                                                                        value: e.plan,
                                                                         itemStyle: {
                                                                             color: e.chose ? '#7F7EF7' : 'grey',
                                                                         },
@@ -451,7 +451,7 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
-                                                                data: item?.details.map(e => e.plan) || []
+                                                                data: item?.details.map(e => e.result) || []
                                                             },
                                                             {
                                                                 name: 'Note',
