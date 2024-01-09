@@ -395,11 +395,11 @@ const KPIDashboard = (props) => {
                                                 <h5 style={{ marginTop: '1.25vh' }}>
                                                     {item.item || "No Data"}
                                                 </h5>
-                                                <span className={item.plan >= item.result ? 'opacity-50' : null} style={{ color: item.plan >= item.result ? 'grey' : '#7F7EF7' }}>
-                                                    {item.plan} /
+                                                <span style={{ color: '#D4D4FD' }}>
+                                                    {item.plan.toLocaleString()} /
                                                 </span>
                                                 <span style={{ color: '#7F7EF7' }}>
-                                                    &nbsp;{item.result}
+                                                    &nbsp;{item.result.toLocaleString()}
                                                 </span>
                                                 <div className="text-primary" style={{ fontSize: "16px" }}>
                                                     {item.rate}
@@ -443,7 +443,7 @@ const KPIDashboard = (props) => {
                                                                     return ({
                                                                         value: e.plan,
                                                                         itemStyle: {
-                                                                            color: e.chose ? '#7F7EF7' : 'grey',
+                                                                            color: e.chose ? '#7F7EF7' : '#D4D4FD',
                                                                         },
                                                                     })
                                                                 }) || []
@@ -451,7 +451,8 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
-                                                                data: item?.details.map(e => e.result) || []
+                                                                data: item?.details.map(e => e.result) || [],
+                                                                color: '#7F7EF7'
                                                             },
                                                             {
                                                                 name: 'Note',
@@ -485,7 +486,7 @@ const KPIDashboard = (props) => {
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center',
-                                                        fontSize: '18px'
+                                                        fontSize: '20px'
                                                     }}
                                                 >
                                                     <span style={{
@@ -497,24 +498,46 @@ const KPIDashboard = (props) => {
                                                     </span>
                                                     <div style={{
                                                         position: 'absolute',
-                                                        top: '25%'
+                                                        top: '30%'
                                                     }}>
                                                         <span className="text-primary">
                                                             {item.totalPlan} /
                                                         </span>
-                                                        <span style={{ color: 'grey', opacity: '50%' }}>
+                                                        <span style={{ color: '#D4D4FD' }}>
                                                             &nbsp;{item.totalResult}
                                                         </span>
                                                     </div>
                                                     <div
-                                                        className="bg-primary"
                                                         style={{
                                                             padding: '12px 42px 12px 42px',
                                                             position: 'absolute',
-                                                            top: '35%',
-                                                            color: '#fff',
+                                                            top: '40%',
+                                                            color: '#0EAB3D',
+                                                            backgroundColor:'#BEE7BF',
                                                         }}>
                                                         {item.totalRate}
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            padding: '12px 42px 12px 42px',
+                                                            position: 'relative',
+                                                            top: '25%',
+                                                            width: '75%',
+                                                            height: '70px',
+                                                            color: '#fff',
+                                                            backgroundColor: '#D4D4FD',
+                                                        }}>
+                                                        <div
+                                                            style={{ 
+                                                                position:'absolute',
+                                                                left:'0',
+                                                                top:'0',
+                                                                height:'100%',
+                                                                width: '60%',
+                                                             backgroundColor: '#7F7EF7',
+                                                         }}
+                                                        >
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
