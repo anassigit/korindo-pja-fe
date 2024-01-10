@@ -40,7 +40,7 @@ const SidebarContent = (props) => {
     if (!submenuLocalStorage) {
       setDropdownOpen({ rule: true, kpi: true })
     }
-    if (location.pathname === "/AppKPIDashboard" || location.pathname === "/AppPlanSetting" || location.pathname === "/AppActualInput") {
+    if (location.pathname === "/AppKPIDashboard" || location.pathname === "/AppPlanSetting" || location.pathname === "/AppKPIMasterSetting" || location.pathname === "/AppActualInput") {
       setDropdownOpen((prevState) => ({ ...prevState, kpi: false }));
     }
     dispatch(getMenuRuleData());
@@ -281,6 +281,17 @@ const SidebarContent = (props) => {
                   className="fas fa-chevron-down dropdown-icon"
                 ></i>
               </a>
+              <Link
+                onClick={() =>
+                  ReactSession.remove("submenuKey")
+                }
+                style={{ fontSize: "14px" }}
+                to="/AppKPIMasterSetting"
+                hidden={dropdownOpen.kpi}
+                className={location.pathname === "/AppKPIMasterSetting" ? "active" : null}
+              >
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Master Setting")}</span>
+              </Link>
               <Link
                 onClick={() =>
                   ReactSession.remove("submenuKey")

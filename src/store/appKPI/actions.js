@@ -1,15 +1,5 @@
 import {
-
-    GET_PROFILE,
-    RESP_GET_PROFILE,
-    EDIT_USER_PROFILE,
-    MSGEDIT,
     RESET_MESSAGE,
-    UPDATE_USER_PASSWORD,
-    MSGUPPASSWORD,
-    EMAIL_FORGOT_PASSWORD,
-    UPDATE_FORGOT_PASSWORD,
-    MSG_EMAIL_FORGOT_PASSWORD,
     GET_YEAR_LIST,
     RESP_GET_YEAR_LIST,
     GET_GROUP_LIST_KPI,
@@ -25,7 +15,10 @@ import {
     GET_COLUMN_LIST,
     RESP_GET_COLUMN_LIST,
     GET_DASHBOARD_KPI,
-    RESP_GET_DASHBOARD_KPI
+    RESP_GET_DASHBOARD_KPI,
+    GET_KPI_MASTER,
+    RESP_GET_KPI_MASTER,
+    GET_DOWNLOAD_MASTER_TEMPLATE
 
 } from "./actionTypes"
 
@@ -79,6 +72,16 @@ import {
     payload: resp,
   })
 
+  export const getKPIMaster = (req) => ({
+    type: GET_KPI_MASTER,
+    payload: req,
+  })
+
+  export const respGetKPIMaster = resp => ({
+    type: RESP_GET_KPI_MASTER,
+    payload: resp,
+  })
+
   export const getItemList = (req) => ({
     type: GET_ITEM_LIST,
     payload: req,
@@ -107,6 +110,11 @@ import {
   export const respGetDashboardKPI = resp => ({
     type: RESP_GET_DASHBOARD_KPI,
     payload: resp,
+  })
+
+  export const getDownloadMasterTemplate = (req) => ({
+    type: GET_DOWNLOAD_MASTER_TEMPLATE,
+    payload: req,
   })
 
   export const resetMessage = (req) => ({

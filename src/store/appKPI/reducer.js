@@ -4,15 +4,18 @@ import {
   GET_DASHBOARD_KPI,
   GET_GROUP_LIST_KPI,
   GET_ITEM_LIST,
+  GET_KPI_MASTER,
   GET_PLAN,
   GET_UNIT_LIST,
   GET_YEAR_LIST,
+  GET_DOWNLOAD_MASTER_TEMPLATE,
   RESET_MESSAGE,
   RESP_GET_COLUMN_LIST,
   RESP_GET_CORPORATION_LIST,
   RESP_GET_DASHBOARD_KPI,
   RESP_GET_GROUP_LIST_KPI,
   RESP_GET_ITEM_LIST,
+  RESP_GET_KPI_MASTER,
   RESP_GET_PLAN,
   RESP_GET_UNIT_LIST,
   RESP_GET_YEAR_LIST
@@ -24,11 +27,12 @@ const INIT_STATE = {
   respGetGroupListKpi: {},
   respGetCorporationList: {},
   respGetColumnList: {},
+  respGetKPIMaster: {},
   respGetPlan: {},
   respGetItemList: {},
   respGetUnitList: {},
   respGetDashboardKPI: {},
-  msgEdit: "",
+  msgEdit: ""
 }
 
 const kpiReducer = (state = INIT_STATE, action) => {
@@ -71,6 +75,15 @@ const kpiReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetColumnList: action.payload,
       }
+    case GET_KPI_MASTER:
+      return {
+        ...state,
+      }
+    case RESP_GET_KPI_MASTER:
+      return {
+        ...state,
+        respGetKPIMaster: action.payload,
+      }
     case GET_PLAN:
       return {
         ...state,
@@ -106,6 +119,10 @@ const kpiReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetDashboardKPI: action.payload,
+      }
+    case GET_DOWNLOAD_MASTER_TEMPLATE:
+      return {
+        ...state,
       }
     case RESET_MESSAGE:
       return {

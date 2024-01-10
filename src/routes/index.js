@@ -26,6 +26,7 @@ import EnterMonthlyData from "pages/AppFileManagement/EnterMonthlyData"
 import Rule from "pages/AppRule/Rule"
 import KPI from "pages/AppKPI/KPI"
 import KPIDashboard from "pages/AppKPI/KPIDashboard"
+import KPIMasterSetting from "pages/AppKPI/KPIMasterSetting"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -44,6 +45,7 @@ const authProtectedRoutes = [
   { path: "/AppRule", component: Rule },
 
   { path: "/AppPlanSetting", component: KPI },
+  { path: "/AppKPIMasterSetting", component: KPIMasterSetting },
   { path: "/AppKPIDashboard", component: KPIDashboard },
 
   // this route should be at the end of all other routes
