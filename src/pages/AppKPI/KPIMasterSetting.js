@@ -18,7 +18,7 @@ import '../../config';
 import UploadKPIMaster from "./UploadKPIMaster";
 
 
-const KPIMasterSetting = () => {
+const KPIMasterSetting = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
 

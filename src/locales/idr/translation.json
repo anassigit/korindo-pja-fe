@@ -149,12 +149,13 @@
   "No Data": "Tidak Ada Data",
   "Select Month": "Pilih Bulan",
   "Select Year": "Pilih Tahun",
-  "KPI Master Setting": "KPI Master Setting",
-  "Select Corporation": "Select Corporation",
-  "Download Template": "Download Template",
-  "Upload": "Upload",
-  "KPI Category": "KPI Category",
-  "Unit": "Unit",
-  "Increase": "Increase",
-  "Definitions and Formulas": "Definitions and Formulas"
+  "KPI Master Setting": "Pengaturan Induk KPI",
+  "Select Corporation": "Pilih Perusahaan",
+  "Download Template": "Unduh Templat",
+  "Upload": "Unggah",
+  "KPI Category": "Kategori KPI",
+  "Unit": "Satuan",
+  "Increase": "Peningkatan",
+  "Definitions and Formulas": "Definisi dan Rumus",
+  "Master Setting": "Pengaturan Induk"
 }
