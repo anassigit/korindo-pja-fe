@@ -1,10 +1,10 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
-import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, GET_DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST } from "./actionTypes"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, GET_DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI } from "./actionTypes"
 
-import { getKPIMaster, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList } from "./actions"
+import { getKPIMaster, msgUpload, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList } from "./actions"
 
-import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE } from "helpers/backend_helper"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE } from "helpers/backend_helper"
 
 function* fetchGetYearList({ payload: req }) {
   try {
@@ -140,6 +140,20 @@ function* fetchGetDownloadMasterTemplate({ payload: req }) {
   }
 }
 
+function* fetchUploadMasterKPI({ payload: req }) {
+  try {
+    const response = yield call(uploadMasterKPIBE, req)
+    if (response.status == 1) {
+      yield put(msgUpload(response))
+    } else {
+      yield put(msgUpload(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgUpload({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
 function* kpiSaga() {
 
   yield takeEvery(GET_YEAR_LIST, fetchGetYearList)
@@ -152,6 +166,7 @@ function* kpiSaga() {
   yield takeEvery(GET_UNIT_LIST, fetchGetUnit)
   yield takeEvery(GET_DASHBOARD_KPI, fetchGetDashboardKPI)
   yield takeEvery(GET_DOWNLOAD_MASTER_TEMPLATE, fetchGetDownloadMasterTemplate)
+  yield takeEvery(UPLOAD_MASTER_KPI, fetchUploadMasterKPI)
 }
 
 export default kpiSaga

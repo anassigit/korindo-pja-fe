@@ -238,3 +238,5 @@ export const getUnitBE = req => postWithParam("rest/KpiManagementRest/getUnitLis
 export const getDashboardKPIBE = req => post("rest/KpiManagementRest/getDashboard", req)
 
 export const getDownloadMasterTemplateBE = req => getWithXls("rest/KpiManagementRest/downloadMasterTemplate", req)
+
+export const uploadMasterKPIBE = req => getWithXls("rest/KpiManagementRest/setMaster", req)

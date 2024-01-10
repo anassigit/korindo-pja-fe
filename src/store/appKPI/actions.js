@@ -18,7 +18,9 @@ import {
     RESP_GET_DASHBOARD_KPI,
     GET_KPI_MASTER,
     RESP_GET_KPI_MASTER,
-    GET_DOWNLOAD_MASTER_TEMPLATE
+    GET_DOWNLOAD_MASTER_TEMPLATE,
+    UPLOAD_MASTER_KPI,
+    MSG_UPLOAD
 
 } from "./actionTypes"
 
@@ -106,15 +108,25 @@ import {
     type: GET_DASHBOARD_KPI,
     payload: req,
   })
+  
+  export const getDownloadMasterTemplate = (req) => ({
+    type: GET_DOWNLOAD_MASTER_TEMPLATE,
+    payload: req,
+  })
 
   export const respGetDashboardKPI = resp => ({
     type: RESP_GET_DASHBOARD_KPI,
     payload: resp,
   })
-
-  export const getDownloadMasterTemplate = (req) => ({
-    type: GET_DOWNLOAD_MASTER_TEMPLATE,
+  
+  export const uploadMasterKPI = (req) => ({
+    type: UPLOAD_MASTER_KPI,
     payload: req,
+  })
+
+  export const msgUpload = resp => ({
+    type: MSG_UPLOAD,
+    payload: resp,
   })
 
   export const resetMessage = (req) => ({

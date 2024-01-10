@@ -8,6 +8,7 @@ import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, msgUpload, uploadFile, getSelectFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
 import { withTranslation } from "react-i18next"
+import { uploadMasterKPI } from 'store/actions';
 
 const UploadKPIMaster = (props) => {
 
@@ -19,7 +20,7 @@ const UploadKPIMaster = (props) => {
     const [successClose, setSuccessClose] = useState(false)
 
     const uploadRespMsg = useSelector(state => {
-        return state.kp.msgUpload;
+        return state.fileManagementReducer.msgUpload;
     })
 
     useEffect(() => {
@@ -75,7 +76,7 @@ const UploadKPIMaster = (props) => {
 
     const insertUpload = async (value) => {
 
-        await dispatch(uploadFile(value));
+        await dispatch(uploadMasterKPI(value));
         // toggleMsgModal()
 
     };
@@ -96,10 +97,7 @@ const UploadKPIMaster = (props) => {
             props.toggle()
 
             setUploadMsg("")
-
             SetSelectedFile([])
-
-            dispatch(getSelectFile({ 'folder_num': props.idNowLoc }))
 
         }
     }
@@ -204,11 +202,11 @@ const UploadKPIMaster = (props) => {
                 e.preventDefault();
                 uploadFileFolderValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>{props.t("Upload KPI Master")}</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("UploadKPIMaster New File")}</ModalHeader>
                 <ModalBody>
 
                     <div className="mb-3">
-                        <label>{props.t("Choose file")} </label>
+                        <label>{props.t("Choose files")} </label>
                         <Form onSubmit={FileUploadSubmit}>
                             <div className="kb-file-upload">
 
@@ -216,7 +214,7 @@ const UploadKPIMaster = (props) => {
                                     <input
                                         type="file"
                                         accept=".docx, .doc, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .jpg, .jpeg, .png, .gif, .svg, .avi, .mov, .mp4, .mkv, .flv"
-                                        id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
+                                        id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" />
                                 </div>
                             </div>
                             &nbsp;
@@ -268,7 +266,6 @@ UploadKPIMaster.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idToggleUpload: PropTypes.any,
-    idNowLoc: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

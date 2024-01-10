@@ -9,6 +9,7 @@ import {
     CardHeader,
     Col,
     Input,
+    Modal,
     Row,
     Spinner
 } from "reactstrap";
@@ -18,6 +19,7 @@ import "../../assets/scss/custom/table/TableCustom.css";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
 import { getDownloadMasterTemplateBE } from "helpers/backend_helper";
+import UploadKPIMaster from "./UploadKPIMaster";
 
 
 const KPIMasterSetting = () => {
@@ -42,20 +44,13 @@ const KPIMasterSetting = () => {
         return state.kpiReducer.respGetKPIMaster
     })
 
-    const downloadMasterTemplate = async () => {
-        dispatch(getDownloadMasterTemplate())
-    }
-
-    const toggleUploadModal = () => {
-        setUploadModal(!uploadModal)
-        setIdToggleUpload(idChild)
-    }
-
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMasterSettingPage, setAppKPIMasterSettingPage] = useState(true)
     const [appKPIMasterState, setAppKPIMasterState] = useState([])
 
     const [appKPIMsg, setAppKPIMsg] = useState("")
+
+    const [uploadModal, setUploadModal] = useState(false)
 
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
@@ -98,6 +93,15 @@ const KPIMasterSetting = () => {
             setAppKPIMasterState([])
         }
     }, [appKPIMasterListData])
+
+
+    const downloadMasterTemplate = () => {
+        dispatch(getDownloadMasterTemplate())
+    }
+
+    const toggleUploadModal = () => {
+        setUploadModal(!uploadModal)
+    }
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -182,11 +186,11 @@ const KPIMasterSetting = () => {
                                     </Input>
                                 </div>
                                 <div>
-                                    <Button onClick={async () => { downloadMasterTemplate() }}>
+                                    <Button onClick={() => downloadMasterTemplate()}>
                                         <i className="mdi mdi-download" />{" "}
                                         Download Template
                                     </Button>
-                                    <Button style={{ marginLeft: "1rem" }} onClick={toggleUploadModal()}>
+                                    <Button style={{ marginLeft: "1rem" }} onClick={() => toggleUploadModal()}>
                                         Upload
                                     </Button>
                                 </div>
@@ -222,7 +226,10 @@ const KPIMasterSetting = () => {
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
-
+                    <UploadKPIMaster
+                        modal={uploadModal}
+                        toggle={toggleUploadModal}
+                    />
                 </>
             }
         />
