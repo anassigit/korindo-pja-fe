@@ -202,7 +202,7 @@ const UploadKPIMaster = (props) => {
                 e.preventDefault();
                 uploadFileFolderValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>{props.t("UploadKPIMaster New File")}</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Upload New File")}</ModalHeader>
                 <ModalBody>
 
                     <div className="mb-3">
