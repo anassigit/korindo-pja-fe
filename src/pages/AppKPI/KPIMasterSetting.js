@@ -43,7 +43,12 @@ const KPIMasterSetting = () => {
     })
 
     const downloadMasterTemplate = async () => {
-        await dispatch(getDownloadMasterTemplate());
+        dispatch(getDownloadMasterTemplate())
+    }
+
+    const toggleUploadModal = () => {
+        setUploadModal(!uploadModal)
+        setIdToggleUpload(idChild)
     }
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
@@ -177,11 +182,11 @@ const KPIMasterSetting = () => {
                                     </Input>
                                 </div>
                                 <div>
-                                    <Button onClick={ async () => {downloadMasterTemplate()}}>
-                                    <i className="mdi mdi-download" />{" "}
+                                    <Button onClick={async () => { downloadMasterTemplate() }}>
+                                        <i className="mdi mdi-download" />{" "}
                                         Download Template
                                     </Button>
-                                    <Button style={{marginLeft: "1rem"}}>                                        
+                                    <Button style={{ marginLeft: "1rem" }} onClick={toggleUploadModal()}>
                                         Upload
                                     </Button>
                                 </div>

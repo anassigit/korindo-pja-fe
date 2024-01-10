@@ -399,7 +399,7 @@ const KPIDashboard = (props) => {
                                                                 color: '#BEE7BF',
                                                                 data: item?.details.map(e => {
                                                                     return ({
-                                                                        value: e.plan,
+                                                                        value: e.plan.toLocaleString(),
                                                                         itemStyle: {
                                                                             color: e.chose ? '#BEE7BF' : '#D4D4FD',
                                                                         },
@@ -409,7 +409,7 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
-                                                                data: item?.details.map(e => e.result) || [],
+                                                                data: item?.details.map(e => e.result.toLocaleString()) || [],
                                                                 color: '#7F7EF7'
                                                             },
                                                             {
@@ -457,10 +457,10 @@ const KPIDashboard = (props) => {
                                                         top: '30%'
                                                     }}>
                                                         <span className="text-primary">
-                                                            {item.totalPlan} /
+                                                            {item.totalPlan.toLocaleString()} /
                                                         </span>
                                                         <span style={{ color: '#D4D4FD' }}>
-                                                            &nbsp;{item.totalResult}
+                                                            &nbsp;{item.totalResult.toLocaleString()}
                                                         </span>
                                                     </div>
                                                     <div
