@@ -62,3 +62,7 @@
 .text-nowrap .custom-statusid-column {
     width: 20px !important;
 }
+
+.custom-chart div {
+    white-space: pre-line !important;
+}

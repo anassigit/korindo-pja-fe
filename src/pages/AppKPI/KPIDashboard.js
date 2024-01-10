@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    Button,
     Card,
     CardBody,
     CardHeader,
@@ -109,7 +110,6 @@ const KPIDashboard = (props) => {
     }, [selectedCorporationList, selectedGroupList, selectedYear])
 
     useEffect(() => {
-        debugger
         if (selectedYear && selectedMonth && selectedGroupList) {
 
             const trueColumns = selectedColumnList
@@ -176,7 +176,8 @@ const KPIDashboard = (props) => {
                             <div
                                 style={{
                                     display: 'flex',
-                                    gap: '16px'
+                                    gap: '16px',
+                                    alignItems: 'center',
                                 }}
                             >
                                 <Input
@@ -280,8 +281,10 @@ const KPIDashboard = (props) => {
                                         id="page-header-user-dropdown"
                                         tag="button"
                                     >
-                                        <span
-                                            style={{ fontSize: '24px' }}
+                                        <Button
+                                            style={{
+                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                            }}
                                             className="mdi mdi-filter"
                                         />
                                     </DropdownToggle>
@@ -353,19 +356,26 @@ const KPIDashboard = (props) => {
                                             }}>
 
                                                 <ReactEcharts
+                                                    className="custom-chart"
                                                     option={{
                                                         tooltip: {
                                                             trigger: 'axis',
                                                             axisPointer: {
                                                                 type: 'shadow'
                                                             },
-                                                            confine: true, // Ensure the tooltip is confined within the chart container
-                                                            width: '25vw', // Set the maximum width of the tooltip to 50%
+                                                            confine: true,
+                                                            width: '2px',
                                                             formatter: function (params) {
                                                                 // Use a formatter function to enable word wrapping
                                                                 var content = params[0].name + '<br>';
                                                                 params.forEach(function (item) {
-                                                                    content += item.marker + ' ' + item.seriesName + ': ' + item.value + '<br>';
+                                                                    if (item.seriesName !== 'Note') {
+                                                                        // Display regular series data
+                                                                        content += item.marker + ' ' + item.seriesName + ': ' + item.value + '<br>';
+                                                                    } else if (item.value) {
+                                                                        // Display note only in the tooltip
+                                                                        content += 'Note: \n' + item.value.substring(1) + '<br>';
+                                                                    }
                                                                 });
                                                                 return content;
                                                             },
@@ -389,6 +399,7 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Plan',
                                                                 type: 'bar',
+                                                                color: '#AAD9BB',
                                                                 data: item?.details.map(e => {
                                                                     return ({
                                                                         value: e.plan,
@@ -410,8 +421,6 @@ const KPIDashboard = (props) => {
                                                                 data: item?.details.map(e => ({
                                                                     name: e.month,
                                                                     value: e.note,
-                                                                    symbol: 'circle',
-                                                                    symbolSize: 10,
                                                                 })) || []
                                                             }
                                                         ]
@@ -444,7 +453,7 @@ const KPIDashboard = (props) => {
                                                         top: '10%',
                                                         fontWeight: 'bold',
                                                     }}>
-                                                        {item.corporationName}
+                                                        {item.item}
                                                     </span>
                                                     <div style={{
                                                         position: 'absolute',
