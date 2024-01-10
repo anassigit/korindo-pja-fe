@@ -7,18 +7,14 @@ import {
     Card,
     CardBody,
     CardHeader,
-    Col,
     Input,
-    Modal,
-    Row,
     Spinner
 } from "reactstrap";
-import { downloadFile, getCorporationList, getDownloadMasterTemplate, getGroupListKPI, getKPIMaster, getYearList, resetMessage } from "store/actions";
+import { getCorporationList, getDownloadMasterTemplate, getGroupListKPI, getKPIMaster, getYearList, resetMessage } from "store/actions";
 import '../../assets/scss/custom/components/custom-datepicker.scss';
 import "../../assets/scss/custom/table/TableCustom.css";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
-import { getDownloadMasterTemplateBE } from "helpers/backend_helper";
 import UploadKPIMaster from "./UploadKPIMaster";
 
 
@@ -45,7 +41,6 @@ const KPIMasterSetting = () => {
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
-    const [appKPIMasterSettingPage, setAppKPIMasterSettingPage] = useState(true)
     const [appKPIMasterState, setAppKPIMasterState] = useState([])
 
     const [appKPIMsg, setAppKPIMsg] = useState("")
@@ -96,7 +91,9 @@ const KPIMasterSetting = () => {
 
 
     const downloadMasterTemplate = () => {
-        dispatch(getDownloadMasterTemplate())
+        dispatch(getDownloadMasterTemplate({
+            file_nm: "KPI MASTER TEMPLATE.xlsx"
+        }))
     }
 
     const toggleUploadModal = () => {
@@ -107,9 +104,9 @@ const KPIMasterSetting = () => {
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
-                    <Card style={{ display: appKPIMasterSettingPage ? 'block' : 'none' }} fluid="true" >
+                    <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI 마스터 설정
+                            {props.t('KPI Master Setting')}
                         </CardHeader>
                         <CardBody>
                             <div style={{ display: 'flex', justifyContent: "space-between" }}>
@@ -126,7 +123,7 @@ const KPIMasterSetting = () => {
                                     >
                                         {Array.isArray(appYearListData?.data?.list) ? (
                                             <>
-                                                <option>Select Year</option>
+                                                <option>{props.t('Select Year')}</option>
                                                 {appYearListData?.data?.list.map((item, index) => (
                                                     <option key={index} value={item}>
                                                         {item}
@@ -135,7 +132,7 @@ const KPIMasterSetting = () => {
                                             </>
                                         ) : (
                                             <option>
-                                                No Data
+                                                {props.t('No Data')}
                                             </option>
                                         )}
                                     </Input>
@@ -147,7 +144,7 @@ const KPIMasterSetting = () => {
                                     >
                                         {Array.isArray(appGroupListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>Select Group</option>
+                                                <option value={''}>{props.t('Select Group')}</option>
                                                 {appGroupListData?.data?.list.map((item, index) => {
                                                     let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
                                                     return (
@@ -159,7 +156,7 @@ const KPIMasterSetting = () => {
                                             </>
                                         ) : (
                                             <option>
-                                                No Data
+                                                {props.t('No Data')}
                                             </option>
                                         )}
                                     </Input>
@@ -169,7 +166,7 @@ const KPIMasterSetting = () => {
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>Select Corporation</option>
+                                                <option value={''}>{props.t('Select Corporation')}</option>
                                                 {appCorporationListData?.data?.list.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item.corporationId}>
@@ -180,7 +177,7 @@ const KPIMasterSetting = () => {
                                             </>
                                         ) : (
                                             <option>
-                                                No Data
+                                                {props.t('No Data')}
                                             </option>
                                         )}
                                     </Input>
@@ -188,20 +185,20 @@ const KPIMasterSetting = () => {
                                 <div>
                                     <Button onClick={() => downloadMasterTemplate()}>
                                         <i className="mdi mdi-download" />{" "}
-                                        Download Template
+                                        {props.t('Download Template')}
                                     </Button>
                                     <Button style={{ marginLeft: "1rem" }} onClick={() => toggleUploadModal()}>
-                                        Upload
+                                        {props.t('Upload')}
                                     </Button>
                                 </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">KPI Category</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Unit</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Increase</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Definitions and Formulas</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('KPI Category')}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Unit')}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Increase')}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Definitions and Formulas')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

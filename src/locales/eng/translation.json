@@ -142,6 +142,13 @@
   "Dashboard": "Dashboard",
   "No Data": "No Data",
   "Select Month": "Select Month",
-  "Select Year": "Select Year"
-
+  "Select Year": "Select Year",
+  "KPI Master Setting": "KPI Master Setting",
+  "Select Corporation": "Select Corporation",
+  "Download Template": "Download Template",
+  "Upload": "Upload",
+  "KPI Category": "KPI Category",
+  "Unit": "Unit",
+  "Increase": "Increase",
+  "Definitions and Formulas": "Definitions and Formulas"
 }

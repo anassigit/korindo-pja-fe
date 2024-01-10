@@ -104,6 +104,7 @@ export async function getWithXls(url, data, config ={responseType: 'blob'}) {
         // let url = window.URL.createObjectURL(new Blob([response.data]));   
         // saveAs(url, filename);
         let url = window.URL.createObjectURL(new Blob([response.data]));   
+        debugger
         saveAs(url, data.file_nm);
       } else {
          return responseError(response);

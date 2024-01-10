@@ -148,5 +148,13 @@
   "Dashboard": "대시보드",
   "No Data": "데이터 없음",
   "Select Month": "월 선택",
-  "Select Year": "년도 선택"
+  "Select Year": "년도 선택",
+  "KPI Master Setting": "KPI 마스터 설정",
+  "Select Corporation": "법인을 선택하세요",
+  "Download Template": "템플릿 다운로드",
+  "Upload": "업로드",
+  "KPI Category": "KPI 카테고리",
+  "Unit": "단위",
+  "Increase": "증가하다",
+  "Definitions and Formulas": "정의 및 공식"
 }
