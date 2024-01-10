@@ -366,14 +366,11 @@ const KPIDashboard = (props) => {
                                                             confine: true,
                                                             width: '2px',
                                                             formatter: function (params) {
-                                                                // Use a formatter function to enable word wrapping
                                                                 var content = params[0].name + '<br>';
                                                                 params.forEach(function (item) {
                                                                     if (item.seriesName !== 'Note') {
-                                                                        // Display regular series data
                                                                         content += item.marker + ' ' + item.seriesName + ': ' + item.value + '<br>';
                                                                     } else if (item.value) {
-                                                                        // Display note only in the tooltip
                                                                         content += 'Note: \n' + item.value.substring(1) + '<br>';
                                                                     }
                                                                 });
@@ -399,12 +396,12 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Plan',
                                                                 type: 'bar',
-                                                                color: '#AAD9BB',
+                                                                color: '#BEE7BF',
                                                                 data: item?.details.map(e => {
                                                                     return ({
                                                                         value: e.plan,
                                                                         itemStyle: {
-                                                                            color: e.chose ? '#AAD9BB' : '#D4D4FD',
+                                                                            color: e.chose ? '#BEE7BF' : '#D4D4FD',
                                                                         },
                                                                     })
                                                                 }) || [],
