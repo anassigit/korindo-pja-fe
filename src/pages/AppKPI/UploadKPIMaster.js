@@ -20,7 +20,7 @@ const UploadKPIMaster = (props) => {
     const [successClose, setSuccessClose] = useState(false)
 
     const uploadRespMsg = useSelector(state => {
-        return state.fileManagementReducer.msgUpload;
+        return state.kpiReducer.msgUpload;
     })
 
     useEffect(() => {
@@ -206,19 +206,19 @@ const UploadKPIMaster = (props) => {
                 <ModalBody>
 
                     <div className="mb-3">
-                        <label>{props.t("Choose files")} </label>
+                        <label>{props.t("Choose file")} </label>
                         <Form onSubmit={FileUploadSubmit}>
                             <div className="kb-file-upload">
 
                                 <div className="file-upload-box">
                                     <input
                                         type="file"
-                                        accept=".docx, .doc, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .jpg, .jpeg, .png, .gif, .svg, .avi, .mov, .mp4, .mkv, .flv"
-                                        id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" />
+                                        accept=".xlsx, .xls"
+                                        id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" multiple />
                                 </div>
                             </div>
                             &nbsp;
-                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
+                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are xlsx, xls")}</span>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
                                 {

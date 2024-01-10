@@ -141,6 +141,7 @@ function* fetchGetDownloadMasterTemplate({ payload: req }) {
 }
 
 function* fetchUploadMasterKPI({ payload: req }) {
+  debugger
   try {
     const response = yield call(uploadMasterKPIBE, req)
     if (response.status == 1) {
