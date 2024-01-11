@@ -63,7 +63,7 @@ const KPIDashboard = (props) => {
 
     const [filterColumn, setFilterColumn] = useState(false)
 
-    const [optionBar, setOptionBar] = useState({});
+    const [initialWidths, setInitialWidths] = useState([]);
 
     useEffect(() => {
         dispatch(getYearList())
@@ -76,8 +76,27 @@ const KPIDashboard = (props) => {
     }, [dispatch])
 
     useEffect(() => {
-        setLoadingSpinner(false);
-    }, [appYearListData, appGroupListData, appCorporationListData, appColumnListData, appDashboardListData]);
+        setLoadingSpinner(false)
+    }, [appYearListData, appGroupListData, appCorporationListData, appColumnListData, appDashboardListData])
+
+    useEffect(() => {
+        if (appDashboardListData.status === '1') {
+            setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0))
+            if (Array.isArray(initialWidths) && initialWidths?.length > 0) {
+                const timeoutId = setTimeout(() => {
+                    setInitialWidths(
+                        appDashboardListData.data.resultList.map((item) => {
+                            const cappedTotalRate = Math.min(100, parseFloat(item.totalRate.replace('%', '')));
+                            return cappedTotalRate;
+                        })
+                    );
+                }, 100);
+                return () => clearTimeout(timeoutId);
+            }
+        } else if (appDashboardListData.status === '0') {
+            setInitialWidths([])
+        }
+    }, [appDashboardListData])
 
     useEffect(() => {
         if (selectedGroupList) {
@@ -151,6 +170,12 @@ const KPIDashboard = (props) => {
         }
 
     }, [appColumnListData])
+
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
 
     const handleCheckboxChange = (index) => {
         const newCheckboxes = [...selectedColumnList]
@@ -340,10 +365,10 @@ const KPIDashboard = (props) => {
                                                     {item.item || "{props.t('No Data')}"}
                                                 </h5>
                                                 <span style={{ color: '#D4D4FD' }}>
-                                                    {item.plan.toLocaleString()} /
+                                                    {formatter.format(item.plan)} /
                                                 </span>
                                                 <span style={{ color: '#7F7EF7' }}>
-                                                    &nbsp;{item.result.toLocaleString()}
+                                                    &nbsp;{formatter.format(item.result)}
                                                 </span>
                                                 <div className="text-primary" style={{ fontSize: "16px" }}>
                                                     {item.rate}
@@ -369,7 +394,7 @@ const KPIDashboard = (props) => {
                                                                 var content = params[0].name + '<br>';
                                                                 params.forEach(function (item) {
                                                                     if (item.seriesName !== 'Note') {
-                                                                        content += item.marker + ' ' + item.seriesName + ': ' + item.value + '<br>';
+                                                                        content += item.marker + ' ' + item.seriesName + ': ' + formatter.format(item.value) + '<br>';
                                                                     } else if (item.value) {
                                                                         content += 'Note: \n' + item.value.substring(1) + '<br>';
                                                                     }
@@ -399,7 +424,7 @@ const KPIDashboard = (props) => {
                                                                 color: '#BEE7BF',
                                                                 data: item?.details.map(e => {
                                                                     return ({
-                                                                        value: e.plan.toLocaleString(),
+                                                                        value: e.plan,
                                                                         itemStyle: {
                                                                             color: e.chose ? '#BEE7BF' : '#D4D4FD',
                                                                         },
@@ -409,7 +434,7 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
-                                                                data: item?.details.map(e => e.result.toLocaleString()) || [],
+                                                                data: item?.details.map(e => e.result) || [],
                                                                 color: '#7F7EF7'
                                                             },
                                                             {
@@ -457,10 +482,10 @@ const KPIDashboard = (props) => {
                                                         top: '30%'
                                                     }}>
                                                         <span className="text-primary">
-                                                            {item.totalPlan.toLocaleString()} /
+                                                            {formatter.format(item.totalPlan)} /
                                                         </span>
                                                         <span style={{ color: '#D4D4FD' }}>
-                                                            &nbsp;{item.totalResult.toLocaleString()}
+                                                            &nbsp;{formatter.format(item.totalResult)}
                                                         </span>
                                                     </div>
                                                     <div
@@ -489,8 +514,9 @@ const KPIDashboard = (props) => {
                                                                 left: '0',
                                                                 top: '0',
                                                                 height: '100%',
-                                                                width: parseFloat(item.totalRate.replace('%', '')) > 100 ? "100%" : item.totalRate,
+                                                                width: `${initialWidths[index]}%`,
                                                                 backgroundColor: '#7F7EF7',
+                                                                transition: 'width 0.5s ease-in-out',
                                                             }}
                                                         >
                                                         </div>
