@@ -8,9 +8,9 @@ import MsgModal from 'components/Common/MsgModal';
 import { resetMessage, msgUpload, uploadFile, getSelectFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
 import { withTranslation } from "react-i18next"
-import { uploadMasterKPI } from 'store/actions';
+import { uploadMasterKPI, uploadPlanKPI } from 'store/actions';
 
-const UploadKPIMaster = (props) => {
+const UploadKPI = (props) => {
 
     const dispatch = useDispatch();
     const [uploadSpinner, setUploadSpinner] = useState(false)
@@ -31,7 +31,6 @@ const UploadKPIMaster = (props) => {
         enableReinitialize: true,
 
         initialValues: {
-            parent_num: props.idToggleUpload,
             //file_name: '',
         },
 
@@ -76,8 +75,7 @@ const UploadKPIMaster = (props) => {
 
     const insertUpload = async (value) => {
 
-        await dispatch(uploadMasterKPI(value));
-        // toggleMsgModal()
+        await dispatch(uploadPlanKPI(value));
 
     };
 
@@ -262,11 +260,11 @@ const UploadKPIMaster = (props) => {
 
 }
 
-UploadKPIMaster.propTypes = {
+UploadKPI.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idToggleUpload: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };
-export default withTranslation()(UploadKPIMaster)
+export default withTranslation()(UploadKPI)

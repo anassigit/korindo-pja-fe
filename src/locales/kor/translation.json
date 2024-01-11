@@ -113,6 +113,7 @@
   "Confirm": "변경",
   "Skip": "건너뛰기",
   "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv": "사용 가능한 확장자: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv",
+  "Allowed File Types Are xls, xlsx": "사용 가능한 확장자: xls, xlsx",
   "Allowed File Types is pdf": "사용 가능한 확장자: pdf",
   "Please enter ID": "아이디를 입력해주세요",
   "Please enter Email": "이메일을 입력해주세요",

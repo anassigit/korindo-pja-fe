@@ -112,6 +112,7 @@
   "Confirm": "Konfirmasi",
   "Skip": "Lewati",
   "Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv": "Tipe Berkas Diizinkan: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv",
+  "Allowed File Types: xls, xlsx": "Tipe Berkas Diizinkan: xls, xlsx",
   "Allowed File Types is pdf": "Tipe Berkas Diizinkan: pdf",
   "Are you sure to delete this?": "Apakah Anda yakin ingin menghapus ini?",
   "Please enter ID": "Harap masukkan ID",
@@ -157,5 +158,5 @@
   "Unit": "Satuan",
   "Increase": "Peningkatan",
   "Definitions and Formulas": "Definisi dan Rumus",
-  "Master Setting": "Pengaturan Induk"
+  "Master Setting": "Pengaturan Master"
 }

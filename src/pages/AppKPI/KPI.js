@@ -3,20 +3,23 @@ import React, { useEffect, useState } from "react"
 import { withTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import {
+    Button,
     Card,
     CardBody,
     CardHeader,
     Input,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions"
+import { getCorporationList, getDownloadMasterTemplate, getDownloadPlanTemplate, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
+import { getDownloadMasterTemplateBE, getDownloadPlanTemplateBE } from "helpers/backend_helper"
+import UploadKPI from "./UploadKPI"
 
 
-const KPI = () => {
+const KPI = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
 
@@ -44,6 +47,8 @@ const KPI = () => {
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
+
+    const [uploadModal, setUploadModal] = useState(false)
 
     useEffect(() => {
         dispatch(getYearList())
@@ -91,6 +96,20 @@ const KPI = () => {
         }
     }, [appPlanListData])
 
+    const toggleUploadModal = () => {
+        setUploadModal(!uploadModal)
+    }
+
+    const downloadPlanTemplate = async () => {
+        try {
+            dispatch(getDownloadPlanTemplateBE({
+                file_nm: "KPI PLAN TEMPLATE.xlsx"
+            }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
@@ -103,74 +122,97 @@ const KPI = () => {
                             <div
                                 style={{
                                     display: 'flex',
-                                    flexDirection: 'row',
-                                    width: '30%',
-                                    gap: '.75vw'
-                                }}>
-                                <Input
-                                    type="select"
-                                    onChange={(e) => setSelectedYear(e.target.value)}
-                                >
-                                    {Array.isArray(appYearListData?.data?.list) ? (
-                                        <>
-                                            <option>Select Year</option>
-                                            {appYearListData?.data?.list.map((item, index) => (
-                                                <option key={index} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <option>
-                                            No Data
-                                        </option>
-                                    )}
-                                </Input>
-                                <Input
-                                    type="select"
-                                    onChange={(e) => {
-                                        setSelectedGroupList(e.target.value)
+                                    justifyContent: 'space-between'
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        width: '30%',
+                                        gap: '.75vw'
+                                    }}>
+                                    <Input
+                                        type="select"
+                                        onChange={(e) => setSelectedYear(e.target.value)}
+                                    >
+                                        {Array.isArray(appYearListData?.data?.list) ? (
+                                            <>
+                                                <option>Select Year</option>
+                                                {appYearListData?.data?.list.map((item, index) => (
+                                                    <option key={index} value={item}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <option>
+                                                No Data
+                                            </option>
+                                        )}
+                                    </Input>
+                                    <Input
+                                        type="select"
+                                        onChange={(e) => {
+                                            setSelectedGroupList(e.target.value)
+                                        }}
+                                    >
+                                        {Array.isArray(appGroupListData?.data?.list) ? (
+                                            <>
+                                                <option value={''}>Select Group</option>
+                                                {appGroupListData?.data?.list.map((item, index) => {
+                                                    let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
+                                                    return (
+                                                        <option key={index} value={item.num}>
+                                                            {nameLang}
+                                                        </option>
+                                                    )
+                                                })}
+                                            </>
+                                        ) : (
+                                            <option>
+                                                No Data
+                                            </option>
+                                        )}
+                                    </Input>
+                                    <Input
+                                        type="select"
+                                        onChange={(e) => setSelectedCorporationList(e.target.value)}
+                                    >
+                                        {Array.isArray(appCorporationListData?.data?.list) ? (
+                                            <>
+                                                <option value={''}>Select Corporation</option>
+                                                {appCorporationListData?.data?.list.map((item, index) => {
+                                                    return (
+                                                        <option key={index} value={item.corporationId}>
+                                                            {item.corporationName}
+                                                        </option>
+                                                    )
+                                                })}
+                                            </>
+                                        ) : (
+                                            <option>
+                                                No Data
+                                            </option>
+                                        )}
+                                    </Input>
+                                </div>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        gap: '.75vw',
                                     }}
                                 >
-                                    {Array.isArray(appGroupListData?.data?.list) ? (
-                                        <>
-                                            <option value={''}>Select Group</option>
-                                            {appGroupListData?.data?.list.map((item, index) => {
-                                                let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
-                                                return (
-                                                    <option key={index} value={item.num}>
-                                                        {nameLang}
-                                                    </option>
-                                                )
-                                            })}
-                                        </>
-                                    ) : (
-                                        <option>
-                                            No Data
-                                        </option>
-                                    )}
-                                </Input>
-                                <Input
-                                    type="select"
-                                    onChange={(e) => setSelectedCorporationList(e.target.value)}
-                                >
-                                    {Array.isArray(appCorporationListData?.data?.list) ? (
-                                        <>
-                                            <option value={''}>Select Corporation</option>
-                                            {appCorporationListData?.data?.list.map((item, index) => {
-                                                return (
-                                                    <option key={index} value={item.corporationId}>
-                                                        {item.corporationName}
-                                                    </option>
-                                                )
-                                            })}
-                                        </>
-                                    ) : (
-                                        <option>
-                                            No Data
-                                        </option>
-                                    )}
-                                </Input>
+                                    <Button onClick={() =>
+                                        downloadPlanTemplate()
+                                    }>
+                                        <i className="mdi mdi-download" />{" "}
+                                        {props.t('Download Template')}
+                                    </Button>
+                                    <Button onClick={() => toggleUploadModal()}>
+                                        {props.t('Upload')}
+                                    </Button>
+                                </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
@@ -226,6 +268,10 @@ const KPI = () => {
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
+                    <UploadKPI
+                        modal={uploadModal}
+                        toggle={toggleUploadModal}
+                    />
                 </>
             }
         />

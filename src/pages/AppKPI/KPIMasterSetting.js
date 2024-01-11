@@ -16,6 +16,7 @@ import "../../assets/scss/custom/table/TableCustom.css";
 import RootPageCustom from '../../common/RootPageCustom';
 import '../../config';
 import UploadKPIMaster from "./UploadKPIMaster";
+import { getDownloadMasterTemplateBE } from "helpers/backend_helper";
 
 
 const KPIMasterSetting = (props) => {
@@ -90,10 +91,14 @@ const KPIMasterSetting = (props) => {
     }, [appKPIMasterListData])
 
 
-    const downloadMasterTemplate = () => {
-        dispatch(getDownloadMasterTemplate({
-            file_nm: "KPI MASTER TEMPLATE.xlsx"
-        }))
+    const downloadMasterTemplate = async () => {
+        try {
+            dispatch(getDownloadMasterTemplateBE({
+                file_nm: "KPI MASTER TEMPLATE.xlsx"
+            }))
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const toggleUploadModal = () => {

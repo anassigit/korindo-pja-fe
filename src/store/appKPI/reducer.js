@@ -8,7 +8,7 @@ import {
   GET_PLAN,
   GET_UNIT_LIST,
   GET_YEAR_LIST,
-  GET_DOWNLOAD_MASTER_TEMPLATE,
+  DOWNLOAD_MASTER_TEMPLATE,
   RESET_MESSAGE,
   RESP_GET_COLUMN_LIST,
   RESP_GET_CORPORATION_LIST,
@@ -20,7 +20,9 @@ import {
   RESP_GET_UNIT_LIST,
   RESP_GET_YEAR_LIST,
   UPLOAD_MASTER_KPI,
-  MSG_UPLOAD
+  MSG_UPLOAD,
+  UPLOAD_PLAN_KPI,
+  DOWNLOAD_PLAN_TEMPLATE
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -118,7 +120,11 @@ const kpiReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
       }
-    case GET_DOWNLOAD_MASTER_TEMPLATE:
+    case DOWNLOAD_MASTER_TEMPLATE:
+      return {
+        ...state,
+      }
+    case DOWNLOAD_PLAN_TEMPLATE:
       return {
         ...state,
       }
@@ -128,6 +134,10 @@ const kpiReducer = (state = INIT_STATE, action) => {
         respGetDashboardKPI: action.payload,
       }
     case UPLOAD_MASTER_KPI:
+      return {
+        ...state,
+      }
+    case UPLOAD_PLAN_KPI:
       return {
         ...state,
       }
