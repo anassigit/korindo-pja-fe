@@ -83,25 +83,34 @@ const MovingPlan = (props) => {
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'row',
-                                width: '40%',
+                                width: '30%',
                                 gap: '.75vw'
                             }}>
-                                <Label className="col-sm-2" style={{ marginTop: "8px" }}>{props.t("Year")}</Label>
-                                <Input
-                                    type="text"
-                                    className="form-control"
-                                    onChange={e => {
-                                        setSelectedYear(e.target.value);
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        width: '100%',
+                                        gap: '.75vw',
                                     }}
-                                    onKeyDown={e => e.key === 'Enter' ? handleSearch() : null}
-                                />
+                                >
+                                    <span>{props.t("Year")}</span>
+                                    <Input
+                                        type="text"
+                                        className="form-control"
+                                        onChange={e => {
+                                            setSelectedYear(e.target.value);
+                                        }}
+                                        onKeyDown={e => e.key === 'Enter' ? handleSearch() : null}
+                                    />
+                                </div>
                                 <Input
                                     type="select"
                                     onChange={(e) => {
                                         setselectedCompanyCode(e.target.value)
                                     }}
                                 >
-                                    {console.log(appCompanyCodeListData?.data?.resultList)}
                                     {Array.isArray(appCompanyCodeListData?.data?.resultList) ? (
                                         <>
                                             <option value={''}>{props.t("Select Company")}</option>
@@ -119,12 +128,61 @@ const MovingPlan = (props) => {
                                         </option>
                                     )}
                                 </Input>
-                                <Button style={{ marginLeft: "30px" }} className="btn btn-primary" onClick={() => handleSearch()}>
+                                <Button className="btn btn-primary" onClick={() => handleSearch()}>
                                     {props.t("Search")}
                                 </Button>
                             </div>
                             <table className="table table-bordered cust-border my-3">
-
+                                <thead style={{ backgroundColor: 'transparent', }}>
+                                    <tr style={{ color: '#495057' }}>
+                                        <th colSpan={5} rowSpan={2}>
+                                            ITEMS
+                                        </th>
+                                        <th>
+                                            test
+                                        </th>
+                                        <th>
+                                            test
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colSpan={4} rowSpan={3} align="center" valign="middle">
+                                            Group TOTAL (IVAL1)
+                                        </td>
+                                        <td colSpan={1} rowSpan={1}>
+                                            Revenue (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1} rowSpan={1}>
+                                            O.I (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1} rowSpan={1}>
+                                            O.I (%) (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1} rowSpan={1}>
+                                        </td>
+                                        <td colSpan={3} rowSpan={2} align="center" valign="middle">
+                                            자원
+                                            <br/>
+                                            (Resources) (IVAL1_1)
+                                        </td>
+                                        <td colSpan={1} rowSpan={1}>
+                                            Revenue (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </CardBody>
                     </Card>
