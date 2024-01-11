@@ -28,6 +28,7 @@ import KPI from "pages/AppKPI/KPI"
 import KPIDashboard from "pages/AppKPI/KPIDashboard"
 import KPIMasterSetting from "pages/AppKPI/KPIMasterSetting"
 import MovingPlan from "pages/AppMovingPlan/MovingPlan"
+import KPIInputResult from "pages/AppKPI/KPIInputResult"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -47,6 +48,7 @@ const authProtectedRoutes = [
   { path: "/AppPlanSetting", component: KPI },
   { path: "/AppKPIMasterSetting", component: KPIMasterSetting },
   { path: "/AppKPIDashboard", component: KPIDashboard },
+  { path: "/AppActualInput", component: KPIInputResult },
   { path: "/AppMovingPlan", component: MovingPlan },
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

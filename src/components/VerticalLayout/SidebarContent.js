@@ -312,7 +312,7 @@ const SidebarContent = (props) => {
                 hidden={dropdownOpen.kpi}
                 className={location.pathname === "/AppActualInput" ? "active" : null}
               >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Actual Input")}</span>
+                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Input KPI Result")}</span>
               </Link>
               <Link
                 onClick={() =>
