@@ -18,7 +18,7 @@ import settingReducer from "./appSetting/reducer"
 import fileManagementReducer from "./appFileManagement/reducer"
 import ruleReducer from "./appRule/reducer"
 import kpiReducer from "./appKPI/reducer"
-// import langReducer from "./language/reducer"
+import movingPlanReducer from "./appMovingPlan/reducer"
 
 const rootReducer = combineReducers({
   Layout,
@@ -36,7 +36,7 @@ const rootReducer = combineReducers({
   fileManagementReducer,
   ruleReducer,
   kpiReducer,
-  // langReducer,
+  movingPlanReducer
 })
 
 export default rootReducer

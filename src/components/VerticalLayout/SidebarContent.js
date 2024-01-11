@@ -268,7 +268,7 @@ const SidebarContent = (props) => {
                 className=""
                 style={{ overflow: "visible", fontSize: "14px" }}
               >
-                <i style={{ fontSize: "14px", position: "relative", right: "1.5%" }} className="fas fa-folder-open"></i>
+                <i style={{ fontSize: "14px", position: "relative", right: "1.5%" }} className="fas fa-chart-line"></i>
                 <span style={{ whiteSpace: "nowrap" }}>{props.t("KPI")}</span>
                 <i
                   hidden={dropdownOpen.kpi}
@@ -325,7 +325,13 @@ const SidebarContent = (props) => {
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Dashboard")}</span>
               </Link>
-
+              <Link
+                to="/AppMovingPlan"
+                style={{ fontSize: "14px" }}
+              >
+                <i className="fas fa-paper-plane" style={{ paddingRight: "2%", marginLeft: "-1.5%" }}></i>
+                <span>{props.t("Moving Plan")}</span>
+              </Link>
               <Link
                 to="/AppSetting"
                 hidden={!getDetailProfile?.data?.admin}

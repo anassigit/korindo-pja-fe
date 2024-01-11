@@ -15,7 +15,7 @@ import settingSaga from "./appSetting/saga"
 import fileManagementSaga from "./appFileManagement/saga"
 import ruleSaga from "./appRule/saga"
 import kpiSaga from "./appKPI/saga"
-// import langSaga from "./language/saga"
+import movingPlanSaga from "./appMovingPlan/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -33,6 +33,6 @@ export default function* rootSaga() {
     fork(fileManagementSaga),
     fork(ruleSaga),
     fork(kpiSaga),
-    // fork(langSaga),
+    fork(movingPlanSaga)
   ])
 }

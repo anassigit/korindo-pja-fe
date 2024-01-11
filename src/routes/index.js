@@ -27,6 +27,7 @@ import Rule from "pages/AppRule/Rule"
 import KPI from "pages/AppKPI/KPI"
 import KPIDashboard from "pages/AppKPI/KPIDashboard"
 import KPIMasterSetting from "pages/AppKPI/KPIMasterSetting"
+import MovingPlan from "pages/AppMovingPlan/MovingPlan"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -43,11 +44,10 @@ const authProtectedRoutes = [
   { path: "/FirstLogin", component: FirstLogin },
   { path: "/EnterMonthlyData", component: EnterMonthlyData },
   { path: "/AppRule", component: Rule },
-
   { path: "/AppPlanSetting", component: KPI },
   { path: "/AppKPIMasterSetting", component: KPIMasterSetting },
   { path: "/AppKPIDashboard", component: KPIDashboard },
-
+  { path: "/AppMovingPlan", component: MovingPlan },
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
   { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> },
