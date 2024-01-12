@@ -135,14 +135,40 @@ const MovingPlan = (props) => {
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th colSpan={5} rowSpan={2} align="center" valign="middle">
+                                        <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center' }}>
                                             ITEMS
                                         </th>
+                                        <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
+                                            JAN
+                                        </th>
+                                    </tr>
+                                    <tr style={{ color: '#495057' }}>
                                         <th>
-                                            test
+                                            Pre. Y (PYAC01)
                                         </th>
                                         <th>
-                                            test
+                                            BP (BP01)
+                                        </th>
+                                        <th>
+                                            MP (MP01)
+                                        </th>
+                                        <th>
+                                            Actual (CYAC01)
+                                        </th>
+                                        <th>
+                                            &quot;Growth
+                                            <br />
+                                            vs. PY (GRW01)&quot;
+                                        </th>
+                                        <th>
+                                            &quot;Achieve
+                                            <br />
+                                            vs. BP (ABP01)&quot;
+                                        </th>
+                                        <th>
+                                            &quot;Achieve
+                                            <br />
+                                            vs. MP (AMP01)&quot;
                                         </th>
                                     </tr>
                                 </thead>
@@ -166,11 +192,11 @@ const MovingPlan = (props) => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colSpan={1} rowSpan={1}>
+                                        <td colSpan={1} rowSpan={93}>
                                         </td>
-                                        <td colSpan={3} rowSpan={2} align="center" valign="middle">
+                                        <td colSpan={3} rowSpan={3} align="center" valign="middle">
                                             자원
-                                            <br/>
+                                            <br />
                                             (Resources) (IVAL1_1)
                                         </td>
                                         <td colSpan={1} rowSpan={1}>
@@ -178,8 +204,55 @@ const MovingPlan = (props) => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colSpan={3} >
-                                            test
+                                        <td colSpan={1}>
+                                            O.I (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1}>
+                                            O.I (%) (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1} rowSpan={90}>
+                                        </td>
+                                        <td colSpan={2} rowSpan={3} align="center" valign="middle">
+                                            팜오일
+                                            <br />
+                                            (Palm oil) (IVAL1_2)
+                                        </td>
+                                        <td colSpan={1} rowSpan={1}>
+                                            Revenue (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1}>
+                                            O.I (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1}>
+                                            O.I (%) (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1} rowSpan={87}>
+                                        </td>
+                                        <td colSpan={1} rowSpan={3} align="center" valign="middle">
+                                            TSE (IVAL1_3)
+                                        </td>
+                                        <td colSpan={1} rowSpan={1}>
+                                            Revenue (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1}>
+                                            O.I (ITEM)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={1}>
+                                            O.I (%) (ITEM)
                                         </td>
                                     </tr>
                                 </tbody>
