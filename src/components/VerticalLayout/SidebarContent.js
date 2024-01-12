@@ -328,6 +328,7 @@ const SidebarContent = (props) => {
               <Link
                 to="/AppMovingPlan"
                 style={{ fontSize: "14px" }}
+                className={location.pathname === "/AppMovingPlan" ? "active" : null}
               >
                 <i className="fas fa-paper-plane" style={{ paddingRight: "2%", marginLeft: "-1.5%" }}></i>
                 <span>{props.t("Moving Plan")}</span>

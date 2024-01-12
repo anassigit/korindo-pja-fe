@@ -135,7 +135,7 @@ const MovingPlan = (props) => {
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th colSpan={5} rowSpan={2}>
+                                        <th colSpan={5} rowSpan={2} align="center" valign="middle">
                                             ITEMS
                                         </th>
                                         <th>
@@ -178,8 +178,8 @@ const MovingPlan = (props) => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            
+                                        <td colSpan={3} >
+                                            test
                                         </td>
                                     </tr>
                                 </tbody>

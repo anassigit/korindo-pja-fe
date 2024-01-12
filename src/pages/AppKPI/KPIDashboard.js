@@ -352,14 +352,18 @@ const KPIDashboard = (props) => {
                                     </DropdownMenu>
                                 </Dropdown>
                             </div>
-                            <h3 className="my-2">
-                                {Array.isArray(appDashboardListData?.data?.resultList) && appDashboardListData?.data?.resultList.length > 0 ? appDashboardListData?.data?.resultList[0].corporationName : ''}
-                            </h3>
                             {
-                                appDashboardListData?.data?.resultList.map((item, index) => {
+                                appDashboardListData?.data?.resultList.map((item, index, array) => {
+                                    const isFirstItem = index === 0;
+                                    const hasNameChanged = !isFirstItem && item.corporationName !== array[index - 1]?.corporationName;
 
                                     return (
                                         <React.Fragment key={index}>
+                                            {(isFirstItem || hasNameChanged) && (
+                                                <h3 className="my-2">
+                                                    {item.corporationName}
+                                                </h3>
+                                            )}
                                             <div className="mx-2">
                                                 <h5 style={{ marginTop: '1.25vh' }}>
                                                     {item.item || "{props.t('No Data')}"}
