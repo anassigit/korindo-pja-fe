@@ -22,7 +22,9 @@ import {
     UPLOAD_MASTER_KPI,
     MSG_UPLOAD,
     UPLOAD_PLAN_KPI,
-    DOWNLOAD_PLAN_TEMPLATE
+    DOWNLOAD_PLAN_TEMPLATE,
+    GET_ACTUAL_INPUT_DATA,
+    RESP_GET_ACTUAL_INPUT_DATA
 
 } from "./actionTypes"
 
@@ -109,6 +111,16 @@ import {
   export const getDashboardKPI = (req) => ({
     type: GET_DASHBOARD_KPI,
     payload: req,
+  })
+
+  export const getActualInputData = (req) => ({
+    type: GET_ACTUAL_INPUT_DATA,
+    payload: req,
+  })
+
+  export const respGetActualInputData = resp => ({
+    type: RESP_GET_ACTUAL_INPUT_DATA,
+    payload: resp,
   })
   
   export const getDownloadMasterTemplate = (req) => ({

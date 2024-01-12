@@ -22,7 +22,9 @@ import {
   UPLOAD_MASTER_KPI,
   MSG_UPLOAD,
   UPLOAD_PLAN_KPI,
-  DOWNLOAD_PLAN_TEMPLATE
+  DOWNLOAD_PLAN_TEMPLATE,
+  GET_ACTUAL_INPUT_DATA,
+  RESP_GET_ACTUAL_INPUT_DATA
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -36,6 +38,7 @@ const INIT_STATE = {
   respGetItemList: {},
   respGetUnitList: {},
   respGetDashboardKPI: {},
+  respGetActualInputData: {},
   msgEdit: "",
   msgUpload: ""
 }
@@ -132,6 +135,15 @@ const kpiReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetDashboardKPI: action.payload,
+      }
+      case GET_ACTUAL_INPUT_DATA:
+      return {
+        ...state,
+      }
+    case RESP_GET_ACTUAL_INPUT_DATA:
+      return {
+        ...state,
+        respGetActualInputData: action.payload,
       }
     case UPLOAD_MASTER_KPI:
       return {

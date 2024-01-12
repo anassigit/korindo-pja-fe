@@ -10,13 +10,11 @@ import {
     Input,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getDownloadMasterTemplate, getDownloadPlanTemplate, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions"
+import { getActualInputData, getCorporationList, getGroupListKPI, getYearList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getDownloadMasterTemplateBE, getDownloadPlanTemplateBE } from "helpers/backend_helper"
-import UploadKPI from "./UploadKPI"
 
 
 const KPIInputResult = (props) => {
@@ -24,6 +22,10 @@ const KPIInputResult = (props) => {
     let langType = localStorage.getItem("I18N_LANGUAGE")
 
     const dispatch = useDispatch()
+
+    const appListData = useSelector((state) => {
+        return state.kpiReducer.respGetActualInputData
+    })
 
     const appYearListData = useSelector((state) => {
         return state.kpiReducer.respGetYearList
@@ -37,78 +39,69 @@ const KPIInputResult = (props) => {
         return state.kpiReducer.respGetCorporationList
     })
 
-    const appPlanListData = useSelector((state) => {
-        return state.kpiReducer.respGetPlan
-    })
-
     const [loadingSpinner, setLoadingSpinner] = useState(false)
-    const [appPlanState, setAppPlanState] = useState([])
+    const [appEditMode, setAppEditMode] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState("")
     const [selectedYear, setSelectedYear] = useState("")
+    const [selectedMonth, setSelectedMonth] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
-
-    const [uploadModal, setUploadModal] = useState(false)
+    const [appData, setappData] = useState([])
+    const [appDataEdited, setAppDataEditedState] = useState([])
+    const [isEdit, setIsEdit] = useState([])
 
     useEffect(() => {
+        setLoadingSpinner(true)
         dispatch(getYearList())
         dispatch(getGroupListKPI())
-        setLoadingSpinner(true)
     }, [])
 
     useEffect(() => {
+        setLoadingSpinner(false)
         dispatch(resetMessage())
     }, [dispatch])
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appYearListData])
+    }, [appYearListData, appGroupListData, appCorporationListData, appListData])
 
     useEffect(() => {
+        setLoadingSpinner(true)
         if (selectedGroupList) {
             dispatch(getCorporationList({
                 groupNum: selectedGroupList
             }))
+        } else {
+            dispatch(getCorporationList({
+                groupNum: ''
+            }))
         }
-    }, [selectedGroupList, selectedYear])
+    }, [selectedGroupList])
 
     useEffect(() => {
-        if (selectedYear && selectedCorporationList && selectedGroupList) {
-            dispatch(getPlan({
+        setAppEditMode(false)
+        if (selectedYear && selectedMonth && selectedCorporationList && selectedGroupList) {
+            setLoadingSpinner(true)
+            dispatch(getActualInputData({
                 groupNum: selectedGroupList,
                 corporationId: selectedCorporationList,
                 year: selectedYear,
+                month: selectedMonth,
             }))
         } else {
-            dispatch(getPlan({
-                groupNum: '',
-                corporationId: '',
-                year: '',
-            }))
+
         }
-    }, [selectedCorporationList, selectedGroupList, selectedYear])
+    }, [selectedYear, selectedMonth, selectedGroupList, selectedCorporationList])
 
     useEffect(() => {
-        if (appPlanListData.status === '1') {
-            setAppPlanState(appPlanListData.data.list)
+        if (appListData.status === '1') {
+            setappData(appListData.data.list)
+            setIsEdit(appListData.data.edit)
         } else {
-            setAppPlanState([])
+            setappData([])
+            setIsEdit(false)
         }
-    }, [appPlanListData])
-
-    const toggleUploadModal = () => {
-        setUploadModal(!uploadModal)
-    }
-
-    const downloadPlanTemplate = async () => {
-        try {
-            dispatch(getDownloadPlanTemplateBE({
-                file_nm: "KPI PLAN TEMPLATE.xlsx"
-            }))
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    }, [appListData])
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -116,145 +109,150 @@ const KPIInputResult = (props) => {
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI 계획 설정
+                            {props.t("Input KPI Result")}
                         </CardHeader>
                         <CardBody>
                             <div
                                 style={{
                                     display: 'flex',
-                                    justifyContent: 'space-between'
+                                    gap: '16px',
+                                    alignItems: 'center',
                                 }}
                             >
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        width: '30%',
-                                        gap: '.75vw'
-                                    }}>
-                                    <Input
-                                        type="select"
-                                        onChange={(e) => setSelectedYear(e.target.value)}
-                                    >
-                                        {Array.isArray(appYearListData?.data?.list) ? (
-                                            <>
-                                                <option>Select Year</option>
-                                                {appYearListData?.data?.list.map((item, index) => (
-                                                    <option key={index} value={item}>
-                                                        {item}
-                                                    </option>
-                                                ))}
-                                            </>
-                                        ) : (
-                                            <option>
-                                                No Data
-                                            </option>
-                                        )}
-                                    </Input>
-                                    <Input
-                                        type="select"
-                                        onChange={(e) => {
-                                            setSelectedGroupList(e.target.value)
-                                        }}
-                                    >
-                                        {Array.isArray(appGroupListData?.data?.list) ? (
-                                            <>
-                                                <option value={''}>Select Group</option>
-                                                {appGroupListData?.data?.list.map((item, index) => {
-                                                    let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
-                                                    return (
-                                                        <option key={index} value={item.num}>
-                                                            {nameLang}
-                                                        </option>
-                                                    )
-                                                })}
-                                            </>
-                                        ) : (
-                                            <option>
-                                                No Data
-                                            </option>
-                                        )}
-                                    </Input>
-                                    <Input
-                                        type="select"
-                                        onChange={(e) => setSelectedCorporationList(e.target.value)}
-                                    >
-                                        {Array.isArray(appCorporationListData?.data?.list) ? (
-                                            <>
-                                                <option value={''}>Select Corporation</option>
-                                                {appCorporationListData?.data?.list.map((item, index) => {
-                                                    return (
-                                                        <option key={index} value={item.corporationId}>
-                                                            {item.corporationName}
-                                                        </option>
-                                                    )
-                                                })}
-                                            </>
-                                        ) : (
-                                            <option>
-                                                No Data
-                                            </option>
-                                        )}
-                                    </Input>
-                                </div>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        gap: '.75vw',
+                                <Input
+                                    type="select"
+                                    style={{ width: 'auto' }}
+                                    value={selectedYear}
+                                    onChange={(e) => {
+                                        setSelectedYear(e.target.value)
                                     }}
                                 >
-                                    <Button onClick={() =>
-                                        downloadPlanTemplate()
-                                    }>
-                                        <i className="mdi mdi-download" />{" "}
-                                        {props.t('Download Template')}
-                                    </Button>
-                                    <Button onClick={() => toggleUploadModal()}>
-                                        {props.t('Upload')}
-                                    </Button>
-                                </div>
+                                    <option>{props.t('Select Year')}</option>
+                                    {
+                                        appYearListData?.data?.list.map((item) => {
+                                            return (
+                                                <option key={item}>{item}</option>
+                                            )
+                                        })
+                                    }
+                                </Input>
+                                <Input
+                                    type="select"
+                                    style={{ width: 'auto' }}
+                                    value={selectedMonth}
+                                    onChange={(e) => {
+                                        setSelectedMonth(e.target.value)
+                                    }}
+                                >
+                                    <option>{props.t('Select Month')}</option>
+                                    {
+                                        Array.from({ length: 12 }, (_, index) => {
+                                            const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' });
+                                            return (
+                                                <option key={index} value={index + 1}>
+                                                    {langType === 'kor' ? index + 1 + "월" : month}
+                                                </option>
+                                            );
+                                        })
+                                    }
+                                </Input>
+                                <Input
+                                    type="select"
+                                    style={{ width: 'auto' }}
+                                    value={selectedGroupList}
+                                    onChange={(e) => {
+                                        setSelectedCorporationList('')
+                                        setSelectedGroupList(e.target.value)
+                                    }}
+                                >
+                                    <option value={''}>{props.t('Select Group')}</option>
+                                    {
+                                        appGroupListData?.data?.list.map((item, index) => {
+                                            let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
+                                            return (
+                                                <option key={index} value={item.num}>
+                                                    {nameLang}
+                                                </option>
+                                            )
+                                        })
+                                    }
+                                </Input>
+                                <Input
+                                    type="select"
+                                    style={{ width: 'auto' }}
+                                    value={selectedCorporationList}
+                                    onChange={(e) => {
+                                        setLoadingSpinner(true)
+                                        setSelectedCorporationList(e.target.value)
+                                    }}
+                                >
+                                    {
+                                        appCorporationListData?.data?.list?.length > 0 ? (
+                                            <>
+                                                <option value={''}>{props.t('Select Group')}</option>
+                                                {
+                                                    appCorporationListData?.data?.list.map((item, index) => {
+                                                        return (
+                                                            <option key={index} value={item.corporationId}>
+                                                                {item.corporationName}
+                                                            </option>
+                                                        )
+                                                    })
+                                                }
+                                            </>
+                                        ) : (
+                                            <option value={''}>{props.t('No Data')}</option>
+                                        )
+                                    }
+                                </Input>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">KPI 항목</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">단위</th>
-                                        {
-                                            (() => {
-                                                const numberOfMonths = 12
-                                                const thElements = []
-
-                                                for (let month = 1; month <= numberOfMonths; month++) {
-                                                    thElements.push(
-                                                        <th key={month - 1} style={{ textAlign: 'center' }} scope="col">{`${month}월`}</th>
-                                                    )
-                                                }
-
-                                                return thElements
-                                            })()
-                                        }
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("KPI Category")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Unit")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Plan")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Result")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Note")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        appPlanState.map((item, index) => {
+                                        appData.map((item, index) => {
+
                                             return (
                                                 <React.Fragment key={index}>
                                                     <tr>
                                                         <td colSpan={1}>{item.item}</td>
                                                         <td colSpan={1}>{item.unit}</td>
+                                                        <td colSpan={1}>{item.plan}</td>
                                                         {
-                                                            item.plan.map((planValue, monthIndex) => {
-                                                                if (planValue !== null) {
-                                                                    return (
-                                                                        <td key={monthIndex}>{planValue}</td>
-                                                                    )
-                                                                } else {
-                                                                    return (
-                                                                        <td key={monthIndex}>No data</td>
-                                                                    )
-                                                                }
-                                                            })
+                                                            appEditMode ?
+                                                                (
+                                                                    <td colSpan={1}>
+                                                                        <Input
+                                                                            type="text"
+                                                                            value={item.result}
+                                                                        >
+                                                                        </Input>
+                                                                    </td>
+                                                                ) : (
+                                                                    <td>{item.result}</td>
+                                                                )
+                                                        }
+                                                        {
+                                                            appEditMode ?
+                                                                (
+                                                                    <td colSpan={1}>
+                                                                        <Input
+                                                                            type="text"
+                                                                            value={item.note}
+                                                                        >
+                                                                        </Input>
+                                                                    </td>
+                                                                ) : (
+                                                                    <td>{item.note}</td>
+                                                                )
                                                         }
                                                     </tr>
                                                 </React.Fragment>
@@ -263,15 +261,36 @@ const KPIInputResult = (props) => {
                                     }
                                 </tbody>
                             </table>
+                            {
+                                appEditMode ? (
+                                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'end' }}>
+                                        <Button>
+                                            {props.t("Save")}
+                                        </Button>
+                                        <Button className="btn-danger" onClick={() => setAppEditMode(false)}>
+                                            {props.t("Cancel")}
+                                        </Button>
+                                    </div>
+                                ) :
+                                    appListData ?
+                                        (
+                                            <div style={{ display: isEdit ? 'flex' : 'none', justifyContent: 'end' }}>
+                                                <Button
+                                                    onClick={() => {
+                                                        setAppEditMode(true)
+                                                        setAppDataEditedState([...appData])
+                                                        setAppEditMode(true)
+                                                    }}>
+                                                    {props.t("Edit")}
+                                                </Button>
+                                            </div>
+                                        ) : null
+                            }
                         </CardBody>
                     </Card>
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
-                    <UploadKPI
-                        modal={uploadModal}
-                        toggle={toggleUploadModal}
-                    />
                 </>
             }
         />

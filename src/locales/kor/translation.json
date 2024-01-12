@@ -154,12 +154,16 @@
   "Select Corporation": "법인을 선택하세요",
   "Download Template": "템플릿 다운로드",
   "Upload": "업로드",
-  "KPI Category": "KPI 카테고리",
+  "KPI Category": "KPI 항목",
   "Unit": "단위",
-  "Increase": "증가하다",
+  "Increase": "값 증가 여부",
   "Definitions and Formulas": "정의 및 공식",
   "Master Setting": "마스터 설정",
-  "Moving Plan": "이사 계획",
+  "Moving Plan": "Moving Plan",
   "Year": "년도",
-  "Select Company": "회사 선택"
+  "Select Company": "회사 선택",
+  "Plan": "계획",
+  "Result": "결과",
+  "Note": "노트",
+  "Cancel": "취소"
 }
