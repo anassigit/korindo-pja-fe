@@ -251,4 +251,4 @@ export const uploadPlanKPIBE = req => postUpload("rest/KpiManagementRest/setPlan
 
 export const getCompanyCodeList = req => post("rest/MovingPlanRest/getCompanyCodeList", req)
 
-export const getMovingPlanList = req => post("rest/MovingPlanRest/getList", req)
+export const getMovingPlanList = req => postWithParam("rest/MovingPlanRest/getList", req)

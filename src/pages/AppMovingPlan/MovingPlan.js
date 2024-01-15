@@ -65,26 +65,39 @@ const MovingPlan = (props) => {
         setLoadingSpinner(true)
         dispatch(getMovingPlantList(
             {
-                year: parseInt(selectedYear),
+                year: selectedYear,
                 companyCode: selectedCompanyCode,
             }
         ))
+    }
+
+    const getMonthAbbreviation = (monthIndex) => {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return months[monthIndex - 1];
+    };
+
+    const getColumnHeader = (index) => {
+        const baseHeaders = ['Pre. Y', 'BP', 'MP', 'Actual', 'Growth vs. PY', 'Achieve vs. BP', 'Achieve vs. MP']
+        const singkatanHeader = ['PYAC', 'BP', 'MP', 'CYAC', 'GRW', 'ABP', 'AMP']
+        const monthNumber = Math.floor(index / baseHeaders.length) + 1
+        const columnHeader = `${baseHeaders[index % baseHeaders.length]} (${singkatanHeader[index % singkatanHeader.length]}${monthNumber.toString().padStart(2, '0')})`
+        return columnHeader
     }
 
     return (
         <RootPageCustom msgStateGet={appMovingPlanMsg} msgStateSet={setappMovingPlanMsg}
             componentJsx={
                 <>
-                    <Card fluid="true" >
+                    <Card fluid="true" style={{ paddingBottom: '32px' }}>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                             {props.t('Moving Plan')}
                         </CardHeader>
-                        <CardBody>
+                        <CardBody style={{ overflow: 'auto' }}>
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'row',
                                 width: '30%',
-                                gap: '.75vw'
+                                gap: '.75vw',
                             }}>
                                 <div
                                     style={{
@@ -132,65 +145,55 @@ const MovingPlan = (props) => {
                                     {props.t("Search")}
                                 </Button>
                             </div>
-                            <table className="table table-bordered cust-border my-3">
+                            <table className="table table-bordered my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center' }}>
+                                        <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky' }}>
                                             ITEMS
                                         </th>
-                                        <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
-                                            JAN
-                                        </th>
+                                        {Array.from({ length: 12 }, (_, monthIndex) => (
+                                            <React.Fragment key={monthIndex}>
+                                                <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
+                                                    {getMonthAbbreviation(monthIndex + 1)}
+                                                </th>
+                                            </React.Fragment>
+                                        ))}
                                     </tr>
                                     <tr style={{ color: '#495057' }}>
-                                        <th>
-                                            Pre. Y (PYAC01)
-                                        </th>
-                                        <th>
-                                            BP (BP01)
-                                        </th>
-                                        <th>
-                                            MP (MP01)
-                                        </th>
-                                        <th>
-                                            Actual (CYAC01)
-                                        </th>
-                                        <th>
-                                            &quot;Growth
-                                            <br />
-                                            vs. PY (GRW01)&quot;
-                                        </th>
-                                        <th>
-                                            &quot;Achieve
-                                            <br />
-                                            vs. BP (ABP01)&quot;
-                                        </th>
-                                        <th>
-                                            &quot;Achieve
-                                            <br />
-                                            vs. MP (AMP01)&quot;
-                                        </th>
+                                        {Array.from({ length: 12 * 7 }, (_, index) => (
+                                            <th key={index} style={{ textAlign: 'center', minWidth: '200px' }}>
+                                                {getColumnHeader(index)}
+                                            </th>
+                                        ))}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td colSpan={4} rowSpan={3} align="center" valign="middle">
-                                            Group TOTAL (IVAL1)
-                                        </td>
-                                        <td colSpan={1} rowSpan={1}>
-                                            Revenue (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1} rowSpan={1}>
-                                            O.I (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1} rowSpan={1}>
-                                            O.I (%) (ITEM)
-                                        </td>
-                                    </tr>
+                                    {
+                                        appListData?.data?.resultList.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <tr key={index}>
+                                                        <td colSpan={4} rowSpan={3} align="center" valign="middle">
+                                                            Group TOTAL (IVAL1)
+                                                        </td>
+                                                        <td colSpan={1} rowSpan={1}>
+                                                            Revenue (ITEM)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colSpan={1} rowSpan={1}>
+                                                            O.I (ITEM)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colSpan={1} rowSpan={1}>
+                                                            O.I (%) (ITEM)
+                                                        </td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })
+                                    }
                                     <tr>
                                         <td colSpan={1} rowSpan={93}>
                                         </td>
