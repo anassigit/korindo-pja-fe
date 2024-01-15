@@ -21,10 +21,12 @@ import {
     DOWNLOAD_MASTER_TEMPLATE,
     UPLOAD_MASTER_KPI,
     MSG_UPLOAD,
+    MSG_EDIT,
     UPLOAD_PLAN_KPI,
     DOWNLOAD_PLAN_TEMPLATE,
     GET_ACTUAL_INPUT_DATA,
-    RESP_GET_ACTUAL_INPUT_DATA
+    RESP_GET_ACTUAL_INPUT_DATA,
+    SET_ACTUAL_INPUT_DATA
 
 } from "./actionTypes"
 
@@ -122,6 +124,11 @@ import {
     type: RESP_GET_ACTUAL_INPUT_DATA,
     payload: resp,
   })
+
+  export const setActualInputData = (req) => ({
+    type: SET_ACTUAL_INPUT_DATA,
+    payload: req,
+  })
   
   export const getDownloadMasterTemplate = (req) => ({
     type: DOWNLOAD_MASTER_TEMPLATE,
@@ -150,6 +157,11 @@ import {
 
   export const msgUpload = resp => ({
     type: MSG_UPLOAD,
+    payload: resp,
+  })
+
+  export const msgEdit = resp => ({
+    type: MSG_EDIT,
     payload: resp,
   })
 

@@ -37,5 +37,5 @@ export const UPLOAD_MASTER_KPI = "UPLOAD_MASTER_KPI"
 export const UPLOAD_PLAN_KPI = "UPLOAD_PLAN_KPI"
 export const MSG_UPLOAD = "MSG_UPLOAD"
 
-// export const EDIT_USER_PROFILE = "EDIT_USER_PROFILE"
-// export const MSGEDIT = "MSGEDIT"
+export const SET_ACTUAL_INPUT_DATA = "SET_ACTUAL_INPUT_DATA"
+export const MSG_EDIT = "MSG_EDIT"

@@ -247,6 +247,8 @@ export const getDownloadPlanTemplateBE = req => getWithXls("rest/KpiManagementRe
 
 export const uploadPlanKPIBE = req => postUpload("rest/KpiManagementRest/setPlan", req)
 
+export const setActualInputDataBE = req => post("rest/KpiManagementRest/setData", req)
+
 //MOVING PLAN
 
 export const getCompanyCodeList = req => post("rest/MovingPlanRest/getCompanyCodeList", req)

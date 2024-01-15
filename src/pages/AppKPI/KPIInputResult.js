@@ -10,7 +10,7 @@ import {
     Input,
     Spinner
 } from "reactstrap"
-import { getActualInputData, getCorporationList, getGroupListKPI, getYearList, resetMessage } from "store/actions"
+import { getActualInputData, getCorporationList, getGroupListKPI, getYearList, resetMessage, setActualInputData } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -39,6 +39,10 @@ const KPIInputResult = (props) => {
         return state.kpiReducer.respGetCorporationList
     })
 
+    const appEditActualInputMessage = useSelector(state => {
+        return state.kpiReducer.msgEdit;
+    })
+
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appEditMode, setAppEditMode] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState("")
@@ -46,8 +50,7 @@ const KPIInputResult = (props) => {
     const [selectedMonth, setSelectedMonth] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
-    const [appData, setappData] = useState([])
-    const [appDataEdited, setAppDataEditedState] = useState([])
+    const [appDataEdited, setAppDataEdited] = useState([])
     const [isEdit, setIsEdit] = useState([])
 
     useEffect(() => {
@@ -89,19 +92,35 @@ const KPIInputResult = (props) => {
                 month: selectedMonth,
             }))
         } else {
-
+            dispatch(getActualInputData({
+                groupNum: '',
+                corporationId: '',
+                year: '',
+                month: '',
+            }))
         }
     }, [selectedYear, selectedMonth, selectedGroupList, selectedCorporationList])
 
     useEffect(() => {
         if (appListData.status === '1') {
-            setappData(appListData.data.list)
             setIsEdit(appListData.data.edit)
         } else {
-            setappData([])
             setIsEdit(false)
         }
     }, [appListData])
+
+    useEffect(() => {
+        if (appEditMode === true) {
+            setAppDataEdited(appListData.data.list)
+        } else {
+            setAppDataEdited([])
+        }
+    }, [appEditMode])
+
+    useEffect(() => {
+        setLoadingSpinner(false)
+        setAppKPIMsg(appEditActualInputMessage)
+    }, [appEditActualInputMessage])
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -218,7 +237,19 @@ const KPIInputResult = (props) => {
                                 </thead>
                                 <tbody>
                                     {
-                                        appData.map((item, index) => {
+                                        appEditMode === false ? appListData?.data?.list.map((item, index) => {
+                                            return (
+                                                <React.Fragment key={index}>
+                                                    <tr>
+                                                        <td colSpan={1}>{item.item}</td>
+                                                        <td colSpan={1}>{item.unit}</td>
+                                                        <td colSpan={1}>{item.plan}</td>
+                                                        <td colSpan={1}>{item.result}</td>
+                                                        <td>{item.note}</td>
+                                                    </tr>
+                                                </React.Fragment>
+                                            )
+                                        }) : appDataEdited.map((item, index) => {
 
                                             return (
                                                 <React.Fragment key={index}>
@@ -231,8 +262,18 @@ const KPIInputResult = (props) => {
                                                                 (
                                                                     <td colSpan={1}>
                                                                         <Input
-                                                                            type="text"
+                                                                            type="number"
                                                                             value={item.result}
+                                                                            onChange={(e) => {
+                                                                                setAppDataEdited((prevState) => {
+                                                                                    const updatedAppDataEdited = [...prevState]
+                                                                                    updatedAppDataEdited[index] = {
+                                                                                        ...updatedAppDataEdited[index],
+                                                                                        result: parseInt(e.target.value)
+                                                                                    }
+                                                                                    return updatedAppDataEdited
+                                                                                })
+                                                                            }}
                                                                         >
                                                                         </Input>
                                                                     </td>
@@ -247,6 +288,16 @@ const KPIInputResult = (props) => {
                                                                         <Input
                                                                             type="text"
                                                                             value={item.note}
+                                                                            onChange={(e) => {
+                                                                                setAppDataEdited((prevState) => {
+                                                                                    const updatedAppDataEdited = [...prevState]
+                                                                                    updatedAppDataEdited[index] = {
+                                                                                        ...updatedAppDataEdited[index],
+                                                                                        note: e.target.value
+                                                                                    }
+                                                                                    return updatedAppDataEdited
+                                                                                });
+                                                                            }}
                                                                         >
                                                                         </Input>
                                                                     </td>
@@ -264,7 +315,32 @@ const KPIInputResult = (props) => {
                             {
                                 appEditMode ? (
                                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'end' }}>
-                                        <Button>
+                                        <Button onClick={() => {
+                                            const kpiSetDetailList = appDataEdited.reduce((changed, editedRow, index) => {
+                                                const originalRow = appListData?.data?.list[index]
+                                                editedRow.result = isNaN(editedRow.result) ? 0 : editedRow.result
+                                                editedRow.note = editedRow.note.trim()
+                                                if (
+                                                    originalRow &&
+                                                    (originalRow.result !== editedRow.result || originalRow.note !== editedRow.note)
+                                                ) {
+                                                    changed.push({
+                                                        kpiId: originalRow.kpiId,
+                                                        month: parseInt(selectedMonth),
+                                                        result: editedRow.result,
+                                                        note: editedRow.note
+                                                    })
+                                                }
+
+                                                return changed
+                                            }, [])
+                                            if (kpiSetDetailList.length > 0) {
+                                                setLoadingSpinner(true)
+                                                dispatch(setActualInputData({kpiSetDetailList: kpiSetDetailList}))
+                                            } else {
+                                                setAppEditMode(false)
+                                            }
+                                        }}>
                                             {props.t("Save")}
                                         </Button>
                                         <Button className="btn-danger" onClick={() => setAppEditMode(false)}>
@@ -277,8 +353,6 @@ const KPIInputResult = (props) => {
                                             <div style={{ display: isEdit ? 'flex' : 'none', justifyContent: 'end' }}>
                                                 <Button
                                                     onClick={() => {
-                                                        setAppEditMode(true)
-                                                        setAppDataEditedState([...appData])
                                                         setAppEditMode(true)
                                                     }}>
                                                     {props.t("Edit")}

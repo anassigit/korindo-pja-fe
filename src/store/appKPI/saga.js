@@ -1,10 +1,10 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
-import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA } from "./actionTypes"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA } from "./actionTypes"
 
-import { getKPIMaster, msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList } from "./actions"
+import { msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList, msgEdit } from "./actions"
 
-import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE } from "helpers/backend_helper"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE, setActualInputDataBE } from "helpers/backend_helper"
 
 function* fetchGetYearList({ payload: req }) {
   try {
@@ -189,6 +189,16 @@ function* fetchUploadPlanKPI({ payload: req }) {
   }
 }
 
+function* fetchSetActualInputData({ payload: req }) {
+  try {
+    const response = yield call(setActualInputDataBE, req)
+    yield put(msgEdit(response))
+  } catch (error) {
+    console.log(error);
+    yield put(msgEdit({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
 function* kpiSaga() {
 
   yield takeEvery(GET_YEAR_LIST, fetchGetYearList)
@@ -205,6 +215,7 @@ function* kpiSaga() {
   yield takeEvery(DOWNLOAD_MASTER_TEMPLATE, fetchGetDownloadPlanTemplate)
   yield takeEvery(UPLOAD_MASTER_KPI, fetchUploadMasterKPI)
   yield takeEvery(UPLOAD_PLAN_KPI, fetchUploadPlanKPI)
+  yield takeEvery(SET_ACTUAL_INPUT_DATA, fetchSetActualInputData)
 }
 
 export default kpiSaga
