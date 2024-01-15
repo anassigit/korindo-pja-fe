@@ -34,12 +34,18 @@ const MovingPlan = (props) => {
 
     const [appMovingPlanMsg, setappMovingPlanMsg] = useState("")
 
-    const [selectedYear, setSelectedYear] = useState("")
+    const [selectedYear, setSelectedYear] = useState("2023")
     const [selectedCompanyCode, setselectedCompanyCode] = useState("")
 
     useEffect(() => {
         setLoadingSpinner(true)
         dispatch(getCompanyCodeList())
+        dispatch(getMovingPlantList(
+            {
+                year: selectedYear,
+                companyCode: selectedCompanyCode,
+            }
+        ))
     }, [])
 
     useEffect(() => {
@@ -47,16 +53,17 @@ const MovingPlan = (props) => {
     }, [dispatch])
 
     useEffect(() => {
-        setLoadingSpinner(false)
         if (appCompanyCodeListData.status === '0') {
             setappMovingPlanMsg(appCompanyCodeListData)
         }
     }, [appCompanyCodeListData])
 
     useEffect(() => {
-        setLoadingSpinner(false)
         if (appListData.status === '0') {
             setappMovingPlanMsg(appListData)
+            setLoadingSpinner(false)
+        } else if (appListData.status === '1') {
+            setLoadingSpinner(false)
         }
     }, [appListData])
 
@@ -92,7 +99,7 @@ const MovingPlan = (props) => {
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                             {props.t('Moving Plan')}
                         </CardHeader>
-                        <CardBody style={{ overflow: 'auto' }}>
+                        <CardBody>
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -145,121 +152,162 @@ const MovingPlan = (props) => {
                                     {props.t("Search")}
                                 </Button>
                             </div>
-                            <table className="table table-bordered my-3">
-                                <thead style={{ backgroundColor: 'transparent', }}>
-                                    <tr style={{ color: '#495057' }}>
-                                        <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky' }}>
-                                            ITEMS
-                                        </th>
-                                        {Array.from({ length: 12 }, (_, monthIndex) => (
-                                            <React.Fragment key={monthIndex}>
-                                                <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
-                                                    {getMonthAbbreviation(monthIndex + 1)}
-                                                </th>
-                                            </React.Fragment>
-                                        ))}
-                                    </tr>
-                                    <tr style={{ color: '#495057' }}>
-                                        {Array.from({ length: 12 * 7 }, (_, index) => (
-                                            <th key={index} style={{ textAlign: 'center', minWidth: '200px' }}>
-                                                {getColumnHeader(index)}
+                            <div style={{ overflow: 'auto', maxHeight: '80vh', marginTop: '10px' }}>
+                                <table className="table table-bordered my-3">
+                                    <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
+                                        <tr>
+                                            <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2' }}>
+                                                ITEMS
                                             </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        appListData?.data?.resultList.map((item, index) => {
-                                            return (
-                                                <>
-                                                    <tr key={index}>
-                                                        <td colSpan={4} rowSpan={3} align="center" valign="middle">
-                                                            Group TOTAL (IVAL1)
-                                                        </td>
-                                                        <td colSpan={1} rowSpan={1}>
-                                                            Revenue (ITEM)
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} rowSpan={1}>
-                                                            O.I (ITEM)
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} rowSpan={1}>
-                                                            O.I (%) (ITEM)
-                                                        </td>
-                                                    </tr>
-                                                </>
-                                            )
-                                        })
-                                    }
-                                    <tr>
-                                        <td colSpan={1} rowSpan={93}>
-                                        </td>
-                                        <td colSpan={3} rowSpan={3} align="center" valign="middle">
-                                            자원
-                                            <br />
-                                            (Resources) (IVAL1_1)
-                                        </td>
-                                        <td colSpan={1} rowSpan={1}>
-                                            Revenue (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1}>
-                                            O.I (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1}>
-                                            O.I (%) (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1} rowSpan={90}>
-                                        </td>
-                                        <td colSpan={2} rowSpan={3} align="center" valign="middle">
-                                            팜오일
-                                            <br />
-                                            (Palm oil) (IVAL1_2)
-                                        </td>
-                                        <td colSpan={1} rowSpan={1}>
-                                            Revenue (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1}>
-                                            O.I (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1}>
-                                            O.I (%) (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1} rowSpan={87}>
-                                        </td>
-                                        <td colSpan={1} rowSpan={3} align="center" valign="middle">
-                                            TSE (IVAL1_3)
-                                        </td>
-                                        <td colSpan={1} rowSpan={1}>
-                                            Revenue (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1}>
-                                            O.I (ITEM)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={1}>
-                                            O.I (%) (ITEM)
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            {Array.from({ length: 12 }, (_, monthIndex) => (
+                                                <React.Fragment key={monthIndex}>
+                                                    <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
+                                                        {getMonthAbbreviation(monthIndex + 1)}
+                                                    </th>
+                                                </React.Fragment>
+                                            ))}
+                                        </tr>
+                                        <tr>
+                                            {Array.from({ length: 12 * 7 }, (_, index) => (
+                                                <th key={index} style={{ textAlign: 'center', minWidth: '200px' }}>
+                                                    {getColumnHeader(index)}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody style={{ position: 'relative' }}>
+                                        {
+                                            appListData?.data?.resultList.map((item, index) => {
+                                                const sortedDetailList = [...item.detailList].sort((a, b) => {
+                                                    const monthsOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                                    return monthsOrder.indexOf(a.month) - monthsOrder.indexOf(b.month);
+                                                })
+                                                return (
+                                                    <>
+                                                        <tr key={index}>
+                                                            {/* {
+                                                                index === 0 ? null : (
+                                                                    <td colSpan={1} rowSpan={appListData?.data?.resultList.length}>
+                                                                    </td>
+                                                                )
+                                                            } */}
+                                                            <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
+                                                                position: 'sticky',
+                                                                left: '0',
+                                                                backgroundColor: item.ival1 ? '#CCE295' : item.ival1_1 ? '#E6F0D8' : item.ival1_2 ? '#F2F2F2' : item.ival1_3 ? 'white' : item.ival1_4 ? '#EEECE1' : 'white'
+                                                            }}>
+                                                                {item.ival1 || item.ival1_1 || item.ival1_2 || item.ival1_3 || item.ival1_4}
+                                                            </td>
+                                                            <td colSpan={1} rowSpan={1} style={{
+                                                                position: 'sticky',
+                                                                left: '8.6rem',
+                                                                backgroundColor: 'white',
+                                                            }}>
+                                                                Revenue (ITEM)
+                                                            </td>
+                                                            {
+                                                                sortedDetailList.map((row, i) => (
+                                                                    <React.Fragment key={i}>
+                                                                        <td>{row.pyac}</td>
+                                                                        <td>{row.bp}</td>
+                                                                        <td>{row.amp}</td>
+                                                                        <td>{row.cyac}</td>
+                                                                        <td>{row.grw}</td>
+                                                                        <td>{row.abp}</td>
+                                                                        <td>{row.amp}</td>
+                                                                    </React.Fragment>
+                                                                ))
+                                                            }
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={1} rowSpan={1} style={{
+                                                                position: 'sticky',
+                                                                left: '8.6rem',
+                                                                backgroundColor: 'white'
+                                                            }}>
+                                                                O.I (ITEM)
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={1} rowSpan={1} style={{
+                                                                position: 'sticky',
+                                                                left: '8.6rem',
+                                                                backgroundColor: 'white'
+                                                            }}>
+                                                                O.I (%) (ITEM)
+                                                            </td>
+                                                        </tr>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                        {/* <tr>
+                                            <td colSpan={1} rowSpan={93}>
+                                            </td>
+                                            <td colSpan={3} rowSpan={3} align="center" valign="middle">
+                                                자원
+                                                <br />
+                                                (Resources) (IVAL1_1)
+                                            </td>
+                                            <td colSpan={1} rowSpan={1}>
+                                                Revenue (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1}>
+                                                O.I (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1}>
+                                                O.I (%) (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1} rowSpan={90}>
+                                            </td>
+                                            <td colSpan={2} rowSpan={3} align="center" valign="middle">
+                                                팜오일
+                                                <br />
+                                                (Palm oil) (IVAL1_2)
+                                            </td>
+                                            <td colSpan={1} rowSpan={1}>
+                                                Revenue (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1}>
+                                                O.I (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1}>
+                                                O.I (%) (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1} rowSpan={87}>
+                                            </td>
+                                            <td colSpan={1} rowSpan={3} align="center" valign="middle">
+                                                TSE (IVAL1_3)
+                                            </td>
+                                            <td colSpan={1} rowSpan={1}>
+                                                Revenue (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1}>
+                                                O.I (ITEM)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1}>
+                                                O.I (%) (ITEM)
+                                            </td>
+                                        </tr> */}
+                                    </tbody>
+                                </table>
+                            </div>
                         </CardBody>
                     </Card>
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
