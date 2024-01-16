@@ -45,7 +45,7 @@ const authProtectedRoutes = [
   { path: "/FirstLogin", component: FirstLogin },
   { path: "/EnterMonthlyData", component: EnterMonthlyData },
   { path: "/AppRule", component: Rule },
-  { path: "/AppPlanSetting", component: KPIPlanSetting },
+  { path: "/AppKPIPlanSetting", component: KPIPlanSetting },
   { path: "/AppKPIMasterSetting", component: KPIMasterSetting },
   { path: "/AppKPIDashboard", component: KPIDashboard },
   { path: "/AppKPIInputResult", component: KPIInputResult },
