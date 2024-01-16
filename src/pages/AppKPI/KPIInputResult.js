@@ -83,6 +83,7 @@ const KPIInputResult = (props) => {
 
     useEffect(() => {
         setAppEditMode(false)
+        setAppKPIMsg("")
         if (selectedYear && selectedMonth && selectedCorporationList && selectedGroupList) {
             setLoadingSpinner(true)
             dispatch(getActualInputData({
@@ -118,7 +119,17 @@ const KPIInputResult = (props) => {
     }, [appEditMode])
 
     useEffect(() => {
-        setLoadingSpinner(false)
+        if(appEditActualInputMessage.status === '1') {
+            setAppEditMode(false)
+            dispatch(getActualInputData({
+                groupNum: selectedGroupList,
+                corporationId: selectedCorporationList,
+                year: selectedYear,
+                month: selectedMonth,
+            }))
+        } else {
+            setLoadingSpinner(false)
+        }
         setAppKPIMsg(appEditActualInputMessage)
     }, [appEditActualInputMessage])
 
@@ -243,8 +254,8 @@ const KPIInputResult = (props) => {
                                                     <tr>
                                                         <td colSpan={1}>{item.item}</td>
                                                         <td colSpan={1}>{item.unit}</td>
-                                                        <td colSpan={1}>{item.plan}</td>
-                                                        <td colSpan={1}>{item.result}</td>
+                                                        <td colSpan={1}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
+                                                        <td colSpan={1}>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td>{item.note}</td>
                                                     </tr>
                                                 </React.Fragment>
@@ -256,29 +267,42 @@ const KPIInputResult = (props) => {
                                                     <tr>
                                                         <td colSpan={1}>{item.item}</td>
                                                         <td colSpan={1}>{item.unit}</td>
-                                                        <td colSpan={1}>{item.plan}</td>
+                                                        <td colSpan={1}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         {
                                                             appEditMode ?
                                                                 (
                                                                     <td colSpan={1}>
                                                                         <Input
-                                                                            type="number"
+                                                                            type="text"
                                                                             value={item.result}
                                                                             onChange={(e) => {
-                                                                                setAppDataEdited((prevState) => {
-                                                                                    const updatedAppDataEdited = [...prevState]
-                                                                                    updatedAppDataEdited[index] = {
-                                                                                        ...updatedAppDataEdited[index],
-                                                                                        result: parseInt(e.target.value)
-                                                                                    }
-                                                                                    return updatedAppDataEdited
-                                                                                })
+                                                                                if (/^(0?(\.\d+)?|\d+(\.\d*)?)$/.test(e.target.value)) {
+                                                                                    setAppDataEdited((prevState) => {
+                                                                                        const updatedAppDataEdited = [...prevState]
+                                                                                        updatedAppDataEdited[index] = {
+                                                                                            ...updatedAppDataEdited[index],
+                                                                                            result: e.target.value
+                                                                                        }
+                                                                                        return updatedAppDataEdited
+                                                                                    })
+                                                                                }
                                                                             }}
-                                                                        >
-                                                                        </Input>
+                                                                            onBlur={(e) => {
+                                                                                if (e.target.value.trim() === '') {
+                                                                                    setAppDataEdited((prevState) => {
+                                                                                        const updatedAppDataEdited = [...prevState]
+                                                                                        updatedAppDataEdited[index] = {
+                                                                                            ...updatedAppDataEdited[index],
+                                                                                            result: 0
+                                                                                        }
+                                                                                        return updatedAppDataEdited
+                                                                                    });
+                                                                                }
+                                                                            }}
+                                                                        />
                                                                     </td>
                                                                 ) : (
-                                                                    <td>{item.result}</td>
+                                                                    <td>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                                 )
                                                         }
                                                         {
@@ -286,7 +310,7 @@ const KPIInputResult = (props) => {
                                                                 (
                                                                     <td colSpan={1}>
                                                                         <Input
-                                                                            type="text"
+                                                                            type="textarea"
                                                                             value={item.note}
                                                                             onChange={(e) => {
                                                                                 setAppDataEdited((prevState) => {
@@ -298,8 +322,7 @@ const KPIInputResult = (props) => {
                                                                                     return updatedAppDataEdited
                                                                                 });
                                                                             }}
-                                                                        >
-                                                                        </Input>
+                                                                        />
                                                                     </td>
                                                                 ) : (
                                                                     <td>{item.note}</td>
@@ -318,7 +341,6 @@ const KPIInputResult = (props) => {
                                         <Button onClick={() => {
                                             const kpiSetDetailList = appDataEdited.reduce((changed, editedRow, index) => {
                                                 const originalRow = appListData?.data?.list[index]
-                                                editedRow.result = isNaN(editedRow.result) ? 0 : editedRow.result
                                                 editedRow.note = editedRow.note.trim()
                                                 if (
                                                     originalRow &&
@@ -336,7 +358,7 @@ const KPIInputResult = (props) => {
                                             }, [])
                                             if (kpiSetDetailList.length > 0) {
                                                 setLoadingSpinner(true)
-                                                dispatch(setActualInputData({kpiSetDetailList: kpiSetDetailList}))
+                                                dispatch(setActualInputData({ kpiSetDetailList: kpiSetDetailList }))
                                             } else {
                                                 setAppEditMode(false)
                                             }
@@ -354,6 +376,7 @@ const KPIInputResult = (props) => {
                                                 <Button
                                                     onClick={() => {
                                                         setAppEditMode(true)
+                                                        setAppKPIMsg("")
                                                     }}>
                                                     {props.t("Edit")}
                                                 </Button>
