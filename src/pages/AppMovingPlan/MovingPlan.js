@@ -53,16 +53,16 @@ const MovingPlan = (props) => {
     }, [dispatch])
 
     useEffect(() => {
-        if (appCompanyCodeListData.status === '0') {
+        if (appCompanyCodeListData?.status === '0') {
             setappMovingPlanMsg(appCompanyCodeListData)
         }
     }, [appCompanyCodeListData])
 
     useEffect(() => {
-        if (appListData.status === '0') {
+        if (appListData?.status === '0') {
             setappMovingPlanMsg(appListData)
             setLoadingSpinner(false)
-        } else if (appListData.status === '1') {
+        } else if (appListData?.status === '1') {
             setLoadingSpinner(false)
         }
     }, [appListData])
@@ -90,6 +90,194 @@ const MovingPlan = (props) => {
         const columnHeader = `${baseHeaders[index % baseHeaders.length]} (${singkatanHeader[index % singkatanHeader.length]}${monthNumber.toString().padStart(2, '0')})`
         return columnHeader
     }
+
+    const RecursiveJsx = ({ data, depth = 0 }) => {
+
+        return (
+            <React.Fragment>
+                {
+                    Array.isArray(data) ? data?.map((item, index) => {
+                        return (
+                            <>
+                                <tr key={index}>
+                                    {/* {
+                                        index === 0 ? null : (
+                                            <td colSpan={1} rowSpan={appListData?.data?.resultList.length}>
+                                            </td>
+                                        )
+                                    } */}
+                                    <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
+                                        position: 'sticky',
+                                        left: '0',
+                                        backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
+                                    }}>
+                                        {item?.title}
+                                    </td>
+                                    <td colSpan={1} rowSpan={1} style={{
+                                        position: 'sticky',
+                                        left: '8.6rem',
+                                        backgroundColor: 'white',
+                                    }}>
+                                        Revenue (ITEM)
+                                    </td>
+                                    {
+                                        item.revenueList.map((row, i) => (
+                                            <React.Fragment key={i}>
+                                                <td>{row.pyac}</td>
+                                                <td>{row.bp}</td>
+                                                <td>{row.amp}</td>
+                                                <td>{row.cyac}</td>
+                                                <td>{row.grw}</td>
+                                                <td>{row.abp}</td>
+                                                <td>{row.amp}</td>
+                                            </React.Fragment>
+                                        ))
+                                    }
+                                </tr>
+                                <tr>
+                                    <td colSpan={1} rowSpan={1} style={{
+                                        position: 'sticky',
+                                        left: '8.6rem',
+                                        backgroundColor: 'white'
+                                    }}>
+                                        O.I (ITEM)
+                                    </td>
+                                    {
+                                        item.oiLIst.map((row, i) => (
+                                            <React.Fragment key={i}>
+                                                <td>{row.pyac}</td>
+                                                <td>{row.bp}</td>
+                                                <td>{row.amp}</td>
+                                                <td>{row.cyac}</td>
+                                                <td>{row.grw}</td>
+                                                <td>{row.abp}</td>
+                                                <td>{row.amp}</td>
+                                            </React.Fragment>
+                                        ))
+                                    }
+                                </tr>
+                                <tr>
+                                    <td colSpan={1} rowSpan={1} style={{
+                                        position: 'sticky',
+                                        left: '8.6rem',
+                                        backgroundColor: 'white'
+                                    }}>
+                                        O.I (%) (ITEM)
+                                    </td>
+                                    {
+                                        item.oiPersenteList.map((row, i) => (
+                                            <React.Fragment key={i}>
+                                                <td>{row.pyac}</td>
+                                                <td>{row.bp}</td>
+                                                <td>{row.amp}</td>
+                                                <td>{row.cyac}</td>
+                                                <td>{row.grw}</td>
+                                                <td>{row.abp}</td>
+                                                <td>{row.amp}</td>
+                                            </React.Fragment>
+                                        ))
+                                    }
+                                </tr>
+                                <RecursiveJsx
+                                    data={item.childList}
+                                    depth={depth}
+                                />
+                            </>
+                        )
+                    }) : data ?
+                        (
+                            <React.Fragment>
+                                <tr>
+                                    <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
+                                        position: 'sticky',
+                                        left: '0',
+                                        // backgroundColor: item.ival1 ? '#CCE295' : item.ival1_1 ? '#E6F0D8' : item.ival1_2 ? '#F2F2F2' : item.ival1_3 ? 'white' : item.ival1_4 ? '#EEECE1' : 'white'
+                                        backgroundColor: data?.level === 0 ? '#CCE295' : data?.level === 1 ? '#E6F0D8' : data?.level === 2 ? '#F2F2F2' : data?.level === 3 ? 'white' : data?.level === 4 ? '#EEECE1' : 'white'
+                                    }}>
+                                        {data?.title}
+                                    </td>
+                                    <td colSpan={1} rowSpan={1} style={{
+                                        position: 'sticky',
+                                        left: '8.6rem',
+                                        backgroundColor: 'white',
+                                    }}>
+                                        Revenue (ITEM)
+                                    </td>
+                                    {
+                                        data?.revenueList.map((row, i) => (
+                                            <React.Fragment key={i}>
+                                                <td>{row.pyac}</td>
+                                                <td>{row.bp}</td>
+                                                <td>{row.amp}</td>
+                                                <td>{row.cyac}</td>
+                                                <td>{row.grw}</td>
+                                                <td>{row.abp}</td>
+                                                <td>{row.amp}</td>
+                                            </React.Fragment>
+                                        ))
+                                    }
+                                </tr>
+                                <tr>
+                                    <td colSpan={1} rowSpan={1} style={{
+                                        position: 'sticky',
+                                        left: '8.6rem',
+                                        backgroundColor: 'white'
+                                    }}>
+                                        O.I (ITEM)
+                                    </td>
+                                    {
+                                        data?.oiLIst.map((row, i) => (
+                                            <React.Fragment key={i}>
+                                                <td>{row.pyac}</td>
+                                                <td>{row.bp}</td>
+                                                <td>{row.amp}</td>
+                                                <td>{row.cyac}</td>
+                                                <td>{row.grw}</td>
+                                                <td>{row.abp}</td>
+                                                <td>{row.amp}</td>
+                                            </React.Fragment>
+                                        ))
+                                    }
+                                </tr>
+                                <tr>
+                                    <td colSpan={1} rowSpan={1} style={{
+                                        position: 'sticky',
+                                        left: '8.6rem',
+                                        backgroundColor: 'white'
+                                    }}>
+                                        O.I (%) (ITEM)
+                                    </td>
+                                    {
+                                        data?.oiPersenteList.map((row, i) => (
+                                            <React.Fragment key={i}>
+                                                <td>{row.pyac}</td>
+                                                <td>{row.bp}</td>
+                                                <td>{row.amp}</td>
+                                                <td>{row.cyac}</td>
+                                                <td>{row.grw}</td>
+                                                <td>{row.abp}</td>
+                                                <td>{row.amp}</td>
+                                            </React.Fragment>
+                                        ))
+                                    }
+                                </tr>
+                                <RecursiveJsx
+                                    data={data.childList}
+                                    depth={depth}
+                                />
+                            </React.Fragment>
+                        ) : null
+                }
+            </React.Fragment>
+        )
+    }
+
+    RecursiveJsx.propTypes = {
+        data: PropTypes.any,
+        depth: PropTypes.any,
+    };
+
+
 
     return (
         <RootPageCustom msgStateGet={appMovingPlanMsg} msgStateSet={setappMovingPlanMsg}
@@ -176,135 +364,13 @@ const MovingPlan = (props) => {
                                         </tr>
                                     </thead>
                                     <tbody style={{ position: 'relative' }}>
+                                        {console.log(appListData)}
+
                                         {
-                                            appListData?.data?.resultList.map((item, index) => {
-                                                const sortedDetailList = [...item.detailList].sort((a, b) => {
-                                                    const monthsOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                                                    return monthsOrder.indexOf(a.month) - monthsOrder.indexOf(b.month);
-                                                })
-                                                return (
-                                                    <>
-                                                        <tr key={index}>
-                                                            {/* {
-                                                                index === 0 ? null : (
-                                                                    <td colSpan={1} rowSpan={appListData?.data?.resultList.length}>
-                                                                    </td>
-                                                                )
-                                                            } */}
-                                                            <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
-                                                                position: 'sticky',
-                                                                left: '0',
-                                                                backgroundColor: item.ival1 ? '#CCE295' : item.ival1_1 ? '#E6F0D8' : item.ival1_2 ? '#F2F2F2' : item.ival1_3 ? 'white' : item.ival1_4 ? '#EEECE1' : 'white'
-                                                            }}>
-                                                                {item.ival1 || item.ival1_1 || item.ival1_2 || item.ival1_3 || item.ival1_4}
-                                                            </td>
-                                                            <td colSpan={1} rowSpan={1} style={{
-                                                                position: 'sticky',
-                                                                left: '8.6rem',
-                                                                backgroundColor: 'white',
-                                                            }}>
-                                                                Revenue (ITEM)
-                                                            </td>
-                                                            {
-                                                                sortedDetailList.map((row, i) => (
-                                                                    <React.Fragment key={i}>
-                                                                        <td>{row.pyac}</td>
-                                                                        <td>{row.bp}</td>
-                                                                        <td>{row.amp}</td>
-                                                                        <td>{row.cyac}</td>
-                                                                        <td>{row.grw}</td>
-                                                                        <td>{row.abp}</td>
-                                                                        <td>{row.amp}</td>
-                                                                    </React.Fragment>
-                                                                ))
-                                                            }
-                                                        </tr>
-                                                        <tr>
-                                                            <td colSpan={1} rowSpan={1} style={{
-                                                                position: 'sticky',
-                                                                left: '8.6rem',
-                                                                backgroundColor: 'white'
-                                                            }}>
-                                                                O.I (ITEM)
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colSpan={1} rowSpan={1} style={{
-                                                                position: 'sticky',
-                                                                left: '8.6rem',
-                                                                backgroundColor: 'white'
-                                                            }}>
-                                                                O.I (%) (ITEM)
-                                                            </td>
-                                                        </tr>
-                                                    </>
-                                                )
-                                            })
+                                            <RecursiveJsx
+                                                data={appListData?.data?.resultList}
+                                            />
                                         }
-                                        {/* <tr>
-                                            <td colSpan={1} rowSpan={93}>
-                                            </td>
-                                            <td colSpan={3} rowSpan={3} align="center" valign="middle">
-                                                자원
-                                                <br />
-                                                (Resources) (IVAL1_1)
-                                            </td>
-                                            <td colSpan={1} rowSpan={1}>
-                                                Revenue (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1}>
-                                                O.I (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1}>
-                                                O.I (%) (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1} rowSpan={90}>
-                                            </td>
-                                            <td colSpan={2} rowSpan={3} align="center" valign="middle">
-                                                팜오일
-                                                <br />
-                                                (Palm oil) (IVAL1_2)
-                                            </td>
-                                            <td colSpan={1} rowSpan={1}>
-                                                Revenue (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1}>
-                                                O.I (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1}>
-                                                O.I (%) (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1} rowSpan={87}>
-                                            </td>
-                                            <td colSpan={1} rowSpan={3} align="center" valign="middle">
-                                                TSE (IVAL1_3)
-                                            </td>
-                                            <td colSpan={1} rowSpan={1}>
-                                                Revenue (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1}>
-                                                O.I (ITEM)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={1}>
-                                                O.I (%) (ITEM)
-                                            </td>
-                                        </tr> */}
                                     </tbody>
                                 </table>
                             </div>
