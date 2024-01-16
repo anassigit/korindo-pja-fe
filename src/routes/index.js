@@ -24,11 +24,11 @@ import FileManagement from "pages/AppFileManagement/FileManagement"
 import FirstLogin from "pages/Authentication/FirstLogin"
 import EnterMonthlyData from "pages/AppFileManagement/EnterMonthlyData"
 import Rule from "pages/AppRule/Rule"
-import KPI from "pages/AppKPI/KPI"
 import KPIDashboard from "pages/AppKPI/KPIDashboard"
 import KPIMasterSetting from "pages/AppKPI/KPIMasterSetting"
 import MovingPlan from "pages/AppMovingPlan/MovingPlan"
 import KPIInputResult from "pages/AppKPI/KPIInputResult"
+import KPIPlanSetting from "pages/AppKPI/KPIPlanSetting"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -45,13 +45,11 @@ const authProtectedRoutes = [
   { path: "/FirstLogin", component: FirstLogin },
   { path: "/EnterMonthlyData", component: EnterMonthlyData },
   { path: "/AppRule", component: Rule },
-  { path: "/AppPlanSetting", component: KPI },
+  { path: "/AppPlanSetting", component: KPIPlanSetting },
   { path: "/AppKPIMasterSetting", component: KPIMasterSetting },
   { path: "/AppKPIDashboard", component: KPIDashboard },
-  { path: "/AppActualInput", component: KPIInputResult },
+  { path: "/AppKPIInputResult", component: KPIInputResult },
   { path: "/AppMovingPlan", component: MovingPlan },
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
   { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> },
 ]
 
@@ -59,8 +57,7 @@ const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/emailPassword", component: EmailVerPassword },
-  { path: "/updatePassword", component: UpdatePassword },
-
+  { path: "/updatePassword", component: UpdatePassword }
 ]
 
 export { publicRoutes, authProtectedRoutes }

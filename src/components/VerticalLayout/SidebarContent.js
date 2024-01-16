@@ -308,9 +308,9 @@ const SidebarContent = (props) => {
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
-                to="/AppActualInput"
+                to="/AppKPIInputResult"
                 hidden={dropdownOpen.kpi}
-                className={location.pathname === "/AppActualInput" ? "active" : null}
+                className={location.pathname === "/AppKPIInputResult" ? "active" : null}
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Input KPI Result")}</span>
               </Link>

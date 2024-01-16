@@ -139,8 +139,8 @@
   "File Management Access Permission": "파일 관리 액세스 권한",
   "All File Can Be Modified": "모든 사용자가 파일 수정 가능",
   "Only Your Own Group Can Be Modified": "소속 사업부 파일만 수정 가능",
-  "All File Can Be Accessed": "모든 사용자가 파일 접근(open / download) 가능",
-  "Only Your Own Group Can Be Accessed": "소속 사업부 파일만 접근(open / download) 가능",
+  "All File Can Be Accessed": "모든 사용자가 파일 접근(열려 있는 / 다운로드) 가능",
+  "Only Your Own Group Can Be Accessed": "소속 사업부 파일만 접근(열려 있는 / 다운로드) 가능",
   "Company Regulations": "그룹사규",
   "Other": "기타",
   "Direct Input": "직접입력",
@@ -165,5 +165,10 @@
   "Plan": "계획",
   "Result": "결과",
   "Note": "노트",
-  "Cancel": "취소"
+  "Cancel": "취소",
+  "KPI PLAN TEMPLATE": "KPI 계획 템플릿.xlsx",
+  "KPI Plan Setting": "KPI 계획 설정",
+  "No valid files selected. Allowed file types: xls & xlsx": "유효한 파일을 선택하지 않았습니다. 허용되는 파일 형식: xls 및 xlsx",
+  "Are you sure you want to delete this file?": "이 파일을 삭제하시겠습니까?",
+  "Please select file": "파일을 선택해주세요"
 }

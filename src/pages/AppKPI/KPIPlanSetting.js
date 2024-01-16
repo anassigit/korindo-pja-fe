@@ -10,16 +10,16 @@ import {
     Input,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getDownloadMasterTemplate, getDownloadPlanTemplate, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions"
+import { getCorporationList, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getDownloadMasterTemplateBE, getDownloadPlanTemplateBE } from "helpers/backend_helper"
+import { getDownloadPlanTemplateBE } from "helpers/backend_helper"
 import UploadKPI from "./UploadKPI"
 
 
-const KPI = (props) => {
+const KPIPlanSetting = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
 
@@ -103,7 +103,7 @@ const KPI = (props) => {
     const downloadPlanTemplate = async () => {
         try {
             dispatch(getDownloadPlanTemplateBE({
-                file_nm: "KPI PLAN TEMPLATE.xlsx"
+                file_nm: props.t('KPI PLAN TEMPLATE')
             }))
         } catch (error) {
             console.log(error)
@@ -116,7 +116,7 @@ const KPI = (props) => {
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI 계획 설정
+                            {props.t('KPI Plan Setting')}
                         </CardHeader>
                         <CardBody>
                             <div
@@ -138,7 +138,7 @@ const KPI = (props) => {
                                     >
                                         {Array.isArray(appYearListData?.data?.list) ? (
                                             <>
-                                                <option>Select Year</option>
+                                                <option>{props.t('Select Year')}</option>
                                                 {appYearListData?.data?.list.map((item, index) => (
                                                     <option key={index} value={item}>
                                                         {item}
@@ -147,7 +147,7 @@ const KPI = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                No Data
+                                                {props.t('No Data')}
                                             </option>
                                         )}
                                     </Input>
@@ -159,7 +159,7 @@ const KPI = (props) => {
                                     >
                                         {Array.isArray(appGroupListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>Select Group</option>
+                                                <option value={''}>{props.t('Select Group')}</option>
                                                 {appGroupListData?.data?.list.map((item, index) => {
                                                     let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
                                                     return (
@@ -171,7 +171,7 @@ const KPI = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                No Data
+                                                {props.t('No Data')}
                                             </option>
                                         )}
                                     </Input>
@@ -181,7 +181,7 @@ const KPI = (props) => {
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>Select Corporation</option>
+                                                <option value={''}>{props.t('Select Corporation')}</option>
                                                 {appCorporationListData?.data?.list.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item.corporationId}>
@@ -192,7 +192,7 @@ const KPI = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                No Data
+                                                {props.t('No Data')}
                                             </option>
                                         )}
                                     </Input>
@@ -251,7 +251,7 @@ const KPI = (props) => {
                                                                     )
                                                                 } else {
                                                                     return (
-                                                                        <td key={monthIndex}>No data</td>
+                                                                        <td key={monthIndex}>{props.t('No Data')}</td>
                                                                     )
                                                                 }
                                                             })
@@ -278,9 +278,9 @@ const KPI = (props) => {
     )
 }
 
-KPI.propTypes = {
+KPIPlanSetting.propTypes = {
     location: PropTypes.object,
     t: PropTypes.any
 }
 
-export default withTranslation()(KPI)
+export default withTranslation()(KPIPlanSetting)

@@ -137,7 +137,6 @@ const UploadKPI = (props) => {
                     })
 
                     if (processedFiles.length === validFiles.length) {
-                        // All files have been processed
                         SetSelectedFile((prevValue) => [...prevValue, ...processedFiles])
                     }
                 }
@@ -145,7 +144,7 @@ const UploadKPI = (props) => {
                 reader.readAsDataURL(file)
             })
         } else if (e.target.files.length != 0) {
-            alert("No valid files selected. Allowed file types: xls & xlsx")
+            alert(props.t("No valid files selected. Allowed file types: xls & xlsx"))
             refCleanser.current.value = ""
             e.target.value = ""
         }
@@ -154,7 +153,7 @@ const UploadKPI = (props) => {
 
 
     const DeleteSelectFile = (id) => {
-        if (window.confirm("Are you sure you want to delete this file?")) {
+        if (window.confirm(props.t("Are you sure you want to delete this file?"))) {
             const result = selectedfile.filter((data) => data.id !== id);
             SetSelectedFile(result);
         } else {
@@ -176,7 +175,7 @@ const UploadKPI = (props) => {
             }
             SetSelectedFile([]);
         } else {
-            alert('Please select file')
+            alert(props.t("Please select file"))
         }
     }
 
@@ -204,7 +203,7 @@ const UploadKPI = (props) => {
                 <ModalBody>
 
                     <div className="mb-3">
-                        <label>{props.t("Choose file")} </label>
+                        <label>{props.t("Choose files")} </label>
                         <Form onSubmit={FileUploadSubmit}>
                             <div className="kb-file-upload">
 
@@ -216,7 +215,7 @@ const UploadKPI = (props) => {
                                 </div>
                             </div>
                             &nbsp;
-                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are xlsx, xls")}</span>
+                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are xls, xlsx")}</span>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
                                 {
