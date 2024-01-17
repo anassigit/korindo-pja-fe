@@ -400,7 +400,6 @@ const KPIDashboard = (props) => {
                                                                     if (item.seriesName !== 'Note') {
                                                                         content += item.marker + ' ' + item.seriesName + ': ' + formatter.format(item.value) + '<br>';
                                                                     } else if (item.value) {
-                                                                        debugger
                                                                         content += 'Note: \n' + item.value + '<br>';
                                                                     }
                                                                 });
