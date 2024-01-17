@@ -129,7 +129,7 @@ const MovingPlan = (props) => {
                                                 backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
                                             }}>
                                             <div
-                                                style={{ width: '160px' }}
+                                                style={{ width: '154px' }}
                                             >
                                                 {item?.title}
                                             </div>
