@@ -128,7 +128,11 @@ const MovingPlan = (props) => {
                                                 left: item.level === 0 ? '0' : '1.55rem',
                                                 backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
                                             }}>
-                                            {item?.title}
+                                            <div
+                                                style={{ width: '160px' }}
+                                            >
+                                                {item?.title}
+                                            </div>
                                         </td>
                                         <td colSpan={1} rowSpan={1} style={{
                                             position: 'sticky',
@@ -332,7 +336,11 @@ const MovingPlan = (props) => {
                                                 // backgroundColor: item.ival1 ? '#CCE295' : item.ival1_1 ? '#E6F0D8' : item.ival1_2 ? '#F2F2F2' : item.ival1_3 ? 'white' : item.ival1_4 ? '#EEECE1' : 'white'
                                                 backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
                                             }}>
-                                                {item?.title}
+                                                <div
+                                                    style={{ width: '175px' }}
+                                                >
+                                                    {item?.title}
+                                                </div>
                                             </td>
                                             <td colSpan={1} rowSpan={1} style={{
                                                 position: 'sticky',
