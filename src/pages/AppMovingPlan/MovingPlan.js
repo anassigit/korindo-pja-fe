@@ -32,6 +32,8 @@ const MovingPlan = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
 
+    const [highestLevel, setHighestLevel] = useState(null)
+
     const [appMovingPlanMsg, setappMovingPlanMsg] = useState("")
 
     const [selectedYear, setSelectedYear] = useState("2023")
@@ -59,7 +61,7 @@ const MovingPlan = (props) => {
     }, [appCompanyCodeListData])
 
     useEffect(() => {
-        if (appListData?.status === '0') {
+        if (appListData?.status === 0) {
             setappMovingPlanMsg(appListData)
             setLoadingSpinner(false)
         } else if (appListData?.status === '1') {
@@ -69,6 +71,7 @@ const MovingPlan = (props) => {
 
     const handleSearch = () => {
         setappMovingPlanMsg('')
+        setHighestLevel(null)
         setLoadingSpinner(true)
         dispatch(getMovingPlantList(
             {
@@ -85,187 +88,364 @@ const MovingPlan = (props) => {
 
     const getColumnHeader = (index) => {
         const baseHeaders = ['Pre. Y', 'BP', 'MP', 'Actual', 'Growth vs. PY', 'Achieve vs. BP', 'Achieve vs. MP']
-        const singkatanHeader = ['PYAC', 'BP', 'MP', 'CYAC', 'GRW', 'ABP', 'AMP']
-        const monthNumber = Math.floor(index / baseHeaders.length) + 1
-        const columnHeader = `${baseHeaders[index % baseHeaders.length]} (${singkatanHeader[index % singkatanHeader.length]}${monthNumber.toString().padStart(2, '0')})`
+        const columnHeader = `${baseHeaders[index % baseHeaders.length]}`
         return columnHeader
     }
 
+    console.log(highestLevel)
     const RecursiveJsx = ({ data, depth = 0 }) => {
 
         return (
             <React.Fragment>
                 {
-                    Array.isArray(data) ? data?.map((item, index) => {
-                        return (
-                            <>
-                                <tr key={index}>
-                                    {/* {
-                                        index === 0 ? null : (
-                                            <td colSpan={1} rowSpan={appListData?.data?.resultList.length}>
-                                            </td>
+                    Array.isArray(data) && data.every(item => item.level !== 0) ? (
+                        data.map((item, index, array) => {
+                            const backgroundColor = item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
+
+                            return (
+                                <React.Fragment key={index}>
+                                    <tr>
+                                        {
+                                            item.level > 0 ? (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={item.level < 3 ? item.level : 3}
+                                                    rowSpan={1}></td>
+                                            ) : null
+                                        }
+                                        <td
+                                            colSpan={item.level === 1 ? 3 : item.level === 2 ? 2 : item.level === 3 ? 1 : item.level === 4 ? 1 : 4}
+                                            // colSpan={3}
+                                            rowSpan={3}
+                                            align="center"
+                                            valign="middle"
+                                            style={{
+                                                position: 'sticky',
+                                                left: item.level === 0 ? '0' : '1.55rem',
+                                                backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
+                                            }}>
+                                            {item?.title}
+                                        </td>
+                                        <td colSpan={1} rowSpan={1} style={{
+                                            position: 'sticky',
+                                            left: '12.7rem',
+                                            backgroundColor: 'white',
+                                        }}>
+                                            Revenue (ITEM)
+                                        </td>
+                                        {
+                                            item.revenueList.map((row, i) => (
+                                                <React.Fragment key={i}>
+                                                    <td>{row.pyac}</td>
+                                                    <td>{row.bp}</td>
+                                                    <td>{row.amp}</td>
+                                                    <td>{row.cyac}</td>
+                                                    <td>{row.grw}</td>
+                                                    <td>{row.abp}</td>
+                                                    <td>{row.amp}</td>
+                                                </React.Fragment>
+                                            ))
+                                        }
+                                    </tr>
+                                    <tr>
+
+                                        {
+                                            item.level === 0 ? (
+                                                null
+                                                // <td
+                                                //     style={{
+                                                //         backgroundColor: backgroundColor,
+                                                //         position: 'sticky',
+                                                //         left: 0,
+                                                //     }}
+                                                //     colSpan={1} rowSpan={1}></td>
+                                            ) : item.level === 1 ? (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={1} rowSpan={1}></td>
+                                            ) : item.level === 2 ? (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={2} rowSpan={1}></td>
+                                            ) : item.level === 3 ? (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={3} rowSpan={1}></td>
+                                            ) : (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={3} rowSpan={1}></td>
+                                            )
+                                        }
+                                        <td colSpan={1} rowSpan={1} style={{
+                                            position: 'sticky',
+                                            left: '12.7rem',
+                                            backgroundColor: 'white'
+                                        }}>
+                                            O.I (ITEM)
+                                        </td>
+                                        {
+                                            item.oiLIst.map((row, i) => (
+                                                <React.Fragment key={i}>
+                                                    <td>{row.pyac}</td>
+                                                    <td>{row.bp}</td>
+                                                    <td>{row.amp}</td>
+                                                    <td>{row.cyac}</td>
+                                                    <td>{row.grw}</td>
+                                                    <td>{row.abp}</td>
+                                                    <td>{row.amp}</td>
+                                                </React.Fragment>
+                                            ))
+                                        }
+                                    </tr>
+                                    <tr>
+                                        {
+                                            item.level === 0 ? (
+                                                null
+                                                // <td
+                                                //     style={{
+                                                //         backgroundColor: backgroundColor,
+                                                //         position: 'sticky',
+                                                //         left: 0,
+                                                //     }}
+                                                //     colSpan={1} rowSpan={1}></td>
+                                            ) : item.level === 1 ? (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={1} rowSpan={1}></td>
+                                            ) : item.level === 2 ? (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={2} rowSpan={1}></td>
+                                            ) : item.level === 3 ? (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={3} rowSpan={1}></td>
+                                            ) : (
+                                                <td
+                                                    style={{
+                                                        backgroundColor: backgroundColor,
+                                                        position: 'sticky',
+                                                        left: 0,
+                                                    }}
+                                                    colSpan={4} rowSpan={1}></td>
+                                            )
+                                        }
+                                        <td colSpan={1} rowSpan={1} style={{
+                                            position: 'sticky',
+                                            left: '12.7rem',
+                                            backgroundColor: 'white'
+                                        }}>
+                                            O.I (%) (ITEM)
+                                        </td>
+                                        {
+                                            item.oiPersenteList.map((row, i) => (
+                                                <React.Fragment key={i}>
+                                                    <td>{row.pyac}</td>
+                                                    <td>{row.bp}</td>
+                                                    <td>{row.amp}</td>
+                                                    <td>{row.cyac}</td>
+                                                    <td>{row.grw}</td>
+                                                    <td>{row.abp}</td>
+                                                    <td>{row.amp}</td>
+                                                </React.Fragment>
+                                            ))
+                                        }
+                                    </tr>
+                                    {
+                                        item.title === 'GROUP TOTAL' ? null : (
+                                            <RecursiveJsx
+                                                data={item.childList}
+                                                depth={depth}
+                                            />
                                         )
-                                    } */}
-                                    <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
-                                        position: 'sticky',
-                                        left: '0',
-                                        backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
-                                    }}>
-                                        {item?.title}
-                                    </td>
-                                    <td colSpan={1} rowSpan={1} style={{
-                                        position: 'sticky',
-                                        left: '8.6rem',
-                                        backgroundColor: 'white',
-                                    }}>
-                                        Revenue (ITEM)
-                                    </td>
-                                    {
-                                        item.revenueList.map((row, i) => (
-                                            <React.Fragment key={i}>
-                                                <td>{row.pyac}</td>
-                                                <td>{row.bp}</td>
-                                                <td>{row.amp}</td>
-                                                <td>{row.cyac}</td>
-                                                <td>{row.grw}</td>
-                                                <td>{row.abp}</td>
-                                                <td>{row.amp}</td>
-                                            </React.Fragment>
-                                        ))
                                     }
-                                </tr>
-                                <tr>
-                                    <td colSpan={1} rowSpan={1} style={{
-                                        position: 'sticky',
-                                        left: '8.6rem',
-                                        backgroundColor: 'white'
-                                    }}>
-                                        O.I (ITEM)
-                                    </td>
-                                    {
-                                        item.oiLIst.map((row, i) => (
-                                            <React.Fragment key={i}>
-                                                <td>{row.pyac}</td>
-                                                <td>{row.bp}</td>
-                                                <td>{row.amp}</td>
-                                                <td>{row.cyac}</td>
-                                                <td>{row.grw}</td>
-                                                <td>{row.abp}</td>
-                                                <td>{row.amp}</td>
-                                            </React.Fragment>
-                                        ))
+                                </React.Fragment>
+                            )
+                        })) : Array.isArray(data) ? (
+                            data.map((item, index, array) => {
+                                if (Array.isArray(item.childList)) {
+                                    setHighestLevel(getMaxLevel(item.childList))
+                                }
+                                function getMaxLevel(data) {
+                                    let maxLevel = 0;
+
+                                    function traverse(node) {
+                                        if (!node || !node.level) {
+                                            return;
+                                        }
+
+                                        maxLevel = Math.max(maxLevel, node.level);
+
+                                        if (Array.isArray(node.childList)) {
+                                            for (const child of node.childList) {
+                                                traverse(child);
+                                            }
+                                        }
                                     }
-                                </tr>
-                                <tr>
-                                    <td colSpan={1} rowSpan={1} style={{
-                                        position: 'sticky',
-                                        left: '8.6rem',
-                                        backgroundColor: 'white'
-                                    }}>
-                                        O.I (%) (ITEM)
-                                    </td>
-                                    {
-                                        item.oiPersenteList.map((row, i) => (
-                                            <React.Fragment key={i}>
-                                                <td>{row.pyac}</td>
-                                                <td>{row.bp}</td>
-                                                <td>{row.amp}</td>
-                                                <td>{row.cyac}</td>
-                                                <td>{row.grw}</td>
-                                                <td>{row.abp}</td>
-                                                <td>{row.amp}</td>
-                                            </React.Fragment>
-                                        ))
+                                    if (data) {
+                                        for (const item of data) {
+                                            traverse(item);
+                                        }
                                     }
-                                </tr>
-                                <RecursiveJsx
-                                    data={item.childList}
-                                    depth={depth}
-                                />
-                            </>
-                        )
-                    }) : data ?
-                        (
-                            <React.Fragment>
-                                <tr>
-                                    <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
-                                        position: 'sticky',
-                                        left: '0',
-                                        // backgroundColor: item.ival1 ? '#CCE295' : item.ival1_1 ? '#E6F0D8' : item.ival1_2 ? '#F2F2F2' : item.ival1_3 ? 'white' : item.ival1_4 ? '#EEECE1' : 'white'
-                                        backgroundColor: data?.level === 0 ? '#CCE295' : data?.level === 1 ? '#E6F0D8' : data?.level === 2 ? '#F2F2F2' : data?.level === 3 ? 'white' : data?.level === 4 ? '#EEECE1' : 'white'
-                                    }}>
-                                        {data?.title}
-                                    </td>
-                                    <td colSpan={1} rowSpan={1} style={{
-                                        position: 'sticky',
-                                        left: '8.6rem',
-                                        backgroundColor: 'white',
-                                    }}>
-                                        Revenue (ITEM)
-                                    </td>
-                                    {
-                                        data?.revenueList.map((row, i) => (
-                                            <React.Fragment key={i}>
-                                                <td>{row.pyac}</td>
-                                                <td>{row.bp}</td>
-                                                <td>{row.amp}</td>
-                                                <td>{row.cyac}</td>
-                                                <td>{row.grw}</td>
-                                                <td>{row.abp}</td>
-                                                <td>{row.amp}</td>
-                                            </React.Fragment>
-                                        ))
-                                    }
-                                </tr>
-                                <tr>
-                                    <td colSpan={1} rowSpan={1} style={{
-                                        position: 'sticky',
-                                        left: '8.6rem',
-                                        backgroundColor: 'white'
-                                    }}>
-                                        O.I (ITEM)
-                                    </td>
-                                    {
-                                        data?.oiLIst.map((row, i) => (
-                                            <React.Fragment key={i}>
-                                                <td>{row.pyac}</td>
-                                                <td>{row.bp}</td>
-                                                <td>{row.amp}</td>
-                                                <td>{row.cyac}</td>
-                                                <td>{row.grw}</td>
-                                                <td>{row.abp}</td>
-                                                <td>{row.amp}</td>
-                                            </React.Fragment>
-                                        ))
-                                    }
-                                </tr>
-                                <tr>
-                                    <td colSpan={1} rowSpan={1} style={{
-                                        position: 'sticky',
-                                        left: '8.6rem',
-                                        backgroundColor: 'white'
-                                    }}>
-                                        O.I (%) (ITEM)
-                                    </td>
-                                    {
-                                        data?.oiPersenteList.map((row, i) => (
-                                            <React.Fragment key={i}>
-                                                <td>{row.pyac}</td>
-                                                <td>{row.bp}</td>
-                                                <td>{row.amp}</td>
-                                                <td>{row.cyac}</td>
-                                                <td>{row.grw}</td>
-                                                <td>{row.abp}</td>
-                                                <td>{row.amp}</td>
-                                            </React.Fragment>
-                                        ))
-                                    }
-                                </tr>
-                                <RecursiveJsx
-                                    data={data.childList}
-                                    depth={depth}
-                                />
-                            </React.Fragment>
+
+                                    return maxLevel;
+                                }
+                                return (
+                                    <React.Fragment key={index}>
+                                        <tr>
+                                            <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
+                                                position: 'sticky',
+                                                left: '0',
+                                                // backgroundColor: item.ival1 ? '#CCE295' : item.ival1_1 ? '#E6F0D8' : item.ival1_2 ? '#F2F2F2' : item.ival1_3 ? 'white' : item.ival1_4 ? '#EEECE1' : 'white'
+                                                backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
+                                            }}>
+                                                {item?.title}
+                                            </td>
+                                            <td colSpan={1} rowSpan={1} style={{
+                                                position: 'sticky',
+                                                left: '12.7rem',
+                                                backgroundColor: 'white',
+                                            }}>
+                                                {
+                                                    item.interestExpenseList ? 'Interest Expense' : 'Revenue (ITEM)'
+                                                }
+                                            </td>
+                                            {
+                                                Array.isArray(item.revenueList) ? item?.revenueList.map((row, i) => (
+                                                    <React.Fragment key={i}>
+                                                        <td>{row.pyac}</td>
+                                                        <td>{row.bp}</td>
+                                                        <td>{row.amp}</td>
+                                                        <td>{row.cyac}</td>
+                                                        <td>{row.grw}</td>
+                                                        <td>{row.abp}</td>
+                                                        <td>{row.amp}</td>
+                                                    </React.Fragment>
+                                                )) : item?.interestExpenseList.map((row, i) => (
+                                                    <React.Fragment key={i}>
+                                                        <td>{row.pyac}</td>
+                                                        <td>{row.bp}</td>
+                                                        <td>{row.amp}</td>
+                                                        <td>{row.cyac}</td>
+                                                        <td>{row.grw}</td>
+                                                        <td>{row.abp}</td>
+                                                        <td>{row.amp}</td>
+                                                    </React.Fragment>
+                                                ))
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1} rowSpan={1} style={{
+                                                position: 'sticky',
+                                                left: '12.7rem',
+                                                backgroundColor: 'white'
+                                            }}>
+                                                {
+                                                    item.netIncomeList ? 'Net Income' : 'O.I (ITEM)'
+                                                }
+                                            </td>
+                                            {
+                                                Array.isArray(item.oiLIst) ? item?.oiLIst.map((row, i) => (
+                                                    <React.Fragment key={i}>
+                                                        <td>{row.pyac}</td>
+                                                        <td>{row.bp}</td>
+                                                        <td>{row.amp}</td>
+                                                        <td>{row.cyac}</td>
+                                                        <td>{row.grw}</td>
+                                                        <td>{row.abp}</td>
+                                                        <td>{row.amp}</td>
+                                                    </React.Fragment>
+                                                )) : item?.netIncomeList.map((row, i) => (
+                                                    <React.Fragment key={i}>
+                                                        <td>{row.pyac}</td>
+                                                        <td>{row.bp}</td>
+                                                        <td>{row.amp}</td>
+                                                        <td>{row.cyac}</td>
+                                                        <td>{row.grw}</td>
+                                                        <td>{row.abp}</td>
+                                                        <td>{row.amp}</td>
+                                                    </React.Fragment>
+                                                ))
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={1} rowSpan={1} style={{
+                                                position: 'sticky',
+                                                left: '12.7rem',
+                                                backgroundColor: 'white'
+                                            }}>
+                                                {
+                                                    item.netIncomeList ? 'Net Income (%)' : 'O.I (%) (ITEM)'
+                                                }
+                                            </td>
+                                            {
+                                                Array.isArray(item.oiPersenteList) ? item?.oiPersenteList.map((row, i) => (
+                                                    <React.Fragment key={i}>
+                                                        <td>{row.pyac}</td>
+                                                        <td>{row.bp}</td>
+                                                        <td>{row.amp}</td>
+                                                        <td>{row.cyac}</td>
+                                                        <td>{row.grw}</td>
+                                                        <td>{row.abp}</td>
+                                                        <td>{row.amp}</td>
+                                                    </React.Fragment>
+                                                )) : item?.netIncomePersenteList.map((row, i) => (
+                                                    <React.Fragment key={i}>
+                                                        <td>{row.pyac}</td>
+                                                        <td>{row.bp}</td>
+                                                        <td>{row.amp}</td>
+                                                        <td>{row.cyac}</td>
+                                                        <td>{row.grw}</td>
+                                                        <td>{row.abp}</td>
+                                                        <td>{row.amp}</td>
+                                                    </React.Fragment>
+                                                ))
+                                            }
+                                        </tr>
+                                        {
+                                            Array.isArray(item.childList) && (
+                                                <RecursiveJsx
+                                                    data={item.childList}
+                                                    depth={depth}
+                                                />
+                                            )
+                                        }
+                                    </React.Fragment>
+                                )
+                            })
                         ) : null
                 }
             </React.Fragment>
@@ -291,7 +471,6 @@ const MovingPlan = (props) => {
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'row',
-                                width: '30%',
                                 gap: '.75vw',
                             }}>
                                 <div
@@ -299,13 +478,15 @@ const MovingPlan = (props) => {
                                         display: 'flex',
                                         flexDirection: 'row',
                                         alignItems: 'center',
-                                        width: '100%',
                                         gap: '.75vw',
                                     }}
                                 >
-                                    <span>{props.t("Year")}</span>
+                                    <span style={{ whiteSpace: 'nowrap' }}>{props.t("Year")}</span>
                                     <Input
                                         type="text"
+                                        style={{
+                                            width: '90%',
+                                        }}
                                         className="form-control"
                                         onChange={e => {
                                             setSelectedYear(e.target.value);
@@ -314,6 +495,7 @@ const MovingPlan = (props) => {
                                     />
                                 </div>
                                 <Input
+                                    style={{ width: 'auto' }}
                                     type="select"
                                     onChange={(e) => {
                                         setselectedCompanyCode(e.target.value)
@@ -324,8 +506,8 @@ const MovingPlan = (props) => {
                                             <option value={''}>{props.t("Select Company")}</option>
                                             {appCompanyCodeListData?.data?.resultList.map((item, index) => {
                                                 return (
-                                                    <option key={index} value={item.companyCode}>
-                                                        {item.companyName}
+                                                    <option key={index} value={item?.companyCode}>
+                                                        {item?.companyName}
                                                     </option>
                                                 )
                                             })}
@@ -336,7 +518,9 @@ const MovingPlan = (props) => {
                                         </option>
                                     )}
                                 </Input>
-                                <Button className="btn btn-primary" onClick={() => handleSearch()}>
+                                <Button
+                                    style={{ width: 'auto' }}
+                                    className="btn btn-primary" onClick={() => handleSearch()}>
                                     {props.t("Search")}
                                 </Button>
                             </div>
@@ -344,7 +528,7 @@ const MovingPlan = (props) => {
                                 <table className="table table-bordered my-3">
                                     <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
                                         <tr>
-                                            <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2' }}>
+                                            <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '300px' }}>
                                                 ITEMS
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
@@ -354,9 +538,15 @@ const MovingPlan = (props) => {
                                                     </th>
                                                 </React.Fragment>
                                             ))}
+                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
+                                                Year to Date
+                                            </th>
+                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
+                                                Total
+                                            </th>
                                         </tr>
                                         <tr>
-                                            {Array.from({ length: 12 * 7 }, (_, index) => (
+                                            {Array.from({ length: 14 * 7 }, (_, index) => (
                                                 <th key={index} style={{ textAlign: 'center', minWidth: '200px' }}>
                                                     {getColumnHeader(index)}
                                                 </th>
@@ -364,8 +554,6 @@ const MovingPlan = (props) => {
                                         </tr>
                                     </thead>
                                     <tbody style={{ position: 'relative' }}>
-                                        {console.log(appListData)}
-
                                         {
                                             <RecursiveJsx
                                                 data={appListData?.data?.resultList}
