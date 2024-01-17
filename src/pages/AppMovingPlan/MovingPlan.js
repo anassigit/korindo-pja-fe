@@ -62,7 +62,6 @@ const MovingPlan = (props) => {
     }, [appCompanyCodeListData])
 
     useEffect(() => {
-        debugger
         if (appListData?.status === 0 || appListData?.status === '0') {
             if (firstSearch) {
                 setappMovingPlanMsg(appListData)
