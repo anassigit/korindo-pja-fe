@@ -31,12 +31,13 @@ const MovingPlan = (props) => {
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
+    const [firstSearch, setFirstSearch] = useState(false)
 
     const [highestLevel, setHighestLevel] = useState(null)
 
     const [appMovingPlanMsg, setappMovingPlanMsg] = useState("")
 
-    const [selectedYear, setSelectedYear] = useState("2023")
+    const [selectedYear, setSelectedYear] = useState("")
     const [selectedCompanyCode, setselectedCompanyCode] = useState("")
 
     useEffect(() => {
@@ -61,8 +62,11 @@ const MovingPlan = (props) => {
     }, [appCompanyCodeListData])
 
     useEffect(() => {
-        if (appListData?.status === 0) {
-            setappMovingPlanMsg(appListData)
+        debugger
+        if (appListData?.status === 0 || appListData?.status === '0') {
+            if (firstSearch) {
+                setappMovingPlanMsg(appListData)
+            }
             setLoadingSpinner(false)
         } else if (appListData?.status === '1') {
             setLoadingSpinner(false)
@@ -71,6 +75,7 @@ const MovingPlan = (props) => {
 
     const handleSearch = () => {
         setappMovingPlanMsg('')
+        setFirstSearch(true)
         setHighestLevel(null)
         setLoadingSpinner(true)
         dispatch(getMovingPlantList(
