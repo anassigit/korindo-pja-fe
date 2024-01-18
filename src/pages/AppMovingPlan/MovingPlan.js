@@ -96,7 +96,6 @@ const MovingPlan = (props) => {
         return columnHeader
     }
 
-    console.log(highestLevel)
     const RecursiveJsx = ({ data, depth = 0 }) => {
 
         return (
@@ -142,6 +141,7 @@ const MovingPlan = (props) => {
                                             position: 'sticky',
                                             left: '12.7rem',
                                             backgroundColor: 'white',
+                                            whiteSpace: 'nowrap',
                                         }}>
                                             Revenue (ITEM)
                                         </td>
@@ -208,7 +208,8 @@ const MovingPlan = (props) => {
                                         <td colSpan={1} rowSpan={1} style={{
                                             position: 'sticky',
                                             left: '12.7rem',
-                                            backgroundColor: 'white'
+                                            backgroundColor: 'white',
+                                            whiteSpace: 'nowrap',
                                         }}>
                                             O.I (ITEM)
                                         </td>
@@ -559,7 +560,7 @@ const MovingPlan = (props) => {
                                         </tr>
                                         <tr>
                                             {Array.from({ length: 14 * 7 }, (_, index) => (
-                                                <th key={index} style={{ textAlign: 'center', minWidth: '200px' }}>
+                                                <th key={index} style={{ textAlign: 'center', minWidth: 'auto' }}>
                                                     {getColumnHeader(index)}
                                                 </th>
                                             ))}
