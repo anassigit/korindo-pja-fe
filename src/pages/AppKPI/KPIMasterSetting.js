@@ -43,14 +43,11 @@ const KPIMasterSetting = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMasterState, setAppKPIMasterState] = useState([])
-
     const [appKPIMsg, setAppKPIMsg] = useState("")
-
-    const [uploadModal, setUploadModal] = useState(false)
-
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
+    const [uploadModal, setUploadModal] = useState(false)
 
     useEffect(() => {
         dispatch(getYearList())
@@ -64,7 +61,7 @@ const KPIMasterSetting = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appYearListData])
+    }, [appYearListData, appKPIMasterListData])
 
     useEffect(() => {
         if (selectedGroupList) {
@@ -90,6 +87,9 @@ const KPIMasterSetting = (props) => {
         }
     }, [appKPIMasterListData])
 
+    const toggleUploadModal = () => {
+        setUploadModal(!uploadModal)
+    }
 
     const downloadMasterTemplate = async () => {
         try {
@@ -99,10 +99,6 @@ const KPIMasterSetting = (props) => {
         } catch (error) {
             console.log(error)
         }
-    }
-
-    const toggleUploadModal = () => {
-        setUploadModal(!uploadModal)
     }
 
     return (
@@ -232,6 +228,7 @@ const KPIMasterSetting = (props) => {
                         modal={uploadModal}
                         toggle={toggleUploadModal}
                         onSuccess={() => {
+                            setLoadingSpinner(true)
                             dispatch(getKPIMaster({
                                 groupNum: selectedGroupList,
                                 corporationId: selectedCorporationList,

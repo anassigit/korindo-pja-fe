@@ -87,7 +87,7 @@ const Rename = (props) => {
 
     useEffect(() => {
         if (renameMsg.status === "1") {
-            // debugger
+            
             setSuccessClose(true)
             setRenameFFMsg(renameMsg)
             renameFileFolderValidInput.resetForm();

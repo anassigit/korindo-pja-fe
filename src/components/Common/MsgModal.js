@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Spinner } from 'reactstrap';
 import '../../assets/scss/custom/modal/modal.css'
 const MsgModal = ({ modal, toggle, message, successClose }) => {
+    
     return (
         <Modal isOpen={modal} toggle={toggle} backdrop="static">
             <ModalHeader toggle={toggle}>Message</ModalHeader>

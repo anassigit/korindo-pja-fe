@@ -47,7 +47,6 @@ const KPIPlanSetting = (props) => {
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
-
     const [uploadModal, setUploadModal] = useState(false)
 
     useEffect(() => {
@@ -271,7 +270,8 @@ const KPIPlanSetting = (props) => {
                     <UploadKPIPlan
                         modal={uploadModal}
                         toggle={toggleUploadModal}
-                        onClick={() => {
+                        onSuccess={() => {
+                            setLoadingSpinner(true)
                             if (selectedYear && selectedCorporationList && selectedGroupList) {
                                 dispatch(getPlan({
                                     groupNum: selectedGroupList,

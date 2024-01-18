@@ -67,7 +67,7 @@ function responseError(response){
       return response.data;
     } else {
         if (response.data.message != null) {
-          // debugger
+          
           if(response.data.message == "Invalid Token"){
             localStorage.removeItem("authUser")
             localStorage.removeItem("user")
@@ -168,29 +168,6 @@ export async function postDownload(url, data, config ={responseType: 'blob'}) {
   })
 }
 
-// export async function postDownload(url, getFiles, config ={responseType: 'blob'}) {
-//   debugger
-//   console.log(getFiles)
-//   axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-//   let token = localStorage.getItem("authUser"); 
-//   return await axiosApi.post(url+"?KOR_TOKEN="+encodeURIComponent(token)+"&"+$.param(getFiles), { ...config })
-//   // return await axiosApi.post(url, { ...data }, { ...config },)
-//   .then(
-//     response => {
-//       debugger
-//       if (response.status == 200) {
-//         debugger
-//         console.log(response.headers)
-//         let url = window.URL.createObjectURL(new Blob([response.getFiles]));   
-//         console.log(url)
-//         saveAs(url, getFiles.filename);
-//       } else {
-//          return responseError(response);
-//       }
-      
-//   })
-// }
-
 
 export async function postDownloadXlsx(
   url,
@@ -209,9 +186,9 @@ export async function postDownloadXlsx(
       { ...config }
     )
     .then(response => {
-      // debugger
+      
       if (response.status == 200) {
-        // debugger
+        
         let res = response.data.data.download
         console.log(res)
         const contentType =
@@ -229,7 +206,7 @@ export async function postDownloadXlsx(
 
 
 const String64toBlob = (data, contentType = "", sliceSize = 512) => {
-  // debugger
+  
   const byteCharacters = atob(data)
   const byteArrays = []
 

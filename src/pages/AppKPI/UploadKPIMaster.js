@@ -5,10 +5,10 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
-import { resetMessage, msgUpload, uploadFile, getSelectFile } from '../../store/appFileManagement/actions';
 import shortid from "shortid";
 import { withTranslation } from "react-i18next"
 import { uploadMasterKPI } from 'store/actions';
+import { resetMessage } from 'store/appKPI/actions';
 
 const UploadKPIMaster = (props) => {
 
@@ -79,13 +79,7 @@ const UploadKPIMaster = (props) => {
         await dispatch(uploadMasterKPI(value));
         // toggleMsgModal()
 
-    };
-
-
-    useEffect(() => {
-
-        uploadFileFolderValidInput.resetForm();
-    }, [props.toggle])
+    }
 
     const [uploadMsgModal, setUploadMsgModal] = useState(false)
     const [uploadContentModal, setUploadContentModal] = useState("")
@@ -93,12 +87,17 @@ const UploadKPIMaster = (props) => {
     const toggleMsgModal = () => {
         setUploadMsgModal(!uploadMsgModal)
         if (uploadMsg.status === "1") {
-            props.toggle()
             setUploadMsg("")
             SetSelectedFile([])
+            props.toggle()
             props.onSuccess()
         }
     }
+
+    useEffect(() => {
+        uploadFileFolderValidInput.resetForm()
+    }, [props.toggle])
+
 
     useEffect(() => {
         if (uploadRespMsg.status === "1") {

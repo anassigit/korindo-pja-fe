@@ -40,7 +40,7 @@ const SidebarContent = (props) => {
     if (!submenuLocalStorage) {
       setDropdownOpen({ rule: true, kpi: true })
     }
-    if (location.pathname === "/AppKPIDashboard" || location.pathname === "/AppPlanSetting" || location.pathname === "/AppKPIMasterSetting" || location.pathname === "/AppActualInput") {
+    if (location.pathname === "/AppKPIDashboard" || location.pathname === "/AppKPIPlanSetting" || location.pathname === "/AppKPIMasterSetting" || location.pathname === "/AppKPIInputResult") {
       setDropdownOpen((prevState) => ({ ...prevState, kpi: false }));
     }
     dispatch(getMenuRuleData());

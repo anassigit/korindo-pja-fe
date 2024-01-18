@@ -453,7 +453,7 @@ const AddInstructions = (props) => {
 
     useEffect(() => {
         if (appAddInstructionsMessage.status == "1") {
-            // debugger
+            
             props.setAppInstructionsPage(true);
             props.setAppAddInstructions(false);
             dispatch(getInstructionsData(props.appInstructionsTabelSearch))
@@ -541,7 +541,6 @@ const AddInstructions = (props) => {
             const updatedSelectedMulti = selectedMulti2.map((item) => {
                 const matchingManager = managerList?.find((data) => data.id === item.value);
                 if (matchingManager) {
-                    debugger
                     return {
                         value: matchingManager.id,
                         label: matchingManager.name + (matchingManager.gname !== null ? ` (${matchingManager.gname})` : ''),

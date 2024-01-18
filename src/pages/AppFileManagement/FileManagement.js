@@ -139,7 +139,6 @@ const FileManagement = (props) => {
   const queryFolderNum = queryParameters.get("folder_num")
 
   const toggleRenameModal = (idT, nmT, tpT) => {
-debugger
     setIdNowLoc(currFolder)
     setIdToggle(idT)
     if (tpT === "FILE") {
@@ -162,8 +161,6 @@ debugger
   }
 
   const togglePreviewModal = (imgUrl, imgNm) => {
-
-    debugger
 
     setImagePreviewModal(!imagePreviewModal);
 
@@ -200,7 +197,7 @@ debugger
 
   const toggleShowModal = (vUrl, vNm) => {
 
-// debugger
+
 
     const pdfWindow = window.open();
     pdfWindow.location.href = new URL(vUrl);
@@ -445,7 +442,7 @@ debugger
   const [searchVal, setSearchVal] = useState()
 
   const handleSearchChange = (e) => {
-    // debugger
+    
     setEnterMonthlyDataSpinner(true)
     dispatch(getSearch({ "search": searchVal }))
   }
@@ -507,7 +504,7 @@ debugger
 
   const handleContextMenu2 = (e, noFile, parFile, nmFile, tpFile, urlFile) => {
 
-    // debugger
+    
     e.preventDefault();
 
     const xPos2 = e.clientX;
