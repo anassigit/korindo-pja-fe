@@ -16,7 +16,7 @@ import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
 import { getDownloadPlanTemplateBE } from "helpers/backend_helper"
-import UploadKPI from "./UploadKPI"
+import UploadKPIPlan from "./UploadKPIPlan"
 
 
 const KPIPlanSetting = (props) => {
@@ -268,9 +268,24 @@ const KPIPlanSetting = (props) => {
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
-                    <UploadKPI
+                    <UploadKPIPlan
                         modal={uploadModal}
                         toggle={toggleUploadModal}
+                        onClick={() => {
+                            if (selectedYear && selectedCorporationList && selectedGroupList) {
+                                dispatch(getPlan({
+                                    groupNum: selectedGroupList,
+                                    corporationId: selectedCorporationList,
+                                    year: selectedYear,
+                                }))
+                            } else {
+                                dispatch(getPlan({
+                                    groupNum: '',
+                                    corporationId: '',
+                                    year: '',
+                                }))
+                            }
+                        }}
                     />
                 </>
             }

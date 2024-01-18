@@ -94,7 +94,7 @@ const KPIMasterSetting = (props) => {
     const downloadMasterTemplate = async () => {
         try {
             dispatch(getDownloadMasterTemplateBE({
-                file_nm: "KPI MASTER TEMPLATE.xlsx"
+                file_nm: props.t('KPI MASTER TEMPLATE')
             }))
         } catch (error) {
             console.log(error)
@@ -231,6 +231,13 @@ const KPIMasterSetting = (props) => {
                     <UploadKPIMaster
                         modal={uploadModal}
                         toggle={toggleUploadModal}
+                        onSuccess={() => {
+                            dispatch(getKPIMaster({
+                                groupNum: selectedGroupList,
+                                corporationId: selectedCorporationList,
+                                year: selectedYear,
+                            }))
+                        }}
                     />
                 </>
             }

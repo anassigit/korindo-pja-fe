@@ -164,5 +164,6 @@
   "KPI Plan Setting": "KPI Plan Setting",
   "No valid files selected. Allowed file types: xls & xlsx": "No valid files selected. Allowed file types: xls & xlsx",
   "Are you sure you want to delete this file?": "Are you sure you want to delete this file?",
-  "Please select file": "Please select file"
+  "Please select file": "Please select file",
+  "KPI MASTER TEMPLATE": "KPI MASTER TEMPLATE.xlsx"
 }

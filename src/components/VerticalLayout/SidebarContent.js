@@ -287,7 +287,7 @@ const SidebarContent = (props) => {
                 }
                 style={{ fontSize: "14px" }}
                 to="/AppKPIMasterSetting"
-                hidden={dropdownOpen.kpi}
+                hidden={dropdownOpen.kpi || !getDetailProfile?.data?.admin}
                 className={location.pathname === "/AppKPIMasterSetting" ? "active" : null}
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Master Setting")}</span>
@@ -298,7 +298,7 @@ const SidebarContent = (props) => {
                 }
                 style={{ fontSize: "14px" }}
                 to="/AppKPIPlanSetting"
-                hidden={dropdownOpen.kpi}
+                hidden={dropdownOpen.kpi || !getDetailProfile?.data?.admin}
                 className={location.pathname === "/AppKPIPlanSetting" ? "active" : null}
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Plan Setting")}</span>

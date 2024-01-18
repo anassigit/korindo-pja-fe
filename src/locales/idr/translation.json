@@ -170,5 +170,6 @@
   "KPI Plan Setting": "Pengaturan Rencana KPI",
   "No valid files selected. Allowed file types: xls & xlsx": "Tidak ada berkas sah yang dipilih. Jenis berkas yang diperbolehkan: xls dan xlsx",
   "Are you sure you want to delete this file?": "Apakah Anda yakin ingin menghapus berkas ini?",
-  "Please select file": "Silakan pilih berkas"
+  "Please select file": "Silakan pilih berkas",
+  "KPI MASTER TEMPLATE": "TEMPLATE INDUK KPI.xlsx"
 }

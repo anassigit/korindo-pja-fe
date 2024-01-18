@@ -10,7 +10,7 @@ import shortid from "shortid";
 import { withTranslation } from "react-i18next"
 import { uploadMasterKPI, uploadPlanKPI } from 'store/actions';
 
-const UploadKPI = (props) => {
+const UploadKPIPlan = (props) => {
 
     const dispatch = useDispatch();
     const [uploadSpinner, setUploadSpinner] = useState(false)
@@ -91,12 +91,10 @@ const UploadKPI = (props) => {
     const toggleMsgModal = () => {
         setUploadMsgModal(!uploadMsgModal)
         if (uploadMsg.status === "1") {
-
             props.toggle()
-
             setUploadMsg("")
             SetSelectedFile([])
-
+            props.onSuccess()
         }
     }
 
@@ -259,11 +257,12 @@ const UploadKPI = (props) => {
 
 }
 
-UploadKPI.propTypes = {
+UploadKPIPlan.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idToggleUpload: PropTypes.any,
     location: PropTypes.object,
-    t: PropTypes.any
+    t: PropTypes.any,
+    onSuccess: PropTypes.any
 };
-export default withTranslation()(UploadKPI)
+export default withTranslation()(UploadKPIPlan)

@@ -93,22 +93,17 @@ const UploadKPIMaster = (props) => {
     const toggleMsgModal = () => {
         setUploadMsgModal(!uploadMsgModal)
         if (uploadMsg.status === "1") {
-
             props.toggle()
-
             setUploadMsg("")
             SetSelectedFile([])
-
+            props.onSuccess()
         }
     }
 
     useEffect(() => {
         if (uploadRespMsg.status === "1") {
-
             setSuccessClose(true)
-            setUploadMsg(uploadRespMsg);
-
-
+            setUploadMsg(uploadRespMsg)
         }
         setUploadContentModal(uploadRespMsg.message)
         setUploadSpinner(false)
@@ -196,7 +191,6 @@ const UploadKPIMaster = (props) => {
                 toggle={toggleMsgModal}
                 message={uploadContentModal}
                 successClose={successClose}
-            //data={idFile}
             />
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -267,6 +261,7 @@ UploadKPIMaster.propTypes = {
     toggle: PropTypes.any,
     idToggleUpload: PropTypes.any,
     location: PropTypes.object,
-    t: PropTypes.any
+    t: PropTypes.any,
+    onSuccess: PropTypes.any
 };
 export default withTranslation()(UploadKPIMaster)

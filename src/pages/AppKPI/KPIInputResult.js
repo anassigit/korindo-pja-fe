@@ -119,7 +119,7 @@ const KPIInputResult = (props) => {
     }, [appEditMode])
 
     useEffect(() => {
-        if(appEditActualInputMessage.status === '1') {
+        if (appEditActualInputMessage.status === '1') {
             setAppEditMode(false)
             dispatch(getActualInputData({
                 groupNum: selectedGroupList,
@@ -256,7 +256,11 @@ const KPIInputResult = (props) => {
                                                         <td colSpan={1}>{item.unit}</td>
                                                         <td colSpan={1}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td colSpan={1}>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
-                                                        <td>{item.note}</td>
+                                                        <td>
+                                                            {item.note.split('\n').map((line, lineIndex) => (
+                                                                <div key={lineIndex}>{line}</div>
+                                                            ))}
+                                                        </td>
                                                     </tr>
                                                 </React.Fragment>
                                             )
@@ -325,7 +329,11 @@ const KPIInputResult = (props) => {
                                                                         />
                                                                     </td>
                                                                 ) : (
-                                                                    <td>{item.note}</td>
+                                                                    <td>
+                                                                        {item.note.split('\n').map((line, lineIndex) => (
+                                                                            <div key={lineIndex}>{line}</div>
+                                                                        ))}
+                                                                    </td>
                                                                 )
                                                         }
                                                     </tr>

@@ -75,12 +75,12 @@
   "ID": "아이디",
   "Password": "비밀번호",
   "Position": "직책",
-  "Save": "변경",
+  "Save": "저장",
   "Add Group Mapping": "그룹 매핑 추가",
   "Add Member": "멤버 추가",
   "Apply": "적용",
   "Background Color": "배경색",
-  "Edit": "편집",
+  "Edit": "등록",
   "Email": "이메일",
   "Name": "이름",
   "Permission": "직무",
@@ -170,5 +170,6 @@
   "KPI Plan Setting": "KPI 계획 설정",
   "No valid files selected. Allowed file types: xls & xlsx": "유효한 파일을 선택하지 않았습니다. 허용되는 파일 형식: xls 및 xlsx",
   "Are you sure you want to delete this file?": "이 파일을 삭제하시겠습니까?",
-  "Please select file": "파일을 선택해주세요"
+  "Please select file": "파일을 선택해주세요",
+  "KPI MASTER TEMPLATE": "KPI 마스터 템플릿.xlsx"
 }
