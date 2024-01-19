@@ -281,28 +281,30 @@ const SidebarContent = (props) => {
                   className="fas fa-chevron-down dropdown-icon"
                 ></i>
               </a>
-              <Link
+              <a
                 onClick={() =>
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
-                to="/AppKPIMasterSetting"
+                // to="/AppKPIMasterSetting"
+                href="/AppKPIMasterSetting"
                 hidden={dropdownOpen.kpi || !getDetailProfile?.data?.admin}
                 className={location.pathname === "/AppKPIMasterSetting" ? "active" : null}
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Master Setting")}</span>
-              </Link>
-              <Link
+              </a>
+              <a
                 onClick={() =>
                   ReactSession.remove("submenuKey")
                 }
                 style={{ fontSize: "14px" }}
-                to="/AppKPIPlanSetting"
+                // to="/AppKPIPlanSetting"
+                href="/AppKPIPlanSetting"
                 hidden={dropdownOpen.kpi || !getDetailProfile?.data?.admin}
                 className={location.pathname === "/AppKPIPlanSetting" ? "active" : null}
               >
                 <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Plan Setting")}</span>
-              </Link>
+              </a>
               <Link
                 onClick={() =>
                   ReactSession.remove("submenuKey")

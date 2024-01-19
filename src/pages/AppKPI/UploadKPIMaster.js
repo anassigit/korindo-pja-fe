@@ -76,8 +76,7 @@ const UploadKPIMaster = (props) => {
 
     const insertUpload = async (value) => {
 
-        await dispatch(uploadMasterKPI(value));
-        // toggleMsgModal()
+        await dispatch(uploadMasterKPI(value))
 
     }
 
@@ -133,7 +132,6 @@ const UploadKPIMaster = (props) => {
                     })
 
                     if (processedFiles.length === validFiles.length) {
-                        // All files have been processed
                         SetSelectedFile((prevValue) => [...prevValue, ...processedFiles])
                     }
                 }

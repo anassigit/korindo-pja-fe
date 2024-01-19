@@ -61,7 +61,7 @@ const KPIPlanSetting = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appYearListData])
+    }, [appYearListData, appGroupListData, appCorporationListData, appPlanListData])
 
     useEffect(() => {
         if (selectedGroupList) {
@@ -88,6 +88,7 @@ const KPIPlanSetting = (props) => {
     }, [selectedCorporationList, selectedGroupList, selectedYear])
 
     useEffect(() => {
+        debugger
         if (appPlanListData.status === '1') {
             setAppPlanState(appPlanListData.data.list)
         } else {
@@ -272,6 +273,7 @@ const KPIPlanSetting = (props) => {
                         toggle={toggleUploadModal}
                         onSuccess={() => {
                             setLoadingSpinner(true)
+                            debugger
                             if (selectedYear && selectedCorporationList && selectedGroupList) {
                                 dispatch(getPlan({
                                     groupNum: selectedGroupList,

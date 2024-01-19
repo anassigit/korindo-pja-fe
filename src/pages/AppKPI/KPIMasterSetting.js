@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import { withTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types"
+import React, { useEffect, useState } from "react"
+import { withTranslation } from "react-i18next"
+import { useDispatch, useSelector } from "react-redux"
 import {
     Button,
     Card,
@@ -9,21 +9,21 @@ import {
     CardHeader,
     Input,
     Spinner
-} from "reactstrap";
-import { getCorporationList, getDownloadMasterTemplate, getGroupListKPI, getKPIMaster, getYearList, resetMessage } from "store/actions";
-import '../../assets/scss/custom/components/custom-datepicker.scss';
-import "../../assets/scss/custom/table/TableCustom.css";
-import RootPageCustom from '../../common/RootPageCustom';
-import '../../config';
-import UploadKPIMaster from "./UploadKPIMaster";
-import { getDownloadMasterTemplateBE } from "helpers/backend_helper";
+} from "reactstrap"
+import { getCorporationList, getGroupListKPI, getKPIMaster, getYearList, resetMessage } from "store/actions"
+import '../../assets/scss/custom/components/custom-datepicker.scss'
+import "../../assets/scss/custom/table/TableCustom.css"
+import RootPageCustom from '../../common/RootPageCustom'
+import '../../config'
+import { getDownloadMasterTemplateBE } from "helpers/backend_helper"
+import UploadKPIMaster from "./UploadKPIMaster"
 
 
 const KPIMasterSetting = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     const appYearListData = useSelector((state) => {
         return state.kpiReducer.respGetYearList
@@ -61,7 +61,7 @@ const KPIMasterSetting = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appYearListData, appKPIMasterListData])
+    }, [appYearListData, appGroupListData, appCorporationListData, appKPIMasterListData])
 
     useEffect(() => {
         if (selectedGroupList) {
@@ -239,7 +239,7 @@ const KPIMasterSetting = (props) => {
                 </>
             }
         />
-    );
+    )
 
 
 }

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
 import shortid from "shortid";
 import { withTranslation } from "react-i18next"
-import { uploadMasterKPI, uploadPlanKPI } from 'store/actions';
+import { uploadPlanKPI } from 'store/actions';
 import { resetMessage } from 'store/appKPI/actions';
 
 const UploadKPIPlan = (props) => {
@@ -75,15 +75,9 @@ const UploadKPIPlan = (props) => {
 
     const insertUpload = async (value) => {
 
-        await dispatch(uploadPlanKPI(value));
+        await dispatch(uploadPlanKPI(value))
 
-    };
-
-
-    useEffect(() => {
-
-        uploadFileFolderValidInput.resetForm();
-    }, [props.modal])
+    }
 
     const [uploadMsgModal, setUploadMsgModal] = useState(false)
     const [uploadContentModal, setUploadContentModal] = useState("")
@@ -99,8 +93,8 @@ const UploadKPIPlan = (props) => {
     }
 
     useEffect(() => {
-        uploadFileFolderValidInput.resetForm()
-    }, [props.toggle])
+        uploadFileFolderValidInput.resetForm();
+    }, [props.modal])
 
     useEffect(() => {
         if (uploadRespMsg.status === "1") {
