@@ -66,6 +66,21 @@ const EnterMonthlyData = (props) => {
   const [tempIdDel, setTempIdDel] = useState()
   const [isYes, setIsYes] = useState(false)
 
+  const months = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ]
+
   const yearData = useSelector(state => {
     return state.fileManagementReducer.respGetYear;
   })
@@ -246,7 +261,7 @@ const EnterMonthlyData = (props) => {
                           value={selectedMonth}
                           onChange={handleMonthChange}
                         >
-                          {monthData?.data?.monthList.map((value, key) => (
+                          {months.map((value, key) => (
                             <option key={key} value={value}>
                               {value}
                             </option>
@@ -261,7 +276,7 @@ const EnterMonthlyData = (props) => {
                 <p /><Row className="mb-2">
                   {dashboardData?.data?.list.map((items, index) => (
                     <Col sm={12} md={6} lg={3} key={index}>
-                      <Card className="mb-2" style={{ backgroundColor: items.open ? null : "#E8E8E8", borderRadius:"0.5em" }}>
+                      <Card className="mb-2" style={{ backgroundColor: items.open ? null : "#E8E8E8", borderRadius: "0.5em" }}>
                         <CardBody>
                           <Row className="text-center justify-content-center" style={{ marginTop: "-5%" }}>
                             {items.count > 0 ? (
