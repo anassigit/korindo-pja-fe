@@ -121,7 +121,7 @@ const Instructions = (props) => {
         let temp3 = ReactSession.get('dateTo')
         let temp4 = ReactSession.get('searchValue')
         let temp5 = ReactSession.get('selected2')
-        let temp6 = ReactSession.get('selectedArray') ? ReactSession.get('selectedArray') : ['1', '2', '3', '4']
+        let temp6 = Array.isArray(ReactSession.get('selectedArray')) && ReactSession.get('selectedArray').length > 0 ? ReactSession.get('selectedArray') : ['1', '2', '3', '4']
 
         let stringArray = ''
         stringArray = temp6.join(',')
