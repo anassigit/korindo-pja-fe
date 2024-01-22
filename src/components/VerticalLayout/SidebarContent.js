@@ -224,23 +224,28 @@ const SidebarContent = (props) => {
                         localStorage.removeItem("selectedYear");
                         localStorage.removeItem("selectedMonth");
                       }}
+                      href={Array.isArray(item.subList) && item.subList.length < 1 ? `/AppRule?v=${item.id}` : null}
                       hidden={dropdownOpen.rule}
                     >
                       <span style={{ whiteSpace: "nowrap", paddingLeft: "12px" }}>{item.name}</span>
-                      <i
-                        hidden={!dropdownOpen[`submenu-${index + 1}`]}
-                        style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                        className="fas fa-chevron-up dropdown-icon"
-                      ></i>
-                      <i
-                        hidden={dropdownOpen[`submenu-${index + 1}`]}
-                        style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                        className="fas fa-chevron-down dropdown-icon"
-                      ></i>
+                      {Array.isArray(item.subList) && item.subList.length > 0 ? (
+                        <>
+                          <i
+                            hidden={!dropdownOpen[`submenu-${index + 1}`]}
+                            style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
+                            className="fas fa-chevron-up dropdown-icon"
+                          ></i>
+                          <i
+                            hidden={dropdownOpen[`submenu-${index + 1}`]}
+                            style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
+                            className="fas fa-chevron-down dropdown-icon"
+                          ></i>
+                        </>
+                      ) : null}
+
                     </a>
                     {dropdownOpen[`submenu-${index + 1}`] &&
                       item?.subList.map((subMenu, i) => {
-
                         return (
                           <a
                             key={i}
