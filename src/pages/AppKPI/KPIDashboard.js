@@ -486,10 +486,11 @@ const KPIDashboard = (props) => {
                                                         top: '30%'
                                                     }}>
                                                         <span className="text-primary">
-                                                            {formatter.format(item.totalPlan)} /
+                                                            {formatter.format(item.totalResult)} /
                                                         </span>
                                                         <span style={{ color: '#D4D4FD' }}>
-                                                            &nbsp;{formatter.format(item.totalResult)}
+                                                            &nbsp;
+                                                            {formatter.format(item.totalPlan)}
                                                         </span>
                                                     </div>
                                                     <div

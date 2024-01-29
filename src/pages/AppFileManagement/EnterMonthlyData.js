@@ -114,7 +114,11 @@ const EnterMonthlyData = (props) => {
   }, [selectedYear])
 
   useEffect(() => {
-    setSelectedMonth(dashboardData?.data?.month)
+    if (dashboardData?.data?.month !== 'undefined') {
+      setSelectedMonth(dashboardData?.data?.month)
+    } else {
+      setSelectedMonth(null)
+    }
     setSelectedYear(dashboardData?.data?.year)
     if (dashboardData.status === '1') {
       setEnterMonthlyDataSpinner(false)
