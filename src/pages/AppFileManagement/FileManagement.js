@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react"
-import RootPageCustom from '../../common/RootPageCustom';
-import PropTypes, { any } from 'prop-types';
-import '../../config';
+import RootPageCustom from '../../common/RootPageCustom'
+import PropTypes, { any } from 'prop-types'
+import '../../config'
 import {
   Row,
   Col,
@@ -17,18 +17,18 @@ import {
   Spinner,
   CardHeader
 } from "reactstrap"
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
-import Rename from "./Rename";
-import Upload from "./Upload";
-import Create from "./Create";
-import Move from "./Move";
-import ImagePreview from "./ImagePreview";
-import ConfirmModal from "components/Common/ConfirmModal";
-import { downloadFileFolder } from "helpers/backend_helper";
+import Rename from "./Rename"
+import Upload from "./Upload"
+import Create from "./Create"
+import Move from "./Move"
+import ImagePreview from "./ImagePreview"
+import ConfirmModal from "components/Common/ConfirmModal"
+import { downloadFileFolder } from "helpers/backend_helper"
 import { withTranslation } from "react-i18next"
-import MsgModal from 'components/Common/MsgModal';
+import MsgModal from 'components/Common/MsgModal'
 
 //css//
 import "../../assets/scss/contextmenu.scss"
@@ -51,17 +51,17 @@ import txtformat from '../../assets/images/file_management/txtformat.png'
 import picture from '../../assets/images/file_management/picture.png'
 import film from '../../assets/images/file_management/film.png'
 import unknown from '../../assets/images/file_management/unknown.png'
-import { getProfile } from "store/actions";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { getProfile } from "store/actions"
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 
 const FileManagement = (props) => {
 
-  //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : "";
+  //let userId = ReactSession.get("user") ? JSON.parse(ReactSession.get("user")).id : ""
   let tempIndex = null
 
-  const history = useHistory();
-  const dispatch = useDispatch();
+  const history = useHistory()
+  const dispatch = useDispatch()
   const [fileManagementPage, setFileManagementPage] = useState(true)
   const [fileManagementMsg, setFileManagementMsg] = useState("")
   const [idParent, setIdParent] = useState(0)
@@ -94,16 +94,16 @@ const FileManagement = (props) => {
   const [downloadMsgModal, setDownloadMsgModal] = useState(false)
   const [downloadContentModal, setDownloadContentModal] = useState("")
   const [successClose, setSuccessClose] = useState(false)
-  const [appFileManagementData, setAppFileManagementData] = useState(null);
+  const [appFileManagementData, setAppFileManagementData] = useState(null)
 
-  const [enterMonthlyDataSpinner, setEnterMonthlyDataSpinner] = useState(false);
+  const [enterMonthlyDataSpinner, setEnterMonthlyDataSpinner] = useState(false)
 
   // folder left-right click
-  const [isContextMenuOpen, setContextMenuOpen] = useState(false);
-  const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
-  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
-  const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+  const [isContextMenuOpen, setContextMenuOpen] = useState(false)
+  const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false)
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false)
+  const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false)
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 })
 
   const [numberFolders, setNumberFolders] = useState()
   const [parentFolders, setParentFolders] = useState(0)
@@ -111,11 +111,11 @@ const FileManagement = (props) => {
   const [typeFolders, setTypeFolders] = useState("")
 
   // file left-right click
-  const [isContextMenuOpen2, setContextMenuOpen2] = useState(false);
-  const [isDropdownMenuOpen2, setDropdownMenuOpen2] = useState(false);
-  const [isContextMenuVisible2, setIsContextMenuVisible2] = useState(false);
-  const [isDropdownMenuVisible2, setIsDropdownMenuVisible2] = useState(false);
-  const [contextMenuPosition2, setContextMenuPosition2] = useState({ x: 0, y: 0 });
+  const [isContextMenuOpen2, setContextMenuOpen2] = useState(false)
+  const [isDropdownMenuOpen2, setDropdownMenuOpen2] = useState(false)
+  const [isContextMenuVisible2, setIsContextMenuVisible2] = useState(false)
+  const [isDropdownMenuVisible2, setIsDropdownMenuVisible2] = useState(false)
+  const [contextMenuPosition2, setContextMenuPosition2] = useState({ x: 0, y: 0 })
 
   const [numberFiles, setNumberFiles] = useState()
   const [parentFiles, setParentFiles] = useState(0)
@@ -133,7 +133,7 @@ const FileManagement = (props) => {
   const [URLImage, setURLImage] = useState("")
   const [locImage, setLocImage] = useState()
 
-  const contextMenuRef = useRef(null);
+  const contextMenuRef = useRef(null)
 
   const queryParameters = new URLSearchParams(window.location.search)
   const queryFolderNum = queryParameters.get("folder_num")
@@ -146,11 +146,11 @@ const FileManagement = (props) => {
       setNmToggle(realNm)
       var extNm1 = nmT.lastIndexOf('.')
       if (extNm1 !== -1) {
-        var extNm = nmT.slice(extNm1 + 1);
+        var extNm = nmT.slice(extNm1 + 1)
         setNmToggleExt(extNm)
 
       } else {
-        console.log("No file extension found.");
+        console.log("No file extension found.")
       }
       setTypeRename(tpT)
     } else {
@@ -162,47 +162,47 @@ const FileManagement = (props) => {
 
   const togglePreviewModal = (imgUrl, imgNm) => {
 
-    setImagePreviewModal(!imagePreviewModal);
+    setImagePreviewModal(!imagePreviewModal)
 
     try {
-      const lastDotIndex = imgNm.lastIndexOf('.');
+      const lastDotIndex = imgNm.lastIndexOf('.')
 
       if (lastDotIndex !== -1) {
-        var flTypeReal = imgNm.slice(lastDotIndex + 1);
-        setFileType(flTypeReal);
+        var flTypeReal = imgNm.slice(lastDotIndex + 1)
+        setFileType(flTypeReal)
         console.log("ext", fileType)
       } else {
-        console.log("No file extension found.");
+        console.log("No file extension found.")
       }
 
-      const urlImg = new URL(imgUrl);
+      const urlImg = new URL(imgUrl)
 
-      setURLImage(urlImg);
-      setNmImage(imgNm);
+      setURLImage(urlImg)
+      setNmImage(imgNm)
 
     } catch (error) {
-      console.error("Invalid URL:", imgUrl);
+      console.error("Invalid URL:", imgUrl)
     }
 
-    if (flTypeReal === "pdf"){
+    if (flTypeReal === "pdf") {
 
-      const pdfWindow = window.open();
-      pdfWindow.location.href = new URL(imgUrl);
+      const pdfWindow = window.open()
+      pdfWindow.location.href = new URL(imgUrl)
 
       setImagePreviewModal(false)
       setContextMenuOpen2(false)
-    } 
-    
+    }
+
   }
 
   const toggleShowModal = (vUrl, vNm) => {
 
 
 
-    const pdfWindow = window.open();
-    pdfWindow.location.href = new URL(vUrl);
+    const pdfWindow = window.open()
+    pdfWindow.location.href = new URL(vUrl)
 
-  };
+  }
 
   const toggleUploadModal = () => {
 
@@ -218,11 +218,11 @@ const FileManagement = (props) => {
     setIdToggleCreate(idChild)
 
     setTimeout(() => {
-      var inputFolderNm = document.getElementById("newFolderNm");
+      var inputFolderNm = document.getElementById("newFolderNm")
       if (inputFolderNm) {
-        inputFolderNm.focus();
+        inputFolderNm.focus()
       }
-    }, 0);
+    }, 0)
   }
 
   const toggleMoveModal = (Fid, Pid) => {
@@ -255,7 +255,7 @@ const FileManagement = (props) => {
 
   useEffect(() => {
 
-    dispatch(resetMessage());
+    dispatch(resetMessage())
 
     if (queryFolderNum) {
       setCurrFolder(queryFolderNum)
@@ -285,15 +285,15 @@ const FileManagement = (props) => {
   const [realFilePath, setRealFilePath] = useState()
 
   const getFileSelect = useSelector(state => {
-    return state.fileManagementReducer.respGetSelect;
+    return state.fileManagementReducer.respGetSelect
   })
 
   const getSearchFile = useSelector(state => {
-    return state.fileManagementReducer.respGetSearchFile;
+    return state.fileManagementReducer.respGetSearchFile
   })
 
   const downloadRespMsg = useSelector(state => {
-    return state.fileManagementReducer.respGetDownloadCheck;
+    return state.fileManagementReducer.respGetDownloadCheck
   })
 
   useEffect(() => {
@@ -305,7 +305,7 @@ const FileManagement = (props) => {
 
     if (getFileSelect) {
       setRealFileList(getFileSelect?.data?.childList)
-      setRealFilePath(getFileSelect?.data?.path);
+      setRealFilePath(getFileSelect?.data?.path)
       setEnterMonthlyDataSpinner(false)
     }
   }, [getFileSelect])
@@ -323,7 +323,7 @@ const FileManagement = (props) => {
 
 
   const msgDeleteFile = useSelector(state => {
-    return state.fileManagementReducer.msgDelete;
+    return state.fileManagementReducer.msgDelete
   })
 
 
@@ -334,7 +334,7 @@ const FileManagement = (props) => {
   const getInsideFolder = (e, f, n) => {
 
     setCurrFolder(e)
-    history.push(`?folder_num=${e}`);
+    history.push(`?folder_num=${e}`)
 
     setEnterMonthlyDataSpinner(true)
     if (currFolder?.toString() === e?.toString()) {
@@ -385,18 +385,18 @@ const FileManagement = (props) => {
 
     setDownloadFlag(true)
 
-  };
+  }
 
   const toggleMsgModal = () => {
-    setDownloadMsgModal(!downloadMsgModal);
+    setDownloadMsgModal(!downloadMsgModal)
 
     if (downloadMsg.status === "0") {
       downloadCheckFile2
-      handleEffect();
+      handleEffect()
 
     }
 
-  };
+  }
 
   useEffect(() => {
 
@@ -405,7 +405,7 @@ const FileManagement = (props) => {
       const indexed_array = {
         file_num: numTemp,
         file_nm: fileNmTemp
-      };
+      }
       dispatch(downloadCheckFile(indexed_array))
       setDownloadFlag(false)
 
@@ -418,31 +418,31 @@ const FileManagement = (props) => {
       const indexed_array = {
         file_num: numTemp,
         file_nm: fileNmTemp
-      };
+      }
       dispatch(downloadFileFolder(indexed_array))
     } catch (error) {
       console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
 
     if (downloadRespMsg.status === "0") {
-      setDownloadMsg(downloadRespMsg);
+      setDownloadMsg(downloadRespMsg)
       toggleMsgModal()
 
     } else if (downloadRespMsg.status === "1") {
       downloadFolderFile()
     }
     setDownloadContentModal(downloadRespMsg.message)
-    setDownloadMsg("");
+    setDownloadMsg("")
 
   }, [downloadRespMsg])
 
   const [searchVal, setSearchVal] = useState()
 
   const handleSearchChange = (e) => {
-    
+
     setEnterMonthlyDataSpinner(true)
     dispatch(getSearch({ "search": searchVal }))
   }
@@ -453,50 +453,50 @@ const FileManagement = (props) => {
 
 
   const handleContextMenu = (e, noFolder, parFolder, nmFolder, tpFolder) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const xPos = e.clientX;
-    const yPos = e.clientY;
+    const xPos = e.clientX
+    const yPos = e.clientY
 
-    setNumberFolders(noFolder);
-    setParentFolders(parFolder);
-    setNameFolders(nmFolder);
-    setTypeFolders(tpFolder);
+    setNumberFolders(noFolder)
+    setParentFolders(parFolder)
+    setNameFolders(nmFolder)
+    setTypeFolders(tpFolder)
     setIsContextMenuVisible(true)
-    setIsContextMenuVisible2(false);
-    setDropdownMenuOpen(false);
-    setDropdownMenuOpen2(false);
+    setIsContextMenuVisible2(false)
+    setDropdownMenuOpen(false)
+    setDropdownMenuOpen2(false)
     setContextMenuPosition({ x: xPos, y: yPos })
 
-  };
+  }
 
   const handleContextMenuOpen = (e) => {
 
-    e.preventDefault();
+    e.preventDefault()
 
-    const xPos = e.clientX;
-    const yPos = e.clientY;
+    const xPos = e.clientX
+    const yPos = e.clientY
 
-    setContextMenuOpen(true);
-    setContextMenuOpen2(false);
-    setDropdownMenuOpen(false);
-    setDropdownMenuOpen2(false);
-    setContextMenuPosition({ x: xPos, y: yPos });
-  };
+    setContextMenuOpen(true)
+    setContextMenuOpen2(false)
+    setDropdownMenuOpen(false)
+    setDropdownMenuOpen2(false)
+    setContextMenuPosition({ x: xPos, y: yPos })
+  }
 
   const hideContextMenu = () => {
 
     setIsContextMenuVisible(false)
-  };
+  }
 
   const handleDropdownMenuToggle = () => {
 
-    setDropdownMenuOpen(true);
-    setContextMenuOpen(false);
-    setContextMenuOpen2(false);
-    setIsContextMenuVisible(false);
-    setIsContextMenuVisible2(false);
-  };
+    setDropdownMenuOpen(true)
+    setContextMenuOpen(false)
+    setContextMenuOpen2(false)
+    setIsContextMenuVisible(false)
+    setIsContextMenuVisible2(false)
+  }
 
   ///  --- END --- ///
 
@@ -504,60 +504,60 @@ const FileManagement = (props) => {
 
   const handleContextMenu2 = (e, noFile, parFile, nmFile, tpFile, urlFile) => {
 
-    
-    e.preventDefault();
 
-    const xPos2 = e.clientX;
-    const yPos2 = e.clientY;
+    e.preventDefault()
 
-    setNumberFiles(noFile);
-    setParentFiles(parFile);
-    setNameFiles(nmFile);
-    setTypeFiles(tpFile);
+    const xPos2 = e.clientX
+    const yPos2 = e.clientY
+
+    setNumberFiles(noFile)
+    setParentFiles(parFile)
+    setNameFiles(nmFile)
+    setTypeFiles(tpFile)
     setUrlFiles(urlFile)
     setIsContextMenuVisible2(true)
-    setIsContextMenuVisible(false);
-    setDropdownMenuOpen(false);
-    setDropdownMenuOpen2(false);
+    setIsContextMenuVisible(false)
+    setDropdownMenuOpen(false)
+    setDropdownMenuOpen2(false)
     setContextMenuPosition2({ x: xPos2, y: yPos2 })
 
-  };
+  }
 
   const handleContextMenuOpen2 = (e) => {
 
-    e.preventDefault();
+    e.preventDefault()
 
-    const xPos2 = e.clientX;
-    const yPos2 = e.clientY;
+    const xPos2 = e.clientX
+    const yPos2 = e.clientY
 
-    setContextMenuOpen2(true);
-    setContextMenuOpen(false);
-    setDropdownMenuOpen2(false);
-    setDropdownMenuOpen(false);
-    setContextMenuPosition2({ x: xPos2, y: yPos2 });
-  };
+    setContextMenuOpen2(true)
+    setContextMenuOpen(false)
+    setDropdownMenuOpen2(false)
+    setDropdownMenuOpen(false)
+    setContextMenuPosition2({ x: xPos2, y: yPos2 })
+  }
 
   const hideContextMenu2 = () => {
 
     setIsContextMenuVisible2(false)
 
-  };
+  }
 
   const handleDropdownMenuToggle2 = () => {
 
-    setDropdownMenuOpen2(true);
-    setContextMenuOpen(false);
-    setContextMenuOpen2(false);
-    setIsContextMenuVisible(false);
-    setIsContextMenuVisible2(false);
+    setDropdownMenuOpen2(true)
+    setContextMenuOpen(false)
+    setContextMenuOpen2(false)
+    setIsContextMenuVisible(false)
+    setIsContextMenuVisible2(false)
 
-  };
+  }
 
   const getDetailProfile = useSelector(state => {
-    return state.userProfileReducer.respGetProfile;
+    return state.userProfileReducer.respGetProfile
   })
 
-  let isAdmin = getDetailProfile?.data?.member?.id
+  let isCreate = getFileSelect?.data?.create
 
   useEffect(() => {
     if (queryFolderNum) {
@@ -663,7 +663,7 @@ const FileManagement = (props) => {
                       <div className="text-sm-end">
                         <div className="float-end ms-1">
                           {
-                            isAdmin === 'admin'
+                            isCreate === true
                               ?
                               <UncontrolledDropdown className="mb-2">
 
@@ -734,7 +734,10 @@ const FileManagement = (props) => {
                 <Row className="mb-1 col-sm-10 unselectable"><h6><i className="mdi mdi-folder align-baseline fs-5" />{"   "}{props.t("Folders")}</h6></Row>
                 <p />
                 <p />
-                <div onClick={() => { hideContextMenu(); hideContextMenu2(); }}>
+                <div onClick={() => {
+                  hideContextMenu()
+                  hideContextMenu2()
+                }}>
                   <Row className="mb-2">
                     <Col sm="12">
 
@@ -749,7 +752,7 @@ const FileManagement = (props) => {
                                 <div
                                   {...(myfiles.edit === true && myfiles.open === true && {
                                     onContextMenu: (e) => {
-                                      handleContextMenu(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type);
+                                      handleContextMenu(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type)
                                     },
                                     onClick: hideContextMenu,
                                   })}
@@ -758,8 +761,8 @@ const FileManagement = (props) => {
 
                                     {...(myfiles.open === true && myfiles.edit === true && {
                                       onContextMenu: (e) => {
-                                        e.preventDefault();
-                                        handleContextMenuOpen(e);
+                                        e.preventDefault()
+                                        handleContextMenuOpen(e)
                                       },
                                       style: { cursor: "pointer" },
                                     })}
@@ -895,14 +898,14 @@ const FileManagement = (props) => {
                               <div
                                 {...(myfiles.open === true && myfiles.edit === true && {
                                   onContextMenu: (e) => {
-                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles?.url);
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles?.url)
                                   },
                                   onClick: hideContextMenu2,
                                 })}
 
                                 {...(myfiles.open === true && myfiles.edit === false && {
                                   onContextMenu: (e) => {
-                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles?.url);
+                                    handleContextMenu2(e, myfiles.num, myfiles.parent_num, myfiles.name, myfiles.type, myfiles?.url)
                                   },
                                   onClick: hideContextMenu2,
                                 })}
@@ -911,52 +914,52 @@ const FileManagement = (props) => {
 
                                 <Card className="shadow-none border bg-light"
                                 // {...(function () {
-                                //   const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
-                                //   const allowedExtensions = ["jpg","jpeg","gif","png","mp4","mkv","flv","mov","avi"];
+                                //   const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase()
+                                //   const allowedExtensions = ["jpg","jpeg","gif","png","mp4","mkv","flv","mov","avi"]
 
                                 //   if (myfiles.open === true && myfiles.edit === true && allowedExtensions.includes(fileExtension)) {
                                 //     return {
                                 //       onContextMenu: (e) => {
-                                //         e.preventDefault();
-                                //         handleContextMenuOpen2(e);
+                                //         e.preventDefault()
+                                //         handleContextMenuOpen2(e)
                                 //       },
                                 //       onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                 //       style: { cursor: "pointer" },
-                                //     };
+                                //     }
                                 //   } else {
                                 //     return {
                                 //       onDoubleClick: () => toggleShowModal(myfiles?.url),
                                 //       style: { cursor: "pointer" },
-                                //     };
+                                //     }
                                 //   }
                                 // })()}
 
                                 // {...(function () {
-                                //   const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
-                                //   const allowedExtensions = ["jpg","jpeg","gif","png","mp4","mkv","flv","mov","avi"];
+                                //   const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase()
+                                //   const allowedExtensions = ["jpg","jpeg","gif","png","mp4","mkv","flv","mov","avi"]
 
                                 //   if (myfiles.open === true && myfiles.edit === false && allowedExtensions.includes(fileExtension)) {
                                 //     return {
                                 //       onContextMenu: (e) => {
-                                //         e.preventDefault();
-                                //         handleContextMenuOpen2(e);
+                                //         e.preventDefault()
+                                //         handleContextMenuOpen2(e)
                                 //       },
                                 //       onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                 //       style: { cursor: "pointer" },
-                                //     };
+                                //     }
                                 //   } else {
                                 //     return {
                                 //       onDoubleClick: () => toggleShowModal(myfiles?.url),
                                 //       style: { cursor: "pointer" },
-                                //     };
+                                //     }
                                 //   }
 
                                 // })()}
 
                                 // {...(myfiles.open === true && myfiles.edit === false && {
                                 //   onContextMenu: (e) => {
-                                //     e.preventDefault();
-                                //     handleContextMenuOpen2(e);
+                                //     e.preventDefault()
+                                //     handleContextMenuOpen2(e)
                                 //   },
                                 //   onDoubleClick: () => toggleShowModal(myfiles?.url),
                                 //   onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
@@ -1165,44 +1168,44 @@ const FileManagement = (props) => {
                                   <CardBody className="p-2 unselectable"
 
                                     {...(function () {
-                                      const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
-                                      const allowedExtensions = ["jpg", "jpeg", "gif", "png", "mp4", "mkv", "flv", "mov", "avi"];
+                                      const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase()
+                                      const allowedExtensions = ["jpg", "jpeg", "gif", "png", "mp4", "mkv", "flv", "mov", "avi"]
 
                                       if (myfiles.open === true && myfiles.edit === true && allowedExtensions.includes(fileExtension)) {
                                         return {
                                           onContextMenu: (e) => {
-                                            e.preventDefault();
-                                            handleContextMenuOpen2(e);
+                                            e.preventDefault()
+                                            handleContextMenuOpen2(e)
                                           },
                                           onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
-                                        };
+                                        }
                                       } else {
                                         return {
                                           onDoubleClick: () => toggleShowModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
-                                        };
+                                        }
                                       }
                                     })()}
 
                                     {...(function () {
-                                      const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase();
-                                      const allowedExtensions = ["jpg", "jpeg", "gif", "png", "mp4", "mkv", "flv", "mov", "avi"];
+                                      const fileExtension = myfiles.name.slice(myfiles.name.lastIndexOf(".") + 1).toLowerCase()
+                                      const allowedExtensions = ["jpg", "jpeg", "gif", "png", "mp4", "mkv", "flv", "mov", "avi"]
 
                                       if (myfiles.open === true && myfiles.edit === false && allowedExtensions.includes(fileExtension)) {
                                         return {
                                           onContextMenu: (e) => {
-                                            e.preventDefault();
-                                            handleContextMenuOpen2(e);
+                                            e.preventDefault()
+                                            handleContextMenuOpen2(e)
                                           },
                                           onClick: () => togglePreviewModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
-                                        };
+                                        }
                                       } else {
                                         return {
                                           onDoubleClick: () => toggleShowModal(myfiles?.url, myfiles.name),
                                           style: { cursor: "pointer" },
-                                        };
+                                        }
                                       }
 
                                     })()}
@@ -1217,7 +1220,7 @@ const FileManagement = (props) => {
                                           <div className="avatar-title bg-transparent rounded">
                                             {(() => {
 
-                                              var fileNameLowerCase = myfiles.name.toLowerCase();
+                                              var fileNameLowerCase = myfiles.name.toLowerCase()
 
 
                                               if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
@@ -1234,7 +1237,7 @@ const FileManagement = (props) => {
                                                       src={doc}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("jpg") ||
                                                 fileNameLowerCase.endsWith("jpeg") ||
@@ -1253,7 +1256,7 @@ const FileManagement = (props) => {
                                                       src={myfiles?.url ? new URL(myfiles.url) : ''}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("xls") ||
                                                 fileNameLowerCase.endsWith("xlsx") ||
@@ -1273,7 +1276,7 @@ const FileManagement = (props) => {
                                                       src={xls}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("ppt") ||
                                                 fileNameLowerCase.endsWith("pptx")) {
@@ -1290,7 +1293,7 @@ const FileManagement = (props) => {
                                                       src={ppt}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               } else if (fileNameLowerCase.endsWith("pdf")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail unselectable">
@@ -1305,7 +1308,7 @@ const FileManagement = (props) => {
                                                       src={pdf}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               } else if (fileNameLowerCase.endsWith("txt")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
@@ -1320,7 +1323,7 @@ const FileManagement = (props) => {
                                                       src={txt}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("mov") ||
                                                 fileNameLowerCase.endsWith("mp4") ||
@@ -1398,7 +1401,7 @@ const FileManagement = (props) => {
                                                       src={unknown}
                                                     />
                                                   </div>
-                                                );
+                                                )
                                               }
                                             })()}
                                           </div>
@@ -1411,7 +1414,7 @@ const FileManagement = (props) => {
 
                                             {(() => {
 
-                                              var fileNameLowerCase = myfiles.name.toLowerCase();
+                                              var fileNameLowerCase = myfiles.name.toLowerCase()
 
 
                                               if (fileNameLowerCase.endsWith("docx") || fileNameLowerCase.endsWith("doc")) {
@@ -1450,7 +1453,7 @@ const FileManagement = (props) => {
                                                     </button>
 
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("jpg") ||
                                                 fileNameLowerCase.endsWith("jpeg") ||
@@ -1459,11 +1462,11 @@ const FileManagement = (props) => {
                                               ) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
-                                                    <img 
-                                                    style={{
-                                                      filter: 'blur(5px)'
-                                                    }}
-                                                    src={myfiles?.url ? new URL(myfiles.url) : ''} 
+                                                    <img
+                                                      style={{
+                                                        filter: 'blur(5px)'
+                                                      }}
+                                                      src={myfiles?.url ? new URL(myfiles.url) : ''}
                                                     />
 
                                                     <button
@@ -1485,7 +1488,7 @@ const FileManagement = (props) => {
                                                       <i className="mdi mdi-eye-off fs-1" />
                                                     </button>
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("xls") ||
                                                 fileNameLowerCase.endsWith("xlsx") ||
@@ -1495,9 +1498,9 @@ const FileManagement = (props) => {
                                                   <div className="thumbnail-container thumbnail">
 
                                                     <img
-                                                                                                        style={{
-                                                                                                          filter: 'blur(5px)'
-                                                                                                        }}
+                                                      style={{
+                                                        filter: 'blur(5px)'
+                                                      }}
                                                       src={xls}
                                                     />
 
@@ -1520,7 +1523,7 @@ const FileManagement = (props) => {
                                                       <i className="mdi mdi-eye-off fs-1" />
                                                     </button>
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("ppt") ||
                                                 fileNameLowerCase.endsWith("pptx")) {
@@ -1557,7 +1560,7 @@ const FileManagement = (props) => {
                                                       <i className="mdi mdi-eye-off fs-1" />
                                                     </button>
                                                   </div>
-                                                );
+                                                )
                                               } else if (fileNameLowerCase.endsWith("pdf")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
@@ -1592,7 +1595,7 @@ const FileManagement = (props) => {
                                                       <i className="mdi mdi-eye-off fs-1" />
                                                     </button>
                                                   </div>
-                                                );
+                                                )
                                               } else if (fileNameLowerCase.endsWith("txt")) {
                                                 return (
                                                   <div className="thumbnail-container thumbnail">
@@ -1627,7 +1630,7 @@ const FileManagement = (props) => {
                                                       <i className="mdi mdi-eye-off fs-1" />
                                                     </button>
                                                   </div>
-                                                );
+                                                )
                                               } else if (
                                                 fileNameLowerCase.endsWith("mov") ||
                                                 fileNameLowerCase.endsWith("mp4") ||
@@ -1760,7 +1763,7 @@ const FileManagement = (props) => {
                                       className="custom-context-menu"
 
                                       style={{
-                                        position: 'fixed',    
+                                        position: 'fixed',
                                         left: contextMenuPosition2.x + 'px',
                                         top: contextMenuPosition2.y + 'px',
                                       }}
@@ -1904,8 +1907,8 @@ const FileManagement = (props) => {
       }
     />
 
-  );
-};
+  )
+}
 FileManagement.propTypes = {
   location: PropTypes.object,
   t: PropTypes.any
