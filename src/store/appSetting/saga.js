@@ -4,11 +4,11 @@ import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_S
 
 import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping, respGetMembers2 } from "./actions"
 
-import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getMembersForMapping, getPermissionList, getRankList, getRelationList, getSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
+import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getMembersForMapping, getPermissionList, getRankList, getRelationList, getGeneralSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
 
-function* fetchGetAllSetting({ payload: req }) {
+function* fetchGetGeneralSetting({ payload: req }) {
   try {
-    const response = yield call(getSetting, req)
+    const response = yield call(getGeneralSetting, req)
     if (response.status == 1) {
       yield put(respGetSetting(response))
     } else {
@@ -206,7 +206,7 @@ function* fetchGetAllMembersMapping({ payload: req }) {
 
 function* settingSaga() {
 
-  yield takeEvery(GET_SETTING, fetchGetAllSetting)
+  yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
   yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
   yield takeEvery(EDIT_MEMBERS, fetchEditMembers)
   yield takeEvery(DELETE_MEMBERS, fetchDeleteMembers)

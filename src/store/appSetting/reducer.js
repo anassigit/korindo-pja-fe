@@ -8,8 +8,6 @@ import {
   MSGDELETE,
   RESET_MESSAGE,
   EDIT_GENERAL_SETTING,
-  GET_GENERAL_SETTING,
-  RESP_GET_GENERAL_SETTING,
   GET_SETTING,
   RESP_GET_SETTING,
   GET_MEMBERS,
@@ -28,8 +26,7 @@ import {
   GET_MEMBERS_MAPPING,
   RESP_GET_MEMBERS_MAPPING,
   GET_MEMBERS2,
-  RESP_GET_MEMBERS2,
-
+  RESP_GET_MEMBERS2
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -44,15 +41,12 @@ const INIT_STATE = {
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
-  msgDownload: "",
+  msgDownload: ""
 }
 
 const settingReducer = (state = INIT_STATE, action) => {
 
   switch (action.type) {
-
-    /* GET ALL SETTING */
-
     case GET_SETTING:
       return {
         ...state,
@@ -97,16 +91,10 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
       }
-
-    /* GENERAL SETTING */
-
     case EDIT_GENERAL_SETTING:
       return {
         ...state,
       }
-
-    /* MEMBERS */
-
     case GET_MEMBERS:
       return {
         ...state,
@@ -117,19 +105,15 @@ const settingReducer = (state = INIT_STATE, action) => {
         respGetMembers: action.payload,
       }
 
-      case GET_MEMBERS2:
-        return {
-          ...state,
-        }
-      case RESP_GET_MEMBERS2:
-        return {
-          ...state,
-          respGetMembers2: action.payload,
-        }
-  
-
-    /* RANK LIST */
-
+    case GET_MEMBERS2:
+      return {
+        ...state,
+      }
+    case RESP_GET_MEMBERS2:
+      return {
+        ...state,
+        respGetMembers2: action.payload,
+      }
     case GET_RANK_LIST:
       return {
         ...state,
@@ -139,9 +123,6 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetRankList: action.payload,
       }
-
-    /* PERMISSION LIST */
-
     case GET_PERMISSION_LIST:
       return {
         ...state,
@@ -151,9 +132,6 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetPermissionList: action.payload,
       }
-
-    /* PERMISSION LIST */
-
     case GET_GROUP_LIST:
       return {
         ...state,
@@ -163,10 +141,6 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetGroupList: action.payload,
       }
-
-
-    /* RELATION LIST */
-
     case GET_RELATION_LIST:
       return {
         ...state,
@@ -176,8 +150,6 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetRelationList: action.payload,
       }
-
-    /* GROUP MAPPING */
     case SAVE_GROUP_MAPPING:
       return {
         ...state,
@@ -190,7 +162,6 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
       }
-
     case GET_MEMBERS_MAPPING:
       return {
         ...state,
@@ -200,7 +171,6 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetMembersMapping: action.payload,
       }
-
     default:
       return state
   }

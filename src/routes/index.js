@@ -18,7 +18,7 @@ import User from "../pages/App008/User"
 import Instructions from "../pages/AppInstructions/Instructions"
 import UserProfile from "../pages/AppUserProfile/UserProfile"
 import ChangePassword from "../pages/AppUserProfile/ChangePassword"
-import Setting from "pages/AppSetting/Setting"
+import GeneralSetting from "pages/AppSetting/GeneralSetting"
 import EditInstructions from "pages/AppInstructions/EditInstructions"
 import FileManagement from "pages/AppFileManagement/FileManagement"
 import FirstLogin from "pages/Authentication/FirstLogin"
@@ -29,6 +29,8 @@ import KPIMasterSetting from "pages/AppKPI/KPIMasterSetting"
 import MovingPlan from "pages/AppMovingPlan/MovingPlan"
 import KPIInputResult from "pages/AppKPI/KPIInputResult"
 import KPIPlanSetting from "pages/AppKPI/KPIPlanSetting"
+import MemberSetting from "pages/AppSetting/MemberSetting"
+import OrganizationSetting from "pages/AppSetting/OrganizationSetting"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -38,7 +40,7 @@ const authProtectedRoutes = [
   { path: "/app008", component: User },
   { path: "/AppInstructions", component: Instructions },
   { path: "/AppEditInstruction", component: EditInstructions },
-  { path: "/AppSetting", component: Setting },
+  { path: "/AppSetting", component: GeneralSetting },
   { path: "/AppUserProfile", component: UserProfile },
   { path: "/changePassword", component: ChangePassword },
   { path: "/AppFileManagement", component: FileManagement },
@@ -51,6 +53,8 @@ const authProtectedRoutes = [
   { path: "/AppKPIInputResult", component: KPIInputResult },
   { path: "/AppMovingPlan", component: MovingPlan },
   { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> },
+  { path: "/AppMemberSetting", component: MemberSetting },
+  { path: "/AppOrganizationSetting", component: OrganizationSetting },
 ]
 
 const publicRoutes = [

@@ -147,31 +147,33 @@ export const deleteReply = req => postWithParam("rest/InstructionRest/DeleteRepl
 
 //appSetting
 
-export const getSetting = req => post("/rest/SettingRest/SelectSetting", req)
+export const getGeneralSetting = req => post("/rest/SettingMasterRest/SelectSetting", req)
 
-export const getMembers = req => post("/rest/SettingRest/SelectMemeberList", req)
+export const getMembers = req => post("/rest/MemberMasterRest/SelectMemeberList", req)
 
-export const getMembersForMapping = req => post("/rest/SettingRest/SelectMemberListForMapping", req)
+export const getMembersForMapping = req => post("/rest/OrganizationMasterRest/SelectMemberList", req)
 
-export const getRankList = req => post("/rest/SettingRest/SelectRankList", req)
+export const getRankList = req => post("/rest/MemberMasterRest/SelectRankList", req)
 
-export const getPermissionList = req => post("/rest/SettingRest/SelectPermissionList", req)
+export const getPermissionList = req => post("/rest/MemberMasterRest/SelectPermissionList", req)
 
-export const getGroupList = req => post("/rest/SettingRest/SelectGroupList", req)
+export const getGroupList = req => post("/rest/OrganizationMasterRest/SelectGroupList", req)
 
-export const getRelationList = req => post("/rest/SettingRest/SelectRelationList", req)
+export const getRelationList = req => post("/rest/OrganizationMasterRest/SelectRelationList", req)
 
-export const saveMembers = req => postWithParam("/rest/SettingRest/InsertMember", req)
+export const updateGeneralSetting = req => postWithParam("/rest/SettingMasterRest/UpdateSetting", req)
 
-export const updateMembers = req => postWithParam("/rest/SettingRest/UpdateMember", req)
+export const saveMembers = req => postWithParam("/rest/MemberMasterRest/InsertMember", req)
 
-export const deleteMembers = req => postWithParam("/rest/SettingRest/DeleteMember", req)
+export const updateMembers = req => postWithParam("/rest/MemberMasterRest/UpdateMember", req)
 
-export const saveGroupMapping = req => postWithParam("/rest/SettingRest/InsertRelation", req)
+export const deleteMembers = req => postWithParam("/rest/MemberMasterRest/DeleteMember", req)
 
-export const updateGroupMapping = req => postWithParam("/rest/SettingRest/UpdateRelation", req)
+export const saveGroupMapping = req => postWithParam("/rest/OrganizationMasterRest/InsertRelation", req)
 
-export const deleteGroupMapping = req => postWithParam("/rest/SettingRest/DeleteRelation", req)
+export const updateGroupMapping = req => postWithParam("/rest/OrganizationMasterRest/UpdateRelation", req)
+
+export const deleteGroupMapping = req => postWithParam("/rest/OrganizationMasterRest/DeleteRelation", req)
 
 /* App Rule */
 
@@ -186,10 +188,6 @@ export const getAttachment = req => post("rest/InstructionRest/SelectAttachFileL
 /* LOGS */
 
 export const getLogsList = req => post("rest/InstructionRest/SelectLogList", req)
-
-/* GENERAL SETTING */
-
-export const updateGeneralSetting = req => postWithParam("/rest/SettingRest/UpdateSetting", req)
 
 /* FILE MANAGEMENT */
 

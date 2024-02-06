@@ -1,7 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
-import { ReactSession } from 'react-client-session';
 
 const currentURL = window.location.href;
 
