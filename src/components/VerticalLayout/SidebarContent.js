@@ -161,20 +161,19 @@ const SidebarContent = props => {
     );
   }
 
-
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
         <div id="sidebar-menu" style={{ marginTop: "40px" }}>
           <ul className="metismenu list-unstyled" id="side-menu">
-            {Array.isArray(menu) && menu.map(item => {
-              if (menuType === 'pja') {
-                return renderMenuItem(item)
-              } else {
-                dispatch(getMenuList())
-                return null
-              }
-            })}
+            {Array.isArray(menu) && firstTimeLogin === 'false' ?
+              menuType === 'pja' ?
+                menu.map(item => renderMenuItem(item))
+                :
+                (dispatch(getMenuList()), null)
+              :
+              null
+            }
 
           </ul>
         </div>

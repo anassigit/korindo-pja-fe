@@ -36,6 +36,7 @@ function* loginUser({ payload: { user, history } }) {
       }
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      debugger
       ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
       localStorage.setItem('appFileManagementData', '')
 
@@ -87,8 +88,8 @@ function* reloginUser({ payload: { user, history } }) {
 
 function* logoutUser({ payload: { history } }) {
   try {
-    localStorage.removeItem("authUser");
-    localStorage.removeItem("user");
+    localStorage.removeItem("authUser")
+    localStorage.removeItem("user")
     localStorage.removeItem('menu')
     ReactSession.remove('menu')
     localStorage.removeItem('menuType')
