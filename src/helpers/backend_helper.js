@@ -24,9 +24,9 @@ export const getUser = req => post("/app001/get-user", req)
 export const getReportJasper = req => post("/app001/generate-report-jasper", req)
 
 //app002
-export const getMenu = () => post("/rest/app002/get-menu")
+// export const getMenu = () => post("/rest/app002/get-menu")
 
-export const getMenuAll = req => post("/rest/app002/get-menu-all", req)
+// export const getMenuAll = req => post("/rest/app002/get-menu-all", req)
 
 export const editMenu = req => post("/rest/app002/edit", req)
 
@@ -101,6 +101,8 @@ export const editUserProfile = req => postWithParam("MemberRest/UpdateMyInfo", r
 export const updateUserPassword = req => postWithParam("MemberRest/UpdatePassword", req)
 
 export const updateForgetPassword = req => postWithParam("MemberRest/ForgotPassword", req)
+
+export const getMenuBE = req => post("MemberRest/getMenuList", req)
 
 
 //appInstructions

@@ -9,13 +9,16 @@ import {
   MSGUPPASSWORD,
   EMAIL_FORGOT_PASSWORD,
   UPDATE_FORGOT_PASSWORD,
-  MSG_EMAIL_FORGOT_PASSWORD
+  MSG_EMAIL_FORGOT_PASSWORD,
+  GET_MENU,
+  RESP_GET_MENU
 
 } from "./actionTypes"
 
 const INIT_STATE = {
 
   respGetProfile: {},
+  respGetMenuList: {},
   msgEdit: "",
   msgUpdatePassword: "",
   msgForgotPassword: "",
@@ -76,7 +79,15 @@ const userProfileReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
       }
-
+    case GET_MENU:
+      return {
+        ...state,
+      }
+    case RESP_GET_MENU:
+      return {
+        ...state,
+        respGetMenuList: action.payload,
+      }
     default:
       return state
   }

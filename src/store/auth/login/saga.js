@@ -5,7 +5,7 @@ import { LOGIN_USER, LOGOUT_USER, RELOGIN_USER } from "./actionTypes"
 import { apiError, loginSuccess, reloginSuccess } from "./actions"
 import { ReactSession } from 'react-client-session';
 
-import { login, getMenu } from "helpers/backend_helper"
+import { login, getMenu, getMenuBE, getSelectMenu } from "helpers/backend_helper"
 import { useEffect } from "react";
 
 window.onpopstate = function (event) {
@@ -22,7 +22,19 @@ function* loginUser({ payload: { user, history } }) {
     const response = yield call(login, user);
     if (response.status == 1) {
 
-      localStorage.setItem("authUser", response.data.KOR_TOKEN);
+      localStorage.setItem("authUser", response.data.KOR_TOKEN)
+      const menu = yield call(getMenuBE, '');
+      if (menu.status == '1') {
+        const menuString = JSON.stringify(menu.data.result);
+        const menuRule = yield call(getSelectMenu, '');
+        if (menuRule.status == '1') {
+          const menuString2 = JSON.stringify(menuRule);
+          localStorage.setItem('menuRule', menuString2);
+        }
+        localStorage.setItem('menu', menuString);
+        localStorage.setItem('menuType', 'pja');
+      }
+
       localStorage.setItem("user", JSON.stringify(response.data.user));
       ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
       localStorage.setItem('appFileManagementData', '')
@@ -48,6 +60,18 @@ function* reloginUser({ payload: { user, history } }) {
     const response = yield call(login, user);
     if (response.status == 1) {
       localStorage.setItem("authUser", response.data.KOR_TOKEN);
+      const menu = yield call(getMenuBE, '');
+      if (menu.status == '1') {
+        const menuString = JSON.stringify(menu.data.result);
+        const menuRule = yield call(getSelectMenu, '');
+        if (menuRule.status == '1') {
+          const menuString2 = JSON.stringify(menuRule);
+          localStorage.setItem('menuRule', menuString2);
+        }
+        localStorage.setItem('menu', menuString);
+        localStorage.setItem('menuType', 'pja');
+      }
+
       localStorage.setItem("user", JSON.stringify(response.data.user));
       yield put(reloginSuccess(response))
       window.location.reload()
@@ -65,6 +89,10 @@ function* logoutUser({ payload: { history } }) {
   try {
     localStorage.removeItem("authUser");
     localStorage.removeItem("user");
+    localStorage.removeItem('menu')
+    ReactSession.remove('menu')
+    localStorage.removeItem('menuType')
+    localStorage.removeItem('menuRule')
     history.push("/login");
     yield put(apiError(""))
   } catch (error) {

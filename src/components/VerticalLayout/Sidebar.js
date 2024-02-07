@@ -17,7 +17,6 @@ const Sidebar = props => {
       <div className="vertical-menu">
         <div style={{ borderRight: "2px solid #D9D1D1" }} className="navbar-brand-box">
           <a href="/AppInstructions" className="logo logo-dark" onClick={() => {
-            window.location.reload()
             ReactSession.remove("appInstructionsTabelSearch")
             ReactSession.remove('selected')
             ReactSession.remove('selected2')

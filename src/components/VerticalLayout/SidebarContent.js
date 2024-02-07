@@ -1,57 +1,63 @@
+import MetisMenu from "metismenujs";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
-import SimpleBar from "simplebar-react";
-import MetisMenu from "metismenujs";
-import { withRouter, Link } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 import { withTranslation } from "react-i18next";
-import { ReactSession } from "react-client-session";
 import { useDispatch, useSelector } from "react-redux";
-import { getMenuRuleData, getRuleData } from "store/appRule/actions";
-import "../../assets/scss/custom.scss"
-import { Spinner } from "reactstrap";
+import { Link, withRouter } from "react-router-dom";
+import SimpleBar from "simplebar-react";
+import { getInfoProfileData, getMenuList } from "store/actions";
+import { getMenuRuleData } from "store/appRule/actions";
 
-const SidebarContent = (props) => {
-  const dispatch = useDispatch();
-  const ref = useRef();
-  const location = props.location;
-  const [dropdownOpen, setDropdownOpen] = useState({});
-  const [activeMenuItem, setActiveMenuItem] = useState(""); // Step 1: State for active menu item
+const SidebarContent = props => {
 
-  const getDetailProfile = useSelector((state) => state.userProfileReducer.respGetProfile);
-  const getMenu = useSelector((state) => state.ruleReducer.respGetMenuRule);
+  const dispatch = useDispatch()
 
-  const queryString = location.search;
-  const startIndex = queryString.lastIndexOf('=') + 1;
+  let menu = localStorage.getItem('menu') ? JSON.parse(localStorage.getItem('menu')) : []
+  let menuRule = localStorage.getItem('menuRule') ? JSON.parse(localStorage.getItem('menuRule')) : []
+  let menuType = localStorage.getItem('menuType') ? localStorage.getItem('menuType') : ''
+  const firstTimeLogin = ReactSession.get("firstTime_Login");
 
-  const extractedValue2 = queryString.substring(startIndex);
+  // const profile = useSelector(state => (
+  //   state.dashboardReducer.respGetInfoProfile
+  // ))
 
-  const submenuLocalStorage = ReactSession.get("submenuKey")
-
-  const [loadingSpinner, setLoadingSpinner] = useState(false)
+  const ref = useRef()
 
   useEffect(() => {
+    const pathName = props.location.pathname;
     new MetisMenu("#side-menu");
-    if (submenuLocalStorage) {
-      setDropdownOpen({ [`submenu-${submenuLocalStorage}`]: true, kpi: true });
+    let matchingMenuItem = null;
+    const ul = document.getElementById("side-menu");
+    const items = ul.getElementsByTagName("a");
+
+    for (let i = 0; i < items.length; ++i) {
+      if (pathName === items[i].pathname) {
+        matchingMenuItem = items[i];
+        break;
+      }
     }
 
-    setLoadingSpinner(true)
-    setActiveMenuItem(location.pathname);
-    if (!submenuLocalStorage) {
-      setDropdownOpen({ rule: true, kpi: true })
+    if (matchingMenuItem) {
+      activateParentDropdown(matchingMenuItem);
     }
-    if (location.pathname === "/AppKPIDashboard" || location.pathname === "/AppKPIPlanSetting" || location.pathname === "/AppKPIMasterSetting" || location.pathname === "/AppKPIInputResult") {
-      setDropdownOpen((prevState) => ({ ...prevState, kpi: false }));
-    }
-    dispatch(getMenuRuleData());
-  }, [location.pathname]);
+  }, [props.location.pathname]);
 
   useEffect(() => {
     ref.current.recalculate();
   });
 
+  function scrollElement(item) {
+    if (item) {
+      const currentPosition = item.offsetTop;
+      if (currentPosition > window.innerHeight) {
+        ref.current.getScrollElement().scrollTop = currentPosition - 300;
+      }
+    }
+  }
+
   function activateParentDropdown(item) {
-    item.classList.add("active");
+    // item.classList.add("active");
     const parent = item.parentElement;
     const parent2El = parent.childNodes[1];
     if (parent2El && parent2El.id !== "side-menu") {
@@ -62,20 +68,19 @@ const SidebarContent = (props) => {
       const parent2 = parent.parentElement;
 
       if (parent2) {
-        parent2.classList.add("mm-show"); // ul tag
-
-        const parent3 = parent2.parentElement; // li tag
+        parent2.classList.add("mm-show");
+        const parent3 = parent2.parentElement;
 
         if (parent3) {
-          parent3.classList.add("mm-active"); // li
-          parent3.childNodes[0].classList.add("mm-active"); //a
-          const parent4 = parent3.parentElement; // ul
+          parent3.classList.add("mm-active");
+          parent3.childNodes[0].classList.add("mm-active");
+          const parent4 = parent3.parentElement;
           if (parent4) {
-            parent4.classList.add("mm-show"); // ul
+            parent4.classList.add("mm-show");
             const parent5 = parent4.parentElement;
             if (parent5) {
-              parent5.classList.add("mm-show"); // li
-              parent5.childNodes[0].classList.add("mm-active"); // a tag
+              parent5.classList.add("mm-show");
+              parent5.childNodes[0].classList.add("mm-active");
             }
           }
         }
@@ -87,268 +92,90 @@ const SidebarContent = (props) => {
     return false;
   }
 
-  const firstTimeLogin = ReactSession.get("firstTime_Login");
+  function renderMenuItem(item) {
+    return (
+      <li key={item.menuId} className={item.menuId === 2 ? 'mm-active' : null}>
+        <a
+          onClick={() => {
+            ReactSession.remove("currentPage");
+            ReactSession.remove('selectedMemberData');
+            ReactSession.remove('selectedDeptData');
+            ReactSession.remove('selectedDeptName');
+            ReactSession.remove('collapser');
+            ReactSession.remove('offset');
+            ReactSession.remove('limit');
+          }}
+          href={item.menuPath ? `/${item.menuPath}` : null}
+          className={item.childList || item.menuId === 5 ? "has-arrow" : null}
+        >
+          {item.menuIcon && <i className={props.t("fas " + item.menuIcon)}></i>}
+          <span>{props.t(item.menuName)}</span>
+        </a>
+        {item.childList && item.childList.length > 0 && item.menuId !== 5 ? (
+          <ul className="sub-menu">
+            {item.childList.map((childItem) => renderMenuItem(childItem))}
+          </ul>
+        ) : null}
 
-  const toggleDropdown = (key) => {
+        {item.menuId === 5 && menuRule?.data?.list.length > 0 ? (
+          <ul className="sub-menu">
+            {menuRule.data.list.map((childItem) => renderMenuRuleItem(childItem))}
+          </ul>
+        ) : null}
+      </li>
+    );
+  }
 
-    const updatedDropdownOpen = { ...dropdownOpen };
+  function renderMenuRuleItem(item) {
 
-    // Close all other open submenus in ReactSession
-    for (const submenuKey in updatedDropdownOpen) {
-      if (submenuKey.startsWith("submenu-") && submenuKey !== key && updatedDropdownOpen[submenuKey]) {
-        // updatedDropdownOpen[submenuKey] = false;
-        // Update ReactSession with the new value
-        ReactSession.set(submenuKey, false);
-      }
-    }
+    const searchString = props.location.search
+    const underscoreIndexLast = searchString.lastIndexOf('_')
+    const beforeUnderscore = searchString.substring(searchString.indexOf('=') + 1, underscoreIndexLast);
+    const parentId = searchString.substring(underscoreIndexLast + 1)
 
-    // Toggle the selected submenu in ReactSession
-    updatedDropdownOpen[key] = !updatedDropdownOpen[key];
-    // Update ReactSession with the new value
-    ReactSession.set(key, updatedDropdownOpen[key]);
+    return (
+      <li key={item.id} className={parseInt(parentId) === item.id || parseInt(beforeUnderscore) === item.id ? 'mm-active' : null}>
+        <a
+          aria-expanded={searchString === item.id ? 'true' : null}
+          onClick={() => {
+            ReactSession.remove("currentPage");
+            ReactSession.remove('selectedMemberData');
+            ReactSession.remove('selectedDeptData');
+            ReactSession.remove('selectedDeptName');
+            ReactSession.remove('collapser');
+            ReactSession.remove('offset');
+            ReactSession.remove('limit');
+          }}
+          href={item.subList.length > 0 ? null : `/AppRule?v=${item.id}_${item.parent_id}`}
+          className={item.subList.length > 0 ? "has-arrow" : null}
+        >
+          {item.menuIcon && <i className={props.t("fas " + item.menuIcon)}></i>}
+          <span>{props.t(item.name)}</span>
+        </a>
+        {item.subList.length > 0 ? (
+          <ul className={parseInt(parentId) === item.id ? 'sub-menu mm-active mm-show' : null}>
+            {item.subList.map((childItem) => renderMenuRuleItem(childItem))}
+          </ul>
+        ) : null}
+      </li>
+    );
+  }
 
-    // Update the local state
-    setDropdownOpen(updatedDropdownOpen);
-  };
-
-  useEffect(() => {
-    if (getMenu.status) {
-      setLoadingSpinner(false)
-    }
-  }, [getMenu])
 
   return (
     <React.Fragment>
-
-      <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
-        <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
-      </div>
       <SimpleBar className="h-100" ref={ref}>
-        <div id="sidebar-menu">
+        <div id="sidebar-menu" style={{ marginTop: "40px" }}>
           <ul className="metismenu list-unstyled" id="side-menu">
-            <li hidden={firstTimeLogin === "true"}>
-              <a
-                onClick={() => {
-                  ReactSession.remove("appInstructionsTabelSearch")
-                  ReactSession.remove('selected')
-                  ReactSession.remove('selected2')
-                  ReactSession.remove('dateFrom')
-                  ReactSession.remove('dateTo')
-                  ReactSession.remove('searchValue')
-                  ReactSession.remove("submenuKey")
-                  ReactSession.remove('selectedArray')
-                  window.location.reload()
-                }}
-                to="/AppInstructions"
-                href="/AppInstructions"
-                className={location.pathname === "/AppInstructions" ? "active" : null}
-                style={{ fontSize: "14px" }}
-              >
-                <i style={{ fontSize: "12px", position: "relative", right: "1.5%" }} className="fas fa-list-ul"></i>
-                <span>{props.t("Instructions List")}</span>
-              </a>
+            {Array.isArray(menu) && menu.map(item => {
+              if (menuType === 'pja') {
+                return renderMenuItem(item)
+              } else {
+                dispatch(getMenuList())
+                return null
+              }
+            })}
 
-              <a
-                onClick={() => {
-                  toggleDropdown("main");
-                }}
-                className=""
-                style={{ overflow: "visible", fontSize: "14px" }}
-              >
-                <i style={{ fontSize: "14px", position: "relative", right: "1.5%" }} className="fas fa-folder-open"></i>
-                <span style={{ whiteSpace: "nowrap" }}>{props.t("File Management")}</span>
-                <i
-                  hidden={dropdownOpen.main}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                  className="fas fa-chevron-up dropdown-icon"
-                ></i>
-                <i
-                  hidden={!dropdownOpen.main}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                  className="fas fa-chevron-down dropdown-icon"
-                ></i>
-              </a>
-              <Link
-                onClick={() =>
-                  ReactSession.remove("submenuKey")
-                }
-                style={{ fontSize: "14px" }}
-                to="/EnterMonthlyData"
-                hidden={dropdownOpen.main}
-                className={location.pathname === "/EnterMonthlyData" ? "active" : null}
-              >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Enter Monthly Data")}</span>
-              </Link>
-              <Link
-                onClick={() =>
-                  ReactSession.remove("submenuKey")
-                }
-                style={{ fontSize: "14px" }}
-                to="/AppFileManagement"
-                hidden={dropdownOpen.main}
-                className={location.pathname === "/AppFileManagement" ? "active" : null}
-              >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Data Inquiry")}</span>
-              </Link>
-
-              <a
-                onClick={() => {
-                  toggleDropdown("rule");
-                  localStorage.setItem("appFileManagementData", "");
-                  ReactSession.remove("appInstructionsTabelSearch");
-                  ReactSession.set("dropdownOpen", dropdownOpen)
-                }}
-              >
-                <i style={{ fontSize: "14px" }} className="mdi mdi-book-open-variant"></i>
-                <span style={{ fontSize: "14px", whiteSpace: "nowrap" }}>{props.t("Company Regulations")}</span>
-                <i
-                  hidden={dropdownOpen.rule}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                  className="fas fa-chevron-up dropdown-icon"
-                ></i>
-                <i
-                  hidden={!dropdownOpen.rule}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                  className="fas fa-chevron-down dropdown-icon"
-                ></i>
-              </a>
-
-              {getMenu?.data?.list.map((item, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    <a
-                      key={index}
-                      style={{ fontSize: "12px" }}
-                      onClick={() => {
-                        toggleDropdown(`submenu-${index + 1}`);
-                        localStorage.removeItem("selectedYear");
-                        localStorage.removeItem("selectedMonth");
-                      }}
-                      href={Array.isArray(item.subList) && item.subList.length < 1 ? `/AppRule?v=${item.id}` : null}
-                      hidden={dropdownOpen.rule}
-                    >
-                      <span style={{ whiteSpace: "nowrap", paddingLeft: "12px" }}>{item.name}</span>
-                      {Array.isArray(item.subList) && item.subList.length > 0 ? (
-                        <>
-                          <i
-                            hidden={!dropdownOpen[`submenu-${index + 1}`]}
-                            style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                            className="fas fa-chevron-up dropdown-icon"
-                          ></i>
-                          <i
-                            hidden={dropdownOpen[`submenu-${index + 1}`]}
-                            style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                            className="fas fa-chevron-down dropdown-icon"
-                          ></i>
-                        </>
-                      ) : null}
-
-                    </a>
-                    {dropdownOpen[`submenu-${index + 1}`] &&
-                      item?.subList.map((subMenu, i) => {
-                        return (
-                          <a
-                            key={i}
-                            to={`/AppRule?v=${subMenu.id}`}
-                            href={`/AppRule?v=${subMenu.id}`}
-                            className={parseInt(extractedValue2) === subMenu.id ? "active" : null}
-                            style={{ fontSize: "12px", marginLeft: "5%" }}
-                            hidden={dropdownOpen.rule}
-                            onClick={() =>
-                              ReactSession.set("submenuKey", subMenu?.parent_id)
-                            }
-                          >
-                            <span style={{ whiteSpace: "nowrap", paddingLeft: "12px" }}>{subMenu.name}</span>
-                          </a>
-                        );
-                      })}
-                  </React.Fragment>
-                );
-              })}
-
-              <a
-                onClick={() => {
-                  toggleDropdown("kpi");
-                }}
-                className=""
-                style={{ overflow: "visible", fontSize: "14px" }}
-              >
-                <i style={{ fontSize: "14px", position: "relative", right: "1.5%" }} className="fas fa-chart-line"></i>
-                <span style={{ whiteSpace: "nowrap" }}>{props.t("KPI")}</span>
-                <i
-                  hidden={dropdownOpen.kpi}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                  className="fas fa-chevron-up dropdown-icon"
-                ></i>
-                <i
-                  hidden={!dropdownOpen.kpi}
-                  style={{ fontSize: "14px", position: "absolute", right: "5%", top: "25%" }}
-                  className="fas fa-chevron-down dropdown-icon"
-                ></i>
-              </a>
-              <a
-                onClick={() =>
-                  ReactSession.remove("submenuKey")
-                }
-                style={{ fontSize: "14px" }}
-                // to="/AppKPIMasterSetting"
-                href="/AppKPIMasterSetting"
-                hidden={dropdownOpen.kpi || !getDetailProfile?.data?.admin}
-                className={location.pathname === "/AppKPIMasterSetting" ? "active" : null}
-              >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Master Setting")}</span>
-              </a>
-              <a
-                onClick={() =>
-                  ReactSession.remove("submenuKey")
-                }
-                style={{ fontSize: "14px" }}
-                // to="/AppKPIPlanSetting"
-                href="/AppKPIPlanSetting"
-                hidden={dropdownOpen.kpi || !getDetailProfile?.data?.admin}
-                className={location.pathname === "/AppKPIPlanSetting" ? "active" : null}
-              >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Plan Setting")}</span>
-              </a>
-              <Link
-                onClick={() =>
-                  ReactSession.remove("submenuKey")
-                }
-                style={{ fontSize: "14px" }}
-                to="/AppKPIInputResult"
-                hidden={dropdownOpen.kpi}
-                className={location.pathname === "/AppKPIInputResult" ? "active" : null}
-              >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Input KPI Result")}</span>
-              </Link>
-              <Link
-                onClick={() =>
-                  ReactSession.remove("submenuKey")
-                }
-                style={{ fontSize: "14px" }}
-                to="/AppKPIDashboard"
-                hidden={dropdownOpen.kpi}
-                className={location.pathname === "/AppKPIDashboard" ? "active" : null}
-              >
-                <span style={{ whiteSpace: "nowrap", paddingLeft: "14px" }}>{props.t("Dashboard")}</span>
-              </Link>
-              <Link
-                to="/AppMovingPlan"
-                style={{ fontSize: "14px" }}
-                className={location.pathname === "/AppMovingPlan" ? "active" : null}
-              >
-                <i className="fas fa-paper-plane" style={{ paddingRight: "2%", marginLeft: "-1.5%" }}></i>
-                <span>{props.t("Moving Plan")}</span>
-              </Link>
-              <Link
-                to="/AppSetting"
-                hidden={!getDetailProfile?.data?.admin}
-                style={{ fontSize: "14px" }}
-              >
-                <i className="fas fa-cog" style={{ paddingRight: "2%", marginLeft: "-1.5%" }}></i>
-                <span>{props.t("Settings")}</span>
-              </Link>
-            </li>
           </ul>
         </div>
       </SimpleBar>

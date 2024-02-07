@@ -9,7 +9,9 @@ import {
     MSGUPPASSWORD,
     EMAIL_FORGOT_PASSWORD,
     UPDATE_FORGOT_PASSWORD,
-    MSG_EMAIL_FORGOT_PASSWORD
+    MSG_EMAIL_FORGOT_PASSWORD,
+    GET_MENU,
+    RESP_GET_MENU
 
 } from "./actionTypes"
 
@@ -63,3 +65,12 @@ import {
     payload: req,
   })
 
+  export const getMenuList = (req) => ({
+    type: GET_MENU,
+    payload: req,
+  })
+
+  export const respGetMenuList = resp => ({
+    type: RESP_GET_MENU,
+    payload: resp,
+  })

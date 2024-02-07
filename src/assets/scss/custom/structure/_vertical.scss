@@ -42,6 +42,7 @@
   top: 0;
   padding-top: $header-height;
   box-shadow: $box-shadow;
+
   @media (max-width: 991.98px) {
     top: $header-height;
     padding-top: 0px;
@@ -51,6 +52,7 @@
     position: fixed;
     top: 0px;
     z-index: 99;
+
     @media (max-width: 991.98px) {
       display: none;
     }
@@ -71,7 +73,7 @@
   padding: 50px 0 30px 0;
 
   .mm-active {
-    > .has-arrow {
+    >.has-arrow {
       &:after {
         transform: rotate(-180deg);
       }
@@ -128,9 +130,10 @@
 
         li {
           a {
-            padding: 0.4rem 1.5rem 0.4rem 3.5rem;
-            font-size: 13px;
+            padding: 0.4rem 1.5rem 0.4rem 1.5rem;
+            font-size: 14px;
             color: $sidebar-menu-sub-item-color;
+
             &:hover {
               color: $sidebar-menu-item-hover-color;
             }
@@ -141,8 +144,8 @@
 
             li {
               a {
-                padding: 0.4rem 1.5rem 0.4rem 4.5rem;
-                font-size: 13px;
+                padding: 0.4rem 1.5rem 0.4rem 2.5rem;
+                font-size: 14px;
               }
             }
           }
@@ -165,12 +168,15 @@
 
 .mm-active {
   color: $sidebar-menu-item-active-color !important;
-  > a {
+
+  >a {
     color: $sidebar-menu-item-active-color !important;
+
     i {
       color: $sidebar-menu-item-active-color !important;
     }
   }
+
   .active {
     color: $sidebar-menu-item-active-color !important;
 
@@ -178,7 +184,8 @@
       color: $sidebar-menu-item-active-color !important;
     }
   }
-  > i {
+
+  >i {
     color: $sidebar-menu-item-active-color !important;
   }
 }
@@ -211,6 +218,7 @@
 
   #page-topbar {
     left: $sidebar-collapsed-width;
+
     @media (max-width: 991.98px) {
       left: 0;
     }
@@ -247,6 +255,7 @@
 
     // Sidebar Menu
     #sidebar-menu {
+
       .menu-title,
       .badge,
       .collapse.in {
@@ -263,12 +272,12 @@
         }
       }
 
-      > ul {
-        > li {
+      >ul {
+        >li {
           position: relative;
           white-space: nowrap;
 
-          > a {
+          >a {
             padding: 15px 15px;
             min-height: 55px;
             transition: none;
@@ -291,7 +300,7 @@
           }
 
           &:hover {
-            > a {
+            >a {
               position: relative;
               width: calc(190px + #{$sidebar-collapsed-width});
               color: $primary;
@@ -307,7 +316,7 @@
               }
             }
 
-            > ul {
+            >ul {
               display: block;
               left: $sidebar-collapsed-width;
               position: absolute;
@@ -343,7 +352,7 @@
 
           li {
             &:hover {
-              > ul {
+              >ul {
                 display: block;
                 left: 190px;
                 height: auto !important;
@@ -353,7 +362,7 @@
               }
             }
 
-            > a {
+            >a {
               span.pull-right {
                 position: absolute;
                 right: 20px;
@@ -412,6 +421,7 @@ body[data-sidebar="dark"] {
       }
     }
   }
+
   // Enlarge menu
   &.vertical-collpsed {
     min-height: $layout-collapsed-min-height;
@@ -421,22 +431,25 @@ body[data-sidebar="dark"] {
       .navbar-brand-box {
         background: $sidebar-dark-bg;
       }
+
       // Sidebar Menu
       #sidebar-menu {
-        > ul {
-          > li {
+        >ul {
+          >li {
             &:hover {
-              > a {
+              >a {
                 background: lighten($sidebar-dark-bg, 2%);
                 color: $sidebar-dark-menu-item-hover-color;
+
                 i {
                   color: $sidebar-dark-menu-item-hover-color;
                 }
               }
 
-              > ul {
+              >ul {
                 a {
                   color: $sidebar-dark-menu-sub-item-color;
+
                   &:hover {
                     color: $sidebar-dark-menu-item-hover-color;
                   }
@@ -454,6 +467,7 @@ body[data-sidebar="dark"] {
           li {
             &.mm-active .active {
               color: $sidebar-dark-menu-item-active-color !important;
+
               i {
                 color: $sidebar-dark-menu-item-active-color !important;
               }
@@ -463,17 +477,22 @@ body[data-sidebar="dark"] {
       }
     }
   }
+
   .mm-active {
     color: $sidebar-dark-menu-item-active-color !important;
-    > a {
+
+    >a {
       color: $sidebar-dark-menu-item-active-color !important;
+
       i {
         color: $sidebar-dark-menu-item-active-color !important;
       }
     }
-    > i {
+
+    >i {
       color: $sidebar-dark-menu-item-active-color !important;
     }
+
     .active {
       color: $sidebar-dark-menu-item-active-color !important;
 
@@ -500,6 +519,7 @@ body[data-sidebar-size="small"] {
   .navbar-brand-box {
     width: $sidebar-width-sm;
   }
+
   .vertical-menu {
     width: $sidebar-width-sm;
     text-align: center;
@@ -509,11 +529,14 @@ body[data-sidebar-size="small"] {
       display: none !important;
     }
   }
+
   .main-content {
     margin-left: $sidebar-width-sm;
   }
+
   .footer {
     left: $sidebar-width-sm;
+
     @media (max-width: 991.98px) {
       left: 0;
     }
@@ -521,6 +544,7 @@ body[data-sidebar-size="small"] {
 
   #page-topbar {
     left: $sidebar-width-sm;
+
     @media (max-width: 991.98px) {
       left: 0;
 
@@ -539,6 +563,7 @@ body[data-sidebar-size="small"] {
           display: block;
         }
       }
+
       ul.sub-menu {
         li {
           a {
@@ -552,16 +577,19 @@ body[data-sidebar-size="small"] {
       }
     }
   }
+
   &.vertical-collpsed {
     .main-content {
       margin-left: $sidebar-collapsed-width;
     }
+
     .vertical-menu {
       #sidebar-menu {
         text-align: left;
-        > ul {
-          > li {
-            > a {
+
+        >ul {
+          >li {
+            >a {
               i {
                 display: inline-block;
               }
@@ -570,6 +598,7 @@ body[data-sidebar-size="small"] {
         }
       }
     }
+
     .footer {
       left: $sidebar-collapsed-width;
     }
@@ -588,22 +617,26 @@ body[data-sidebar="greatwhale"] {
     .logo-dark {
       display: none;
     }
+
     .logo-light {
       display: block;
     }
   }
 
   .mm-active {
-    color: #8C8C8C !important;
-    > a {
-      color: #8C8C8C !important;
+    color: $sidebar-menu-item-active-color !important;
+
+    >a {
+      color: $sidebar-menu-item-active-color !important;
+
       i {
-        color: #8C8C8C !important;
+        color: $sidebar-menu-item-active-color !important;
       }
     }
-    > i,
+
+    >i,
     .active {
-      color: #3F4031 !important; 
+      color: #3F4031 !important;
     }
   }
 
@@ -616,14 +649,16 @@ body[data-sidebar="greatwhale"] {
 
         a {
           // color: rgba($white, 0.6);
-          color: #8C8C8C ;
+          color: #8C8C8C;
+
           i {
             // color: rgba($white, 0.6);
-            color: #8C8C8C ;
+            color: #8C8C8C;
           }
+
           &.waves-effect {
             .waves-ripple {
-              background: rgba($white, 0.1);
+              background: rgba(#8C8C8C, 0.1);
             }
           }
 
@@ -641,9 +676,10 @@ body[data-sidebar="greatwhale"] {
         ul.sub-menu {
           li {
             a {
-              color: rgba($white, 0.5);
+              color: rgba($sidebar-menu-item-icon-color, 0.65);
+
               &:hover {
-                color: $white;
+                color: $sidebar-menu-item-icon-color;
               }
             }
           }
@@ -655,10 +691,11 @@ body[data-sidebar="greatwhale"] {
   &.vertical-collpsed {
     .vertical-menu {
       #sidebar-menu {
-        > ul {
-          > li {
-            &:hover > a {
+        >ul {
+          >li {
+            &:hover>a {
               color: $white;
+
               i {
                 color: $white;
               }
@@ -681,10 +718,13 @@ body[data-sidebar="greatwhale"] {
                     color: $sidebar-menu-item-active-color;
                   }
                 }
+
                 &.mm-active {
                   color: $sidebar-menu-item-active-color !important;
-                  > a {
+
+                  >a {
                     color: $sidebar-menu-item-active-color !important;
+
                     i {
                       color: $sidebar-menu-item-active-color !important;
                     }
@@ -703,6 +743,7 @@ body[data-sidebar="greatwhale"] {
 .bg-colored {
   background-color: $primary !important;
 }
+
 body[data-sidebar="colored"] {
   .vertical-menu {
     background-color: #fff;
@@ -713,10 +754,11 @@ body[data-sidebar="colored"] {
       .navbar-brand-box {
         background-color: #fff;
       }
+
       #sidebar-menu {
-        > ul {
-          > li {
-            &:hover > a {
+        >ul {
+          >li {
+            &:hover>a {
               background-color: lighten(#fff, 2%);
             }
           }
@@ -724,6 +766,7 @@ body[data-sidebar="colored"] {
       }
     }
   }
+
   &[data-sidebar-size="small"] {
     .menu-title {
       background: transparent;
@@ -751,10 +794,11 @@ body[data-sidebar="winter"] {
         background-image: linear-gradient(to right, #556ee6, #7bae40);
         background-repeat: repeat-x;
       }
+
       #sidebar-menu {
-        > ul {
-          > li {
-            &:hover > a {
+        >ul {
+          >li {
+            &:hover>a {
               background-image: linear-gradient(to right, #556ee6, #7bae40);
               background-repeat: repeat-x;
             }
@@ -785,10 +829,11 @@ body[data-sidebar="ladylip"] {
         background-image: linear-gradient(to right, #556ee6, #f46a6a);
         background-repeat: repeat-x;
       }
+
       #sidebar-menu {
-        > ul {
-          > li {
-            &:hover > a {
+        >ul {
+          >li {
+            &:hover>a {
               background-image: linear-gradient(to right, #556ee6, #f46a6a);
               background-repeat: repeat-x;
             }
@@ -797,6 +842,7 @@ body[data-sidebar="ladylip"] {
       }
     }
   }
+
   &[data-sidebar-size="small"] {
     .menu-title {
       background-image: linear-gradient(to right, #556ee6, #f46a6a);
@@ -818,10 +864,11 @@ body[data-sidebar="plumplate"] {
         background-image: linear-gradient(to right, #556ee6, #f1b44c);
         background-repeat: repeat-x;
       }
+
       #sidebar-menu {
-        > ul {
-          > li {
-            &:hover > a {
+        >ul {
+          >li {
+            &:hover>a {
               background-image: linear-gradient(to right, #556ee6, #f1b44c);
               background-repeat: repeat-x;
             }
@@ -830,6 +877,7 @@ body[data-sidebar="plumplate"] {
       }
     }
   }
+
   &[data-sidebar-size="small"] {
     .menu-title {
       background-image: linear-gradient(to right, #556ee6, #f1b44c);
@@ -851,10 +899,11 @@ body[data-sidebar="strongbliss"] {
         background-image: linear-gradient(to right, #f46a6a, #f1b44c);
         background-repeat: repeat-x;
       }
+
       #sidebar-menu {
-        > ul {
-          > li {
-            &:hover > a {
+        >ul {
+          >li {
+            &:hover>a {
               background-image: linear-gradient(to right, #f46a6a, #f1b44c);
               background-repeat: repeat-x;
             }
@@ -863,6 +912,7 @@ body[data-sidebar="strongbliss"] {
       }
     }
   }
+
   &[data-sidebar-size="small"] {
     .menu-title {
       background-image: linear-gradient(to right, #f46a6a, #f1b44c);
@@ -880,22 +930,19 @@ body[data-sidebar="greatwhale"] {
   &.vertical-collpsed {
     .vertical-menu {
       .navbar-brand-box {
-        background-image: linear-gradient(
-          to right,
-          darken($primary, 15%),
-          #50a5f1
-        );
+        background-image: linear-gradient(to right,
+            darken($primary, 15%),
+            #50a5f1);
         background-repeat: repeat-x;
       }
+
       #sidebar-menu {
-        > ul {
-          > li {
-            &:hover > a {
-              background-image: linear-gradient(
-                to right,
-                darken($primary, 15%),
-                #50a5f1
-              );
+        >ul {
+          >li {
+            &:hover>a {
+              background-image: linear-gradient(to right,
+                  darken($primary, 15%),
+                  #50a5f1);
               background-repeat: repeat-x;
             }
           }
@@ -903,6 +950,7 @@ body[data-sidebar="greatwhale"] {
       }
     }
   }
+
   &[data-sidebar-size="small"] {
     .menu-title {
       background-image: linear-gradient(to right, #556ee6, #50a5f1);
@@ -993,23 +1041,29 @@ body[data-sidebar-image="img4"] {
   width: 30px;
   height: 30px;
 }
+
 .gradient-colored {
   background-color: $primary;
 }
+
 .gradient-winter {
   background-image: linear-gradient(to right, #556ee6, #7bae40);
   background-repeat: repeat-x;
 }
+
 .gradient-lady-lip {
   background-image: linear-gradient(to right, #556ee6, #f46a6a);
   background-repeat: repeat-x;
 }
+
 .gradient-plum-plate {
   background-image: linear-gradient(to right, #556ee6, #f1b44c);
 }
+
 .gradient-strong-bliss {
   background-image: linear-gradient(to right, #f46a6a, #f1b44c);
 }
+
 .gradient-strong-great-whale {
   background-image: linear-gradient(to right, darken($primary, 10%), #50a5f1);
 }

@@ -11,7 +11,7 @@ import UpdatePassword from "../pages/Authentication/UpdatePassword"
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
 
-import Menu from "../pages/App002/Menu"
+// import Menu from "../pages/App002/Menu"
 import Role from "../pages/App003/Role"
 import RoleAkses from "../pages/App004/RoleAkses"
 import User from "../pages/App008/User"
@@ -34,7 +34,6 @@ import OrganizationSetting from "pages/AppSetting/OrganizationSetting"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
-  { path: "/app002", component: Menu },
   { path: "/app003", component: Role },
   { path: "/app004", component: RoleAkses },
   { path: "/app008", component: User },
