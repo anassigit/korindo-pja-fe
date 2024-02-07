@@ -26,7 +26,11 @@ const SidebarContent = props => {
 
   useEffect(() => {
     const pathName = props.location.pathname;
-    new MetisMenu("#side-menu");
+
+    // BUAT SIDE MENU NYA GA AUTO COLLAPSE
+    new MetisMenu("#side-menu", {
+      toggle: false
+    });
     let matchingMenuItem = null;
     const ul = document.getElementById("side-menu");
     const items = ul.getElementsByTagName("a");
@@ -136,7 +140,6 @@ const SidebarContent = props => {
     return (
       <li key={item.id} className={parseInt(parentId) === item.id || parseInt(beforeUnderscore) === item.id ? 'mm-active' : null}>
         <a
-          aria-expanded={searchString === item.id ? 'true' : null}
           onClick={() => {
             ReactSession.remove("currentPage");
             ReactSession.remove('selectedMemberData');
@@ -146,7 +149,7 @@ const SidebarContent = props => {
             ReactSession.remove('offset');
             ReactSession.remove('limit');
           }}
-          href={item.subList.length > 0 ? null : `/AppRule?v=${item.id}_${item.parent_id}`}
+          href={item.parent_id === null ? `/AppRule?v=${item.id}` : `/AppRule?v=${item.id}_${item.parent_id}`}
           className={item.subList.length > 0 ? "has-arrow" : null}
         >
           {item.menuIcon && <i className={props.t("fas " + item.menuIcon)}></i>}
