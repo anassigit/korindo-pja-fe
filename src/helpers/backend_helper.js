@@ -149,7 +149,7 @@ export const deleteReply = req => postWithParam("rest/InstructionRest/DeleteRepl
 
 export const getGeneralSetting = req => post("/rest/SettingMasterRest/SelectSetting", req)
 
-export const getMembers = req => post("/rest/MemberMasterRest/SelectMemeberList", req)
+export const getMembers = req => post("/rest/MemberMasterRest/SelectMemberList", req)
 
 export const getMembersForMapping = req => post("/rest/OrganizationMasterRest/SelectMemberList", req)
 
