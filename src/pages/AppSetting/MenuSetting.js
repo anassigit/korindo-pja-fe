@@ -1,12 +1,8 @@
 import RootPageCustom from "common/RootPageCustom"
-import TableCustom from "common/TableCustom"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
     Button,
-    Card,
-    CardBody,
-    CardHeader,
     Container,
     Spinner,
     UncontrolledTooltip
@@ -20,6 +16,7 @@ import PropTypes from "prop-types"
 import AddMenu from "./AddMenu"
 import ConfirmModal from "components/Common/ConfirmModal"
 import EditMenu from "./EditMenu"
+import TableCustom3 from "common/TableCustom3"
 
 const MenuSetting = (props) => {
 
@@ -250,7 +247,7 @@ const MenuSetting = (props) => {
                             <span className="mdi mdi-plus" /> {props.t('Add New Menu')}
                         </Button>
                     </div>
-                    <TableCustom
+                    <TableCustom3
                                 keyField={"menuId"}
                                 columns={appMenuColumn}
                                 redukResponse={appMenuListData}
