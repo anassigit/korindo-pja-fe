@@ -137,7 +137,7 @@ const EditMenu = (props) => {
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Lovv2
                                             title={props.t("Menu")}
-                                            keyFieldData="menuParentId"
+                                            keyFieldData="menuId"
                                             columns={appLovMenuListColumns}
                                             getData={getMenuParentListLov}
                                             pageSize={10}
