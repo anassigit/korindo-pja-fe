@@ -1,65 +1,55 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import { useDispatch } from "react-redux";
-import { Card } from "reactstrap";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import PropTypes from "prop-types"
+import BootstrapTable from "react-bootstrap-table-next"
+import paginationFactory from "react-bootstrap-table2-paginator"
+import { useDispatch } from "react-redux"
+import { Card } from "reactstrap"
+import { useHistory, useLocation } from "react-router-dom"
 
 const TableCustom = (props) => {
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const location = useLocation();
 
-    // Parse page parameter from the URL
-    const urlParams = new URLSearchParams(location.search);
-    const pageParam = urlParams.get("page");
-    const currentPageFromURL = parseInt(pageParam);
-
-    const [currentPage, setCurrentPage] = useState(0);
-    const [tempDispatch, setTempDispatch] = useState(0);
-
-    // Custom handler for table change (pagination and sorting)
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const location = useLocation()
+    const urlParams = new URLSearchParams(location.search)
+    const pageParam = urlParams.get("page")
+    const currentPageFromURL = parseInt(pageParam)
     const customHandleTableChange = (type, { page, sortField, sortOrder, sizePerPage }) => {
         if (type === "sort") {
-            // Handle sorting change
-            props.searchSet({ page: 1, limit: sizePerPage, offset: 0, sort: sortField, order: sortOrder, search: props.searchGet.search });
+            props.searchSet({ page: 1, limit: sizePerPage, offset: 0, sort: sortField, order: sortOrder, search: props.searchGet.search })
         }
         if (type === "pagination") {
-            // Handle pagination change
-            props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search });
-
-            history.push(`?page=${page}`);
+            props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search })
+            history.push(`?page=${page}`)
         }
         if (type === "link") {
-            props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search });
+            props.searchSet({ page, limit: sizePerPage, offset: ((page - 1) * sizePerPage), sort: props.searchGet.sort, order: props.searchGet.order, search: props.searchGet.search })
         }
     }
 
     useEffect(() => {
-
         if (props.searchGet.page !== currentPageFromURL) {
             customHandleTableChange("link", {
                 page: currentPageFromURL,
                 sortField: props.searchGet.sort,
                 sortOrder: props.searchGet.order,
                 sizePerPage: props.searchGet.limit,
-            });
+            })
             setCurrentPage(currentPageFromURL)
         }
-    }, [currentPageFromURL]);
+    }, [currentPageFromURL])
 
     useEffect(() => {
-        // Check if the current route is /AppInstructions
         if (location.pathname === "/AppInstructions" && !location.search) {
-            history.replace("/AppInstructions?page=1");
+            history.replace("/AppInstructions?page=1")
         }
-
-        // Conditionally dispatch based on the page
-        if (location.pathname === "/AppInstructions") {
-            dispatch(props.redukCall(props.searchGet));
+        if (location.pathname === "/AppMenuSetting" && !location.search) {
+            history.replace("/AppMenuSetting?page=1")
         }
-    }, [location.pathname, location.search, props.searchGet]);
+        if (location.pathname === "/AppInstructions" || location.pathname === "/AppMenuSetting") {
+            dispatch(props.redukCall(props.searchGet))
+        }
+    }, [location.pathname, location.search, props.searchGet])
 
     return (
         <Card className="m-0 p-0">
@@ -88,7 +78,7 @@ const TableCustom = (props) => {
                 rowEvents={props.rowClick}
             />
         </Card>
-    );
+    )
 }
 
 TableCustom.propTypes = {
@@ -105,4 +95,4 @@ TableCustom.propTypes = {
     rowClick: PropTypes.any,
 }
 
-export default TableCustom;
+export default TableCustom

@@ -1,5 +1,4 @@
 import {
-
   SAVE_MEMBERS,
   EDIT_MEMBERS,
   DELETE_MEMBERS,
@@ -26,7 +25,14 @@ import {
   GET_MEMBERS_MAPPING,
   RESP_GET_MEMBERS_MAPPING,
   GET_MEMBERS2,
-  RESP_GET_MEMBERS2
+  RESP_GET_MEMBERS2,
+  DELETE_MENU,
+  EDIT_MENU,
+  GET_LIST_MENU,
+  GET_MENU2,
+  RESP_GET_MENU2,
+  RESP_GET_MENU_LIST,
+  SAVE_MENU
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -38,6 +44,8 @@ const INIT_STATE = {
   respGetGroupList: {},
   respGetRelationList: {},
   respGetMembersMapping: {},
+  respGetMenuList: {},
+  respGetMenu2: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -170,6 +178,36 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetMembersMapping: action.payload,
+      }
+      case GET_LIST_MENU:
+      return {
+        ...state,
+      }
+    case RESP_GET_MENU_LIST:
+      return {
+        ...state,
+        respGetMenuList: action.payload,
+      }
+    case GET_MENU2:
+      return {
+        ...state,
+      }
+    case RESP_GET_MENU2:
+      return {
+        ...state,
+        respGetMenu2: action.payload,
+      }
+    case SAVE_MENU:
+      return {
+        ...state,
+      }
+    case EDIT_MENU:
+      return {
+        ...state,
+      }
+    case DELETE_MENU:
+      return {
+        ...state,
       }
     default:
       return state

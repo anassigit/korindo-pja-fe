@@ -177,6 +177,20 @@ export const updateGroupMapping = req => postWithParam("/rest/OrganizationMaster
 
 export const deleteGroupMapping = req => postWithParam("/rest/OrganizationMasterRest/DeleteRelation", req)
 
+// Maintain Menu
+
+export const getMaintainMenuListBE = req => post("/rest/MenuMasterRest/getList", req)
+
+export const getLovParentMenuListBE = req => post("/rest/MenuMasterRest/getParentList", req)
+
+export const getMaintainMenuBE = req => postWithParam("/rest/MenuMasterRest/select", req)
+
+export const saveMenuBE = req => postWithParam("/rest/MenuMasterRest/insert", req)
+
+export const editMenuBE = req => postWithParam("/rest/MenuMasterRest/update", req)
+
+export const deleteMenuBE = req => postWithParam("/rest/MenuMasterRest/delete", req)
+
 /* App Rule */
 
 export const getSelectMenu = req => post("/rest/RuleRest/SelectMenu", req)

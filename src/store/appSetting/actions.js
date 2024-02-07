@@ -1,5 +1,4 @@
 import {
-
   GET_SETTING,
   RESP_GET_SETTING,
   SAVE_MEMBERS,
@@ -10,7 +9,6 @@ import {
   MSGDELETE,
   RESET_MESSAGE,
   EDIT_GENERAL_SETTING,
-  RESP_GET_GENERAL_SETTING,
   GET_MEMBERS,
   RESP_GET_MEMBERS,
   GET_RANK_LIST,
@@ -28,6 +26,13 @@ import {
   GET_MEMBERS_MAPPING,
   GET_MEMBERS2,
   RESP_GET_MEMBERS2,
+  DELETE_MENU,
+  EDIT_MENU,
+  GET_LIST_MENU,
+  GET_MENU2,
+  RESP_GET_MENU2,
+  RESP_GET_MENU_LIST,
+  SAVE_MENU
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -181,4 +186,41 @@ export const getMembersMapping = (req) => ({
 export const respGetMembersMapping = resp => ({
   type: RESP_GET_MEMBERS_MAPPING,
   payload: resp,
+})
+
+//MENU
+
+export const getMenuListDataAction = (req) => ({
+  type: GET_LIST_MENU,
+  payload: req,
+})
+
+export const respGetMenuList = resp => ({
+  type: RESP_GET_MENU_LIST,
+  payload: resp,
+})
+
+export const getMenuDataAction = (req) => ({
+  type: GET_MENU2,
+  payload: req,
+})
+
+export const respGetMenu2 = resp => ({
+  type: RESP_GET_MENU2,
+  payload: resp,
+})
+
+export const addMaintainMenu = (req) => ({
+  type: SAVE_MENU,
+  payload: req,
+})
+
+export const editMaintainMenu = (req) => ({
+  type: EDIT_MENU,
+  payload: req,
+})
+
+export const deleteMaintainMenu = (req) => ({
+  type: DELETE_MENU,
+  payload: req,
 })

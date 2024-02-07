@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
 
-const currentURL = window.location.href;
+const currentURL = window.location.href
 
 const Authmiddleware = ({
   component: Component,
@@ -13,8 +13,7 @@ const Authmiddleware = ({
   <Route
     {...rest}
     render={props => {
-      const queryParameters = new URLSearchParams(window.location.search)
-      const korToken = queryParameters.get("KOR_TOKEN")
+      const korToken = new URLSearchParams(window.location.search).get("KOR_TOKEN")
       if (korToken && !localStorage.getItem("authUser")) {
         localStorage.setItem('authUser', korToken)
       }
@@ -47,4 +46,4 @@ Authmiddleware.propTypes = {
   layout: PropTypes.any,
 }
 
-export default Authmiddleware;
+export default Authmiddleware

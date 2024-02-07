@@ -171,5 +171,22 @@
   "No valid files selected. Allowed file types: xls & xlsx": "유효한 파일을 선택하지 않았습니다. 허용되는 파일 형식: xls 및 xlsx",
   "Are you sure you want to delete this file?": "이 파일을 삭제하시겠습니까?",
   "Please select file": "파일을 선택해주세요",
-  "KPI MASTER TEMPLATE": "KPI 마스터 템플릿.xlsx"
+  "KPI MASTER TEMPLATE": "KPI 마스터 템플릿.xlsx",
+  "Parent Menu ID": "상위 메뉴 ID",
+  "Parent Menu Name": "상위 메뉴 이름",
+  "Menu Name": "메뉴명",
+  "Menu Path": "메뉴 경로",
+  "Order": "주문하다",
+  "Icon (FA Icon)": "아이콘 (FA 아이콘)",
+  "Menu ID": "메뉴아이디",
+  "Required": "필수의",
+  "Icon": "아이콘",
+  "Add New Menu": "새 메뉴 추가",
+  "Edit Menu": "편집 메뉴",
+  "Menu Setting": "메뉴 설정",
+  "Submit": "제출하다",
+  "Actions": "행위",
+  "Contact person Wonjoon Choi": "담당자 최원준 (579)",
+  "AddressKorindo": "©코린도",
+  "Menu": "메뉴"
 }

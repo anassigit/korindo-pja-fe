@@ -171,5 +171,22 @@
   "No valid files selected. Allowed file types: xls & xlsx": "Tidak ada berkas sah yang dipilih. Jenis berkas yang diperbolehkan: xls dan xlsx",
   "Are you sure you want to delete this file?": "Apakah Anda yakin ingin menghapus berkas ini?",
   "Please select file": "Silakan pilih berkas",
-  "KPI MASTER TEMPLATE": "TEMPLATE INDUK KPI.xlsx"
+  "KPI MASTER TEMPLATE": "TEMPLATE INDUK KPI.xlsx",
+  "Parent Menu ID": "ID Menu Induk",
+  "Parent Menu Name": "Nama Menu Induk",
+  "Menu Name": "Nama Menu",
+  "Menu Path": "Nama Jalur",
+  "Order": "Urutan",
+  "Icon (FA Icon)": "Ikon (FA Ikon)",
+  "Menu ID": "ID Menu",
+  "Required": "Diperlukan",
+  "Icon": "Ikon",
+  "Add New Menu": "Tambahkan Menu Baru",
+  "Edit Menu": "Sunting Menu",
+  "Menu Setting": "Pengaturan Menu",
+  "Submit": "Kirim",
+  "Actions": "Aksi",
+  "Contact person Wonjoon Choi": "Kontak person Wonjoon Choi (579)",
+  "AddressKorindo": "©Korindo",
+  "Menu": "Menu"
 }

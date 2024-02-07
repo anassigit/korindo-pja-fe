@@ -5,6 +5,7 @@ import {
   LOV_MENU,
   LOV_COMPANY,
   MSG_LOV,
+  LOV_MENU_PARENT_LIST
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -31,6 +32,10 @@ const getLovData = (state = INIT_STATE, action) => {
         ...state,
       }
     case LOV_COMPANY:
+      return {
+        ...state,
+      }
+    case LOV_MENU_PARENT_LIST:
       return {
         ...state,
       }

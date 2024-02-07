@@ -7,7 +7,8 @@ import {
     Col,
     Container,
     Input,
-    Row
+    Row,
+    UncontrolledAlert
 } from "reactstrap"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
@@ -46,8 +47,6 @@ const GeneralSetting = (props) => {
             setAppSettingMsg(appEditMessage)
         } else if (appEditMessage.status === '0') {
             setAppSettingMsg(appEditMessage)
-        } else {
-            setAppSettingMsg('There are no modifications')
         }
         dispatch(getSettingData())
     }, [appEditMessage])
@@ -101,6 +100,7 @@ const GeneralSetting = (props) => {
             dispatch(editGeneralSetting(Object.assign({}, ...updatedSettings)))
         }
         toggleMsgModal()
+        setAppSettingMsg("")
     }
 
     useEffect(() => {
@@ -122,9 +122,11 @@ const GeneralSetting = (props) => {
     }, [appSettingData])
 
     return (
-        <RootPageCustom msgStateGet={appSettingMsg} msgStateSet={setAppSettingMsg}
+        <RootPageCustom
             componentJsx={
                 <Container fluid="true">
+                    {appSettingMsg !== "" ? <UncontrolledAlert toggle={() => { setAppSettingMsg("") }} color={appSettingMsg.status == "1" ? "success" : "danger"}>
+                        {typeof appSettingMsg == 'string' ? null : appSettingMsg.message}</UncontrolledAlert> : null}
                     <Row>
                         <Col>
                             <Card>
@@ -134,33 +136,6 @@ const GeneralSetting = (props) => {
                                 <CardBody>
                                     <React.Fragment>
                                         <Row className="mb-2">
-                                            <Col md="12" lg="4" >
-                                                <Row className="mb-2">
-                                                    <b>{props.t("Instruction Display Settings")}</b>
-                                                </Row>
-                                                <Row>
-                                                    <label>
-                                                        <Input
-                                                            type="radio"
-                                                            name="ins_display_setting"
-                                                            value="0"
-                                                            checked={radioValue1 === "0"}
-                                                            onChange={handleRadioChange1}
-                                                        />
-                                                        <span> </span>{props.t("Show Your Own Instruction")}
-                                                    </label>
-                                                    <label>
-                                                        <Input
-                                                            type="radio"
-                                                            name="ins_display_setting"
-                                                            value="1"
-                                                            checked={radioValue1 === "1"}
-                                                            onChange={handleRadioChange1}
-                                                        />
-                                                        <span> </span>{props.t("Show All Instruction")}
-                                                    </label>
-                                                </Row>
-                                            </Col>
                                             <Col md="12" lg="4">
                                                 <Row className="mb-2">
                                                     <b>{props.t("Notification Settings")}</b>
@@ -222,64 +197,6 @@ const GeneralSetting = (props) => {
                                                             onChange={handleRadioChange3}
                                                         />
                                                         <span> </span>{props.t("Both")}
-                                                    </label>
-                                                </Row>
-                                            </Col>
-                                        </Row>
-                                        {/* setting v2 */}
-                                        <Row>
-                                            <hr></hr>
-                                            <Col md="12" lg="4" >
-                                                <Row className="mb-2">
-                                                    <b>{props.t("File Management Edit Permission")}</b>
-                                                </Row>
-                                                <Row>
-                                                    <label>
-                                                        <Input
-                                                            type="radio"
-                                                            name="file_edit_setting"
-                                                            value="0"
-                                                            checked={radioValueFileManage1 === "0"}
-                                                            onChange={handleRadioChangeFile1}
-                                                        />
-                                                        <span> </span>{props.t("All File Can Be Modified")}
-                                                    </label>
-                                                    <label>
-                                                        <Input
-                                                            type="radio"
-                                                            name="file_edit_setting"
-                                                            value="1"
-                                                            checked={radioValueFileManage1 === "1"}
-                                                            onChange={handleRadioChangeFile1}
-                                                        />
-                                                        <span> </span>{props.t("Only Your Own Group Can Be Modified")}
-                                                    </label>
-                                                </Row>
-                                            </Col>
-                                            <Col md="12" lg="4">
-                                                <Row className="mb-2">
-                                                    <b>{props.t("File Management Access Permission")}</b>
-                                                </Row>
-                                                <Row>
-                                                    <label>
-                                                        <Input
-                                                            type="radio"
-                                                            name="file_access_setting"
-                                                            value="0"
-                                                            checked={radioValueFileManage2 === "0"}
-                                                            onChange={handleRadioChangeFile2}
-                                                        />
-                                                        <span> </span>{props.t("All File Can Be Accessed")}
-                                                    </label>
-                                                    <label>
-                                                        <Input
-                                                            type="radio"
-                                                            name="file_access_setting"
-                                                            value="1"
-                                                            checked={radioValueFileManage2 === "1"}
-                                                            onChange={handleRadioChangeFile2}
-                                                        />
-                                                        <span> </span>{props.t("Only Your Own Group Can Be Accessed")}
                                                     </label>
                                                 </Row>
                                             </Col>

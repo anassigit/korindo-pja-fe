@@ -1,17 +1,10 @@
 import React from "react"
 import { Redirect } from "react-router-dom"
-
-// Authentication related pages
 import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
 import EmailVerPassword from "../pages/Authentication/EmailVerPassword"
 import UpdatePassword from "../pages/Authentication/UpdatePassword"
-
-
-// Dashboard
 import Dashboard from "../pages/Dashboard/index"
-
-// import Menu from "../pages/App002/Menu"
 import Role from "../pages/App003/Role"
 import RoleAkses from "../pages/App004/RoleAkses"
 import User from "../pages/App008/User"
@@ -31,6 +24,7 @@ import KPIInputResult from "pages/AppKPI/KPIInputResult"
 import KPIPlanSetting from "pages/AppKPI/KPIPlanSetting"
 import MemberSetting from "pages/AppSetting/MemberSetting"
 import OrganizationSetting from "pages/AppSetting/OrganizationSetting"
+import MenuSetting from "pages/AppSetting/MenuSetting"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -39,7 +33,10 @@ const authProtectedRoutes = [
   { path: "/app008", component: User },
   { path: "/AppInstructions", component: Instructions },
   { path: "/AppEditInstruction", component: EditInstructions },
-  { path: "/AppSetting", component: GeneralSetting },
+  { path: "/AppGeneralSetting", component: GeneralSetting },
+  { path: "/AppMemberSetting", component: MemberSetting },
+  { path: "/AppOrganizationSetting", component: OrganizationSetting },
+  { path: "/AppMenuSetting", component: MenuSetting },
   { path: "/AppUserProfile", component: UserProfile },
   { path: "/changePassword", component: ChangePassword },
   { path: "/AppFileManagement", component: FileManagement },
@@ -51,9 +48,7 @@ const authProtectedRoutes = [
   { path: "/AppKPIDashboard", component: KPIDashboard },
   { path: "/AppKPIInputResult", component: KPIInputResult },
   { path: "/AppMovingPlan", component: MovingPlan },
-  { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> },
-  { path: "/AppMemberSetting", component: MemberSetting },
-  { path: "/AppOrganizationSetting", component: OrganizationSetting },
+  { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> }
 ]
 
 const publicRoutes = [

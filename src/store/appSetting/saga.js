@@ -1,10 +1,10 @@
 import { call, put, takeEvery, all } from "redux-saga/effects"
 
-import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING, GET_MEMBERS_MAPPING, GET_MEMBERS2 } from "./actionTypes"
+import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING, GET_MEMBERS_MAPPING, GET_MEMBERS2, GET_LIST_MENU, GET_MENU2, SAVE_MENU, EDIT_MENU, DELETE_MENU } from "./actionTypes"
 
-import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping, respGetMembers2 } from "./actions"
+import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping, respGetMembers2, respGetMenuList, respGetMenu2 } from "./actions"
 
-import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getMembersForMapping, getPermissionList, getRankList, getRelationList, getGeneralSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers } from "helpers/backend_helper"
+import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getMembersForMapping, getPermissionList, getRankList, getRelationList, getGeneralSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers, getMaintainMenuListBE, getMaintainMenuBE, saveMenuBE, editMenuBE, deleteMenuBE } from "helpers/backend_helper"
 
 function* fetchGetGeneralSetting({ payload: req }) {
   try {
@@ -203,28 +203,99 @@ function* fetchGetAllMembersMapping({ payload: req }) {
   }
 }
 
+//MENU
+
+function* fetchGetMenuList({ payload: req }) {
+  try {
+    const response = yield call(getMaintainMenuListBE, req)
+    if (response.status == 1) {
+      yield put(respGetMenuList(response))
+    } else {
+      yield put(respGetMenuList(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetMenuList({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchGetMenu({ payload: req }) {
+  try {
+    const response = yield call(getMaintainMenuBE, req)
+    if (response.status == 1) {
+      yield put(respGetMenu2(response))
+    } else {
+      yield put(respGetMenu2(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetMenu2({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchAddMenu({ payload: req }) {
+  try {
+    const response = yield call(saveMenuBE, req)
+    if (response.status == 1) {
+      yield put(msgAdd(response))
+    } else {
+      yield put(msgAdd(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgAdd({ "status": 0, "message": "Error Save Data" }))
+  }
+}
+
+function* fetchEditMenu({ payload: req }) {
+  try {
+    const response = yield call(editMenuBE, req)
+    if (response.status == 1) {
+      yield put(msgEdit(response))
+    } else {
+      yield put(msgEdit(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgEdit({ "status": 0, "message": "Error Edit Data" }))
+  }
+}
+
+function* fetchDeleteMenu({ payload: req }) {
+  try {
+    const response = yield call(deleteMenuBE, req)
+    if (response.status == 1) {
+      yield put(msgDelete(response))
+    } else {
+      yield put(msgDelete(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgDelete({ "status": 0, "message": "Error Delete Data" }))
+  }
+}
 
 function* settingSaga() {
-
   yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
   yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
   yield takeEvery(EDIT_MEMBERS, fetchEditMembers)
   yield takeEvery(DELETE_MEMBERS, fetchDeleteMembers)
   yield takeEvery(EDIT_GENERAL_SETTING, fetchEditGeneralSetting)
-  
   yield takeEvery(GET_MEMBERS, fetchGetAllMembers)
   yield takeEvery(GET_MEMBERS2, fetchGetAllMembers2)
   yield takeEvery(GET_RANK_LIST, fetchGetAllRankList)
   yield takeEvery(GET_PERMISSION_LIST, fetchGetAllPermissionList)
-  
   yield takeEvery(GET_GROUP_LIST, fetchGetAllGroupList)
-  
   yield takeEvery(GET_RELATION_LIST, fetchGetAllRelationList)
   yield takeEvery(SAVE_GROUP_MAPPING, fetchSaveGroupMapping)
   yield takeEvery(EDIT_GROUP_MAPPING, fetchEditGroupMapping)
   yield takeEvery(DELETE_GROUP_MAPPING, fetchDeleteGroupMapping)
   yield takeEvery(GET_MEMBERS_MAPPING, fetchGetAllMembersMapping)
-
+  yield takeEvery(GET_LIST_MENU, fetchGetMenuList)
+  yield takeEvery(GET_MENU2, fetchGetMenu)
+  yield takeEvery(SAVE_MENU, fetchAddMenu)
+  yield takeEvery(EDIT_MENU, fetchEditMenu)
+  yield takeEvery(DELETE_MENU, fetchDeleteMenu)
 }
 
 export default settingSaga

@@ -165,5 +165,22 @@
   "No valid files selected. Allowed file types: xls & xlsx": "No valid files selected. Allowed file types: xls & xlsx",
   "Are you sure you want to delete this file?": "Are you sure you want to delete this file?",
   "Please select file": "Please select file",
-  "KPI MASTER TEMPLATE": "KPI MASTER TEMPLATE.xlsx"
+  "KPI MASTER TEMPLATE": "KPI MASTER TEMPLATE.xlsx",
+  "Parent Menu ID": "Parent Menu ID",
+  "Parent Menu Name": "Parent Menu Name",
+  "Menu Name": "Menu Name",
+  "Menu Path": "Menu Path",
+  "Order": "Order",
+  "Icon (FA Icon)": "Icon (FA Icon)",
+  "Menu ID": "Menu ID",
+  "Required": "Required",
+  "Icon": "Icon",
+  "Add New Menu": "Add New Menu",
+  "Edit Menu": "Edit Menu",
+  "Menu Setting": "Menu Setting",
+  "Submit": "Submit",
+  "Actions": "Actions",
+  "Contact person Wonjoon Choi": "Contact person Wonjoon Choi (579)",
+  "AddressKorindo": "©Korindo",
+  "Menu": "Menu"
 }
