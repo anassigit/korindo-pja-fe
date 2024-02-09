@@ -40,7 +40,7 @@ const KPIInputResult = (props) => {
     })
 
     const appEditActualInputMessage = useSelector(state => {
-        return state.kpiReducer.msgEdit;
+        return state.kpiReducer.msgEdit
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
@@ -177,12 +177,12 @@ const KPIInputResult = (props) => {
                                     <option>{props.t('Select Month')}</option>
                                     {
                                         Array.from({ length: 12 }, (_, index) => {
-                                            const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' });
+                                            const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' })
                                             return (
                                                 <option key={index} value={index + 1}>
                                                     {langType === 'kor' ? index + 1 + "월" : month}
                                                 </option>
-                                            );
+                                            )
                                         })
                                     }
                                 </Input>
@@ -280,8 +280,8 @@ const KPIInputResult = (props) => {
                                                                             type="text"
                                                                             value={item.result}
                                                                             onChange={(e) => {
-                                                                                if (/^(0?(\.\d+)?|\d+(\.\d*)?)$/.test(e.target.value)) {
-                                                                                    setAppDataEdited((prevState) => {
+                                                                                if (/^[-\d.]*$/.test(e.target.value)) {
+                                                                                    setAppDataEdited(prevState => {
                                                                                         const updatedAppDataEdited = [...prevState]
                                                                                         updatedAppDataEdited[index] = {
                                                                                             ...updatedAppDataEdited[index],
@@ -300,7 +300,7 @@ const KPIInputResult = (props) => {
                                                                                             result: 0
                                                                                         }
                                                                                         return updatedAppDataEdited
-                                                                                    });
+                                                                                    })
                                                                                 }
                                                                             }}
                                                                         />
@@ -324,7 +324,7 @@ const KPIInputResult = (props) => {
                                                                                         note: e.target.value
                                                                                     }
                                                                                     return updatedAppDataEdited
-                                                                                });
+                                                                                })
                                                                             }}
                                                                         />
                                                                     </td>
