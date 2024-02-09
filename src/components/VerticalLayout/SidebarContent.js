@@ -33,6 +33,7 @@ const SidebarContent = props => {
     let matchingMenuItem = null;
     const ul = document.getElementById("side-menu");
     const items = ul.getElementsByTagName("a");
+    let activateFileManagementUrl = null
 
     for (let i = 0; i < items.length; ++i) {
       if (pathName === items[i].pathname) {
@@ -40,10 +41,11 @@ const SidebarContent = props => {
         break;
       }
     }
-
     if (matchingMenuItem) {
       activateParentDropdown(matchingMenuItem);
     }
+    activateFileManagementUrl = items[1]
+    activateParentDropdown(activateFileManagementUrl);
   }, [props.location.pathname]);
 
   useEffect(() => {
@@ -97,7 +99,7 @@ const SidebarContent = props => {
 
   function renderMenuItem(item) {
     return (
-      <li key={item.menuId} className={item.menuId === 2 ? 'mm-active' : null}>
+      <li key={item.menuId}>
         <a
           onClick={() => {
             ReactSession.remove("currentPage");
