@@ -17,14 +17,17 @@ function* loginUser({ payload: { user, history } }) {
       localStorage.setItem("authUser", response.data.KOR_TOKEN)
       const menu = yield call(getMenuBE, '')
       if (menu.status == '1') {
-        const menuString = JSON.stringify(menu.data.result)
+        const menuData = {
+          menu: menu.data.result,
+          menuType: 'pja'
+        }
+
+        ReactSession.set("menu", JSON.stringify(menuData))
         const menuRule = yield call(getSelectMenu, '')
         if (menuRule.status == '1') {
           const menuString2 = JSON.stringify(menuRule)
           localStorage.setItem('menuRule', menuString2)
         }
-        localStorage.setItem('menu', menuString)
-        localStorage.setItem('menuType', 'pja')
       }
       localStorage.setItem("user", JSON.stringify(response.data.user))
       ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
@@ -51,19 +54,23 @@ function* reloginUser({ payload: { user, history } }) {
       localStorage.setItem("authUser", response.data.KOR_TOKEN)
       const menu = yield call(getMenuBE, '')
       if (menu.status == '1') {
-        const menuString = JSON.stringify(menu.data.result)
+
+        const menuData = {
+          menu: menu.data.result,
+          menuType: 'pja'
+        }
+
+        ReactSession.set("menu", JSON.stringify(menuData))
+
         const menuRule = yield call(getSelectMenu, '')
         if (menuRule.status == '1') {
           const menuString2 = JSON.stringify(menuRule)
           localStorage.setItem('menuRule', menuString2)
         }
-        localStorage.setItem('menu', menuString)
-        localStorage.setItem('menuType', 'pja')
       }
 
       localStorage.setItem("user", JSON.stringify(response.data.user))
       yield put(reloginSuccess(response))
-      window.location.reload()
       document.getElementById("reloginForm").style.display = "none"
       yield put(apiError(''))
     } else {
@@ -78,7 +85,6 @@ function* logoutUser({ payload: { history } }) {
   try {
     localStorage.removeItem("authUser")
     localStorage.removeItem("user")
-    localStorage.removeItem('menu')
     ReactSession.remove('menu')
     localStorage.removeItem('menuType')
     localStorage.removeItem('menuRule')

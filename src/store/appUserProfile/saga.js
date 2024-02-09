@@ -4,6 +4,7 @@ import { GET_PROFILE, EDIT_USER_PROFILE, UPDATE_USER_PASSWORD, EMAIL_FORGOT_PASS
 
 import { respGetProfile, msgEdit, msgUpdatePassword, msgEmailForgotPassword, respGetMenuList } from "./actions"
 
+import { ReactSession } from 'react-client-session';
 import { getProfile, editUserProfile, updateUserPassword, emailForgotPassword, updateForgotPassword, getMenuBE, getSelectMenu } from "helpers/backend_helper"
 
 function* fetchGetProfile({ payload: req }) {
@@ -65,20 +66,21 @@ function* fetchGetMenu({ payload: req }) {
     const response = yield call(getMenuBE, req)
     if (response.status == 1) {
       if (response.status == '1') {
-        const menuString = JSON.stringify(response.data.result)
+        const menuData = {
+          menu: response.data.result,
+          menuType: 'pja'
+        }
         const menuRule = yield call(getSelectMenu, '')
         if (menuRule.status == '1') {
           const menuString2 = JSON.stringify(menuRule)
           localStorage.setItem('menuRule', menuString2)
         }
-        localStorage.setItem('menu', menuString)
-        localStorage.setItem('menuType', 'pja')
       }
       yield put(respGetMenuList(response))
     } else {
       yield put(respGetMenuList(response))
     }
-    window.location.reload
+    console.log(localStorage.getItem('menuType'));
   } catch (error) {
     console.log(error);
     yield put(respGetMenuList({ "status": 0, "message": "Error Get Data" }))

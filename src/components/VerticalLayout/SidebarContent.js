@@ -13,9 +13,8 @@ const SidebarContent = props => {
 
   const dispatch = useDispatch()
 
-  let menu = localStorage.getItem('menu') ? JSON.parse(localStorage.getItem('menu')) : []
+  let menu = JSON.parse(ReactSession.get("menu") || {});
   let menuRule = localStorage.getItem('menuRule') ? JSON.parse(localStorage.getItem('menuRule')) : []
-  let menuType = localStorage.getItem('menuType') ? localStorage.getItem('menuType') : ''
   const firstTimeLogin = ReactSession.get("firstTime_Login");
 
   // const profile = useSelector(state => (
@@ -167,17 +166,20 @@ const SidebarContent = props => {
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
-        <div id="sidebar-menu" style={{ marginTop: "40px" }}>
+        <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
-            {Array.isArray(menu) && firstTimeLogin === 'false' ?
-              menuType === 'pja' ?
-                menu.map(item => renderMenuItem(item))
-                :
-                (dispatch(getMenuList()), null)
+            {Array.isArray(menu?.menu) && firstTimeLogin === 'false' ?
+              menu?.menu.map(item => {
+                if (menu.menuType === 'pja') {
+                  return renderMenuItem(item)
+                } else {
+                  dispatch(getMenuList())
+                  return null
+                }
+              })
               :
               null
             }
-
           </ul>
         </div>
       </SimpleBar>

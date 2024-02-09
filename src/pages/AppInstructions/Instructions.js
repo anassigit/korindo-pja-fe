@@ -181,6 +181,7 @@ const Instructions = (props) => {
 
     useEffect(() => {
         if (appInstructionsData.status == "0") {
+            debugger
             setAppInstructionsMsg(appInstructionsData)
         }
         if (ReactSession.get('appEditInstructionsMsg') != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
@@ -663,14 +664,29 @@ const Instructions = (props) => {
                                             <div className="input-group">
                                                 <Col sm="12">
                                                     <div className="text-sm-end">
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-primary "
-                                                            onClick={() => { appInstructionsPreAdd() }}
-                                                        >
-                                                            <i className="mdi mdi-plus fs-5 align-middle" />{" "}
-                                                            {props.t("New Instructions")}
-                                                        </button>
+
+                                                        {
+                                                            appInstructionsData?.data?.create ? (
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-primary "
+                                                                    onClick={() => { appInstructionsPreAdd() }}
+                                                                >
+                                                                    <i className="mdi mdi-plus fs-5 align-middle" />{" "}
+                                                                    {props.t("New Instructions")}
+                                                                </button>
+                                                            ) : (
+                                                                <button
+                                                                    disabled
+                                                                    type="button"
+                                                                    className="btn btn-dark opacity-25"
+                                                                >
+                                                                    <i className="mdi mdi-plus fs-5 align-middle" />{" "}
+                                                                    {props.t("New Instructions")}
+                                                                </button>
+                                                            )
+
+                                                        }
                                                     </div>
                                                 </Col>
                                             </div>
