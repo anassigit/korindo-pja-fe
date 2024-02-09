@@ -45,7 +45,9 @@ const SidebarContent = props => {
       activateParentDropdown(matchingMenuItem);
     }
     activateFileManagementUrl = items[1]
-    activateParentDropdown(activateFileManagementUrl);
+    if (activateFileManagementUrl) {
+      activateParentDropdown(activateFileManagementUrl);
+    }
   }, [props.location.pathname]);
 
   useEffect(() => {
