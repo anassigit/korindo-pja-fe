@@ -1,22 +1,20 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import { withTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types"
+import React, { useEffect, useState } from "react"
+import { withTranslation } from "react-i18next"
+import { useDispatch, useSelector } from "react-redux"
 import {
     Button,
     Card,
     CardBody,
     CardHeader,
     Input,
-    Label,
     Spinner
-} from "reactstrap";
-import { getCompanyCodeList, getMovingPlantList, resetMessage } from "store/actions";
-import '../../assets/scss/custom/components/custom-datepicker.scss';
-import "../../assets/scss/custom/table/TableCustom.css";
-import RootPageCustom from '../../common/RootPageCustom';
+} from "reactstrap"
+import { getCompanyCodeList, getMovingPlantList, resetMessage } from "store/actions"
+import '../../assets/scss/custom/components/custom-datepicker.scss'
+import "../../assets/scss/custom/table/TableCustom.css"
+import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-
 
 const MovingPlan = (props) => {
 
@@ -86,25 +84,44 @@ const MovingPlan = (props) => {
     }
 
     const getMonthAbbreviation = (monthIndex) => {
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        return months[monthIndex - 1];
-    };
+        const months = [
+            props.t("Jan"),
+            props.t("Feb"),
+            props.t("Mar"),
+            props.t("Apr"),
+            props.t("May"),
+            props.t("Jun"),
+            props.t("Jul"),
+            props.t("Aug"),
+            props.t("Sep"),
+            props.t("Oct"),
+            props.t("Nov"),
+            props.t("Dec")
+        ]
+        return months[monthIndex - 1]
+    }
 
     const getColumnHeader = (index) => {
-        const baseHeaders = ['Pre. Y', 'BP', 'MP', 'Actual', 'Growth vs. PY', 'Achieve vs. BP', 'Achieve vs. MP']
+        const baseHeaders = [
+            props.t("PreY"),
+            'BP',
+            'MP',
+            props.t("Actual"),
+            props.t("GrowthVsPY"),
+            props.t("AchieveVsBP"),
+            props.t("AchieveVsMP"),
+        ]
         const columnHeader = `${baseHeaders[index % baseHeaders.length]}`
         return columnHeader
     }
 
     const RecursiveJsx = ({ data, depth = 0 }) => {
-
         return (
             <React.Fragment>
                 {
                     Array.isArray(data) && data.every(item => item.level !== 0) ? (
                         data.map((item, index, array) => {
                             const backgroundColor = item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
-
                             return (
                                 <React.Fragment key={index}>
                                     <tr>
@@ -122,7 +139,6 @@ const MovingPlan = (props) => {
                                         }
                                         <td
                                             colSpan={item.level === 1 ? 3 : item.level === 2 ? 2 : item.level === 3 ? 1 : item.level === 4 ? 1 : 4}
-                                            // colSpan={3}
                                             rowSpan={3}
                                             align="center"
                                             valign="middle"
@@ -160,17 +176,9 @@ const MovingPlan = (props) => {
                                         }
                                     </tr>
                                     <tr>
-
                                         {
                                             item.level === 0 ? (
                                                 null
-                                                // <td
-                                                //     style={{
-                                                //         backgroundColor: backgroundColor,
-                                                //         position: 'sticky',
-                                                //         left: 0,
-                                                //     }}
-                                                //     colSpan={1} rowSpan={1}></td>
                                             ) : item.level === 1 ? (
                                                 <td
                                                     style={{
@@ -231,13 +239,6 @@ const MovingPlan = (props) => {
                                         {
                                             item.level === 0 ? (
                                                 null
-                                                // <td
-                                                //     style={{
-                                                //         backgroundColor: backgroundColor,
-                                                //         position: 'sticky',
-                                                //         left: 0,
-                                                //     }}
-                                                //     colSpan={1} rowSpan={1}></td>
                                             ) : item.level === 1 ? (
                                                 <td
                                                     style={{
@@ -309,28 +310,25 @@ const MovingPlan = (props) => {
                                     setHighestLevel(getMaxLevel(item.childList))
                                 }
                                 function getMaxLevel(data) {
-                                    let maxLevel = 0;
-
+                                    let maxLevel = 0
                                     function traverse(node) {
                                         if (!node || !node.level) {
-                                            return;
+                                            return
                                         }
-
-                                        maxLevel = Math.max(maxLevel, node.level);
-
+                                        maxLevel = Math.max(maxLevel, node.level)
                                         if (Array.isArray(node.childList)) {
                                             for (const child of node.childList) {
-                                                traverse(child);
+                                                traverse(child)
                                             }
                                         }
                                     }
                                     if (data) {
                                         for (const item of data) {
-                                            traverse(item);
+                                            traverse(item)
                                         }
                                     }
 
-                                    return maxLevel;
+                                    return maxLevel
                                 }
                                 return (
                                     <React.Fragment key={index}>
@@ -338,7 +336,6 @@ const MovingPlan = (props) => {
                                             <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
                                                 position: 'sticky',
                                                 left: '0',
-                                                // backgroundColor: item.ival1 ? '#CCE295' : item.ival1_1 ? '#E6F0D8' : item.ival1_2 ? '#F2F2F2' : item.ival1_3 ? 'white' : item.ival1_4 ? '#EEECE1' : 'white'
                                                 backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
                                             }}>
                                                 <div
@@ -353,7 +350,7 @@ const MovingPlan = (props) => {
                                                 backgroundColor: 'white',
                                             }}>
                                                 {
-                                                    item.interestExpenseList ? 'Interest Expense' : 'Revenue (ITEM)'
+                                                    item.interestExpenseList ? "Interest Expense" : "Revenue (ITEM)"
                                                 }
                                             </td>
                                             {
@@ -387,7 +384,7 @@ const MovingPlan = (props) => {
                                                 backgroundColor: 'white'
                                             }}>
                                                 {
-                                                    item.netIncomeList ? 'Net Income' : 'O.I (ITEM)'
+                                                    item.netIncomeList ? "Net Income" : "O.I (ITEM)"
                                                 }
                                             </td>
                                             {
@@ -421,7 +418,7 @@ const MovingPlan = (props) => {
                                                 backgroundColor: 'white'
                                             }}>
                                                 {
-                                                    item.netIncomeList ? 'Net Income (%)' : 'O.I (%) (ITEM)'
+                                                    item.netIncomeList ? "Net Income (%)" : "O.I (%) (ITEM)"
                                                 }
                                             </td>
                                             {
@@ -468,9 +465,7 @@ const MovingPlan = (props) => {
     RecursiveJsx.propTypes = {
         data: PropTypes.any,
         depth: PropTypes.any,
-    };
-
-
+    }
 
     return (
         <RootPageCustom msgStateGet={appMovingPlanMsg} msgStateSet={setappMovingPlanMsg}
@@ -502,7 +497,7 @@ const MovingPlan = (props) => {
                                         }}
                                         className="form-control"
                                         onChange={e => {
-                                            setSelectedYear(e.target.value);
+                                            setSelectedYear(e.target.value)
                                         }}
                                         onKeyDown={e => e.key === 'Enter' ? handleSearch() : null}
                                     />
@@ -542,7 +537,7 @@ const MovingPlan = (props) => {
                                     <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
                                         <tr>
                                             <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '300px' }}>
-                                                ITEMS
+                                                {props.t("ITEMS")}
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>
@@ -552,10 +547,10 @@ const MovingPlan = (props) => {
                                                 </React.Fragment>
                                             ))}
                                             <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
-                                                Year to Date
+                                                {props.t("Year to Date")}
                                             </th>
                                             <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
-                                                Total
+                                                {props.t("Total")}
                                             </th>
                                         </tr>
                                         <tr>
@@ -583,9 +578,7 @@ const MovingPlan = (props) => {
                 </>
             }
         />
-    );
-
-
+    )
 }
 
 MovingPlan.propTypes = {

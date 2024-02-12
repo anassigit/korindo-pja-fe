@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import { withTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types"
+import React, { useEffect, useState } from "react"
+import { withTranslation } from "react-i18next"
+import { useDispatch, useSelector } from "react-redux"
 import {
     Button,
     Card,
@@ -12,23 +12,20 @@ import {
     DropdownMenu,
     DropdownToggle,
     Input,
-    InputGroup,
-    Label,
     Spinner
-} from "reactstrap";
-import '../../assets/scss/custom/components/custom-datepicker.scss';
-import "../../assets/scss/custom/table/TableCustom.css";
-import RootPageCustom from '../../common/RootPageCustom';
-import '../../config';
-import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions";
+} from "reactstrap"
+import '../../assets/scss/custom/components/custom-datepicker.scss'
+import "../../assets/scss/custom/table/TableCustom.css"
+import RootPageCustom from '../../common/RootPageCustom'
+import '../../config'
+import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions"
 import ReactEcharts from "echarts-for-react"
-import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const KPIDashboard = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     const appYearListData = useSelector((state) => {
         return state.kpiReducer.respGetYearList
@@ -63,7 +60,7 @@ const KPIDashboard = (props) => {
 
     const [filterColumn, setFilterColumn] = useState(false)
 
-    const [initialWidths, setInitialWidths] = useState([]);
+    const [initialWidths, setInitialWidths] = useState([])
 
     useEffect(() => {
         dispatch(getYearList())
@@ -86,12 +83,12 @@ const KPIDashboard = (props) => {
                 const timeoutId = setTimeout(() => {
                     setInitialWidths(
                         appDashboardListData.data.resultList.map((item) => {
-                            const cappedTotalRate = Math.min(100, parseFloat(item.totalRate.replace('%', '')));
-                            return cappedTotalRate;
+                            const cappedTotalRate = Math.min(100, parseFloat(item.totalRate.replace('%', '')))
+                            return cappedTotalRate
                         })
-                    );
-                }, 100);
-                return () => clearTimeout(timeoutId);
+                    )
+                }, 100)
+                return () => clearTimeout(timeoutId)
             }
         } else if (appDashboardListData.status === '0') {
             setInitialWidths([])
@@ -162,7 +159,7 @@ const KPIDashboard = (props) => {
                 return (
                     { [e]: false }
                 )
-            }) || [];
+            }) || []
 
             setSelectedColumnList(initialCheckboxesState)
         } else {
@@ -175,7 +172,7 @@ const KPIDashboard = (props) => {
         style: 'decimal',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-    });
+    })
 
     const handleCheckboxChange = (index) => {
         const newCheckboxes = [...selectedColumnList]
@@ -184,9 +181,9 @@ const KPIDashboard = (props) => {
         newCheckboxes[index] = {
             ...newCheckboxes[index],
             [columnName]: !newCheckboxes[index]?.[columnName]
-        };
+        }
 
-        setSelectedColumnList(newCheckboxes);
+        setSelectedColumnList(newCheckboxes)
     }
 
     return (
@@ -235,12 +232,12 @@ const KPIDashboard = (props) => {
                                     <option>{props.t('Select Month')}</option>
                                     {
                                         Array.from({ length: 12 }, (_, index) => {
-                                            const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' });
+                                            const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' })
                                             return (
                                                 <option key={index} value={index + 1}>
                                                     {langType === 'kor' ? index + 1 + "월" : month}
                                                 </option>
-                                            );
+                                            )
                                         })
                                     }
                                 </Input>
@@ -354,12 +351,9 @@ const KPIDashboard = (props) => {
                             </div>
                             {
                                 appDashboardListData?.data?.resultList.map((item, index, array) => {
-                                    const isFirstItem = index === 0;
-                                    const hasNameChanged = !isFirstItem && item.corporationName !== array[index - 1]?.corporationName;
-
                                     return (
                                         <React.Fragment key={index}>
-                                            {(isFirstItem || hasNameChanged) && (
+                                            {(index === 0 || !index === 0 && item.corporationName !== array[index - 1]?.corporationName) && (
                                                 <h3 className="my-2">
                                                     {item.corporationName}
                                                 </h3>
@@ -383,7 +377,6 @@ const KPIDashboard = (props) => {
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center'
                                             }}>
-
                                                 <ReactEcharts
                                                     className="custom-chart"
                                                     option={{
@@ -395,15 +388,15 @@ const KPIDashboard = (props) => {
                                                             confine: true,
                                                             width: '2px',
                                                             formatter: function (params) {
-                                                                var content = params[0].name + '<br>';
+                                                                var content = params[0].name + '<br>'
                                                                 params.forEach(function (item) {
                                                                     if (item.seriesName !== 'Note') {
-                                                                        content += item.marker + ' ' + item.seriesName + ': ' + formatter.format(item.value) + '<br>';
+                                                                        content += item.marker + ' ' + item.seriesName + ': ' + formatter.format(item.value) + '<br>'
                                                                     } else if (item.value) {
-                                                                        content += 'Note: \n' + item.value + '<br>';
+                                                                        content += 'Note: \n' + item.value + '<br>'
                                                                     }
-                                                                });
-                                                                return content;
+                                                                })
+                                                                return content
                                                             },
                                                         },
                                                         legend: {},
@@ -418,9 +411,7 @@ const KPIDashboard = (props) => {
                                                             type: 'category',
                                                             data: item?.details.map(item => item.month) || []
                                                         },
-                                                        yAxis: {
-
-                                                        },
+                                                        yAxis: {},
                                                         series: [
                                                             {
                                                                 name: 'Plan',
@@ -535,17 +526,13 @@ const KPIDashboard = (props) => {
 
                         </CardBody>
                     </Card>
-
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
-
                 </>
             }
         />
-    );
-
-
+    )
 }
 
 KPIDashboard.propTypes = {
