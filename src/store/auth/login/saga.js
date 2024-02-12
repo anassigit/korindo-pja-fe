@@ -30,7 +30,7 @@ function* loginUser({ payload: { user, history } }) {
         }
       }
       localStorage.setItem("user", JSON.stringify(response.data.user))
-      ReactSession.set("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
+      localStorage.setItem("firstTime_Login", JSON.stringify(response.data.firstTime_Login))
       localStorage.setItem('appFileManagementData', '')
       ReactSession.remove("appInstructionsTabelSearch")
       ReactSession.remove('selected')
@@ -87,6 +87,7 @@ function* logoutUser({ payload: { history } }) {
     localStorage.removeItem("user")
     ReactSession.remove('menu')
     localStorage.removeItem('menuType')
+    localStorage.removeItem('firstTime_Login')
     localStorage.removeItem('menuRule')
     history.push("/login")
     yield put(apiError(""))

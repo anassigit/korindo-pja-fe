@@ -104,7 +104,7 @@ const Instructions = (props) => {
 
     useEffect(() => {
         const lastURL = localStorage.getItem('currentURL');
-        let temp = ReactSession.get('firstTime_Login')
+        let temp = localStorage.getItem("firstTime_Login")
         if (temp === "true") {
             history.push('/FirstLogin')
         } else if (lastURL) {

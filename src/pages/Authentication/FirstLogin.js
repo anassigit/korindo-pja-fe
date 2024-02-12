@@ -30,7 +30,7 @@ const FirstLogin = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let temp = ReactSession.get('firstTime_Login')
+    let temp = localStorage.getItem('firstTime_Login')
     if (!localStorage.getItem("I18N_LANGUAGE")) {
       localStorage.setItem("I18N_LANGUAGE", "kor")
     }
@@ -121,7 +121,7 @@ const FirstLogin = (props) => {
       dispatch(updateUserPassword(values))
       history.push('/')
       window.location.reload()
-      ReactSession.set('firstTime_Login', 'false')
+      localStorage.setItem('firstTime_Login', 'false')
     }
   });
 
@@ -244,7 +244,7 @@ const FirstLogin = (props) => {
                         <Col>
                           <div className="d-grid" style={{ width: "102.5%", marginLeft: "-5%" }}>
                             <button className="btn btn-light btn-block" style={{ width: "102.5%" }} onClick={() => {
-                              ReactSession.set('firstTime_Login', 'false')
+                              localStorage.setItem('firstTime_Login', 'false')
                               history.push('/')
                             }}
                             >

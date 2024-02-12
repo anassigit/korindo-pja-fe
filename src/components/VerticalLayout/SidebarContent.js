@@ -17,17 +17,19 @@ const SidebarContent = props => {
   let menu = null
 
   if (menuData) {
-      try {
-          menu = JSON.parse(menuData)
-      } catch (error) {
-        localStorage.removeItem("menu")
-      }
+    try {
+      menu = JSON.parse(menuData)
+    } catch (error) {
+      localStorage.removeItem("menu")
+    }
   } else {
     dispatch(getMenuList())
   }
-  
+
+  console.log(menu)
+
   let menuRule = localStorage.getItem('menuRule') ? JSON.parse(localStorage.getItem('menuRule')) : []
-  const firstTimeLogin = ReactSession.get("firstTime_Login");
+  const firstTimeLogin = localStorage.getItem("firstTime_Login")
 
   // const profile = useSelector(state => (
   //   state.dashboardReducer.respGetInfoProfile
