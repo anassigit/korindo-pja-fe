@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react"
 import { withTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import {
+    Button,
     Card,
     CardBody,
     CardHeader,
     Input,
-    Spinner
+    Spinner,
+    UncontrolledTooltip
 } from "reactstrap"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
@@ -128,78 +130,96 @@ const KPIDashboardDetail = (props) => {
                             <div
                                 style={{
                                     display: 'flex',
-                                    gap: '16px',
-                                    alignItems: 'center',
+                                    justifyContent: 'space-between'
                                 }}
                             >
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedYear}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedYear(e.target.value)
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        gap: '16px',
+                                        alignItems: 'center',
                                     }}
                                 >
-                                    <option>{props.t('Select Year')}</option>
-                                    {
-                                        appYearListData?.data?.list.map((item, index) => {
-                                            return (
-                                                <option key={item}>{item}</option>
+                                    <Input
+                                        type="select"
+                                        style={{ width: 'auto' }}
+                                        value={selectedYear}
+                                        onChange={(e) => {
+                                            setLoadingSpinner(true)
+                                            setSelectedYear(e.target.value)
+                                        }}
+                                    >
+                                        <option>{props.t('Select Year')}</option>
+                                        {
+                                            appYearListData?.data?.list.map((item, index) => {
+                                                return (
+                                                    <option key={item}>{item}</option>
+                                                )
+                                            })
+                                        }
+                                    </Input>
+                                    <Input
+                                        type="select"
+                                        style={{ width: 'auto' }}
+                                        value={selectedGroupList}
+                                        onChange={(e) => {
+                                            setLoadingSpinner(true)
+                                            setSelectedCorporationList('')
+                                            setSelectedGroupList(e.target.value)
+                                        }}
+                                    >
+                                        <option value={''}>{props.t('Select Group')}</option>
+                                        {
+                                            appGroupListData?.data?.list.map((item, index) => {
+                                                let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
+                                                return (
+                                                    <option key={index} value={item.num}>
+                                                        {nameLang}
+                                                    </option>
+                                                )
+                                            })
+                                        }
+                                    </Input>
+                                    <Input
+                                        type="select"
+                                        style={{ width: 'auto' }}
+                                        value={selectedCorporationList}
+                                        onChange={(e) => {
+                                            setLoadingSpinner(true)
+                                            setSelectedCorporationList(e.target.value)
+                                        }}
+                                    >
+                                        {
+                                            appCorporationListData?.data?.list?.length > 0 ? (
+                                                <>
+                                                    <option value={''}>{props.t('Select Group')}</option>
+                                                    {
+                                                        appCorporationListData?.data?.list.map((item, index) => {
+                                                            return (
+                                                                <option key={index} value={item.corporationId}>
+                                                                    {item.corporationName}
+                                                                </option>
+                                                            )
+                                                        })
+                                                    }
+                                                </>
+                                            ) : (
+                                                <option value={''}>{props.t('No Data')}</option>
                                             )
-                                        })
-                                    }
-                                </Input>
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedGroupList}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedCorporationList('')
-                                        setSelectedGroupList(e.target.value)
+                                        }
+                                    </Input>
+                                </div>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        gap: '.75vw',
                                     }}
                                 >
-                                    <option value={''}>{props.t('Select Group')}</option>
-                                    {
-                                        appGroupListData?.data?.list.map((item, index) => {
-                                            let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
-                                            return (
-                                                <option key={index} value={item.num}>
-                                                    {nameLang}
-                                                </option>
-                                            )
-                                        })
-                                    }
-                                </Input>
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedCorporationList}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedCorporationList(e.target.value)
-                                    }}
-                                >
-                                    {
-                                        appCorporationListData?.data?.list?.length > 0 ? (
-                                            <>
-                                                <option value={''}>{props.t('Select Group')}</option>
-                                                {
-                                                    appCorporationListData?.data?.list.map((item, index) => {
-                                                        return (
-                                                            <option key={index} value={item.corporationId}>
-                                                                {item.corporationName}
-                                                            </option>
-                                                        )
-                                                    })
-                                                }
-                                            </>
-                                        ) : (
-                                            <option value={''}>{props.t('No Data')}</option>
-                                        )
-                                    }
-                                </Input>
+                                    <Button>
+                                        <i className="mdi mdi-download" />{" "}
+                                        {props.t('Download Data')}
+                                    </Button>
+                                </div>
                             </div>
                             <div style={{ overflow: 'auto', maxHeight: '80vh', marginTop: '10px' }}>
                                 <table className="table table-bordered my-3">
@@ -242,12 +262,15 @@ const KPIDashboardDetail = (props) => {
                                                         </td>
                                                         {Array.from(data.details, (detail, index) => (
                                                             <React.Fragment key={index}>
-                                                                <td>
-                                                                    {detail.plan}
+                                                                <td style={{ textAlign: "right" }} id="detailTooltip">
+                                                                    {detail.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                                                                 </td>
-                                                                <td key={index}>
-                                                                    {detail.result}
+                                                                <td style={{ textAlign: "right" }} id="detailTooltip">
+                                                                    {detail.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                                                                 </td>
+                                                                <UncontrolledTooltip placement="top" target="detailTooltip">
+                                                                    {detail.note}
+                                                                </UncontrolledTooltip>
                                                             </React.Fragment>
                                                         ))}
                                                     </tr>

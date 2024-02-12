@@ -254,8 +254,8 @@ const KPIInputResult = (props) => {
                                                     <tr>
                                                         <td colSpan={1}>{item.item}</td>
                                                         <td colSpan={1}>{item.unit}</td>
-                                                        <td colSpan={1}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
-                                                        <td colSpan={1}>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
+                                                        <td colSpan={1} style={{ textAlign: "right" }}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
+                                                        <td colSpan={1} style={{ textAlign: "right" }}>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td>
                                                             {item.note.split('\n').map((line, lineIndex) => (
                                                                 <div key={lineIndex}>{line}</div>
@@ -271,7 +271,7 @@ const KPIInputResult = (props) => {
                                                     <tr>
                                                         <td colSpan={1}>{item.item}</td>
                                                         <td colSpan={1}>{item.unit}</td>
-                                                        <td colSpan={1}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
+                                                        <td colSpan={1} style={{ textAlign: "right" }}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         {
                                                             appEditMode ?
                                                                 (

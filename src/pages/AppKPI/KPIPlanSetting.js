@@ -202,6 +202,10 @@ const KPIPlanSetting = (props) => {
                                         gap: '.75vw',
                                     }}
                                 >
+                                    <Button>
+                                        <i className="mdi mdi-download" />{" "}
+                                        {props.t('Download Data')}
+                                    </Button>
                                     <Button onClick={() =>
                                         downloadPlanTemplate()
                                     }>
@@ -220,10 +224,8 @@ const KPIPlanSetting = (props) => {
                                         <th style={{ textAlign: 'center' }} colSpan={1} scope="col">단위</th>
                                         {
                                             (() => {
-                                                const numberOfMonths = 12
                                                 const thElements = []
-
-                                                for (let month = 1; month <= numberOfMonths; month++) {
+                                                for (let month = 1; month <= 12; month++) {
                                                     thElements.push(
                                                         <th key={month - 1} style={{ textAlign: 'center' }} scope="col">{`${month}월`}</th>
                                                     )
@@ -246,7 +248,7 @@ const KPIPlanSetting = (props) => {
                                                             item.plan.map((planValue, monthIndex) => {
                                                                 if (planValue !== null) {
                                                                     return (
-                                                                        <td key={monthIndex}>{planValue}</td>
+                                                                        <td style={{textAlign: "right"}} key={monthIndex}>{planValue.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                                     )
                                                                 } else {
                                                                     return (
