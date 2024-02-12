@@ -13,14 +13,14 @@ const SidebarContent = props => {
 
   const dispatch = useDispatch()
 
-  let menuData = ReactSession.get("menu")
+  let menuData = localStorage.getItem("menu")
   let menu = null
 
   if (menuData) {
       try {
           menu = JSON.parse(menuData)
       } catch (error) {
-          ReactSession.remove("menu")
+        localStorage.removeItem("menu")
       }
   } else {
     dispatch(getMenuList())

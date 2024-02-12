@@ -13,7 +13,7 @@ import i18n from "../../../i18n";
 import languages from "../../../common/languages";
 
 const LanguageDropdown = () => {
-  // Declare a new state variable, which we'll call "menu"
+  
   const [selectedLang, setSelectedLang] = useState("");
   const [menu, setMenu] = useState(false);
 

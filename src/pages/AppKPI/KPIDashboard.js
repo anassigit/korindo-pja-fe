@@ -78,7 +78,9 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         if (appDashboardListData.status === '1') {
-            setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0))
+            if (appDashboardListData && appDashboardListData.data && appDashboardListData.data.resultList) {
+                setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0));
+            } 
             if (Array.isArray(initialWidths) && initialWidths?.length > 0) {
                 const timeoutId = setTimeout(() => {
                     setInitialWidths(

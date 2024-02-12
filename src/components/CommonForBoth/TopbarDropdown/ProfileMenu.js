@@ -19,8 +19,7 @@ import { ReactSession } from 'react-client-session';
 import { getProfile } from "store/actions"
 
 const ProfileMenu = props => {
-  // Declare a new state variable, which we'll call "menu"
-
+  
   const dispatch = useDispatch()
   const [menu, setMenu] = useState(false)
 
