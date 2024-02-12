@@ -13,7 +13,7 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardDetailKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions"
 
 const KPIDashboardDetail = (props) => {
 
@@ -33,12 +33,8 @@ const KPIDashboardDetail = (props) => {
         return state.kpiReducer.respGetCorporationList
     })
 
-    const appColumnListData = useSelector((state) => {
-        return state.kpiReducer.respGetColumnList
-    })
-
-    const appDashboardListData = useSelector((state) => {
-        return state.kpiReducer.respGetDashboardKPI
+    const appDashboardDetailListData = useSelector((state) => {
+        return state.kpiReducer.respGetDashboardDetailKPI
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
@@ -46,8 +42,6 @@ const KPIDashboardDetail = (props) => {
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
-    const [selectedColumnList, setSelectedColumnList] = useState([])
-    const [initialWidths, setInitialWidths] = useState([])
 
     useEffect(() => {
         dispatch(getYearList())
@@ -61,24 +55,7 @@ const KPIDashboardDetail = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appYearListData, appGroupListData, appCorporationListData, appColumnListData, appDashboardListData])
-
-    useEffect(() => {
-        if (appDashboardListData.status === '1') {
-            setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0))
-            if (Array.isArray(initialWidths) && initialWidths?.length > 0) {
-                const timeoutId = setTimeout(() => {
-                    setInitialWidths(
-                        appDashboardListData.data.resultList.map((item) => {
-                            const cappedTotalRate = Math.min(100, parseFloat(item.totalRate.replace('%', '')))
-                            return cappedTotalRate
-                        })
-                    )
-                }, 100)
-                return () => clearTimeout(timeoutId)
-            }
-        } else if (appDashboardListData.status === '0') setInitialWidths([])
-    }, [appDashboardListData])
+    }, [appYearListData, appGroupListData, appCorporationListData, appDashboardDetailListData])
 
     useEffect(() => {
         if (selectedGroupList) {
@@ -93,38 +70,16 @@ const KPIDashboardDetail = (props) => {
     }, [selectedGroupList, selectedYear])
 
     useEffect(() => {
-
-        if (selectedYear && selectedCorporationList && selectedGroupList) {
-            dispatch(getColumnList({
-                groupNum: selectedGroupList,
-                corporationId: selectedCorporationList,
-                year: selectedYear,
-            }))
-        } else {
-            dispatch(getColumnList({
-                groupNum: '',
-                corporationId: '',
-                year: '',
-            }))
-        }
-
-    }, [selectedCorporationList, selectedGroupList, selectedYear])
-
-    useEffect(() => {
         if (selectedYear && selectedGroupList) {
-            dispatch(getDashboardKPI({
+            dispatch(getDashboardDetailKPI({
                 search: {
                     year: selectedYear,
                     groupNum: selectedGroupList,
-                    corporationId: selectedCorporationList,
-                    column: selectedColumnList
-                        .filter(columnObj => Object.values(columnObj)[0])
-                        .map(columnObj => Object.keys(columnObj)[0])
-                        .join(',')
+                    corporationId: selectedCorporationList
                 }
             }))
         } else {
-            dispatch(getDashboardKPI({
+            dispatch(getDashboardDetailKPI({
                 search: {
                     groupNum: '',
                     corporationId: '',
@@ -133,22 +88,7 @@ const KPIDashboardDetail = (props) => {
             }))
         }
         setLoadingSpinner(true)
-    }, [selectedCorporationList, selectedGroupList, selectedYear, selectedColumnList])
-
-    useEffect(() => {
-        if (appColumnListData.status === '1') {
-            const initialCheckboxesState = appColumnListData?.data?.list.map((e) => {
-                return (
-                    { [e]: false }
-                )
-            }) || []
-
-            setSelectedColumnList(initialCheckboxesState)
-        } else {
-            setSelectedColumnList([])
-        }
-
-    }, [appColumnListData])
+    }, [selectedCorporationList, selectedGroupList, selectedYear])
 
     const getMonthAbbreviation = (monthIndex) => {
         const months = [
@@ -217,7 +157,6 @@ const KPIDashboardDetail = (props) => {
                                     onChange={(e) => {
                                         setLoadingSpinner(true)
                                         setSelectedCorporationList('')
-                                        setSelectedColumnList([])
                                         setSelectedGroupList(e.target.value)
                                     }}
                                 >
@@ -240,7 +179,6 @@ const KPIDashboardDetail = (props) => {
                                     onChange={(e) => {
                                         setLoadingSpinner(true)
                                         setSelectedCorporationList(e.target.value)
-                                        setSelectedColumnList([])
                                     }}
                                 >
                                     {
@@ -288,66 +226,33 @@ const KPIDashboardDetail = (props) => {
                                     </thead>
                                     <tbody style={{ position: 'relative' }}>
                                         {
-                                            <tr>
-                                                <td rowSpan={2} align="center" valign="middle" style={{
-                                                    position: 'sticky',
-                                                    left: '0',
-                                                    backgroundColor: 'white'
-                                                }}>
-                                                    <div
-                                                        style={{ width: '175px' }}
-                                                    >
-                                                        data
-                                                    </div>
-                                                </td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                <td>data</td>
-                                                {/* {
-                                                    Array.isArray(item.revenueList) ? item?.revenueList.map((row, i) => (
-                                                        <React.Fragment key={i}>
-                                                            <td>{row.pyac}</td>
-                                                            <td>{row.bp}</td>
-                                                            <td>{row.amp}</td>
-                                                            <td>{row.cyac}</td>
-                                                            <td>{row.grw}</td>
-                                                            <td>{row.abp}</td>
-                                                            <td>{row.amp}</td>
-                                                        </React.Fragment>
-                                                    )) : item?.interestExpenseList.map((row, i) => (
-                                                        <React.Fragment key={i}>
-                                                            <td>{row.pyac}</td>
-                                                            <td>{row.bp}</td>
-                                                            <td>{row.amp}</td>
-                                                            <td>{row.cyac}</td>
-                                                            <td>{row.grw}</td>
-                                                            <td>{row.abp}</td>
-                                                            <td>{row.amp}</td>
-                                                        </React.Fragment>
-                                                    ))
-                                                } */}
-                                            </tr>
+                                            appDashboardDetailListData?.data?.resultList.map((data, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td align="center" valign="middle" style={{
+                                                            position: 'sticky',
+                                                            left: '0',
+                                                            backgroundColor: 'white'
+                                                        }}>
+                                                            <div
+                                                                style={{ width: '175px' }}
+                                                            >
+                                                                {data.item}
+                                                            </div>
+                                                        </td>
+                                                        {Array.from(data.details, (detail, index) => (
+                                                            <React.Fragment key={index}>
+                                                                <td>
+                                                                    {detail.plan}
+                                                                </td>
+                                                                <td key={index}>
+                                                                    {detail.result}
+                                                                </td>
+                                                            </React.Fragment>
+                                                        ))}
+                                                    </tr>
+                                                )
+                                            })
                                         }
                                     </tbody>
                                 </table>
