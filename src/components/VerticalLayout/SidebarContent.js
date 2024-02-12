@@ -13,7 +13,19 @@ const SidebarContent = props => {
 
   const dispatch = useDispatch()
 
-  let menu = JSON.parse(ReactSession.get("menu") || {});
+  let menuData = ReactSession.get("menu")
+  let menu = null
+
+  if (menuData) {
+      try {
+          menu = JSON.parse(menuData)
+      } catch (error) {
+          ReactSession.remove("menu")
+      }
+  } else {
+    dispatch(getMenuList())
+  }
+  
   let menuRule = localStorage.getItem('menuRule') ? JSON.parse(localStorage.getItem('menuRule')) : []
   const firstTimeLogin = ReactSession.get("firstTime_Login");
 
