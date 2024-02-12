@@ -85,7 +85,7 @@ function* logoutUser({ payload: { history } }) {
   try {
     localStorage.removeItem("authUser")
     localStorage.removeItem("user")
-    ReactSession.remove('menu')
+    localStorage.removeItem('menu')
     localStorage.removeItem('menuType')
     localStorage.removeItem('firstTime_Login')
     localStorage.removeItem('menuRule')
