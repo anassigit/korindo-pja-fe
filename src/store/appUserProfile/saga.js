@@ -70,6 +70,7 @@ function* fetchGetMenu({ payload: req }) {
           menu: response.data.result,
           menuType: 'pja'
         }
+        ReactSession.set("menu", JSON.stringify(menuData))
         const menuRule = yield call(getSelectMenu, '')
         if (menuRule.status == '1') {
           const menuString2 = JSON.stringify(menuRule)
@@ -80,7 +81,6 @@ function* fetchGetMenu({ payload: req }) {
     } else {
       yield put(respGetMenuList(response))
     }
-    console.log(localStorage.getItem('menuType'));
   } catch (error) {
     console.log(error);
     yield put(respGetMenuList({ "status": 0, "message": "Error Get Data" }))
