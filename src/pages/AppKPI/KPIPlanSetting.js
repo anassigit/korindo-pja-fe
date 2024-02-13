@@ -112,7 +112,7 @@ const KPIPlanSetting = (props) => {
     const downloadPlan = async () => {
         try {
             dispatch(getDownloadPlan({
-                file_nm: props.t('KPI PLAN'),
+                file_nm: props.t('KPI PLAN.xlsx'),
                 groupNum: selectedGroupList,
                 corporationId: selectedCorporationList,
                 year: selectedYear,
@@ -215,9 +215,10 @@ const KPIPlanSetting = (props) => {
                                         gap: '.75vw',
                                     }}
                                 >
-                                    <Button onClick={() => {
-                                    downloadPlan()
-                                    }}>
+                                    <Button
+                                        disabled={appPlanState.length > 0 ? false : true}
+                                        className={appPlanState.length > 0 ? "" : "btn btn-dark opacity-25"}
+                                        onClick={() => { downloadPlan() }}>
                                         <i className="mdi mdi-download" />{" "}
                                         {props.t('Download Data')}
                                     </Button>
@@ -263,7 +264,7 @@ const KPIPlanSetting = (props) => {
                                                             item.plan.map((planValue, monthIndex) => {
                                                                 if (planValue !== null) {
                                                                     return (
-                                                                        <td style={{textAlign: "right"}} key={monthIndex}>{planValue.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
+                                                                        <td style={{ textAlign: "right" }} key={monthIndex}>{planValue.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                                     )
                                                                 } else {
                                                                     return (

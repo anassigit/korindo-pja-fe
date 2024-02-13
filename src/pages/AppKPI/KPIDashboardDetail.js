@@ -118,6 +118,19 @@ const KPIDashboardDetail = (props) => {
         return `${baseHeaders[index % baseHeaders.length]}`
     }
 
+    const downloadDashboardDetail = async () => {
+        // try {
+        //     dispatch(getDownloadDashboardDetail({
+        //         file_nm: props.t('KPI PLAN XLSX'),
+        //         groupNum: selectedGroupList,
+        //         corporationId: selectedCorporationList,
+        //         year: selectedYear,
+        //     }))
+        // } catch (error) {
+        //     console.log(error)
+        // }
+    }
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
@@ -215,8 +228,11 @@ const KPIDashboardDetail = (props) => {
                                         gap: '.75vw',
                                     }}
                                 >
-                                    <Button>
-                                        <i className="mdi mdi-download"/>{" "}
+                                    <Button
+                                        disabled={appDashboardDetailListData?.data?.resultList.length > 0 ? false : true}
+                                        className={appDashboardDetailListData?.data?.resultList.length > 0 ? "" : "btn btn-dark opacity-25"}
+                                        onClick={() => { downloadDashboardDetail() }}>
+                                        <i className="mdi mdi-download" />{" "}
                                         {props.t('Download Data')}
                                     </Button>
                                 </div>
@@ -265,7 +281,7 @@ const KPIDashboardDetail = (props) => {
                                                                     textAlign: "right",
                                                                     color: detail.plan > detail.result ? "red" : "black",
                                                                     width: '100%',
-                                                                    position:'relative'
+                                                                    position: 'relative'
                                                                 }} id={"detailTooltip" + data.item + index}>
                                                                     {detail.note.trim() !== "" ? (
                                                                         <div style={{ position: 'absolute', top: 0, right: 0 }}>
