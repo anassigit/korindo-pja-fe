@@ -216,7 +216,7 @@ const KPIDashboardDetail = (props) => {
                                     }}
                                 >
                                     <Button>
-                                        <i className="mdi mdi-download" />{" "}
+                                        <i className="mdi mdi-download"/>{" "}
                                         {props.t('Download Data')}
                                     </Button>
                                 </div>
@@ -225,7 +225,7 @@ const KPIDashboardDetail = (props) => {
                                 <table className="table table-bordered my-3">
                                     <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
                                         <tr>
-                                            <th rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '300px' }}>
+                                            <th rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
                                                 {props.t("ITEMS")}
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
@@ -254,23 +254,32 @@ const KPIDashboardDetail = (props) => {
                                                             left: '0',
                                                             backgroundColor: 'white'
                                                         }}>
-                                                            <div
-                                                                style={{ width: '175px' }}
-                                                            >
-                                                                {data.item}
-                                                            </div>
+                                                            <div style={{ width: '175px' }}>{data.item}</div>
                                                         </td>
                                                         {Array.from(data.details, (detail, index) => (
                                                             <React.Fragment key={index}>
-                                                                <td style={{ textAlign: "right" }} id="detailTooltip">
+                                                                <td style={{ textAlign: "right" }}>
                                                                     {detail.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                                                                 </td>
-                                                                <td style={{ textAlign: "right" }} id="detailTooltip">
+                                                                <td style={{
+                                                                    textAlign: "right",
+                                                                    color: detail.plan > detail.result ? "red" : "black",
+                                                                    width: '100%',
+                                                                    position:'relative'
+                                                                }} id={"detailTooltip" + data.item + index}>
+                                                                    {detail.note.trim() !== "" ? (
+                                                                        <div style={{ position: 'absolute', top: 0, right: 0 }}>
+                                                                            <i className="mdi mdi-comment-alert" />
+                                                                        </div>
+                                                                    ) : null}
                                                                     {detail.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                                                                 </td>
-                                                                <UncontrolledTooltip placement="top" target="detailTooltip">
-                                                                    {detail.note}
-                                                                </UncontrolledTooltip>
+                                                                {detail.note.trim() !== "" ? (
+                                                                    <UncontrolledTooltip placement="top" target={"detailTooltip" + data.item + index}>
+                                                                        {detail.note}
+                                                                    </UncontrolledTooltip>
+                                                                ) : null
+                                                                }
                                                             </React.Fragment>
                                                         ))}
                                                     </tr>

@@ -181,7 +181,6 @@ const Instructions = (props) => {
 
     useEffect(() => {
         if (appInstructionsData.status == "0") {
-            debugger
             setAppInstructionsMsg(appInstructionsData)
         }
         if (ReactSession.get('appEditInstructionsMsg') != undefined || history.location.state != null || !performance.navigation.TYPE_RELOAD) {
