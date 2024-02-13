@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA, GET_DASHBOARD_DETAIL_KPI } from "./actionTypes"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_PLAN_TEMPLATE, DOWNLOAD_PLAN } from "./actionTypes"
 import { msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList, msgEdit, respGetDashboardDetailKPI } from "./actions"
-import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE, setActualInputDataBE, getDashboardDetailKPIBE } from "helpers/backend_helper"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE, setActualInputDataBE, getDashboardDetailKPIBE, getDownloadPlanBE } from "helpers/backend_helper"
 
 function* fetchGetYearList({ payload: req }) {
     try {
@@ -164,9 +164,18 @@ function* fetchGetDownloadMasterTemplate({ payload: req }) {
         console.log(error);
     }
 }
+
 function* fetchGetDownloadPlanTemplate({ payload: req }) {
     try {
         yield call(getDownloadPlanTemplateBE, req)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function* fetchGetDownloadPlan({ payload: req }) {
+    try {
+        yield call(getDownloadPlanBE, req)
     } catch (error) {
         console.log(error);
     }
@@ -223,7 +232,8 @@ function* kpiSaga() {
     yield takeEvery(GET_DASHBOARD_DETAIL_KPI, fetchGetDashboardDetailKPI)
     yield takeEvery(GET_ACTUAL_INPUT_DATA, fetchGetActualInputData)
     yield takeEvery(DOWNLOAD_MASTER_TEMPLATE, fetchGetDownloadMasterTemplate)
-    yield takeEvery(DOWNLOAD_MASTER_TEMPLATE, fetchGetDownloadPlanTemplate)
+    yield takeEvery(DOWNLOAD_PLAN_TEMPLATE, fetchGetDownloadPlanTemplate)
+    yield takeEvery(DOWNLOAD_PLAN, fetchGetDownloadPlan)
     yield takeEvery(UPLOAD_MASTER_KPI, fetchUploadMasterKPI)
     yield takeEvery(UPLOAD_PLAN_KPI, fetchUploadPlanKPI)
     yield takeEvery(SET_ACTUAL_INPUT_DATA, fetchSetActualInputData)

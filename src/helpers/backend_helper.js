@@ -265,6 +265,8 @@ export const uploadPlanKPIBE = req => postUpload("rest/KpiManagementRest/setPlan
 
 export const setActualInputDataBE = req => post("rest/KpiManagementRest/setData", req)
 
+export const getDownloadPlanBE = req => getWithXls("rest/KpiManagementRest/downloadPlanSetting", req)
+
 //MOVING PLAN
 
 export const getCompanyCodeList = req => post("rest/MovingPlanRest/getCompanyCodeList", req)

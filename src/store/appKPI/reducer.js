@@ -28,7 +28,8 @@ import {
     SET_ACTUAL_INPUT_DATA,
     MSG_EDIT,
     GET_DASHBOARD_DETAIL_KPI,
-    RESP_GET_DASHBOARD_DETAIL_KPI
+    RESP_GET_DASHBOARD_DETAIL_KPI,
+    DOWNLOAD_PLAN
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -146,6 +147,10 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
             }
         case DOWNLOAD_PLAN_TEMPLATE:
+            return {
+                ...state,
+            }
+        case DOWNLOAD_PLAN:
             return {
                 ...state,
             }

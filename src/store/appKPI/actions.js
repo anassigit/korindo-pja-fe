@@ -28,7 +28,8 @@ import {
     DOWNLOAD_PLAN_TEMPLATE,
     GET_ACTUAL_INPUT_DATA,
     RESP_GET_ACTUAL_INPUT_DATA,
-    SET_ACTUAL_INPUT_DATA
+    SET_ACTUAL_INPUT_DATA,
+    DOWNLOAD_PLAN
 
 } from "./actionTypes"
 
@@ -154,6 +155,10 @@ export const getDownloadMasterTemplate = (req) => ({
 
 export const getDownloadPlanTemplate = (req) => ({
     type: DOWNLOAD_PLAN_TEMPLATE,
+    payload: req,
+})
+export const getDownloadPlan = (req) => ({
+    type: DOWNLOAD_PLAN,
     payload: req,
 })
 

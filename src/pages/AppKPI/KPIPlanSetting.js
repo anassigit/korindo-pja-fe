@@ -10,7 +10,7 @@ import {
     Input,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions"
+import { getCorporationList, getDownloadPlan, getGroupListKPI, getPlan, getYearList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -103,6 +103,19 @@ const KPIPlanSetting = (props) => {
         try {
             dispatch(getDownloadPlanTemplateBE({
                 file_nm: props.t('KPI PLAN TEMPLATE')
+            }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const downloadPlan = async () => {
+        try {
+            dispatch(getDownloadPlan({
+                file_nm: props.t('KPI PLAN'),
+                groupNum: selectedGroupList,
+                corporationId: selectedCorporationList,
+                year: selectedYear,
             }))
         } catch (error) {
             console.log(error)
@@ -202,7 +215,9 @@ const KPIPlanSetting = (props) => {
                                         gap: '.75vw',
                                     }}
                                 >
-                                    <Button>
+                                    <Button onClick={() => {
+                                    downloadPlan()
+                                    }}>
                                         <i className="mdi mdi-download" />{" "}
                                         {props.t('Download Data')}
                                     </Button>
