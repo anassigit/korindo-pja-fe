@@ -353,9 +353,10 @@ const KPIDashboard = (props) => {
                             </div>
                             {
                                 appDashboardListData?.data?.resultList.map((item, index, array) => {
+                                    debugger
                                     return (
                                         <React.Fragment key={index}>
-                                            {(index === 0 || !index === 0 && item.corporationName !== array[index - 1]?.corporationName) && (
+                                            {(index === 0 || index !== 0 && item.corporationName !== array[index - 1]?.corporationName) && (
                                                 <h3 className="my-2">
                                                     {item.corporationName}
                                                 </h3>
