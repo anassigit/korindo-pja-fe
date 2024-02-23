@@ -49,11 +49,12 @@ const SidebarContent = props => {
         if (matchingMenuItem) {
             activateParentDropdown(matchingMenuItem)
         }
-        activateFileManagementUrl = items[1]
+        // activateFileManagementUrl = items[1]
         if (activateFileManagementUrl) {
             activateParentDropdown(activateFileManagementUrl)
         }
     }, [props.location.pathname])
+
 
     useEffect(() => {
         ref.current.recalculate()
@@ -71,6 +72,7 @@ const SidebarContent = props => {
     function activateParentDropdown(item) {
         const parent = item.parentElement
         const parent2El = parent.childNodes[1]
+
         if (parent2El && parent2El.id !== "side-menu") {
             parent2El.classList.add("mm-show")
         }
@@ -85,7 +87,9 @@ const SidebarContent = props => {
                 if (parent3) {
                     parent3.classList.add("mm-active")
                     parent3.childNodes[0].classList.add("mm-active")
+
                     const parent4 = parent3.parentElement
+
                     if (parent4) {
                         parent4.classList.add("mm-show")
                         const parent5 = parent4.parentElement

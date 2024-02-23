@@ -298,7 +298,7 @@ const KPIDashboard = (props) => {
                                 <Dropdown
                                     isOpen={filterColumn}
                                     toggle={() => setFilterColumn(!filterColumn)}
-                                    className="d-inline-block"
+                                    className="`d`-inline-block"
                                 >
                                     <DropdownToggle
                                         className="btn header-item "
@@ -353,7 +353,6 @@ const KPIDashboard = (props) => {
                             </div>
                             {
                                 appDashboardListData?.data?.resultList.map((item, index, array) => {
-                                    debugger
                                     return (
                                         <React.Fragment key={index}>
                                             {(index === 0 || index !== 0 && item.corporationName !== array[index - 1]?.corporationName) && (
