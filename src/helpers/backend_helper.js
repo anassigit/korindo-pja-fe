@@ -157,7 +157,7 @@ export const getMembersForMapping = req => post("/rest/OrganizationMasterRest/Se
 
 export const getRankList = req => post("/rest/MemberMasterRest/SelectRankList", req)
 
-export const getPermissionList = req => post("/rest/MemberMasterRest/SelectPermissionList", req)
+export const getPermissionList = req => post("/rest/MemberMasterRest/SelectRoleList", req)
 
 export const getGroupList = req => post("/rest/OrganizationMasterRest/SelectGroupList", req)
 

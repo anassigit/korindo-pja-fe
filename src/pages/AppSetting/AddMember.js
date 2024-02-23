@@ -47,7 +47,7 @@ const AddMember = (props) => {
             email: '',
             rank: '',
             hp: '',
-            permission: '',
+            role: '',
             pw: '',
             name: '',
             bgColor: '',
@@ -102,19 +102,19 @@ const AddMember = (props) => {
 
     /******* Permission *******/
 
-    const permissionOptionsEng = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
+    const permissionOptionsEng = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
         value: num,
-        label: name_eng,
+        label: roleName,
     }))
 
-    const permissionOptionsIdr = (appPermissionListData?.data?.permissionList || []).map(({ num, name_idr }) => ({
+    const permissionOptionsIdr = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
         value: num,
-        label: name_idr,
+        label: roleName,
     }))
 
-    const permissionOptionsKor = (appPermissionListData?.data?.permissionList || []).map(({ num, name_kor }) => ({
+    const permissionOptionsKor = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
         value: num,
-        label: name_kor,
+        label: roleName,
     }))
 
     const [addMemberMsgModal, setAddMemberMsgModal] = useState(false)
@@ -228,18 +228,18 @@ const AddMember = (props) => {
                             </Input>
                         </div>
                         <div className="mb-3 mx-3">
-                            <Label>{props.t("Permission")}</Label>
+                            <Label>{props.t("Role")}</Label>
                             <Input
                                 type="select"
-                                name="permission"
+                                name="role"
                                 onChange={addMemberValidInput.handleChange}
-                                value={addMemberValidInput.values.permission || ''}
+                                value={addMemberValidInput.values.role || ''}
                             >
-                                <option value="">{props.t("Select Permission")}</option>
+                                <option value="">{props.t("Select Role")}</option>
                                 {
-                                    (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).map((permission) => (
-                                        <option key={permission.value} value={permission.value}>
-                                            {permission.label}
+                                    (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).map((role) => (
+                                        <option key={role.value} value={role.value}>
+                                            {role.label}
                                         </option>
                                     ))}
                             </Input>

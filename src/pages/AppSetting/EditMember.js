@@ -47,7 +47,7 @@ const EditMember = (props) => {
             email: '',
             rank: '',
             hp: '',
-            permission: '',
+            role: '',
             name: '',
             bgColor: '',
         },
@@ -84,7 +84,7 @@ const EditMember = (props) => {
                 editMemberValidInput.setFieldValue('rank', filteredRankOption.value);
             }
             if (filteredPermissionOption) {
-                editMemberValidInput.setFieldValue('permission', filteredPermissionOption.value);
+                editMemberValidInput.setFieldValue('role', filteredPermissionOption.value);
             }
         }
     }, [props.data]);
@@ -117,19 +117,19 @@ const EditMember = (props) => {
 
     /******* Permission *******/
 
-    const permissionOptionsEng = (appPermissionListData?.data?.permissionList || []).map(({ num, name_eng }) => ({
+    const permissionOptionsEng = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
         value: num,
-        label: name_eng,
+        label: roleName,
     }))
 
-    const permissionOptionsIdr = (appPermissionListData?.data?.permissionList || []).map(({ num, name_idr }) => ({
+    const permissionOptionsIdr = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
         value: num,
-        label: name_idr,
+        label: roleName,
     }))
 
-    const permissionOptionsKor = (appPermissionListData?.data?.permissionList || []).map(({ num, name_kor }) => ({
+    const permissionOptionsKor = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
         value: num,
-        label: name_kor,
+        label: roleName,
     }))
 
     const [editMemberMsgModal, setEditMemberMsgModal] = useState(false)
@@ -244,24 +244,24 @@ const EditMember = (props) => {
                             </Input>
                         </div>
                         <div className="mb-3 mx-3">
-                            <Label>Permission</Label>
+                            <Label>Role</Label>
                             <Input
                                 type="select"
-                                name="permission"
+                                name="role"
                                 onChange={editMemberValidInput.handleChange}
-                                value={editMemberValidInput.values.permission}
+                                value={editMemberValidInput.values.role}
                             >
-                                <option value="">{props.t("Select Permission")}</option>
+                                <option value="">{props.t("Select Role")}</option>
                                 {
-                                    (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).map((permission) => (
-                                        <option key={permission.value} value={permission.value}>
-                                            {permission.label}
+                                    (langType === 'eng' ? permissionOptionsEng : (langType === 'idr' ? permissionOptionsIdr : permissionOptionsKor)).map((role) => (
+                                        <option key={role.value} value={role.value}>
+                                            {role.label}
                                         </option>
                                     ))}
                             </Input>
                         </div>
 
-                        <div className="mb-3 mx-3" hidden={editMemberValidInput?.values?.permission !== 2 && editMemberValidInput?.values?.permission !== '2'}>
+                        <div className="mb-3 mx-3" hidden={editMemberValidInput?.values?.role !== 2 && editMemberValidInput?.values?.role !== '2'}>
                             <Label>Background Color</Label>
                             <Input
                                 type="color"
