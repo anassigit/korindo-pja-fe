@@ -117,18 +117,18 @@ const EditMember = (props) => {
 
     /******* Permission *******/
 
-    const permissionOptionsEng = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
-        value: num,
+    const permissionOptionsEng = (appPermissionListData?.data?.list || []).map(({ roleId, roleName }) => ({
+        value: roleId,
         label: roleName,
     }))
 
-    const permissionOptionsIdr = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
-        value: num,
+    const permissionOptionsIdr = (appPermissionListData?.data?.list || []).map(({ roleId, roleName }) => ({
+        value: roleId,
         label: roleName,
     }))
 
-    const permissionOptionsKor = (appPermissionListData?.data?.list || []).map(({ num, roleName }) => ({
-        value: num,
+    const permissionOptionsKor = (appPermissionListData?.data?.list || []).map(({ roleId, roleName }) => ({
+        value: roleId,
         label: roleName,
     }))
 
