@@ -43,6 +43,7 @@ const EditMenu = (props) => {
             menuParentName: '',
             menuPath: '',
             menuIcon: '',
+            groupStatus: '',
             pos: ''
         },
         validationSchema: Yup.object().shape({
@@ -79,6 +80,7 @@ const EditMenu = (props) => {
             editMenuFormik.setFieldValue('menuParentName', selectedMaintainMenu.data.result?.menuParentName)
             editMenuFormik.setFieldValue('menuPath', selectedMaintainMenu.data.result?.menuPath)
             editMenuFormik.setFieldValue('menuIcon', selectedMaintainMenu.data.result?.menuIcon)
+            editMenuFormik.setFieldValue('groupStatus', selectedMaintainMenu.data.result?.groupStatus === 1 ? true : false)
             editMenuFormik.setFieldValue('pos', selectedMaintainMenu.data.result?.pos)
         }
     }, [selectedMaintainMenu.data])
@@ -273,6 +275,30 @@ const EditMenu = (props) => {
                                             onChange={(e) => editMenuFormik.setFieldValue('menuIcon', e.target.value)}
                                         />
                                         <FormFeedback type="invalid">{editMenuFormik.errors.menuIcon}</FormFeedback>
+                                    </div>
+                                </div>
+                                <div
+                                    className="d-flex flex-row col-10 align-items-center py-2 justify-content-between"
+                                >
+                                    <div className="col-4">
+                                        <Label
+                                            style={{
+                                                marginTop: "2px",
+                                            }}
+                                        >
+                                            {props.t('Group Separate Permission')}
+                                        </Label>
+                                    </div>
+                                    <div className="col-8" style={{ marginTop: "-8px" }}>
+                                        <Input
+                                            type="checkbox"
+                                            checked={editMenuFormik.values.groupStatus}
+                                            invalid={editMenuFormik.touched.groupStatus && editMenuFormik.errors.groupStatus
+                                                ? true : false
+                                            }
+                                            onChange={(e) => editMenuFormik.setFieldValue('groupStatus', e.target.value)}
+                                        />
+                                        <FormFeedback type="invalid">{editMenuFormik.errors.groupStatus}</FormFeedback>
                                     </div>
                                 </div>
                                 <div

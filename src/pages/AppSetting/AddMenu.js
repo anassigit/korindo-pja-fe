@@ -39,6 +39,7 @@ const AddMenu = (props) => {
             parentMenuName: '',
             menuPath: '',
             menuIcon: '',
+            groupStatus: false,
             pos: ''
         },
         validationSchema: Yup.object().shape({
@@ -52,6 +53,7 @@ const AddMenu = (props) => {
                 menuParentId: values.menuParentId,
                 menuPath: values.menuPath,
                 menuIcon: values.menuIcon,
+                groupStatus: values.groupStatus ? 1 : 0,
                 pos: values.pos
             }))
         }
@@ -253,6 +255,30 @@ const AddMenu = (props) => {
                                             onChange={(e) => addMenuFormik.setFieldValue('menuIcon', e.target.value)}
                                         />
                                         <FormFeedback type="invalid">{addMenuFormik.errors.menuIcon}</FormFeedback>
+                                    </div>
+                                </div>
+                                <div
+                                    className="d-flex flex-row col-10 align-items-center py-2 justify-content-between"
+                                >
+                                    <div className="col-4">
+                                        <Label
+                                            style={{
+                                                marginTop: "2px",
+                                            }}
+                                        >
+                                            {props.t('Group Separate Permission')}
+                                        </Label>
+                                    </div>
+                                    <div className="col-8" style={{ marginTop: "-8px" }}>
+                                        <Input
+                                            type="checkbox"
+                                            checked={addMenuFormik.values.groupStatus}
+                                            invalid={addMenuFormik.touched.groupStatus && addMenuFormik.errors.groupStatus
+                                                ? true : false
+                                            }
+                                            onChange={(e) => addMenuFormik.setFieldValue('groupStatus', e.target.value)}
+                                        />
+                                        <FormFeedback type="invalid">{addMenuFormik.errors.groupStatus}</FormFeedback>
                                     </div>
                                 </div>
                                 <div

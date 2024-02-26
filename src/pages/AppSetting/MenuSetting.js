@@ -5,6 +5,7 @@ import {
     Button,
     Container,
     Spinner,
+    UncontrolledAlert,
     UncontrolledTooltip
 } from "reactstrap"
 import { resetMessage } from "store/actions"
@@ -34,6 +35,8 @@ const MenuSetting = (props) => {
     const appMenuListData = useSelector((state) => {
         return state.settingReducer.respGetMenuList
     })
+
+    const [appMenuMsg, setAppMenuMsg] = useState('')
 
     const appMessageDelete = useSelector((state) => state.settingReducer.msgDelete)
     const appMessageAdd = useSelector((state) => state.settingReducer.msgAdd)
@@ -68,11 +71,14 @@ const MenuSetting = (props) => {
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "menuParentId",
-            text: props.t('Parent Menu ID'),
+            dataField: "parent",
+            text: props.t('Parent Menu'),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, cellData) => {
+                return cellContent?.menuName
+            }
         },
         {
             dataField: "menuPath",
@@ -89,6 +95,16 @@ const MenuSetting = (props) => {
             headerStyle: { textAlign: 'center' },
             formatter: (cellContent, _cellData) => {
                 return <span className={`fa ${cellContent}`} />
+            },
+        },
+        {
+            dataField: "groupStatus",
+            text: props.t('Group Separate Permission'),
+            sort: true,
+            style: { textAlign: 'center' },
+            headerStyle: { textAlign: 'center' },
+            formatter: (cellContent, _cellData) => {
+                return cellContent === 0 ? false : true
             },
         },
         {
@@ -167,6 +183,7 @@ const MenuSetting = (props) => {
         }
         if (messageToUpdate) {
             setLoadingSpinner(false)
+            setAppMenuMsg(messageToUpdate)
             dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
     }, [appMessageDelete])
@@ -182,6 +199,7 @@ const MenuSetting = (props) => {
         }
         if (messageToUpdate) {
             setLoadingSpinner(false)
+            setAppMenuMsg(messageToUpdate)
             dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
     }, [appMessageAdd])
@@ -197,6 +215,7 @@ const MenuSetting = (props) => {
         }
         if (messageToUpdate) {
             setLoadingSpinner(false)
+            setAppMenuMsg(messageToUpdate)
             dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
     }, [appMessageEdit])
@@ -204,6 +223,19 @@ const MenuSetting = (props) => {
     return (
         <RootPageCustom componentJsx={
             <>
+                {appMenuMsg !== "" ? (
+                    <UncontrolledAlert
+                        toggle={() => {
+                            setAppMenuMsg("")
+                            setIsClosed(true)
+                        }}
+                        color={appMenuMsg.status == "1" ? "success" : "danger"}
+                    >
+                        {typeof appMenuMsg == "string"
+                            ? null
+                            : appMenuMsg.message}
+                    </UncontrolledAlert>
+                ) : null}
                 <Container style={{ display: appMaintainMenu ? 'block' : "none" }} fluid="true">
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
                         <div style={{
@@ -248,15 +280,15 @@ const MenuSetting = (props) => {
                         </Button>
                     </div>
                     <TableCustom3
-                                keyField={"menuId"}
-                                columns={appMenuColumn}
-                                redukResponse={appMenuListData}
-                                appdata={appMenuListData?.data != null && appMenuListData?.data.list ? appMenuListData?.data.list : []}
-                                appdataTotal={appMenuListData?.data != null ? appMenuListData?.data.count : 0}
-                                searchSet={setAppMenuTabelSearch}
-                                searchGet={appMenuTabelSearch}
-                                redukCall={getMenuListDataAction}
-                            />
+                        keyField={"menuId"}
+                        columns={appMenuColumn}
+                        redukResponse={appMenuListData}
+                        appdata={appMenuListData?.data != null && appMenuListData?.data.list ? appMenuListData?.data.list : []}
+                        appdataTotal={appMenuListData?.data != null ? appMenuListData?.data.count : 0}
+                        searchSet={setAppMenuTabelSearch}
+                        searchGet={appMenuTabelSearch}
+                        redukCall={getMenuListDataAction}
+                    />
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="primary" />
                     </div>
