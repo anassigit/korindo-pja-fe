@@ -50,17 +50,27 @@ const AddInstructions = (props) => {
     const validationMessages = {
         eng: {
             title: "Please enter instructions.",
+            owner: "Please enter Owner.",
+            manager: "Please enter Manager.",
         },
         kor: {
             title: "지시사항을 입력해 주세요.",
+            owner: "소유자를 입력하세요.",
+            manager: "관리자를 입력해 주세요.",
         },
         idr: {
             title: "Harap masukkan instruksi.",
+            manager: "Harap masukkan Manager.",
+            owner: "Harap masukkan Owner.",
         },
     };
 
     const validationSchema = Yup.object().shape({
+
         title: Yup.string().required(validationMessages[langType]?.title),
+
+        owner: Yup.string().required(validationMessages[langType]?.owner),
+        manager: Yup.string().required(validationMessages[langType]?.manager),
     })
 
 
@@ -72,6 +82,8 @@ const AddInstructions = (props) => {
             insDate: '',
             status: '',
             description: '',
+            owner: '',
+            manager: '',
         },
 
         validationSchema: validationSchema,
@@ -87,9 +99,8 @@ const AddInstructions = (props) => {
             bodyForm.append('status', val.status);
             bodyForm.append('description', val.description);
 
-
             selectedMulti.map((data, index) => {
-
+            
                 bodyForm.append('user', data.value);
 
             })
@@ -154,7 +165,7 @@ const AddInstructions = (props) => {
 
             if (getOwnerList.data !== undefined) {
 
-                getOwnerList.data.ownerList.map((data) => {
+                getOwnerList?.data?.ownerList?.map((data) => {
                     const newOwner = {
                         value: data.id,
                         label: data.name,
@@ -280,11 +291,22 @@ const AddInstructions = (props) => {
     }
 
     function handleMulti(s) {
+        if ( s.length === 0 ) {
+            addInstructionsValidInput.setFieldValue('owner', '')
+        }
+        else{
+            addInstructionsValidInput.setFieldValue('owner', 'a')
+        }
         setselectedMulti(s);
 
     }
     function handleMulti2(s) {
-
+        if ( s.length === 0 ) {
+            addInstructionsValidInput.setFieldValue('manager', '')
+        }
+        else{
+            addInstructionsValidInput.setFieldValue('manager', 'a')
+        }
         setselectedMulti2(s);
     }
 
@@ -509,14 +531,14 @@ const AddInstructions = (props) => {
     useEffect(() => {
 
         if (getOwnerList?.data !== undefined) {
-            const newOwners = getOwnerList?.data?.ownerList.map((data) => ({
+            const newOwners = getOwnerList?.data?.ownerList?.map((data) => ({
                 value: data.id,
                 label: data.name,
                 bgColor: data.bgColor,
             }))
 
             if (selectedMulti?.length > 0) {
-                getOwnerList?.data?.ownerList.map((val) => {
+                getOwnerList?.data?.ownerList?.map((val) => {
                     if (val.id == selectedMulti[0].value) {
                         setselectedMulti([{
                             value: val.id,
@@ -701,7 +723,7 @@ const AddInstructions = (props) => {
 
                                         <Col md="6">
                                             <div className="mb-3 col-sm-8">
-                                                <Label> {props.t("Owner")} </Label>
+                                                <Label> {props.t("Owner")} <span style={{ color: "red" }}>* </span> </Label>
                                                 <Select
                                                     isOptionDisabled={() => selectedMulti.length >= 1}
                                                     value={selectedMulti}
@@ -710,16 +732,19 @@ const AddInstructions = (props) => {
                                                         handleMulti(e);
                                                     }}
                                                     options={optionOwner}
-                                                    className="select2-selection"
+                                                    className={`select2-selection ${addInstructionsValidInput.errors.owner && addInstructionsValidInput.touched.owner ? 'custom-invalid' : ''}`}
                                                     styles={colourStyles}
                                                     components={{ DropdownIndicator }}
                                                     placeholder={props.t("Select or type")}
-
+                                                    
                                                 />
+                                                {addInstructionsValidInput.errors.owner && addInstructionsValidInput.touched.owner && (
+                                                 <div style={{ color: '#f46a6a', width: '100%', marginTop: '0.25rem', fontSize: '80%', display: 'block'}}>{addInstructionsValidInput.errors.owner}</div>
+                                                )}
                                             </div>
 
                                             <div className="mb-3 col-sm-8">
-                                                <label>{props.t("Managers")} </label>
+                                                <Label>{props.t("Managers")} <span style={{color:'red'}}>* </span> </Label>
                                                 <Select
                                                     //id="user"
                                                     value={selectedMulti2}
@@ -728,14 +753,16 @@ const AddInstructions = (props) => {
                                                         handleMulti2(e);
                                                     }}
                                                     options={optionManager}
-                                                    className="select2-selection"
+                                                    className={`select2-selection ${addInstructionsValidInput.errors.manager && addInstructionsValidInput.touched.manager ? 'custom-invalid' : ''}`}
                                                     styles={colourStyles2}
                                                     components={{ DropdownIndicator }}
                                                     placeholder={props.t("Select or type")}
-
+                                                    invalid={selectedMulti2.length >= 1}
                                                 />
+                                               {addInstructionsValidInput.errors.manager && addInstructionsValidInput.touched.manager && (
+                                                 <div style={{ color: '#f46a6a', width: '100%', marginTop: '0.25rem', fontSize: '80%', display: 'block'}}>{addInstructionsValidInput.errors.manager}</div>
+                                                )}
                                             </div>
-
                                             <div className="mb-3 col-sm-8">
                                                 <label>{props.t("Upload Attach Files")} </label>
 
