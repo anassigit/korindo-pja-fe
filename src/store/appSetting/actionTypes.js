@@ -57,3 +57,14 @@ export const RESP_GET_MENU2 = "RESP_GET_MENU2"
 export const SAVE_MENU = "SAVE_MENU"
 export const EDIT_MENU = "EDIT_MENU"
 export const DELETE_MENU = "DELETE_MENU"
+
+// Role Setting
+export const GET_ROLE_LIST = "GET_ROLE_LIST"
+export const RESP_GET_ROLE_LIST = "RESP_GET_ROLE_LIST"
+
+export const GET_ROLE = "GET_ROLE"
+export const RESP_GET_ROLE = "RESP_GET_ROLE"
+
+export const SAVE_ROLE = "SAVE_ROLE"
+export const EDIT_ROLE = "EDIT_ROLE"
+export const DELETE_ROLE = "DELETE_ROLE"

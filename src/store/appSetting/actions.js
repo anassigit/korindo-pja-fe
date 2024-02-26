@@ -32,7 +32,13 @@ import {
   GET_MENU2,
   RESP_GET_MENU2,
   RESP_GET_MENU_LIST,
-  SAVE_MENU
+  SAVE_MENU,
+  RESP_GET_ROLE,
+  SAVE_ROLE,
+  EDIT_ROLE,
+  RESP_GET_ROLE_LIST,
+  GET_ROLE_LIST,
+  GET_ROLE
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -222,5 +228,41 @@ export const editMaintainMenu = (req) => ({
 
 export const deleteMaintainMenu = (req) => ({
   type: DELETE_MENU,
+  payload: req,
+})
+
+//Role
+export const getRoleListDataAction = (req) => ({
+  type: GET_ROLE_LIST,
+  payload: req,
+})
+
+export const respGetRoleList = resp => ({
+  type: RESP_GET_ROLE_LIST,
+  payload: resp,
+})
+
+export const getRoleDataAction = (req) => ({
+  type: GET_ROLE,
+  payload: req,
+})
+
+export const respGetRole = resp => ({
+  type: RESP_GET_ROLE,
+  payload: resp,
+})
+
+export const addMaintainRole = (req) => ({
+  type: SAVE_ROLE,
+  payload: req,
+})
+
+export const editMaintainRole = (req) => ({
+  type: EDIT_ROLE,
+  payload: req,
+})
+
+export const deleteMaintainRole = (req) => ({
+  type: DELETE_ROLE,
   payload: req,
 })

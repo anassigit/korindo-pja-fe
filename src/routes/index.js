@@ -26,6 +26,7 @@ import KPIPlanSetting from "pages/AppKPI/KPIPlanSetting"
 import MemberSetting from "pages/AppSetting/MemberSetting"
 import OrganizationSetting from "pages/AppSetting/OrganizationSetting"
 import MenuSetting from "pages/AppSetting/MenuSetting"
+import RoleSetting from "pages/AppSetting/RoleSetting"
 
 const authProtectedRoutes = [
     { path: "/dashboard", component: Dashboard },
@@ -50,6 +51,7 @@ const authProtectedRoutes = [
     { path: "/AppKPIDashboardDetail", component: KPIDashboardDetail },
     { path: "/AppKPIInputResult", component: KPIInputResult },
     { path: "/AppMovingPlan", component: MovingPlan },
+    { path: "/AppRoleSetting", component: RoleSetting },
     { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> }
 ]
 

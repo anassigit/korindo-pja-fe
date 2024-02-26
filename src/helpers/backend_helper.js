@@ -191,6 +191,20 @@ export const editMenuBE = req => postWithParam("/rest/MenuMasterRest/update", re
 
 export const deleteMenuBE = req => postWithParam("/rest/MenuMasterRest/delete", req)
 
+// Maintain Role
+
+export const getMaintainRoleListBE = req => post("/rest/RoleMasterRest/getList", req)
+
+export const getLovParentRoleListBE = req => post("/rest/RoleMasterRest/getParentList", req)
+
+export const getMaintainRoleBE = req => postWithParam("/rest/RoleMasterRest/select", req)
+
+export const saveRoleBE = req => postWithParam("/rest/RoleMasterRest/insert", req)
+
+export const editRoleBE = req => postWithParam("/rest/RoleMasterRest/update", req)
+
+export const deleteRoleBE = req => postWithParam("/rest/RoleMasterRest/delete", req)
+
 /* App Rule */
 
 export const getSelectMenu = req => post("/rest/RuleRest/SelectMenu", req)

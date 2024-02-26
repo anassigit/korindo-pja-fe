@@ -1,10 +1,83 @@
-import { call, put, takeEvery, all } from "redux-saga/effects"
+import {
+  call,
+  put,
+  takeEvery,
+  all
+} from "redux-saga/effects"
 
-import { GET_MEMBERS, SAVE_MEMBERS, EDIT_MEMBERS, DELETE_MEMBERS, EDIT_GENERAL_SETTING, GET_SETTING, GET_RANK_LIST, GET_PERMISSION_LIST, GET_GROUP_LIST, GET_RELATION_LIST, SAVE_GROUP_MAPPING, EDIT_GROUP_MAPPING, DELETE_GROUP_MAPPING, GET_MEMBERS_MAPPING, GET_MEMBERS2, GET_LIST_MENU, GET_MENU2, SAVE_MENU, EDIT_MENU, DELETE_MENU } from "./actionTypes"
+import {
+  GET_MEMBERS,
+  SAVE_MEMBERS,
+  EDIT_MEMBERS,
+  DELETE_MEMBERS,
+  EDIT_GENERAL_SETTING,
+  GET_SETTING,
+  GET_RANK_LIST,
+  GET_PERMISSION_LIST,
+  GET_GROUP_LIST,
+  GET_RELATION_LIST,
+  SAVE_GROUP_MAPPING,
+  EDIT_GROUP_MAPPING,
+  DELETE_GROUP_MAPPING,
+  GET_MEMBERS_MAPPING,
+  GET_MEMBERS2,
+  GET_LIST_MENU,
+  GET_MENU2,
+  SAVE_MENU,
+  EDIT_MENU,
+  DELETE_MENU,
+  GET_LIST_ROLE,
+  GET_ROLE,
+  SAVE_ROLE,
+  EDIT_ROLE,
+  DELETE_ROLE,
+  GET_ROLE_LIST,
+} from "./actionTypes"
 
-import { msgAdd, msgEdit, msgDelete, respGetSetting, respGetMembers, respGetRankList, respGetPermissionList, respGetGroupList, respGetRelationList, respGetMembersMapping, respGetMembers2, respGetMenuList, respGetMenu2 } from "./actions"
+import {
+  msgAdd,
+  msgEdit,
+  msgDelete,
+  respGetSetting,
+  respGetMembers,
+  respGetRankList,
+  respGetPermissionList,
+  respGetGroupList,
+  respGetRelationList,
+  respGetMembersMapping,
+  respGetMembers2,
+  respGetMenuList,
+  respGetMenu2,
+  respGetRoleList,
+  respGetRole,
+} from "./actions"
 
-import { deleteGroupMapping, deleteMembers, getGroupList, getMembers, getMembersForMapping, getPermissionList, getRankList, getRelationList, getGeneralSetting, saveGroupMapping, saveMembers, updateGeneralSetting, updateGroupMapping, updateMembers, getMaintainMenuListBE, getMaintainMenuBE, saveMenuBE, editMenuBE, deleteMenuBE } from "helpers/backend_helper"
+import {
+  deleteGroupMapping,
+  deleteMembers,
+  getGroupList,
+  getMembers,
+  getMembersForMapping,
+  getPermissionList,
+  getRankList,
+  getRelationList,
+  getGeneralSetting,
+  saveGroupMapping,
+  saveMembers,
+  updateGeneralSetting,
+  updateGroupMapping,
+  updateMembers,
+  getMaintainMenuListBE,
+  getMaintainMenuBE,
+  saveMenuBE,
+  editMenuBE,
+  deleteMenuBE,
+  getMaintainRoleListBE,
+  getMaintainRoleBE,
+  saveRoleBE,
+  editRoleBE,
+  deleteRoleBE,
+} from "helpers/backend_helper"
 
 function* fetchGetGeneralSetting({ payload: req }) {
   try {
@@ -275,6 +348,78 @@ function* fetchDeleteMenu({ payload: req }) {
   }
 }
 
+//ROLE
+
+function* fetchGetRoleList({ payload: req }) {
+  try {
+    const response = yield call(getMaintainRoleListBE, req)
+    if (response.status == 1) {
+      yield put(respGetRoleList(response))
+    } else {
+      yield put(respGetRoleList(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetRoleList({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchGetRole({ payload: req }) {
+  try {
+    const response = yield call(getMaintainRoleBE, req)
+    if (response.status == 1) {
+      yield put(respGetRole(response))
+    } else {
+      yield put(respGetRole(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetRole({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchAddRole({ payload: req }) {
+  try {
+    const response = yield call(saveRoleBE, req)
+    if (response.status == 1) {
+      yield put(msgAdd(response))
+    } else {
+      yield put(msgAdd(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgAdd({ "status": 0, "message": "Error Save Data" }))
+  }
+}
+
+function* fetchEditRole({ payload: req }) {
+  try {
+    const response = yield call(editRoleBE, req)
+    if (response.status == 1) {
+      yield put(msgEdit(response))
+    } else {
+      yield put(msgEdit(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgEdit({ "status": 0, "message": "Error Edit Data" }))
+  }
+}
+
+function* fetchDeleteRole({ payload: req }) {
+  try {
+    const response = yield call(deleteRoleBE, req)
+    if (response.status == 1) {
+      yield put(msgDelete(response))
+    } else {
+      yield put(msgDelete(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgDelete({ "status": 0, "message": "Error Delete Data" }))
+  }
+}
+
 function* settingSaga() {
   yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
   yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
@@ -296,6 +441,11 @@ function* settingSaga() {
   yield takeEvery(SAVE_MENU, fetchAddMenu)
   yield takeEvery(EDIT_MENU, fetchEditMenu)
   yield takeEvery(DELETE_MENU, fetchDeleteMenu)
+  yield takeEvery(GET_ROLE_LIST, fetchGetRoleList)
+  yield takeEvery(GET_ROLE, fetchGetRole)
+  yield takeEvery(SAVE_ROLE, fetchAddRole)
+  yield takeEvery(EDIT_ROLE, fetchEditRole)
+  yield takeEvery(DELETE_ROLE, fetchDeleteRole)
 }
 
 export default settingSaga

@@ -37,6 +37,9 @@ function* loginUser({ payload: { user, history } }) {
       ReactSession.remove('dateFrom')
       ReactSession.remove('dateTo')
       ReactSession.remove('searchValue')
+      if (!localStorage.getItem("I18N_LANGUAGE")) {
+        localStorage.setItem("I18N_LANGUAGE", "eng")
+      }
       history.push({ pathname: '/' })
       yield put(loginSuccess(response))
     } else {
@@ -72,6 +75,10 @@ function* reloginUser({ payload: { user, history } }) {
       localStorage.setItem("user", JSON.stringify(response.data.user))
       yield put(reloginSuccess(response))
       document.getElementById("reloginForm").style.display = "none"
+      if (!localStorage.getItem("I18N_LANGUAGE")) {
+        localStorage.setItem("I18N_LANGUAGE", "eng")
+      }
+      window.location.reload()
       yield put(apiError(''))
     } else {
       yield put(apiError("Id or Password not match"))

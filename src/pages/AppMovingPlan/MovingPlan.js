@@ -164,13 +164,13 @@ const MovingPlan = (props) => {
                                         {
                                             item.revenueList.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td>{row.pyac}</td>
-                                                    <td>{row.bp}</td>
-                                                    <td>{row.amp}</td>
-                                                    <td>{row.cyac}</td>
-                                                    <td>{row.grw}</td>
-                                                    <td>{row.abp}</td>
-                                                    <td>{row.amp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -224,13 +224,13 @@ const MovingPlan = (props) => {
                                         {
                                             item.oiLIst.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td>{row.pyac}</td>
-                                                    <td>{row.bp}</td>
-                                                    <td>{row.amp}</td>
-                                                    <td>{row.cyac}</td>
-                                                    <td>{row.grw}</td>
-                                                    <td>{row.abp}</td>
-                                                    <td>{row.amp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -283,13 +283,13 @@ const MovingPlan = (props) => {
                                         {
                                             item.oiPersenteList.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td>{row.pyac}</td>
-                                                    <td>{row.bp}</td>
-                                                    <td>{row.amp}</td>
-                                                    <td>{row.cyac}</td>
-                                                    <td>{row.grw}</td>
-                                                    <td>{row.abp}</td>
-                                                    <td>{row.amp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                    <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -356,23 +356,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.revenueList) ? item?.revenueList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td>{row.pyac}</td>
-                                                        <td>{row.bp}</td>
-                                                        <td>{row.amp}</td>
-                                                        <td>{row.cyac}</td>
-                                                        <td>{row.grw}</td>
-                                                        <td>{row.abp}</td>
-                                                        <td>{row.amp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.interestExpenseList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td>{row.pyac}</td>
-                                                        <td>{row.bp}</td>
-                                                        <td>{row.amp}</td>
-                                                        <td>{row.cyac}</td>
-                                                        <td>{row.grw}</td>
-                                                        <td>{row.abp}</td>
-                                                        <td>{row.amp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -390,23 +390,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.oiLIst) ? item?.oiLIst.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td>{row.pyac}</td>
-                                                        <td>{row.bp}</td>
-                                                        <td>{row.amp}</td>
-                                                        <td>{row.cyac}</td>
-                                                        <td>{row.grw}</td>
-                                                        <td>{row.abp}</td>
-                                                        <td>{row.amp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.netIncomeList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td>{row.pyac}</td>
-                                                        <td>{row.bp}</td>
-                                                        <td>{row.amp}</td>
-                                                        <td>{row.cyac}</td>
-                                                        <td>{row.grw}</td>
-                                                        <td>{row.abp}</td>
-                                                        <td>{row.amp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -424,23 +424,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.oiPersenteList) ? item?.oiPersenteList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td>{row.pyac}</td>
-                                                        <td>{row.bp}</td>
-                                                        <td>{row.amp}</td>
-                                                        <td>{row.cyac}</td>
-                                                        <td>{row.grw}</td>
-                                                        <td>{row.abp}</td>
-                                                        <td>{row.amp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.netIncomePersenteList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td>{row.pyac}</td>
-                                                        <td>{row.bp}</td>
-                                                        <td>{row.amp}</td>
-                                                        <td>{row.cyac}</td>
-                                                        <td>{row.grw}</td>
-                                                        <td>{row.abp}</td>
-                                                        <td>{row.amp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
+                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
