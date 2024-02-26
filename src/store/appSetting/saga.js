@@ -32,6 +32,9 @@ import {
   EDIT_ROLE,
   DELETE_ROLE,
   GET_ROLE_LIST,
+  GET_ROLE_ACCESS,
+  GET_ROLE_ACCESS_LIST,
+  SAVE_ACCESS_ROLE,
 } from "./actionTypes"
 
 import {
@@ -50,6 +53,9 @@ import {
   respGetMenu2,
   respGetRoleList,
   respGetRole,
+  respGetRoleAccess,
+  getRoleAccess,
+  respGetRoleAccessList,
 } from "./actions"
 
 import {
@@ -77,6 +83,10 @@ import {
   saveRoleBE,
   editRoleBE,
   deleteRoleBE,
+  getRoleAccessList,
+  getRoleAccessBE,
+  getRoleAccessListBE,
+  saveRoleAccessBE,
 } from "helpers/backend_helper"
 
 function* fetchGetGeneralSetting({ payload: req }) {
@@ -420,6 +430,47 @@ function* fetchDeleteRole({ payload: req }) {
   }
 }
 
+function* fetchGetRoleAccess({ payload: req }) {
+  try {
+    const response = yield call(getRoleAccessBE, req)
+    if (response.status == 1) {
+      yield put(respGetRoleAccess(response))
+    } else {
+      yield put(respGetRoleAccess(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetRoleAccess({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+function* fetchGetRoleAccessList({ payload: req }) {
+  try {
+    const response = yield call(getRoleAccessListBE, req)
+    if (response.status == 1) {
+      yield put(respGetRoleAccessList(response))
+    } else {
+      yield put(respGetRoleAccessList(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetRoleAccessList({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
+function* fetchAddAccessRole({ payload: req }) {
+  try {
+    const response = yield call(saveRoleAccessBE, req)
+    if (response.status == 1) {
+      yield put(msgAdd(response))
+    } else {
+      yield put(msgAdd(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgAdd({ "status": 0, "message": "Error Save Data" }))
+  }
+}
+
 function* settingSaga() {
   yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
   yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
@@ -446,6 +497,9 @@ function* settingSaga() {
   yield takeEvery(SAVE_ROLE, fetchAddRole)
   yield takeEvery(EDIT_ROLE, fetchEditRole)
   yield takeEvery(DELETE_ROLE, fetchDeleteRole)
+  yield takeEvery(GET_ROLE_ACCESS, fetchGetRoleAccess)
+  yield takeEvery(GET_ROLE_ACCESS_LIST, fetchGetRoleAccessList)
+  yield takeEvery(SAVE_ACCESS_ROLE, fetchAddAccessRole)
 }
 
 export default settingSaga

@@ -14,86 +14,81 @@ import {
     Input,
     Label
 } from "reactstrap"
-import { addMaintainMenu, getMenuParentListLov, resetMessage } from "store/actions"
+import { addMaintainRole, getRoleParentListLov, resetMessage } from "store/actions"
 import * as Yup from "yup"
 import '../../assets/scss/custom.scss'
 import '../../config'
 import Lovv2 from "common/Lovv2"
 import { withTranslation } from "react-i18next"
 
-const AddMenu = (props) => {
+const AddRole = (props) => {
 
     const dispatch = useDispatch()
 
-    const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
+    const [appRoleSearchLov, setAppRoleSearchLov] = useState("")
 
     useEffect(() => {
         dispatch(resetMessage())
     }, [dispatch])
 
-    const addMenuFormik = useFormik({
+    const addRoleFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            menuName: '',
-            menuParentId: '',
-            parentMenuName: '',
-            menuPath: '',
-            menuIcon: '',
+            roleName: '',
+            roleParentId: '',
+            parentRoleName:'',
             pos: ''
         },
         validationSchema: Yup.object().shape({
-            menuName: Yup.string().required(props.t('Required')),
-            menuPath: Yup.string().required(props.t('Required')),
-            pos: Yup.string().required(props.t('Required'))
+            roleName: Yup.string().required(props.t('Required')),
         }),
         onSubmit: (values) => {
-            dispatch(addMaintainMenu({
-                menuName: values.menuName,
-                menuParentId: values.menuParentId,
-                menuPath: values.menuPath,
-                menuIcon: values.menuIcon,
+            dispatch(addMaintainRole({
+                roleName: values.roleName,
+                roleParentId: values.roleParentId,
+                
                 pos: values.pos
             }))
         }
     })
 
     useEffect(() => {
-        if (props.appAddMaintainMenu) {
-            addMenuFormik.resetForm()
+        if (props.appAddMaintainRole) {
+            addRoleFormik.resetForm()
         }
-    }, [props.appAddMaintainMenu])
+    }, [props.appAddMaintainRole])
 
-    const appLovMenuListColumns = [
+    const appLovRoleListColumns = [
         {
-            dataField: "menuId",
-            text: props.t('Menu ID'),
+            dataField: "roleId",
+            text: props.t('Role ID'),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
-            dataField: "menuName",
-            text: props.t('Menu Name'),
+            dataField: "roleName",
+            text: props.t('Role Name'),
             sort: true,
             headerStyle: { textAlign: 'center' },
         },
     ]
 
-    const appCallBackMenu = (row) => {
-        setAppMenuSearchLov(row.menuId)
-        addMenuFormik.setFieldValue("menuParentId", row.menuId)
-        addMenuFormik.setFieldValue("parentMenuName", row.menuName)
+    const appCallBackRole = (row) => {
+        setAppRoleSearchLov(row.roleId)
+        addRoleFormik.setFieldValue("roleParentId", row.roleId)
+        addRoleFormik.setFieldValue("parentRoleName", row.roleName)
     }
 
     return (
-        <Container style={{ display: props.appAddMaintainMenu ? 'block' : "none" }} fluid="true">
+        <Container style={{ display: props.appAddMaintainRole ? 'block' : "none" }} fluid="true">
             <Card style={{ marginBottom: 0 }}>
-                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>{props.t("Add New Menu")}</CardHeader>
+                <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>{props.t("Add New Role")}</CardHeader>
                 <CardBody>
                     <Form
                         onSubmit={(e) => {
                             e.preventDefault()
-                            addMenuFormik.handleSubmit()
+                            addRoleFormik.handleSubmit()
                             return false
                         }}
                     >
@@ -111,27 +106,26 @@ const AddMenu = (props) => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {props.t('Parent Menu ID')}
+                                            {props.t('Parent Role ID')}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Lovv2
-                                            title={props.t("Menu")}
-                                            keyFieldData="menuId"
-                                            columns={appLovMenuListColumns}
-                                            getData={getMenuParentListLov}
+                                            title={props.t("Role")}
+                                            keyFieldData="roleId"
+                                            columns={appLovRoleListColumns}
+                                            getData={getRoleParentListLov}
                                             pageSize={10}
-                                            callbackFunc={appCallBackMenu}
-                                            defaultSetInput="menuParentId"
-                                            invalidData={addMenuFormik}
-                                            fieldValue="menuParentId"
-                                            stateSearchInput={appMenuSearchLov}
-                                            stateSearchInputSet={setAppMenuSearchLov}
-                                            touchedLovField={addMenuFormik.touched.menuParentId}
-                                            errorLovField={addMenuFormik.errors.menuParentId}
-                                            hasNoSearch={true}
+                                            callbackFunc={appCallBackRole}
+                                            defaultSetInput="roleId"
+                                            invalidData={addRoleFormik}
+                                            fieldValue="roleId"
+                                            stateSearchInput={appRoleSearchLov}
+                                            stateSearchInputSet={setAppRoleSearchLov}
+                                            touchedLovField={addRoleFormik.touched.roleId}
+                                            errorLovField={addRoleFormik.errors.roleId}
                                         />
-                                        <FormFeedback type="invalid">{addMenuFormik.errors.menuParentId}</FormFeedback>
+                                        <FormFeedback type="invalid">{addRoleFormik.errors.roleId}</FormFeedback>
                                     </div>
                                 </div>
                                 <div
@@ -143,20 +137,20 @@ const AddMenu = (props) => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {props.t('Parent Menu Name')}
+                                            {props.t('Parent Role Name')}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Input
                                             type="text"
                                             disabled
-                                            value={addMenuFormik.values.parentMenuName}
-                                            invalid={addMenuFormik.touched.parentMenuName && addMenuFormik.errors.parentMenuName
+                                            value={addRoleFormik.values.parentRoleName}
+                                            invalid={addRoleFormik.touched.parentRoleName && addRoleFormik.errors.parentRoleName
                                                 ? true : false
                                             }
-                                            onChange={(e) => addMenuFormik.setFieldValue('parentMenuName', e.target.value)}
+                                            onChange={(e) => addRoleFormik.setFieldValue('parentRoleName', e.target.value)}
                                         />
-                                        <FormFeedback type="invalid">{addMenuFormik.errors.menuId}</FormFeedback>
+                                        <FormFeedback type="invalid">{addRoleFormik.errors.roleId}</FormFeedback>
                                     </div>
                                 </div>
                                 <div
@@ -168,19 +162,19 @@ const AddMenu = (props) => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {props.t('Menu Name')} <span className="text-danger"> *</span>
+                                            {props.t('Role Name')} <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Input
                                             type="text"
-                                            value={addMenuFormik.values.menuName}
-                                            invalid={addMenuFormik.touched.menuName && addMenuFormik.errors.menuName
+                                            value={addRoleFormik.values.roleName}
+                                            invalid={addRoleFormik.touched.roleName && addRoleFormik.errors.roleName
                                                 ? true : false
                                             }
-                                            onChange={(e) => addMenuFormik.setFieldValue('menuName', e.target.value)}
+                                            onChange={(e) => addRoleFormik.setFieldValue('roleName', e.target.value)}
                                         />
-                                        <FormFeedback type="invalid">{addMenuFormik.errors.menuName}</FormFeedback>
+                                        <FormFeedback type="invalid">{addRoleFormik.errors.roleName}</FormFeedback>
                                     </div>
                                 </div>
                                 <div
@@ -192,67 +186,19 @@ const AddMenu = (props) => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {props.t('Menu Path')} <span className="text-danger"> *</span>
+                                            {props.t('Order')}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Input
                                             type="text"
-                                            value={addMenuFormik.values.menuPath}
-                                            invalid={addMenuFormik.touched.menuPath && addMenuFormik.errors.menuPath
+                                            value={addRoleFormik.values.pos}
+                                            invalid={addRoleFormik.touched.pos && addRoleFormik.errors.pos
                                                 ? true : false
                                             }
-                                            onChange={(e) => addMenuFormik.setFieldValue('menuPath', e.target.value)}
+                                            onChange={(e) => addRoleFormik.setFieldValue('pos', e.target.value)}
                                         />
-                                        <FormFeedback type="invalid">{addMenuFormik.errors.menuPath}</FormFeedback>
-                                    </div>
-                                </div>
-                                <div
-                                    className="d-flex flex-row col-10 align-items-center py-2 justify-content-between"
-                                >
-                                    <div className="col-4">
-                                        <Label
-                                            style={{
-                                                marginTop: "2px",
-                                            }}
-                                        >
-                                            {props.t('Order')} <span className="text-danger"> *</span>
-                                        </Label>
-                                    </div>
-                                    <div className="col-8" style={{ marginTop: "-8px" }}>
-                                        <Input
-                                            type="text"
-                                            value={addMenuFormik.values.pos}
-                                            invalid={addMenuFormik.touched.pos && addMenuFormik.errors.pos
-                                                ? true : false
-                                            }
-                                            onChange={(e) => addMenuFormik.setFieldValue('pos', e.target.value)}
-                                        />
-                                        <FormFeedback type="invalid">{addMenuFormik.errors.pos}</FormFeedback>
-                                    </div>
-                                </div>
-                                <div
-                                    className="d-flex flex-row col-10 align-items-center py-2 justify-content-between"
-                                >
-                                    <div className="col-4">
-                                        <Label
-                                            style={{
-                                                marginTop: "2px",
-                                            }}
-                                        >
-                                            {props.t('Icon (FA Icon)')}
-                                        </Label>
-                                    </div>
-                                    <div className="col-8" style={{ marginTop: "-8px" }}>
-                                        <Input
-                                            type="text"
-                                            value={addMenuFormik.values.menuIcon}
-                                            invalid={addMenuFormik.touched.menuIcon && addMenuFormik.errors.menuIcon
-                                                ? true : false
-                                            }
-                                            onChange={(e) => addMenuFormik.setFieldValue('menuIcon', e.target.value)}
-                                        />
-                                        <FormFeedback type="invalid">{addMenuFormik.errors.menuIcon}</FormFeedback>
+                                        <FormFeedback type="invalid">{addRoleFormik.errors.pos}</FormFeedback>
                                     </div>
                                 </div>
                                 <div
@@ -283,8 +229,8 @@ const AddMenu = (props) => {
             <Button
                 className="btn btn-danger my-2"
                 onClick={() => {
-                    props.setAppMaintainMenu(true)
-                    props.setAppAddMaintainMenu(false)
+                    props.setAppMaintainRole(true)
+                    props.setAppAddMaintainRole(false)
 
                 }}
             >
@@ -295,13 +241,13 @@ const AddMenu = (props) => {
     )
 }
 
-AddMenu.propTypes = {
+AddRole.propTypes = {
     location: PropTypes.object,
     t: PropTypes.any,
-    appAddMaintainMenu: PropTypes.any,
-    setAppMaintainMenu: PropTypes.any,
-    setAppAddMaintainMenu: PropTypes.any,
+    appAddMaintainRole: PropTypes.any,
+    setAppMaintainRole: PropTypes.any,
+    setAppAddMaintainRole: PropTypes.any,
     setLoadingSpinner: PropTypes.any,
 }
 
-export default withTranslation()(AddMenu)
+export default withTranslation()(AddRole)

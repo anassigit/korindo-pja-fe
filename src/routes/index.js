@@ -5,9 +5,6 @@ import Logout from "../pages/Authentication/Logout"
 import EmailVerPassword from "../pages/Authentication/EmailVerPassword"
 import UpdatePassword from "../pages/Authentication/UpdatePassword"
 import Dashboard from "../pages/Dashboard/index"
-import Role from "../pages/App003/Role"
-import RoleAkses from "../pages/App004/RoleAkses"
-import User from "../pages/App008/User"
 import Instructions from "../pages/AppInstructions/Instructions"
 import UserProfile from "../pages/AppUserProfile/UserProfile"
 import ChangePassword from "../pages/AppUserProfile/ChangePassword"
@@ -30,9 +27,6 @@ import RoleSetting from "pages/AppSetting/RoleSetting"
 
 const authProtectedRoutes = [
     { path: "/dashboard", component: Dashboard },
-    { path: "/app003", component: Role },
-    { path: "/app004", component: RoleAkses },
-    { path: "/app008", component: User },
     { path: "/AppInstructions", component: Instructions },
     { path: "/AppEditInstruction", component: EditInstructions },
     { path: "/AppGeneralSetting", component: GeneralSetting },

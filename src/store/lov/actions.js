@@ -5,7 +5,8 @@ import {
   LOV_MENU,
   LOV_COMPANY,
   MSG_LOV,
-  LOV_MENU_PARENT_LIST
+  LOV_MENU_PARENT_LIST,
+  LOV_MENU_ROLE_LIST
 } from "./actionTypes"
 
 export const getMenuParent = req => ({
@@ -41,4 +42,9 @@ export const getMenuParentListLov = (req) => ({
 export const msgLov = (resp) => ({
   type: MSG_LOV,
   payload: resp,
+})
+
+export const getRoleParentListLov = (req) => ({
+  type: LOV_MENU_ROLE_LIST,
+  payload: req,
 })

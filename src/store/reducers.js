@@ -4,9 +4,6 @@ import { combineReducers } from "redux"
 import Layout from "./layout/reducer"
 
 // Authentication
-import RoleReducer from "./app003/reducer"
-import RoleAksesReducer from "./app004/reducer"
-import MUserReducer from "./app008/reducer"
 import fileManagementReducer from "./appFileManagement/reducer"
 import instructionsReducer from "./appInstructions/reducer"
 import kpiReducer from "./appKPI/reducer"
@@ -23,11 +20,8 @@ const rootReducer = combineReducers({
   Layout,
   Login,
   LovReducer,
-  RoleReducer,
-  RoleAksesReducer,
   ComboReducer,
   ReportJasper,
-  MUserReducer,
   instructionsReducer,
   userProfileReducer,
   settingReducer,

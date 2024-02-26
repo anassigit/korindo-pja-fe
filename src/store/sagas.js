@@ -1,8 +1,6 @@
 import { all, fork } from "redux-saga/effects"
 
 //public
-import RoleSaga from "./app003/saga"
-import RoleAksesSaga from "./app004/saga"
 import fileManagementSaga from "./appFileManagement/saga"
 import instructionsSaga from "./appInstructions/saga"
 import kpiSaga from "./appKPI/saga"
@@ -21,8 +19,6 @@ export default function* rootSaga() {
     fork(AuthSaga),
     fork(LayoutSaga),
     fork(LovSaga),
-    fork(RoleSaga),
-    fork(RoleAksesSaga),
     fork(ComboSaga),
     fork(ReportJasperSaga),
     fork(instructionsSaga),

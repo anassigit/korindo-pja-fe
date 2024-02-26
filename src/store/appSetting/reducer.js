@@ -39,7 +39,12 @@ import {
   RESP_GET_ROLE,
   SAVE_ROLE,
   EDIT_ROLE,
-  DELETE_ROLE
+  DELETE_ROLE,
+  GET_ROLE_ACCESS,
+  RESP_GET_ROLE_ACCESS,
+  GET_ROLE_ACCESS_LIST,
+  RESP_GET_ROLE_ACCESS_LIST,
+  SAVE_ACCESS_ROLE,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -55,14 +60,15 @@ const INIT_STATE = {
   respGetMenu2: {},
   respGetRoleList: {},
   respGetRole: {},
+  respGetRoleAccessList: {},
+  respGetRoleAccess: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
-  msgDownload: ""
+  msgDownload: "",
 }
 
 const settingReducer = (state = INIT_STATE, action) => {
-
   switch (action.type) {
     case GET_SETTING:
       return {
@@ -248,6 +254,28 @@ const settingReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
       }
+    case GET_ROLE_ACCESS:
+      return {
+        ...state,
+      }
+    case RESP_GET_ROLE_ACCESS:
+      return {
+        ...state,
+        respGetRoleAccess: action.payload,
+      }
+    case GET_ROLE_ACCESS_LIST:
+      return {
+        ...state,
+      }
+    case RESP_GET_ROLE_ACCESS_LIST:
+      return {
+        ...state,
+        respGetRoleAccessList: action.payload,
+      }
+      case SAVE_ACCESS_ROLE:
+        return {
+          ...state,
+        }
     default:
       return state
   }

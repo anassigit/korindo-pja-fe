@@ -515,7 +515,7 @@ const MovingPlan = (props) => {
                                             {appCompanyCodeListData?.data?.resultList.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item?.companyCode}>
-                                                        {item?.companyName}
+                                                        {item?.companyInitial}
                                                     </option>
                                                 )
                                             })}

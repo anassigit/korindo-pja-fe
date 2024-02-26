@@ -38,7 +38,13 @@ import {
   EDIT_ROLE,
   RESP_GET_ROLE_LIST,
   GET_ROLE_LIST,
-  GET_ROLE
+  GET_ROLE,
+  DELETE_ROLE,
+  GET_ROLE_ACCESS,
+  GET_ROLE_ACCESS_LIST,
+  RESP_GET_ROLE_ACCESS_LIST,
+  RESP_GET_ROLE_ACCESS,
+  SAVE_ACCESS_ROLE
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -266,3 +272,29 @@ export const deleteMaintainRole = (req) => ({
   type: DELETE_ROLE,
   payload: req,
 })
+
+export const getRoleAccessList = (req) => ({
+  type: GET_ROLE_ACCESS_LIST,
+  payload: req,
+})
+
+export const respGetRoleAccessList = resp => ({
+  type: RESP_GET_ROLE_ACCESS_LIST,
+  payload: resp,
+})
+
+export const getRoleAccess = (req) => ({
+  type: GET_ROLE_ACCESS,
+  payload: req,
+})
+
+export const respGetRoleAccess = resp => ({
+  type: RESP_GET_ROLE_ACCESS,
+  payload: resp,
+})
+
+export const addRoleAccess = (req) => ({
+  type: SAVE_ACCESS_ROLE,
+  payload: req,
+})
+

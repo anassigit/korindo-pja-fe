@@ -5,14 +5,15 @@ import {
   LOV_MENU,
   LOV_COMPANY,
   MSG_LOV,
-  LOV_MENU_PARENT_LIST
+  LOV_MENU_PARENT_LIST,
+  LOV_MENU_ROLE_LIST
 } from "./actionTypes"
 
 const INIT_STATE = {
   resp: { data: [] },
 }
 
-const getLovData = (state = INIT_STATE, action) => {
+const LovReducer = (state = INIT_STATE, action) => {
 
   switch (action.type) {
     case LOV_MENU_PARENT:
@@ -44,9 +45,13 @@ const getLovData = (state = INIT_STATE, action) => {
         ...state,
         resp: action.payload,
       }
+    case LOV_MENU_ROLE_LIST:
+      return {
+        ...state,
+      }
     default:
       return state
   }
 }
 
-export default getLovData
+export default LovReducer

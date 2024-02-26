@@ -49,7 +49,6 @@ const SidebarContent = props => {
         if (matchingMenuItem) {
             activateParentDropdown(matchingMenuItem)
         }
-        // activateFileManagementUrl = items[1]
         if (activateFileManagementUrl) {
             activateParentDropdown(activateFileManagementUrl)
         }
@@ -107,6 +106,30 @@ const SidebarContent = props => {
         return false
     }
 
+    // function activateParentDropdown(item) {
+    //     const ul = document.getElementById("side-menu")
+    //     const activeItems = ul.querySelectorAll(".mm-active")
+
+    //     activeItems.forEach(activeItems => {
+    //         if ( activeItems !== item.parentElement) {
+    //             activeItems.classList.remove("mm-active")
+    //         }
+    //     })
+
+    //     let parent = item.parentElement
+    //     while(parent) {
+    //         parent.classList.add("mm-active")
+
+    //         if (parent.nodeName === "UL") {
+    //             parent.previousElementSibling.classList.add("mm-active")
+    //         }
+    //         parent = parent.parentElement.closest("ul")
+    //     }
+
+    //     scrollElement(item)
+    //     return false
+    // }
+
     function renderMenuItem(item) {
         return (
             <li key={item.menuId}>
@@ -149,7 +172,7 @@ const SidebarContent = props => {
         const parentId = searchString.substring(underscoreIndexLast + 1)
 
         return (
-            <li key={item.id} className={parseInt(parentId) === item.id || parseInt(beforeUnderscore) === item.id ? 'mm-active' : null}>
+            <li key={item.id} className={parseInt(parentId) === item.id || parseInt(beforeUnderscore) === item.id ? '' : null}>
                 <a
                     onClick={() => {
                         ReactSession.remove("currentPage")

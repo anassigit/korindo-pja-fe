@@ -56,7 +56,10 @@ const TableCustom3 = (props) => {
         if (location.pathname === "/AppMenuSetting" && !location.search) {
             history.replace("/AppMenuSetting?page=1")
         }
-        if (location.pathname === "/AppInstructions" || location.pathname === "/AppMenuSetting") {
+        if (location.pathname === "/AppRoleSetting" && !location.search) {
+            history.replace("/AppRoleSetting?page=1")
+        }
+        if (location.pathname === "/AppInstructions" || location.pathname === "/AppMenuSetting" || location.pathname === "/AppRoleSetting") {
             dispatch(props.redukCall(props.searchGet))
         }
     }, [location.pathname, location.search, props.searchGet])
