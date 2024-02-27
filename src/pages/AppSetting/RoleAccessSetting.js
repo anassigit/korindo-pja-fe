@@ -11,15 +11,13 @@ import AddRoleAccess from "./AddRoleAccess"
 
 const RoleAccessSetting = props => {
   const [searchVal, setSearchVal] = useState("")
-  const [addAppRoleDetail, setAddAppRoleDetail] = useState(false)
-  const [appRoleAccess, setAppRoleAccess] = useState(false)
   const [addNewRoleAccess, setAddNewRoleAccess] = useState(false)
 
   const appRoleListData = useSelector(state => {
     return state.settingReducer.respGetRoleAccessList
   })
 
-  const [appRoleTabelSearch, setAppRoleTabelSearch] = useState({
+  const [appRoleAccessTabelSearch, setAppRoleAccessTabelSearch] = useState({
     page: 1,
     limit: 10,
     offset: 0,
@@ -32,7 +30,7 @@ const RoleAccessSetting = props => {
   })
 
   useEffect(() => {
-    setAppRoleTabelSearch(prevState => ({
+    setAppRoleAccessTabelSearch(prevState => ({
       ...prevState,
       page: 1,
       offset: 0,
@@ -43,11 +41,11 @@ const RoleAccessSetting = props => {
     }))
   }, [props.appMaintainRoleData])
   const preAddApp = () => {
-    setAddAppRoleDetail(true)
+    props.setAppAddDetailRole(true)
     props.setAppDetailRole(false)
   }
   const handleClick = () => {
-    setAppRoleTabelSearch(prevState => ({
+    setAppRoleAccessTabelSearch(prevState => ({
       ...prevState,
       page: 1,
       offset: 0,
@@ -227,22 +225,24 @@ const RoleAccessSetting = props => {
           </Button>
         </div>
 
-        <TableCustom3
-          keyField={"roleId"}
-          columns={appRoleColumn}
-          redukResponse={appRoleListData}
-          appdata={
-            appRoleListData?.data != null && appRoleListData?.data.list
-              ? appRoleListData?.data.list
-              : []
-          }
-          appdataTotal={
-            appRoleListData?.data != null ? appRoleListData?.data.count : 0
-          }
-          searchSet={setAppRoleTabelSearch}
-          searchGet={appRoleTabelSearch}
-          redukCall={getRoleAccessList}
-        />
+        {props.appDetailRole ? (
+          <TableCustom3
+            keyField={"roleId"}
+            columns={appRoleColumn}
+            redukResponse={appRoleListData}
+            appdata={
+              appRoleListData?.data != null && appRoleListData?.data.list
+                ? appRoleListData?.data.list
+                : []
+            }
+            appdataTotal={
+              appRoleListData?.data != null ? appRoleListData?.data.count : 0
+            }
+            searchSet={setAppRoleAccessTabelSearch}
+            searchGet={appRoleAccessTabelSearch}
+            redukCall={getRoleAccessList}
+          />
+        ) : null}
         <Button
           className="btn btn-danger my-2"
           onClick={() => {
@@ -256,12 +256,9 @@ const RoleAccessSetting = props => {
       </Container>
 
       <AddRoleAccess
-        setAddAppRoleDetail={setAddAppRoleDetail}
-        addAppRoleDetail={addAppRoleDetail}
-        appRoleAccess={appRoleAccess}
-        setAppRoleAccess={setAppRoleAccess}
+        setappAddDetailRole={props.setAppAddDetailRole}
+        appAddDetailRole={props.appAddDetailRole}
         setAppDetailRole={props.setAppDetailRole}
-
       />
     </>
   )
@@ -275,6 +272,10 @@ RoleAccessSetting.propTypes = {
   setAppMaintainRole: PropTypes.any,
   setAppDetailRole: PropTypes.any,
   setLoadingSpinner: PropTypes.any,
+  appAddDetailRole: PropTypes.any,
+  appEditDetailRole: PropTypes.any,
+  setAppEditDetailRole: PropTypes.any,
+  setAppAddDetailRole: PropTypes.any,
 }
 
 export default withTranslation()(RoleAccessSetting)

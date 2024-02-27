@@ -70,10 +70,10 @@ const AddRoleAccess = props => {
   })
 
   useEffect(() => {
-    if (props.addAppRoleDetail) {
+    if (props.appAddDetailRole) {
       addRoleAccessFormik.resetForm()
     }
-  }, [props.addAppRoleDetail])
+  }, [props.appAddDetailRole])
 
   const appLovRoleAccessListColumns = [
     {
@@ -123,7 +123,7 @@ const AddRoleAccess = props => {
   return (
     <Container
       fluid="true"
-      style={{ display: props.addAppRoleDetail ? "block" : "none" }}
+      style={{ display: props.appAddDetailRole ? "block" : "none" }}
     >
       <Card style={{ marginBottom: 0 }}>
         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
@@ -425,8 +425,8 @@ const AddRoleAccess = props => {
       <Button
         className="btn btn-danger my-2"
         onClick={() => {
-          props.setAddAppRoleDetail(false)
           props.setAppDetailRole(true)
+          props.setAppAddDetailRole(false)
         }}
       >
         <span className="mdi mdi-arrow-left" />
@@ -439,11 +439,9 @@ const AddRoleAccess = props => {
 AddRoleAccess.propTypes = {
   location: PropTypes.object,
   t: PropTypes.any,
-  addAppRoleDetail: PropTypes.any,
-  appRoleAccess: PropTypes.any,
-  setAppRoleAccess: PropTypes.any,
-  setAddAppRoleDetail: PropTypes.any,
   setAppDetailRole: PropTypes.any,
+  appAddDetailRole: PropTypes.any,
+  setAppAddDetailRole: PropTypes.any,
 }
 
 export default withTranslation()(AddRoleAccess)

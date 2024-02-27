@@ -29,6 +29,8 @@ const RoleSetting = props => {
   const [appAddMaintainRole, setAppAddMaintainRole] = useState(false)
   const [appEditMaintainRole, setAppEditMaintainRole] = useState(false)
   const [appDetailRole, setAppDetailRole] = useState(false)
+  const [appAddDetailRole, setAppAddDetailRole] = useState(false)
+  const [appEditDetailRole, setAppEditDetailRole] = useState(false)
   const [appMaintainRoleData, setAppMaintainRoleData] = useState({})
   const [appMaintainRoleMsg, setAppMaintainRoleMsg] = useState("")
   const [isYes, setIsYes] = useState(false)
@@ -67,6 +69,16 @@ const RoleSetting = props => {
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
+    },
+    {
+      dataField: "parent",
+      text: props.t("Parent Name"),
+      sort: true,
+      style: { textAlign: "center" },
+      headerStyle: { textAlign: "center" },
+      formatter: (cellContent, cellData) => {
+        return cellContent?.roleName
+    }
     },
     {
       text: props.t("Detail"),
@@ -187,8 +199,12 @@ const RoleSetting = props => {
     if (appMessageAdd.status === "1" || appMessageAdd.status === "0") {
       messageToUpdate = appMessageAdd
       if (appMessageAdd.status === "1") {
-        setAppMaintainRole(true)
-        setAppAddMaintainRole(false)
+        if(appAddDetailRole) {
+          setAppDetailRole(true)
+          setAppAddDetailRole(false)
+        }
+        // setAppMaintainRole(true)
+        // setAppAddMaintainRole(false)
       }
     }
     if (messageToUpdate) {
@@ -342,6 +358,10 @@ const RoleSetting = props => {
             appDetailRole={appDetailRole}
             setAppMaintainRole={setAppMaintainRole}
             setAppDetailRole={setAppDetailRole}
+            appAddDetailRole={appAddDetailRole}
+            appEditDetailRole={appEditDetailRole}
+            setAppEditDetailRole={setAppEditDetailRole}
+            setAppAddDetailRole={setAppAddDetailRole}
             setLoadingSpinner={setLoadingSpinner}
           />
           <ConfirmModal
