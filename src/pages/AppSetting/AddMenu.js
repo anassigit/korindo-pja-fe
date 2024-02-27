@@ -35,7 +35,7 @@ const AddMenu = (props) => {
         enableReinitialize: true,
         initialValues: {
             menuName: '',
-            menuParentId: '',
+            menuId: '',
             parentMenuName: '',
             menuPath: '',
             menuIcon: '',
@@ -50,7 +50,7 @@ const AddMenu = (props) => {
         onSubmit: (values) => {
             dispatch(addMaintainMenu({
                 menuName: values.menuName,
-                menuParentId: values.menuParentId,
+                menuId: values.menuId,
                 menuPath: values.menuPath,
                 menuIcon: values.menuIcon,
                 groupStatus: values.groupStatus ? 1 : 0,
@@ -83,10 +83,9 @@ const AddMenu = (props) => {
 
     const appCallBackMenu = (row) => {
         setAppMenuSearchLov(row.menuId)
-        addMenuFormik.setFieldValue("menuParentId", row.menuId)
+        addMenuFormik.setFieldValue("menuId", row.menuId)
         addMenuFormik.setFieldValue("parentMenuName", row.menuName)
     }
-
     return (
         <Container style={{ display: props.appAddMaintainMenu ? 'block' : "none" }} fluid="true">
             <Card style={{ marginBottom: 0 }}>
@@ -124,22 +123,22 @@ const AddMenu = (props) => {
                                             getData={getMenuParentListLov}
                                             pageSize={10}
                                             callbackFunc={appCallBackMenu}
-                                            defaultSetInput="menuParentId"
+                                            defaultSetInput="menuId"
                                             invalidData={addMenuFormik}
-                                            fieldValue="menuParentId"
+                                            fieldValue="menuId"
                                             stateSearchInput={appMenuSearchLov}
                                             stateSearchInputSet={setAppMenuSearchLov}
-                                            touchedLovField={addMenuFormik.touched.menuParentId}
-                                            errorLovField={addMenuFormik.errors.menuParentId}
+                                            touchedLovField={addMenuFormik.touched.menuId}
+                                            errorLovField={addMenuFormik.errors.menuId}
                                             hasNoSearch={true}
                                         />
-                                        <FormFeedback type="invalid">{addMenuFormik.errors.menuParentId}</FormFeedback>
+                                        <FormFeedback type="invalid">{addMenuFormik.errors.menuId}</FormFeedback>
                                     </div>
                                 </div>
                                 <div
                                     className="d-flex flex-row col-10 align-items-center py-2 justify-content-between"
                                 >
-                                    <div className="col-4">
+                                      <div className="col-4">
                                         <Label
                                             style={{
                                                 marginTop: "2px",
@@ -273,11 +272,13 @@ const AddMenu = (props) => {
                                         <Input
                                             type="checkbox"
                                             checked={addMenuFormik.values.groupStatus}
-                                            invalid={addMenuFormik.touched.groupStatus && addMenuFormik.errors.groupStatus
+                                            value={addMenuFormik.values.groupStatus}
+                                            invalid={ addMenuFormik.touched.groupStatus && addMenuFormik.errors.groupStatus
                                                 ? true : false
                                             }
-                                            onChange={(e) => addMenuFormik.setFieldValue('groupStatus', e.target.value)}
+                                            onChange={(e) => addMenuFormik.setFieldValue('groupStatus', e.target.checked)}
                                         />
+                                        
                                         <FormFeedback type="invalid">{addMenuFormik.errors.groupStatus}</FormFeedback>
                                     </div>
                                 </div>

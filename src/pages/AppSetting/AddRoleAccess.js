@@ -1,4 +1,3 @@
-import RootPageCustom from "common/RootPageCustom"
 import {
   Button,
   Card,
@@ -15,52 +14,115 @@ import {
 import { React, useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { withTranslation } from "react-i18next"
-import TableCustom from "common/TableCustom"
-import TableCustom3 from "common/TableCustom3"
-import { addMaintainRole, getRoleAccessList } from "store/actions"
-import { useDispatch, useSelector } from "react-redux"
+import {
+  addRoleAccess,
+  getMenuParentListLov,
+  getRoleParentListLov,
+  resetMessage,
+} from "store/actions"
+import { useDispatch } from "react-redux"
 import Lovv2 from "common/Lovv2"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 
 const AddRoleAccess = props => {
+  const dispatch = useDispatch()
 
-    const dispatch = useDispatch()
+  const [appRoleAccessSearchLov, setAppRoleAccessSearchLov] = useState("")
+  const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
 
-    const addRoleFormik = useFormik({
-        enableReinitialize: true,
-        initialValues: {
-            roleId: '',
-            menuId: '',
-            bCreate: '',
-            bRead: '',
-            bUpdate: '',
-            bPrint: '',
-            bDelete: '',
-            groupId: '',
-        },
-        validationSchema: Yup.object().shape({
-            // roleId: Yup.string().required(props.t('Required')),
-            menuId: Yup.string().required(props.t('Required')),
-            groupId: Yup.string().required(props.t('Required')),
-        }),
-        onSubmit: (values) => {
-            dispatch(AddRoleAccess({
-                roleId: values.roleId,
-                menuId: values.menuId,
-                bCreate: values.bCreate,
-                bRead: values.bRead,
-                bUpdate: values.bUpdate, 
-                bPrint: values.bPrint,
-                bDelete: values.bDelete,
-                groupId: values.groupId,
-            }))
-        }
-    })
+  useEffect(() => {
+    dispatch(resetMessage())
+  }, [dispatch])
+
+  const addRoleAccessFormik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      roleId: "",
+      menuId: "",
+      bCreate: false,
+      bRead: false,
+      bUpdate: false,
+      bPrint: false,
+      bDelete: false,
+      groupId: "",
+    },
+    validationSchema: Yup.object().shape({
+      roleId: Yup.string().required(props.t("Required")),
+      menuId: Yup.string().required(props.t("Required")),
+      groupId: Yup.string().required(props.t("Required")),
+    }),
+    onSubmit: values => {
+      debugger
+      dispatch(
+        addRoleAccess({
+          roleId: values.roleId,
+          menuId: values.menuId,
+          bCreate: values.bCreate ? 1 : 0,
+          bRead: values.bRead ? 1 : 0,
+          bUpdate: values.bUpdate ? 1 : 0,
+          bPrint: values.bPrint ? 1 : 0,
+          bDelete: values.bDelete ? 1 : 0,
+          groupId: values.groupId,
+        })
+      )
+    },
+  })
+
+  useEffect(() => {
+    if (props.addAppRoleDetail) {
+      addRoleAccessFormik.resetForm()
+    }
+  }, [props.addAppRoleDetail])
+
+  const appLovRoleAccessListColumns = [
+    {
+      dataField: "roleId",
+      text: props.t("Role ID"),
+      sort: true,
+      style: { textAlign: "center" },
+      headerStyle: { textAlign: "center" },
+    },
+    {
+      dataField: "roleName",
+      text: props.t("Role Name"),
+      sort: true,
+      style: { textAlign: "center" },
+      headerStyle: { textAlign: "center" },
+    },
+  ]
+
+  const appLovMenuListColumns = [
+    {
+      dataField: "menuId",
+      text: props.t("Menu ID"),
+      sort: true,
+      style: { textAlign: "center" },
+      headerStyle: { textAlign: "center" },
+    },
+    {
+      dataField: "menuName",
+      text: props.t("Menu Name"),
+      sort: true,
+      style: { textAlign: "center" },
+      headerStyle: { textAlign: "center" },
+    },
+  ]
+
+  const appCallBackRoleAccess = row => {
+    setAppRoleAccessSearchLov(row.roleId)
+    addRoleAccessFormik.setFieldValue("roleId", row.roleId)
+    addRoleAccessFormik.setFieldValue("roleName", row.roleName)
+  }
+
+  const appCallBackMenuAccess = row => {
+    addRoleAccessFormik.setFieldValue("menuId", row.menuId)
+    addRoleAccessFormik.setFieldValue("menuName", row.menuName)
+  }
 
   return (
     <Container
-      fluid
+      fluid="true"
       style={{ display: props.addAppRoleDetail ? "block" : "none" }}
     >
       <Card style={{ marginBottom: 0 }}>
@@ -72,7 +134,7 @@ const AddRoleAccess = props => {
           <Form
             onSubmit={e => {
               e.preventDefault()
-              addRoleFormik.handleSubmit()
+              addRoleAccessFormik.handleSubmit()
               return false
             }}
           >
@@ -86,30 +148,31 @@ const AddRoleAccess = props => {
                       }}
                     >
                       {props.t("Role ID")}
+                      <span className="text-danger"> *</span>
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    {/* <Lovv2
+                    <Lovv2
                       title={props.t("Role")}
                       keyFieldData="roleId"
-                      columns={appLovRoleListColumns}
+                      columns={appLovRoleAccessListColumns}
                       getData={getRoleParentListLov}
                       pageSize={10}
-                      callbackFunc={appCallBackRole}
+                      callbackFunc={appCallBackRoleAccess}
                       defaultSetInput="roleId"
-                      invalidData={addRoleFormik}
+                      invalidData={addRoleAccessFormik}
                       fieldValue="roleId"
-                      stateSearchInput={appRoleSearchLov}
-                      stateSearchInputSet={setAppRoleSearchLov}
-                      touchedLovField={addRoleFormik.touched.roleId}
-                      errorLovField={addRoleFormik.errors.roleId}
-                    /> */}
+                      stateSearchInput={appRoleAccessSearchLov}
+                      stateSearchInputSet={setAppRoleAccessSearchLov}
+                      touchedLovField={addRoleAccessFormik.touched.roleId}
+                      errorLovField={addRoleAccessFormik.errors.roleId}
+                    />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.roleId}
+                      {addRoleAccessFormik.errors.roleId}
                     </FormFeedback>
                   </div>
                 </div>
-                <div className="d-flex flex-row col-10 align-items-center py-2 justify-content-between">
+                <div className="d-flex flex-row col-10 align-items-start py-2 justify-content-between">
                   <div className="col-4">
                     <Label
                       style={{
@@ -117,27 +180,27 @@ const AddRoleAccess = props => {
                       }}
                     >
                       {props.t("Menu ID")}
+                      <span className="text-danger"> *</span>
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    <Input
-                      type="text"
-                      value={addRoleFormik.values.menuId}
-                      invalid={
-                        addRoleFormik.touched.menuId &&
-                        addRoleFormik.errors.menuId
-                          ? true
-                          : false
-                      }
-                      onChange={e =>
-                        addRoleFormik.setFieldValue(
-                          "menuId",
-                          e.target.value
-                        )
-                      }
+                    <Lovv2
+                      title={props.t("Menu")}
+                      keyFieldData="menuId"
+                      columns={appLovMenuListColumns}
+                      getData={getMenuParentListLov}
+                      pageSize={10}
+                      callbackFunc={appCallBackMenuAccess}
+                      defaultSetInput="menuId"
+                      invalidData={addRoleAccessFormik}
+                      fieldValue="menuId"
+                      stateSearchInput={appMenuSearchLov}
+                      stateSearchInputSet={setAppMenuSearchLov}
+                      touchedLovField={addRoleAccessFormik.touched.menuId}
+                      errorLovField={addRoleAccessFormik.errors.menuId}
                     />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.menuId}
+                      {addRoleAccessFormik.errors.roleId}
                     </FormFeedback>
                   </div>
                 </div>
@@ -154,23 +217,23 @@ const AddRoleAccess = props => {
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Input
                       type="checkbox"
-                      
-                      value={addRoleFormik.values.bCreate}
+                      checked={addRoleAccessFormik.values.bCreate}
+                      value={addRoleAccessFormik.values.bCreate}
                       invalid={
-                        addRoleFormik.touched.bCreate &&
-                        addRoleFormik.errors.bCreate
+                        addRoleAccessFormik.touched.bCreate &&
+                        addRoleAccessFormik.errors.bCreate
                           ? true
                           : false
                       }
                       onChange={e =>
-                        addRoleFormik.setFieldValue(
+                        addRoleAccessFormik.setFieldValue(
                           "bCreate",
                           e.target.value
                         )
                       }
                     />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.bCreate}
+                      {addRoleAccessFormik.errors.bCreate}
                     </FormFeedback>
                   </div>
                 </div>
@@ -187,23 +250,23 @@ const AddRoleAccess = props => {
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Input
                       type="checkbox"
-                      
-                      value={addRoleFormik.values.bRead}
+                      checked={addRoleAccessFormik.values.bRead}
+                      value={addRoleAccessFormik.values.bRead}
                       invalid={
-                        addRoleFormik.touched.bRead &&
-                        addRoleFormik.errors.bRead
+                        addRoleAccessFormik.touched.bRead &&
+                        addRoleAccessFormik.errors.bRead
                           ? true
                           : false
                       }
                       onChange={e =>
-                        addRoleFormik.setFieldValue(
+                        addRoleAccessFormik.setFieldValue(
                           "bRead",
                           e.target.value
                         )
                       }
                     />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.bRead}
+                      {addRoleAccessFormik.errors.bRead}
                     </FormFeedback>
                   </div>
                 </div>
@@ -220,23 +283,23 @@ const AddRoleAccess = props => {
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Input
                       type="checkbox"
-                      
-                      value={addRoleFormik.values.bUpdate}
+                      checked={addRoleAccessFormik.values.bUpdate}
+                      value={addRoleAccessFormik.values.bUpdate}
                       invalid={
-                        addRoleFormik.touched.bUpdate &&
-                        addRoleFormik.errors.bUpdate
+                        addRoleAccessFormik.touched.bUpdate &&
+                        addRoleAccessFormik.errors.bUpdate
                           ? true
                           : false
                       }
                       onChange={e =>
-                        addRoleFormik.setFieldValue(
+                        addRoleAccessFormik.setFieldValue(
                           "bUpdate",
                           e.target.value
                         )
                       }
                     />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.bUpdate}
+                      {addRoleAccessFormik.errors.bUpdate}
                     </FormFeedback>
                   </div>
                 </div>
@@ -253,23 +316,23 @@ const AddRoleAccess = props => {
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Input
                       type="checkbox"
-                      
-                      value={addRoleFormik.values.parentRoleName}
+                      checked={addRoleAccessFormik.values.bPrint}
+                      value={addRoleAccessFormik.values.parentRoleName}
                       invalid={
-                        addRoleFormik.touched.parentRoleName &&
-                        addRoleFormik.errors.parentRoleName
+                        addRoleAccessFormik.touched.parentRoleName &&
+                        addRoleAccessFormik.errors.parentRoleName
                           ? true
                           : false
                       }
                       onChange={e =>
-                        addRoleFormik.setFieldValue(
+                        addRoleAccessFormik.setFieldValue(
                           "parentRoleName",
                           e.target.value
                         )
                       }
                     />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.roleId}
+                      {addRoleAccessFormik.errors.roleId}
                     </FormFeedback>
                   </div>
                 </div>
@@ -286,23 +349,23 @@ const AddRoleAccess = props => {
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Input
                       type="checkbox"
-                      
-                      value={addRoleFormik.values.bDelete}
+                      checked={addRoleAccessFormik.values.bDelete}
+                      value={addRoleAccessFormik.values.bDelete}
                       invalid={
-                        addRoleFormik.touched.bDelete &&
-                        addRoleFormik.errors.bDelete
+                        addRoleAccessFormik.touched.bDelete &&
+                        addRoleAccessFormik.errors.bDelete
                           ? true
                           : false
                       }
                       onChange={e =>
-                        addRoleFormik.setFieldValue(
+                        addRoleAccessFormik.setFieldValue(
                           "bDelete",
                           e.target.value
                         )
                       }
                     />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.bDelete}
+                      {addRoleAccessFormik.errors.bDelete}
                     </FormFeedback>
                   </div>
                 </div>
@@ -314,32 +377,32 @@ const AddRoleAccess = props => {
                       }}
                     >
                       {props.t("Group ID")}
+                      <span className="text-danger"> *</span>
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Input
                       type="text"
-                      
-                      value={addRoleFormik.values.groupId}
+                      value={addRoleAccessFormik.values.groupId}
                       invalid={
-                        addRoleFormik.touched.groupId &&
-                        addRoleFormik.errors.groupId
+                        addRoleAccessFormik.touched.groupId &&
+                        addRoleAccessFormik.errors.groupId
                           ? true
                           : false
                       }
                       onChange={e =>
-                        addRoleFormik.setFieldValue(
+                        addRoleAccessFormik.setFieldValue(
                           "groupId",
                           e.target.value
                         )
                       }
                     />
                     <FormFeedback type="invalid">
-                      {addRoleFormik.errors.groupId}
+                      {addRoleAccessFormik.errors.groupId}
                     </FormFeedback>
                   </div>
                 </div>
-                
+
                 <div className="d-flex flex-row col-10 align-items-center py-2 justify-content-between">
                   <div className="col-4">
                     <Label
@@ -358,6 +421,17 @@ const AddRoleAccess = props => {
           </Form>
         </CardBody>
       </Card>
+
+      <Button
+        className="btn btn-danger my-2"
+        onClick={() => {
+          props.setAddAppRoleDetail(false)
+          props.setAppDetailRole(true)
+        }}
+      >
+        <span className="mdi mdi-arrow-left" />
+        &nbsp;{props.t("Back")}
+      </Button>
     </Container>
   )
 }
@@ -365,8 +439,11 @@ const AddRoleAccess = props => {
 AddRoleAccess.propTypes = {
   location: PropTypes.object,
   t: PropTypes.any,
-  setAddAppRoleDetail: PropTypes.any,
   addAppRoleDetail: PropTypes.any,
+  appRoleAccess: PropTypes.any,
+  setAppRoleAccess: PropTypes.any,
+  setAddAppRoleDetail: PropTypes.any,
+  setAppDetailRole: PropTypes.any,
 }
 
 export default withTranslation()(AddRoleAccess)

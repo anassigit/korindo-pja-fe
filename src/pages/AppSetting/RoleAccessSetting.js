@@ -12,6 +12,8 @@ import AddRoleAccess from "./AddRoleAccess"
 const RoleAccessSetting = props => {
   const [searchVal, setSearchVal] = useState("")
   const [addAppRoleDetail, setAddAppRoleDetail] = useState(false)
+  const [appRoleAccess, setAppRoleAccess] = useState(false)
+  const [addNewRoleAccess, setAddNewRoleAccess] = useState(false)
 
   const appRoleListData = useSelector(state => {
     return state.settingReducer.respGetRoleAccessList
@@ -241,10 +243,25 @@ const RoleAccessSetting = props => {
           searchGet={appRoleTabelSearch}
           redukCall={getRoleAccessList}
         />
+        <Button
+          className="btn btn-danger my-2"
+          onClick={() => {
+            props.setAppMaintainRole(true)
+            props.setAppDetailRole(false)
+          }}
+        >
+          <span className="mdi mdi-arrow-left" />
+          &nbsp;{props.t("Back")}
+        </Button>
       </Container>
+
       <AddRoleAccess
         setAddAppRoleDetail={setAddAppRoleDetail}
         addAppRoleDetail={addAppRoleDetail}
+        appRoleAccess={appRoleAccess}
+        setAppRoleAccess={setAppRoleAccess}
+        setAppDetailRole={props.setAppDetailRole}
+
       />
     </>
   )

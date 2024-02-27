@@ -39,11 +39,11 @@ const EditMenu = (props) => {
         enableReinitialize: true,
         initialValues: {
             menuName: '',
-            menuParentId: '',
+            menuId: '',
             menuParentName: '',
             menuPath: '',
             menuIcon: '',
-            groupStatus: '',
+            groupStatus: false,
             pos: ''
         },
         validationSchema: Yup.object().shape({
@@ -55,9 +55,10 @@ const EditMenu = (props) => {
             dispatch(editMaintainMenu({
                 menuId: selectedMaintainMenu.data.result?.menuId,
                 menuName: values.menuName,
-                menuParentId: values.menuParentId,
+                menuId: values.menuId,
                 menuPath: values.menuPath,
                 menuIcon: values.menuIcon,
+                groupStatus:values.groupStatus ? 1 : 0,
                 pos: values.pos
             }))
         }
@@ -74,9 +75,9 @@ const EditMenu = (props) => {
 
     useEffect(() => {
         if (selectedMaintainMenu.status === '1') {
-            setAppMenuSearchLov(props.appMaintainMenuData?.menuParentId)
+            setAppMenuSearchLov(props.appMaintainMenuData?.menuId)
             editMenuFormik.setFieldValue('menuName', selectedMaintainMenu.data.result?.menuName)
-            editMenuFormik.setFieldValue('menuParentId', selectedMaintainMenu.data.result?.menuParentId)
+            editMenuFormik.setFieldValue('menuId', selectedMaintainMenu.data.result?.menuId)
             editMenuFormik.setFieldValue('menuParentName', selectedMaintainMenu.data.result?.menuParentName)
             editMenuFormik.setFieldValue('menuPath', selectedMaintainMenu.data.result?.menuPath)
             editMenuFormik.setFieldValue('menuIcon', selectedMaintainMenu.data.result?.menuIcon)
@@ -103,7 +104,7 @@ const EditMenu = (props) => {
 
     const appCallBackMenu = (row) => {
         setAppMenuSearchLov(row.menuId)
-        editMenuFormik.setFieldValue("menuParentId", row.menuId)
+        editMenuFormik.setFieldValue("menuId", row.menuId)
         editMenuFormik.setFieldValue("menuParentName", row.menuName)
     }
 
@@ -144,16 +145,16 @@ const EditMenu = (props) => {
                                             getData={getMenuParentListLov}
                                             pageSize={10}
                                             callbackFunc={appCallBackMenu}
-                                            defaultSetInput="menuParentId"
+                                            defaultSetInput="menuId"
                                             invalidData={editMenuFormik}
-                                            fieldValue="menuParentId"
+                                            fieldValue="menuId"
                                             stateSearchInput={appMenuSearchLov}
                                             stateSearchInputSet={setAppMenuSearchLov}
-                                            touchedLovField={editMenuFormik.touched.menuParentId}
-                                            errorLovField={editMenuFormik.errors.menuParentId}
+                                            touchedLovField={editMenuFormik.touched.menuId}
+                                            errorLovField={editMenuFormik.errors.menuId}
                                             hasNoSearch={true}
                                         />
-                                        <FormFeedback type="invalid">{editMenuFormik.errors.menuParentId}</FormFeedback>
+                                        <FormFeedback type="invalid">{editMenuFormik.errors.menuId}</FormFeedback>
                                     </div>
                                 </div>
                                 <div
@@ -292,11 +293,14 @@ const EditMenu = (props) => {
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Input
                                             type="checkbox"
+                                            value={editMenuFormik.values.groupStatus}
                                             checked={editMenuFormik.values.groupStatus}
-                                            invalid={editMenuFormik.touched.groupStatus && editMenuFormik.errors.groupStatus
+                                            invalid={editMenuFormik.touched.groupStatus && editMenuFormik.errors.groupStatus    
                                                 ? true : false
                                             }
-                                            onChange={(e) => editMenuFormik.setFieldValue('groupStatus', e.target.value)}
+                                            onChange={(e) => 
+                                                editMenuFormik.setFieldValue('groupStatus', e.target.checked)
+                                            }
                                         />
                                         <FormFeedback type="invalid">{editMenuFormik.errors.groupStatus}</FormFeedback>
                                     </div>

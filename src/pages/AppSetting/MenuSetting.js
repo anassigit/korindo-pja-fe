@@ -108,6 +108,13 @@ const MenuSetting = (props) => {
             },
         },
         {
+            dataField: "pos",
+            text: props.t('Order'),
+            sort: true,
+            style: { textAlign: 'center' },
+            headerStyle: { textAlign: 'center' },
+        },
+        {
             text: props.t('Actions'),
             headerStyle: { textAlign: 'center' },
             style: { textAlign: 'center', fontSize: '16px' },
