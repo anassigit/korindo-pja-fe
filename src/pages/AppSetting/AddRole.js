@@ -60,6 +60,7 @@ const AddRole = props => {
   useEffect(() => {
     if (props.appAddMaintainRole) {
       addRoleFormik.resetForm()
+      setAppRoleSearchLov("")
     }
   }, [props.appAddMaintainRole])
 
