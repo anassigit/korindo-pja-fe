@@ -40,6 +40,13 @@ const RoleAccessSetting = props => {
     props.setAppAddDetailRole(true)
     props.setAppDetailRole(false)
   }
+
+  const preEditApp = data => {
+    props.setAppEditDetailAccessRole(true)
+    props.setAppDetailRole(false)
+    setAppMantainRoleAccessData(data)
+  }
+  
   const handleClick = () => {
     props.setAppRoleAccessTabelSearch(prevState => ({
       ...prevState,
@@ -51,6 +58,7 @@ const RoleAccessSetting = props => {
       },
     }))
   }
+
 
   const handleEnterKeyPress = e => {
     if (e.key === "Enter") {

@@ -237,8 +237,14 @@ const RoleSetting = props => {
     if (appMessageEdit?.status === "1" || appMessageEdit?.status === "0") {
       messageToUpdate = appMessageEdit
       if (appMessageEdit?.status === "1") {
-        setAppMaintainRole(true)
-        setAppEditMaintainRole(false)
+        if(appEditDetailAccessRole) {
+          setAppDetailRole(true)
+          setAppEditDetailAccessRole(false)
+        }
+        else {
+          setAppMaintainRole(true)
+          setAppEditMaintainRole(false)
+        }
       }
     }
     if (messageToUpdate) {
