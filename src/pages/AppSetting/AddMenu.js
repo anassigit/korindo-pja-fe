@@ -69,6 +69,7 @@ const AddMenu = props => {
   useEffect(() => {
     if (props.appAddMaintainMenu) {
       addMenuFormik.resetForm()
+      setAppMenuSearchLov("")
     }
   }, [props.appAddMaintainMenu])
 
