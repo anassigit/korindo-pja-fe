@@ -51,7 +51,6 @@ const AddRoleAccess = props => {
       groupId: Yup.string().required(props.t("Required")),
     }),
     onSubmit: values => {
-      debugger
       const groupIdString = values.groupId
       const groupIdList = groupIdString.split(',').map(Number);
       

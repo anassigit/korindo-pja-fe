@@ -18,6 +18,7 @@ import {
   addMaintainRole,
   editRoleAccess,
   getMenuParentListLov,
+  getRoleDataAction,
   getRoleParentListLov,
   resetMessage,
 } from "store/actions"
@@ -61,7 +62,6 @@ const EditRoleAccess = props => {
       groupId: Yup.string().required(props.t("Required")),
     }),
     onSubmit: values => {
-      debugger
       const groupIdString = values.groupId
       const groupIdList = groupIdString.split(',').map(Number);
       
@@ -84,9 +84,10 @@ const EditRoleAccess = props => {
   useEffect(() => {
     if (props.appEditDetailAccessRole) {
       editRoleAccessFormik.resetForm()
-      editRoleAccessFormik.setFieldValue(
-        "roleId",
-        props.appMaintainRoleData?.roleId
+      dispatch(
+        getRoleDataAction({
+          roleId: props.appMaintainRoleData?.roleId,
+        })
       )
     }
   }, [props.appEditDetailAccessRole])
@@ -97,7 +98,7 @@ const EditRoleAccess = props => {
         "menuId",
         props.appMaintainRoleData?.parent?.menuId
       )
-      setAppRoleSearchLov(props.appMaintainRoleData?.parent?.roleId)
+      setAppRoleSearchLov(props.appMaintainRoleData?.menuId)
       editRoleAccessFormik.setFieldValue(
         "bcreate",
         selectedMaintainRoleAccess.data.result?.bcreate
@@ -123,15 +124,15 @@ const EditRoleAccess = props => {
 
   const appLovMenuListColumns = [
     {
-      dataField: "roleAccessId",
-      text: props.t("Role Access ID"),
+      dataField: "menuId",
+      text: props.t("Menu ID"),
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
-      dataField: "roleName",
-      text: props.t("Role Name"),
+      dataField: "menuName",
+      text: props.t("Menu Name"),
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -157,7 +158,7 @@ const EditRoleAccess = props => {
           <Form
             onSubmit={e => {
               e.preventDefault()
-              editRoleFormik.handleSubmit()
+              editRoleAccessFormik.handleSubmit()
               return false
             }}
           >

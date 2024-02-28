@@ -46,7 +46,7 @@ const RoleAccessSetting = props => {
     props.setAppDetailRole(false)
     setAppMantainRoleAccessData(data)
   }
-  
+
   const handleClick = () => {
     props.setAppRoleAccessTabelSearch(prevState => ({
       ...prevState,
@@ -288,6 +288,7 @@ const RoleAccessSetting = props => {
         appMaintainRoleData={props.appMaintainRoleData}
         appEditDetailAccessRole={props.appEditDetailAccessRole}
         setAppEditDetailAccessRole={props.setAppEditDetailAccessRole}
+        setAppDetailRole={props.setAppDetailRole}
       />
     </>
   )

@@ -68,6 +68,7 @@ const EditRole = props => {
   useEffect(() => {
     if (props.appEditMaintainRole) {
       editRoleFormik.resetForm()
+      setAppRoleSearchLov("")
       dispatch(
         getRoleDataAction({
           roleId: props.appMaintainRoleData?.roleId,
