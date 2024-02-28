@@ -55,7 +55,7 @@ const Lov = props => {
   }, [props.stateSearchInput])
 
   useEffect(() => {
-    setReq({ page: 1, limit: props.pageSize, offset: 0, sort: props.fieldValue, order: "asc", search: { any: searchValModal, param: props.pParam } })
+    setReq({ page: 1, limit: props.pageSize, offset: 0, sort: null, order: "asc", search: { any: searchValModal, param: props.pParam } })
   }, [searchValModal, props.pParam])
 
   const tableRowEvents = {

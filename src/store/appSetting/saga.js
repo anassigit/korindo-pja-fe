@@ -35,6 +35,7 @@ import {
   GET_ROLE_ACCESS,
   GET_ROLE_ACCESS_LIST,
   SAVE_ACCESS_ROLE,
+  EDIT_ACCESS_ROLE,
 } from "./actionTypes"
 
 import {
@@ -87,6 +88,7 @@ import {
   getRoleAccessBE,
   getRoleAccessListBE,
   saveRoleAccessBE,
+  editRoleAccessBE,
 } from "helpers/backend_helper"
 
 function* fetchGetGeneralSetting({ payload: req }) {
@@ -471,6 +473,20 @@ function* fetchAddAccessRole({ payload: req }) {
   }
 }
 
+function* fetchEditAccessRole({ payload: req }) {
+  try {
+    const response = yield call(editRoleAccessBE, req)
+    if (response.status == 1) {
+      yield put(msgEdit(response))
+    } else {
+      yield put(msgEdit(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgEdit({ "status": 0, "message": "Error Edit Data" }))
+  }
+}
+
 function* settingSaga() {
   yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
   yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
@@ -500,6 +516,7 @@ function* settingSaga() {
   yield takeEvery(GET_ROLE_ACCESS, fetchGetRoleAccess)
   yield takeEvery(GET_ROLE_ACCESS_LIST, fetchGetRoleAccessList)
   yield takeEvery(SAVE_ACCESS_ROLE, fetchAddAccessRole)
+  yield takeEvery(EDIT_ACCESS_ROLE, fetchEditAccessRole)
 }
 
 export default settingSaga

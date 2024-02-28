@@ -5,32 +5,23 @@ import PropTypes from "prop-types"
 import { withTranslation } from "react-i18next"
 import TableCustom from "common/TableCustom"
 import TableCustom3 from "common/TableCustom3"
-import { getRoleAccessList } from "store/actions"
-import { useSelector } from "react-redux"
+import { getRoleAccessList, resetMessage } from "store/actions"
+import { useDispatch, useSelector } from "react-redux"
 import AddRoleAccess from "./AddRoleAccess"
+import EditRoleAccess from "./EditRoleAccess"
 
 const RoleAccessSetting = props => {
-  const [searchVal, setSearchVal] = useState("")
-  const [addNewRoleAccess, setAddNewRoleAccess] = useState(false)
+  const dispatch = useDispatch()
 
-  const appRoleListData = useSelector(state => {
+  const [addNewRoleAccess, setAddNewRoleAccess] = useState(false)
+  const [appMaintainRoleAccessData, setAppMantainRoleAccessData] = useState({})
+
+  const appRoleAccessListData = useSelector(state => {
     return state.settingReducer.respGetRoleAccessList
   })
 
-  const [appRoleAccessTabelSearch, setAppRoleAccessTabelSearch] = useState({
-    page: 1,
-    limit: 10,
-    offset: 0,
-    sort: "",
-    order: "",
-    search: {
-      search: searchVal,
-      roleId: "",
-    },
-  })
-
   useEffect(() => {
-    setAppRoleAccessTabelSearch(prevState => ({
+    props.setAppRoleAccessTabelSearch(prevState => ({
       ...prevState,
       page: 1,
       offset: 0,
@@ -40,18 +31,23 @@ const RoleAccessSetting = props => {
       },
     }))
   }, [props.appMaintainRoleData])
+
+  useEffect(() => {
+    dispatch(resetMessage())
+  }, [dispatch])
+
   const preAddApp = () => {
     props.setAppAddDetailRole(true)
     props.setAppDetailRole(false)
   }
   const handleClick = () => {
-    setAppRoleAccessTabelSearch(prevState => ({
+    props.setAppRoleAccessTabelSearch(prevState => ({
       ...prevState,
       page: 1,
       offset: 0,
       search: {
         ...prevState.search,
-        search: searchVal,
+        search: props.searchVal2,
       },
     }))
   }
@@ -63,7 +59,7 @@ const RoleAccessSetting = props => {
     }
   }
 
-  const appRoleColumn = [
+  const appRoleAccessColumn = [
     {
       dataField: "roleAccessId",
       text: props.t("Role Access ID"),
@@ -112,6 +108,9 @@ const RoleAccessSetting = props => {
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
+      formatter: (cellContent, _cellData) => {
+        return cellContent === 0 ? false : true
+      },
     },
     {
       dataField: "bread",
@@ -119,6 +118,9 @@ const RoleAccessSetting = props => {
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
+      formatter: (cellContent, _cellData) => {
+        return cellContent === 0 ? false : true
+      },
     },
     {
       dataField: "bupdate",
@@ -126,6 +128,9 @@ const RoleAccessSetting = props => {
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
+      formatter: (cellContent, _cellData) => {
+        return cellContent === 0 ? false : true
+      },
     },
     {
       dataField: "bprint",
@@ -133,6 +138,9 @@ const RoleAccessSetting = props => {
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
+      formatter: (cellContent, _cellData) => {
+        return cellContent === 0 ? false : true
+      },
     },
     {
       dataField: "bdelete",
@@ -140,6 +148,9 @@ const RoleAccessSetting = props => {
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
+      formatter: (cellContent, _cellData) => {
+        return cellContent === 0 ? false : true
+      },
     },
     {
       text: props.t("Actions"),
@@ -194,7 +205,7 @@ const RoleAccessSetting = props => {
               <input
                 type="search"
                 className="form-control"
-                onChange={e => setSearchVal(e.target.value)}
+                onChange={e => props.setSearchVal2(e.target.value)}
                 onKeyDown={e =>
                   e.key === "Enter" ? handleEnterKeyPress(e) : null
                 }
@@ -221,25 +232,28 @@ const RoleAccessSetting = props => {
           }}
         >
           <Button onClick={() => preAddApp()}>
-            <span className="mdi mdi-plus" /> {props.t("Add New Role")}
+            <span className="mdi mdi-plus" /> {props.t("Add New Role Access")}
           </Button>
         </div>
 
         {props.appDetailRole ? (
           <TableCustom3
             keyField={"roleId"}
-            columns={appRoleColumn}
-            redukResponse={appRoleListData}
+            columns={appRoleAccessColumn}
+            redukResponse={appRoleAccessListData}
             appdata={
-              appRoleListData?.data != null && appRoleListData?.data.list
-                ? appRoleListData?.data.list
+              appRoleAccessListData?.data != null &&
+              appRoleAccessListData?.data.list
+                ? appRoleAccessListData?.data.list
                 : []
             }
             appdataTotal={
-              appRoleListData?.data != null ? appRoleListData?.data.count : 0
+              appRoleAccessListData?.data != null
+                ? appRoleAccessListData?.data.count
+                : 0
             }
-            searchSet={setAppRoleAccessTabelSearch}
-            searchGet={appRoleAccessTabelSearch}
+            searchSet={props.setAppRoleAccessTabelSearch}
+            searchGet={props.appRoleAccessTabelSearch}
             redukCall={getRoleAccessList}
           />
         ) : null}
@@ -256,9 +270,16 @@ const RoleAccessSetting = props => {
       </Container>
 
       <AddRoleAccess
-        setappAddDetailRole={props.setAppAddDetailRole}
+        appMaintainRoleData={props.appMaintainRoleData}
         appAddDetailRole={props.appAddDetailRole}
+        setAppAddDetailRole={props.setAppAddDetailRole}
         setAppDetailRole={props.setAppDetailRole}
+      />
+
+      <EditRoleAccess
+        appMaintainRoleData={props.appMaintainRoleData}
+        appEditDetailAccessRole={props.appEditDetailAccessRole}
+        setAppEditDetailAccessRole={props.setAppEditDetailAccessRole}
       />
     </>
   )
@@ -276,6 +297,12 @@ RoleAccessSetting.propTypes = {
   appEditDetailRole: PropTypes.any,
   setAppEditDetailRole: PropTypes.any,
   setAppAddDetailRole: PropTypes.any,
+  appRoleAccessTabelSearch: PropTypes.any,
+  setAppRoleAccessTabelSearch: PropTypes.any,
+  searchVal2: PropTypes.any,
+  appEditDetailAccessRole: PropTypes.any,
+  setAppEditDetailAccessRole: PropTypes.any,
+  setSearchVal2: PropTypes.any,
 }
 
 export default withTranslation()(RoleAccessSetting)

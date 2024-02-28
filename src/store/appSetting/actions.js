@@ -44,7 +44,8 @@ import {
   GET_ROLE_ACCESS_LIST,
   RESP_GET_ROLE_ACCESS_LIST,
   RESP_GET_ROLE_ACCESS,
-  SAVE_ACCESS_ROLE
+  SAVE_ACCESS_ROLE,
+  EDIT_ACCESS_ROLE
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -295,6 +296,11 @@ export const respGetRoleAccess = resp => ({
 
 export const addRoleAccess = (req) => ({
   type: SAVE_ACCESS_ROLE,
+  payload: req,
+})
+
+export const editRoleAccess = (req) => ({
+  type: EDIT_ACCESS_ROLE,
   payload: req,
 })
 

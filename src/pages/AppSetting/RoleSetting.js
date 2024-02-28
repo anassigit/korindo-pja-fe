@@ -8,7 +8,7 @@ import {
   UncontrolledAlert,
   UncontrolledTooltip,
 } from "reactstrap"
-import { resetMessage } from "store/actions"
+import { getRoleAccessList, resetMessage } from "store/actions"
 import { deleteMaintainRole, getRoleListDataAction } from "store/actions"
 import "../../assets/scss/custom.scss"
 import "../../config"
@@ -31,10 +31,13 @@ const RoleSetting = props => {
   const [appDetailRole, setAppDetailRole] = useState(false)
   const [appAddDetailRole, setAppAddDetailRole] = useState(false)
   const [appEditDetailRole, setAppEditDetailRole] = useState(false)
+  const [appEditDetailAccessRole, setAppEditDetailAccessRole] = useState(false)
   const [appMaintainRoleData, setAppMaintainRoleData] = useState({})
   const [appMaintainRoleMsg, setAppMaintainRoleMsg] = useState("")
   const [isYes, setIsYes] = useState(false)
   const [roleId, setRoleId] = useState("")
+
+  const [searchVal2, setSearchVal2] = useState("")
 
   const appRoleListData = useSelector(state => {
     return state.settingReducer.respGetRoleList
@@ -43,6 +46,18 @@ const RoleSetting = props => {
   const appMessageAdd = useSelector(state => state.settingReducer.msgAdd)
 
   const appMessageEdit = useSelector(state => state.settingReducer.msgEdit)
+
+  const [appRoleAccessTabelSearch, setAppRoleAccessTabelSearch] = useState({
+    page: 1,
+    limit: 10,
+    offset: 0,
+    sort: "",
+    order: "",
+    search: {
+      search: searchVal2,
+      roleId: "",
+    },
+  })
 
   const [appRoleTabelSearch, setAppRoleTabelSearch] = useState({
     page: 1,
@@ -203,13 +218,16 @@ const RoleSetting = props => {
           setAppDetailRole(true)
           setAppAddDetailRole(false)
         }
-        // setAppMaintainRole(true)
-        // setAppAddMaintainRole(false)
+        else {
+          setAppMaintainRole(true)
+          setAppAddMaintainRole(false)
+        }
       }
     }
     if (messageToUpdate) {
       setLoadingSpinner(false)
       dispatch(getRoleListDataAction(appRoleTabelSearch))
+      dispatch(getRoleAccessList(appRoleAccessTabelSearch))
       setAppMaintainRoleMsg(messageToUpdate)
     }
   }, [appMessageAdd])
@@ -359,9 +377,15 @@ const RoleSetting = props => {
             setAppMaintainRole={setAppMaintainRole}
             setAppDetailRole={setAppDetailRole}
             appAddDetailRole={appAddDetailRole}
+            setAppAddDetailRole={setAppAddDetailRole}
             appEditDetailRole={appEditDetailRole}
             setAppEditDetailRole={setAppEditDetailRole}
-            setAppAddDetailRole={setAppAddDetailRole}
+            appRoleAccessTabelSearch={appRoleAccessTabelSearch}
+            setAppRoleAccessTabelSearch={setAppRoleAccessTabelSearch}
+            appEditDetailAccessRole={appEditDetailAccessRole}
+            setAppEditDetailAccessRole={setAppEditDetailAccessRole}
+            searchVal2={searchVal2}
+            setSearchVal2={setSearchVal2}
             setLoadingSpinner={setLoadingSpinner}
           />
           <ConfirmModal

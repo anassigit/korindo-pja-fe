@@ -9,7 +9,6 @@ import {
   FormGroup,
   Input,
   Label,
-  UncontrolledTooltip,
 } from "reactstrap"
 import { React, useEffect, useState } from "react"
 import PropTypes from "prop-types"
@@ -28,7 +27,6 @@ import * as Yup from "yup"
 const AddRoleAccess = props => {
   const dispatch = useDispatch()
 
-  const [appRoleAccessSearchLov, setAppRoleAccessSearchLov] = useState("")
   const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
 
   useEffect(() => {
@@ -54,6 +52,9 @@ const AddRoleAccess = props => {
     }),
     onSubmit: values => {
       debugger
+      const groupIdString = values.groupId
+      const groupIdList = groupIdString.split(',').map(Number);
+      
       dispatch(
         addRoleAccess({
           roleId: values.roleId,
@@ -63,7 +64,7 @@ const AddRoleAccess = props => {
           bUpdate: values.bUpdate ? 1 : 0,
           bPrint: values.bPrint ? 1 : 0,
           bDelete: values.bDelete ? 1 : 0,
-          groupId: values.groupId,
+          groupId: groupIdList,
         })
       )
     },
@@ -72,25 +73,12 @@ const AddRoleAccess = props => {
   useEffect(() => {
     if (props.appAddDetailRole) {
       addRoleAccessFormik.resetForm()
+      addRoleAccessFormik.setFieldValue(
+        "roleId",
+        props.appMaintainRoleData?.roleId
+      )
     }
   }, [props.appAddDetailRole])
-
-  const appLovRoleAccessListColumns = [
-    {
-      dataField: "roleId",
-      text: props.t("Role ID"),
-      sort: true,
-      style: { textAlign: "center" },
-      headerStyle: { textAlign: "center" },
-    },
-    {
-      dataField: "roleName",
-      text: props.t("Role Name"),
-      sort: true,
-      style: { textAlign: "center" },
-      headerStyle: { textAlign: "center" },
-    },
-  ]
 
   const appLovMenuListColumns = [
     {
@@ -109,12 +97,6 @@ const AddRoleAccess = props => {
     },
   ]
 
-  const appCallBackRoleAccess = row => {
-    setAppRoleAccessSearchLov(row.roleId)
-    addRoleAccessFormik.setFieldValue("roleId", row.roleId)
-    addRoleAccessFormik.setFieldValue("roleName", row.roleName)
-  }
-
   const appCallBackMenuAccess = row => {
     addRoleAccessFormik.setFieldValue("menuId", row.menuId)
     addRoleAccessFormik.setFieldValue("menuName", row.menuName)
@@ -128,7 +110,7 @@ const AddRoleAccess = props => {
       <Card style={{ marginBottom: 0 }}>
         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
           <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-          {props.t("Add New Access Role")}
+          {props.t("Add New Role Access")}
         </CardHeader>
         <CardBody>
           <Form
@@ -152,20 +134,22 @@ const AddRoleAccess = props => {
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    <Lovv2
-                      title={props.t("Role")}
-                      keyFieldData="roleId"
-                      columns={appLovRoleAccessListColumns}
-                      getData={getRoleParentListLov}
-                      pageSize={10}
-                      callbackFunc={appCallBackRoleAccess}
-                      defaultSetInput="roleId"
-                      invalidData={addRoleAccessFormik}
-                      fieldValue="roleId"
-                      stateSearchInput={appRoleAccessSearchLov}
-                      stateSearchInputSet={setAppRoleAccessSearchLov}
-                      touchedLovField={addRoleAccessFormik.touched.roleId}
-                      errorLovField={addRoleAccessFormik.errors.roleId}
+                    <Input
+                      type="text"
+                      disabled
+                      value={addRoleAccessFormik.values.roleId}
+                      invalid={
+                        addRoleAccessFormik.touched.roleId &&
+                        addRoleAccessFormik.errors.roleId
+                          ? true
+                          : false
+                      }
+                      onChange={e =>
+                        addRoleAccessFormik.setFieldValue(
+                          "roleId",
+                          e.target.value
+                        )
+                      }
                     />
                     <FormFeedback type="invalid">
                       {addRoleAccessFormik.errors.roleId}
@@ -184,21 +168,23 @@ const AddRoleAccess = props => {
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    <Lovv2
-                      title={props.t("Menu")}
-                      keyFieldData="menuId"
-                      columns={appLovMenuListColumns}
-                      getData={getMenuParentListLov}
-                      pageSize={10}
-                      callbackFunc={appCallBackMenuAccess}
-                      defaultSetInput="menuId"
-                      invalidData={addRoleAccessFormik}
-                      fieldValue="menuId"
-                      stateSearchInput={appMenuSearchLov}
-                      stateSearchInputSet={setAppMenuSearchLov}
-                      touchedLovField={addRoleAccessFormik.touched.menuId}
-                      errorLovField={addRoleAccessFormik.errors.menuId}
-                    />
+                    {props.appAddDetailRole ? (
+                      <Lovv2
+                        title={props.t("Menu")}
+                        keyFieldData="menuId"
+                        columns={appLovMenuListColumns}
+                        getData={getMenuParentListLov}
+                        pageSize={10}
+                        callbackFunc={appCallBackMenuAccess}
+                        defaultSetInput="menuId"
+                        invalidData={addRoleAccessFormik}
+                        fieldValue="menuId"
+                        stateSearchInput={appMenuSearchLov}
+                        stateSearchInputSet={setAppMenuSearchLov}
+                        touchedLovField={addRoleAccessFormik.touched.menuId}
+                        errorLovField={addRoleAccessFormik.errors.menuId}
+                      />
+                    ) : null}
                     <FormFeedback type="invalid">
                       {addRoleAccessFormik.errors.roleId}
                     </FormFeedback>
@@ -228,13 +214,10 @@ const AddRoleAccess = props => {
                       onChange={e =>
                         addRoleAccessFormik.setFieldValue(
                           "bCreate",
-                          e.target.value
+                          e.target.checked
                         )
                       }
                     />
-                    <FormFeedback type="invalid">
-                      {addRoleAccessFormik.errors.bCreate}
-                    </FormFeedback>
                   </div>
                 </div>
                 <div className="d-flex flex-row col-10 align-items-center py-2 justify-content-between">
@@ -261,13 +244,10 @@ const AddRoleAccess = props => {
                       onChange={e =>
                         addRoleAccessFormik.setFieldValue(
                           "bRead",
-                          e.target.value
+                          e.target.checked
                         )
                       }
                     />
-                    <FormFeedback type="invalid">
-                      {addRoleAccessFormik.errors.bRead}
-                    </FormFeedback>
                   </div>
                 </div>
                 <div className="d-flex flex-row col-10 align-items-center py-2 justify-content-between">
@@ -294,13 +274,10 @@ const AddRoleAccess = props => {
                       onChange={e =>
                         addRoleAccessFormik.setFieldValue(
                           "bUpdate",
-                          e.target.value
+                          e.target.checked
                         )
                       }
                     />
-                    <FormFeedback type="invalid">
-                      {addRoleAccessFormik.errors.bUpdate}
-                    </FormFeedback>
                   </div>
                 </div>
                 <div className="d-flex flex-row col-10 align-items-center py-2 justify-content-between">
@@ -317,23 +294,20 @@ const AddRoleAccess = props => {
                     <Input
                       type="checkbox"
                       checked={addRoleAccessFormik.values.bPrint}
-                      value={addRoleAccessFormik.values.parentRoleName}
+                      value={addRoleAccessFormik.values.bPrint}
                       invalid={
-                        addRoleAccessFormik.touched.parentRoleName &&
-                        addRoleAccessFormik.errors.parentRoleName
+                        addRoleAccessFormik.touched.bPrint &&
+                        addRoleAccessFormik.errors.bPrint
                           ? true
                           : false
                       }
                       onChange={e =>
                         addRoleAccessFormik.setFieldValue(
-                          "parentRoleName",
-                          e.target.value
+                          "bPrint",
+                          e.target.checked
                         )
                       }
                     />
-                    <FormFeedback type="invalid">
-                      {addRoleAccessFormik.errors.roleId}
-                    </FormFeedback>
                   </div>
                 </div>
                 <div className="d-flex flex-row col-10 align-items-center py-2 justify-content-between">
@@ -360,13 +334,10 @@ const AddRoleAccess = props => {
                       onChange={e =>
                         addRoleAccessFormik.setFieldValue(
                           "bDelete",
-                          e.target.value
+                          e.target.checked
                         )
                       }
                     />
-                    <FormFeedback type="invalid">
-                      {addRoleAccessFormik.errors.bDelete}
-                    </FormFeedback>
                   </div>
                 </div>
                 <div className="d-flex flex-row col-10 align-items-center py-2 justify-content-between">
@@ -442,6 +413,7 @@ AddRoleAccess.propTypes = {
   setAppDetailRole: PropTypes.any,
   appAddDetailRole: PropTypes.any,
   setAppAddDetailRole: PropTypes.any,
+  appMaintainRoleData: PropTypes.any,
 }
 
 export default withTranslation()(AddRoleAccess)

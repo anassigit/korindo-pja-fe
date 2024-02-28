@@ -55,8 +55,8 @@ const EditRole = props => {
     onSubmit: values => {
       dispatch(
         editMaintainRole({
-        //   roleId: selectedMaintainRole.data.result?.roleId,
-        parentRoleId: values.parentRoleId,
+          //   roleId: selectedMaintainRole.data.result?.roleId,
+          parentRoleId: values.parentRoleId,
           roleName: values.roleName,
           roleId: values.roleId,
           pos: values.pos,
@@ -78,10 +78,10 @@ const EditRole = props => {
 
   useEffect(() => {
     if (selectedMaintainRole?.status === "1") {
-        editRoleFormik.setFieldValue(
-            "parentRoleId",
-            props.appMaintainRoleData?.parent?.roleId
-          )
+      editRoleFormik.setFieldValue(
+        "parentRoleId",
+        props.appMaintainRoleData?.parent?.roleId
+      )
       setAppRoleSearchLov(props.appMaintainRoleData?.parent?.roleId)
       editRoleFormik.setFieldValue(
         "roleName",
@@ -162,10 +162,7 @@ const EditRole = props => {
                           : false
                       }
                       onChange={e =>
-                        editRoleFormik.setFieldValue(
-                          "roleId",
-                          e.target.value
-                        )
+                        editRoleFormik.setFieldValue("roleId", e.target.value)
                       }
                     />
                     <FormFeedback type="invalid">
@@ -184,22 +181,25 @@ const EditRole = props => {
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    <Lovv2
-                      title={props.t("Role")}
-                      keyFieldData="roleId"
-                      columns={appLovRoleListColumns}
-                      getData={getRoleParentListLov}
-                      pageSize={10}
-                      callbackFunc={appCallBackRole}
-                      defaultSetInput="roleId"
-                      invalidData={editRoleFormik}
-                      fieldValue="parentRoleId"
-                      stateSearchInput={appRoleSearchLov}
-                      stateSearchInputSet={setAppRoleSearchLov}
-                      touchedLovField={editRoleFormik.touched.roleId}
-                      errorLovField={editRoleFormik.errors.roleId}
-                      hasNoSearch={true}
-                    />
+                    {props.appEditMaintainRole ? (
+                      <Lovv2
+                        title={props.t("Role")}
+                        keyFieldData="roleId"
+                        columns={appLovRoleListColumns}
+                        getData={getRoleParentListLov}
+                        pageSize={10}
+                        callbackFunc={appCallBackRole}
+                        defaultSetInput="roleId"
+                        invalidData={editRoleFormik}
+                        fieldValue="roleId"
+                        stateSearchInput={appRoleSearchLov}
+                        stateSearchInputSet={setAppRoleSearchLov}
+                        touchedLovField={editRoleFormik.touched.roleId}
+                        errorLovField={editRoleFormik.errors.roleId}
+                        hasNoSearch={true}
+                      />
+                    ) : null}
+
                     <FormFeedback type="invalid">
                       {editRoleFormik.errors.roleId}
                     </FormFeedback>

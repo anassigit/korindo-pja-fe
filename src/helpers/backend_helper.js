@@ -153,7 +153,9 @@ export const getRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/g
 
 export const getRoleAccessListBE = req => post("rest/RoleAccessMasterRest/getList", req)
 
-export const saveRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/getMenuList", req)
+export const saveRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/insert", req)
+
+export const editRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/update", req)
 
 
 

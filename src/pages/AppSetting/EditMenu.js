@@ -59,7 +59,7 @@ const EditMenu = props => {
     onSubmit: values => {
       dispatch(
         editMaintainMenu({
-        parentMenuId: values.parentMenuId,
+          parentMenuId: values.parentMenuId,
           menuName: values.menuName,
           menuId: values.menuId,
           menuPath: values.menuPath,
@@ -85,16 +85,17 @@ const EditMenu = props => {
 
   useEffect(() => {
     if (selectedMaintainMenu.status === "1") {
-        editMenuFormik.setFieldValue(
-            "parentMenuId",
-            props.appMaintainMenuData?.parent?.menuId
-          )
-        setAppMenuSearchLov(props.appMaintainMenuData?.parent?.menuId)
-        editMenuFormik.setFieldValue(
-            "menuName",
+      
+      editMenuFormik.setFieldValue(
+        "parentMenuId",
+        props.appMaintainMenuData?.parent?.menuId
+      )
+      setAppMenuSearchLov(props.appMaintainMenuData?.parent?.menuId)
+      editMenuFormik.setFieldValue(
+        "menuName",
         selectedMaintainMenu.data.result?.menuName
-        )
-        editMenuFormik.setFieldValue(
+      )
+      editMenuFormik.setFieldValue(
         "menuId",
         selectedMaintainMenu.data.result?.menuId
       )
