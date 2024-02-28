@@ -191,17 +191,17 @@ const EditRole = props => {
                         callbackFunc={appCallBackRole}
                         defaultSetInput="roleId"
                         invalidData={editRoleFormik}
-                        fieldValue="roleId"
+                        fieldValue="parentRoleId"
                         stateSearchInput={appRoleSearchLov}
                         stateSearchInputSet={setAppRoleSearchLov}
-                        touchedLovField={editRoleFormik.touched.roleId}
-                        errorLovField={editRoleFormik.errors.roleId}
+                        touchedLovField={editRoleFormik.touched.parentRoleId}
+                        errorLovField={editRoleFormik.errors.parentRoleId}
                         hasNoSearch={true}
                       />
                     ) : null}
 
                     <FormFeedback type="invalid">
-                      {editRoleFormik.errors.roleId}
+                      {editRoleFormik.errors.parentRoleId}
                     </FormFeedback>
                   </div>
                 </div>
