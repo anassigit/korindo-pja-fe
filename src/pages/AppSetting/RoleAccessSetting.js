@@ -190,7 +190,6 @@ const RoleAccessSetting = props => {
       },
     },
   ]
-
   return (
     <>
       <Container

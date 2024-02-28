@@ -32,9 +32,13 @@ const EditRoleAccess = props => {
   const dispatch = useDispatch()
 
   const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
-  const [appRoleSearchLov, setAppRoleSearchLov] = useState("")
+  const [appRoleAccessSearchLov, setAppRoleAccessSearchLov] = useState("")
 
   const selectedMaintainRoleAccess = useSelector(state => {
+    return state.settingReducer.respGetRoleAccessList
+  })
+
+  const appRoleAccessListData = useSelector(state => {
     return state.settingReducer.respGetRoleAccessList
   })
 
@@ -67,8 +71,8 @@ const EditRoleAccess = props => {
       
       dispatch(
         editRoleAccess({
-          roleAccessId: values.roleAccessId,
-          roleId: values.roleId,
+          // roleAccessId: values.roleAccessId,
+          // roleId: values.roleId,
           menuId: values.menuId,
           bCreate: values.bCreate ? 1 : 0,
           bRead: values.bRead ? 1 : 0,
@@ -84,6 +88,7 @@ const EditRoleAccess = props => {
   useEffect(() => {
     if (props.appEditDetailAccessRole) {
       editRoleAccessFormik.resetForm()
+      setAppRoleAccessSearchLov("")
       dispatch(
         getRoleDataAction({
           roleId: props.appMaintainRoleData?.roleId,
@@ -98,7 +103,7 @@ const EditRoleAccess = props => {
         "menuId",
         props.appMaintainRoleData?.parent?.menuId
       )
-      setAppRoleSearchLov(props.appMaintainRoleData?.menuId)
+      setAppRoleAccessSearchLov(props.appMaintainRoleData?.menuId)
       editRoleAccessFormik.setFieldValue(
         "bcreate",
         selectedMaintainRoleAccess.data.result?.bcreate
@@ -179,7 +184,7 @@ const EditRoleAccess = props => {
                     <Input
                       type="text"
                       disabled
-                      value={editRoleAccessFormik.values.roleAccessId}
+                      value={editRoleAccessFormik.values.list?.roleId}
                       invalid={
                         editRoleAccessFormik.touched.roleAccessId &&
                         editRoleAccessFormik.errors.roleAccessId
