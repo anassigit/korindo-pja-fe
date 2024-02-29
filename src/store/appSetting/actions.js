@@ -46,7 +46,9 @@ import {
   RESP_GET_ROLE_ACCESS,
   SAVE_ACCESS_ROLE,
   EDIT_ACCESS_ROLE,
-  DELETE_ACCESS_ROLE
+  DELETE_ACCESS_ROLE,
+  GET_GROUP_LIST_ROLE_ACCESS,
+  RESP_GET_GROUP_LIST_ROLE_ACCESS
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -307,6 +309,16 @@ export const editRoleAccess = (req) => ({
 
 export const deleteRoleAccess = (req) => ({
   type: DELETE_ACCESS_ROLE,
+  payload: req,
+})
+
+export const getGroupListRoleAccess = (req) => ({
+  type: GET_GROUP_LIST_ROLE_ACCESS,
+  payload: req,
+})
+
+export const respGetGroupListRoleAccess = (req) => ({
+  type: RESP_GET_GROUP_LIST_ROLE_ACCESS,
   payload: req,
 })
 

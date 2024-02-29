@@ -119,16 +119,16 @@ const KPIDashboardDetail = (props) => {
     }
 
     const downloadDashboardDetail = async () => {
-        // try {
-        //     dispatch(getDownloadDashboardDetail({
-        //         file_nm: props.t('KPI PLAN XLSX'),
-        //         groupNum: selectedGroupList,
-        //         corporationId: selectedCorporationList,
-        //         year: selectedYear,
-        //     }))
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        try {
+            dispatch(getDownloadDashboardDetail({
+                file_nm: props.t('KPI PLAN XLSX'),
+                groupNum: selectedGroupList,
+                corporationId: selectedCorporationList,
+                year: selectedYear,
+            }))
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

@@ -37,6 +37,7 @@ import {
   SAVE_ACCESS_ROLE,
   EDIT_ACCESS_ROLE,
   DELETE_ACCESS_ROLE,
+  GET_GROUP_LIST_ROLE_ACCESS,
 } from "./actionTypes"
 
 import {
@@ -58,6 +59,7 @@ import {
   respGetRoleAccess,
   getRoleAccess,
   respGetRoleAccessList,
+  respGetGroupListRoleAccess,
 } from "./actions"
 
 import {
@@ -503,6 +505,20 @@ function* fetchDeleteRoleAccess({ payload: req }) {
   }
 }
 
+function* fetchgetGroupListRoleAccess({ payload: req }) {
+  try {
+    const response = yield call(getRoleAccessListBE, req)
+    if (response.status == 1) {
+      yield put(respGetGroupListRoleAccess(response))
+    } else {
+      yield put(respGetGroupListRoleAccess(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(respGetGroupListRoleAccess({ "status": 0, "message": "Error Get Data" }))
+  }
+}
+
 function* settingSaga() {
   yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
   yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
@@ -534,6 +550,8 @@ function* settingSaga() {
   yield takeEvery(SAVE_ACCESS_ROLE, fetchAddAccessRole)
   yield takeEvery(EDIT_ACCESS_ROLE, fetchEditAccessRole)
   yield takeEvery(DELETE_ACCESS_ROLE, fetchDeleteRoleAccess)
+  yield takeEvery(GET_GROUP_LIST_ROLE_ACCESS, fetchgetGroupListRoleAccess)
+
 }
 
 export default settingSaga

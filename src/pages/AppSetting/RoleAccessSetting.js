@@ -106,6 +106,7 @@ const RoleAccessSetting = props => {
       dataField: "menuName",
       text: props.t("Menu Name"),
       sort: true,
+      style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {

@@ -121,6 +121,8 @@ export const updateGroupMapping = req => postWithParam("/rest/OrganizationMaster
 
 export const deleteGroupMapping = req => postWithParam("/rest/OrganizationMasterRest/DeleteRelation", req)
 
+export const getGroupListRoleAccess = req => postWithParam("/rest/RoleAccessMasterRest/getGroupList")
+
 // Maintain Menu
 
 export const getMaintainMenuListBE = req => post("/rest/MenuMasterRest/getList", req)

@@ -47,6 +47,8 @@ import {
   SAVE_ACCESS_ROLE,
   EDIT_ACCESS_ROLE,
   DELETE_ACCESS_ROLE,
+  GET_GROUP_LIST_ROLE_ACCESS,
+  RESP_GET_GROUP_LIST_ROLE_ACCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -64,6 +66,7 @@ const INIT_STATE = {
   respGetRole: {},
   respGetRoleAccessList: {},
   respGetRoleAccess: {},
+  respGetGroupListRoleAccess: {},
   msgAdd: "",
   msgEdit: "",
   msgDelete: "",
@@ -285,6 +288,15 @@ const settingReducer = (state = INIT_STATE, action) => {
     case DELETE_ACCESS_ROLE:
       return {
         ...state,
+      }
+    case GET_GROUP_LIST_ROLE_ACCESS:
+      return {
+        ...state,
+      }
+    case RESP_GET_GROUP_LIST_ROLE_ACCESS:
+      return {
+        ...state,
+        respGetGroupListRoleAccess: action.payload,
       }
     default:
       return state

@@ -24,13 +24,21 @@ import {
   resetMessage,
 } from "store/actions"
 import * as Yup from "yup"
+import Select, { components } from "react-select"
 import "../../assets/scss/custom.scss"
 import "../../config"
 import Lovv2 from "common/Lovv2"
 import { withTranslation } from "react-i18next"
+import { getGroupList } from "helpers/backend_helper"
 
 const EditRoleAccess = props => {
   const dispatch = useDispatch()
+
+  const [selectedMulti2, setselectedMulti2] = useState([])
+  const [optionGroupList, setOptionGroupList] = useState([])
+
+  const [addUser, setAddUser] = useState([])
+  const [removeUser, setRemoveUser] = useState([])
 
   const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
 
@@ -38,10 +46,165 @@ const EditRoleAccess = props => {
     return state.settingReducer.respGetRoleAccess
   })
 
+  /* MULTI SELECTED OPTIONS FOR GROUP LIST ROLE ACCESS */
+  const getGroupListRoleAccess = useSelector(state => {
+    debugger
+    return state.settingReducer.respGetGroupListRoleAccess
+  })
+
+  useEffect(() => {
+    const groupList = getGroupListRoleAccess?.data?.groupList
+    if (groupList) {
+      const uniqueGroups = []
+      const seenNames = new Set()
+
+      groupList.forEach(group => {
+        const { groupId, groupName, groupStatus } = group
+
+        const fullName = groupName !== null ? `${groupName}` : groupName
+
+        if (!seenNames.has(fullName)) {
+          seenNames.add(fullName)
+          uniqueGroups.push({
+            // value: groupId,
+            // label: fullName,
+            groupStatus: groupStatus,
+          })
+        }
+      })
+
+      setselectedMulti2(uniqueGroups)
+    }
+
+    setOptionGroupList(
+      groupList?.map(group => ({
+        value: group.groupId,
+        label: group.groupName,
+        groupStatus: group.groupStatus,
+      })) || []
+    )
+
+    /* useEffect field here */
+  }, [getGroupListRoleAccess])
+
+  function handleMulti2(s) {
+    const currentSelection = selectedMulti2.map(item => item.value)
+
+    const addedValues = s.filter(item => !currentSelection.includes(item.value))
+    const deletedValues = currentSelection.filter(
+      item => !s.some(selectedItem => selectedItem.value === item)
+    )
+
+    addedValues.forEach(addedItem => {
+      setAddUser(current => [...current, addedItem.value])
+    })
+
+    deletedValues.forEach(deletedItem => {
+      setRemoveUser(current => [...current, deletedItem])
+    })
+    console.log(addUser)
+    console.log(removeUser)
+
+    setselectedMulti2(s)
+  }
+
+  useEffect(() => {
+    const uniqueAddUser = new Set(addUser)
+    const uniqueRemoveUser = new Set(removeUser)
+
+    const filteredAddUser = Array.from(uniqueAddUser).filter(
+      user => !uniqueRemoveUser.has(user)
+    )
+    const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(
+      user => !uniqueAddUser.has(user)
+    )
+
+    filteredAddUser.forEach(user => {
+      bodyForm.append("addUser", user)
+    })
+
+    filteredRemoveUser.forEach(user => {
+      bodyForm.append("removeUser", user)
+    })
+  })
+
+  const DropdownIndicator = props => {
+    return (
+      <components.DropdownIndicator {...props}>
+        <i className="mdi mdi-plus-thick" />
+      </components.DropdownIndicator>
+    )
+  }
+
+  const colourStyles2 = {
+    control: (baseStyles, state) => ({
+      ...baseStyles,
+      borderColor: state.isFocused ? "white" : "white",
+      borderColor: state.isSelected ? "white" : "white",
+      borderColor: state.isFocused ? "white" : "white",
+      borderColor: state.isDisabled ? "white" : "white",
+      border: 0,
+      boxShadow: "none",
+    }),
+
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      const color = data.bgColor
+      return {
+        ...styles,
+        backgroundColor: isDisabled
+          ? undefined
+          : isSelected
+          ? data.color
+          : isFocused
+          ? "#e6e6e6"
+          : undefined,
+        color: isDisabled ? "#ccc" : isSelected ? "white" : "black", // <-- Updated line here
+        cursor: isDisabled ? "not-allowed" : "default",
+
+        ":active": {
+          ...styles[":active"],
+          backgroundColor: !isDisabled
+            ? isSelected
+              ? data.color
+              : color
+            : undefined,
+        },
+      }
+    },
+
+    multiValue: (styles, { data }) => {
+      const color = data.bgColor
+      return {
+        ...styles,
+        backgroundColor: "#579DFF",
+      }
+    },
+
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: "white",
+      fontSize: "13px",
+      paddingLeft: "12px",
+      paddingRight: "12px",
+      paddingTop: "7.5px",
+      paddingBottom: "7.5px",
+      borderRadius: "4px",
+    }),
+
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: "white",
+      ":hover": {
+        backgroundColor: data.bgColor,
+        color: "white",
+      },
+    }),
+  }
+
   useEffect(() => {
     dispatch(resetMessage())
   }, [dispatch])
-  
+
   const editRoleAccessFormik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -63,8 +226,8 @@ const EditRoleAccess = props => {
     }),
     onSubmit: values => {
       const groupIdString = values.groupId
-      const groupIdList = groupIdString.split(',').map(Number);
-      
+      const groupIdList = groupIdString.split(",").map(Number)
+
       dispatch(
         editRoleAccess({
           // roleAccessId: values.roleAccessId,
@@ -95,10 +258,9 @@ const EditRoleAccess = props => {
 
   useEffect(() => {
     if (selectedMaintainRoleAccess?.status === "1") {
-      debugger
       editRoleAccessFormik.setFieldValue(
         "roleAccessId",
-        selectedMaintainRoleAccess?.data?.result?.roleAccessId
+        selectedMaintainRoleAccess?.data?.roleAccessId
       )
       editRoleAccessFormik.setFieldValue(
         "roleId",
@@ -174,7 +336,7 @@ const EditRoleAccess = props => {
           >
             <FormGroup>
               <div className="col-4">
-              <div className="d-flex flex-row col-10 align-items-start py-2 justify-content-between">
+                <div className="d-flex flex-row col-10 align-items-start py-2 justify-content-between">
                   <div className="col-4">
                     <Label
                       style={{
@@ -182,14 +344,13 @@ const EditRoleAccess = props => {
                       }}
                     >
                       {props.t("Role Access ID")}
-                      
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Input
                       type="text"
                       disabled
-                      value={editRoleAccessFormik.values.list?.roleId}
+                      value={editRoleAccessFormik.values.roleAccessId}
                       invalid={
                         editRoleAccessFormik.touched.roleAccessId &&
                         editRoleAccessFormik.errors.roleAccessId
@@ -204,7 +365,7 @@ const EditRoleAccess = props => {
                       }
                     />
                     <FormFeedback type="invalid">
-                      {editRoleAccessFormik.errors.roleId}
+                      {editRoleAccessFormik.errors.roleAccessId}
                     </FormFeedback>
                   </div>
                 </div>
@@ -253,23 +414,21 @@ const EditRoleAccess = props => {
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    {props.appEditDetailAccessRole ? (
-                      <Lovv2
-                        title={props.t("Menu")}
-                        keyFieldData="menuId"
-                        columns={appLovMenuListColumns}
-                        getData={getMenuParentListLov}
-                        pageSize={10}
-                        callbackFunc={appCallBackMenuAccess}
-                        defaultSetInput="menuId"
-                        invalidData={editRoleAccessFormik}
-                        fieldValue="menuId"
-                        stateSearchInput={appMenuSearchLov}
-                        stateSearchInputSet={setAppMenuSearchLov}
-                        touchedLovField={editRoleAccessFormik.touched.menuId}
-                        errorLovField={editRoleAccessFormik.errors.menuId}
-                      />
-                    ) : null}
+                    <Lovv2
+                      title={props.t("Menu")}
+                      keyFieldData="menuId"
+                      columns={appLovMenuListColumns}
+                      getData={getMenuParentListLov}
+                      pageSize={10}
+                      callbackFunc={appCallBackMenuAccess}
+                      defaultSetInput="menuId"
+                      invalidData={editRoleAccessFormik}
+                      fieldValue="menuId"
+                      stateSearchInput={appMenuSearchLov}
+                      stateSearchInputSet={setAppMenuSearchLov}
+                      touchedLovField={editRoleAccessFormik.touched.menuId}
+                      errorLovField={editRoleAccessFormik.errors.menuId}
+                    />
                     <FormFeedback type="invalid">
                       {editRoleAccessFormik.errors.roleId}
                     </FormFeedback>
@@ -437,21 +596,22 @@ const EditRoleAccess = props => {
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    <Input
-                      type="text"
-                      value={editRoleAccessFormik.values.groupId}
-                      invalid={
-                        editRoleAccessFormik.touched.groupId &&
-                        editRoleAccessFormik.errors.groupId
-                          ? true
-                          : false
-                      }
-                      onChange={e =>
-                        editRoleAccessFormik.setFieldValue(
-                          "groupId",
-                          e.target.value
-                        )
-                      }
+                    <Select
+                      value={selectedMulti2}
+                      isMulti={true}
+                      onChange={e => {
+                        handleMulti2(e)
+                      }}
+                      options={[
+                        { value: "can", label: "Can" },
+                        { value: "cannot", label: "Cannot" },
+                      ]}
+                      className="select2-selection"
+                      styles={colourStyles2}
+                      components={{
+                        DropdownIndicator: DropdownIndicator,
+                      }}
+                      placeholder={props.t("Select")}
                     />
                     <FormFeedback type="invalid">
                       {editRoleAccessFormik.errors.groupId}

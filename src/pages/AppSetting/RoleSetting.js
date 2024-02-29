@@ -33,6 +33,7 @@ const RoleSetting = props => {
   const [appEditDetailRole, setAppEditDetailRole] = useState(false)
   const [appEditDetailAccessRole, setAppEditDetailAccessRole] = useState(false)
   const [appMaintainRoleData, setAppMaintainRoleData] = useState({})
+  const [appMaintainGroupIdData, setAppMaintainGroupIdData] = useState({})
   const [appMaintainRoleMsg, setAppMaintainRoleMsg] = useState("")
   const [isYes, setIsYes] = useState(false)
   const [roleId, setRoleId] = useState("")
@@ -388,6 +389,7 @@ const RoleSetting = props => {
             setAppEditDetailAccessRole={setAppEditDetailAccessRole}
             searchVal2={searchVal2}
             setSearchVal2={setSearchVal2}
+            appMaintainGroupData={appMaintainGroupIdData}
             setLoadingSpinner={setLoadingSpinner}
           />
           <ConfirmModal
