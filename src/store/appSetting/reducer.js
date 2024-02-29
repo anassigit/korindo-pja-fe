@@ -46,6 +46,7 @@ import {
   RESP_GET_ROLE_ACCESS_LIST,
   SAVE_ACCESS_ROLE,
   EDIT_ACCESS_ROLE,
+  DELETE_ACCESS_ROLE,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -273,14 +274,18 @@ const settingReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetRoleAccessList: action.payload,
       }
-      case SAVE_ACCESS_ROLE:
-        return {
-          ...state,
-        }
-      case EDIT_ACCESS_ROLE:
-        return {
-          ...state,
-        }
+    case SAVE_ACCESS_ROLE:
+      return {
+        ...state,
+      }
+    case EDIT_ACCESS_ROLE:
+      return {
+        ...state,
+      }
+    case DELETE_ACCESS_ROLE:
+      return {
+        ...state,
+      }
     default:
       return state
   }

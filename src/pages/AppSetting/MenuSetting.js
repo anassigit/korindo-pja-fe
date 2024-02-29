@@ -187,11 +187,11 @@ const MenuSetting = (props) => {
                 setAppMaintainMenu(true)
                 setAppAddMaintainMenu(false)
             }
+            setAppMenuMsg(messageToUpdate)
+            dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
         if (messageToUpdate) {
             setLoadingSpinner(false)
-            setAppMenuMsg(messageToUpdate)
-            dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
     }, [appMessageDelete])
 
@@ -203,11 +203,11 @@ const MenuSetting = (props) => {
                 setAppMaintainMenu(true)
                 setAppAddMaintainMenu(false)
             }
+            setAppMenuMsg(messageToUpdate)
+            dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
         if (messageToUpdate) {
             setLoadingSpinner(false)
-            setAppMenuMsg(messageToUpdate)
-            dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
     }, [appMessageAdd])
 
@@ -219,11 +219,11 @@ const MenuSetting = (props) => {
                 setAppMaintainMenu(true)
                 setAppEditMaintainMenu(false)
             }
+            setAppMenuMsg(messageToUpdate)
+            dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
         if (messageToUpdate) {
             setLoadingSpinner(false)
-            setAppMenuMsg(messageToUpdate)
-            dispatch(getMenuListDataAction(appMenuTabelSearch))
         }
     }, [appMessageEdit])
 

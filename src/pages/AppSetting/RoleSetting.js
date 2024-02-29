@@ -93,7 +93,7 @@ const RoleSetting = props => {
       headerStyle: { textAlign: "center" },
       formatter: (cellContent, cellData) => {
         return cellContent?.roleName
-    }
+      }
     },
     {
       text: props.t("Detail"),
@@ -197,15 +197,12 @@ const RoleSetting = props => {
     let messageToUpdate
     if (appMessageDelete.status === "1" || appMessageDelete.status === "0") {
       messageToUpdate = appMessageDelete
-      if (appMessageDelete.status === "1") {
-        setAppMaintainRole(true)
-        setAppAddMaintainRole(false)
-      }
+      dispatch(getRoleListDataAction(appRoleTabelSearch))
+      dispatch(getRoleAccessList(appRoleAccessTabelSearch))
+      setAppMaintainRoleMsg(messageToUpdate)
     }
     if (messageToUpdate) {
       setLoadingSpinner(false)
-      dispatch(getRoleListDataAction(appRoleTabelSearch))
-      setAppMaintainRoleMsg(messageToUpdate)
     }
   }, [appMessageDelete])
 
@@ -214,21 +211,20 @@ const RoleSetting = props => {
     if (appMessageAdd.status === "1" || appMessageAdd.status === "0") {
       messageToUpdate = appMessageAdd
       if (appMessageAdd.status === "1") {
-        if(appAddDetailRole) {
+        if (appAddDetailRole) {
           setAppDetailRole(true)
           setAppAddDetailRole(false)
-        }
-        else {
+        } else {
           setAppMaintainRole(true)
           setAppAddMaintainRole(false)
         }
       }
-    }
-    if (messageToUpdate) {
-      setLoadingSpinner(false)
       dispatch(getRoleListDataAction(appRoleTabelSearch))
       dispatch(getRoleAccessList(appRoleAccessTabelSearch))
       setAppMaintainRoleMsg(messageToUpdate)
+    }
+    if (messageToUpdate) {
+      setLoadingSpinner(false)
     }
   }, [appMessageAdd])
 
@@ -246,11 +242,11 @@ const RoleSetting = props => {
           setAppEditMaintainRole(false)
         }
       }
+      dispatch(getRoleListDataAction(appRoleTabelSearch))
+      setAppMaintainRoleMsg(messageToUpdate)
     }
     if (messageToUpdate) {
       setLoadingSpinner(false)
-      dispatch(getRoleListDataAction(appRoleTabelSearch))
-      setAppMaintainRoleMsg(messageToUpdate)
     }
   }, [appMessageEdit])
 

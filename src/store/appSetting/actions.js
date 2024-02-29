@@ -45,7 +45,8 @@ import {
   RESP_GET_ROLE_ACCESS_LIST,
   RESP_GET_ROLE_ACCESS,
   SAVE_ACCESS_ROLE,
-  EDIT_ACCESS_ROLE
+  EDIT_ACCESS_ROLE,
+  DELETE_ACCESS_ROLE
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -301,6 +302,11 @@ export const addRoleAccess = (req) => ({
 
 export const editRoleAccess = (req) => ({
   type: EDIT_ACCESS_ROLE,
+  payload: req,
+})
+
+export const deleteRoleAccess = (req) => ({
+  type: DELETE_ACCESS_ROLE,
   payload: req,
 })
 

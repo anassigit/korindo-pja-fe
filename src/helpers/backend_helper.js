@@ -147,9 +147,10 @@ export const saveRoleBE = req => postWithParam("/rest/RoleMasterRest/insert", re
 
 export const editRoleBE = req => postWithParam("/rest/RoleMasterRest/update", req)
 
+
 export const deleteRoleBE = req => postWithParam("/rest/RoleMasterRest/delete", req)
 
-export const getRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/getList", req)
+export const getRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/select", req)
 
 export const getRoleAccessListBE = req => post("rest/RoleAccessMasterRest/getList", req)
 
@@ -157,8 +158,7 @@ export const saveRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/
 
 export const editRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/update", req)
 
-
-
+export const deleteRoleAccessBE = req => postWithParam("/rest/RoleAccessMasterRest/delete", req)
 
 /* App Rule */
 

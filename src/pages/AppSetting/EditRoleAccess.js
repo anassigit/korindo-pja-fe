@@ -18,6 +18,7 @@ import {
   addMaintainRole,
   editRoleAccess,
   getMenuParentListLov,
+  getRoleAccess,
   getRoleDataAction,
   getRoleParentListLov,
   resetMessage,
@@ -32,14 +33,9 @@ const EditRoleAccess = props => {
   const dispatch = useDispatch()
 
   const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
-  const [appRoleAccessSearchLov, setAppRoleAccessSearchLov] = useState("")
 
   const selectedMaintainRoleAccess = useSelector(state => {
-    return state.settingReducer.respGetRoleAccessList
-  })
-
-  const appRoleAccessListData = useSelector(state => {
-    return state.settingReducer.respGetRoleAccessList
+    return state.settingReducer.respGetRoleAccess
   })
 
   useEffect(() => {
@@ -88,10 +84,10 @@ const EditRoleAccess = props => {
   useEffect(() => {
     if (props.appEditDetailAccessRole) {
       editRoleAccessFormik.resetForm()
-      setAppRoleAccessSearchLov("")
+      setAppMenuSearchLov("")
       dispatch(
-        getRoleDataAction({
-          roleId: props.appMaintainRoleData?.roleId,
+        getRoleAccess({
+          roleAccessId: props.roleAccessId,
         })
       )
     }
@@ -99,30 +95,39 @@ const EditRoleAccess = props => {
 
   useEffect(() => {
     if (selectedMaintainRoleAccess?.status === "1") {
+      debugger
+      editRoleAccessFormik.setFieldValue(
+        "roleAccessId",
+        selectedMaintainRoleAccess?.data?.result?.roleAccessId
+      )
+      editRoleAccessFormik.setFieldValue(
+        "roleId",
+        selectedMaintainRoleAccess?.data?.result?.roleId
+      )
       editRoleAccessFormik.setFieldValue(
         "menuId",
-        props.appMaintainRoleData?.parent?.menuId
+        selectedMaintainRoleAccess?.data?.result?.menuId
       )
-      setAppRoleAccessSearchLov(props.appMaintainRoleData?.menuId)
+      setAppMenuSearchLov(selectedMaintainRoleAccess?.data?.result?.menuId)
       editRoleAccessFormik.setFieldValue(
         "bcreate",
-        selectedMaintainRoleAccess.data.result?.bcreate
+        selectedMaintainRoleAccess.data.result?.bcreate === 1 ? true : false
       )
       editRoleAccessFormik.setFieldValue(
         "bRead",
-        selectedMaintainRoleAccess.data.result?.bRead === 1 ? true : false
+        selectedMaintainRoleAccess.data.result?.bread === 1 ? true : false
       )
       editRoleAccessFormik.setFieldValue(
         "bUpdate",
-        selectedMaintainRoleAccess.data.result?.bUpdate === 1 ? true : false
+        selectedMaintainRoleAccess.data.result?.bupdate === 1 ? true : false
       )
       editRoleAccessFormik.setFieldValue(
         "bPrint",
-        selectedMaintainRoleAccess.data.result?.bPrint === 1 ? true : false
+        selectedMaintainRoleAccess.data.result?.bprint === 1 ? true : false
       )
       editRoleAccessFormik.setFieldValue(
         "bDelete",
-        selectedMaintainRoleAccess.data.result?.bDelete === 1 ? true : false
+        selectedMaintainRoleAccess.data.result?.bdelete === 1 ? true : false
       )
     }
   }, [selectedMaintainRoleAccess?.data])
@@ -494,6 +499,7 @@ EditRoleAccess.propTypes = {
   appEditDetailAccessRole: PropTypes.any,
   setAppEditDetailAccessRole: PropTypes.any,
   appMaintainRoleData: PropTypes.any,
+  roleAccessId: PropTypes.any,
 }
 
 export default withTranslation()(EditRoleAccess)

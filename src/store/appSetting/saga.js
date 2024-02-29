@@ -36,6 +36,7 @@ import {
   GET_ROLE_ACCESS_LIST,
   SAVE_ACCESS_ROLE,
   EDIT_ACCESS_ROLE,
+  DELETE_ACCESS_ROLE,
 } from "./actionTypes"
 
 import {
@@ -89,6 +90,7 @@ import {
   getRoleAccessListBE,
   saveRoleAccessBE,
   editRoleAccessBE,
+  deleteRoleAccessBE,
 } from "helpers/backend_helper"
 
 function* fetchGetGeneralSetting({ payload: req }) {
@@ -487,6 +489,20 @@ function* fetchEditAccessRole({ payload: req }) {
   }
 }
 
+function* fetchDeleteRoleAccess({ payload: req }) {
+  try {
+    const response = yield call(deleteRoleAccessBE, req)
+    if (response.status == 1) {
+      yield put(msgDelete(response))
+    } else {
+      yield put(msgDelete(response))
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(msgDelete({ "status": 0, "message": "Error Delete Data" }))
+  }
+}
+
 function* settingSaga() {
   yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
   yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
@@ -517,6 +533,7 @@ function* settingSaga() {
   yield takeEvery(GET_ROLE_ACCESS_LIST, fetchGetRoleAccessList)
   yield takeEvery(SAVE_ACCESS_ROLE, fetchAddAccessRole)
   yield takeEvery(EDIT_ACCESS_ROLE, fetchEditAccessRole)
+  yield takeEvery(DELETE_ACCESS_ROLE, fetchDeleteRoleAccess)
 }
 
 export default settingSaga

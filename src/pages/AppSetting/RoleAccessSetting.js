@@ -5,16 +5,19 @@ import PropTypes from "prop-types"
 import { withTranslation } from "react-i18next"
 import TableCustom from "common/TableCustom"
 import TableCustom3 from "common/TableCustom3"
-import { getRoleAccessList, resetMessage } from "store/actions"
+import { deleteRoleAccess, getRoleAccessList, resetMessage } from "store/actions"
 import { useDispatch, useSelector } from "react-redux"
 import AddRoleAccess from "./AddRoleAccess"
 import EditRoleAccess from "./EditRoleAccess"
+import ConfirmModal from "components/Common/ConfirmModal"
 
 const RoleAccessSetting = props => {
-  const dispatch = useDispatch()
 
-  const [addNewRoleAccess, setAddNewRoleAccess] = useState(false)
-  const [appMaintainRoleAccessData, setAppMantainRoleAccessData] = useState({})
+  const dispatch = useDispatch()
+  const [modal, setModal] = useState(false)
+  const [isYes, setIsYes] = useState(false)
+
+  const [roleAccessId, setRoleAccessId] = useState(false)
 
   const appRoleAccessListData = useSelector(state => {
     return state.settingReducer.respGetRoleAccessList
@@ -44,7 +47,7 @@ const RoleAccessSetting = props => {
   const preEditApp = data => {
     props.setAppEditDetailAccessRole(true)
     props.setAppDetailRole(false)
-    setAppMantainRoleAccessData(data)
+    setRoleAccessId(data.roleAccessId)
   }
 
   const handleClick = () => {
@@ -71,6 +74,7 @@ const RoleAccessSetting = props => {
     {
       dataField: "roleAccessId",
       text: props.t("Role Access ID"),
+      hidden: true,
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -78,6 +82,7 @@ const RoleAccessSetting = props => {
     {
       dataField: "roleId",
       text: props.t("Role ID"),
+      hidden: true,
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -92,6 +97,7 @@ const RoleAccessSetting = props => {
     {
       dataField: "menuId",
       text: props.t("Menu ID"),
+      hidden: true,
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -100,15 +106,25 @@ const RoleAccessSetting = props => {
       dataField: "menuName",
       text: props.t("Menu Name"),
       sort: true,
-      style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
       dataField: "groupName",
       text: props.t("Group Name"),
       sort: true,
-      style: { textAlign: "center" },
+      style: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '20vw' },
       headerStyle: { textAlign: "center" },
+      formatter: (cellContent, cellData, index) => {
+        const tooltipId = `tooltip-${index}`
+        return (
+          <>
+            <span id={tooltipId}>
+              {cellContent}
+            </span>
+            <UncontrolledTooltip target={tooltipId}>{cellContent}</UncontrolledTooltip>
+          </>
+        )
+      }
     },
     {
       dataField: "bcreate",
@@ -190,6 +206,20 @@ const RoleAccessSetting = props => {
       },
     },
   ]
+  const toggleDeleteModal = (data) => {
+    setModal(!modal)
+    if (data?.roleAccessId) {
+      setRoleAccessId(data.roleAccessId)
+    }
+  }
+
+  useEffect(() => {
+    if (isYes) {
+      dispatch(deleteRoleAccess({ roleAccessId: roleAccessId }))
+      props.setLoadingSpinner(true)
+    }
+  }, [isYes])
+
   return (
     <>
       <Container
@@ -250,7 +280,7 @@ const RoleAccessSetting = props => {
             redukResponse={appRoleAccessListData}
             appdata={
               appRoleAccessListData?.data != null &&
-              appRoleAccessListData?.data.list
+                appRoleAccessListData?.data.list
                 ? appRoleAccessListData?.data.list
                 : []
             }
@@ -288,6 +318,14 @@ const RoleAccessSetting = props => {
         appEditDetailAccessRole={props.appEditDetailAccessRole}
         setAppEditDetailAccessRole={props.setAppEditDetailAccessRole}
         setAppDetailRole={props.setAppDetailRole}
+        roleAccessId={roleAccessId}
+      />
+
+      <ConfirmModal
+        modal={modal}
+        toggle={toggleDeleteModal}
+        message={props.t("Are you sure to delete this?")}
+        setIsYes={setIsYes}
       />
     </>
   )
