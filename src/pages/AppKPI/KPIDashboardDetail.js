@@ -115,7 +115,6 @@ const KPIDashboardDetail = (props) => {
     }
 
     const downloadDashboardDetail = async () => {
-        debugger
         try {
             dispatch(getDownloadDashboardDetail({
                 file_nm: 'KPI Dashboard Detail.xlsx',
@@ -202,7 +201,7 @@ const KPIDashboardDetail = (props) => {
                                         {
                                             appCorporationListData?.data?.list?.length > 0 ? (
                                                 <>
-                                                    <option value={''}>{'Select Group'}</option>
+                                                    <option value={''}>{'Select Corporation'}</option>
                                                     {
                                                         appCorporationListData?.data?.list.map((item, index) => {
                                                             return (

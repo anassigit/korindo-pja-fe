@@ -218,7 +218,6 @@ const AddMenu = props => {
                       }}
                     >
                       {props.t("Menu Path")}{" "}
-                      <span className="text-danger"> *</span>
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>

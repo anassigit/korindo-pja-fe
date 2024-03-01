@@ -71,6 +71,10 @@ const KPIMasterSetting = (props) => {
         }
     }, [selectedGroupList, selectedYear])
 
+    // useEffect(() => {
+    //     setSelectedCorporationList('')
+    // }, [selectedGroupList])
+
     useEffect(() => {
         dispatch(getKPIMaster({
             groupNum: selectedGroupList,
@@ -164,6 +168,7 @@ const KPIMasterSetting = (props) => {
                                     <Input
                                         type="select"
                                         onChange={(e) => setSelectedCorporationList(e.target.value)}
+                                        value={selectedCorporationList}
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
                                             <>

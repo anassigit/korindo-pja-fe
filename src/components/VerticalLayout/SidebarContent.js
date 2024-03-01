@@ -147,7 +147,8 @@ const SidebarContent = props => {
                     className={item.childList || item.menuId === 5 ? "has-arrow" : null}
                 >
                     {item.menuIcon && <i className={props.t("fas " + item.menuIcon)}></i>}
-                    <span>{props.t(item.menuName)}</span>
+                    {/* <span>{props.t(item.menuName)}</span> */}
+                    <span>{item.menuName}</span>
                 </a>
                 {item.childList && item.childList.length > 0 && item.menuId !== 5 ? (
                     <ul className="sub-menu">
@@ -187,7 +188,8 @@ const SidebarContent = props => {
                     className={item.subList.length > 0 ? "has-arrow" : null}
                 >
                     {item.menuIcon && <i className={props.t("fas " + item.menuIcon)}></i>}
-                    <span>{props.t(item.name)}</span>
+                    {/* <span>{props.t(item.name)}</span> */}
+                    <span>{item.name}</span>
                 </a>
                 {item.subList.length > 0 ? (
                     <ul className={parseInt(parentId) === item.id ? 'sub-menu mm-active mm-show' : null}>

@@ -275,7 +275,7 @@ const KPIDashboard = (props) => {
                                     {
                                         appCorporationListData?.data?.list?.length > 0 ? (
                                             <>
-                                                <option value={''}>{'Select Group'}</option>
+                                                <option value={''}>{'Select Corporation'}</option>
                                                 {
                                                     appCorporationListData?.data?.list.map((item, index) => {
                                                         return (
