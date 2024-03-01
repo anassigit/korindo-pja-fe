@@ -238,11 +238,11 @@ const KPIDashboardDetail = (props) => {
                                 <table className="table table-bordered my-3">
                                     <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
                                         <tr>
-                                            <th rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
-                                                {"Group Name"}
+                                            <th rowSpan={2} style={{ zIndex: 3, textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: '0', backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
+                                                <div>{"Corporation Name"}</div>
                                             </th>
-                                            <th rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
-                                                {"ITEMS"}
+                                            <th rowSpan={2} style={{ zIndex: 3, textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: '225px', backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
+                                                <div>{"ITEMS"}</div>
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>
@@ -267,13 +267,17 @@ const KPIDashboardDetail = (props) => {
                                                     <tr key={index}>
                                                         <td align="center" valign="middle" style={{
                                                             position: 'sticky',
-                                                            backgroundColor: 'white'
+                                                            backgroundColor: 'white',
+                                                            left: '0',
+                                                            zIndex: '2'
                                                         }}>
-                                                            <div style={{ width: '175px' }}>{data.corporationName}</div>
+                                                            <div>{data.corporationName}</div>
                                                         </td>
                                                         <td align="center" valign="middle" style={{
                                                             position: 'sticky',
-                                                            backgroundColor: 'white'
+                                                            backgroundColor: 'white',
+                                                            left: '225px',
+                                                            zIndex: '2'
                                                         }}>
                                                             <div style={{ width: '175px' }}>{data.item}</div>
                                                         </td>

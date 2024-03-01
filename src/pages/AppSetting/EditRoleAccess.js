@@ -60,37 +60,38 @@ const EditRoleAccess = props => {
       const uniqueGroups = [];
       const seenIds = new Set();
 
-      
+
       // const filteredGroupItem = Array.from(groupList).filter(
       //   group => group
       // )
       groupList.forEach((group) => {
-          const id = group.groupId;
-          const name = group.groupName;
-          const status = group.groupStatus;
-  
-          if (!seenIds.has(id)) {
-              seenIds.add(id);
-              uniqueGroups.push({
-                  value: group.groupId,
-                  label: group.groupName,
-                  groupStatus: group.groupStatus,
-              });
-          }
+        const id = group.groupId;
+        const name = group.groupName;
+        const status = group.groupStatus;
+
+        if (!seenIds.has(id)) {
+          seenIds.add(id);
+          uniqueGroups.push({
+            value: group.groupId,
+            label: group.groupName,
+            groupStatus: group.groupStatus,
+          });
+        }
       });
 
-        setselectedMulti2(uniqueGroups);
+      setselectedMulti2(uniqueGroups);
     }
 
     setOptionGroupList(selectedGroupList?.data?.list.map((group) => ({
-        value: group.groupId,
-        label: group.groupName,
-        groupStatus: group.groupStatus,
+      value: group.groupId,
+      label: group.groupName,
+      groupStatus: group.groupStatus,
+      isDisabled: group.groupStatus === 'CANNOT',
     })))
 
     /* useEffect field here */
 
-}, [selectedGroupList]);
+  }, [selectedGroupList]);
 
   function handleMulti2(s) {
 
@@ -100,169 +101,169 @@ const EditRoleAccess = props => {
     const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
 
     addedValues.forEach((addedItem) => {
-        setAddUser(current => [...current, addedItem.value]);
+      setAddUser(current => [...current, addedItem.value]);
     })
 
     deletedValues.forEach((deletedItem) => {
-        setRemoveUser(current => [...current, deletedItem]);
+      setRemoveUser(current => [...current, deletedItem]);
     })
 
     setselectedMulti2(s);
-}
+  }
 
-useEffect(() => {
-  const uniqueAddUser = new Set(addUser);
-  const uniqueRemoveUser = new Set(removeUser);
+  useEffect(() => {
+    const uniqueAddUser = new Set(addUser);
+    const uniqueRemoveUser = new Set(removeUser);
 
-  const filteredAddUser = Array.from(uniqueAddUser).filter(
-    user => !uniqueRemoveUser.has(user)
-  );
-  const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(
-    user => !uniqueAddUser.has(user)
-  );
+    const filteredAddUser = Array.from(uniqueAddUser).filter(
+      user => !uniqueRemoveUser.has(user)
+    );
+    const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(
+      user => !uniqueAddUser.has(user)
+    );
 
-}, [addUser, removeUser]); // Corrected dependency array
+  }, [addUser, removeUser]); // Corrected dependency array
 
 
   const DropdownIndicator = (props) => {
     return (
-        <components.DropdownIndicator {...props}>
-            <i className="mdi mdi-plus-thick" />
-        </components.DropdownIndicator>
+      <components.DropdownIndicator {...props}>
+        <i className="mdi mdi-plus-thick" />
+      </components.DropdownIndicator>
     );
-}
+  }
 
   const colourStyles2 = {
     control: (baseStyles, state) => ({
-        ...baseStyles,
-        borderColor: state.isFocused ? 'white' : 'white',
-        borderColor: state.isSelected ? 'white' : 'white',
-        borderColor: state.isFocused ? 'white' : 'white',
-        borderColor: state.isDisabled ? 'white' : 'white',
-        border: 0,
-        boxShadow: 'none',
+      ...baseStyles,
+      borderColor: state.isFocused ? 'white' : 'white',
+      borderColor: state.isSelected ? 'white' : 'white',
+      borderColor: state.isFocused ? 'white' : 'white',
+      borderColor: state.isDisabled ? 'white' : 'white',
+      border: 0,
+      boxShadow: 'none',
 
     }),
 
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-        const color = data.bgColor;
-        return {
-            ...styles,
-            backgroundColor: isDisabled
-                ? undefined
-                : isSelected
-                    ? data.color
-                    : isFocused
-                        ? '#e6e6e6'
-                        : undefined,
-            color: isDisabled
-                ? '#ccc'
-                : isSelected
-                    ? 'white'
-                    : 'black', // <-- Updated line here
-            cursor: isDisabled ? 'not-allowed' : 'default',
+      const color = data.bgColor;
+      return {
+        ...styles,
+        backgroundColor: isDisabled
+          ? undefined
+          : isSelected
+            ? data.color
+            : isFocused
+              ? '#e6e6e6'
+              : undefined,
+        color: isDisabled
+          ? '#ccc'
+          : isSelected
+            ? 'white'
+            : 'black', // <-- Updated line here
+        cursor: isDisabled ? 'not-allowed' : 'default',
 
-            ':active': {
-                ...styles[':active'],
-                backgroundColor: !isDisabled
-                    ? isSelected
-                        ? data.color
-                        : color
-                    : undefined,
-            },
-        };
+        ':active': {
+          ...styles[':active'],
+          backgroundColor: !isDisabled
+            ? isSelected
+              ? data.color
+              : color
+            : undefined,
+        },
+      };
     },
 
     multiValue: (styles, { data }) => {
-        const color = data.bgColor;
-        return {
-            ...styles,
-            backgroundColor: '#579DFF',
+      const color = data.bgColor;
+      return {
+        ...styles,
+        backgroundColor: '#579DFF',
 
-        };
+      };
     },
 
     multiValueLabel: (styles, { data }) => ({
-        ...styles,
-        color: 'white',
-        fontSize: '13px',
-        paddingLeft: '12px',
-        paddingRight: '12px',
-        paddingTop: '7.5px',
-        paddingBottom: '7.5px',
-        borderRadius: '4px',
+      ...styles,
+      color: 'white',
+      fontSize: '13px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      paddingTop: '7.5px',
+      paddingBottom: '7.5px',
+      borderRadius: '4px',
     }),
 
     multiValueRemove: (styles, { data }) => ({
-        ...styles,
+      ...styles,
+      color: 'white',
+      ':hover': {
+        backgroundColor: data.bgColor,
         color: 'white',
-        ':hover': {
-            backgroundColor: data.bgColor,
-            color: 'white',
-        },
-    }),
-};
-
-const colourStyles2Disabled = {
-  control: (baseStyles, state) => ({
-    ...baseStyles,
-    borderColor: state.isFocused ? "white" : "white",
-    borderColor: state.isSelected ? "white" : "white",
-    borderColor: state.isFocused ? "white" : "white",
-    borderColor: state.isDisabled ? "white" : "white",
-    border: 0,
-    boxShadow: "none",
-  }),
-
-  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-    const color = data.bgColor
-    return {
-      ...styles,
-      backgroundColor: isDisabled
-        ? undefined
-        : isSelected
-        ? data.color
-        : isFocused
-        ? "#e6e6e6"
-        : undefined,
-      color: isDisabled ? "#ccc" : isSelected ? "white" : "black", // <-- Updated line here
-      cursor: isDisabled ? "not-allowed" : "default",
-
-      ":active": {
-        ...styles[":active"],
-        backgroundColor: !isDisabled
-          ? isSelected
-            ? data.color
-            : color
-          : undefined,
       },
-    }
-  },
+    }),
+  };
 
-  multiValue: (styles, { data }) => {
-    const color = data.bgColor
-    return {
+  const colourStyles2Disabled = {
+    control: (baseStyles, state) => ({
+      ...baseStyles,
+      borderColor: state.isFocused ? "white" : "white",
+      borderColor: state.isSelected ? "white" : "white",
+      borderColor: state.isFocused ? "white" : "white",
+      borderColor: state.isDisabled ? "white" : "white",
+      border: 0,
+      boxShadow: "none",
+    }),
+
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      const color = data.bgColor
+      return {
+        ...styles,
+        backgroundColor: isDisabled
+          ? undefined
+          : isSelected
+            ? data.color
+            : isFocused
+              ? "#e6e6e6"
+              : undefined,
+        color: isDisabled ? "#ccc" : isSelected ? "white" : "black", // <-- Updated line here
+        cursor: isDisabled ? "not-allowed" : "default",
+
+        ":active": {
+          ...styles[":active"],
+          backgroundColor: !isDisabled
+            ? isSelected
+              ? data.color
+              : color
+            : undefined,
+        },
+      }
+    },
+
+    multiValue: (styles, { data }) => {
+      const color = data.bgColor
+      return {
+        ...styles,
+        backgroundColor: "#999999",
+      }
+    },
+
+    multiValueLabel: (styles, { data }) => ({
       ...styles,
-      backgroundColor: "#999999",
-    }
-  },
+      color: "white",
+      fontSize: "13px",
+      paddingLeft: "12px",
+      paddingRight: "12px",
+      paddingTop: "7.5px",
+      paddingBottom: "7.5px",
+      borderRadius: "4px",
+    }),
 
-  multiValueLabel: (styles, { data }) => ({
-    ...styles,
-    color: "white",
-    fontSize: "13px",
-    paddingLeft: "12px",
-    paddingRight: "12px",
-    paddingTop: "7.5px",
-    paddingBottom: "7.5px",
-    borderRadius: "4px",
-  }),
-
-  multiValueRemove: (styles, { data }) => ({
-    ...styles,
-    color: "#579DFF",
-  }),
-}
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: "#579DFF",
+    }),
+  }
 
   useEffect(() => {
     dispatch(resetMessage())
@@ -288,7 +289,7 @@ const colourStyles2Disabled = {
       groupId: Yup.string().required(props.t("Required")),
     }),
     onSubmit: values => {
-      
+
       const groupIdString = values.groupId
       const groupIdList = groupIdString.split(",").map(Number)
 
@@ -357,8 +358,8 @@ const colourStyles2Disabled = {
       )
       dispatch(
         getGroupListRoleAccess({
-         roleId : selectedMaintainRoleAccess?.data?.result?.roleId,
-         menuId : selectedMaintainRoleAccess?.data?.result?.menuId,
+          roleId: selectedMaintainRoleAccess?.data?.result?.roleId,
+          menuId: selectedMaintainRoleAccess?.data?.result?.menuId,
         })
       )
     }
@@ -423,7 +424,7 @@ const colourStyles2Disabled = {
                       value={editRoleAccessFormik.values.roleAccessId}
                       invalid={
                         editRoleAccessFormik.touched.roleAccessId &&
-                        editRoleAccessFormik.errors.roleAccessId
+                          editRoleAccessFormik.errors.roleAccessId
                           ? true
                           : false
                       }
@@ -456,7 +457,7 @@ const colourStyles2Disabled = {
                       value={editRoleAccessFormik.values.roleId}
                       invalid={
                         editRoleAccessFormik.touched.roleId &&
-                        editRoleAccessFormik.errors.roleId
+                          editRoleAccessFormik.errors.roleId
                           ? true
                           : false
                       }
@@ -521,7 +522,7 @@ const colourStyles2Disabled = {
                       value={editRoleAccessFormik.values.bCreate}
                       invalid={
                         editRoleAccessFormik.touched.bCreate &&
-                        editRoleAccessFormik.errors.bCreate
+                          editRoleAccessFormik.errors.bCreate
                           ? true
                           : false
                       }
@@ -551,7 +552,7 @@ const colourStyles2Disabled = {
                       value={editRoleAccessFormik.values.bRead}
                       invalid={
                         editRoleAccessFormik.touched.bRead &&
-                        editRoleAccessFormik.errors.bRead
+                          editRoleAccessFormik.errors.bRead
                           ? true
                           : false
                       }
@@ -581,7 +582,7 @@ const colourStyles2Disabled = {
                       value={editRoleAccessFormik.values.bUpdate}
                       invalid={
                         editRoleAccessFormik.touched.bUpdate &&
-                        editRoleAccessFormik.errors.bUpdate
+                          editRoleAccessFormik.errors.bUpdate
                           ? true
                           : false
                       }
@@ -611,7 +612,7 @@ const colourStyles2Disabled = {
                       value={editRoleAccessFormik.values.bPrint}
                       invalid={
                         editRoleAccessFormik.touched.bPrint &&
-                        editRoleAccessFormik.errors.bPrint
+                          editRoleAccessFormik.errors.bPrint
                           ? true
                           : false
                       }
@@ -641,7 +642,7 @@ const colourStyles2Disabled = {
                       value={editRoleAccessFormik.values.bDelete}
                       invalid={
                         editRoleAccessFormik.touched.bDelete &&
-                        editRoleAccessFormik.errors.bDelete
+                          editRoleAccessFormik.errors.bDelete
                           ? true
                           : false
                       }
@@ -666,8 +667,7 @@ const colourStyles2Disabled = {
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                  <Select
-
+                    <Select
                       value={selectedMulti2}
                       isMulti={true}
                       onChange={(e) => {
@@ -675,8 +675,8 @@ const colourStyles2Disabled = {
                       }}
                       options={optionGroupList}
                       className="select2-selection"
-                      // styles={colourStyles2}
-                      styles = {colourStyles2Disabled}
+                      styles={colourStyles2}
+                      // styles = {colourStyles2Disabled}
                       components={{
                         DropdownIndicator: DropdownIndicator,
                       }}
