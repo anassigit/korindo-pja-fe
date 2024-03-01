@@ -55,7 +55,7 @@ const EditMenu = props => {
     },
     validationSchema: Yup.object().shape({
       menuName: Yup.string().required("Required"),
-      menuPath: Yup.string().required("Required"),
+      // menuPath: Yup.string().required("Required"),
     }),
     onSubmit: values => {
       dispatch(

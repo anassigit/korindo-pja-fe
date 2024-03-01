@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import React, { useEffect, useRef } from "react"
 import { ReactSession } from 'react-client-session'
 import { withTranslation } from "react-i18next"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { withRouter } from "react-router-dom"
 import SimpleBar from "simplebar-react"
 import { getMenuList } from "store/actions"
@@ -14,6 +14,12 @@ const SidebarContent = props => {
 
     let menuData = localStorage.getItem("menu")
     let menu = null
+
+    let count = 0
+
+    const getMenuData = useSelector((state) => {
+        return state.userProfileReducer.respGetMenuList
+    })
 
     if (menuData) {
         try {
@@ -29,6 +35,17 @@ const SidebarContent = props => {
     const firstTimeLogin = localStorage.getItem("firstTime_Login")
 
     const ref = useRef()
+
+    useEffect(() => {
+        dispatch(getMenuList())
+    }, [])
+ 
+    let isRenewed = 
+    useEffect(() => {
+        if (getMenuData?.data?.result && JSON.stringify(getMenuData?.data?.result) !== JSON.stringify(menu?.menu)) {
+            localStorage.removeItem('menu')
+        }
+    }, [getMenuData])
 
     useEffect(() => {
         const pathName = props.location.pathname
@@ -52,6 +69,8 @@ const SidebarContent = props => {
         if (activateFileManagementUrl) {
             activateParentDropdown(activateFileManagementUrl)
         }
+
+
     }, [props.location.pathname])
 
 

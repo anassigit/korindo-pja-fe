@@ -207,6 +207,7 @@ const KPIPlanSetting = (props) => {
                                     </Input>
                                     <Input
                                         type="select"
+                                        value={selectedCorporationList}
                                         onChange={(e) => setSelectedCorporationList(e.target.value)}
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
