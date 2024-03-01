@@ -21,10 +21,10 @@ const ConfirmModal = ( props ) => {
             <ModalBody>{props.message}</ModalBody>
             <ModalFooter>
                 <Button color="primary" onClick={toggleYes}>
-                  {props.t("Yes")}
+                  {"Yes"}
                 </Button>
                 <Button color="danger" onClick={toggleNo}>
-                    {props.t("No")}
+                    {"No"}
                 </Button>
             </ModalFooter>
         </Modal>
