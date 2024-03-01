@@ -193,11 +193,11 @@ const UploadKPIMaster = (props) => {
                 e.preventDefault();
                 uploadFileFolderValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>{props.t("Upload New File")}</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{"Upload New File"}</ModalHeader>
                 <ModalBody>
 
                     <div className="mb-3">
-                        <label>{props.t("Choose file")} </label>
+                        <label>{"Choose file"} </label>
                         <Form onSubmit={FileUploadSubmit}>
                             <div className="kb-file-upload">
 
@@ -209,7 +209,7 @@ const UploadKPIMaster = (props) => {
                                 </div>
                             </div>
                             &nbsp;
-                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are xlsx, xls")}</span>
+                            <span style={{ fontSize: "12px", color: "blue" }} >{"Allowed File Types Are xlsx, xls"}</span>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
                                 {
@@ -239,11 +239,11 @@ const UploadKPIMaster = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={uploadSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        {props.t("Add")}
+                        {"Add"}
                         <Spinner style={{ display: uploadSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={() => { closeButton() }}>
-                        {props.t("Close")}
+                        {"Close"}
                     </Button>
                 </ModalFooter>
             </Form>

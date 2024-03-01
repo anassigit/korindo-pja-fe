@@ -220,13 +220,15 @@ export const getItemBE = req => postWithParam("rest/KpiManagementRest/getItemLis
 
 export const getUnitBE = req => postWithParam("rest/KpiManagementRest/getUnitList", req)
 
-export const getDashboardKPIBE = req => post("rest/KpiManagementRest/getDashboard", req)
+export const getDashboardKPIBE = req => postWithParam("rest/KpiManagementRest/getDashboard", req)
 
-export const getDashboardDetailKPIBE = req => post("rest/KpiManagementRest/getDashboardDetail", req)
+export const getDashboardDetailKPIBE = req => postWithParam("rest/KpiManagementRest/getDashboardDetail", req)
 
 export const getActualInputDataBE = req => postWithParam("rest/KpiManagementRest/getData", req)
 
 export const getDownloadMasterTemplateBE = req => getWithXls("rest/KpiManagementRest/downloadMasterTemplate", req)
+
+export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagementRest/downloadDashboardDetail", req)
 
 export const uploadMasterKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
 

@@ -139,7 +139,7 @@ const KPIInputResult = (props) => {
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("Input KPI Result")}
+                            {"Input KPI Result"}
                         </CardHeader>
                         <CardBody>
                             <div
@@ -157,7 +157,7 @@ const KPIInputResult = (props) => {
                                         setSelectedYear(e.target.value)
                                     }}
                                 >
-                                    <option>{props.t('Select Year')}</option>
+                                    <option>{'Select Year'}</option>
                                     {
                                         appYearListData?.data?.list.map((item) => {
                                             return (
@@ -174,7 +174,7 @@ const KPIInputResult = (props) => {
                                         setSelectedMonth(e.target.value)
                                     }}
                                 >
-                                    <option>{props.t('Select Month')}</option>
+                                    <option>{'Select Month'}</option>
                                     {
                                         Array.from({ length: 12 }, (_, index) => {
                                             const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' })
@@ -195,7 +195,7 @@ const KPIInputResult = (props) => {
                                         setSelectedGroupList(e.target.value)
                                     }}
                                 >
-                                    <option value={''}>{props.t('Select Group')}</option>
+                                    <option value={''}>{'Select Group'}</option>
                                     {
                                         appGroupListData?.data?.list.map((item, index) => {
                                             let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
@@ -219,7 +219,7 @@ const KPIInputResult = (props) => {
                                     {
                                         appCorporationListData?.data?.list?.length > 0 ? (
                                             <>
-                                                <option value={''}>{props.t('Select Group')}</option>
+                                                <option value={''}>{'Select Group'}</option>
                                                 {
                                                     appCorporationListData?.data?.list.map((item, index) => {
                                                         return (
@@ -231,7 +231,7 @@ const KPIInputResult = (props) => {
                                                 }
                                             </>
                                         ) : (
-                                            <option value={''}>{props.t('No Data')}</option>
+                                            <option value={''}>{'No Data'}</option>
                                         )
                                     }
                                 </Input>
@@ -239,11 +239,11 @@ const KPIInputResult = (props) => {
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("KPI Category")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Unit")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Plan")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Result")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Note")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"KPI Category"}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"Unit"}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"Plan"}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"Result"}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"Note"}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -371,10 +371,10 @@ const KPIInputResult = (props) => {
                                                 setAppEditMode(false)
                                             }
                                         }}>
-                                            {props.t("Save")}
+                                            {"Save"}
                                         </Button>
                                         <Button className="btn-danger" onClick={() => setAppEditMode(false)}>
-                                            {props.t("Cancel")}
+                                            {"Cancel"}
                                         </Button>
                                     </div>
                                 ) :
@@ -386,7 +386,7 @@ const KPIInputResult = (props) => {
                                                         setAppEditMode(true)
                                                         setAppKPIMsg("")
                                                     }}>
-                                                    {props.t("Edit")}
+                                                    {"Edit"}
                                                 </Button>
                                             </div>
                                         ) : null

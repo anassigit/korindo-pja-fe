@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_PLAN_TEMPLATE, DOWNLOAD_PLAN } from "./actionTypes"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_PLAN_TEMPLATE, DOWNLOAD_PLAN, DOWNLOAD_DASHBOARD_DETAIL } from "./actionTypes"
 import { msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList, msgEdit, respGetDashboardDetailKPI } from "./actions"
-import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE, setActualInputDataBE, getDashboardDetailKPIBE, getDownloadPlanBE } from "helpers/backend_helper"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE, setActualInputDataBE, getDashboardDetailKPIBE, getDownloadPlanBE, getDownloadDashboardDetailBE } from "helpers/backend_helper"
 
 function* fetchGetYearList({ payload: req }) {
     try {
@@ -157,6 +157,14 @@ function* fetchGetActualInputData({ payload: req }) {
     }
 }
 
+function* fetchGetDownloadDashboardDetail({ payload: req }) {
+    try {
+        yield call(getDownloadDashboardDetailBE, req)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 function* fetchGetDownloadMasterTemplate({ payload: req }) {
     try {
         yield call(getDownloadMasterTemplateBE, req)
@@ -231,6 +239,7 @@ function* kpiSaga() {
     yield takeEvery(GET_DASHBOARD_KPI, fetchGetDashboardKPI)
     yield takeEvery(GET_DASHBOARD_DETAIL_KPI, fetchGetDashboardDetailKPI)
     yield takeEvery(GET_ACTUAL_INPUT_DATA, fetchGetActualInputData)
+    yield takeEvery(DOWNLOAD_DASHBOARD_DETAIL, fetchGetDownloadDashboardDetail)
     yield takeEvery(DOWNLOAD_MASTER_TEMPLATE, fetchGetDownloadMasterTemplate)
     yield takeEvery(DOWNLOAD_PLAN_TEMPLATE, fetchGetDownloadPlanTemplate)
     yield takeEvery(DOWNLOAD_PLAN, fetchGetDownloadPlan)

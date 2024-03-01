@@ -94,7 +94,7 @@ const KPIMasterSetting = (props) => {
     const downloadMasterTemplate = async () => {
         try {
             dispatch(getDownloadMasterTemplateBE({
-                file_nm: props.t('KPI MASTER TEMPLATE')
+                file_nm: 'KPI MASTER TEMPLATE'
             }))
         } catch (error) {
             console.log(error)
@@ -107,7 +107,7 @@ const KPIMasterSetting = (props) => {
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t('KPI Master Setting')}
+                            {'KPI Master Setting'}
                         </CardHeader>
                         <CardBody>
                             <div style={{ display: 'flex', justifyContent: "space-between" }}>
@@ -124,7 +124,7 @@ const KPIMasterSetting = (props) => {
                                     >
                                         {Array.isArray(appYearListData?.data?.list) ? (
                                             <>
-                                                <option>{props.t('Select Year')}</option>
+                                                <option>{'Select Year'}</option>
                                                 {appYearListData?.data?.list.map((item, index) => (
                                                     <option key={index} value={item}>
                                                         {item}
@@ -133,7 +133,7 @@ const KPIMasterSetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {props.t('No Data')}
+                                                {'No Data'}
                                             </option>
                                         )}
                                     </Input>
@@ -145,7 +145,7 @@ const KPIMasterSetting = (props) => {
                                     >
                                         {Array.isArray(appGroupListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{props.t('Select Group')}</option>
+                                                <option value={''}>{'Select Group'}</option>
                                                 {appGroupListData?.data?.list.map((item, index) => {
                                                     let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
                                                     return (
@@ -157,7 +157,7 @@ const KPIMasterSetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {props.t('No Data')}
+                                                {'No Data'}
                                             </option>
                                         )}
                                     </Input>
@@ -167,7 +167,7 @@ const KPIMasterSetting = (props) => {
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{props.t('Select Corporation')}</option>
+                                                <option value={''}>{'Select Corporation'}</option>
                                                 {appCorporationListData?.data?.list.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item.corporationId}>
@@ -178,7 +178,7 @@ const KPIMasterSetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {props.t('No Data')}
+                                                {'No Data'}
                                             </option>
                                         )}
                                     </Input>
@@ -186,20 +186,20 @@ const KPIMasterSetting = (props) => {
                                 <div>
                                     <Button onClick={() => downloadMasterTemplate()}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t('Download Template')}
+                                        {'Download Template'}
                                     </Button>
                                     <Button style={{ marginLeft: "1rem" }} onClick={() => toggleUploadModal()}>
-                                        {props.t('Upload')}
+                                        {'Upload'}
                                     </Button>
                                 </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('KPI Category')}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Unit')}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Increase')}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t('Definitions and Formulas')}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{'KPI Category'}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{'Unit'}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{'Increase'}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{'Definitions and Formulas'}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

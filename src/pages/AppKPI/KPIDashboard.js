@@ -80,7 +80,7 @@ const KPIDashboard = (props) => {
         if (appDashboardListData.status === '1') {
             if (appDashboardListData && appDashboardListData.data && appDashboardListData.data.resultList) {
                 setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0));
-            } 
+            }
             if (Array.isArray(initialWidths) && initialWidths?.length > 0) {
                 const timeoutId = setTimeout(() => {
                     setInitialWidths(
@@ -135,21 +135,17 @@ const KPIDashboard = (props) => {
                 .map(columnObj => Object.keys(columnObj)[0])
                 .join(',')
             dispatch(getDashboardKPI({
-                search: {
-                    year: selectedYear,
-                    month: selectedMonth,
-                    groupNum: selectedGroupList,
-                    corporationId: selectedCorporationList,
-                    column: trueColumns
-                }
+                year: selectedYear,
+                month: selectedMonth,
+                groupNum: selectedGroupList,
+                corporationId: selectedCorporationList,
+                column: trueColumns
             }))
         } else {
             dispatch(getDashboardKPI({
-                search: {
-                    groupNum: '',
-                    corporationId: '',
-                    year: '',
-                }
+                groupNum: '',
+                corporationId: '',
+                year: '',
             }))
         }
         setLoadingSpinner(true)
@@ -194,7 +190,7 @@ const KPIDashboard = (props) => {
                 <>
                     <Card style={{ display: appKPIPage ? 'block' : 'none' }} fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI {props.t('Dashboard')}
+                            KPI {'Dashboard'}
                         </CardHeader>
                         <CardBody>
                             <div
@@ -213,7 +209,7 @@ const KPIDashboard = (props) => {
                                         setSelectedYear(e.target.value)
                                     }}
                                 >
-                                    <option>{props.t('Select Year')}</option>
+                                    <option>{'Select Year'}</option>
                                     {
                                         appYearListData?.data?.list.map((item, index) => {
                                             return (
@@ -231,7 +227,7 @@ const KPIDashboard = (props) => {
                                         setSelectedMonth(e.target.value)
                                     }}
                                 >
-                                    <option>{props.t('Select Month')}</option>
+                                    <option>{'Select Month'}</option>
                                     {
                                         Array.from({ length: 12 }, (_, index) => {
                                             const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' })
@@ -254,7 +250,7 @@ const KPIDashboard = (props) => {
                                         setSelectedGroupList(e.target.value)
                                     }}
                                 >
-                                    <option value={''}>{props.t('Select Group')}</option>
+                                    <option value={''}>{'Select Group'}</option>
                                     {
                                         appGroupListData?.data?.list.map((item, index) => {
                                             let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
@@ -279,7 +275,7 @@ const KPIDashboard = (props) => {
                                     {
                                         appCorporationListData?.data?.list?.length > 0 ? (
                                             <>
-                                                <option value={''}>{props.t('Select Group')}</option>
+                                                <option value={''}>{'Select Group'}</option>
                                                 {
                                                     appCorporationListData?.data?.list.map((item, index) => {
                                                         return (
@@ -291,7 +287,7 @@ const KPIDashboard = (props) => {
                                                 }
                                             </>
                                         ) : (
-                                            <option value={''}>{props.t('No Data')}</option>
+                                            <option value={''}>{'No Data'}</option>
                                         )
                                     }
                                 </Input>
@@ -346,7 +342,7 @@ const KPIDashboard = (props) => {
                                                 </div>
                                             ))
                                         ) : (
-                                            <DropdownItem>{props.t('No Data')}</DropdownItem>
+                                            <DropdownItem>{'No Data'}</DropdownItem>
                                         )}
                                     </DropdownMenu>
                                 </Dropdown>
@@ -362,7 +358,7 @@ const KPIDashboard = (props) => {
                                             )}
                                             <div className="mx-2">
                                                 <h5 style={{ marginTop: '1.25vh' }}>
-                                                    {item.item || "{props.t('No Data')}"}
+                                                    {item.item || "{'No Data'}"}
                                                 </h5>
                                                 <span style={{ color: '#D4D4FD' }}>
                                                     {formatter.format(item.plan)} /

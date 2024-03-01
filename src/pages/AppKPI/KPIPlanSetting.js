@@ -102,7 +102,7 @@ const KPIPlanSetting = (props) => {
     const downloadPlanTemplate = async () => {
         try {
             dispatch(getDownloadPlanTemplateBE({
-                file_nm: props.t('KPI PLAN TEMPLATE')
+                file_nm: 'KPI PLAN TEMPLATE'
             }))
         } catch (error) {
             console.log(error)
@@ -112,7 +112,7 @@ const KPIPlanSetting = (props) => {
     const downloadPlan = async () => {
         try {
             dispatch(getDownloadPlan({
-                file_nm: props.t('KPI PLAN.xlsx'),
+                file_nm: 'KPI PLAN.xlsx',
                 groupNum: selectedGroupList,
                 corporationId: selectedCorporationList,
                 year: selectedYear,
@@ -122,13 +122,31 @@ const KPIPlanSetting = (props) => {
         }
     }
 
+    const getMonthAbbreviation = (monthIndex) => {
+        const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        ]
+        return months[monthIndex - 1]
+    }
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t('KPI Plan Setting')}
+                            {'KPI Plan Setting'}
                         </CardHeader>
                         <CardBody>
                             <div
@@ -150,7 +168,7 @@ const KPIPlanSetting = (props) => {
                                     >
                                         {Array.isArray(appYearListData?.data?.list) ? (
                                             <>
-                                                <option>{props.t('Select Year')}</option>
+                                                <option>{'Select Year'}</option>
                                                 {appYearListData?.data?.list.map((item, index) => (
                                                     <option key={index} value={item}>
                                                         {item}
@@ -159,7 +177,7 @@ const KPIPlanSetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {props.t('No Data')}
+                                                {'No Data'}
                                             </option>
                                         )}
                                     </Input>
@@ -171,7 +189,7 @@ const KPIPlanSetting = (props) => {
                                     >
                                         {Array.isArray(appGroupListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{props.t('Select Group')}</option>
+                                                <option value={''}>{'Select Group'}</option>
                                                 {appGroupListData?.data?.list.map((item, index) => {
                                                     let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
                                                     return (
@@ -183,7 +201,7 @@ const KPIPlanSetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {props.t('No Data')}
+                                                {'No Data'}
                                             </option>
                                         )}
                                     </Input>
@@ -193,7 +211,7 @@ const KPIPlanSetting = (props) => {
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{props.t('Select Corporation')}</option>
+                                                <option value={''}>{'Select Corporation'}</option>
                                                 {appCorporationListData?.data?.list.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item.corporationId}>
@@ -204,7 +222,7 @@ const KPIPlanSetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {props.t('No Data')}
+                                                {'No Data'}
                                             </option>
                                         )}
                                     </Input>
@@ -220,30 +238,30 @@ const KPIPlanSetting = (props) => {
                                         className={appPlanState.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadPlan() }}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t('Download Data')}
+                                        {'Download Excel'}
                                     </Button>
                                     <Button onClick={() =>
                                         downloadPlanTemplate()
                                     }>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t('Download Template')}
+                                        {'Download Template'}
                                     </Button>
                                     <Button onClick={() => toggleUploadModal()}>
-                                        {props.t('Upload')}
+                                        {'Upload'}
                                     </Button>
                                 </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">KPI 항목</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">단위</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">KPI Category</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Unit</th>
                                         {
                                             (() => {
                                                 const thElements = []
                                                 for (let month = 1; month <= 12; month++) {
                                                     thElements.push(
-                                                        <th key={month - 1} style={{ textAlign: 'center' }} scope="col">{`${month}월`}</th>
+                                                        <th key={month - 1} style={{ textAlign: 'center' }} scope="col">{getMonthAbbreviation(month)}</th>
                                                     )
                                                 }
 
@@ -268,7 +286,7 @@ const KPIPlanSetting = (props) => {
                                                                     )
                                                                 } else {
                                                                     return (
-                                                                        <td key={monthIndex}>{props.t('No Data')}</td>
+                                                                        <td key={monthIndex}>{'No Data'}</td>
                                                                     )
                                                                 }
                                                             })

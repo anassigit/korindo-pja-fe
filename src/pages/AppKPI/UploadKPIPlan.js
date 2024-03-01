@@ -137,7 +137,7 @@ const UploadKPIPlan = (props) => {
                 reader.readAsDataURL(file)
             })
         } else if (e.target.files.length != 0) {
-            alert(props.t("No valid files selected. Allowed file types: xls & xlsx"))
+            alert("No valid files selected. Allowed file types: xls & xlsx")
             refCleanser.current.value = ""
             e.target.value = ""
         }
@@ -146,7 +146,7 @@ const UploadKPIPlan = (props) => {
 
 
     const DeleteSelectFile = (id) => {
-        if (window.confirm(props.t("Are you sure you want to delete this file?"))) {
+        if (window.confirm("Are you sure you want to delete this file?")) {
             const result = selectedfile.filter((data) => data.id !== id);
             SetSelectedFile(result);
         } else {
@@ -168,7 +168,7 @@ const UploadKPIPlan = (props) => {
             }
             SetSelectedFile([]);
         } else {
-            alert(props.t("Please select file"))
+            alert("Please select file")
         }
     }
 
@@ -191,11 +191,11 @@ const UploadKPIPlan = (props) => {
                 e.preventDefault();
                 uploadFileFolderValidInput.handleSubmit();
             }}>
-                <ModalHeader toggle={props.toggle}>{props.t("Upload New File")}</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{"Upload New File"}</ModalHeader>
                 <ModalBody>
 
                     <div className="mb-3">
-                        <label>{props.t("Choose files")} </label>
+                        <label>{"Choose files"} </label>
                         <Form onSubmit={FileUploadSubmit}>
                             <div className="kb-file-upload">
 
@@ -207,7 +207,7 @@ const UploadKPIPlan = (props) => {
                                 </div>
                             </div>
                             &nbsp;
-                            <span style={{ fontSize: "12px", color: "blue" }} >{props.t("Allowed File Types Are xls, xlsx")}</span>
+                            <span style={{ fontSize: "12px", color: "blue" }} >{"Allowed File Types Are xls, xlsx"}</span>
                             &nbsp;&nbsp;&nbsp;
                             <div className="kb-attach-box mb-3">
                                 {
@@ -237,11 +237,11 @@ const UploadKPIPlan = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={uploadSpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        {props.t("Add")}
+                        {"Add"}
                         <Spinner style={{ display: uploadSpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" />
                     </Button>
                     <Button color="danger" onClick={() => { closeButton() }}>
-                        {props.t("Close")}
+                        {"Close"}
                     </Button>
                 </ModalFooter>
             </Form>

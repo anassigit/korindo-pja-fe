@@ -15,7 +15,7 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getCorporationList, getDashboardDetailKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardDetailKPI, getDownloadDashboardDetail, getGroupListKPI, getYearList, resetMessage } from "store/actions"
 
 const KPIDashboardDetail = (props) => {
 
@@ -74,19 +74,15 @@ const KPIDashboardDetail = (props) => {
     useEffect(() => {
         if (selectedYear && selectedGroupList) {
             dispatch(getDashboardDetailKPI({
-                search: {
-                    year: selectedYear,
-                    groupNum: selectedGroupList,
-                    corporationId: selectedCorporationList
-                }
+                year: selectedYear,
+                groupNum: selectedGroupList,
+                corporationId: selectedCorporationList
             }))
         } else {
             dispatch(getDashboardDetailKPI({
-                search: {
-                    groupNum: '',
-                    corporationId: '',
-                    year: '',
-                }
+                groupNum: '',
+                corporationId: '',
+                year: '',
             }))
         }
         setLoadingSpinner(true)
@@ -94,34 +90,35 @@ const KPIDashboardDetail = (props) => {
 
     const getMonthAbbreviation = (monthIndex) => {
         const months = [
-            props.t("Jan"),
-            props.t("Feb"),
-            props.t("Mar"),
-            props.t("Apr"),
-            props.t("May"),
-            props.t("Jun"),
-            props.t("Jul"),
-            props.t("Aug"),
-            props.t("Sep"),
-            props.t("Oct"),
-            props.t("Nov"),
-            props.t("Dec")
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
         ]
         return months[monthIndex - 1]
     }
 
     const getColumnHeader = (index) => {
         const baseHeaders = [
-            props.t('Plan'),
-            props.t('Result')
+            'Plan',
+            'Result'
         ]
         return `${baseHeaders[index % baseHeaders.length]}`
     }
 
     const downloadDashboardDetail = async () => {
+        debugger
         try {
             dispatch(getDownloadDashboardDetail({
-                file_nm: props.t('KPI PLAN XLSX'),
+                file_nm: 'KPI Dashboard Detail.xlsx',
                 groupNum: selectedGroupList,
                 corporationId: selectedCorporationList,
                 year: selectedYear,
@@ -137,7 +134,7 @@ const KPIDashboardDetail = (props) => {
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI {props.t('Dashboard Detail')}
+                            KPI {'Dashboard Detail'}
                         </CardHeader>
                         <CardBody>
                             <div
@@ -162,7 +159,7 @@ const KPIDashboardDetail = (props) => {
                                             setSelectedYear(e.target.value)
                                         }}
                                     >
-                                        <option>{props.t('Select Year')}</option>
+                                        <option>{'Select Year'}</option>
                                         {
                                             appYearListData?.data?.list.map((item, index) => {
                                                 return (
@@ -181,7 +178,7 @@ const KPIDashboardDetail = (props) => {
                                             setSelectedGroupList(e.target.value)
                                         }}
                                     >
-                                        <option value={''}>{props.t('Select Group')}</option>
+                                        <option value={''}>{'Select Group'}</option>
                                         {
                                             appGroupListData?.data?.list.map((item, index) => {
                                                 let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
@@ -205,7 +202,7 @@ const KPIDashboardDetail = (props) => {
                                         {
                                             appCorporationListData?.data?.list?.length > 0 ? (
                                                 <>
-                                                    <option value={''}>{props.t('Select Group')}</option>
+                                                    <option value={''}>{'Select Group'}</option>
                                                     {
                                                         appCorporationListData?.data?.list.map((item, index) => {
                                                             return (
@@ -217,7 +214,7 @@ const KPIDashboardDetail = (props) => {
                                                     }
                                                 </>
                                             ) : (
-                                                <option value={''}>{props.t('No Data')}</option>
+                                                <option value={''}>{'No Data'}</option>
                                             )
                                         }
                                     </Input>
@@ -233,7 +230,7 @@ const KPIDashboardDetail = (props) => {
                                         className={appDashboardDetailListData?.data?.resultList.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadDashboardDetail() }}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t('Download Data')}
+                                        {'Download Excel'}
                                     </Button>
                                 </div>
                             </div>
@@ -241,8 +238,11 @@ const KPIDashboardDetail = (props) => {
                                 <table className="table table-bordered my-3">
                                     <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
                                         <tr>
-                                            <th rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
-                                                {props.t("ITEMS")}
+                                            <th rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
+                                                {"Group Name"}
+                                            </th>
+                                            <th rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', backgroundColor: '#81B642', zIndex: '2', minWidth: '225px' }}>
+                                                {"ITEMS"}
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>
@@ -267,7 +267,12 @@ const KPIDashboardDetail = (props) => {
                                                     <tr key={index}>
                                                         <td align="center" valign="middle" style={{
                                                             position: 'sticky',
-                                                            left: '0',
+                                                            backgroundColor: 'white'
+                                                        }}>
+                                                            <div style={{ width: '175px' }}>{data.corporationName}</div>
+                                                        </td>
+                                                        <td align="center" valign="middle" style={{
+                                                            position: 'sticky',
                                                             backgroundColor: 'white'
                                                         }}>
                                                             <div style={{ width: '175px' }}>{data.item}</div>

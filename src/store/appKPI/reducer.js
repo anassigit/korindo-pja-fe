@@ -29,7 +29,8 @@ import {
     MSG_EDIT,
     GET_DASHBOARD_DETAIL_KPI,
     RESP_GET_DASHBOARD_DETAIL_KPI,
-    DOWNLOAD_PLAN
+    DOWNLOAD_PLAN,
+    DOWNLOAD_DASHBOARD_DETAIL
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -143,6 +144,10 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 respGetDashboardDetailKPI: action.payload,
             }
         case DOWNLOAD_MASTER_TEMPLATE:
+            return {
+                ...state,
+            }
+        case DOWNLOAD_DASHBOARD_DETAIL:
             return {
                 ...state,
             }

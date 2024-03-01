@@ -29,7 +29,8 @@ import {
     GET_ACTUAL_INPUT_DATA,
     RESP_GET_ACTUAL_INPUT_DATA,
     SET_ACTUAL_INPUT_DATA,
-    DOWNLOAD_PLAN
+    DOWNLOAD_PLAN,
+    DOWNLOAD_DASHBOARD_DETAIL
 
 } from "./actionTypes"
 
@@ -145,6 +146,11 @@ export const respGetActualInputData = resp => ({
 
 export const setActualInputData = (req) => ({
     type: SET_ACTUAL_INPUT_DATA,
+    payload: req,
+})
+
+export const getDownloadDashboardDetail = (req) => ({
+    type: DOWNLOAD_DASHBOARD_DETAIL,
     payload: req,
 })
 
