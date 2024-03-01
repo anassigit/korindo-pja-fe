@@ -78,7 +78,7 @@ const MovingPlan = (props) => {
         setappMovingPlanMsg('')
         setFirstSearch(true)
         setHighestLevel(null)
-        if (selectedYear) {
+        // if (selectedYear) {
             setLoadingSpinner(true)
             dispatch(getMovingPlantList(
                 {
@@ -86,7 +86,7 @@ const MovingPlan = (props) => {
                     companyCode: selectedCompanyCode,
                 }
             ))
-        }
+        // }
     }
 
     const getMonthAbbreviation = (monthIndex) => {
