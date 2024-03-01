@@ -393,3 +393,11 @@
 .custom-invalid {
   border: red 1px solid;
 }
+
+.react-datepicker-popper {
+  z-index: 999;
+}
+
+.react-datepicker__year-wrapper {
+  justify-content: center;
+}

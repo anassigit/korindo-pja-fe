@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { withTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -8,13 +8,16 @@ import {
     CardBody,
     CardHeader,
     Input,
-    Spinner
+    InputGroup,
+    Spinner,
+    UncontrolledTooltip
 } from "reactstrap"
 import { getCompanyCodeList, getMovingPlantList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
+import ReactDatePicker from "react-datepicker"
 
 const MovingPlan = (props) => {
 
@@ -35,6 +38,7 @@ const MovingPlan = (props) => {
 
     const [appMovingPlanMsg, setappMovingPlanMsg] = useState("")
 
+    const [isOpen, setIsOpen] = useState(false)
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedCompanyCode, setselectedCompanyCode] = useState("")
 
@@ -74,42 +78,57 @@ const MovingPlan = (props) => {
         setappMovingPlanMsg('')
         setFirstSearch(true)
         setHighestLevel(null)
-        setLoadingSpinner(true)
-        dispatch(getMovingPlantList(
-            {
-                year: selectedYear,
-                companyCode: selectedCompanyCode,
-            }
-        ))
+        if (selectedYear) {
+            setLoadingSpinner(true)
+            dispatch(getMovingPlantList(
+                {
+                    year: selectedYear.getFullYear(),
+                    companyCode: selectedCompanyCode,
+                }
+            ))
+        }
     }
 
     const getMonthAbbreviation = (monthIndex) => {
         const months = [
-            props.t("Jan"),
-            props.t("Feb"),
-            props.t("Mar"),
-            props.t("Apr"),
-            props.t("May"),
-            props.t("Jun"),
-            props.t("Jul"),
-            props.t("Aug"),
-            props.t("Sep"),
-            props.t("Oct"),
-            props.t("Nov"),
-            props.t("Dec")
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
         ]
         return months[monthIndex - 1]
     }
 
     const getColumnHeader = (index) => {
         const baseHeaders = [
-            props.t("PreY"),
+            "Pre. Y",
             'BP',
             'MP',
-            props.t("Actual"),
-            props.t("GrowthVsPY"),
-            props.t("AchieveVsBP"),
-            props.t("AchieveVsMP"),
+            "Actual",
+            "Growth vs. PY",
+            "Achieve vs. BP",
+            "Achieve vs. MP",
+        ]
+        const columnHeader = `${baseHeaders[index % baseHeaders.length]}`
+        return columnHeader
+    }
+    const getToolTipHeader = (index) => {
+        const baseHeaders = [
+            "작년 실적",
+            "사업계획",
+            "이동계획",
+            "실적",
+            "작년 대비 실적",
+            "사업계획 대비 실적",
+            "이동계획 대비 실적",
         ]
         const columnHeader = `${baseHeaders[index % baseHeaders.length]}`
         return columnHeader
@@ -132,6 +151,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        fontWeight: 'bold',
                                                     }}
                                                     colSpan={item.level < 3 ? item.level : 3}
                                                     rowSpan={1}></td>
@@ -145,10 +165,11 @@ const MovingPlan = (props) => {
                                             style={{
                                                 position: 'sticky',
                                                 left: item.level === 0 ? '0' : '1.55rem',
-                                                backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
+                                                backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white',
+                                                fontWeight: 'bold',
                                             }}>
                                             <div
-                                                style={{ width: '154px' }}
+                                                style={{ width: '154px', fontWeight: 'bold' }}
                                             >
                                                 {item?.title}
                                             </div>
@@ -164,13 +185,13 @@ const MovingPlan = (props) => {
                                         {
                                             item.revenueList.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -224,13 +245,13 @@ const MovingPlan = (props) => {
                                         {
                                             item.oiLIst.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -283,13 +304,13 @@ const MovingPlan = (props) => {
                                         {
                                             item.oiPersenteList.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                    <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                    <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -339,7 +360,7 @@ const MovingPlan = (props) => {
                                                 backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
                                             }}>
                                                 <div
-                                                    style={{ width: '175px' }}
+                                                    style={{ width: '175px', fontWeight: 'bold' }}
                                                 >
                                                     {item?.title}
                                                 </div>
@@ -356,23 +377,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.revenueList) ? item?.revenueList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.interestExpenseList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -390,23 +411,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.oiLIst) ? item?.oiLIst.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.netIncomeList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -424,23 +445,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.oiPersenteList) ? item?.oiPersenteList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.netIncomePersenteList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{textAlign: 'right'}}>{row.pyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.bp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.cyac}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.grw}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.abp}</td>
-                                                        <td style={{textAlign: 'right'}}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -473,7 +494,7 @@ const MovingPlan = (props) => {
                 <>
                     <Card fluid="true" style={{ paddingBottom: '32px' }}>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t('Moving Plan')}
+                            {'Moving Plan'}
                         </CardHeader>
                         <CardBody>
                             <div style={{
@@ -481,27 +502,7 @@ const MovingPlan = (props) => {
                                 flexDirection: 'row',
                                 gap: '.75vw',
                             }}>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        gap: '.75vw',
-                                    }}
-                                >
-                                    <span style={{ whiteSpace: 'nowrap' }}>{props.t("Year")}</span>
-                                    <Input
-                                        type="text"
-                                        style={{
-                                            width: '90%',
-                                        }}
-                                        className="form-control"
-                                        onChange={e => {
-                                            setSelectedYear(e.target.value)
-                                        }}
-                                        onKeyDown={e => e.key === 'Enter' ? handleSearch() : null}
-                                    />
-                                </div>
+
                                 <Input
                                     style={{ width: 'auto' }}
                                     type="select"
@@ -511,7 +512,7 @@ const MovingPlan = (props) => {
                                 >
                                     {Array.isArray(appCompanyCodeListData?.data?.resultList) ? (
                                         <>
-                                            <option value={''}>{props.t("Select Company")}</option>
+                                            <option value={''}>{"All Company"}</option>
                                             {appCompanyCodeListData?.data?.resultList.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item?.companyCode}>
@@ -522,42 +523,84 @@ const MovingPlan = (props) => {
                                         </>
                                     ) : (
                                         <option>
-                                            {props.t("No Data")}
+                                            {"No Data"}
                                         </option>
                                     )}
                                 </Input>
+                                <InputGroup
+                                    onClick={() => {
+                                        setIsOpen(!isOpen)
+                                    }}
+                                    style={{ display: 'flex', flexDirection: 'row', width: 'auto' }}
+                                >
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            width: '8vw',
+                                        }}
+                                    >
+                                        <ReactDatePicker
+                                            className={`form-control`}
+                                            selected={selectedYear ? new Date(selectedYear) : ''}
+                                            onChange={(selectedDate) => {
+                                                setSelectedYear(selectedDate)
+                                            }}
+                                            open={isOpen}
+                                            dateFormat="yyyy"
+                                            showYearPicker
+                                            onClickOutside={() => {
+                                                setIsOpen(!isOpen)
+                                            }}
+                                        />
+                                    </div>
+                                    <span
+                                        className="fas fa-calendar text-dark"
+                                        onClick={() => {
+                                            setIsOpen(!isOpen)
+                                        }}
+                                        style={{ fontSize: '16px', position: 'absolute', top: '25%', right: '10%' }}
+                                    >
+
+                                    </span>
+                                </InputGroup>
                                 <Button
-                                    style={{ width: 'auto' }}
                                     className="btn btn-primary" onClick={() => handleSearch()}>
-                                    {props.t("Search")}
+                                    {"Search"}
                                 </Button>
                             </div>
                             <div style={{ overflow: 'auto', maxHeight: '80vh', marginTop: '10px' }}>
-                                <table className="table table-bordered my-3">
+                                <table className="table table-bordered my-3" style={{ borderColor: 'black' }}>
                                     <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
                                         <tr>
-                                            <th colSpan={5} rowSpan={2} style={{ textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '300px' }}>
-                                                {props.t("ITEMS")}
+                                            <th colSpan={5} rowSpan={2} style={{ color: 'black', textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '300px' }}>
+                                                {"ITEMS"}
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>
-                                                    <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
+                                                    <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center', color: 'black' }}>
                                                         {getMonthAbbreviation(monthIndex + 1)}
                                                     </th>
                                                 </React.Fragment>
                                             ))}
-                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
-                                                {props.t("Year to Date")}
+                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center', }}>
+                                                {"Year to Date"}
                                             </th>
-                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center' }}>
-                                                {props.t("Total")}
+                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center', }}>
+                                                {"Total"}
                                             </th>
                                         </tr>
                                         <tr>
                                             {Array.from({ length: 14 * 7 }, (_, index) => (
-                                                <th key={index} style={{ textAlign: 'center', minWidth: 'auto' }}>
-                                                    {getColumnHeader(index)}
-                                                </th>
+                                                <React.Fragment key={index}>
+                                                    <th id={`tooltip-${index}`} style={{ textAlign: 'center', minWidth: 'auto', color: 'black' }}>
+                                                        {getColumnHeader(index)}
+                                                    </th>
+                                                    <UncontrolledTooltip target={`tooltip-${index}`} placement="bottom">
+                                                        {getToolTipHeader(index)}
+                                                    </UncontrolledTooltip>
+                                                </React.Fragment>
                                             ))}
                                         </tr>
                                     </thead>
