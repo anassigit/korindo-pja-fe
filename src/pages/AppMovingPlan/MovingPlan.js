@@ -45,12 +45,6 @@ const MovingPlan = (props) => {
     useEffect(() => {
         setLoadingSpinner(true)
         dispatch(getCompanyCodeList())
-        dispatch(getMovingPlantList(
-            {
-                year: selectedYear,
-                companyCode: selectedCompanyCode,
-            }
-        ))
     }, [])
 
     useEffect(() => {
@@ -61,10 +55,11 @@ const MovingPlan = (props) => {
         if (appCompanyCodeListData?.status === '0') {
             setappMovingPlanMsg(appCompanyCodeListData)
         }
+        setLoadingSpinner(false)
     }, [appCompanyCodeListData])
 
     useEffect(() => {
-        if (appListData?.status === 0 || appListData?.status === '0') {
+        if (appListData?.status === '0') {
             if (firstSearch) {
                 setappMovingPlanMsg(appListData)
             }
@@ -79,13 +74,13 @@ const MovingPlan = (props) => {
         setFirstSearch(true)
         setHighestLevel(null)
         // if (selectedYear) {
-            setLoadingSpinner(true)
-            dispatch(getMovingPlantList(
-                {
-                    year: selectedYear.getFullYear(),
-                    companyCode: selectedCompanyCode,
-                }
-            ))
+        setLoadingSpinner(true)
+        dispatch(getMovingPlantList(
+            {
+                year: selectedYear ? selectedYear.getFullYear() : '',
+                companyCode: selectedCompanyCode,
+            }
+        ))
         // }
     }
 
