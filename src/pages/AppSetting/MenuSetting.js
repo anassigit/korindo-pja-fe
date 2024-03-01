@@ -59,21 +59,21 @@ const MenuSetting = (props) => {
     const appMenuColumn = [
         {
             dataField: "menuId",
-            text: props.t('Menu ID'),
+            text: 'Menu ID',
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "menuName",
-            text: props.t('Menu Name'),
+            text: 'Menu Name',
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "parent",
-            text: props.t('Parent Menu'),
+            text: 'Parent Menu',
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
@@ -83,14 +83,14 @@ const MenuSetting = (props) => {
         },
         {
             dataField: "menuPath",
-            text: props.t('Menu Path'),
+            text: 'Menu Path',
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "menuIcon",
-            text: props.t('Icon'),
+            text: 'Icon',
             sort: true,
             style: { textAlign: 'center', fontSize: '18px' },
             headerStyle: { textAlign: 'center' },
@@ -100,7 +100,7 @@ const MenuSetting = (props) => {
         },
         {
             dataField: "groupStatus",
-            text: props.t('Group Separate Permission'),
+            text: 'Group Separate Permission',
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
@@ -110,13 +110,13 @@ const MenuSetting = (props) => {
         },
         {
             dataField: "pos",
-            text: props.t('Order'),
+            text: 'Order',
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
-            text: props.t('Actions'),
+            text: 'Actions',
             headerStyle: { textAlign: 'center' },
             style: { textAlign: 'center', fontSize: '16px' },
             formatter: (_cellContent, cellData, index) => {
@@ -124,8 +124,8 @@ const MenuSetting = (props) => {
                     <div style={{ display: 'flex', gap: '1vw', justifyContent: 'center' }}>
                         <a id={`edit-${index}`} className="mdi mdi-pencil text-primary" onClick={() => preEditApp(cellData)} />
                         <a id={`delete-${index}`} className="mdi mdi-delete text-danger" onClick={() => toggleDeleteModal(cellData)} />
-                        <UncontrolledTooltip target={`edit-${index}`}>{props.t('Edit')}</UncontrolledTooltip>
-                        <UncontrolledTooltip target={`delete-${index}`}>{props.t('Delete')}</UncontrolledTooltip>
+                        <UncontrolledTooltip target={`edit-${index}`}>{'Edit'}</UncontrolledTooltip>
+                        <UncontrolledTooltip target={`delete-${index}`}>{'Delete'}</UncontrolledTooltip>
                     </div>
                 )
             }
@@ -252,7 +252,7 @@ const MenuSetting = (props) => {
                             width: '30%',
                             gap: '.75vw'
                         }}>
-                            <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
+                            <label className="col-sm-3" style={{ marginTop: "8px" }}>{"Search"}</label>
                             <div className="col-sm-5">
                                 <input
                                     type="search"
@@ -266,7 +266,7 @@ const MenuSetting = (props) => {
                                     className="btn btn-primary btn-block"
                                     onClick={() => handleClick()}
                                 >
-                                    {props.t("Search")}
+                                    {"Search"}
                                 </button>
                             </div>
                         </div>
@@ -284,7 +284,7 @@ const MenuSetting = (props) => {
                         <Button
                             onClick={() => preAddApp()}
                         >
-                            <span className="mdi mdi-plus" /> {props.t('Add New Menu')}
+                            <span className="mdi mdi-plus" /> {'Add New Menu'}
                         </Button>
                     </div>
                     <TableCustom3
@@ -319,7 +319,7 @@ const MenuSetting = (props) => {
                 <ConfirmModal
                     modal={modal}
                     toggle={toggleDeleteModal}
-                    message={props.t("Are you sure to delete this?")}
+                    message={"Are you sure to delete this?"}
                     setIsYes={setIsYes}
                 />
             </>

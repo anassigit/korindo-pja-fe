@@ -54,8 +54,8 @@ const EditMenu = props => {
       pos: "",
     },
     validationSchema: Yup.object().shape({
-      menuName: Yup.string().required(props.t("Required")),
-      menuPath: Yup.string().required(props.t("Required")),
+      menuName: Yup.string().required("Required"),
+      menuPath: Yup.string().required("Required"),
     }),
     onSubmit: values => {
       dispatch(
@@ -123,14 +123,14 @@ const EditMenu = props => {
   const appLovMenuListColumns = [
     {
       dataField: "menuId",
-      text: props.t("Menu ID"),
+      text: "Menu ID",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
       dataField: "menuName",
-      text: props.t("Menu Name"),
+      text: "Menu Name",
       sort: true,
       headerStyle: { textAlign: "center" },
     },
@@ -150,7 +150,7 @@ const EditMenu = props => {
       <Card style={{ marginBottom: 0 }}>
         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
           <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-          {props.t("Edit Menu")}
+          {"Edit Menu"}
         </CardHeader>
         <CardBody>
           <Form
@@ -169,7 +169,7 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Menu ID")}
+                      {"Menu ID"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -199,12 +199,12 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Parent Menu ID")}
+                      {"Parent Menu ID"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     <Lovv2
-                      title={props.t("Menu")}
+                      title={"Menu"}
                       keyFieldData="menuId"
                       columns={appLovMenuListColumns}
                       getData={getMenuParentListLov}
@@ -231,7 +231,7 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Parent Menu Name")}
+                      {"Parent Menu Name"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -264,7 +264,7 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Menu Name")}{" "}
+                      {"Menu Name"}{" "}
                       <span className="text-danger"> *</span>
                     </Label>
                   </div>
@@ -294,7 +294,7 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Menu Path")}{" "}
+                      {"Menu Path"}{" "}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -323,7 +323,7 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Order")}
+                      {"Order"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -351,7 +351,7 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Icon (FA Icon)")}
+                      {"Icon (FA Icon)"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -380,7 +380,7 @@ const EditMenu = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Group Separate Permission")}
+                      {"Group Separate Permission"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -416,7 +416,7 @@ const EditMenu = props => {
                     ></Label>
                   </div>
                   <div className="col-8">
-                    <Button type="submit">{props.t("Submit")}</Button>
+                    <Button type="submit">{"Submit"}</Button>
                   </div>
                 </div>
               </div>
@@ -432,7 +432,7 @@ const EditMenu = props => {
         }}
       >
         <span className="mdi mdi-arrow-left" />
-        &nbsp;{props.t("Back")}
+        &nbsp;{"Back"}
       </Button>
     </Container>
   )
