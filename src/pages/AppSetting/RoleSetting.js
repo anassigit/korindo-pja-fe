@@ -37,6 +37,7 @@ const RoleSetting = props => {
   const [appMaintainRoleMsg, setAppMaintainRoleMsg] = useState("")
   const [isYes, setIsYes] = useState(false)
   const [roleId, setRoleId] = useState("")
+  const [isClosed, setIsClosed] = useState(false)
 
   const [searchVal2, setSearchVal2] = useState("")
 

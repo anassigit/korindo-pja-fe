@@ -1078,7 +1078,7 @@ const EditInstructions = props => {
 
     const addedValues = s.filter((item) => !currentSelection.includes(item.value))
     const deletedValues = currentSelection.filter(
-      item => !s.some(selectedItem => selectedItem.value === item)
+      item => !s.some((selectedItem) => selectedItem.value === item)
     )
 
     // const bodyForm = new FormData();

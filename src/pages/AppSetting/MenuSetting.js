@@ -31,6 +31,7 @@ const MenuSetting = (props) => {
     const [appMaintainMenuData, setAppMaintainMenuData] = useState({})
     const [isYes, setIsYes] = useState(false)
     const [menuId, setmenuId] = useState('')
+    const [isClosed, setIsClosed] = useState(false)
 
     const appMenuListData = useSelector((state) => {
         return state.settingReducer.respGetMenuList

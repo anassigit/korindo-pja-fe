@@ -60,6 +60,7 @@ import {
   getRoleAccess,
   respGetRoleAccessList,
   respGetGroupListRoleAccess,
+  getGroupListRoleAccess,
 } from "./actions"
 
 import {
@@ -93,6 +94,7 @@ import {
   saveRoleAccessBE,
   editRoleAccessBE,
   deleteRoleAccessBE,
+  getGroupListRoleAccessBE,
 } from "helpers/backend_helper"
 
 function* fetchGetGeneralSetting({ payload: req }) {
@@ -507,7 +509,7 @@ function* fetchDeleteRoleAccess({ payload: req }) {
 
 function* fetchgetGroupListRoleAccess({ payload: req }) {
   try {
-    const response = yield call(getRoleAccessListBE, req)
+    const response = yield call(getGroupListRoleAccessBE, req)
     if (response.status == 1) {
       yield put(respGetGroupListRoleAccess(response))
     } else {

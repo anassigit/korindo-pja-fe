@@ -52,20 +52,22 @@ const AddRoleAccess = props => {
     }),
     onSubmit: values => {
       const groupIdString = values.groupId
-      const groupIdList = groupIdString.split(',').map(Number);
-      
-      dispatch(
-        addRoleAccess({
-          roleId: values.roleId,
-          menuId: values.menuId,
-          bCreate: values.bCreate ? 1 : 0,
-          bRead: values.bRead ? 1 : 0,
-          bUpdate: values.bUpdate ? 1 : 0,
-          bPrint: values.bPrint ? 1 : 0,
-          bDelete: values.bDelete ? 1 : 0,
-          groupId: groupIdList,
-        })
-      )
+      const groupIdList = groupIdString.split(",").map(Number)
+
+      groupIdList.map(groupId => {
+        dispatch(
+          addRoleAccess({
+            roleId: values.roleId,
+            menuId: values.menuId,
+            bCreate: values.bCreate ? 1 : 0,
+            bRead: values.bRead ? 1 : 0,
+            bUpdate: values.bUpdate ? 1 : 0,
+            bPrint: values.bPrint ? 1 : 0,
+            bDelete: values.bDelete ? 1 : 0,
+            groupId: groupId,
+          })
+        );
+      });
     },
   })
 

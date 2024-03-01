@@ -317,8 +317,8 @@ export const getGroupListRoleAccess = (req) => ({
   payload: req,
 })
 
-export const respGetGroupListRoleAccess = (req) => ({
+export const respGetGroupListRoleAccess = resp => ({
   type: RESP_GET_GROUP_LIST_ROLE_ACCESS,
-  payload: req,
+  payload: resp,
 })
 
