@@ -121,7 +121,7 @@ export const updateGroupMapping = req => postWithParam("/rest/OrganizationMaster
 
 export const deleteGroupMapping = req => postWithParam("/rest/OrganizationMasterRest/DeleteRelation", req)
 
-export const getGroupListRoleAccess = req => postWithParam("/rest/RoleAccessMasterRest/getGroupList")
+export const getGroupListRoleAccessBE = req => postWithParam("/rest/RoleAccessMasterRest/getGroupList", req)
 
 // Maintain Menu
 
@@ -156,7 +156,7 @@ export const getRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/s
 
 export const getRoleAccessListBE = req => post("rest/RoleAccessMasterRest/getList", req)
 
-export const saveRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/insert", req)
+export const saveRoleAccessBE = req => postWithParam("/rest/RoleAccessMasterRest/insert", req)
 
 export const editRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/update", req)
 
