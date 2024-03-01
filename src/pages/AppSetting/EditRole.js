@@ -50,7 +50,7 @@ const EditRole = props => {
       pos: "",
     },
     validationSchema: Yup.object().shape({
-      roleName: Yup.string().required(props.t("Required")),
+      roleName: Yup.string().required("Required"),
     }),
     onSubmit: values => {
       dispatch(
@@ -94,7 +94,7 @@ const EditRole = props => {
       )
       editRoleFormik.setFieldValue(
         "roleParentName",
-        selectedMaintainRole.data.result?.parent?.roleName
+        selectedMaintainRole.data.result?.parent?.roleName ? selectedMaintainRole.data.result?.parent?.roleName : ''
       )
     }
   }, [selectedMaintainRole?.data])
@@ -102,14 +102,14 @@ const EditRole = props => {
   const appLovRoleListColumns = [
     {
       dataField: "roleId",
-      text: props.t("Role ID"),
+      text: "Role ID",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
       dataField: "roleName",
-      text: props.t("Role Name"),
+      text: "Role Name",
       sort: true,
       headerStyle: { textAlign: "center" },
     },
@@ -129,7 +129,7 @@ const EditRole = props => {
       <Card style={{ marginBottom: 0 }}>
         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
           <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-          {props.t("Edit Role")}
+          {"Edit Role"}
         </CardHeader>
         <CardBody>
           <Form
@@ -148,7 +148,7 @@ const EditRole = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Role ID")}
+                      {"Role ID"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -178,13 +178,13 @@ const EditRole = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Parent Role ID")}
+                      {"Parent Role ID"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
                     {props.appEditMaintainRole ? (
                       <Lovv2
-                        title={props.t("Role")}
+                        title={"Role"}
                         keyFieldData="roleId"
                         columns={appLovRoleListColumns}
                         getData={getRoleParentListLov}
@@ -213,7 +213,7 @@ const EditRole = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Parent Role Name")}
+                      {"Parent Role Name"}
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -246,7 +246,7 @@ const EditRole = props => {
                         marginTop: "2px",
                       }}
                     >
-                      {props.t("Role Name")}{" "}
+                      {"Role Name"}{" "}
                       <span className="text-danger"> *</span>
                     </Label>
                   </div>
@@ -280,7 +280,7 @@ const EditRole = props => {
                     ></Label>
                   </div>
                   <div className="col-8">
-                    <Button type="submit">{props.t("Submit")}</Button>
+                    <Button type="submit">{"Submit"}</Button>
                   </div>
                 </div>
               </div>
@@ -296,7 +296,7 @@ const EditRole = props => {
         }}
       >
         <span className="mdi mdi-arrow-left" />
-        &nbsp;{props.t("Back")}
+        &nbsp;{"Back"}
       </Button>
     </Container>
   )

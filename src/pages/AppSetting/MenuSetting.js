@@ -177,6 +177,7 @@ const MenuSetting = (props) => {
         if (isYes) {
             dispatch(deleteMaintainMenu({ menuId: menuId }))
             setLoadingSpinner(true)
+            setIsYes(false)
         }
     }, [isYes])
 

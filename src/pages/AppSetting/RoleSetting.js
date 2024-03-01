@@ -75,21 +75,21 @@ const RoleSetting = props => {
   const appRoleColumn = [
     {
       dataField: "roleId",
-      text: props.t("Role ID"),
+      text: "Role ID",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
       dataField: "roleName",
-      text: props.t("Role Name"),
+      text: "Role Name",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
       dataField: "parent",
-      text: props.t("Parent Name"),
+      text: "Parent Name",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -98,7 +98,7 @@ const RoleSetting = props => {
       }
     },
     {
-      text: props.t("Detail"),
+      text: "Detail",
       style: { textAlign: "center", fontSize: "18px" },
       headerStyle: { textAlign: "center" },
       formatter: (cellContent, cellData) => {
@@ -111,7 +111,7 @@ const RoleSetting = props => {
       },
     },
     {
-      text: props.t("Actions"),
+      text: "Actions",
       headerStyle: { textAlign: "center" },
       style: { textAlign: "center", fontSize: "16px" },
       formatter: (_cellContent, cellData, index) => {
@@ -130,10 +130,10 @@ const RoleSetting = props => {
               onClick={() => toggleDeleteModal(cellData)}
             />
             <UncontrolledTooltip target={`edit-${index}`}>
-              {props.t("Edit")}
+              {"Edit"}
             </UncontrolledTooltip>
             <UncontrolledTooltip target={`delete-${index}`}>
-              {props.t("Delete")}
+              {"Delete"}
             </UncontrolledTooltip>
           </div>
         )
@@ -192,6 +192,7 @@ const RoleSetting = props => {
     if (isYes) {
       dispatch(deleteMaintainRole({ roleId: roleId }))
       setLoadingSpinner(true)
+      setIsYes(false)
     }
   }, [isYes])
 
@@ -283,7 +284,7 @@ const RoleSetting = props => {
                 }}
               >
                 <label className="col-sm-3" style={{ marginTop: "8px" }}>
-                  {props.t("Search")}
+                  {"Search"}
                 </label>
                 <div className="col-sm-5">
                   <input
@@ -300,7 +301,7 @@ const RoleSetting = props => {
                     className="btn btn-primary btn-block"
                     onClick={() => handleClick()}
                   >
-                    {props.t("Search")}
+                    {"Search"}
                   </button>
                 </div>
               </div>
@@ -316,7 +317,7 @@ const RoleSetting = props => {
               }}
             >
               <Button onClick={() => preAddApp()}>
-                <span className="mdi mdi-plus" /> {props.t("Add New Role")}
+                <span className="mdi mdi-plus" /> {"Add New Role"}
               </Button>
             </div>
             <TableCustom3
@@ -396,7 +397,7 @@ const RoleSetting = props => {
           <ConfirmModal
             modal={modal}
             toggle={toggleDeleteModal}
-            message={props.t("Are you sure to delete this?")}
+            message={"Are you sure to delete this?"}
             setIsYes={setIsYes}
           />
         </>

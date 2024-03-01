@@ -73,7 +73,7 @@ const RoleAccessSetting = props => {
   const appRoleAccessColumn = [
     {
       dataField: "roleAccessId",
-      text: props.t("Role Access ID"),
+      text: "Role Access ID",
       hidden: true,
       sort: true,
       style: { textAlign: "center" },
@@ -81,7 +81,7 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "roleId",
-      text: props.t("Role ID"),
+      text: "Role ID",
       hidden: true,
       sort: true,
       style: { textAlign: "center" },
@@ -89,14 +89,14 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "roleName",
-      text: props.t("Role Name"),
+      text: "Role Name",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
       dataField: "menuId",
-      text: props.t("Menu ID"),
+      text: "Menu ID",
       hidden: true,
       sort: true,
       style: { textAlign: "center" },
@@ -104,14 +104,14 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "menuName",
-      text: props.t("Menu Name"),
+      text: "Menu Name",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
     },
     {
       dataField: "groupName",
-      text: props.t("Group Name"),
+      text: "Group Name",
       sort: true,
       style: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '20vw' },
       headerStyle: { textAlign: "center" },
@@ -129,7 +129,7 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "bcreate",
-      text: props.t("Create"),
+      text: "Create",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -139,7 +139,7 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "bread",
-      text: props.t("Read"),
+      text: "Read",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -149,7 +149,7 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "bupdate",
-      text: props.t("Update"),
+      text: "Update",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -159,7 +159,7 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "bprint",
-      text: props.t("Print"),
+      text: "Print",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -169,7 +169,7 @@ const RoleAccessSetting = props => {
     },
     {
       dataField: "bdelete",
-      text: props.t("Delete"),
+      text: "Delete",
       sort: true,
       style: { textAlign: "center" },
       headerStyle: { textAlign: "center" },
@@ -178,7 +178,7 @@ const RoleAccessSetting = props => {
       },
     },
     {
-      text: props.t("Actions"),
+      text: "Actions",
       headerStyle: { textAlign: "center" },
       style: { textAlign: "center", fontSize: "16px" },
       formatter: (_cellContent, cellData, index) => {
@@ -197,10 +197,10 @@ const RoleAccessSetting = props => {
               onClick={() => toggleDeleteModal(cellData)}
             />
             <UncontrolledTooltip target={`edit-${index}`}>
-              {props.t("Edit")}
+              {"Edit"}
             </UncontrolledTooltip>
             <UncontrolledTooltip target={`delete-${index}`}>
-              {props.t("Delete")}
+              {"Delete"}
             </UncontrolledTooltip>
           </div>
         )
@@ -218,6 +218,7 @@ const RoleAccessSetting = props => {
     if (isYes) {
       dispatch(deleteRoleAccess({ roleAccessId: roleAccessId }))
       props.setLoadingSpinner(true)
+      setIsYes(false)
     }
   }, [isYes])
 
@@ -237,7 +238,7 @@ const RoleAccessSetting = props => {
             }}
           >
             <label className="col-sm-3" style={{ marginTop: "8px" }}>
-              {props.t("Search")}
+              {"Search"}
             </label>
             <div className="col-sm-5">
               <input
@@ -254,7 +255,7 @@ const RoleAccessSetting = props => {
                 className="btn btn-primary btn-block"
                 onClick={() => handleClick()}
               >
-                {props.t("Search")}
+                {"Search"}
               </button>
             </div>
           </div>
@@ -270,7 +271,7 @@ const RoleAccessSetting = props => {
           }}
         >
           <Button onClick={() => preAddApp()}>
-            <span className="mdi mdi-plus" /> {props.t("Add New Role Access")}
+            <span className="mdi mdi-plus" /> {"Add New Role Access"}
           </Button>
         </div>
 
@@ -303,7 +304,7 @@ const RoleAccessSetting = props => {
           }}
         >
           <span className="mdi mdi-arrow-left" />
-          &nbsp;{props.t("Back")}
+          &nbsp;{"Back"}
         </Button>
       </Container>
 
@@ -325,7 +326,7 @@ const RoleAccessSetting = props => {
       <ConfirmModal
         modal={modal}
         toggle={toggleDeleteModal}
-        message={props.t("Are you sure to delete this?")}
+        message={"Are you sure to delete this?"}
         setIsYes={setIsYes}
       />
     </>

@@ -182,7 +182,7 @@ const EnterMonthlyData = (props) => {
         }
       ))
       setMonthlyDataMsg('')
-
+      setIsYes(false)
     }
   }, [isYes])
 
