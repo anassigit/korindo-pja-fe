@@ -41,6 +41,7 @@ function* loginUser({ payload: { user, history } }) {
         localStorage.setItem("I18N_LANGUAGE", "eng")
       }
       history.push({ pathname: '/' })
+      window.location.reload()
       yield put(loginSuccess(response))
     } else {
       yield put(apiError(response.message))
