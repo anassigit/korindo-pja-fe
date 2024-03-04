@@ -12,6 +12,13 @@ import logoKorindo2 from "../../assets/images/logotitle.png";
 import { ReactSession } from 'react-client-session';
 
 const Sidebar = props => {
+
+  let menuData = localStorage.getItem("menu")
+
+  if (!menuData) {
+    window.location.reload()
+  }
+
   return (
     <React.Fragment>
       <div className="vertical-menu">

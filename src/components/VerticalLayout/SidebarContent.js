@@ -39,13 +39,13 @@ const SidebarContent = props => {
     useEffect(() => {
         dispatch(getMenuList())
     }, [])
- 
+
     useEffect(() => {
         if (getMenuData?.data?.result && JSON.stringify(getMenuData?.data?.result) !== JSON.stringify(menu?.menu)) {
             localStorage.removeItem('menu')
             setTimeout(() => {
                 window.location.reload()
-              }, 1000)
+            }, 1000)
         }
     }, [getMenuData])
 
