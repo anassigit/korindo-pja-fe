@@ -37,7 +37,7 @@ const AddMenu = props => {
   const addMenuFormik = useFormik({
     enableReinitialize: true,
     initialValues: {
-    //   menuId: "",
+      //   menuId: "",
       menuName: "",
       parentMenuId: "",
       parentMenuName: "",
@@ -54,7 +54,7 @@ const AddMenu = props => {
     onSubmit: values => {
       dispatch(
         addMaintainMenu({
-        //   menuId: values.menuId,
+          //   menuId: values.menuId,
           menuName: values.menuName,
           parentMenuId: values.parentMenuId,
           menuPath: values.menuPath,
@@ -114,7 +114,7 @@ const AddMenu = props => {
           >
             <FormGroup>
               <div className="col-4">
-                
+
                 <div className="d-flex flex-row col-10 align-items-start py-2 justify-content-between">
                   <div className="col-4">
                     <Label
@@ -164,7 +164,7 @@ const AddMenu = props => {
                       value={addMenuFormik.values.parentMenuName}
                       invalid={
                         addMenuFormik.touched.parentMenuName &&
-                        addMenuFormik.errors.parentMenuName
+                          addMenuFormik.errors.parentMenuName
                           ? true
                           : false
                       }
@@ -197,7 +197,7 @@ const AddMenu = props => {
                       value={addMenuFormik.values.menuName}
                       invalid={
                         addMenuFormik.touched.menuName &&
-                        addMenuFormik.errors.menuName
+                          addMenuFormik.errors.menuName
                           ? true
                           : false
                       }
@@ -226,7 +226,7 @@ const AddMenu = props => {
                       value={addMenuFormik.values.menuPath}
                       invalid={
                         addMenuFormik.touched.menuPath &&
-                        addMenuFormik.errors.menuPath
+                          addMenuFormik.errors.menuPath
                           ? true
                           : false
                       }
@@ -283,7 +283,7 @@ const AddMenu = props => {
                       value={addMenuFormik.values.menuIcon}
                       invalid={
                         addMenuFormik.touched.menuIcon &&
-                        addMenuFormik.errors.menuIcon
+                          addMenuFormik.errors.menuIcon
                           ? true
                           : false
                       }
@@ -313,7 +313,7 @@ const AddMenu = props => {
                       value={addMenuFormik.values.groupStatus}
                       invalid={
                         addMenuFormik.touched.groupStatus &&
-                        addMenuFormik.errors.groupStatus
+                          addMenuFormik.errors.groupStatus
                           ? true
                           : false
                       }
@@ -324,7 +324,7 @@ const AddMenu = props => {
                         )
                       }
                     />
-
+                    
                     <FormFeedback type="invalid">
                       {addMenuFormik.errors.groupStatus}
                     </FormFeedback>

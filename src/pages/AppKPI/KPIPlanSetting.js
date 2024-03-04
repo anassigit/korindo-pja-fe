@@ -102,7 +102,7 @@ const KPIPlanSetting = (props) => {
     const downloadPlanTemplate = async () => {
         try {
             dispatch(getDownloadPlanTemplateBE({
-                file_nm: 'KPI PLAN TEMPLATE'
+                file_nm: 'KPI PLAN TEMPLATE.xlsx'
             }))
         } catch (error) {
             console.log(error)

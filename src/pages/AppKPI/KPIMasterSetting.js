@@ -10,7 +10,7 @@ import {
     Input,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getGroupListKPI, getKPIMaster, getYearList, resetMessage } from "store/actions"
+import { getCorporationList, getDownloadMasterTemplate, getGroupListKPI, getKPIMaster, getYearList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -97,8 +97,8 @@ const KPIMasterSetting = (props) => {
 
     const downloadMasterTemplate = async () => {
         try {
-            dispatch(getDownloadMasterTemplateBE({
-                file_nm: 'KPI MASTER TEMPLATE'
+            dispatch(getDownloadMasterTemplate({
+                file_nm: 'KPI MASTER TEMPLATE.xlsx'
             }))
         } catch (error) {
             console.log(error)

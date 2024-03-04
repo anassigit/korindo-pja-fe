@@ -32,6 +32,7 @@ const EditMenu = props => {
   const dispatch = useDispatch()
 
   const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
+  const [basicValue, setBasicValue] = useState(false)
 
   const selectedMaintainMenu = useSelector(state => {
     return state.settingReducer.respGetMenu2
@@ -76,6 +77,7 @@ const EditMenu = props => {
     if (props.appEditMaintainMenu) {
       editMenuFormik.resetForm()
       setAppMenuSearchLov("")
+      setBasicValue(false)
       dispatch(
         getMenuDataAction({
           menuId: props.appMaintainMenuData?.menuId,
@@ -86,7 +88,7 @@ const EditMenu = props => {
 
   useEffect(() => {
     if (selectedMaintainMenu.status === "1") {
-      
+
       editMenuFormik.setFieldValue(
         "parentMenuId",
         props.appMaintainMenuData?.parent?.menuId
@@ -116,6 +118,7 @@ const EditMenu = props => {
         "groupStatus",
         selectedMaintainMenu.data.result?.groupStatus === 1 ? true : false
       )
+      setBasicValue(selectedMaintainMenu.data.result?.groupStatus === 1 ? true : false)
       editMenuFormik.setFieldValue("pos", selectedMaintainMenu.data.result?.pos)
     }
   }, [selectedMaintainMenu.data])
@@ -179,7 +182,7 @@ const EditMenu = props => {
                       value={editMenuFormik.values.menuId}
                       invalid={
                         editMenuFormik.touched.menuId &&
-                        editMenuFormik.errors.menuId
+                          editMenuFormik.errors.menuId
                           ? true
                           : false
                       }
@@ -241,7 +244,7 @@ const EditMenu = props => {
                       value={editMenuFormik.values.menuParentName}
                       invalid={
                         editMenuFormik.touched.menuParentName &&
-                        editMenuFormik.errors.menuParentName
+                          editMenuFormik.errors.menuParentName
                           ? true
                           : false
                       }
@@ -274,7 +277,7 @@ const EditMenu = props => {
                       value={editMenuFormik.values.menuName}
                       invalid={
                         editMenuFormik.touched.menuName &&
-                        editMenuFormik.errors.menuName
+                          editMenuFormik.errors.menuName
                           ? true
                           : false
                       }
@@ -303,7 +306,7 @@ const EditMenu = props => {
                       value={editMenuFormik.values.menuPath}
                       invalid={
                         editMenuFormik.touched.menuPath &&
-                        editMenuFormik.errors.menuPath
+                          editMenuFormik.errors.menuPath
                           ? true
                           : false
                       }
@@ -360,7 +363,7 @@ const EditMenu = props => {
                       value={editMenuFormik.values.menuIcon}
                       invalid={
                         editMenuFormik.touched.menuIcon &&
-                        editMenuFormik.errors.menuIcon
+                          editMenuFormik.errors.menuIcon
                           ? true
                           : false
                       }
@@ -390,7 +393,7 @@ const EditMenu = props => {
                       checked={editMenuFormik.values.groupStatus}
                       invalid={
                         editMenuFormik.touched.groupStatus &&
-                        editMenuFormik.errors.groupStatus
+                          editMenuFormik.errors.groupStatus
                           ? true
                           : false
                       }
@@ -401,6 +404,11 @@ const EditMenu = props => {
                         )
                       }
                     />
+                    {
+                      editMenuFormik.values.groupStatus !== basicValue ? (
+                        <div style={{ position: 'absolute', color: '#f46a6a', width: '100%', marginTop: '0.25rem', fontSize: '80%', display: 'block' }}>if you change this, every role will be delete this menu</div>
+                      ) : ''
+                    }
                     <FormFeedback type="invalid">
                       {editMenuFormik.errors.groupStatus}
                     </FormFeedback>

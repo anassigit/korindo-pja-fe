@@ -565,7 +565,10 @@ const MovingPlan = (props) => {
                                     {"Search"}
                                 </Button>
                             </div>
-                            <div style={{ overflow: 'auto', maxHeight: '80vh', marginTop: '10px' }}>
+                            <div style={{ color:'red', display: 'flex', justifyContent: 'right', marginTop: '10px', marginRight: '8px' }}>
+                                * Pre.Y, BP, MP, Actual is In Million (Juta)
+                            </div>
+                            <div style={{ overflow: 'auto', maxHeight: '80vh' }}>
                                 <table className="table table-bordered my-3" style={{ borderColor: 'black' }}>
                                     <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
                                         <tr>
