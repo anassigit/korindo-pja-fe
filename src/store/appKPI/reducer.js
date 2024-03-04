@@ -30,12 +30,15 @@ import {
     GET_DASHBOARD_DETAIL_KPI,
     RESP_GET_DASHBOARD_DETAIL_KPI,
     DOWNLOAD_PLAN,
-    DOWNLOAD_DASHBOARD_DETAIL
+    DOWNLOAD_DASHBOARD_DETAIL,
+    GET_GROUP_LIST_KPI_INPUT,
+    RESP_GET_GROUP_LIST_KPI_INPUT
 } from "./actionTypes"
 
 const INIT_STATE = {
     respGetYearList: {},
     respGetGroupListKpi: {},
+    respGetGroupListKpiInput: {},
     respGetCorporationList: {},
     respGetColumnList: {},
     respGetKPIMaster: {},
@@ -70,6 +73,15 @@ const kpiReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 respGetGroupListKpi: action.payload,
+            }
+        case GET_GROUP_LIST_KPI_INPUT:
+            return {
+                ...state,
+            }
+        case RESP_GET_GROUP_LIST_KPI_INPUT:
+            return {
+                ...state,
+                respGetGroupListKpiInput: action.payload,
             }
         case GET_CORPORATION_LIST:
             return {

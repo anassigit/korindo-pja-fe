@@ -10,7 +10,7 @@ import {
     Input,
     Spinner
 } from "reactstrap"
-import { getActualInputData, getCorporationList, getGroupListKPI, getYearList, resetMessage, setActualInputData } from "store/actions"
+import { getActualInputData, getCorporationList, getGroupListKPI, getGroupListKPIInput, getYearList, resetMessage, setActualInputData } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -32,7 +32,7 @@ const KPIInputResult = (props) => {
     })
 
     const appGroupListData = useSelector((state) => {
-        return state.kpiReducer.respGetGroupListKpi
+        return state.kpiReducer.respGetGroupListKpiInput
     })
 
     const appCorporationListData = useSelector((state) => {
@@ -56,7 +56,7 @@ const KPIInputResult = (props) => {
     useEffect(() => {
         setLoadingSpinner(true)
         dispatch(getYearList())
-        dispatch(getGroupListKPI())
+        dispatch(getGroupListKPIInput())
     }, [])
 
     useEffect(() => {

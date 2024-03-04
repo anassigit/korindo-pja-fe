@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_PLAN_TEMPLATE, DOWNLOAD_PLAN, DOWNLOAD_DASHBOARD_DETAIL } from "./actionTypes"
-import { msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList, msgEdit, respGetDashboardDetailKPI } from "./actions"
-import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE, setActualInputDataBE, getDashboardDetailKPIBE, getDownloadPlanBE, getDownloadDashboardDetailBE } from "helpers/backend_helper"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_MASTER_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_PLAN, GET_UNIT_LIST, GET_YEAR_LIST, UPLOAD_MASTER_KPI, UPLOAD_PLAN_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_PLAN_TEMPLATE, DOWNLOAD_PLAN, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT } from "./actionTypes"
+import { msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetPlan, respGetUnitList, respGetYearList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput } from "./actions"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPI, getItemBE, getKPIMasterBE, getPlanBE, getUnitBE, getYearListKPI, getDownloadMasterTemplateBE, uploadMasterKPIBE, uploadPlanKPIBE, getDownloadPlanTemplateBE, getActualInputDataBE, setActualInputDataBE, getDashboardDetailKPIBE, getDownloadPlanBE, getDownloadDashboardDetailBE, getGroupListKPIInputBE } from "helpers/backend_helper"
 
 function* fetchGetYearList({ payload: req }) {
     try {
@@ -28,6 +28,20 @@ function* fetchGetGroupListKPI({ payload: req }) {
     } catch (error) {
         console.log(error);
         yield put(respGetGroupListKpi({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
+function* fetchGetGroupListKPIInput({ payload: req }) {
+    try {
+        const response = yield call(getGroupListKPIInputBE, req)
+        if (response.status == 1) {
+            yield put(respGetGroupListKpiInput(response))
+        } else {
+            yield put(respGetGroupListKpiInput(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(respGetGroupListKpiInput({ "status": 0, "message": "Error Get Data" }))
     }
 }
 
@@ -230,6 +244,7 @@ function* fetchSetActualInputData({ payload: req }) {
 function* kpiSaga() {
     yield takeEvery(GET_YEAR_LIST, fetchGetYearList)
     yield takeEvery(GET_GROUP_LIST_KPI, fetchGetGroupListKPI)
+    yield takeEvery(GET_GROUP_LIST_KPI_INPUT, fetchGetGroupListKPIInput)
     yield takeEvery(GET_CORPORATION_LIST, fetchGetCorporationList)
     yield takeEvery(GET_COLUMN_LIST, fetchGetColumnList)
     yield takeEvery(GET_KPI_MASTER, fetchGetKPIMaster)

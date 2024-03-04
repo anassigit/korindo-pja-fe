@@ -30,7 +30,9 @@ import {
     RESP_GET_ACTUAL_INPUT_DATA,
     SET_ACTUAL_INPUT_DATA,
     DOWNLOAD_PLAN,
-    DOWNLOAD_DASHBOARD_DETAIL
+    DOWNLOAD_DASHBOARD_DETAIL,
+    GET_GROUP_LIST_KPI_INPUT,
+    RESP_GET_GROUP_LIST_KPI_INPUT
 
 } from "./actionTypes"
 
@@ -51,6 +53,16 @@ export const getGroupListKPI = (req) => ({
 
 export const respGetGroupListKpi = resp => ({
     type: RESP_GET_GROUP_LIST_KPI,
+    payload: resp,
+})
+
+export const getGroupListKPIInput = (req) => ({
+    type: GET_GROUP_LIST_KPI_INPUT,
+    payload: req,
+})
+
+export const respGetGroupListKpiInput = resp => ({
+    type: RESP_GET_GROUP_LIST_KPI_INPUT,
     payload: resp,
 })
 
