@@ -40,10 +40,12 @@ const SidebarContent = props => {
         dispatch(getMenuList())
     }, [])
  
-    let isRenewed = 
     useEffect(() => {
         if (getMenuData?.data?.result && JSON.stringify(getMenuData?.data?.result) !== JSON.stringify(menu?.menu)) {
             localStorage.removeItem('menu')
+            setTimeout(() => {
+                window.location.reload()
+              }, 1000)
         }
     }, [getMenuData])
 
