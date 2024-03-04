@@ -52,10 +52,10 @@ const EditRoleAccess = props => {
     return state.settingReducer.respGetGroupListRoleAccess
   })
 
-  const groupList = selectedGroupList?.data?.list;
-
+  
   useEffect(() => {
-
+    
+    const groupList = selectedGroupList?.data?.list;
     if (groupList) {
       const uniqueGroups = [];
       const seenIds = new Set();
@@ -385,6 +385,13 @@ const EditRoleAccess = props => {
   const appCallBackMenuAccess = row => {
     editRoleAccessFormik.setFieldValue("menuId", row.menuId)
     editRoleAccessFormik.setFieldValue("menuName", row.menuName)
+    
+    dispatch(
+      getGroupListRoleAccess({
+        roleId: selectedMaintainRoleAccess?.data?.result?.roleId,
+        menuId: row.menuId,
+      })
+    )
   }
 
   return (

@@ -99,6 +99,7 @@ const RoleSetting = props => {
     },
     {
       text: "Detail",
+      hidden: true,
       style: { textAlign: "center", fontSize: "18px" },
       headerStyle: { textAlign: "center" },
       formatter: (cellContent, cellData) => {
@@ -236,7 +237,7 @@ const RoleSetting = props => {
     if (appMessageEdit?.status === "1" || appMessageEdit?.status === "0") {
       messageToUpdate = appMessageEdit
       if (appMessageEdit?.status === "1") {
-        if(appEditDetailAccessRole) {
+        if (appEditDetailAccessRole) {
           setAppDetailRole(true)
           setAppEditDetailAccessRole(false)
         }

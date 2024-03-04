@@ -15,19 +15,66 @@ import PropTypes from "prop-types"
 import { withTranslation } from "react-i18next"
 import {
   addRoleAccess,
+  getGroupListRoleAccess,
   getMenuParentListLov,
   getRoleParentListLov,
   resetMessage,
 } from "store/actions"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Lovv2 from "common/Lovv2"
 import { useFormik } from "formik"
 import * as Yup from "yup"
+import Select, { components } from "react-select"
 
 const AddRoleAccess = props => {
   const dispatch = useDispatch()
 
   const [appMenuSearchLov, setAppMenuSearchLov] = useState("")
+
+  const [selectedMulti2, setselectedMulti2] = useState([]);
+  const [optionGroupList, setOptionGroupList] = useState([]);
+  
+  const [addUser, setAddUser] = useState([])
+  const [removeUser, setRemoveUser] = useState([])
+
+  const selectedGroupList = useSelector(state => {
+    return state.settingReducer.respGetGroupListRoleAccess
+  })
+
+  useEffect(() => {
+    const groupList = selectedGroupList?.data?.list;
+
+    if (groupList) {
+      const uniqueGroups = [];
+      const seenIds = new Set();
+
+      groupList.forEach((group) => {
+        const id = group.groupId;
+        const name = group.groupName;
+        const status = group.groupStatus;
+
+        if (!seenIds.has(id)) {
+          seenIds.add(id);
+          uniqueGroups.push({
+            value: group.groupId,
+            label: group.groupName,
+            groupStatus: group.groupStatus,
+          });
+        }
+      });
+
+      // setselectedMulti2(uniqueGroups);
+      setOptionGroupList(uniqueGroups);
+    }
+    debugger
+    setOptionGroupList(selectedGroupList?.data?.list.map((group) => ({
+      value: group.groupId,
+      label: group.groupName,
+      groupStatus: group.groupStatus,
+      isDisabled: group.groupStatus === 'CANNOT',
+    })))
+
+  }, [selectedGroupList]);
 
   useEffect(() => {
     dispatch(resetMessage())
@@ -78,6 +125,13 @@ const AddRoleAccess = props => {
         "roleId",
         props.appMaintainRoleData?.roleId
       )
+
+      dispatch(
+        getGroupListRoleAccess({
+          roleId: props.appMaintainRoleData?.roleId,
+          menuId: '',
+        })
+      )
     }
   }, [props.appAddDetailRole])
 
@@ -101,6 +155,109 @@ const AddRoleAccess = props => {
   const appCallBackMenuAccess = row => {
     addRoleAccessFormik.setFieldValue("menuId", row.menuId)
     addRoleAccessFormik.setFieldValue("menuName", row.menuName)
+
+    dispatch(
+      getGroupListRoleAccess({
+        roleId: addRoleAccessFormik.values.roleId,
+        menuId: row.menuId,
+      })
+    )
+  }
+
+  const colourStyles2 = {
+    control: (baseStyles, state) => ({
+      ...baseStyles,
+      borderColor: state.isFocused ? 'white' : 'white',
+      borderColor: state.isSelected ? 'white' : 'white',
+      borderColor: state.isFocused ? 'white' : 'white',
+      borderColor: state.isDisabled ? 'white' : 'white',
+      border: 0,
+      boxShadow: 'none',
+
+    }),
+
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      const color = data.bgColor;
+      return {
+        ...styles,
+        backgroundColor: isDisabled
+          ? undefined
+          : isSelected
+            ? data.color
+            : isFocused
+              ? '#e6e6e6'
+              : undefined,
+        color: isDisabled
+          ? '#ccc'
+          : isSelected
+            ? 'white'
+            : 'black', // <-- Updated line here
+        cursor: isDisabled ? 'not-allowed' : 'default',
+
+        ':active': {
+          ...styles[':active'],
+          backgroundColor: !isDisabled
+            ? isSelected
+              ? data.color
+              : color
+            : undefined,
+        },
+      };
+    },
+
+    multiValue: (styles, { data }) => {
+      const color = data.bgColor;
+      return {
+        ...styles,
+        backgroundColor: '#579DFF',
+
+      };
+    },
+
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: 'white',
+      fontSize: '13px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      paddingTop: '7.5px',
+      paddingBottom: '7.5px',
+      borderRadius: '4px',
+    }),
+
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: 'white',
+      ':hover': {
+        backgroundColor: data.bgColor,
+        color: 'white',
+      },
+    }),
+  };
+
+  const DropdownIndicator = (props) => {
+    return (
+      <components.DropdownIndicator {...props}>
+        <i className="mdi mdi-plus-thick" />
+      </components.DropdownIndicator>
+    );
+  }
+  function handleMulti2(s) {
+
+    const currentSelection = selectedMulti2.map((item) => item.value);
+
+    const addedValues = s.filter((item) => !currentSelection.includes(item.value));
+    const deletedValues = currentSelection.filter((item) => !s.some((selectedItem) => selectedItem.value === item));
+
+    addedValues.forEach((addedItem) => {
+      setAddUser(current => [...current, addedItem.value]);
+    })
+
+    deletedValues.forEach((deletedItem) => {
+      setRemoveUser(current => [...current, deletedItem]);
+    })
+
+    setselectedMulti2(s);
   }
 
   return (
@@ -141,7 +298,7 @@ const AddRoleAccess = props => {
                       value={addRoleAccessFormik.values.roleId}
                       invalid={
                         addRoleAccessFormik.touched.roleId &&
-                        addRoleAccessFormik.errors.roleId
+                          addRoleAccessFormik.errors.roleId
                           ? true
                           : false
                       }
@@ -208,7 +365,7 @@ const AddRoleAccess = props => {
                       value={addRoleAccessFormik.values.bCreate}
                       invalid={
                         addRoleAccessFormik.touched.bCreate &&
-                        addRoleAccessFormik.errors.bCreate
+                          addRoleAccessFormik.errors.bCreate
                           ? true
                           : false
                       }
@@ -238,7 +395,7 @@ const AddRoleAccess = props => {
                       value={addRoleAccessFormik.values.bRead}
                       invalid={
                         addRoleAccessFormik.touched.bRead &&
-                        addRoleAccessFormik.errors.bRead
+                          addRoleAccessFormik.errors.bRead
                           ? true
                           : false
                       }
@@ -268,7 +425,7 @@ const AddRoleAccess = props => {
                       value={addRoleAccessFormik.values.bUpdate}
                       invalid={
                         addRoleAccessFormik.touched.bUpdate &&
-                        addRoleAccessFormik.errors.bUpdate
+                          addRoleAccessFormik.errors.bUpdate
                           ? true
                           : false
                       }
@@ -298,7 +455,7 @@ const AddRoleAccess = props => {
                       value={addRoleAccessFormik.values.bPrint}
                       invalid={
                         addRoleAccessFormik.touched.bPrint &&
-                        addRoleAccessFormik.errors.bPrint
+                          addRoleAccessFormik.errors.bPrint
                           ? true
                           : false
                       }
@@ -328,7 +485,7 @@ const AddRoleAccess = props => {
                       value={addRoleAccessFormik.values.bDelete}
                       invalid={
                         addRoleAccessFormik.touched.bDelete &&
-                        addRoleAccessFormik.errors.bDelete
+                          addRoleAccessFormik.errors.bDelete
                           ? true
                           : false
                       }
@@ -353,21 +510,20 @@ const AddRoleAccess = props => {
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
-                    <Input
-                      type="text"
-                      value={addRoleAccessFormik.values.groupId}
-                      invalid={
-                        addRoleAccessFormik.touched.groupId &&
-                        addRoleAccessFormik.errors.groupId
-                          ? true
-                          : false
-                      }
-                      onChange={e =>
-                        addRoleAccessFormik.setFieldValue(
-                          "groupId",
-                          e.target.value
-                        )
-                      }
+                    <Select
+                      value={selectedMulti2}
+                      isMulti={true}
+                      onChange={(e) => {
+                        handleMulti2(e)
+                      }}
+                      options={optionGroupList}
+                      className="select2-selection"
+                      styles={colourStyles2}
+                      // styles = {colourStyles2Disabled}
+                      components={{
+                        DropdownIndicator: DropdownIndicator,
+                      }}
+                      placeholder={"Select or type"}
                     />
                     <FormFeedback type="invalid">
                       {addRoleAccessFormik.errors.groupId}
