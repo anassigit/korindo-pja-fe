@@ -378,7 +378,9 @@ const KPIInputResult = (props) => {
                                         </Button>
                                     </div>
                                 ) :
-                                    appListData ?
+                                    appListData 
+                                    && appListData?.data?.list.length > 0 
+                                    ?
                                         (
                                             <div style={{ display: isEdit ? 'flex' : 'none', justifyContent: 'end' }}>
                                                 <Button
