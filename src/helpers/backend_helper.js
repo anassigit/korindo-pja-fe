@@ -1,5 +1,5 @@
 
-import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf,postWithParam, postDownload, postDownloadXlsx } from "./api_helper"
+import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf, postWithParam, postDownload, postDownloadXlsx } from "./api_helper"
 
 //combo
 export const getCombo = req => post("/app001/get-dtlsetting-combo", req)
@@ -123,6 +123,8 @@ export const deleteGroupMapping = req => postWithParam("/rest/OrganizationMaster
 
 export const getGroupListRoleAccessBE = req => postWithParam("/rest/RoleAccessMasterRest/getGroupList", req)
 
+export const getLanguageListBE = req => post("/rest/LanguageMasterRest/getList", req)
+
 // Maintain Menu
 
 export const getMaintainMenuListBE = req => post("/rest/MenuMasterRest/getList", req)
@@ -198,9 +200,9 @@ export const searchFile = req => postWithParam("/rest/FileManagementRest/Search"
 
 export const getYear = req => postWithParam("/rest/FileManagementRest/SelectYear", req)
 
-export const getMonth= req => postWithParam("/rest/FileManagementRest/SelectMonth", req)
+export const getMonth = req => postWithParam("/rest/FileManagementRest/SelectMonth", req)
 
-export const getMonthlyData= req => postWithParam("/rest/FileManagementRest/SelectDashboard", req)
+export const getMonthlyData = req => postWithParam("/rest/FileManagementRest/SelectDashboard", req)
 
 // KPI
 
