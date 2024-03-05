@@ -16,6 +16,7 @@ import {
   Label,
   Row,
   Spinner,
+  UncontrolledAlert,
 } from "reactstrap"
 import * as Yup from "yup"
 import {
@@ -791,17 +792,17 @@ const EditInstructions = props => {
         backgroundColor: isDisabled
           ? undefined
           : isSelected
-          ? data.color
-          : isFocused
-          ? "#e6e6e6"
-          : undefined,
+            ? data.color
+            : isFocused
+              ? "#e6e6e6"
+              : undefined,
         color: isDisabled
           ? "#ccc"
           : isSelected
-          ? "white"
             ? "white"
-            : "black"
-          : data.color,
+              ? "white"
+              : "black"
+            : data.color,
         cursor: isDisabled ? "not-allowed" : "default",
 
         ":active": {
@@ -862,17 +863,17 @@ const EditInstructions = props => {
         backgroundColor: isDisabled
           ? undefined
           : isSelected
-          ? data.color
-          : isFocused
-          ? "#e6e6e6"
-          : undefined,
+            ? data.color
+            : isFocused
+              ? "#e6e6e6"
+              : undefined,
         color: isDisabled
           ? "#ccc"
           : isSelected
-          ? "white"
             ? "white"
-            : "black"
-          : data.color,
+              ? "white"
+              : "black"
+            : data.color,
         cursor: isDisabled ? "not-allowed" : "default",
 
         ":active": {
@@ -934,10 +935,10 @@ const EditInstructions = props => {
         backgroundColor: isDisabled
           ? undefined
           : isSelected
-          ? data.color
-          : isFocused
-          ? "#e6e6e6"
-          : undefined,
+            ? data.color
+            : isFocused
+              ? "#e6e6e6"
+              : undefined,
         color: isDisabled ? "#ccc" : isSelected ? "white" : "black", // <-- Updated line here
         cursor: isDisabled ? "not-allowed" : "default",
 
@@ -999,10 +1000,10 @@ const EditInstructions = props => {
         backgroundColor: isDisabled
           ? undefined
           : isSelected
-          ? data.color
-          : isFocused
-          ? "#e6e6e6"
-          : undefined,
+            ? data.color
+            : isFocused
+              ? "#e6e6e6"
+              : undefined,
         color: isDisabled ? "#ccc" : isSelected ? "white" : "black", // <-- Updated line here
         cursor: isDisabled ? "not-allowed" : "default",
 
@@ -1468,10 +1469,10 @@ const EditInstructions = props => {
         pathname: "/AppInstructions",
       })
 
-      setLoadingSpinner(false)
       ReactSession.set("appEditInstructionsMsg", editInstructionsMessage)
     }
 
+    setLoadingSpinner(false)
     setSubmitClicked(false)
 
     localStorage.removeItem("tempSelect")
@@ -1751,13 +1752,17 @@ const EditInstructions = props => {
   return (
     <RootPageCustom
       msgStateGet={
-        appEditInstructionsMsg.status == 1
-          ? null
-          : appEditInstructionsMsg.message
+        // appEditInstructionsMsg.status == 1
+        //   ? null
+        //   : appEditInstructionsMsg.message
+        null
       }
       msgStateSet={setAppEditInstructionsMsg}
       componentJsx={
         <>
+          {appEditInstructionsMsg !== "" ? <UncontrolledAlert toggle={() => { setAppEditInstructionsMsg("");}} color={appEditInstructionsMsg.status == "1" ? "success" : "danger"}>
+            {typeof appEditInstructionsMsg == 'string' ? null : appEditInstructionsMsg.message}</UncontrolledAlert> : null}
+
           <ConfirmModal
             modal={confirmModal}
             toggle={confirmToggle}
@@ -1850,7 +1855,7 @@ const EditInstructions = props => {
               style={{
                 display:
                   getDetailInstructionData?.data?.instruction?.edit == "ALL" ||
-                  getDetailInstructionData?.data?.instruction?.edit == "STATUS"
+                    getDetailInstructionData?.data?.instruction?.edit == "STATUS"
                     ? "flex"
                     : "none",
               }}
@@ -1882,13 +1887,13 @@ const EditInstructions = props => {
                                 }
                                 invalid={
                                   editInstructionsValidInput.touched.no &&
-                                  editInstructionsValidInput.errors.no
+                                    editInstructionsValidInput.errors.no
                                     ? true
                                     : false
                                 }
                               />
                               {editInstructionsValidInput.touched.no &&
-                              editInstructionsValidInput.errors.no ? (
+                                editInstructionsValidInput.errors.no ? (
                                 <FormFeedback type="invalid">
                                   {editInstructionsValidInput.errors.no}
                                 </FormFeedback>
@@ -1918,13 +1923,13 @@ const EditInstructions = props => {
                                 onKeyPress={noEnterAllowed}
                                 invalid={
                                   editInstructionsValidInput.touched.title &&
-                                  editInstructionsValidInput.errors.title
+                                    editInstructionsValidInput.errors.title
                                     ? true
                                     : false
                                 }
                               />
                               {editInstructionsValidInput.touched.title &&
-                              editInstructionsValidInput.errors.title ? (
+                                editInstructionsValidInput.errors.title ? (
                                 <FormFeedback type="invalid">
                                   {editInstructionsValidInput.errors.title}
                                 </FormFeedback>
@@ -1956,8 +1961,8 @@ const EditInstructions = props => {
                                 selected={
                                   editInstructionsValidInput.values.insDate
                                     ? new Date(
-                                        editInstructionsValidInput.values.insDate
-                                      )
+                                      editInstructionsValidInput.values.insDate
+                                    )
                                     : null
                                 }
                               />
@@ -2009,7 +2014,7 @@ const EditInstructions = props => {
                                 )}
                               </Input>
                               {editInstructionsValidInput.touched.status &&
-                              editInstructionsValidInput.errors.status ? (
+                                editInstructionsValidInput.errors.status ? (
                                 <FormFeedback type="invalid">
                                   {editInstructionsValidInput.errors.status}
                                 </FormFeedback>
@@ -2043,16 +2048,16 @@ const EditInstructions = props => {
                                   invalid={
                                     editInstructionsValidInput.touched
                                       .description &&
-                                    editInstructionsValidInput.errors
-                                      .description
+                                      editInstructionsValidInput.errors
+                                        .description
                                       ? true
                                       : false
                                   }
                                 />
                                 {editInstructionsValidInput.touched
                                   .description &&
-                                editInstructionsValidInput.errors
-                                  .description ? (
+                                  editInstructionsValidInput.errors
+                                    .description ? (
                                   <FormFeedback type="invalid">
                                     {
                                       editInstructionsValidInput.errors
@@ -2325,7 +2330,7 @@ const EditInstructions = props => {
               style={{
                 display:
                   getDetailInstructionData?.data?.instruction?.edit == "ALL" ||
-                  getDetailInstructionData?.data?.instruction?.edit == "STATUS"
+                    getDetailInstructionData?.data?.instruction?.edit == "STATUS"
                     ? "none"
                     : "flex",
               }}
@@ -2357,13 +2362,13 @@ const EditInstructions = props => {
                                 }
                                 invalid={
                                   editInstructionsValidInput.touched.no &&
-                                  editInstructionsValidInput.errors.no
+                                    editInstructionsValidInput.errors.no
                                     ? true
                                     : false
                                 }
                               />
                               {editInstructionsValidInput.touched.no &&
-                              editInstructionsValidInput.errors.no ? (
+                                editInstructionsValidInput.errors.no ? (
                                 <FormFeedback type="invalid">
                                   {editInstructionsValidInput.errors.no}
                                 </FormFeedback>
@@ -2389,13 +2394,13 @@ const EditInstructions = props => {
                                 }
                                 invalid={
                                   editInstructionsValidInput.touched.title &&
-                                  editInstructionsValidInput.errors.title
+                                    editInstructionsValidInput.errors.title
                                     ? true
                                     : false
                                 }
                               />
                               {editInstructionsValidInput.touched.title &&
-                              editInstructionsValidInput.errors.title ? (
+                                editInstructionsValidInput.errors.title ? (
                                 <FormFeedback type="invalid">
                                   {editInstructionsValidInput.errors.title}
                                 </FormFeedback>
@@ -2423,8 +2428,8 @@ const EditInstructions = props => {
                                 selected={
                                   editInstructionsValidInput.values.insDate
                                     ? new Date(
-                                        editInstructionsValidInput.values.insDate
-                                      )
+                                      editInstructionsValidInput.values.insDate
+                                    )
                                     : null
                                 }
                               />
@@ -2459,7 +2464,7 @@ const EditInstructions = props => {
                               </Input>
 
                               {editInstructionsValidInput.touched.status &&
-                              editInstructionsValidInput.errors.status ? (
+                                editInstructionsValidInput.errors.status ? (
                                 <FormFeedback type="invalid">
                                   {editInstructionsValidInput.errors.status}
                                 </FormFeedback>
@@ -2489,16 +2494,16 @@ const EditInstructions = props => {
                                   invalid={
                                     editInstructionsValidInput.touched
                                       .description &&
-                                    editInstructionsValidInput.errors
-                                      .description
+                                      editInstructionsValidInput.errors
+                                        .description
                                       ? true
                                       : false
                                   }
                                 />
                                 {editInstructionsValidInput.touched
                                   .description &&
-                                editInstructionsValidInput.errors
-                                  .description ? (
+                                  editInstructionsValidInput.errors
+                                    .description ? (
                                   <FormFeedback type="invalid">
                                     {
                                       editInstructionsValidInput.errors
@@ -2735,67 +2740,67 @@ const EditInstructions = props => {
 
                                         {selectedRowIndex === reply_num
                                           ? tempAttachReply2.map(
-                                              (file, index) => (
-                                                <React.Fragment key={index}>
-                                                  <div className="reply-attachment d-flex align-items-start mb-1">
-                                                    <div
-                                                      className="vertical-line"
-                                                      style={{
-                                                        borderLeft:
-                                                          "2px solid #919191",
-                                                        height: "16px",
-                                                        margin: "0 10px",
-                                                      }}
-                                                    />
-                                                    <i
-                                                      className="mdi mdi-paperclip"
-                                                      style={{
-                                                        cursor: "pointer",
-                                                        verticalAlign: "middle",
-                                                      }}
-                                                      onClick={() =>
-                                                        downloadCheckFileInst(
-                                                          file.num,
-                                                          file.name
-                                                        )
-                                                      }
-                                                    />
-                                                    <u
-                                                      style={{
-                                                        cursor: "pointer",
-                                                        display: "inline-block",
-                                                        maxWidth: "80%",
-                                                        overflow: "hidden",
-                                                        textOverflow:
-                                                          "ellipsis",
-                                                        whiteSpace: "nowrap",
-                                                      }}
-                                                      onClick={() =>
-                                                        downloadCheckFileInst(
-                                                          file.num,
-                                                          file.name
-                                                        )
-                                                      }
-                                                    >
-                                                      {file.name}
-                                                    </u>
-                                                    &nbsp;
-                                                    <i
-                                                      style={{
-                                                        cursor: "pointer",
-                                                        fontSize: "20px",
-                                                        marginTop: "-4px",
-                                                      }}
-                                                      className="mdi mdi-download"
-                                                      onClick={() =>
-                                                        downloadCheckFileInst(
-                                                          file.num,
-                                                          file.name
-                                                        )
-                                                      }
-                                                    />
-                                                    {selectedRowIndex ===
-                                                      reply_num && (
+                                            (file, index) => (
+                                              <React.Fragment key={index}>
+                                                <div className="reply-attachment d-flex align-items-start mb-1">
+                                                  <div
+                                                    className="vertical-line"
+                                                    style={{
+                                                      borderLeft:
+                                                        "2px solid #919191",
+                                                      height: "16px",
+                                                      margin: "0 10px",
+                                                    }}
+                                                  />
+                                                  <i
+                                                    className="mdi mdi-paperclip"
+                                                    style={{
+                                                      cursor: "pointer",
+                                                      verticalAlign: "middle",
+                                                    }}
+                                                    onClick={() =>
+                                                      downloadCheckFileInst(
+                                                        file.num,
+                                                        file.name
+                                                      )
+                                                    }
+                                                  />
+                                                  <u
+                                                    style={{
+                                                      cursor: "pointer",
+                                                      display: "inline-block",
+                                                      maxWidth: "80%",
+                                                      overflow: "hidden",
+                                                      textOverflow:
+                                                        "ellipsis",
+                                                      whiteSpace: "nowrap",
+                                                    }}
+                                                    onClick={() =>
+                                                      downloadCheckFileInst(
+                                                        file.num,
+                                                        file.name
+                                                      )
+                                                    }
+                                                  >
+                                                    {file.name}
+                                                  </u>
+                                                  &nbsp;
+                                                  <i
+                                                    style={{
+                                                      cursor: "pointer",
+                                                      fontSize: "20px",
+                                                      marginTop: "-4px",
+                                                    }}
+                                                    className="mdi mdi-download"
+                                                    onClick={() =>
+                                                      downloadCheckFileInst(
+                                                        file.num,
+                                                        file.name
+                                                      )
+                                                    }
+                                                  />
+                                                  {selectedRowIndex ===
+                                                    reply_num && (
                                                       <i
                                                         style={{
                                                           cursor: "pointer",
@@ -2812,76 +2817,76 @@ const EditInstructions = props => {
                                                         }
                                                       />
                                                     )}
-                                                    <br />
-                                                  </div>
-                                                </React.Fragment>
-                                              )
+                                                  <br />
+                                                </div>
+                                              </React.Fragment>
                                             )
+                                          )
                                           : row.attachFileList.map(
-                                              (file, index) => (
-                                                <React.Fragment key={index}>
-                                                  <div className="reply-attachment d-flex align-items-start mb-1">
-                                                    <div
-                                                      className="vertical-line"
-                                                      style={{
-                                                        borderLeft:
-                                                          "2px solid #919191",
-                                                        height: "16px",
-                                                        margin: "0 10px",
-                                                      }}
-                                                    />
-                                                    <i
-                                                      className="mdi mdi-paperclip"
-                                                      style={{
-                                                        cursor: "pointer",
-                                                        verticalAlign: "middle",
-                                                      }}
-                                                      onClick={() =>
-                                                        downloadCheckFileInst(
-                                                          file.num,
-                                                          file.name
-                                                        )
-                                                      }
-                                                    />
-                                                    <u
-                                                      style={{
-                                                        cursor: "pointer",
-                                                        display: "inline-block",
-                                                        maxWidth: "80%",
-                                                        overflow: "hidden",
-                                                        textOverflow:
-                                                          "ellipsis",
-                                                        whiteSpace: "nowrap",
-                                                      }}
-                                                      onClick={() =>
-                                                        downloadCheckFileInst(
-                                                          file.num,
-                                                          file.name
-                                                        )
-                                                      }
-                                                    >
-                                                      {file.name}
-                                                    </u>
-                                                    &nbsp;
-                                                    <i
-                                                      style={{
-                                                        cursor: "pointer",
-                                                        fontSize: "20px",
-                                                        marginTop: "-4px",
-                                                      }}
-                                                      className="mdi mdi-download"
-                                                      onClick={() =>
-                                                        downloadCheckFileInst(
-                                                          file.num,
-                                                          file.name
-                                                        )
-                                                      }
-                                                    />
-                                                    <br />
-                                                  </div>
-                                                </React.Fragment>
-                                              )
-                                            )}
+                                            (file, index) => (
+                                              <React.Fragment key={index}>
+                                                <div className="reply-attachment d-flex align-items-start mb-1">
+                                                  <div
+                                                    className="vertical-line"
+                                                    style={{
+                                                      borderLeft:
+                                                        "2px solid #919191",
+                                                      height: "16px",
+                                                      margin: "0 10px",
+                                                    }}
+                                                  />
+                                                  <i
+                                                    className="mdi mdi-paperclip"
+                                                    style={{
+                                                      cursor: "pointer",
+                                                      verticalAlign: "middle",
+                                                    }}
+                                                    onClick={() =>
+                                                      downloadCheckFileInst(
+                                                        file.num,
+                                                        file.name
+                                                      )
+                                                    }
+                                                  />
+                                                  <u
+                                                    style={{
+                                                      cursor: "pointer",
+                                                      display: "inline-block",
+                                                      maxWidth: "80%",
+                                                      overflow: "hidden",
+                                                      textOverflow:
+                                                        "ellipsis",
+                                                      whiteSpace: "nowrap",
+                                                    }}
+                                                    onClick={() =>
+                                                      downloadCheckFileInst(
+                                                        file.num,
+                                                        file.name
+                                                      )
+                                                    }
+                                                  >
+                                                    {file.name}
+                                                  </u>
+                                                  &nbsp;
+                                                  <i
+                                                    style={{
+                                                      cursor: "pointer",
+                                                      fontSize: "20px",
+                                                      marginTop: "-4px",
+                                                    }}
+                                                    className="mdi mdi-download"
+                                                    onClick={() =>
+                                                      downloadCheckFileInst(
+                                                        file.num,
+                                                        file.name
+                                                      )
+                                                    }
+                                                  />
+                                                  <br />
+                                                </div>
+                                              </React.Fragment>
+                                            )
+                                          )}
 
                                         <Row style={{ paddingLeft: "24px" }}>
                                           <Col sm="10">
@@ -3077,11 +3082,11 @@ const EditInstructions = props => {
                                           </td>
                                           <td className="tg-0lax">
                                             {row.write_time === " " ||
-                                            row.write_time === ""
+                                              row.write_time === ""
                                               ? ""
                                               : moment(row.write_time).format(
-                                                  "yyyy-MM-DD hh:mm"
-                                                )}
+                                                "yyyy-MM-DD hh:mm"
+                                              )}
                                           </td>
                                         </tr>
                                       </>
@@ -3106,7 +3111,7 @@ const EditInstructions = props => {
 EditInstructions.propTypes = {
   appEditInstructions: PropTypes.any,
   setEditInstructions: PropTypes.any,
-  setAppInstructionsMsg: PropTypes.any,
+  setappEditInstructionsMsg: PropTypes.any,
   setAppInstructionsPage: PropTypes.any,
   instructionsData: PropTypes.any,
   appInstructionsTabelSearch: PropTypes.any,
