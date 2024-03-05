@@ -1760,7 +1760,7 @@ const EditInstructions = props => {
       msgStateSet={setAppEditInstructionsMsg}
       componentJsx={
         <>
-          {appEditInstructionsMsg !== "" ? <UncontrolledAlert toggle={() => { setAppEditInstructionsMsg("");}} color={appEditInstructionsMsg.status == "1" ? "success" : "danger"}>
+          {appEditInstructionsMsg !== "" ? <UncontrolledAlert toggle={() => { setAppEditInstructionsMsg(""); }} color={appEditInstructionsMsg.status == "1" ? "success" : "danger"}>
             {typeof appEditInstructionsMsg == 'string' ? null : appEditInstructionsMsg.message}</UncontrolledAlert> : null}
 
           <ConfirmModal
@@ -2278,10 +2278,12 @@ const EditInstructions = props => {
                         <Button
                           type="submit"
                           color="primary"
-                          onClick={() =>
+                          onClick={() => {
+                            setOnlyReply(false)
                             !editInstructionsValidInput.errors
                               ? setLoadingSpinner(true)
                               : null
+                          }
                           }
                         >
                           <i className="mdi mdi-check-circle fs-5 align-middle me-2"></i>
