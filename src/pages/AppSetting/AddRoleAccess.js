@@ -33,7 +33,7 @@ const AddRoleAccess = props => {
 
   const [selectedMulti2, setselectedMulti2] = useState([]);
   const [optionGroupList, setOptionGroupList] = useState([]);
-  
+
   const [addUser, setAddUser] = useState([])
   const [removeUser, setRemoveUser] = useState([])
 
@@ -66,7 +66,6 @@ const AddRoleAccess = props => {
       // setselectedMulti2(uniqueGroups);
       setOptionGroupList(uniqueGroups);
     }
-    debugger
     setOptionGroupList(selectedGroupList?.data?.list.map((group) => ({
       value: group.groupId,
       label: group.groupName,
@@ -98,10 +97,8 @@ const AddRoleAccess = props => {
       groupId: Yup.string().required("Required"),
     }),
     onSubmit: values => {
-      const groupIdString = values.groupId
-      const groupIdList = groupIdString.split(",").map(Number)
-
-      groupIdList.map(groupId => {
+      
+      selectedMulti2.map(value => {
         dispatch(
           addRoleAccess({
             roleId: values.roleId,
@@ -111,7 +108,7 @@ const AddRoleAccess = props => {
             bUpdate: values.bUpdate ? 1 : 0,
             bPrint: values.bPrint ? 1 : 0,
             bDelete: values.bDelete ? 1 : 0,
-            groupId: groupId,
+            groupId: value.value,
           })
         );
       });
@@ -121,11 +118,12 @@ const AddRoleAccess = props => {
   useEffect(() => {
     if (props.appAddDetailRole) {
       addRoleAccessFormik.resetForm()
+      setAppMenuSearchLov('')
+      setselectedMulti2([])
       addRoleAccessFormik.setFieldValue(
         "roleId",
         props.appMaintainRoleData?.roleId
       )
-
       dispatch(
         getGroupListRoleAccess({
           roleId: props.appMaintainRoleData?.roleId,
@@ -515,9 +513,14 @@ const AddRoleAccess = props => {
                       isMulti={true}
                       onChange={(e) => {
                         handleMulti2(e)
+                        if (e.length > 0) {
+                          addRoleAccessFormik.setFieldValue('groupId', 'a')
+                        } else {
+                          addRoleAccessFormik.setFieldValue('groupId', '')
+                        }
                       }}
                       options={optionGroupList}
-                      className="select2-selection"
+                      className={`select2-selection ${addRoleAccessFormik.errors.groupId && addRoleAccessFormik.touched.groupId && 'custom-invalid'}`}
                       styles={colourStyles2}
                       // styles = {colourStyles2Disabled}
                       components={{
@@ -525,9 +528,11 @@ const AddRoleAccess = props => {
                       }}
                       placeholder={"Select or type"}
                     />
-                    <FormFeedback type="invalid">
-                      {addRoleAccessFormik.errors.groupId}
-                    </FormFeedback>
+                    {
+                      addRoleAccessFormik.errors.groupId && addRoleAccessFormik.touched.groupId && (
+                        <div style={{ color: '#f46a6a', width: '100%', marginTop: '0.25rem', fontSize: '80%', display: 'block' }}>{addRoleAccessFormik.errors.groupId}</div>
+                      )
+                    }
                   </div>
                 </div>
 

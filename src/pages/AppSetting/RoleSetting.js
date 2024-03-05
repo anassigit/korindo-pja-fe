@@ -99,7 +99,6 @@ const RoleSetting = props => {
     },
     {
       text: "Detail",
-      hidden: true,
       style: { textAlign: "center", fontSize: "18px" },
       headerStyle: { textAlign: "center" },
       formatter: (cellContent, cellData) => {
@@ -215,10 +214,11 @@ const RoleSetting = props => {
     if (appMessageAdd.status === "1" || appMessageAdd.status === "0") {
       messageToUpdate = appMessageAdd
       if (appMessageAdd.status === "1") {
+        debugger
         if (appAddDetailRole) {
           setAppDetailRole(true)
           setAppAddDetailRole(false)
-        } else {
+        } else if (appAddMaintainRole) {
           setAppMaintainRole(true)
           setAppAddMaintainRole(false)
         }
@@ -240,8 +240,7 @@ const RoleSetting = props => {
         if (appEditDetailAccessRole) {
           setAppDetailRole(true)
           setAppEditDetailAccessRole(false)
-        }
-        else {
+        } else if (appEditMaintainRole) {
           setAppMaintainRole(true)
           setAppEditMaintainRole(false)
         }

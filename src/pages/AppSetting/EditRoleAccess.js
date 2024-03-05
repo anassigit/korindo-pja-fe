@@ -52,9 +52,9 @@ const EditRoleAccess = props => {
     return state.settingReducer.respGetGroupListRoleAccess
   })
 
-  
+
   useEffect(() => {
-    
+
     const groupList = selectedGroupList?.data?.list;
     if (groupList) {
       const uniqueGroups = [];
@@ -75,19 +75,20 @@ const EditRoleAccess = props => {
             value: group.groupId,
             label: group.groupName,
             groupStatus: group.groupStatus,
+            isDisabled: group.groupStatus === 'CANNOT',
           });
         }
       });
 
-      setselectedMulti2(uniqueGroups);
+      setOptionGroupList(uniqueGroups);
     }
 
-    setOptionGroupList(selectedGroupList?.data?.list.map((group) => ({
-      value: group.groupId,
-      label: group.groupName,
-      groupStatus: group.groupStatus,
-      isDisabled: group.groupStatus === 'CANNOT',
-    })))
+    // setOptionGroupList(selectedGroupList?.data?.list.map((group) => ({
+    //   value: group.groupId,
+    //   label: group.groupName,
+    //   groupStatus: group.groupStatus,
+    //   isDisabled: group.groupStatus === 'CANNOT',
+    // })))
 
     /* useEffect field here */
 
@@ -122,7 +123,7 @@ const EditRoleAccess = props => {
       user => !uniqueAddUser.has(user)
     );
 
-  }, [addUser, removeUser]); // Corrected dependency array
+  }, [addUser, removeUser]);
 
 
   const DropdownIndicator = (props) => {
@@ -289,10 +290,8 @@ const EditRoleAccess = props => {
       groupId: Yup.string().required("Required"),
     }),
     onSubmit: values => {
-
-      const groupIdString = values.groupId
-      const groupIdList = groupIdString.split(",").map(Number)
-
+      const groupIds = selectedMulti2.map(value => value.value);
+      debugger
       dispatch(
         editRoleAccess({
           roleAccessId: values.roleAccessId,
@@ -303,9 +302,25 @@ const EditRoleAccess = props => {
           bUpdate: values.bUpdate ? 1 : 0,
           bPrint: values.bPrint ? 1 : 0,
           bDelete: values.bDelete ? 1 : 0,
-          groupId: groupIdList,
+          groupId: groupIds,
         })
       )
+
+      // selectedMulti2.forEach(value => {
+      //   dispatch(
+      //     editRoleAccess({
+      //       roleAccessId: values.roleAccessId,
+      //       roleId: values.roleId,
+      //       menuId: values.menuId,
+      //       bCreate: values.bCreate ? 1 : 0,
+      //       bRead: values.bRead ? 1 : 0,
+      //       bUpdate: values.bUpdate ? 1 : 0,
+      //       bPrint: values.bPrint ? 1 : 0,
+      //       bDelete: values.bDelete ? 1 : 0,
+      //       groupId: value.value,
+      //     })
+      //   );
+      // });
     },
   })
 
@@ -313,6 +328,7 @@ const EditRoleAccess = props => {
     if (props.appEditDetailAccessRole) {
       editRoleAccessFormik.resetForm()
       setAppMenuSearchLov("")
+      setselectedMulti2('')
       dispatch(
         getRoleAccess({
           roleAccessId: props.roleAccessId,
@@ -356,6 +372,14 @@ const EditRoleAccess = props => {
         "bDelete",
         selectedMaintainRoleAccess.data.result?.bdelete === 1 ? true : false
       )
+      setselectedMulti2(selectedMaintainRoleAccess?.data?.groupList.filter(item => item.groupStatus === 'ALREADY').map((item, index) => {
+        return ({
+          value: item.groupId,
+          label: item.groupName,
+          groupStatus: item.groupStatus,
+          isDisabled: item.groupStatus === 'CANNOT',
+        })
+      }))
       dispatch(
         getGroupListRoleAccess({
           roleId: selectedMaintainRoleAccess?.data?.result?.roleId,
@@ -385,7 +409,7 @@ const EditRoleAccess = props => {
   const appCallBackMenuAccess = row => {
     editRoleAccessFormik.setFieldValue("menuId", row.menuId)
     editRoleAccessFormik.setFieldValue("menuName", row.menuName)
-    
+
     dispatch(
       getGroupListRoleAccess({
         roleId: selectedMaintainRoleAccess?.data?.result?.roleId,
@@ -679,9 +703,14 @@ const EditRoleAccess = props => {
                       isMulti={true}
                       onChange={(e) => {
                         handleMulti2(e)
+                        if (e.length > 0) {
+                          editRoleAccessFormik.setFieldValue('groupId', 'a')
+                        } else {
+                          editRoleAccessFormik.setFieldValue('groupId', '')
+                        }
                       }}
                       options={optionGroupList}
-                      className="select2-selection"
+                      className={`select2-selection ${editRoleAccessFormik.errors.groupId && editRoleAccessFormik.touched.groupId && 'custom-invalid'}`}
                       styles={colourStyles2}
                       // styles = {colourStyles2Disabled}
                       components={{
@@ -689,9 +718,11 @@ const EditRoleAccess = props => {
                       }}
                       placeholder={"Select or type"}
                     />
-                    <FormFeedback type="invalid">
-                      {editRoleAccessFormik.errors.groupId}
-                    </FormFeedback>
+                    {
+                      editRoleAccessFormik.errors.groupId && editRoleAccessFormik.touched.groupId && (
+                        <div style={{ color: '#f46a6a', width: '100%', marginTop: '0.25rem', fontSize: '80%', display: 'block' }}>{editRoleAccessFormik.errors.groupId}</div>
+                      )
+                    }
                   </div>
                 </div>
 
