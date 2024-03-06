@@ -567,7 +567,7 @@ const MovingPlan = (props) => {
                                     </Button>
                                 </div>
                                 {
-                                    selectedCompanyCode && selectedYear ? (
+                                    selectedYear ? (
                                         <Button onClick={() => {
                                             dispatch(downloadExcelMovingPlan({
                                                 year: selectedYear ? selectedYear.getFullYear() : '',
