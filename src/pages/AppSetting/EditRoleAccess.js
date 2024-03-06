@@ -353,7 +353,7 @@ const EditRoleAccess = props => {
       )
       setAppMenuSearchLov(selectedMaintainRoleAccess?.data?.result?.menuId)
       editRoleAccessFormik.setFieldValue(
-        "bcreate",
+        "bCreate",
         selectedMaintainRoleAccess.data.result?.bcreate === 1 ? true : false
       )
       editRoleAccessFormik.setFieldValue(
@@ -373,6 +373,8 @@ const EditRoleAccess = props => {
         selectedMaintainRoleAccess.data.result?.bdelete === 1 ? true : false
       )
       setselectedMulti2(selectedMaintainRoleAccess?.data?.groupList.filter(item => item.groupStatus === 'ALREADY').map((item, index) => {
+
+        editRoleAccessFormik.setFieldValue('groupId', 'a')
         return ({
           value: item.groupId,
           label: item.groupName,
