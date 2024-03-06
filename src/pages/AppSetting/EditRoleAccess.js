@@ -49,13 +49,13 @@ const EditRoleAccess = props => {
 
   /* MULTI SELECTED OPTIONS FOR GROUP LIST ROLE ACCESS */
   const selectedGroupList = useSelector(state => {
-    return state.settingReducer.respGetGroupListRoleAccess
+    return state.settingReducer.respGetRoleAccess
   })
 
 
   useEffect(() => {
 
-    const groupList = selectedGroupList?.data?.list;
+    const groupList = selectedGroupList?.data?.groupList;
     if (groupList) {
       const uniqueGroups = [];
       const seenIds = new Set();
@@ -291,7 +291,6 @@ const EditRoleAccess = props => {
     }),
     onSubmit: values => {
       const groupIds = selectedMulti2.map(value => value.value);
-      debugger
       dispatch(
         editRoleAccess({
           roleAccessId: values.roleAccessId,
@@ -382,12 +381,6 @@ const EditRoleAccess = props => {
           isDisabled: item.groupStatus === 'CANNOT',
         })
       }))
-      dispatch(
-        getGroupListRoleAccess({
-          roleId: selectedMaintainRoleAccess?.data?.result?.roleId,
-          menuId: selectedMaintainRoleAccess?.data?.result?.menuId,
-        })
-      )
     }
   }, [selectedMaintainRoleAccess?.data])
 
