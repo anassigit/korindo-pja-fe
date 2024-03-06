@@ -249,3 +249,5 @@ export const getDownloadPlanBE = req => getWithXls("rest/KpiManagementRest/downl
 export const getCompanyCodeList = req => post("rest/MovingPlanRest/getCompanyCodeList", req)
 
 export const getMovingPlanList = req => postWithParam("rest/MovingPlanRest/getList", req)
+
+export const downloadExcelMovingPlanBE = req => getWithXls("rest/MovingPlanRest/downloadExcel", req)

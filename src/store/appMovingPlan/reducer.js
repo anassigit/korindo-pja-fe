@@ -3,7 +3,8 @@ import {
   GET_COMPANY_CODE_LIST,
   RESP_GET_COMPANY_CODE_LIST,
   GET_MOVING_PLAN_LIST,
-  RESP_GET_MOVING_PLAN_LIST
+  RESP_GET_MOVING_PLAN_LIST,
+  DOWNLOAD_MOVING_PLAN
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -24,7 +25,7 @@ const kpiReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetCompanyCodeList: action.payload,
       }
-      case GET_MOVING_PLAN_LIST:
+    case GET_MOVING_PLAN_LIST:
       return {
         ...state,
       }
@@ -32,6 +33,10 @@ const kpiReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         respGetMovingPlanList: action.payload,
+      }
+    case DOWNLOAD_MOVING_PLAN:
+      return {
+        ...state,
       }
     case RESET_MESSAGE:
       return {

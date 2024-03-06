@@ -14,6 +14,9 @@ import {
   FormGroup,
   Input,
   Label,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
   Row,
   Spinner,
   UncontrolledAlert,
@@ -228,6 +231,8 @@ const EditInstructions = props => {
     )
     dispatch(
       getReply({
+        offset: offset,
+        limit: 5,
         search: {
           num: num,
           langType: langType,
@@ -268,6 +273,8 @@ const EditInstructions = props => {
     )
     dispatch(
       getLogs({
+        offset: offset2,
+        limit: 5,
         search: {
           num: num,
         },
@@ -295,6 +302,8 @@ const EditInstructions = props => {
     )
     dispatch(
       getReply({
+        offset: offset,
+        limit: 5,
         search: {
           num: num,
           langType: langType,
@@ -335,6 +344,8 @@ const EditInstructions = props => {
     )
     dispatch(
       getLogs({
+        offset: offset2,
+        limit: 5,
         search: {
           num: num,
         },
@@ -1354,6 +1365,8 @@ const EditInstructions = props => {
 
       dispatch(
         getReply({
+          offset: offset,
+          limit: 5,
           search: {
             num: num,
             langType: langType,
@@ -1374,6 +1387,8 @@ const EditInstructions = props => {
     if (msgEditReply.status == "1") {
       dispatch(
         getReply({
+          offset: offset,
+          limit: 5,
           search: {
             num: num,
             langType: langType,
@@ -1394,6 +1409,8 @@ const EditInstructions = props => {
     if (msgDeleteReply.status == "1") {
       dispatch(
         getReply({
+          offset: offset,
+          limit: 5,
           search: {
             num: num,
             langType: langType,
@@ -1578,6 +1595,163 @@ const EditInstructions = props => {
       setLoadingSpinner(false)
     }
   }, [isYes])
+
+  /* Paginations */
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalReplies = replyData?.data?.count || 0;
+  const totalPages = Math.ceil(totalReplies / 5);
+  const repliesPerPage = 5;
+
+  const [currentPage2, setCurrentPage2] = useState(1);
+  const totalLogs = logsData?.data?.count || 0;
+  const totalPages2 = Math.ceil(totalLogs / 5);
+  const logsPerPage = 5;
+
+  const offset = (currentPage - 1) * repliesPerPage;
+  const offset2 = (currentPage2 - 1) * logsPerPage;
+
+  useEffect(() => {
+    dispatch(getReply({
+      offset: offset,
+      limit: repliesPerPage,
+      search: {
+        num: editInstructionsValidInput.values.no,
+        langType: langType,
+      }
+    }));
+  }, [currentPage, editInstructionsValidInput.values.no]);
+
+  useEffect(() => {
+    dispatch(getLogs({
+      offset: offset2,
+      limit: logsPerPage,
+      search: {
+        num: editInstructionsValidInput.values.no,
+        langType: langType,
+      }
+    }));
+  }, [currentPage2, editInstructionsValidInput.values.no]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageChange2 = (page) => {
+    setCurrentPage2(page);
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxPages = 3;
+
+    debugger
+    if (totalPages <= maxPages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      let startPage, endPage;
+
+      if (currentPage <= maxPages) {
+        if (currentPage === maxPages) {
+          startPage = 1;
+          endPage = maxPages + 1;
+        } else {
+          startPage = 1;
+          endPage = maxPages;
+        }
+      } else if (currentPage >= totalPages - maxPages + 1) {
+        if (currentPage === totalPages - maxPages + 1) {
+          startPage = totalPages - maxPages;
+          endPage = totalPages;
+        } else {
+          startPage = totalPages - maxPages + 1;
+          endPage = totalPages;
+        }
+      } else {
+        startPage = currentPage - 1;
+        endPage = currentPage + 1;
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      if (startPage > 1) {
+        if (startPage > 2) {
+          pages.unshift('...');
+        }
+        pages.unshift(1);
+      }
+
+
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+          pages.push('...');
+        }
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
+  const getPageNumbers2 = () => {
+    const pages = [];
+    const maxPages = 3;
+
+    if (totalPages2 <= maxPages) {
+      for (let i = 1; i <= totalPages2; i++) {
+        pages.push(i);
+      }
+    } else {
+      let startPage, endPage;
+
+      if (currentPage2 <= maxPages) {
+        if (currentPage2 === maxPages) {
+          startPage = 1;
+          endPage = maxPages + 1;
+        } else {
+          startPage = 1;
+          endPage = maxPages;
+        }
+      } else if (currentPage2 >= totalPages2 - maxPages + 1) {
+        if (currentPage2 === totalPages2 - maxPages + 1) {
+          startPage = totalPages2 - maxPages;
+          endPage = totalPages2;
+        } else {
+          startPage = totalPages2 - maxPages + 1;
+          endPage = totalPages2;
+        }
+      } else {
+        startPage = currentPage2 - 1;
+        endPage = currentPage2 + 1;
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      if (startPage > 1) {
+        if (startPage > 2) {
+          pages.unshift('...');
+        }
+        pages.unshift(1);
+      }
+
+      if (endPage < totalPages2) {
+        if (endPage < totalPages2 - 1) {
+          pages.push('...')
+        }
+        pages.push(totalPages2)
+      }
+    }
+
+    return pages
+  }
+
+  /* END OF REPLY */
 
   /* DELETE REPLY */
   useEffect(() => {
@@ -2691,18 +2865,20 @@ const EditInstructions = props => {
                   </a>
 
                   <CardBody hidden={isHiddenReply}>
+                    <div style={{ marginBottom: '16px' }}>{'Page ' + currentPage + ' of ' + totalPages}</div>
                     <React.Fragment>
                       <FormGroup>
                         <Row>
                           <Col md="12">
                             <Row>
+
                               {replyData?.data?.replyList?.length > 0 &&
                                 replyData?.data?.replyList.map((row, index) => {
                                   const reply_num =
                                     replyData?.data?.replyList.length - index
                                   return (
                                     <div
-                                      key={reply_num}
+                                      key={index}
                                       className="reply-row my-1 p-3"
                                       style={{
                                         backgroundColor: "#EEE",
@@ -2712,7 +2888,7 @@ const EditInstructions = props => {
                                       }}
                                     >
                                       <div className="reply-num">
-                                        {reply_num}
+                                        {row.displayNum}
                                       </div>
                                       <div
                                         className="reply-fill"
@@ -2889,7 +3065,6 @@ const EditInstructions = props => {
                                               </React.Fragment>
                                             )
                                           )}
-
                                         <Row style={{ paddingLeft: "24px" }}>
                                           <Col sm="10">
                                             <div className="col-sm-12">
@@ -3020,6 +3195,22 @@ const EditInstructions = props => {
                           </Col>
                         </Row>
                       </FormGroup>
+
+                      <Pagination aria-label="Page navigation example">
+                        <PaginationItem disabled={currentPage === 1}>
+                          <PaginationLink previous onClick={() => handlePageChange(currentPage - 1)} />
+                        </PaginationItem>
+                        {getPageNumbers().map((pageNumber, index) => (
+                          <PaginationItem key={index} active={pageNumber === currentPage} disabled={pageNumber === "..."}>
+                            <PaginationLink onClick={() => handlePageChange(pageNumber)}>
+                              {pageNumber}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem disabled={currentPage === totalPages}>
+                          <PaginationLink next onClick={() => handlePageChange(currentPage + 1)} />
+                        </PaginationItem>
+                      </Pagination>
                     </React.Fragment>
                   </CardBody>
                 </Card>
@@ -3058,11 +3249,14 @@ const EditInstructions = props => {
                   </a>
 
                   <CardBody hidden={isHiddenLogs}>
+
+                    <div style={{ marginBottom: '16px' }}>{'Page ' + currentPage2 + ' of ' + totalPages2}</div>
+
                     <React.Fragment>
                       <FormGroup className="mb-0">
                         <Row>
                           <Col md="12">
-                            <Row>
+                            <Row style={{ padding: "0 24px 0 24px" }}>
                               <table
                                 className="tg"
                                 style={{ marginTop: "10px" }}
@@ -3077,28 +3271,45 @@ const EditInstructions = props => {
                                   {logsData?.data?.logList != null &&
                                     logsData?.data?.logList.length > 0 &&
                                     logsData?.data?.logList.map((row, logs) => (
-                                      <>
-                                        <tr key={logs}>
-                                          <td className="tg-0lax">
-                                            {row.content}
-                                          </td>
-                                          <td className="tg-0lax">
-                                            {row.write_time === " " ||
-                                              row.write_time === ""
-                                              ? ""
-                                              : moment(row.write_time).format(
-                                                "yyyy-MM-DD hh:mm"
-                                              )}
-                                          </td>
-                                        </tr>
-                                      </>
+                                      <tr key={logs} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                                        <td className="tg-0lax">
+                                          {row.write_time === " " ||
+                                            row.write_time === ""
+                                            ? ""
+                                            : moment(row.write_time).format(
+                                              "yyyy-MM-DD hh:mm"
+                                            )}
+                                        </td>
+                                        <td className="tg-0lax">
+                                          {row.name}
+                                        </td>
+                                        <td className="tg-0lax" style={{ width: '72vw' }}>
+                                          {row.content}
+                                        </td>
+                                      </tr>
                                     ))}
                                 </tbody>
                               </table>
+
                             </Row>
                           </Col>
                         </Row>
                       </FormGroup>
+                      <Pagination aria-label="Page navigation example">
+                        <PaginationItem disabled={currentPage2 === 1}>
+                          <PaginationLink previous onClick={() => handlePageChange2(currentPage2 - 1)} />
+                        </PaginationItem>
+                        {getPageNumbers2().map((pageNumber, index) => (
+                          <PaginationItem key={index} active={pageNumber === currentPage2} disabled={pageNumber === "..."}>
+                            <PaginationLink onClick={() => handlePageChange2(pageNumber)}>
+                              {pageNumber}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem disabled={currentPage2 === totalPages2}>
+                          <PaginationLink next onClick={() => handlePageChange2(currentPage2 + 1)} />
+                        </PaginationItem>
+                      </Pagination>
                     </React.Fragment>
                   </CardBody>
                 </Card>

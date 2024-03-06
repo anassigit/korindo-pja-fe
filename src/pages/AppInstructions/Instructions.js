@@ -16,7 +16,7 @@ import {
     UncontrolledAlert,
     Spinner,
 } from "reactstrap";
-import { getInstructionsData, getInstructionsData2, resetMessage, getGroupListData, getStatus, getAllStatusData } from "../../store/appInstructions/actions"
+import { getInstructionsData, getInstructionsData2, resetMessage, getGroupListData, getStatus, getAllStatusData, getReply } from "../../store/appInstructions/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
 import AddInstructions from "./AddInstructions";
@@ -32,6 +32,7 @@ import e from "cors";
 import { ContextMenu } from "react-contextmenu";
 import { date } from "yup";
 import moment from "moment";
+import ReplyModal from "./ReplyModal";
 
 
 const Instructions = (props) => {
@@ -44,7 +45,6 @@ const Instructions = (props) => {
     const [appInstructionsPage, setAppInstructionsPage] = useState(true)
     const [appAddInstructions, setAppAddInstructions] = useState(false)
     const [appEditInstructions, setEditInstructions] = useState(false)
-    const [appDetailInstructions, setAppDetailInstructions] = useState(true)
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
     const [appInstructionsMsg2, setAppInstructionsMsg2] = useState("")
     const [instructionsData, setInstructionsData] = useState()
@@ -65,6 +65,7 @@ const Instructions = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
 
+    const [modal, setModal] = useState(false)
 
     const [sessionAppInstructionsTabelSearch, setSessionAppInstructionsTabelSearch] = useState(
         ReactSession.get("appInstructionsTabelSearch") || null
@@ -336,7 +337,6 @@ const Instructions = (props) => {
             formatter: (cellContent, appInstructionsData) => (
                 <>
                     <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
-
                         <span>
                             <div>
                                 {
@@ -358,7 +358,16 @@ const Instructions = (props) => {
             ),
             events: {
                 onClick: (e, column, columnIndex, appInstructionsData, rowIndex) => {
-                    appInstructionsPreEdit(appInstructionsData);
+                    dispatch(getReply({
+                        offset: 0,
+                        limit: 5,
+                        search: {
+                            num: appInstructionsData.num.toString(),
+                            langType: langType,
+                        }
+                    }))
+                    setInstructionsData(appInstructionsData.num.toString());
+                    toggle()
                 },
             },
         },
@@ -419,7 +428,6 @@ const Instructions = (props) => {
 
         // Rest of your code
         setAppInstructionsMsg("");
-        setInstructionsData(appInstructionsData);
         setAppInstructionsPage(false);
         setEditInstructions(true);
     }
@@ -517,6 +525,10 @@ const Instructions = (props) => {
                 group: appInstructionsTabelSearch.search.group,
             }
         })
+    }
+
+    const toggle = () => {
+        setModal(!modal)
     }
 
     return (
@@ -717,6 +729,11 @@ const Instructions = (props) => {
                         setAppInstructionsPage={setAppInstructionsPage}
                         appInstructionsTabelSearch={appInstructionsTabelSearch} />
 
+                    <ReplyModal
+                        modal={modal}
+                        toggle={toggle}
+                        data={instructionsData}
+                    />
                 </>
             }
         />

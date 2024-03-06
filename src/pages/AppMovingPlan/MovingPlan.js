@@ -12,7 +12,7 @@ import {
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
-import { getCompanyCodeList, getMovingPlantList, resetMessage } from "store/actions"
+import { downloadExcelMovingPlan, getCompanyCodeList, getMovingPlantList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -492,80 +492,104 @@ const MovingPlan = (props) => {
                             {'Moving Plan'}
                         </CardHeader>
                         <CardBody>
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                gap: '.75vw',
-                            }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    gap: '.75vw',
+                                }}>
 
-                                <Input
-                                    style={{ width: 'auto' }}
-                                    type="select"
-                                    onChange={(e) => {
-                                        setselectedCompanyCode(e.target.value)
-                                    }}
-                                >
-                                    {Array.isArray(appCompanyCodeListData?.data?.resultList) ? (
-                                        <>
-                                            <option value={''}>{"All Company"}</option>
-                                            {appCompanyCodeListData?.data?.resultList.map((item, index) => {
-                                                return (
-                                                    <option key={index} value={item?.companyCode}>
-                                                        {item?.companyInitial}
-                                                    </option>
-                                                )
-                                            })}
-                                        </>
-                                    ) : (
-                                        <option>
-                                            {"No Data"}
-                                        </option>
-                                    )}
-                                </Input>
-                                <InputGroup
-                                    onClick={() => {
-                                        setIsOpen(!isOpen)
-                                    }}
-                                    style={{ display: 'flex', flexDirection: 'row', width: 'auto' }}
-                                >
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            width: '8vw',
+                                    <Input
+                                        style={{ width: 'auto' }}
+                                        type="select"
+                                        onChange={(e) => {
+                                            setselectedCompanyCode(e.target.value)
                                         }}
                                     >
-                                        <ReactDatePicker
-                                            className={`form-control`}
-                                            selected={selectedYear ? new Date(selectedYear) : ''}
-                                            onChange={(selectedDate) => {
-                                                setSelectedYear(selectedDate)
-                                            }}
-                                            open={isOpen}
-                                            dateFormat="yyyy"
-                                            showYearPicker
-                                            onClickOutside={() => {
-                                                setIsOpen(!isOpen)
-                                            }}
-                                        />
-                                    </div>
-                                    <span
-                                        className="fas fa-calendar text-dark"
+                                        {Array.isArray(appCompanyCodeListData?.data?.resultList) ? (
+                                            <>
+                                                <option value={''}>{"All Company"}</option>
+                                                {appCompanyCodeListData?.data?.resultList.map((item, index) => {
+                                                    return (
+                                                        <option key={index} value={item?.companyCode}>
+                                                            {item?.companyInitial}
+                                                        </option>
+                                                    )
+                                                })}
+                                            </>
+                                        ) : (
+                                            <option>
+                                                {"No Data"}
+                                            </option>
+                                        )}
+                                    </Input>
+                                    <InputGroup
                                         onClick={() => {
                                             setIsOpen(!isOpen)
                                         }}
-                                        style={{ fontSize: '16px', position: 'absolute', top: '25%', right: '10%' }}
+                                        style={{ display: 'flex', flexDirection: 'row', width: 'auto' }}
                                     >
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                width: '8vw',
+                                            }}
+                                        >
+                                            <ReactDatePicker
+                                                className={`form-control`}
+                                                selected={selectedYear ? new Date(selectedYear) : ''}
+                                                onChange={(selectedDate) => {
+                                                    setSelectedYear(selectedDate)
+                                                }}
+                                                open={isOpen}
+                                                dateFormat="yyyy"
+                                                showYearPicker
+                                                onClickOutside={() => {
+                                                    setIsOpen(!isOpen)
+                                                }}
+                                            />
+                                        </div>
+                                        <span
+                                            className="fas fa-calendar text-dark"
+                                            onClick={() => {
+                                                setIsOpen(!isOpen)
+                                            }}
+                                            style={{ fontSize: '16px', position: 'absolute', top: '25%', right: '10%' }}
+                                        >
 
-                                    </span>
-                                </InputGroup>
-                                <Button
-                                    className="btn btn-primary" onClick={() => handleSearch()}>
-                                    {"Search"}
-                                </Button>
+                                        </span>
+                                    </InputGroup>
+                                    <Button
+                                        className="btn btn-primary" onClick={() => handleSearch()}>
+                                        {"Search"}
+                                    </Button>
+                                </div>
+                                {
+                                    selectedCompanyCode && selectedYear ? (
+                                        <Button onClick={() => {
+                                            dispatch(downloadExcelMovingPlan({
+                                                year: selectedYear ? selectedYear.getFullYear() : '',
+                                                companyCode: selectedCompanyCode,
+                                                file_nm: 'Moving Plan.xlsx',
+                                            }))
+                                        }}>
+                                            {props.t('Download Excel')}
+                                        </Button>
+                                    ) : (
+                                        <button
+                                            disabled
+                                            type="button"
+                                            className="btn btn-dark opacity-25"
+                                        >
+                                            {props.t("Download Excel")}
+                                        </button>
+                                    )
+
+                                }
                             </div>
-                            <div style={{ color:'red', display: 'flex', justifyContent: 'right', marginTop: '10px', marginRight: '8px' }}>
+                            <div style={{ color: 'red', display: 'flex', justifyContent: 'right', marginTop: '10px', marginRight: '8px' }}>
                                 * Pre.Y, BP, MP, Actual is In Million (Juta)
                             </div>
                             <div style={{ overflow: 'auto', maxHeight: '80vh' }}>

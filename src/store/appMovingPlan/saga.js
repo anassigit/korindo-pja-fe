@@ -1,10 +1,10 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
-import { GET_COMPANY_CODE_LIST, GET_MOVING_PLAN_LIST } from "./actionTypes"
+import { DOWNLOAD_MOVING_PLAN, GET_COMPANY_CODE_LIST, GET_MOVING_PLAN_LIST } from "./actionTypes"
 
 import { respGetCompanyCodeList, respGetMovingPlanList } from "./actions"
 
-import { getCompanyCodeList, getMovingPlanList } from "helpers/backend_helper"
+import { downloadExcelMovingPlanBE, getCompanyCodeList, getMovingPlanList } from "helpers/backend_helper"
 
 function* fetchGetCompanyCodeList({ payload: req }) {
   try {
@@ -34,9 +34,18 @@ function* fetchGetMovingPlanList({ payload: req }) {
   }
 }
 
+function* fetchDownloadMovingPlan({ payload: req }) {
+  try {
+    yield call(downloadExcelMovingPlanBE, req)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* kpiSaga() {
   yield takeEvery(GET_COMPANY_CODE_LIST, fetchGetCompanyCodeList)
   yield takeEvery(GET_MOVING_PLAN_LIST, fetchGetMovingPlanList)
+  yield takeEvery(DOWNLOAD_MOVING_PLAN, fetchDownloadMovingPlan)
 }
 
 export default kpiSaga
