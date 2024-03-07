@@ -214,7 +214,6 @@ const RoleSetting = props => {
     if (appMessageAdd.status === "1" || appMessageAdd.status === "0") {
       messageToUpdate = appMessageAdd
       if (appMessageAdd.status === "1") {
-        debugger
         if (appAddDetailRole) {
           setAppDetailRole(true)
           setAppAddDetailRole(false)

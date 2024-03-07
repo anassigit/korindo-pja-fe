@@ -1645,7 +1645,6 @@ const EditInstructions = props => {
     const pages = [];
     const maxPages = 3;
 
-    debugger
     if (totalPages <= maxPages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);

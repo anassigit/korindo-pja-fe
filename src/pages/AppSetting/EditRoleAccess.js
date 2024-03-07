@@ -386,7 +386,6 @@ const EditRoleAccess = props => {
   }, [editRoleAccessFormik.values.menuId])
 
   useEffect(() => {
-    debugger
 
     editRoleAccessFormik.setFieldValue('groupListNotEmpty', groupListNotEmpty);
     if (editRoleAccessFormik.values.menuId !== selectedMaintainRoleAccess?.data?.result?.menuId) {
@@ -796,8 +795,6 @@ const EditRoleAccess = props => {
                       placeholder={"Select or type"}
                     />
 
-                    {console.log('editRoleAccessFormik.touched', editRoleAccessFormik.touched)}
-                    {console.log('editRoleAccessFormik.errors', editRoleAccessFormik.errors)}
                     {
                       editRoleAccessFormik.errors.groupId && editRoleAccessFormik.touched.groupId && (
                         <div style={{ color: '#f46a6a', width: '100%', marginTop: '0.25rem', fontSize: '80%', display: 'block' }}>{editRoleAccessFormik.errors.groupId}</div>
