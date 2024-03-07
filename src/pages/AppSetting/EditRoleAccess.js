@@ -52,6 +52,10 @@ const EditRoleAccess = props => {
     return state.settingReducer.respGetRoleAccess
   })
 
+  const newGroupList = useSelector(state => {
+    return state.settingReducer.respGetGroupListRoleAccess
+  })
+
 
   useEffect(() => {
 
@@ -82,15 +86,6 @@ const EditRoleAccess = props => {
 
       setOptionGroupList(uniqueGroups);
     }
-
-    // setOptionGroupList(selectedGroupList?.data?.list.map((group) => ({
-    //   value: group.groupId,
-    //   label: group.groupName,
-    //   groupStatus: group.groupStatus,
-    //   isDisabled: group.groupStatus === 'CANNOT',
-    // })))
-
-    /* useEffect field here */
 
   }, [selectedGroupList]);
 
@@ -327,7 +322,7 @@ const EditRoleAccess = props => {
     if (props.appEditDetailAccessRole) {
       editRoleAccessFormik.resetForm()
       setAppMenuSearchLov("")
-      setselectedMulti2('')
+      setselectedMulti2([])
       dispatch(
         getRoleAccess({
           roleAccessId: props.roleAccessId,
@@ -383,6 +378,97 @@ const EditRoleAccess = props => {
       }))
     }
   }, [selectedMaintainRoleAccess?.data])
+
+  useEffect(() => {
+    if (editRoleAccessFormik.values.menuId !== selectedMaintainRoleAccess?.data?.result?.menuId) {
+      dispatch(
+        getGroupListRoleAccess({
+          roleId: selectedMaintainRoleAccess?.data?.result?.roleId,
+          menuId: editRoleAccessFormik.values.menuId,
+        })
+      )
+      setselectedMulti2([])
+      setOptionGroupList([])
+      editRoleAccessFormik.setFieldValue('groupId', '')
+    } else {
+
+    }
+  }, [editRoleAccessFormik.values.menuId])
+
+  useEffect(() => {
+    if (editRoleAccessFormik.values.menuId !== selectedMaintainRoleAccess?.data?.result?.menuId) {
+
+      debugger
+      if (newGroupList.status === '1') {
+        const groupList = newGroupList?.data?.list;
+        if (groupList) {
+          const uniqueGroups = [];
+          const seenIds = new Set();
+
+
+          // const filteredGroupItem = Array.from(groupList).filter(
+          //   group => group
+          // )
+          groupList.forEach((group) => {
+            const id = group.groupId;
+            const name = group.groupName;
+            const status = group.groupStatus;
+
+            if (!seenIds.has(id)) {
+              seenIds.add(id);
+              uniqueGroups.push({
+                value: group.groupId,
+                label: group.groupName,
+                groupStatus: group.groupStatus,
+                isDisabled: group.groupStatus === 'CANNOT',
+              });
+            }
+          });
+
+          setOptionGroupList(uniqueGroups);
+        }
+      }
+
+    } else {
+      const groupList = selectedGroupList?.data?.groupList;
+      if (groupList) {
+        const uniqueGroups = [];
+        const seenIds = new Set();
+
+
+        // const filteredGroupItem = Array.from(groupList).filter(
+        //   group => group
+        // )
+        groupList.forEach((group) => {
+          const id = group.groupId;
+          const name = group.groupName;
+          const status = group.groupStatus;
+
+          if (!seenIds.has(id)) {
+            seenIds.add(id);
+            uniqueGroups.push({
+              value: group.groupId,
+              label: group.groupName,
+              groupStatus: group.groupStatus,
+              isDisabled: group.groupStatus === 'CANNOT',
+            });
+          }
+        });
+
+        setOptionGroupList(uniqueGroups);
+      }
+      setselectedMulti2(selectedMaintainRoleAccess?.data?.groupList.filter(item => item.groupStatus === 'ALREADY').map((item, index) => {
+
+        editRoleAccessFormik.setFieldValue('groupId', 'a')
+        return ({
+          value: item.groupId,
+          label: item.groupName,
+          groupStatus: item.groupStatus,
+          isDisabled: item.groupStatus === 'CANNOT',
+        })
+      }))
+    }
+  }, [newGroupList])
 
   const appLovMenuListColumns = [
     {
