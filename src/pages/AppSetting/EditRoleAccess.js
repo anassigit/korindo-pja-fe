@@ -448,7 +448,7 @@ const EditRoleAccess = props => {
 
         setOptionGroupList(uniqueGroups);
       }
-      setselectedMulti2(selectedMaintainRoleAccess?.data?.groupList.filter(item => item.groupStatus === 'ALREADY').map((item, index) => {
+      setselectedMulti2((selectedMaintainRoleAccess?.data?.groupList || []).filter(item => item.groupStatus === 'ALREADY').map((item, index) => {
 
         editRoleAccessFormik.setFieldValue('groupId', 'a')
         return ({

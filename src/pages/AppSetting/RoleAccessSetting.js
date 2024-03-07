@@ -308,20 +308,28 @@ const RoleAccessSetting = props => {
         </Button>
       </Container>
 
-      <AddRoleAccess
-        appMaintainRoleData={props.appMaintainRoleData}
-        appAddDetailRole={props.appAddDetailRole}
-        setAppAddDetailRole={props.setAppAddDetailRole}
-        setAppDetailRole={props.setAppDetailRole}
-      />
+      {
+        props.appAddDetailRole && (
+          <AddRoleAccess
+            appMaintainRoleData={props.appMaintainRoleData}
+            appAddDetailRole={props.appAddDetailRole}
+            setAppAddDetailRole={props.setAppAddDetailRole}
+            setAppDetailRole={props.setAppDetailRole}
+          />
+        )
+      }
 
-      <EditRoleAccess
-        appMaintainRoleData={props.appMaintainRoleData}
-        appEditDetailAccessRole={props.appEditDetailAccessRole}
-        setAppEditDetailAccessRole={props.setAppEditDetailAccessRole}
-        setAppDetailRole={props.setAppDetailRole}
-        roleAccessId={roleAccessId}
-      />
+      {
+        props.appEditDetailAccessRole && (
+          <EditRoleAccess
+            appMaintainRoleData={props.appMaintainRoleData}
+            appEditDetailAccessRole={props.appEditDetailAccessRole}
+            setAppEditDetailAccessRole={props.setAppEditDetailAccessRole}
+            setAppDetailRole={props.setAppDetailRole}
+            roleAccessId={roleAccessId}
+          />
+        )
+      }
 
       <ConfirmModal
         modal={modal}
