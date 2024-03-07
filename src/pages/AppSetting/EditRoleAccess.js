@@ -265,6 +265,8 @@ const EditRoleAccess = props => {
     dispatch(resetMessage())
   }, [dispatch])
 
+  const groupListNotEmpty = newGroupList?.data?.list?.length === 0;
+
   const editRoleAccessFormik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -282,7 +284,11 @@ const EditRoleAccess = props => {
       // rolroleAccessIdId: Yup.string().required("Required"),
       // roleId: Yup.string().required("Required"),
       menuId: Yup.string().required("Required"),
-      groupId: Yup.string().required("Required"),
+      groupId: Yup.string().when('groupListNotEmpty', {
+        is: false,
+        then: Yup.string().required("Required"),
+        otherwise: Yup.string()
+      }),
     }),
     onSubmit: values => {
       const groupIds = selectedMulti2.map(value => value.value);
@@ -299,22 +305,6 @@ const EditRoleAccess = props => {
           groupId: groupIds,
         })
       )
-
-      // selectedMulti2.forEach(value => {
-      //   dispatch(
-      //     editRoleAccess({
-      //       roleAccessId: values.roleAccessId,
-      //       roleId: values.roleId,
-      //       menuId: values.menuId,
-      //       bCreate: values.bCreate ? 1 : 0,
-      //       bRead: values.bRead ? 1 : 0,
-      //       bUpdate: values.bUpdate ? 1 : 0,
-      //       bPrint: values.bPrint ? 1 : 0,
-      //       bDelete: values.bDelete ? 1 : 0,
-      //       groupId: value.value,
-      //     })
-      //   );
-      // });
     },
   })
 
@@ -332,6 +322,7 @@ const EditRoleAccess = props => {
   }, [props.appEditDetailAccessRole])
 
   useEffect(() => {
+    editRoleAccessFormik.setFieldValue('groupListNotEmpty', groupListNotEmpty);
     if (selectedMaintainRoleAccess?.status === "1") {
       editRoleAccessFormik.setFieldValue(
         "roleAccessId",
@@ -366,15 +357,14 @@ const EditRoleAccess = props => {
         "bDelete",
         selectedMaintainRoleAccess.data.result?.bdelete === 1 ? true : false
       )
-      setselectedMulti2(selectedMaintainRoleAccess?.data?.groupList.filter(item => item.groupStatus === 'ALREADY').map((item, index) => {
-
-        editRoleAccessFormik.setFieldValue('groupId', 'a')
-        return ({
+      setselectedMulti2((selectedMaintainRoleAccess?.data?.groupList || []).filter(item => item.groupStatus === 'ALREADY').map((item, index) => {
+        editRoleAccessFormik.setFieldValue('groupId', 'a');
+        return {
           value: item.groupId,
           label: item.groupName,
           groupStatus: item.groupStatus,
           isDisabled: item.groupStatus === 'CANNOT',
-        })
+        }
       }))
     }
   }, [selectedMaintainRoleAccess?.data])
@@ -396,9 +386,11 @@ const EditRoleAccess = props => {
   }, [editRoleAccessFormik.values.menuId])
 
   useEffect(() => {
+    debugger
+
+    editRoleAccessFormik.setFieldValue('groupListNotEmpty', groupListNotEmpty);
     if (editRoleAccessFormik.values.menuId !== selectedMaintainRoleAccess?.data?.result?.menuId) {
 
-      debugger
       if (newGroupList.status === '1') {
         const groupList = newGroupList?.data?.list;
         if (groupList) {
@@ -775,7 +767,11 @@ const EditRoleAccess = props => {
                       }}
                     >
                       {"Group ID"}
-                      <span className="text-danger"> *</span>
+                      {
+                        !groupListNotEmpty && (
+                          <span className="text-danger"> *</span>
+                        )
+                      }
                     </Label>
                   </div>
                   <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -799,6 +795,9 @@ const EditRoleAccess = props => {
                       }}
                       placeholder={"Select or type"}
                     />
+
+                    {console.log('editRoleAccessFormik.touched', editRoleAccessFormik.touched)}
+                    {console.log('editRoleAccessFormik.errors', editRoleAccessFormik.errors)}
                     {
                       editRoleAccessFormik.errors.groupId && editRoleAccessFormik.touched.groupId && (
                         <div style={{ color: '#f46a6a', width: '100%', marginTop: '0.25rem', fontSize: '80%', display: 'block' }}>{editRoleAccessFormik.errors.groupId}</div>
