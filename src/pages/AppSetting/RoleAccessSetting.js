@@ -222,91 +222,113 @@ const RoleAccessSetting = props => {
     }
   }, [isYes])
 
+  useEffect(() => {
+
+    if (!props.appDetailRole) {
+      props.setAppRoleAccessTabelSearch({
+        page: 1,
+        limit: 10,
+        offset: 0,
+        sort: "",
+        order: "",
+        search: {
+          search: "",
+          roleId: "",
+        },
+      })
+    }
+    
+  }, [props.appDetailRole])
+
   return (
     <>
-      <Container
-        fluid="true"
-        style={{ display: props.appDetailRole ? "block" : "none" }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "30%",
-              gap: ".75vw",
-            }}
+      {
+        props.appDetailRole && (
+          <Container
+            fluid="true"
+            style={{ display: props.appDetailRole ? "block" : "none" }}
           >
-            <label className="col-sm-3" style={{ marginTop: "8px" }}>
-              {"Search"}
-            </label>
-            <div className="col-sm-5">
-              <input
-                type="search"
-                className="form-control"
-                onChange={e => props.setSearchVal2(e.target.value)}
-                onKeyDown={e =>
-                  e.key === "Enter" ? handleEnterKeyPress(e) : null
-                }
-              />
-            </div>
-            <div className="col-sm-3">
-              <button
-                className="btn btn-primary btn-block"
-                onClick={() => handleClick()}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "30%",
+                  gap: ".75vw",
+                }}
               >
-                {"Search"}
-              </button>
+                <label className="col-sm-3" style={{ marginTop: "8px" }}>
+                  {"Search"}
+                </label>
+                <div className="col-sm-5">
+                  <input
+                    type="search"
+                    className="form-control"
+                    onChange={e => props.setSearchVal2(e.target.value)}
+                    onKeyDown={e =>
+                      e.key === "Enter" ? handleEnterKeyPress(e) : null
+                    }
+                  />
+                </div>
+                <div className="col-sm-3">
+                  <button
+                    className="btn btn-primary btn-block"
+                    onClick={() => handleClick()}
+                  >
+                    {"Search"}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div
-          className="col-12 pb-2"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "12px",
-            justifyContent: "right",
-            alignItems: "center",
-          }}
-        >
-          <Button onClick={() => preAddApp()}>
-            <span className="mdi mdi-plus" /> {"Add New Role Access"}
-          </Button>
-        </div>
+            <div
+              className="col-12 pb-2"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "12px",
+                justifyContent: "right",
+                alignItems: "center",
+              }}
+            >
+              <Button onClick={() => preAddApp()}>
+                <span className="mdi mdi-plus" /> {"Add New Role Access"}
+              </Button>
+            </div>
 
-        {props.appDetailRole ? (
-          <TableCustom3
-            keyField={"roleId"}
-            columns={appRoleAccessColumn}
-            redukResponse={appRoleAccessListData}
-            appdata={
-              appRoleAccessListData?.data != null &&
-                appRoleAccessListData?.data.list
-                ? appRoleAccessListData?.data.list
-                : []
-            }
-            appdataTotal={
-              appRoleAccessListData?.data != null
-                ? appRoleAccessListData?.data.count
-                : 0
-            }
-            searchSet={props.setAppRoleAccessTabelSearch}
-            searchGet={props.appRoleAccessTabelSearch}
-            redukCall={getRoleAccessList}
-          />
-        ) : null}
-        <Button
-          className="btn btn-danger my-2"
-          onClick={() => {
-            props.setAppMaintainRole(true)
-            props.setAppDetailRole(false)
-          }}
-        >
-          <span className="mdi mdi-arrow-left" />
-          &nbsp;{"Back"}
-        </Button>
-      </Container>
+            {props.appDetailRole ? (
+              <TableCustom3
+                keyField={row => `${row.roleId}_${row.roleAccessId}`}
+                columns={appRoleAccessColumn}
+                redukResponse={appRoleAccessListData}
+                appdata={
+                  appRoleAccessListData?.data?.list != null &&
+                  appRoleAccessListData?.data?.list
+                    ? appRoleAccessListData?.data?.list
+                    : []
+                }
+                appdataTotal={
+                  appRoleAccessListData?.data != null
+                    ? appRoleAccessListData?.data.count
+                    : 0
+                }
+                searchSet={props.setAppRoleAccessTabelSearch}
+                searchGet={props.appRoleAccessTabelSearch}
+                redukCall={getRoleAccessList}
+              />
+            ) : null}
+            <Button
+              className="btn btn-danger my-2"
+              onClick={() => {
+                props.setAppMaintainRole(true)
+                props.setAppDetailRole(false)
+              }}
+            >
+              <span className="mdi mdi-arrow-left" />
+              &nbsp;{"Back"}
+            </Button>
+          </Container>
+        )
+      }
 
       {
         props.appAddDetailRole && (

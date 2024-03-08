@@ -19,7 +19,8 @@ import {
   Input,
   CardDeck,
   Button,
-  Spinner
+  Spinner,
+  InputGroup
 } from "reactstrap"
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch, respGetDownloadCheckFile, downloadCheckFile, getYear, getMonth, getMonthlyData } from "../../store/appFileManagement/actions"
@@ -36,16 +37,19 @@ import "../../assets/scss/custom.scss"
 //js file//
 import UploadMonthly from "./UploadMonthly";
 import FileTables from "./FileTables";
-import { min } from "lodash";
+
+import DatePicker from "react-datepicker";
+import moment from "moment";
+// import '../../assets/scss/custom/components/custom-datepicker.scss'
 
 const EnterMonthlyData = (props) => {
 
+  const dispatch = useDispatch();
+
   let langType = localStorage.getItem("I18N_LANGUAGE")
   const storedMonth = localStorage.getItem("selectedMonth");
-  const storedYear = localStorage.getItem("selectedYear");
 
   const [enterMonthlyDataSpinner, setEnterMonthlyDataSpinner] = useState(false);
-  const dispatch = useDispatch();
   const [monthlyDataPage, setMonthlyDataPage] = useState(true)
   const [monthlyDataMsg, setMonthlyDataMsg] = useState("")
 
@@ -59,8 +63,10 @@ const EnterMonthlyData = (props) => {
 
   const [detailModalMonthly, setDetailModalMonthly] = useState(false)
   const [idFolderDetail, setIdFolderDetail] = useState("")
-  const [currYearDetail, setCurrYearDetail] = useState("")
-  const [currMonthDetail, setCurrMonthDetail] = useState()
+
+  const [monthDate, setMonthDate] = useState("")
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [isButtonClicked, setIsButtonClicked] = useState(false)
 
   const [confirmModalDelete, setConfirmModalDelete] = useState(false)
   const [tempIdDel, setTempIdDel] = useState()
@@ -109,11 +115,6 @@ const EnterMonthlyData = (props) => {
   }, [])
 
   useEffect(() => {
-    dispatch(getMonth({ year: selectedYear }))
-    setEnterMonthlyDataSpinner(true)
-  }, [selectedYear])
-
-  useEffect(() => {
     if (dashboardData?.data?.month !== 'undefined') {
       setSelectedMonth(dashboardData?.data?.month)
     } else {
@@ -126,25 +127,37 @@ const EnterMonthlyData = (props) => {
   }, [dashboardData])
 
   useEffect(() => {
-    if (storedMonth && storedYear) {
-      dispatch(getMonthlyData({ month: storedMonth, year: storedYear }));
-    } else if (selectedMonth && selectedYear) {
-      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear, langType: langType }));
-      setEnterMonthlyDataSpinner(true);
+    debugger
+    let tempDate = new Date(monthDate ? monthDate : '')
+    let year = tempDate ? tempDate.getFullYear() : ''
+    let month = tempDate ? tempDate.getMonth() + 1 : ''
+    let monthDateString = ""
+    if (year && month) {
+      monthDateString = year + "-" + (month < 10 ? "0" : "") + month;
     }
-  }, [selectedMonth, selectedYear, langType]);
 
-  const handleYearChange = (e) => {
-    setSelectedYear(e.target.value);
-    localStorage.setItem("selectedYear", e.target.value);
-    localStorage.setItem("selectedMonth", selectedMonth);
-  };
+    if (storedMonth && monthDateString && monthDateString !== storedMonth) {
 
-  const handleMonthChange = (e) => {
-    setSelectedMonth(e.target.value);
-    localStorage.setItem("selectedYear", selectedYear);
-    localStorage.setItem("selectedMonth", e.target.value);
-  }
+      const formattedDate = storedMonth.replace(/-/g, '')
+      dispatch(getMonthlyData({ date: formattedDate }))
+      setMonthDate(new Date(storedMonth))
+
+    } else if (monthDate) {
+      if (monthDate instanceof Date) {
+        const tempDate = `${monthDate.getFullYear()}-${(monthDate.getMonth() + 1).toString().padStart(2, '0')}`
+        const formattedDate = tempDate.replace(/-/g, '')
+        dispatch(getMonthlyData({ date: formattedDate }))
+      } else {
+        const formattedDate = monthDate.replace(/-/g, '')
+        dispatch(getMonthlyData({ date: formattedDate }))
+
+      }
+      setEnterMonthlyDataSpinner(true);
+
+    } else if (storedMonth && storedMonth !== 'null') {
+      setMonthDate(new Date(storedMonth))
+    }
+  }, [monthDate, langType]);
 
   const toggleUploadModalMonthly = (folder_id) => {
     setUploadModalMonthly(!uploadModalMonthly)
@@ -189,7 +202,9 @@ const EnterMonthlyData = (props) => {
   useEffect(() => {
     if (msgDeleteFile?.status == "1") {
       setMonthlyDataMsg(msgDeleteFile)
-      dispatch(getMonthlyData({ month: selectedMonth, year: selectedYear }))
+      const formattedDate = monthDate.replace(/-/g, '')
+
+      dispatch(getMonthlyData({ date: formattedDate }))
       setIsYes(!isYes)
       setEnterMonthlyDataSpinner(false);
     }
@@ -233,45 +248,41 @@ const EnterMonthlyData = (props) => {
                 <Row className="mb-2">
                   <Col sm="12">
                     <Row className="mb-1">
-                      <Col>
-                        <input
-                          hidden
-                          type="text"
-                          className="form-control"
-                          placeholder={props.t('Search')}
-                          onChange={handleSearchChange}
-                        />
-                      </Col>
-                      <Col sm="1" className="d-flex justify-content-end">
-                        <Input
-                          name="year"
-                          className="year"
-                          type="select"
-                          value={selectedYear}
-                          onChange={handleYearChange}
-                        >
-                          {yearData?.data?.yearList.map((value, key) => (
-                            <option key={key} value={value}>
-                              {value}
-                            </option>
-                          ))}
-                        </Input>
-                      </Col>
-                      <Col sm="1" className="d-flex justify-content-end">
-                        <Input
-                          name="month"
-                          className="month"
-                          type="select"
-                          value={selectedMonth}
-                          onChange={handleMonthChange}
-                        >
-                          {months.map((value, key) => (
-                            <option key={key} value={value}>
-                              {value}
-                            </option>
-                          ))}
-                        </Input>
-                      </Col>
+                      <InputGroup style={{ display: 'flex', justifyContent: 'right' }} className="d-flex">
+                        <div style={{ width: '150px' }}>
+                          <DatePicker
+                            onClickOutside={() => {
+                              setShowDatePicker(false)
+                              setIsButtonClicked(false)
+                            }}
+                            onInputClick={() => {
+                              setShowDatePicker(!showDatePicker)
+                              setIsButtonClicked(false)
+                            }}
+                            open={showDatePicker}
+                            className="form-control"
+                            showMonthYearPicker
+                            dateFormat="yyyy-MM"
+                            selected={monthDate ? moment(monthDate, 'yyyy-MM').toDate() : null}
+                            onChange={(date) => {
+                              localStorage.setItem("selectedMonth", date ? moment(date).format('yyyy-MM') : null)
+                              setMonthDate(date ? moment(date).format('yyyy-MM') : null)
+                            }}
+                            onKeyDown={(e) => {
+                              e.preventDefault()
+                            }}
+                            isClearable
+                          />
+                        </div>
+                        <Button onClick={(e) => {
+                          if (!isButtonClicked) {
+                            setShowDatePicker(!showDatePicker);
+                            setIsButtonClicked(true)
+                          }
+                        }}>
+                          <span className="mdi mdi-calendar" />
+                        </Button>
+                      </InputGroup>
                     </Row>
                   </Col>
                 </Row>
@@ -374,7 +385,7 @@ const EnterMonthlyData = (props) => {
                                           ></span> : null}
                                         </div>
                                         <div
-                                          id={`fileName_${index}_${i}`} // Unique ID for each tooltip
+                                          id={`fileName_${index}_${i}`}
                                           style={{
                                             width: '100%',
                                             fontSize: "12px",

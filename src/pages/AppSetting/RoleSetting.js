@@ -376,28 +376,24 @@ const RoleSetting = props => {
             setLoadingSpinner={setLoadingSpinner}
           />
 
-          {
-            appDetailRole && (
-              <RoleAccessSetting
-                appMaintainRoleData={appMaintainRoleData}
-                appDetailRole={appDetailRole}
-                setAppMaintainRole={setAppMaintainRole}
-                setAppDetailRole={setAppDetailRole}
-                appAddDetailRole={appAddDetailRole}
-                setAppAddDetailRole={setAppAddDetailRole}
-                appEditDetailRole={appEditDetailRole}
-                setAppEditDetailRole={setAppEditDetailRole}
-                appRoleAccessTabelSearch={appRoleAccessTabelSearch}
-                setAppRoleAccessTabelSearch={setAppRoleAccessTabelSearch}
-                appEditDetailAccessRole={appEditDetailAccessRole}
-                setAppEditDetailAccessRole={setAppEditDetailAccessRole}
-                searchVal2={searchVal2}
-                setSearchVal2={setSearchVal2}
-                appMaintainGroupData={appMaintainGroupIdData}
-                setLoadingSpinner={setLoadingSpinner}
-              />
-            )
-          }
+          <RoleAccessSetting
+            appMaintainRoleData={appMaintainRoleData}
+            appDetailRole={appDetailRole}
+            setAppMaintainRole={setAppMaintainRole}
+            setAppDetailRole={setAppDetailRole}
+            appAddDetailRole={appAddDetailRole}
+            setAppAddDetailRole={setAppAddDetailRole}
+            appEditDetailRole={appEditDetailRole}
+            setAppEditDetailRole={setAppEditDetailRole}
+            appRoleAccessTabelSearch={appRoleAccessTabelSearch}
+            setAppRoleAccessTabelSearch={setAppRoleAccessTabelSearch}
+            appEditDetailAccessRole={appEditDetailAccessRole}
+            setAppEditDetailAccessRole={setAppEditDetailAccessRole}
+            searchVal2={searchVal2}
+            setSearchVal2={setSearchVal2}
+            appMaintainGroupData={appMaintainGroupIdData}
+            setLoadingSpinner={setLoadingSpinner}
+          />
 
           <ConfirmModal
             modal={modal}
