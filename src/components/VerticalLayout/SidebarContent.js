@@ -163,6 +163,7 @@ const SidebarContent = props => {
                         ReactSession.remove('collapser')
                         ReactSession.remove('offset')
                         ReactSession.remove('limit')
+                        localStorage.removeItem("selectedMonth")
                     }}
                     href={item.menuPath ? `/${item.menuPath}` : null}
                     className={item.childList || item.menuId === 5 ? "has-arrow" : null}
