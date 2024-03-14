@@ -137,7 +137,6 @@ const EnterMonthlyData = (props) => {
       } else {
         const formattedDate = dateState.replace(/-/g, '')
         dispatch(getMonthlyData({ date: formattedDate }))
-
       }
       setEnterMonthlyDataSpinner(true);
 

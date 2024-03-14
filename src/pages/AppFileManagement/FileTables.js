@@ -52,14 +52,13 @@ const FileTables = (props) => {
     })
 
     useEffect(() => {
-        if (props.dateState instanceof Date) {
+        if (props.dateState && props.dateState instanceof Date) {
             const tempDate = `${props.dateState.getFullYear()}-${(props.dateState.getMonth() + 1).toString().padStart(2, '0')}`
             const formattedDate = tempDate.replace(/-/g, '')
             dispatch(getMonthlyData({ date: formattedDate }))
-        } else {
+        } else if (props.dateState) {
             const formattedDate = props.dateState.replace(/-/g, '')
             dispatch(getMonthlyData({ date: formattedDate }))
-
         }
     }, [props.dateState])
 
@@ -147,10 +146,11 @@ const FileTables = (props) => {
                                         myfiles.num === props.idFolderDetail ? (
                                             myfiles.fileList.map((item, key) => {
                                                 const fileExtension = item.name.slice(item.name.lastIndexOf(".") + 1).toLowerCase();
-                                                const allowedExtensions = ["jpg", "jpeg", "gif", "png", "pdf"];
+                                                const allowedExtensions = ["jpg", "jpeg", "gif", "png"];
                                                 let icon = unknown;
                                                 let action;
 
+                                                debugger
                                                 if (allowedExtensions.includes(fileExtension)) {
                                                     icon = new URL(item.url);
                                                     action = () => handlePreview(item.url);
