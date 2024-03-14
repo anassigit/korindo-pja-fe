@@ -1754,6 +1754,35 @@ const FileManagement = (props) => {
                                         </div>
                                       )}
                                     </div>
+                                    {
+                                      myfiles.path && (
+                                        <div
+                                          style={{
+                                            width: "100%",
+                                            display: "flex",
+                                            justifyContent: 'center',
+                                          }}
+                                        >
+                                          <div style={{
+                                            position: "absolute",
+                                            width: '75%',
+                                            bottom:'-2px',
+                                            textAlign: 'center',
+                                            direction: 'rtl',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            fontSize: '12px',
+                                            padding: '8px',
+                                            borderRadius: '5%',
+                                            backgroundColor: 'rgb(239, 242, 247)',
+                                          }}>
+                                            {myfiles.path}
+                                            {/* {`.../${myfiles.path?.split('/').pop()}`} */}
+                                          </div>
+                                        </div>
+                                      )
+                                    }
                                   </CardBody>
                                 </Card>
 
