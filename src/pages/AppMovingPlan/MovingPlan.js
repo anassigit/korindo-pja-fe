@@ -42,6 +42,8 @@ const MovingPlan = (props) => {
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedCompanyCode, setselectedCompanyCode] = useState("")
 
+    const datePickerRef = useRef(null);
+
     useEffect(() => {
         setLoadingSpinner(true)
         dispatch(getCompanyCodeList())
@@ -485,11 +487,23 @@ const MovingPlan = (props) => {
 
     const currentYear = new Date().getFullYear();
 
-    // Generate years from current year to 10 years in the future
     const years = [];
-    for (let year = currentYear; year <= currentYear + 10; year++) {
+    for (let year = 2017; year <= currentYear; year++) {
         years.push(year);
     }
+
+    const renderCustomHeader = ({ date }) => (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '10px' }}>
+            <div style={{
+                marginTop: 0,
+                color: "#000",
+                fontWeight: "bold",
+                fontSize: "0.944rem"
+            }}
+            >{date.getFullYear()}
+            </div>
+        </div >
+    );
 
     return (
         <RootPageCustom msgStateGet={appMovingPlanMsg} msgStateSet={setappMovingPlanMsg}
@@ -531,48 +545,44 @@ const MovingPlan = (props) => {
                                             </option>
                                         )}
                                     </Input>
-                                    <InputGroup
-                                        onClick={() => {
-                                            setIsOpen(!isOpen)
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            width: '8vw',
+                                            position: 'relative'
                                         }}
-                                        style={{ display: 'flex', flexDirection: 'row', width: 'auto' }}
+                                        className="custom-yearpicker"
                                     >
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                width: '8vw',
+                                        <ReactDatePicker
+                                            ref={datePickerRef}
+                                            className={`form-control`}
+                                            selected={selectedYear ? new Date(selectedYear) : ''}
+                                            onChange={(selectedDate) => {
+                                                setSelectedYear(selectedDate)
+                                            }}
+                                            maxDate={new Date()}
+                                            dateFormat="yyyy"
+                                            showYearPicker
+                                            yearItemNumber={years.length}
+                                            yearDropdownItem={years.map(year => (
+                                                <option key={year} value={year}>
+                                                    {year}
+                                                </option>
+                                            ))}
+                                        />
+                                        <label
+                                            style={{ position: 'absolute', right: '10px', top: '1px' }}
+                                            onClick={() => {
+                                                if (datePickerRef.current) {
+                                                    datePickerRef.current.setOpen(true);
+                                                }
                                             }}
                                         >
-                                            <ReactDatePicker
-                                                className={`form-control`}
-                                                selected={selectedYear ? new Date(selectedYear) : ''}
-                                                onChange={(selectedDate) => {
-                                                    setSelectedYear(selectedDate)
-                                                }}
-                                                open={isOpen}
-                                                maxDate={new Date()}
-                                                dateFormat="yyyy"
-                                                showYearPicker
-                                                // yearDropdownItem={years} 
-                                                showIcon={true}
-                                                icon={
-                                                    <span
-                                                        className="fas fa-calendar text-dark"
-                                                        onClick={() => {
-                                                            setIsOpen(!isOpen)
-                                                        }}
-                                                        style={{ fontSize: '16px', position: 'absolute', top: '25%', right: '10%' }}
-                                                    />
-                                                }
-                                                toggleCalendarOnIconClick
-                                                onClickOutside={() => {
-                                                    setIsOpen(!isOpen)
-                                                }}
-                                            />
-                                        </div>
-                                    </InputGroup>
+                                            <span className="mdi mdi-calendar" style={{ fontSize: '24px' }} />
+                                        </label>
+                                    </div>
                                     <Button
                                         className="btn btn-primary" onClick={() => handleSearch()}>
                                         {"Search"}
