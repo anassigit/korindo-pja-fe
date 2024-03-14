@@ -483,6 +483,14 @@ const MovingPlan = (props) => {
         depth: PropTypes.any,
     }
 
+    const currentYear = new Date().getFullYear();
+
+    // Generate years from current year to 10 years in the future
+    const years = [];
+    for (let year = currentYear; year <= currentYear + 10; year++) {
+        years.push(year);
+    }
+
     return (
         <RootPageCustom msgStateGet={appMovingPlanMsg} msgStateSet={setappMovingPlanMsg}
             componentJsx={
@@ -544,22 +552,26 @@ const MovingPlan = (props) => {
                                                     setSelectedYear(selectedDate)
                                                 }}
                                                 open={isOpen}
+                                                maxDate={new Date()}
                                                 dateFormat="yyyy"
                                                 showYearPicker
+                                                // yearDropdownItem={years} 
+                                                showIcon={true}
+                                                icon={
+                                                    <span
+                                                        className="fas fa-calendar text-dark"
+                                                        onClick={() => {
+                                                            setIsOpen(!isOpen)
+                                                        }}
+                                                        style={{ fontSize: '16px', position: 'absolute', top: '25%', right: '10%' }}
+                                                    />
+                                                }
+                                                toggleCalendarOnIconClick
                                                 onClickOutside={() => {
                                                     setIsOpen(!isOpen)
                                                 }}
                                             />
                                         </div>
-                                        <span
-                                            className="fas fa-calendar text-dark"
-                                            onClick={() => {
-                                                setIsOpen(!isOpen)
-                                            }}
-                                            style={{ fontSize: '16px', position: 'absolute', top: '25%', right: '10%' }}
-                                        >
-
-                                        </span>
                                     </InputGroup>
                                     <Button
                                         className="btn btn-primary" onClick={() => handleSearch()}>
