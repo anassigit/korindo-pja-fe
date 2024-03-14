@@ -52,8 +52,16 @@ const FileTables = (props) => {
     })
 
     useEffect(() => {
-        dispatch(getMonthlyData({ month: props.currMonth, year: props.currYear }))
-    }, [props.currMonth, props.currYear])
+        if (props.dateState instanceof Date) {
+            const tempDate = `${props.dateState.getFullYear()}-${(props.dateState.getMonth() + 1).toString().padStart(2, '0')}`
+            const formattedDate = tempDate.replace(/-/g, '')
+            dispatch(getMonthlyData({ date: formattedDate }))
+        } else {
+            const formattedDate = props.dateState.replace(/-/g, '')
+            dispatch(getMonthlyData({ date: formattedDate }))
+
+        }
+    }, [props.dateState])
 
 
     useEffect(() => {
@@ -65,7 +73,15 @@ const FileTables = (props) => {
     const closeButton = () => {
 
         props.toggle();
-        dispatch(getMonthlyData({ month: props.currMonth, year: props.currYear }))
+        if (props.dateState instanceof Date) {
+            const tempDate = `${props.dateState.getFullYear()}-${(props.dateState.getMonth() + 1).toString().padStart(2, '0')}`
+            const formattedDate = tempDate.replace(/-/g, '')
+            dispatch(getMonthlyData({ date: formattedDate }))
+        } else {
+            const formattedDate = props.dateState.replace(/-/g, '')
+            dispatch(getMonthlyData({ date: formattedDate }))
+
+        }
 
     }
 
@@ -224,8 +240,7 @@ FileTables.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idFolderDetail: PropTypes.any,
-    currMonth: PropTypes.any,
-    currYear: PropTypes.any,
+    dateState: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

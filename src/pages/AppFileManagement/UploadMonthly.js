@@ -100,7 +100,15 @@ const UploadMonthly = (props) => {
             SetSelectedFile([])
 
             // dispatch(getSelectFile({'folder_num': props.idNowLoc}))
-            dispatch(getMonthlyData({ month: props.currMonth, year: props.currYear }))
+            if (props.dateState instanceof Date) {
+                const tempDate = `${props.dateState.getFullYear()}-${(props.dateState.getMonth() + 1).toString().padStart(2, '0')}`
+                const formattedDate = tempDate.replace(/-/g, '')
+                dispatch(getMonthlyData({ date: formattedDate }))
+            } else {
+                const formattedDate = props.dateState.replace(/-/g, '')
+                dispatch(getMonthlyData({ date: formattedDate }))
+
+            }
 
         }
     }
@@ -270,8 +278,7 @@ UploadMonthly.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     idFolderUpload: PropTypes.any,
-    currMonth: PropTypes.any,
-    currYear: PropTypes.any,
+    dateState: PropTypes.any,
     setEnterMonthlyDataSpinner: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any

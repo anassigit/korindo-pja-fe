@@ -53,18 +53,13 @@ const EnterMonthlyData = (props) => {
   const [monthlyDataPage, setMonthlyDataPage] = useState(true)
   const [monthlyDataMsg, setMonthlyDataMsg] = useState("")
 
-  const [selectedYear, setSelectedYear] = useState("")
-  const [selectedMonth, setSelectedMonth] = useState()
-
   const [uploadModalMonthly, setUploadModalMonthly] = useState(false)
   const [idFolderUpload, setIdFolderUpload] = useState("")
-  const [currYear, setCurrYear] = useState("")
-  const [currMonth, setCurrMonth] = useState()
 
   const [detailModalMonthly, setDetailModalMonthly] = useState(false)
   const [idFolderDetail, setIdFolderDetail] = useState("")
 
-  const [monthDate, setMonthDate] = useState("")
+  const [dateState, setDateState] = useState("")
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [isButtonClicked, setIsButtonClicked] = useState(false)
 
@@ -109,26 +104,18 @@ const EnterMonthlyData = (props) => {
   }
 
   useEffect(() => {
-    dispatch(getYear())
     dispatch(getMonthlyData({}))
     setEnterMonthlyDataSpinner(true)
   }, [])
 
   useEffect(() => {
-    if (dashboardData?.data?.month !== 'undefined') {
-      setSelectedMonth(dashboardData?.data?.month)
-    } else {
-      setSelectedMonth(null)
-    }
-    setSelectedYear(dashboardData?.data?.year)
     if (dashboardData.status === '1') {
       setEnterMonthlyDataSpinner(false)
     }
   }, [dashboardData])
 
   useEffect(() => {
-    debugger
-    let tempDate = new Date(monthDate ? monthDate : '')
+    let tempDate = new Date(dateState ? dateState : '')
     let year = tempDate ? tempDate.getFullYear() : ''
     let month = tempDate ? tempDate.getMonth() + 1 : ''
     let monthDateString = ""
@@ -140,38 +127,34 @@ const EnterMonthlyData = (props) => {
 
       const formattedDate = storedMonth.replace(/-/g, '')
       dispatch(getMonthlyData({ date: formattedDate }))
-      setMonthDate(new Date(storedMonth))
+      setDateState(new Date(storedMonth))
 
-    } else if (monthDate) {
-      if (monthDate instanceof Date) {
-        const tempDate = `${monthDate.getFullYear()}-${(monthDate.getMonth() + 1).toString().padStart(2, '0')}`
+    } else if (dateState) {
+      if (dateState instanceof Date) {
+        const tempDate = `${dateState.getFullYear()}-${(dateState.getMonth() + 1).toString().padStart(2, '0')}`
         const formattedDate = tempDate.replace(/-/g, '')
         dispatch(getMonthlyData({ date: formattedDate }))
       } else {
-        const formattedDate = monthDate.replace(/-/g, '')
+        const formattedDate = dateState.replace(/-/g, '')
         dispatch(getMonthlyData({ date: formattedDate }))
 
       }
       setEnterMonthlyDataSpinner(true);
 
     } else if (storedMonth && storedMonth !== 'null') {
-      setMonthDate(new Date(storedMonth))
+      setDateState(new Date(storedMonth))
     }
-  }, [monthDate, langType]);
+  }, [dateState, langType]);
 
   const toggleUploadModalMonthly = (folder_id) => {
     setUploadModalMonthly(!uploadModalMonthly)
     setIdFolderUpload(folder_id)
-    setCurrMonth(selectedMonth)
-    setCurrYear(selectedYear)
 
   }
 
   const toggleDetailModalMonthly = (folder_id) => {
     setDetailModalMonthly(!detailModalMonthly)
     setIdFolderDetail(folder_id)
-    setCurrMonth(selectedMonth)
-    setCurrYear(selectedYear)
 
   }
 
@@ -202,7 +185,7 @@ const EnterMonthlyData = (props) => {
   useEffect(() => {
     if (msgDeleteFile?.status == "1") {
       setMonthlyDataMsg(msgDeleteFile)
-      const formattedDate = monthDate.replace(/-/g, '')
+      const formattedDate = dateState.replace(/-/g, '')
 
       dispatch(getMonthlyData({ date: formattedDate }))
       setIsYes(!isYes)
@@ -226,17 +209,15 @@ const EnterMonthlyData = (props) => {
             modal={uploadModalMonthly}
             toggle={toggleUploadModalMonthly}
             idFolderUpload={idFolderUpload}
-            currMonth={currMonth}
-            currYear={currYear}
             setEnterMonthlyDataSpinner={setEnterMonthlyDataSpinner}
+            dateState={dateState}
           />
 
           <FileTables
             modal={detailModalMonthly}
             toggle={toggleDetailModalMonthly}
             idFolderDetail={idFolderDetail}
-            currMonth={currMonth}
-            currYear={currYear}
+            dateState={dateState}
           />
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={() => setMonthlyDataMsg('')} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
@@ -260,18 +241,32 @@ const EnterMonthlyData = (props) => {
                               setIsButtonClicked(false)
                             }}
                             open={showDatePicker}
-                            className="form-control"
+                            className="form-control custom-reset-date"
                             showMonthYearPicker
                             dateFormat="yyyy-MM"
-                            selected={monthDate ? moment(monthDate, 'yyyy-MM').toDate() : null}
+                            selected={dateState ? moment(dateState, 'yyyy-MM').toDate() : new Date()}
                             onChange={(date) => {
                               localStorage.setItem("selectedMonth", date ? moment(date).format('yyyy-MM') : null)
-                              setMonthDate(date ? moment(date).format('yyyy-MM') : null)
+                              setDateState(date ? moment(date).format('yyyy-MM') : null)
                             }}
                             onKeyDown={(e) => {
                               e.preventDefault()
                             }}
                             isClearable
+                            customInput={
+                              <>
+                                <div className="react-datepicker__input-container">
+                                  <input
+                                    type="text"
+                                    className="form-control custom-reset-date"
+                                    value={dateState ? moment(dateState).format('YYYY-MM') : moment().format('YYYY-MM')}
+                                  />
+                                  {/* <button type="button" className="react-datepicker__close-icon" aria-label="Close" tabIndex="-1">
+                                    Clear
+                                  </button> */}
+                                </div>
+                              </>
+                            }
                           />
                         </div>
                         <Button onClick={(e) => {
