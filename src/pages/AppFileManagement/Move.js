@@ -194,7 +194,7 @@ const Move = (props) => {
 
     return (
 
-        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static" keyboard={false}>
+        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static">
 
             <MsgModal
                 modal={moveMsgModal}

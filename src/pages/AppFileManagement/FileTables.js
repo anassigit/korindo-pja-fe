@@ -17,7 +17,7 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import MsgModal from 'components/Common/MsgModal';
-import { resetMessage, getMonthlyData } from '../../store/appFileManagement/actions';
+import { resetMessage, getMonthlyData, deleteFileFolder } from '../../store/appFileManagement/actions';
 import { withTranslation } from "react-i18next"
 import { downloadFileFolder } from "helpers/backend_helper";
 
@@ -27,6 +27,7 @@ import ppt from '../../assets/images/file_management/ppt.png'
 import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
 import unknown from '../../assets/images/file_management/unknown.png'
+import ConfirmModal from 'components/Common/ConfirmModal';
 
 const FileTables = (props) => {
 
@@ -38,10 +39,9 @@ const FileTables = (props) => {
     const [detailContentModal, setDetailContentModal] = useState("")
     const [successClose, setSuccessClose] = useState(false)
 
-    const [numF, setNumF] = useState("")
-    const [numP, setNumP] = useState(0)
-    const [nem, setNem] = useState("")
-
+    const [confirmModalDelete, setConfirmModalDelete] = useState(false)
+    const [tempIdDel, setTempIdDel] = useState()
+    const [isYes, setIsYes] = useState(false)
 
     const dashboardData = useSelector(state => {
         return state.fileManagementReducer.respGetMonthlyData;
@@ -68,6 +68,21 @@ const FileTables = (props) => {
     }, [dispatch])
 
 
+    useEffect(() => {
+        if (isYes && tempIdDel) {
+            let num = null
+            num = tempIdDel
+            num.toString()
+            props.setEnterMonthlyDataSpinner(true);
+            dispatch(deleteFileFolder(
+                {
+                    'file_num': num
+                }
+            ))
+            props.setMonthlyDataMsg('')
+            setIsYes(false)
+        }
+    }, [isYes])
 
     const closeButton = () => {
 
@@ -79,7 +94,6 @@ const FileTables = (props) => {
         } else {
             const formattedDate = props.dateState.replace(/-/g, '')
             dispatch(getMonthlyData({ date: formattedDate }))
-
         }
 
     }
@@ -110,11 +124,16 @@ const FileTables = (props) => {
         }
     };
 
-
+    const confirmToggleDelete = (e) => {
+        if (e) {
+            setTempIdDel(e)
+        }
+        setConfirmModalDelete(!confirmModalDelete)
+    }
 
     return (
 
-        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static" keyboard={false}>
+        <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static">
 
             {/* <MsgModal
                 modal={detailMsgModal}
@@ -122,6 +141,13 @@ const FileTables = (props) => {
                 message={detailContentModal}
                 successClose={successClose}
             /> */}
+
+            <ConfirmModal
+                modal={confirmModalDelete}
+                toggle={confirmToggleDelete}
+                message={props.t("Are you sure to delete this?")}
+                setIsYes={setIsYes}
+            />
 
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -134,11 +160,12 @@ const FileTables = (props) => {
                     <Row>
 
                         <div >
-                            <table className="table table-sm">
+                            <table className="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">No.</th>
                                         <th scope="col">{props.t("Files name")}</th>
+                                        <th scope="col">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -150,7 +177,6 @@ const FileTables = (props) => {
                                                 let icon = unknown;
                                                 let action;
 
-                                                debugger
                                                 if (allowedExtensions.includes(fileExtension)) {
                                                     icon = new URL(item.url);
                                                     action = () => handlePreview(item.url);
@@ -170,7 +196,7 @@ const FileTables = (props) => {
                                                     icon = txt;
                                                     action = () => handlePreview(item.url);
                                                 } else {
-                                                    action = () =>  window.open(new URL(item.url));
+                                                    action = () => window.open(new URL(item.url));
                                                 }
 
                                                 return (
@@ -178,7 +204,7 @@ const FileTables = (props) => {
                                                         <td scope="row">{key + 1}</td>
                                                         <td
                                                             style={{
-                                                                maxWidth: "400px",
+                                                                maxWidth: "350px",
                                                                 whiteSpace: "nowrap",
                                                                 overflow: "hidden",
                                                                 textOverflow: "ellipsis"
@@ -199,6 +225,16 @@ const FileTables = (props) => {
                                                                     {item.name}
                                                                 </UncontrolledTooltip>
                                                             </>
+                                                        </td>
+                                                        <td style={{ textAlign: 'center' }}>
+                                                            <span
+                                                                className='mdi mdi-delete'
+                                                                style={{
+                                                                    color: "#B4B4B8",
+                                                                    fontSize: '18px',
+                                                                }}
+                                                                onClick={() => confirmToggleDelete(item?.num)}
+                                                            />
                                                         </td>
                                                     </tr>
                                                 );
@@ -241,6 +277,8 @@ FileTables.propTypes = {
     toggle: PropTypes.any,
     idFolderDetail: PropTypes.any,
     dateState: PropTypes.any,
+    setMonthlyDataMsg: PropTypes.any,
+    setEnterMonthlyDataSpinner: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 };

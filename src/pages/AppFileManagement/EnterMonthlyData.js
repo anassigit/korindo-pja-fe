@@ -34,6 +34,15 @@ import MsgModal from 'components/Common/MsgModal';
 import "../../assets/scss/contextmenu.scss"
 import "../../assets/scss/custom.scss"
 
+//images//
+
+import doc from '../../assets/images/file_management/doc.png'
+import xls from '../../assets/images/file_management/xls.png'
+import ppt from '../../assets/images/file_management/ppt.png'
+import pdf from '../../assets/images/file_management/pdf.png'
+import txt from '../../assets/images/file_management/txt.png'
+import media from '../../assets/images/file_management/media.png'
+
 //js file//
 import UploadMonthly from "./UploadMonthly";
 import FileTables from "./FileTables";
@@ -119,15 +128,24 @@ const EnterMonthlyData = (props) => {
     let year = tempDate ? tempDate.getFullYear() : ''
     let month = tempDate ? tempDate.getMonth() + 1 : ''
     let monthDateString = ""
+
     if (year && month) {
-      monthDateString = year + "-" + (month < 10 ? "0" : "") + month;
+      monthDateString = year + "-" + (month < 10 ? "0" : "") + month
     }
 
-    if (storedMonth && monthDateString && monthDateString !== storedMonth) {
+    const dateObj = new Date(storedMonth)
+    const yearStored = dateObj.getFullYear()
+    const monthStored = (dateObj.getMonth() + 1).toString().padStart(2, '0')
 
-      const formattedDate = storedMonth.replace(/-/g, '')
+    const formattedStoredMonth = `${yearStored}-${monthStored}`
+
+    const dateFormatRegex = /^\d{4}-\d{2}$/;
+
+    if (formattedStoredMonth && monthDateString && monthDateString !== formattedStoredMonth) {
+
+      const formattedDate = monthDateString.replace(/-/g, '')
       dispatch(getMonthlyData({ date: formattedDate }))
-      setDateState(new Date(storedMonth))
+      setDateState(new Date(monthDateString))
 
     } else if (dateState) {
       if (dateState instanceof Date) {
@@ -135,13 +153,18 @@ const EnterMonthlyData = (props) => {
         const formattedDate = tempDate.replace(/-/g, '')
         dispatch(getMonthlyData({ date: formattedDate }))
       } else {
+        debugger
         const formattedDate = dateState.replace(/-/g, '')
         dispatch(getMonthlyData({ date: formattedDate }))
       }
       setEnterMonthlyDataSpinner(true);
 
-    } else if (storedMonth && storedMonth !== 'null') {
-      setDateState(new Date(storedMonth))
+    } else if (formattedStoredMonth && formattedStoredMonth !== 'null' && dateFormatRegex.test(formattedStoredMonth)) {
+      setDateState(new Date(formattedStoredMonth))
+      if (typeof formattedStoredMonth === 'string') {
+        const formattedDate = formattedStoredMonth.replace(/-/g, '')
+        dispatch(getMonthlyData({ date: formattedDate }))
+      }
     }
   }, [dateState, langType]);
 
@@ -166,7 +189,7 @@ const EnterMonthlyData = (props) => {
   }
 
   useEffect(() => {
-    if (isYes) {
+    if (isYes && tempIdDel) {
       let num = null
       num = tempIdDel
       num.toString()
@@ -184,9 +207,15 @@ const EnterMonthlyData = (props) => {
   useEffect(() => {
     if (msgDeleteFile?.status == "1") {
       setMonthlyDataMsg(msgDeleteFile)
-      const formattedDate = dateState.replace(/-/g, '')
 
-      dispatch(getMonthlyData({ date: formattedDate }))
+      if (dateState instanceof Date) {
+        const tempDate = `${dateState.getFullYear()}-${(dateState.getMonth() + 1).toString().padStart(2, '0')}`
+        const formattedDate = tempDate.replace(/-/g, '')
+        dispatch(getMonthlyData({ date: formattedDate }))
+    } else {
+        const formattedDate = dateState.replace(/-/g, '')
+        dispatch(getMonthlyData({ date: formattedDate }))
+    }
       setIsYes(!isYes)
       setEnterMonthlyDataSpinner(false);
     }
@@ -194,24 +223,30 @@ const EnterMonthlyData = (props) => {
 
   const getFileIconClass = (fileName) => {
     const fileExtensions = {
-      images: [".jpg", ".png", ".img", ".gif", ".mp4", ".3gp", ".mov", ".mkv", ".webm", ".avi", ".MOV", ".ogg", ".wmv"],
+      media: [".jpg", ".png", ".img", ".gif", ".mp4", ".3gp", ".mov", ".mkv", ".webm", ".avi", ".MOV", ".ogg", ".wmv"],
       pdf: [".pdf"],
-      documents: [".doc", ".docx", ".txt", ".rtf", ".odt", ".html", ".xml", ".csv", ".xls", ".xlsx", ".ppt", ".pptx", ".odp"],
-      excel: [".xls", ".xlsx"]
+      documents: [".doc", ".docx", ".txt", ".rtf", ".odt", ".html", ".xml", ".csv", ".xls", ".xlsx", ".odp"],
+      excel: [".xls", ".xlsx"],
+      powerpoint: [".ppt", ".pptx"],
+      txt: [".txt"],
     };
 
     const extension = fileName.toLowerCase().substring(fileName.lastIndexOf('.'))
-    
-    if (fileExtensions.images.includes(extension)) {
-      return "mdi-file-image"
-    } else if (fileExtensions.pdf.includes(extension)) {
-      return "mdi-file-pdf"
+
+    if (fileExtensions.pdf.includes(extension)) {
+      return pdf
     } else if (fileExtensions.excel.includes(extension)) {
-      return "mdi-file-excel"
+      return xls
+    } else if (fileExtensions.powerpoint.includes(extension)) {
+      return ppt
+    } else if (fileExtensions.txt.includes(extension)) {
+      return txt
+    } else if (fileExtensions.media.includes(extension)) {
+      return media
     } else if (fileExtensions.documents.some(ext => extension === ext)) {
-      return "mdi-file-document"
+      return doc
     } else {
-      return "mdi-file-document"
+      return doc
     }
   };
   return (
@@ -239,6 +274,8 @@ const EnterMonthlyData = (props) => {
             toggle={toggleDetailModalMonthly}
             idFolderDetail={idFolderDetail}
             dateState={dateState}
+            setEnterMonthlyDataSpinner={setEnterMonthlyDataSpinner}
+            setMonthlyDataMsg={setMonthlyDataMsg}
           />
 
           {monthlyDataMsg !== "" ? <UncontrolledAlert toggle={() => setMonthlyDataMsg('')} color={monthlyDataMsg.status == "1" ? "success" : "danger"}>
@@ -267,8 +304,8 @@ const EnterMonthlyData = (props) => {
                             dateFormat="yyyy-MM"
                             selected={dateState ? moment(dateState, 'yyyy-MM').toDate() : new Date()}
                             onChange={(date) => {
-                              localStorage.setItem("selectedMonth", date ? moment(date).format('yyyy-MM') : null)
-                              setDateState(date ? moment(date).format('yyyy-MM') : null)
+                              localStorage.setItem("selectedMonth", date ? moment(date).format('yyyy-MM') : new Date())
+                              setDateState(date ? moment(date).format('yyyy-MM') : new Date())
                             }}
                             onKeyDown={(e) => {
                               e.preventDefault()
@@ -325,7 +362,7 @@ const EnterMonthlyData = (props) => {
                                             key={i}
                                           >
                                             <div style={{ position: "relative", textAlign: "center" }}>
-                                              <span
+                                              {/* <span
                                                 style={{
                                                   fontSize: "50px",
                                                   color: items.open ? "#7BAE40" : "#BBBCBE",
@@ -334,20 +371,28 @@ const EnterMonthlyData = (props) => {
                                                 }}
                                                 className={`mdi ${getFileIconClass(file.name)}`}
                                                 onClick={items.open ? () => window.open(new URL(file.url)) : null}
-                                              ></span>
+                                              ></span> */}
+                                              <img style={{
+                                                height: '50px',
+                                                marginTop: '12px',
+                                                cursor: "pointer"
+                                              }}
+                                                src={getFileIconClass(file.name)}
+                                                onClick={items.open ? () => window.open(new URL(file.url)) : null}
+                                              />
                                               {items.edit ?
                                                 <span
                                                   style={{
                                                     fontSize: "18px",
                                                     position: "absolute",
                                                     top: "0",
-                                                    left: "2em",
+                                                    left: "2.5em",
                                                     right: "0",
                                                     textAlign: "center",
-                                                    color: "#f46a6a",
+                                                    color: "#B4B4B8",
                                                     cursor: "pointer"
                                                   }}
-                                                  className="mdi mdi-close-circle"
+                                                  className="mdi mdi-delete"
                                                   onClick={() => confirmToggleDelete(file.num)}
                                                 ></span> : null}
                                             </div>
@@ -378,7 +423,7 @@ const EnterMonthlyData = (props) => {
                                         ) : (
                                           <Col className="files" style={{ height: "12vh" }} key={i}>
                                             <div style={{ position: "relative", textAlign: "center" }}>
-                                              <span
+                                              {/* <span
                                                 style={{
                                                   fontSize: "50px",
                                                   color: items.open ? "#7BAE40" : "#BBBCBE",
@@ -387,19 +432,31 @@ const EnterMonthlyData = (props) => {
                                                 }}
                                                 className={`mdi ${getFileIconClass(file.name)}`}
                                                 onClick={items.open ? () => window.open(new URL(file.url)) : null}
-                                              ></span>
+                                              ></span> */}
+                                              <img style={{
+                                                // position: 'absolute',
+                                                // top: '27%',
+                                                // left: '37%',
+                                                // width: '50px',
+                                                height: '50px',
+                                                marginTop: '12px',
+                                                cursor: "pointer"
+                                              }}
+                                                src={getFileIconClass(file.name)}
+                                                onClick={items.open ? () => window.open(new URL(file.url)) : null}
+                                              />
                                               {items.edit ? <span
                                                 style={{
                                                   fontSize: "18px",
                                                   position: "absolute",
                                                   top: "0",
-                                                  left: "2em",
+                                                  left: "2.5em",
                                                   right: "0",
                                                   textAlign: "center",
-                                                  color: "#f46a6a",
+                                                  color: "#B4B4B8",
                                                   cursor: "pointer"
                                                 }}
-                                                className="mdi mdi-close-circle"
+                                                className="mdi mdi-delete"
                                                 onClick={() => confirmToggleDelete(file.num)}
                                               ></span> : null}
                                             </div>
@@ -464,10 +521,10 @@ const EnterMonthlyData = (props) => {
                                       position: "absolute",
                                       top: "12%",
                                       left: "55%",
-                                      color: "#f46a6a",
+                                      color: "#B4B4B8",
                                       cursor: "pointer"
                                     }}
-                                    className="mdi mdi-close-circle"
+                                    className="mdi mdi-delete"
                                   ></span>
                                   <div
                                     style={{

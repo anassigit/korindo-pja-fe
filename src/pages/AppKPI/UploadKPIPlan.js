@@ -180,7 +180,7 @@ const UploadKPIPlan = (props) => {
     }
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" modalOptions={{ dismissible: false }} keyboard={false}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" modalOptions={{ dismissible: false }}>
             <MsgModal
                 modal={uploadMsgModal}
                 toggle={toggleMsgModal}

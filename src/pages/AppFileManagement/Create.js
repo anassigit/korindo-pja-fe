@@ -88,7 +88,7 @@ const Create = (props) => {
     }, [createRespMsg]);
 
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" keyboard={false}>
+        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
                 modal={createMsgModal}
                 toggle={toggleMsgModal}
