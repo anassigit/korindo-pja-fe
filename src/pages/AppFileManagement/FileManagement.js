@@ -1766,7 +1766,7 @@ const FileManagement = (props) => {
                                           <div style={{
                                             position: "absolute",
                                             width: '75%',
-                                            bottom:'-2px',
+                                            bottom: '-2px',
                                             textAlign: 'center',
                                             direction: 'rtl',
                                             whiteSpace: 'nowrap',
@@ -1776,10 +1776,14 @@ const FileManagement = (props) => {
                                             padding: '8px',
                                             borderRadius: '5%',
                                             backgroundColor: 'rgb(239, 242, 247)',
-                                          }}>
+                                          }}
+                                            id={myfiles?.num && `num_${myfiles.num}`}
+                                          >
                                             {myfiles.path}
-                                            {/* {`.../${myfiles.path?.split('/').pop()}`} */}
                                           </div>
+                                          <UncontrolledTooltip placement="top" target={myfiles?.num && `num_${myfiles.num}`}>
+                                            {myfiles.path}
+                                          </UncontrolledTooltip>
                                         </div>
                                       )
                                     }

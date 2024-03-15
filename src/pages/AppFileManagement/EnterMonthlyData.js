@@ -374,7 +374,7 @@ const EnterMonthlyData = (props) => {
                                               ></span> */}
                                               <img style={{
                                                 height: '50px',
-                                                marginTop: '12px',
+                                                marginTop: '24px',
                                                 cursor: "pointer"
                                               }}
                                                 src={getFileIconClass(file.name)}
@@ -385,7 +385,7 @@ const EnterMonthlyData = (props) => {
                                                   style={{
                                                     fontSize: "18px",
                                                     position: "absolute",
-                                                    top: "0",
+                                                    top: "4px",
                                                     left: "2.5em",
                                                     right: "0",
                                                     textAlign: "center",
@@ -439,7 +439,7 @@ const EnterMonthlyData = (props) => {
                                                 // left: '37%',
                                                 // width: '50px',
                                                 height: '50px',
-                                                marginTop: '12px',
+                                                marginTop: '24px',
                                                 cursor: "pointer"
                                               }}
                                                 src={getFileIconClass(file.name)}
@@ -449,7 +449,7 @@ const EnterMonthlyData = (props) => {
                                                 style={{
                                                   fontSize: "18px",
                                                   position: "absolute",
-                                                  top: "0",
+                                                  top: "4px",
                                                   left: "2.5em",
                                                   right: "0",
                                                   textAlign: "center",
