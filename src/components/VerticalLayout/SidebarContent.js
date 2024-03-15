@@ -163,7 +163,12 @@ const SidebarContent = props => {
                         ReactSession.remove('collapser')
                         ReactSession.remove('offset')
                         ReactSession.remove('limit')
-                        localStorage.removeItem("selectedMonth")
+                        const today = new Date();
+                        const year = today.getFullYear();
+                        const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                        const selectedMonth = `${year}-${month}`;
+
+                        localStorage.setItem("selectedMonth", selectedMonth);
                     }}
                     href={item.menuPath ? `/${item.menuPath}` : null}
                     className={item.childList || item.menuId === 5 ? "has-arrow" : null}
@@ -205,6 +210,13 @@ const SidebarContent = props => {
                         ReactSession.remove('collapser')
                         ReactSession.remove('offset')
                         ReactSession.remove('limit')
+                        
+                        const today = new Date();
+                        const year = today.getFullYear();
+                        const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                        const selectedMonth = `${year}-${month}`;
+
+                        localStorage.setItem("selectedMonth", selectedMonth);
                     }}
                     href={item.parent_id === null ? `/AppRule?v=${item.id}` : `/AppRule?v=${item.id}_${item.parent_id}`}
                     className={item.subList.length > 0 ? "has-arrow" : null}
