@@ -3281,7 +3281,7 @@ const EditInstructions = props => {
                                   {logsData?.data?.logList != null &&
                                     logsData?.data?.logList.length > 0 &&
                                     logsData?.data?.logList.map((row, logs) => (
-                                      <tr key={logs} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                                      <tr key={logs} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', height: 'auto' }}>
                                         <td className="tg-0lax">
                                           {row.write_time === " " ||
                                             row.write_time === ""
@@ -3293,7 +3293,7 @@ const EditInstructions = props => {
                                         <td className="tg-0lax">
                                           {row.name}
                                         </td>
-                                        <td className="tg-0lax" style={{ width: '72vw' }}>
+                                        <td className="tg-0lax" style={{ width: '72vw', height: '100% ' }}>
                                           {row.content}
                                         </td>
                                       </tr>

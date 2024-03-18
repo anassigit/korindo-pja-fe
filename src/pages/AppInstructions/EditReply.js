@@ -144,7 +144,7 @@ const EditReply = (props) => {
                 if (e.target) {
                     e.target.value = "";
                 }
-                return; // Exit function early if file extension is not allowed
+                return;
             }
             const newFiles = Array.from(e.currentTarget.files)
             const existingFiles = Array.from(preservedFiles)
