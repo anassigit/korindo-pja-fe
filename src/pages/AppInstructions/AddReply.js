@@ -108,8 +108,9 @@ const AddReply = (props) => {
 
                 insert(bodyForm2, config);
             }
-
-            refCleanser.current.value = "";
+            if (refCleanser.current) {
+                refCleanser.current.value = "";
+            }
         } else {
             replyValidInput.setFieldError('content', props.t('Please enter content'));
         }

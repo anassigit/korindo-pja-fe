@@ -310,7 +310,7 @@ const EnterMonthlyData = (props) => {
                             onKeyDown={(e) => {
                               e.preventDefault()
                             }}
-                            isClearable
+                            // isClearable
                             customInput={
                               <>
                                 <div className="react-datepicker__input-container">

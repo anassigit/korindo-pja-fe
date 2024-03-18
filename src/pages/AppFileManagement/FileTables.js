@@ -26,6 +26,7 @@ import xls from '../../assets/images/file_management/xls.png'
 import ppt from '../../assets/images/file_management/ppt.png'
 import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
+import media from '../../assets/images/file_management/media.png'
 import unknown from '../../assets/images/file_management/unknown.png'
 import ConfirmModal from 'components/Common/ConfirmModal';
 
@@ -164,6 +165,9 @@ const FileTables = (props) => {
                                 <thead>
                                     <tr>
                                         <th scope="col">No.</th>
+                                        <th scope="col" style={{
+                                            //  width: '2px'
+                                        }}></th>
                                         <th scope="col">{props.t("Files name")}</th>
                                         <th scope="col">Delete</th>
                                     </tr>
@@ -178,7 +182,7 @@ const FileTables = (props) => {
                                                 let action;
 
                                                 if (allowedExtensions.includes(fileExtension)) {
-                                                    icon = new URL(item.url);
+                                                    icon = media;
                                                     action = () => handlePreview(item.url);
                                                 } else if (item.name.endsWith("docx") || item.name.endsWith("doc")) {
                                                     icon = doc;
@@ -196,15 +200,28 @@ const FileTables = (props) => {
                                                     icon = txt;
                                                     action = () => handlePreview(item.url);
                                                 } else {
+                                                    icon = doc;
                                                     action = () => window.open(new URL(item.url));
                                                 }
 
                                                 return (
                                                     <tr key={key}>
-                                                        <td scope="row">{key + 1}</td>
+                                                        <td scope="row" style={{ textAlign: 'center' }}>{key + 1}</td>
+                                                        <td scope="row" style={{
+                                                            width: '1%'
+                                                        }}>
+                                                            <img
+                                                                src={icon}
+                                                                style={{
+                                                                    height: "15px",
+                                                                    width: "12px",
+                                                                    alignItems: "unset"
+                                                                }}
+                                                            />
+                                                        </td>
                                                         <td
                                                             style={{
-                                                                maxWidth: "350px",
+                                                                maxWidth: "315px",
                                                                 whiteSpace: "nowrap",
                                                                 overflow: "hidden",
                                                                 textOverflow: "ellipsis"
@@ -213,14 +230,7 @@ const FileTables = (props) => {
                                                             id={`nameTooltip_${key}`}
                                                         >
                                                             <>
-                                                                <img
-                                                                    src={icon}
-                                                                    style={{
-                                                                        height: "15px",
-                                                                        width: "15px",
-                                                                        alignItems: "unset"
-                                                                    }}
-                                                                />{" "}{item.name}
+                                                                {item.name}
                                                                 <UncontrolledTooltip placement="bottom" target={`nameTooltip_${key}`}>
                                                                     {item.name}
                                                                 </UncontrolledTooltip>

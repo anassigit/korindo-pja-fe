@@ -140,8 +140,12 @@ const UploadKPIMaster = (props) => {
             })
         } else if (e.target.files.length != 0) {
             alert("No valid files selected. Allowed file types: xls & xlsx")
-            refCleanser.current.value = ""
-            e.target.value = ""
+            if (refCleanser.current) {
+                refCleanser.current.value = "";
+            }
+            if (e.target) {
+                e.target.value = "";
+            }
         }
 
     };

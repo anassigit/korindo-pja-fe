@@ -733,6 +733,7 @@ const Instructions = (props) => {
                         modal={modal}
                         toggle={toggle}
                         data={instructionsData}
+                        setLoadingSpinner={setLoadingSpinner}
                     />
                 </>
             }

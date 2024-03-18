@@ -586,7 +586,9 @@ const AddInstructions = (props) => {
     }, [getManagerList, langType]);
     
     useEffect(() => {
-        refCleanser.current.value = ""
+        if (refCleanser.current) {
+            refCleanser.current.value = "";
+        }
         SetSelectedFile([])
     }, [props.appAddInstructions])
 

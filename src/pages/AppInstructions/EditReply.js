@@ -79,7 +79,9 @@ const EditReply = (props) => {
             insertEdit(bodyForm, config)
             editReplyValidInput.setFieldValue('content', '')
             editReplyValidInput.setFieldValue('files', [])
-            refCleanser.current.value = ""
+            if (refCleanser.current) {
+                refCleanser.current.value = "";
+            }
         } else {
             editReplyValidInput.setFieldError('content', props.t('Please enter content'))
         }

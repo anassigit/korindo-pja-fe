@@ -742,8 +742,12 @@ const EditInstructions = props => {
       alert(
         "No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv"
       )
-      refCleanser.current.value = ""
-      e.target.value = ""
+      if (refCleanser.current) {
+        refCleanser.current.value = "";
+      }
+      if (e.target) {
+        e.target.value = "";
+      }
     }
   }
 
@@ -1152,7 +1156,9 @@ const EditInstructions = props => {
       alert(
         "No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv"
       )
-      refCleanser.current.value = ""
+      if (refCleanser.current) {
+        refCleanser.current.value = "";
+      }
     } else {
       const processedFiles = []
 
@@ -1198,7 +1204,9 @@ const EditInstructions = props => {
       alert(
         "No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv"
       )
-      refCleanser.current.value = ""
+      if (refCleanser.current) {
+        refCleanser.current.value = "";
+      }
     } else {
       const processedFiles = []
 
@@ -1239,7 +1247,9 @@ const EditInstructions = props => {
     if (selectedfileR.length > 0) {
       SetFilesR(prevFiles => [...prevFiles, ...selectedfileR])
       SetSelectedFileR([])
-      refCleanser.current.value = ""
+      if (refCleanser.current) {
+        refCleanser.current.value = "";
+      }
     } else {
     }
   }
@@ -1252,7 +1262,9 @@ const EditInstructions = props => {
     if (selectedfileR2.length > 0) {
       SetFilesR2(prevFiles => [...prevFiles, ...selectedfileR2])
       SetSelectedFileR2([])
-      refCleanser.current.value = ""
+      if (refCleanser.current) {
+        refCleanser.current.value = "";
+      }
     } else {
     }
   }
