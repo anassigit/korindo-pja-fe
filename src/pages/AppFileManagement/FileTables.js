@@ -177,7 +177,7 @@ const FileTables = (props) => {
                                         myfiles.num === props.idFolderDetail ? (
                                             myfiles.fileList.map((item, key) => {
                                                 const fileExtension = item.name.slice(item.name.lastIndexOf(".") + 1).toLowerCase();
-                                                const allowedExtensions = ["jpg", "jpeg", "gif", "png"];
+                                                const allowedExtensions = ["jpg", "jpeg", "gif", "png", "mp4", "mov", "avi", "mpg", "mpeg"];
                                                 let icon = unknown;
                                                 let action;
 

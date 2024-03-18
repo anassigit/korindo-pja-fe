@@ -111,7 +111,6 @@ const ReplyModal = ({ modal, toggle, data, t, setLoadingSpinner }) => {
     };
 
     const downloadCheckFileInst = (num, fileNm) => {
-        debugger
         setLoadingSpinner(true)
         setNumTemp(num)
         setFileNmTemp(fileNm)

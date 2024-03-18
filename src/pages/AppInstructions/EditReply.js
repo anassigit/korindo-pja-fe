@@ -129,6 +129,30 @@ const EditReply = (props) => {
         props.setLoadingSpinner(false)
     }, [editReplyMessage])
 
+    const handleFileChange = (e) => {
+        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i;
+        if (e.target.files.length !== 0) {
+            const file = e.target.files[0];
+            const fileName = file.name;
+            const fileExtension = fileName.slice(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+            if (!allowedFileExtensions.test(fileExtension)) {
+                alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv");
+                if (refCleanser.current) {
+                    refCleanser.current.value = "";
+                }
+                if (e.target) {
+                    e.target.value = "";
+                }
+                return; // Exit function early if file extension is not allowed
+            }
+            const newFiles = Array.from(event.currentTarget.files)
+            const existingFiles = Array.from(preservedFiles)
+            const mergedFiles = [...existingFiles, ...newFiles]
+            setPreservedFiles([...mergedFiles])
+        }
+    }
+
     return (
         <Modal className='modal-xl' isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal
@@ -182,10 +206,7 @@ const EditReply = (props) => {
                                         multiple
                                         accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .avi, .mov, .mp4, .mkv, .flv"
                                         onChange={(event) => {
-                                            const newFiles = Array.from(event.currentTarget.files)
-                                            const existingFiles = Array.from(preservedFiles)
-                                            const mergedFiles = [...existingFiles, ...newFiles]
-                                            setPreservedFiles([...mergedFiles])
+                                            handleFileChange(event)
                                         }}
                                     />
                                 </div>
