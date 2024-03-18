@@ -257,7 +257,6 @@ function* fetchGetStatus({ payload: req }) {
 }
 
 function* fetchGetCheckDownload({ payload: req }) {
-  yield put(respGetCheckDownload(''))
   try {
     const response = yield call(checkFileDownload, req)
     if (response.status == 1) {

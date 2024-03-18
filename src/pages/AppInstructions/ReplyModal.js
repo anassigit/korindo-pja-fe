@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { getCheckDownloadData, getReply } from 'store/actions';
 import { downloadFiles } from 'helpers/backend_helper';
 import MsgModal from 'components/Common/MsgModal';
+import { resetMessage } from 'store/appInstructions/actions';
 
 const ReplyModal = ({ modal, toggle, data, t, setLoadingSpinner }) => {
     let langType = localStorage.getItem("I18N_LANGUAGE");
@@ -31,6 +32,12 @@ const ReplyModal = ({ modal, toggle, data, t, setLoadingSpinner }) => {
     const totalPages = Math.ceil(totalReplies / 5);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (downloadMessage.status) {
+            dispatch(resetMessage())
+        } 
+    }, [downloadMessage])
 
     useEffect(() => {
         const offset = (currentPage - 1) * repliesPerPage;

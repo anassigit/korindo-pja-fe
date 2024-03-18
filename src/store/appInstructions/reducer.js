@@ -173,26 +173,13 @@ const instructionsReducer = (state = INIT_STATE, action) => {
     case RESET_MESSAGE:
       return {
         ...state,
-        respGetInstructions: {},
-        respGetGroupList: {},
-        respGetAllStatus: {},
-        respGetManager: {},
-        respGetOwner: {},
-        respGetStatus: {},
-        respGetSelectedManager: {},
-        respGetInstructions2: {},
-        respGetReply: {},
-        respGetSelectedReply: {},
         respGetCheckDownload: {},
         msgEditReply: "",
         msgDeleteReply: "",
         msgAddReply: "",
-        respGetAttachment: {},
-        respGetLogs: {},
         msgAdd: "",
         msgEdit: "",
         msgDelete: "",
-        respGetDetailInstruction: {},
         msgDownload: "",
       }
     case SAVE_INSTRUCTIONS:
@@ -321,7 +308,6 @@ const instructionsReducer = (state = INIT_STATE, action) => {
         ...state,
         respGetLogs: action.payload,
       }
-
 
     default:
       return state

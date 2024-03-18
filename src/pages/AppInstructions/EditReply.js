@@ -146,7 +146,7 @@ const EditReply = (props) => {
                 }
                 return; // Exit function early if file extension is not allowed
             }
-            const newFiles = Array.from(event.currentTarget.files)
+            const newFiles = Array.from(e.currentTarget.files)
             const existingFiles = Array.from(preservedFiles)
             const mergedFiles = [...existingFiles, ...newFiles]
             setPreservedFiles([...mergedFiles])
