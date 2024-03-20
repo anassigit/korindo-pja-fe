@@ -96,7 +96,7 @@
     "Notification Settings": "Pengaturan Pemberitahuan",
     "Send Notifications": "Kirim pemberitahuan",
     "Don't Send Notifications": "Jangan kirim pemberitahuan",
-    "Notification Settings 2": "Kirim pemberitahuan ke",
+    "Notification Target": "Kirim pemberitahuan ke",
     "Both": "Keduanya",
     "Please enter your current password": "Harap masukkan kata sandi saat ini",
     "Enter your new password": "Masukkan kata sandi baru",
@@ -215,5 +215,8 @@
     "Interest Expense": "Beban Bunga",
     "Net Income": "Pendapatan Bersih",
     "Download Excel": "Unduh Excel",
+    "Hide": "Sembunyikan",
+    "Show": "Tampilkan",
+    "Registration iOS Button": "Tombol Registrasi iOS",
     "KPI PLAN XLSX": "RENCANA KPI.xlsx"
 }

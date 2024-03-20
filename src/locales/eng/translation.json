@@ -97,7 +97,7 @@
     "Notification Settings": "Notification Settings",
     "Send Notifications": "Send Notifications",
     "Don't Send Notifications": "Don't Send Notifications",
-    "Notification Settings 2": "Notification Target",
+    "Notification Target": "Notification Target",
     "Both": "Both",
     "Please enter your current password": "Please enter your current password.",
     "Enter your new password": "Enter your new password.",
@@ -209,5 +209,8 @@
     "Interest Expense": "Interest Expense",
     "Net Income": "Net Income",
     "Download Excel": "Download Excel",
+    "Hide": "Hide",
+    "Show": "Show",
+    "Registration iOS Button": "Registration iOS Button",
     "KPI PLAN XLSX": "KPI PLAN.xlsx"
 }

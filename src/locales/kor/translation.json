@@ -97,7 +97,7 @@
     "Notification Settings": "알림 설정",
     "Send Notifications": "알림 보내기",
     "Don't Send Notifications": "알림 보내지 않기",
-    "Notification Settings 2": "알림 보내기 대상",
+    "Notification Target": "알림 보내기 대상",
     "Both": "둘 다",
     "Please enter your current password": "현재 비밀번호를 입력하세요.",
     "Enter your new password": "새 비밀번호를 입력해주세요.",
@@ -215,5 +215,8 @@
     "Interest Expense": "이자 비용",
     "Net Income": "순이익",
     "Download Data": "데이터 다운로드",
+    "Hide": "숨기기",
+    "Show": "보이기",
+    "Registration iOS Button": "등록 iOS 버튼",
     "KPI PLAN XLSX": "KPI 계획.xlsx"
 }

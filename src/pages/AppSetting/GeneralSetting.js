@@ -54,12 +54,9 @@ const GeneralSetting = (props) => {
     const [radioValue1, setRadioValue1] = useState("")
     const [radioValue2, setRadioValue2] = useState("")
     const [radioValue3, setRadioValue3] = useState("")
+    const [radioValueIOSButton, setRadioValueIOSButton] = useState("")
     const [radioValueFileManage1, setRadioValueFileManage1] = useState("")
     const [radioValueFileManage2, setRadioValueFileManage2] = useState("")
-
-    const handleRadioChange1 = (event) => {
-        setRadioValue1(event.target.value)
-    }
 
     const handleRadioChange2 = (event) => {
         setRadioValue2(event.target.value)
@@ -69,32 +66,16 @@ const GeneralSetting = (props) => {
         setRadioValue3(event.target.value)
     }
 
-    const handleRadioChangeFile1 = (event) => {
-        setRadioValueFileManage1(event.target.value)
-        setFileManageSetting([event.target.value, radioValueFileManage2])
-    }
-
-    const handleRadioChangeFile2 = (event) => {
-        setRadioValueFileManage2(event.target.value)
-        setFileManageSetting([radioValueFileManage1, event.target.value])
-    }
-
     const handleSaveGeneral = () => {
         const updatedSettings = []
-        if (radioValue1 !== appSettingData?.data?.setting?.find(setting => setting.id === "ins_display_setting")?.value.toString()) {
-            updatedSettings.push({ ins_display_setting: radioValue1 })
-        }
         if (radioValue2 !== appSettingData?.data?.setting?.find(setting => setting.id === "ins_notice_setting")?.value.toString()) {
             updatedSettings.push({ ins_notice_setting: radioValue2 })
         }
         if (radioValue3 !== appSettingData?.data?.setting?.find(setting => setting.id === "ins_notice2_setting")?.value.toString()) {
             updatedSettings.push({ ins_notice2_setting: radioValue3 })
         }
-        if (radioValueFileManage1 !== appSettingData?.data?.setting?.find(setting => setting.id === "file_edit_setting")?.value.toString()) {
-            updatedSettings.push({ file_edit_setting: radioValueFileManage1 })
-        }
-        if (radioValueFileManage2 !== appSettingData?.data?.setting?.find(setting => setting.id === "file_access_setting")?.value.toString()) {
-            updatedSettings.push({ file_access_setting: radioValueFileManage2 })
+        if (radioValueIOSButton !== appSettingData?.data?.setting?.find(setting => setting.id === "ins_button_setting")?.value.toString()) {
+            updatedSettings.push({ ins_button_setting: radioValueIOSButton })
         }
         if (updatedSettings.length > 0) {
             dispatch(editGeneralSetting(Object.assign({}, ...updatedSettings)))
@@ -106,16 +87,12 @@ const GeneralSetting = (props) => {
     useEffect(() => {
         if (appSettingData?.data?.setting && Array.isArray(appSettingData.data.setting)) {
             appSettingData.data.setting.forEach((setting) => {
-                if (setting.id === "ins_display_setting") {
-                    setRadioValue1(setting.value.toString())
-                } else if (setting.id === "ins_notice_setting") {
+                if (setting.id === "ins_notice_setting") {
                     setRadioValue2(setting.value.toString())
                 } else if (setting.id === "ins_notice2_setting") {
                     setRadioValue3(setting.value.toString())
-                } else if (setting.id === "file_edit_setting") {
-                    setRadioValueFileManage1(setting.value.toString())
-                } else if (setting.id === "file_access_setting") {
-                    setRadioValueFileManage2(setting.value.toString())
+                } else if (setting.id === "ins_button_setting") {
+                    setRadioValueIOSButton(setting.value.toString())
                 }
             })
         }
@@ -149,7 +126,7 @@ const GeneralSetting = (props) => {
                                                             checked={radioValue2 === "0"}
                                                             onChange={handleRadioChange2}
                                                         />
-                                                        <span> </span>{props.t("Send Notifications")}
+                                                        &nbsp;{props.t("Send Notifications")}
                                                     </label>
                                                     <label>
                                                         <Input
@@ -159,13 +136,13 @@ const GeneralSetting = (props) => {
                                                             checked={radioValue2 === "1"}
                                                             onChange={handleRadioChange2}
                                                         />
-                                                        <span> </span>{props.t("Don't Send Notifications")}
+                                                        &nbsp;{props.t("Don't Send Notifications")}
                                                     </label>
                                                 </Row>
                                             </Col>
                                             <Col md="12" lg="4">
                                                 <Row className="mb-2">
-                                                    <b>{props.t("Notification Settings 2")}</b>
+                                                    <b>{props.t("Notification Target")}</b>
                                                 </Row>
                                                 <Row>
                                                     <label>
@@ -176,7 +153,7 @@ const GeneralSetting = (props) => {
                                                             checked={radioValue3 === "0"}
                                                             onChange={handleRadioChange3}
                                                         />
-                                                        <span> </span>WhatsApp
+                                                        &nbsp;WhatsApp
                                                     </label>
                                                     <label>
                                                         <Input
@@ -186,7 +163,7 @@ const GeneralSetting = (props) => {
                                                             checked={radioValue3 === "1"}
                                                             onChange={handleRadioChange3}
                                                         />
-                                                        <span> </span>{props.t("Email")}
+                                                        &nbsp;{props.t("Email")}
                                                     </label>
                                                     <label>
                                                         <Input
@@ -196,7 +173,34 @@ const GeneralSetting = (props) => {
                                                             checked={radioValue3 === "2"}
                                                             onChange={handleRadioChange3}
                                                         />
-                                                        <span> </span>{props.t("Both")}
+                                                        &nbsp;{props.t("Both")}
+                                                    </label>
+                                                </Row>
+                                            </Col>
+                                            <Col md="12" lg="4">
+                                                <Row className="mb-2">
+                                                    <b>{props.t("Registration iOS Button")}</b>
+                                                </Row>
+                                                <Row>
+                                                    <label>
+                                                        <Input
+                                                            type="radio"
+                                                            name="ins_button_setting"
+                                                            value="0"
+                                                            checked={radioValueIOSButton === "0"}
+                                                            onChange={(e) => setRadioValueIOSButton(e.target.value)}
+                                                        />
+                                                        &nbsp;{props.t("Hide")}
+                                                    </label>
+                                                    <label>
+                                                        <Input
+                                                            type="radio"
+                                                            name="ins_button_setting"
+                                                            value="1"
+                                                            checked={radioValueIOSButton === "1"}
+                                                            onChange={(e) => setRadioValueIOSButton(e.target.value)}
+                                                        />
+                                                        &nbsp;{props.t("Show")}
                                                     </label>
                                                 </Row>
                                             </Col>
