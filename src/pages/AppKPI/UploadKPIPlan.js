@@ -75,7 +75,7 @@ const UploadKPIPlan = (props) => {
 
     const insertUpload = async (value) => {
 
-        await dispatch(uploadPlanKPI(value))
+        // await dispatch(uploadPlanKPI(value))
 
     }
 

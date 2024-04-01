@@ -1,10 +1,8 @@
 
-import { get, post, getWithParam, postLogin, getWithXls, postUpload, getWithPdf, postWithParam, postDownload, postDownloadXlsx } from "./api_helper"
+import { get, post, postLogin, getWithXls, postUpload, getWithPdf, postWithParam, postDownload, postDownloadXlsx } from "./api_helper"
 
-//combo
 export const getCombo = req => post("/app001/get-dtlsetting-combo", req)
 
-//Login
 export const getData = req => post("/app001/get-all", req)
 
 export const getDataImage = req => getWithXls("/app001/get-file-image", req)
@@ -22,11 +20,6 @@ export const updateForgotPassword = req => postWithParam("/MemberRest/UpdateForg
 export const getUser = req => post("/app001/get-user", req)
 
 export const getReportJasper = req => post("/app001/generate-report-jasper", req)
-
-//app002
-// export const getMenu = () => post("/rest/app002/get-menu")
-
-// export const getMenuAll = req => post("/rest/app002/get-menu-all", req)
 
 export const editMenu = req => post("/rest/app002/edit", req)
 
@@ -206,19 +199,13 @@ export const getMonthlyData = req => postWithParam("/rest/FileManagementRest/Sel
 
 // KPI
 
-export const getYearListKPI = req => post("rest/KpiManagementRest/getYearList", req)
-
-export const getGroupListKPI = req => post("rest/KpiManagementRest/getGroupList", req)
-
-export const getGroupListKPIInputBE = req => post("rest/KpiManagementRest/getGroupListForInpuData", req)
+export const getGroupListKPIBE = req => postWithParam("rest/KpiManagementRest/getGroupList", req)
 
 export const getCorporationListKPI = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
 
 export const getColumnListKPI = req => postWithParam("rest/KpiManagementRest/getColumList", req)
 
 export const getKPIMasterBE = req => postWithParam("rest/KpiManagementRest/getMaster", req)
-
-export const getPlanBE = req => postWithParam("rest/KpiManagementRest/getPlan", req)
 
 export const getItemBE = req => postWithParam("rest/KpiManagementRest/getItemList", req)
 
@@ -236,13 +223,7 @@ export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagemen
 
 export const uploadMasterKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
 
-export const getDownloadPlanTemplateBE = req => getWithXls("rest/KpiManagementRest/downloadPlanTemplate", req)
-
-export const uploadPlanKPIBE = req => postUpload("rest/KpiManagementRest/setPlan", req)
-
 export const setActualInputDataBE = req => post("rest/KpiManagementRest/setData", req)
-
-export const getDownloadPlanBE = req => getWithXls("rest/KpiManagementRest/downloadPlanSetting", req)
 
 //MOVING PLAN
 

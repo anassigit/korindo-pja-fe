@@ -5,9 +5,7 @@ import {
     GET_GROUP_LIST_KPI,
     GET_ITEM_LIST,
     GET_KPI_MASTER,
-    GET_PLAN,
     GET_UNIT_LIST,
-    GET_YEAR_LIST,
     DOWNLOAD_MASTER_TEMPLATE,
     RESET_MESSAGE,
     RESP_GET_COLUMN_LIST,
@@ -16,27 +14,21 @@ import {
     RESP_GET_GROUP_LIST_KPI,
     RESP_GET_ITEM_LIST,
     RESP_GET_KPI_MASTER,
-    RESP_GET_PLAN,
     RESP_GET_UNIT_LIST,
-    RESP_GET_YEAR_LIST,
     UPLOAD_MASTER_KPI,
     MSG_UPLOAD,
-    UPLOAD_PLAN_KPI,
-    DOWNLOAD_PLAN_TEMPLATE,
     GET_ACTUAL_INPUT_DATA,
     RESP_GET_ACTUAL_INPUT_DATA,
     SET_ACTUAL_INPUT_DATA,
     MSG_EDIT,
     GET_DASHBOARD_DETAIL_KPI,
     RESP_GET_DASHBOARD_DETAIL_KPI,
-    DOWNLOAD_PLAN,
     DOWNLOAD_DASHBOARD_DETAIL,
     GET_GROUP_LIST_KPI_INPUT,
     RESP_GET_GROUP_LIST_KPI_INPUT
 } from "./actionTypes"
 
 const INIT_STATE = {
-    respGetYearList: {},
     respGetGroupListKpi: {},
     respGetGroupListKpiInput: {},
     respGetCorporationList: {},
@@ -55,16 +47,6 @@ const INIT_STATE = {
 const kpiReducer = (state = INIT_STATE, action) => {
 
     switch (action.type) {
-
-        case GET_YEAR_LIST:
-            return {
-                ...state,
-            }
-        case RESP_GET_YEAR_LIST:
-            return {
-                ...state,
-                respGetYearList: action.payload,
-            }
         case GET_GROUP_LIST_KPI:
             return {
                 ...state,
@@ -110,15 +92,6 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetKPIMaster: action.payload,
             }
-        case GET_PLAN:
-            return {
-                ...state,
-            }
-        case RESP_GET_PLAN:
-            return {
-                ...state,
-                respGetPlan: action.payload,
-            }
         case GET_ITEM_LIST:
             return {
                 ...state,
@@ -163,14 +136,6 @@ const kpiReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
             }
-        case DOWNLOAD_PLAN_TEMPLATE:
-            return {
-                ...state,
-            }
-        case DOWNLOAD_PLAN:
-            return {
-                ...state,
-            }
         case GET_ACTUAL_INPUT_DATA:
             return {
                 ...state,
@@ -185,10 +150,6 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
             }
         case UPLOAD_MASTER_KPI:
-            return {
-                ...state,
-            }
-        case UPLOAD_PLAN_KPI:
             return {
                 ...state,
             }

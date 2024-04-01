@@ -18,7 +18,7 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, getYearList, resetMessage } from "store/actions"
+import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, resetMessage } from "store/actions"
 import ReactEcharts from "echarts-for-react"
 
 const KPIDashboard = (props) => {
@@ -26,10 +26,6 @@ const KPIDashboard = (props) => {
     let langType = localStorage.getItem("I18N_LANGUAGE")
 
     const dispatch = useDispatch()
-
-    const appYearListData = useSelector((state) => {
-        return state.kpiReducer.respGetYearList
-    })
 
     const appGroupListData = useSelector((state) => {
         return state.kpiReducer.respGetGroupListKpi
@@ -63,7 +59,6 @@ const KPIDashboard = (props) => {
     const [initialWidths, setInitialWidths] = useState([])
 
     useEffect(() => {
-        dispatch(getYearList())
         dispatch(getGroupListKPI())
         setLoadingSpinner(true)
     }, [])

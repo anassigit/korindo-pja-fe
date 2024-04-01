@@ -15,17 +15,13 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getCorporationList, getDashboardDetailKPI, getDownloadDashboardDetail, getGroupListKPI, getYearList, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardDetailKPI, getDownloadDashboardDetail, getGroupListKPI, resetMessage } from "store/actions"
 
 const KPIDashboardDetail = (props) => {
 
     let langType = localStorage.getItem("I18N_LANGUAGE")
 
     const dispatch = useDispatch()
-
-    const appYearListData = useSelector((state) => {
-        return state.kpiReducer.respGetYearList
-    })
 
     const appGroupListData = useSelector((state) => {
         return state.kpiReducer.respGetGroupListKpi
@@ -46,7 +42,6 @@ const KPIDashboardDetail = (props) => {
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
 
     useEffect(() => {
-        dispatch(getYearList())
         dispatch(getGroupListKPI())
         setLoadingSpinner(true)
     }, [])

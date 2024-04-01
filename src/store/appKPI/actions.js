@@ -1,13 +1,9 @@
 import {
     RESET_MESSAGE,
-    GET_YEAR_LIST,
-    RESP_GET_YEAR_LIST,
     GET_GROUP_LIST_KPI,
     RESP_GET_GROUP_LIST_KPI,
     GET_CORPORATION_LIST,
     RESP_GET_CORPORATION_LIST,
-    RESP_GET_PLAN,
-    GET_PLAN,
     GET_UNIT_LIST,
     RESP_GET_UNIT_LIST,
     GET_ITEM_LIST,
@@ -24,27 +20,13 @@ import {
     UPLOAD_MASTER_KPI,
     MSG_UPLOAD,
     MSG_EDIT,
-    UPLOAD_PLAN_KPI,
-    DOWNLOAD_PLAN_TEMPLATE,
     GET_ACTUAL_INPUT_DATA,
     RESP_GET_ACTUAL_INPUT_DATA,
     SET_ACTUAL_INPUT_DATA,
-    DOWNLOAD_PLAN,
     DOWNLOAD_DASHBOARD_DETAIL,
     GET_GROUP_LIST_KPI_INPUT,
     RESP_GET_GROUP_LIST_KPI_INPUT
-
 } from "./actionTypes"
-
-export const getYearList = (req) => ({
-    type: GET_YEAR_LIST,
-    payload: req,
-})
-
-export const respGetYearList = resp => ({
-    type: RESP_GET_YEAR_LIST,
-    payload: resp,
-})
 
 export const getGroupListKPI = (req) => ({
     type: GET_GROUP_LIST_KPI,
@@ -83,16 +65,6 @@ export const getColumnList = (req) => ({
 
 export const respGetColumnList = resp => ({
     type: RESP_GET_COLUMN_LIST,
-    payload: resp,
-})
-
-export const getPlan = (req) => ({
-    type: GET_PLAN,
-    payload: req,
-})
-
-export const respGetPlan = resp => ({
-    type: RESP_GET_PLAN,
     payload: resp,
 })
 
@@ -171,22 +143,8 @@ export const getDownloadMasterTemplate = (req) => ({
     payload: req,
 })
 
-export const getDownloadPlanTemplate = (req) => ({
-    type: DOWNLOAD_PLAN_TEMPLATE,
-    payload: req,
-})
-export const getDownloadPlan = (req) => ({
-    type: DOWNLOAD_PLAN,
-    payload: req,
-})
-
 export const uploadMasterKPI = (req) => ({
     type: UPLOAD_MASTER_KPI,
-    payload: req,
-})
-
-export const uploadPlanKPI = (req) => ({
-    type: UPLOAD_PLAN_KPI,
     payload: req,
 })
 

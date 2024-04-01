@@ -1,53 +1,59 @@
 .noti-icon .badge {
-  left: 23px;
+    left: 23px;
 }
+
 .mt-2 {
-  margin-top: 20px !important;
+    margin-top: 20px !important;
 }
 
 .dataTables_filter,
 .dataTables_paginate {
-  float: right;
+    float: right;
 }
 
 .rdw-editor-main {
-  border: 1px solid #eeeef5;
-  height: 239px;
+    border: 1px solid #eeeef5;
+    height: 239px;
 }
+
 .dz-message {
-  text-align: center;
-  padding: 100px;
+    text-align: center;
+    padding: 100px;
 }
+
 .fcYNFc {
-  background-color: #ffffff !important;
+    background-color: #ffffff !important;
 }
+
 .task-box {
-  border: 1px solid #e1e1e6;
+    border: 1px solid #e1e1e6;
 }
+
 .react-datepicker-wrapper {
-  width: 100% !important;
+    width: 100% !important;
 }
 
 .ReactModal__Overlay {
-  z-index: 1001 !important;
+    z-index: 1001 !important;
 }
 
 .fc-event .fc-content {
-  padding: 5px;
-  color: #fff;
+    padding: 5px;
+    color: #fff;
 }
+
 .chat-conversation .right .conversation-list {
-  margin-right: 15px;
+    margin-right: 15px;
 }
 
 .external-event {
-  &:hover {
-    cursor: pointer;
-  }
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .rangeslider-horizontal .rangeslider__fill {
-  background-color: #7BAE40 !important;
+    background-color: #7BAE40 !important;
 }
 
 // vin add custom 
@@ -84,7 +90,7 @@
 //     margin-bottom: 30px;
 //     background-color: #fff;
 //     border: none;
-    
+
 // }
 // .card-body {
 //     padding: 30px;
@@ -254,7 +260,7 @@
 // 	background-color: rgb(255, 255, 255);
 // 	height: 100vh;
 // 	padding:1.5rem;
-	
+
 // }
 
 // .hight {
@@ -271,15 +277,15 @@
 //      &::-webkit-scrollbar {
 //         width: 10px;
 //       }
-       
+
 //     &::-webkit-scrollbar-track {
 //         background-color: gainsboro ;
 //     }
-       
+
 //     &::-webkit-scrollbar-thumb {
 //         background-color: black;
 //         border-radius: 200px;
-       
+
 //       }
 // }
 
@@ -287,7 +293,7 @@
 // 	padding: 8px;
 // 	margin: 3px 0px;
 //   border:none;
-	
+
 // }
 
 
@@ -323,56 +329,56 @@
 // .thumbnail {
 //   width: 230px; 
 //   height: 230px; 
- 
+
 //   object-fit: cover;
 // }
 
 .thumbnail-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  background-color: #fafafa;
-  border-radius: 2.5%;
-  height: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #fafafa;
+    border-radius: 2.5%;
+    height: 10%;
 }
 
 .thumbnail {
-  width: 100%; 
-  max-width: 250px; 
-  max-height: 150px;
-  height: 0; 
-  padding-bottom: 50%; 
-  position: relative; 
-  overflow: hidden; 
+    width: 100%;
+    max-width: 250px;
+    max-height: 150px;
+    height: 0;
+    padding-bottom: 50%;
+    position: relative;
+    overflow: hidden;
 }
 
 @media (max-width: 768px) {
-  .thumbnail {
-    max-width: 100%; 
-  }
+    .thumbnail {
+        max-width: 100%;
+    }
 }
 
 
 .unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -o-user-select: none;
-  // pointer-events: none;
-  cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+    // pointer-events: none;
+    cursor: default;
 }
 
 .unselectable-two {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -o-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
 }
 
 // #sidebar-menu ul li a.active{
@@ -383,21 +389,33 @@
 //   min-width: 1rem !important;
 // }
 
-.MsoBodyText{
-  padding-top: 8px;
+.MsoBodyText {
+    padding-top: 8px;
 }
+
 // #sidebar-menu ul li a {
 //   padding: 0.5rem 1.5rem !important;
 // }
 
 .custom-invalid {
-  border: red 1px solid;
+    border: red 1px solid;
 }
 
 .react-datepicker-popper {
-  z-index: 999;
+    z-index: 999;
 }
 
 .react-datepicker__year-wrapper {
-  justify-content: center;
+    justify-content: center;
+}
+
+.add-kpi-result-header-modal .modal-title {
+    width: 100%;
+}
+
+.add-kpi-result-header-modal .wrapper-class {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
 }

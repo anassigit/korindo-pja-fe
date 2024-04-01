@@ -16,15 +16,14 @@ import EnterMonthlyData from "pages/AppFileManagement/EnterMonthlyData"
 import Rule from "pages/AppRule/Rule"
 import KPIDashboard from "pages/AppKPI/KPIDashboard"
 import KPIDashboardDetail from "pages/AppKPI/KPIDashboardDetail"
-import KPIMasterSetting from "pages/AppKPI/KPIMasterSetting"
 import MovingPlan from "pages/AppMovingPlan/MovingPlan"
 import KPIInputResult from "pages/AppKPI/KPIInputResult"
-import KPIPlanSetting from "pages/AppKPI/KPIPlanSetting"
 import MemberSetting from "pages/AppSetting/MemberSetting"
 import OrganizationSetting from "pages/AppSetting/OrganizationSetting"
 import MenuSetting from "pages/AppSetting/MenuSetting"
 import RoleSetting from "pages/AppSetting/RoleSetting"
 import LanguageSetting from "pages/AppSetting/LanguageSetting"
+import KPISetting from "pages/AppKPI/KPISetting"
 
 const authProtectedRoutes = [
     { path: "/dashboard", component: Dashboard },
@@ -40,8 +39,7 @@ const authProtectedRoutes = [
     { path: "/FirstLogin", component: FirstLogin },
     { path: "/EnterMonthlyData", component: EnterMonthlyData },
     { path: "/AppRule", component: Rule },
-    { path: "/AppKPIPlanSetting", component: KPIPlanSetting },
-    { path: "/AppKPIMasterSetting", component: KPIMasterSetting },
+    { path: "/AppKPISetting", component: KPISetting },
     { path: "/AppKPIDashboard", component: KPIDashboard },
     { path: "/AppKPIDashboardDetail", component: KPIDashboardDetail },
     { path: "/AppKPIInputResult", component: KPIInputResult },
