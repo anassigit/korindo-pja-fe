@@ -14,6 +14,9 @@ import txt from '../../assets/images/file_management/txt.png'
 import media from '../../assets/images/file_management/media.png'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import '../../assets/scss/custom/components/custom-datepicker.scss'
+import FileTables from 'pages/AppFileManagement/FileTables'
+import FileTable from './FileTable'
 
 const AddKPIResult = (props) => {
     const dispatch = useDispatch()
@@ -21,15 +24,18 @@ const AddKPIResult = (props) => {
     const [successClose, setSuccessClose] = useState(false)
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [selectedDate, setSelectedDate] = useState("")
+    const [selectedKpiId, setSelectedKpiId] = useState("")
+    const [selectedFileNum, setSelectedFileNum] = useState("")
     const [pageNum, setPageNum] = useState("0")
     const [isButtonClicked, setIsButtonClicked] = useState(false)
     const [isClosed, setIsClosed] = useState(false)
     const [addKPIResultMsgModal, setAddKPIResultMsgModal] = useState(false)
     const [addKPIResultContentModal, setAddKPIResultContentModal] = useState("")
     const [addKPIResultMsg, setAddKPIResultMsg] = useState(false)
+    const [detailModalMonthly, setDetailModalMonthly] = useState(false)
 
     const setKPINoteMessage = useSelector(state => {
-        return state.settingReducer.msgEdit
+        return state.kpiReducer.msgEdit
     })
 
     const appFileListData = useSelector(state => {
@@ -43,6 +49,7 @@ const AddKPIResult = (props) => {
     useEffect(() => {
         if (props.modal === true) {
             setSelectedDate(props.date)
+            setSelectedKpiId(props.kpiId)
             dispatch(getKPIFile({
                 groupNum: props.groupNum,
                 date: props.date.replace(/-/g, "")
@@ -82,7 +89,7 @@ const AddKPIResult = (props) => {
     const handleClick = () => {
         setAddKPIResultSpinner(true)
         dispatch(setKPINote({
-            kpiId: props.kpiId,
+            kpiId: selectedKpiId,
             pageNum: pageNum
         }))
     }
@@ -116,8 +123,12 @@ const AddKPIResult = (props) => {
         }
     }
 
+    const toggleDetailModalMonthly = () => {
+        setDetailModalMonthly(!detailModalMonthly)
+    }
+
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
+        <Modal size={appFileListData?.data?.list?.count > 2 ? 'lg' : 'md'} style={{ width: appFileListData?.data?.list?.count > 2 ? '650px' : '50vw' }} isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal2
                 modal={addKPIResultMsgModal}
                 toggle={toggleMsgModal}
@@ -125,11 +136,18 @@ const AddKPIResult = (props) => {
                 setIsClosed={setIsClosed}
                 successClose={successClose}
             />
+            <FileTable
+                modal={detailModalMonthly}
+                toggle={toggleDetailModalMonthly}
+                appFileListData={appFileListData}
+                selectedFileNum={selectedFileNum}
+                setSelectedFileNum={setSelectedFileNum}
+            />
             <ModalHeader toggle={props.toggle} className='add-kpi-result-header-modal'>
                 <div className='wrapper-class'>
-                    <span style={{ width: 'inherit' }}>{props.t("Add KPI Result")}</span>
-                    <InputGroup style={{ flexWrap: 'unset', display: 'flex', justifyContent: "right", width: "85%" }}>
-                        <div style={{ width: '150px' }}>
+                    <span style={{ width: 'inherit' }}>Add KPI Result</span>
+                    <InputGroup style={{ flexWrap: 'unset', display: 'flex', justifyContent: "right", width: "50%" }}>
+                        <div style={{ width: '100px' }}>
                             <DatePicker
                                 onClickOutside={() => {
                                     setShowDatePicker(false)
@@ -140,7 +158,7 @@ const AddKPIResult = (props) => {
                                     setIsButtonClicked(false)
                                 }}
                                 open={showDatePicker}
-                                className="form-control custom-reset-date"
+                                className="form-control custom-reset-date kpi-result-datepicker"
                                 showMonthYearPicker
                                 dateFormat="yyyy-MM"
                                 selected={selectedDate ? moment(selectedDate, 'yyyy-MM').toDate() : new Date()}
@@ -148,6 +166,7 @@ const AddKPIResult = (props) => {
                                     setShowDatePicker(false)
                                     setIsButtonClicked(false)
                                     setSelectedDate(date ? moment(date).format('yyyy-MM') : new Date())
+                                    setSelectedFileNum("")
                                 }}
                                 onKeyDown={(e) => {
                                     e.preventDefault()
@@ -157,7 +176,7 @@ const AddKPIResult = (props) => {
                                         <div className="react-datepicker__input-container">
                                             <input
                                                 type="text"
-                                                className="form-control custom-reset-date"
+                                                className="form-control custom-reset-date kpi-result-datepicker"
                                                 value={selectedDate ? moment(selectedDate).format('yyyy-MM') : moment().format('yyyy-MM')}
                                             />
                                         </div>
@@ -177,7 +196,7 @@ const AddKPIResult = (props) => {
                 </div>
             </ModalHeader>
             <ModalBody>
-                <Row className="text-center justify-content-center" style={{ marginTop: "-5%" }}>
+                <div className="text-center d-flex" style={{ marginTop: "-5%" }}>
                     {appFileListData?.data?.list?.count > 0 ? (
                         <>
                             {appFileListData?.data?.list?.fileList?.map((file, index) => {
@@ -197,23 +216,7 @@ const AddKPIResult = (props) => {
                                                         cursor: "pointer"
                                                     }}
                                                         src={getFileIconClass(file.name)}
-                                                        onClick={appFileListData?.data?.list?.open ? () => window.open(new URL(file.url)) : null}
                                                     />
-                                                    {appFileListData?.data?.list?.edit ?
-                                                        <span
-                                                            style={{
-                                                                fontSize: "18px",
-                                                                position: "absolute",
-                                                                top: "4px",
-                                                                left: "2.5em",
-                                                                right: "0",
-                                                                textAlign: "center",
-                                                                color: "#B4B4B8",
-                                                                cursor: "pointer"
-                                                            }}
-                                                            className="mdi mdi-delete"
-                                                            onClick={() => confirmToggleDelete(file.num)}
-                                                        ></span> : null}
                                                 </div>
                                                 <div
                                                     id={`fileName_${index}_${index}`}
@@ -231,7 +234,6 @@ const AddKPIResult = (props) => {
                                                         cursor: 'pointer',
                                                         margin: '0 auto',
                                                     }}
-                                                    onClick={appFileListData?.data?.list?.open ? () => window.open(new URL(file.url)) : null}
                                                 >
                                                     {file.name}
                                                 </div>
@@ -240,30 +242,15 @@ const AddKPIResult = (props) => {
                                                 </UncontrolledTooltip>
                                             </Col>
                                         ) : (
-                                            <Col className="files" style={{ height: "12vh" }} key={index}>
+                                            <Col className="files" style={{ height: "12vh", borderRadius: "10px", backgroundColor: selectedFileNum === file.num.toString() ? "silver" : "" }} key={index}>
                                                 <div style={{ position: "relative", textAlign: "center" }}>
-                                                    <img style={{
+                                                    <img onClick={() => setSelectedFileNum(file.num.toString())} style={{
                                                         height: '50px',
                                                         marginTop: '24px',
                                                         cursor: "pointer"
                                                     }}
                                                         src={getFileIconClass(file.name)}
-                                                        onClick={appFileListData?.data?.list?.open ? () => window.open(new URL(file.url)) : null}
                                                     />
-                                                    {appFileListData?.data?.list?.edit ? <span
-                                                        style={{
-                                                            fontSize: "18px",
-                                                            position: "absolute",
-                                                            top: "4px",
-                                                            left: "2.5em",
-                                                            right: "0",
-                                                            textAlign: "center",
-                                                            color: "#B4B4B8",
-                                                            cursor: "pointer"
-                                                        }}
-                                                        className="mdi mdi-delete"
-                                                        onClick={() => confirmToggleDelete(file.num)}
-                                                    ></span> : null}
                                                 </div>
                                                 <div
                                                     id={`fileName_${index}_${index}`}
@@ -274,13 +261,19 @@ const AddKPIResult = (props) => {
                                                         textOverflow: "ellipsis",
                                                         overflow: "hidden",
                                                         textAlign: "center",
-                                                        marginLeft: "50%",
-                                                        transform: "translateX(-50%)",
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
                                                         cursor: "pointer"
                                                     }}
-                                                    onClick={appFileListData?.data?.list?.open ? () => window.open(new URL(file.url)) : null}
                                                 >
-                                                    {file.name}
+                                                    <span
+                                                        style={{
+                                                            width: '150px',
+                                                            textOverflow: 'ellipsis',
+                                                            overflow: 'hidden',
+                                                            whiteSpace: 'nowrap',
+                                                        }}>
+                                                        {file.name}</span>
                                                 </div>
 
                                                 <UncontrolledTooltip placement="top" target={`fileName_${index}_${index}`}>
@@ -290,16 +283,16 @@ const AddKPIResult = (props) => {
                                         )
                                     ) : (
                                         index === 3 ? (
-                                            <Col md='3' style={{ marginTop: "2%" }} className="files" key={index}>
+                                            <Col md='2' style={{ marginTop: "2%" }} className="files" key={index}>
                                                 <a
                                                     style={{
                                                         fontSize: "50px",
-                                                        color: appFileListData?.data?.list?.open ? "#7BAE40" : "#BBBCBE",
+                                                        color: "#7BAE40",
                                                         opacity: "0.75",
-                                                        cursor: appFileListData?.data?.list?.open ? "pointer" : "default"
+                                                        cursor: "pointer"
                                                     }}
                                                     className="mdi mdi-dots-horizontal"
-                                                    onClick={appFileListData?.data?.list?.open ? () => toggleDetailModalMonthly(appFileListData?.data?.list?.num) : null}
+                                                    onClick={() => toggleDetailModalMonthly()}
                                                 ></a>
                                             </Col>
                                         ) : null
@@ -314,7 +307,7 @@ const AddKPIResult = (props) => {
                             <span
                                 style={{
                                     fontSize: "50px",
-                                    color: appFileListData?.data?.list?.open ? "#f46a6a" : "#BBBCBE",
+                                    color: "#BBBCBE",
                                     opacity: "0.75",
                                 }}
                                 className="mdi mdi-file-cancel-outline"
@@ -338,15 +331,13 @@ const AddKPIResult = (props) => {
                                     textOverflow: "ellipsis",
                                     overflow: "hidden",
                                     textAlign: "center",
-                                    marginLeft: "50%",
-                                    transform: "translateX(-50%)"
                                 }}
                             >
                                 {props.t('No File')}
                             </div>
                         </Col>
                     )}
-                </Row>
+                </div>
                 <Row className="align-items-center mt-3">
                     <Col className="col-8" style={{
                         whiteSpace: "nowrap",
@@ -360,11 +351,12 @@ const AddKPIResult = (props) => {
                     </Col>
                 </Row>
             </ModalBody>
-            <ModalFooter style={{ justifyContent: "space-between" }}>
-                <Row style={{
+            <ModalFooter style={{ justifyContent: "space-between", display: 'flex' }}>
+                <div style={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    width: '100%',
                 }}>
                     <Col style={{
                         display: "flex",
@@ -374,11 +366,12 @@ const AddKPIResult = (props) => {
                         gap: ".75vw",
                     }}
                     >
-                        <span style={{ marginTop: "8px" }}>{props.t("Page")}</span>
+                        <span style={{ marginTop: "8px" }}>Page</span>
                         <Input
                             type="number"
                             className="form-control"
                             value={pageNum}
+                            style={{ width: '50%' }}
                             onChange={e => {
                                 try {
                                     setPageNum(e.target.value)
@@ -401,10 +394,13 @@ const AddKPIResult = (props) => {
                     >
                         <Button
                             className="btn btn-primary btn-block"
-                            onClick={() => handleClick()}
-                            color={addKPIResultSpinner ? "primary disabled" : "primary"}
+                            onClick={selectedFileNum !== "" ? () => {
+                                handleClick()
+                                toggleMsgModal()
+                            } : null}
+                            color={(addKPIResultSpinner || selectedFileNum === "") ? "primary disabled" : "primary"}
                         >
-                            {props.t("Submit")}
+                            Submit
                             <Spinner style={{
                                 display: addKPIResultSpinner ? "block" : "none",
                                 marginTop: '-27px',
@@ -412,11 +408,14 @@ const AddKPIResult = (props) => {
                                 position: "absolute"
                             }} className="ms-4" color="danger" />
                         </Button>
-                        <Button color="danger" onClick={props.toggle}>
-                            {props.t("Close")}
+                        <Button color="danger" onClick={() => {
+                            props.toggle()
+                            setSelectedFileNum("")
+                        }}>
+                            Close
                         </Button>
                     </Col>
-                </Row>
+                </div>
             </ModalFooter>
         </Modal>
     )

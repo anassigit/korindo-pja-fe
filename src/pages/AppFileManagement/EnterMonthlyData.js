@@ -153,7 +153,6 @@ const EnterMonthlyData = (props) => {
                 const formattedDate = tempDate.replace(/-/g, '')
                 dispatch(getMonthlyData({ date: formattedDate }))
             } else {
-                debugger
                 const formattedDate = dateState.replace(/-/g, '')
                 dispatch(getMonthlyData({ date: formattedDate }))
             }
