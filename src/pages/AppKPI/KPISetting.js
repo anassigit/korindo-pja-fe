@@ -11,13 +11,12 @@ import {
     InputGroup,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getDownloadPlan, getGroupListKPI, getKPIMaster, resetMessage } from "store/actions"
+import { getCorporationList, getDownloadKPITemplate, getGroupListKPI, getKPIMaster, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getDownloadPlanTemplateBE } from "helpers/backend_helper"
-import UploadKPIPlan from "./UploadKPIPlan"
+import UploadKPI from "./UploadKPI"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 
@@ -36,7 +35,7 @@ const KPISetting = (props) => {
         return state.kpiReducer.respGetCorporationList
     })
 
-    const appPlanListData = useSelector((state) => {
+    const appKPIListData = useSelector((state) => {
         return state.kpiReducer.respGetKPIMaster
     })
 
@@ -44,7 +43,7 @@ const KPISetting = (props) => {
     const [appPlanState, setAppPlanState] = useState([])
     const [appKPIMsg, setAppKPIMsg] = useState("")
     const [selectedYear, setSelectedYear] = useState(moment().format('yyyy'))
-    const [selectedGroupList, setSelectedGroupList] = useState("")
+    const [selectedGroupId, setSelectedGroupId] = useState("")
     const [selectedCorporationId, setSelectedCorporationId] = useState("")
     const [selectedCorporationName, setSelectedCorporationName] = useState("")
     const [uploadModal, setUploadModal] = useState(false)
@@ -65,56 +64,56 @@ const KPISetting = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appGroupListData, appCorporationListData, appPlanListData])
+    }, [appGroupListData, appCorporationListData, appKPIListData])
 
     useEffect(() => {
         setLoadingSpinner(true)
-        if (selectedGroupList) {
+        if (selectedGroupId) {
             dispatch(getCorporationList({
-                groupNum: selectedGroupList
+                groupNum: selectedGroupId
             }))
         } else {
             dispatch(getCorporationList({
                 groupNum: ''
             }))
         }
-    }, [selectedGroupList])
+    }, [selectedGroupId])
 
     useEffect(() => {
-        if (selectedCorporationId && selectedGroupList && selectedYear) {
+        if (selectedCorporationId || (selectedGroupId && selectedYear)) {
             setLoadingSpinner(true)
             dispatch(getKPIMaster({
                 corporationId: selectedCorporationId,
                 year: selectedYear
             }))
         }
-    }, [selectedCorporationId, selectedYear, selectedGroupList])
+    }, [selectedCorporationId, selectedYear, selectedGroupId])
 
     useEffect(() => {
-        if (appPlanListData.status === '1') {
-            setAppPlanState(appPlanListData.data.list)
+        if (appKPIListData.status === '1') {
+            setAppPlanState(appKPIListData.data.list)
         } else {
             setAppPlanState([])
         }
-    }, [appPlanListData])
+    }, [appKPIListData])
 
     const toggleUploadModal = () => {
         setUploadModal(!uploadModal)
     }
 
-    const downloadPlanTemplate = async () => {
+    const downloadKPITemplate = async () => {
         try {
-            // dispatch(getDownloadPlanTemplateBE({
-            //     file_nm: 'KPI PLAN TEMPLATE.xlsx'
-            // }))
+            dispatch(getDownloadKPITemplate({
+                file_nm: 'KPI TEMPLATE.xlsx'
+            }))
         } catch (error) {
             console.log(error)
         }
     }
 
-    const downloadPlan = async () => {
+    const downloadKPI = async () => {
         try {
-            // dispatch(getDownloadPlan({
+            // dispatch(getDownload({
             //     file_nm: 'KPI PLAN.xlsx',
             //     groupNum: selectedGroupList,
             //     corporationId: selectedCorporationId,
@@ -126,18 +125,18 @@ const KPISetting = (props) => {
 
     const getMonthAbbreviation = (monthIndex) => {
         const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
+            props.t("Jan"),
+            props.t("Feb"),
+            props.t("Mar"),
+            props.t("Apr"),
+            props.t("May"),
+            props.t("Jun"),
+            props.t("Jul"),
+            props.t("Aug"),
+            props.t("Sep"),
+            props.t("Oct"),
+            props.t("Nov"),
+            props.t("Dec"),
         ]
         return months[monthIndex - 1]
     }
@@ -153,7 +152,7 @@ const KPISetting = (props) => {
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI Setting
+                            {props.t("KPI Setting")}
                         </CardHeader>
                         <CardBody>
                             <div
@@ -192,6 +191,8 @@ const KPISetting = (props) => {
                                                 ))}
                                                 selected={selectedYear ? moment(selectedYear, 'yyyy').toDate() : new Date()}
                                                 onChange={(date) => {
+                                                    setShowDatePicker(false)
+                                                    setIsButtonClicked(false)
                                                     setSelectedYear(date ? moment(date).format('yyyy') : new Date())
                                                 }}
                                                 onKeyDown={(e) => {
@@ -223,12 +224,12 @@ const KPISetting = (props) => {
                                         type="select"
                                         style={{ width: 'auto' }}
                                         onChange={(e) => {
-                                            setSelectedGroupList(e.target.value)
+                                            setSelectedGroupId(e.target.value)
                                         }}
                                     >
                                         {Array.isArray(appGroupListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{'Select Group'}</option>
+                                                <option value={''}>{props.t("Select Group")}</option>
                                                 {appGroupListData?.data?.list.map((item, index) => {
                                                     let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
                                                     return (
@@ -240,7 +241,7 @@ const KPISetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {'No Data'}
+                                                    {props.t("No Data")}
                                             </option>
                                         )}
                                     </Input>
@@ -249,7 +250,6 @@ const KPISetting = (props) => {
                                         style={{ width: 'auto' }}
                                         value={selectedCorporationId}
                                         onChange={(e) => {
-                                            debugger
                                             const selectedId = e.target.value;
                                             setSelectedCorporationId(selectedId);
                                             const selectedCorporation = appCorporationListData?.data?.list.find(item => item.corporationId.toString() === selectedId)
@@ -262,7 +262,7 @@ const KPISetting = (props) => {
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{'Select Corporation'}</option>
+                                                <option value={''}>{props.t("Select Corporation")}</option>
                                                 {appCorporationListData?.data?.list.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item.corporationId}>
@@ -273,7 +273,7 @@ const KPISetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                {'No Data'}
+                                                    {props.t("No Data")}
                                             </option>
                                         )}
                                     </Input>
@@ -287,27 +287,27 @@ const KPISetting = (props) => {
                                     <Button
                                         disabled={appPlanState.length > 0 ? false : true}
                                         className={appPlanState.length > 0 ? "" : "btn btn-dark opacity-25"}
-                                        onClick={() => { downloadPlan() }}>
+                                        onClick={() => { downloadKPI() }}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {'Download Excel'}
+                                        {props.t("Download Excel")}
                                     </Button>
                                     <Button onClick={() =>
-                                        downloadPlanTemplate()
+                                        downloadKPITemplate()
                                     }>
                                         <i className="mdi mdi-download" />{" "}
-                                        {'Download Template'}
+                                        {props.t("Download Template")}
                                     </Button>
                                     <Button onClick={() => toggleUploadModal()}>
-                                        {'Upload'}
+                                        {props.t("Upload")}
                                     </Button>
                                 </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Corporation</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Year</th>
-                                        <th style={{ textAlign: 'center', width: 'auto' }} colSpan={1} scope="col">KPI Category</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Corporation")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Year")}</th>
+                                        <th style={{ textAlign: 'center', width: 'auto' }} colSpan={1} scope="col">{props.t("KPI Category")}</th>
                                         {
                                             (() => {
                                                 const thElements = []
@@ -339,7 +339,7 @@ const KPISetting = (props) => {
                                                                     )
                                                                 } else {
                                                                     return (
-                                                                        <td key={monthIndex}>{'No Data'}</td>
+                                                                        <td key={monthIndex}>{props.t("No Data")}</td>
                                                                     )
                                                                 }
                                                             })
@@ -356,14 +356,14 @@ const KPISetting = (props) => {
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
                         <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
                     </div>
-                    <UploadKPIPlan
+                    <UploadKPI
                         modal={uploadModal}
                         toggle={toggleUploadModal}
                         onSuccess={() => {
                             setLoadingSpinner(true)
-                            if (selectedYear && selectedCorporationId && selectedGroupList) {
+                            if (selectedYear && selectedCorporationId && selectedGroupId) {
                                 dispatch(getKPIMaster({
-                                    groupNum: selectedGroupList,
+                                    groupNum: selectedGroupId,
                                     corporationId: selectedCorporationId,
                                 }))
                             } else {

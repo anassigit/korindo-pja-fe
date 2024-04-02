@@ -42,21 +42,18 @@ const KPIInputResult = (props) => {
         return state.kpiReducer.msgEdit
     })
 
-    const toggleAddGroupMappingModal = () => {
-        setAddGroupMappingModal(!addGroupMappingModal)
+    const toggleAddKPIResultModal = () => {
+        setAddKPIResultModal(!addKPIResultModal)
     }
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
-    const [appEditMode, setAppEditMode] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState("")
-    const [selectedGroupList, setSelectedGroupList] = useState("")
-    const [selectedCorporationList, setSelectedCorporationList] = useState("")
-    const [appDataEdited, setAppDataEdited] = useState([])
-    const [isEdit, setIsEdit] = useState([])
+    const [selectedGroupNum, setSelectedGroupNum] = useState("")
+    const [selectedCorporationId, setSelectedCorporationId] = useState("")
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [selectedDate, setSelectedDate] = useState(moment().format('yyyy-MM'))
     const [isButtonClicked, setIsButtonClicked] = useState(false)
-    const [addGroupMappingModal, setAddGroupMappingModal] = useState(false)
+    const [addKPIResultModal, setAddKPIResultModal] = useState(false)
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -76,23 +73,23 @@ const KPIInputResult = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(true)
-        if (selectedGroupList) {
+        if (selectedGroupNum) {
             dispatch(getCorporationList({
-                groupNum: selectedGroupList
+                groupNum: selectedGroupNum
             }))
         } else {
             dispatch(getCorporationList({
                 groupNum: ''
             }))
         }
-    }, [selectedGroupList])
+    }, [selectedGroupNum])
 
     useEffect(() => {
-        if (selectedCorporationList && selectedGroupList && selectedDate) {
+        if (selectedCorporationId || (selectedGroupNum && selectedDate)) {
             setLoadingSpinner(true)
             dispatch(getActualInputData({
-                groupNum: selectedGroupList,
-                corporationId: selectedCorporationList,
+                groupNum: selectedGroupNum,
+                corporationId: selectedCorporationId,
                 date: selectedDate.replace(/-/g, "")
             }))
         } else {
@@ -102,19 +99,21 @@ const KPIInputResult = (props) => {
                 date: selectedDate.replace(/-/g, "")
             }))
         }
-    }, [selectedGroupList, selectedCorporationList, selectedDate])
+    }, [selectedGroupNum, selectedCorporationId, selectedDate])
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
                     <AddKPIResult
-                        modal={addGroupMappingModal}
-                        toggle={toggleAddGroupMappingModal}
+                        modal={addKPIResultModal}
+                        toggle={toggleAddKPIResultModal}
+                        groupNum={selectedGroupNum}
+                        date={selectedDate}
                     />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {"Input KPI Result"}
+                            {props.t("Input KPI Result")}
                         </CardHeader>
                         <CardBody>
                             <div
@@ -147,6 +146,8 @@ const KPIInputResult = (props) => {
                                                 dateFormat="yyyy-MM"
                                                 selected={selectedDate ? moment(selectedDate, 'yyyy-MM').toDate() : new Date()}
                                                 onChange={(date) => {
+                                                    setShowDatePicker(false)
+                                                    setIsButtonClicked(false)
                                                     setSelectedDate(date ? moment(date).format('yyyy-MM') : new Date())
                                                 }}
                                                 onKeyDown={(e) => {
@@ -177,13 +178,12 @@ const KPIInputResult = (props) => {
                                     <Input
                                         type="select"
                                         style={{ width: 'auto' }}
-                                        value={selectedGroupList}
+                                        value={selectedGroupNum}
                                         onChange={(e) => {
-                                            setSelectedCorporationList('')
-                                            setSelectedGroupList(e.target.value)
+                                            setSelectedGroupNum(e.target.value)
                                         }}
                                     >
-                                        <option value={''}>{'Select Group'}</option>
+                                        <option value={''}>{props.t("Select Group")}</option>
                                         {
                                             appGroupListData?.data?.list.map((item, index) => {
                                                 let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
@@ -198,16 +198,13 @@ const KPIInputResult = (props) => {
                                     <Input
                                         type="select"
                                         style={{ width: 'auto' }}
-                                        value={selectedCorporationList}
-                                        onChange={(e) => {
-                                            setLoadingSpinner(true)
-                                            setSelectedCorporationList(e.target.value)
-                                        }}
+                                        value={selectedCorporationId}
+                                        onChange={(e) => setSelectedCorporationId(e.target.value)}
                                     >
                                         {
                                             appCorporationListData?.data?.list?.length > 0 ? (
                                                 <>
-                                                    <option value={''}>{'Select Corporation'}</option>
+                                                    <option value={''}>{props.t("Select Corporation")}</option>
                                                     {
                                                         appCorporationListData?.data?.list.map((item, index) => {
                                                             return (
@@ -219,7 +216,7 @@ const KPIInputResult = (props) => {
                                                     }
                                                 </>
                                             ) : (
-                                                <option value={''}>{'No Data'}</option>
+                                                    <option value={''}>{props.t("No Data")}</option>
                                             )
                                         }
                                     </Input>
@@ -235,26 +232,24 @@ const KPIInputResult = (props) => {
                                         className={appListData?.data?.list.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadPlan() }}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {'Download Excel'}
+                                        {props.t("Download Excel")}
                                     </Button>
-                                    <Button onClick={() =>
-                                        downloadPlanTemplate()
-                                    }>
+                                    <Button>
                                         <i className="mdi mdi-download" />{" "}
-                                        {'Download Template'}
+                                        {props.t("Download Template")}
                                     </Button>
                                     <Button onClick={() => toggleUploadModal()}>
-                                        {'Upload'}
+                                        {props.t("Upload")}
                                     </Button>
                                 </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"KPI Category"}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"Plan"}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{"Result"}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Catch Up</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("KPI Category")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Plan")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Result")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Catch Up")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -267,7 +262,7 @@ const KPIInputResult = (props) => {
                                                         <td colSpan={1} style={{ textAlign: "right" }}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td colSpan={1} style={{ textAlign: "right" }}>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td style={{ textAlign: "center" }}>
-                                                            <Button onClick={toggleAddGroupMappingModal}><i className="mdi mdi-plus fs-5 align-middle" />{" "}Add</Button>
+                                                            <Button onClick={toggleAddKPIResultModal}><i className="mdi mdi-plus fs-5 align-middle" />{" "}Add</Button>
                                                         </td>
                                                     </tr>
                                                 </React.Fragment>

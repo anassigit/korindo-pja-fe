@@ -12,6 +12,7 @@ import {
     DropdownMenu,
     DropdownToggle,
     Input,
+    InputGroup,
     Spinner
 } from "reactstrap"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
@@ -20,6 +21,8 @@ import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
 import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, resetMessage } from "store/actions"
 import ReactEcharts from "echarts-for-react"
+import DatePicker from "react-datepicker"
+import moment from "moment"
 
 const KPIDashboard = (props) => {
 
@@ -44,32 +47,43 @@ const KPIDashboard = (props) => {
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
-    const [appKPIPage, setAppKPIPage] = useState(true)
-
     const [appKPIMsg, setAppKPIMsg] = useState('')
-
-    const [selectedYear, setSelectedYear] = useState("")
-    const [selectedMonth, setSelectedMonth] = useState("")
-    const [selectedGroupList, setSelectedGroupList] = useState("")
-    const [selectedCorporationList, setSelectedCorporationList] = useState("")
+    const [selectedGroupId, setSelectedGroupId] = useState("")
+    const [selectedCorporationId, setSelectedCorporationId] = useState("")
     const [selectedColumnList, setSelectedColumnList] = useState([])
-
     const [filterColumn, setFilterColumn] = useState(false)
-
     const [initialWidths, setInitialWidths] = useState([])
+    const [showDatePicker, setShowDatePicker] = useState(false)
+    const [isButtonClicked, setIsButtonClicked] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(moment().format('yyyy-MM'))
 
     useEffect(() => {
-        dispatch(getGroupListKPI())
         setLoadingSpinner(true)
+        dispatch(getGroupListKPI({
+            viewType: 1
+        }))
     }, [])
 
     useEffect(() => {
+        setLoadingSpinner(false)
         dispatch(resetMessage())
     }, [dispatch])
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appYearListData, appGroupListData, appCorporationListData, appColumnListData, appDashboardListData])
+    }, [appGroupListData, appCorporationListData, appColumnListData, appDashboardListData])
+
+    useEffect(() => {
+        if (selectedGroupId) {
+            dispatch(getCorporationList({
+                groupNum: selectedGroupId
+            }))
+        } else {
+            dispatch(getCorporationList({
+                groupNum: ''
+            }))
+        }
+    }, [selectedGroupId])
 
     useEffect(() => {
         if (appDashboardListData.status === '1') {
@@ -93,24 +107,11 @@ const KPIDashboard = (props) => {
     }, [appDashboardListData])
 
     useEffect(() => {
-        if (selectedGroupList) {
-            dispatch(getCorporationList({
-                groupNum: selectedGroupList
-            }))
-        } else {
-            dispatch(getCorporationList({
-                groupNum: ''
-            }))
-        }
-    }, [selectedGroupList, selectedYear])
-
-    useEffect(() => {
-
-        if (selectedYear && selectedCorporationList && selectedGroupList) {
+        if (selectedDate && selectedCorporationId && selectedGroupId) {
             dispatch(getColumnList({
-                groupNum: selectedGroupList,
-                corporationId: selectedCorporationList,
-                year: selectedYear,
+                groupNum: selectedGroupId,
+                corporationId: selectedCorporationId,
+                year: selectedDate.substring(0, 4),
             }))
         } else {
             dispatch(getColumnList({
@@ -120,31 +121,30 @@ const KPIDashboard = (props) => {
             }))
         }
 
-    }, [selectedCorporationList, selectedGroupList, selectedYear])
+    }, [selectedCorporationId, selectedGroupId, selectedDate])
 
     useEffect(() => {
-        if (selectedYear && selectedMonth && selectedGroupList) {
-
-            const trueColumns = selectedColumnList
-                .filter(columnObj => Object.values(columnObj)[0])
-                .map(columnObj => Object.keys(columnObj)[0])
-                .join(',')
+        if (selectedDate && selectedGroupId) {
             dispatch(getDashboardKPI({
-                year: selectedYear,
-                month: selectedMonth,
-                groupNum: selectedGroupList,
-                corporationId: selectedCorporationList,
-                column: trueColumns
+                year: selectedDate.substring(0, 4),
+                month: selectedDate.substring(5),
+                groupNum: selectedGroupId,
+                corporationId: selectedCorporationId,
+                column: selectedColumnList
+                    .filter(columnObj => Object.values(columnObj)[0])
+                    .map(columnObj => Object.keys(columnObj)[0])
+                    .join(',')
             }))
         } else {
             dispatch(getDashboardKPI({
                 groupNum: '',
                 corporationId: '',
                 year: '',
+                month: ''
             }))
         }
         setLoadingSpinner(true)
-    }, [selectedCorporationList, selectedMonth, selectedGroupList, selectedYear, selectedColumnList])
+    }, [selectedCorporationId, selectedGroupId, selectedDate, selectedColumnList])
 
     useEffect(() => {
         if (appColumnListData.status === '1') {
@@ -160,6 +160,11 @@ const KPIDashboard = (props) => {
         }
 
     }, [appColumnListData])
+
+    const years = [];
+    for (let year = 2017; year <= new Date().getFullYear(); year++) {
+        years.push(year);
+    }
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'decimal',
@@ -183,164 +188,178 @@ const KPIDashboard = (props) => {
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
-                    <Card style={{ display: appKPIPage ? 'block' : 'none' }} fluid="true" >
+                    <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI {'Dashboard'}
+                            {props.t("KPI Dashboard")}
                         </CardHeader>
                         <CardBody>
                             <div
                                 style={{
                                     display: 'flex',
-                                    gap: '16px',
-                                    alignItems: 'center',
+                                    justifyContent: 'space-between'
                                 }}
                             >
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedYear}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedYear(e.target.value)
-                                    }}
-                                >
-                                    <option>{'Select Year'}</option>
-                                    {
-                                        appYearListData?.data?.list.map((item, index) => {
-                                            return (
-                                                <option key={item}>{item}</option>
-                                            )
-                                        })
-                                    }
-                                </Input>
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedMonth}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedMonth(e.target.value)
-                                    }}
-                                >
-                                    <option>{'Select Month'}</option>
-                                    {
-                                        Array.from({ length: 12 }, (_, index) => {
-                                            const month = new Date(selectedYear, index, 1).toLocaleString('en-US', { month: 'short' })
-                                            return (
-                                                <option key={index} value={index + 1}>
-                                                    {langType === 'kor' ? index + 1 + "월" : month}
-                                                </option>
-                                            )
-                                        })
-                                    }
-                                </Input>
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedGroupList}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedCorporationList('')
-                                        setSelectedColumnList([])
-                                        setSelectedGroupList(e.target.value)
-                                    }}
-                                >
-                                    <option value={''}>{'Select Group'}</option>
-                                    {
-                                        appGroupListData?.data?.list.map((item, index) => {
-                                            let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
-                                            return (
-                                                <option key={index} value={item.num}>
-                                                    {nameLang}
-                                                </option>
-                                            )
-                                        })
-                                    }
-                                </Input>
-                                <Input
-                                    type="select"
-                                    style={{ width: 'auto' }}
-                                    value={selectedCorporationList}
-                                    onChange={(e) => {
-                                        setLoadingSpinner(true)
-                                        setSelectedCorporationList(e.target.value)
-                                        setSelectedColumnList([])
-                                    }}
-                                >
-                                    {
-                                        appCorporationListData?.data?.list?.length > 0 ? (
-                                            <>
-                                                <option value={''}>{'Select Corporation'}</option>
-                                                {
-                                                    appCorporationListData?.data?.list.map((item, index) => {
-                                                        return (
-                                                            <option key={index} value={item.corporationId}>
-                                                                {item.corporationName}
-                                                            </option>
-                                                        )
-                                                    })
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        width: '40%',
+                                        gap: '.75vw'
+                                    }}>
+                                    <InputGroup style={{ flexWrap: 'unset' }}>
+                                        <div style={{ width: '150px' }}>
+                                            <DatePicker
+                                                onClickOutside={() => {
+                                                    setShowDatePicker(false)
+                                                    setIsButtonClicked(false)
+                                                }}
+                                                onInputClick={() => {
+                                                    setShowDatePicker(!showDatePicker)
+                                                    setIsButtonClicked(false)
+                                                }}
+                                                open={showDatePicker}
+                                                className="form-control custom-reset-date"
+                                                showMonthYearPicker
+                                                dateFormat="yyyy-MM"
+                                                selected={selectedDate ? moment(selectedDate, 'yyyy-MM').toDate() : new Date()}
+                                                onChange={(date) => {
+                                                    setShowDatePicker(false)
+                                                    setIsButtonClicked(false)
+                                                    setSelectedDate(date ? moment(date).format('yyyy-MM') : new Date())
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    e.preventDefault()
+                                                }}
+                                                customInput={
+                                                    <>
+                                                        <div className="react-datepicker__input-container">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control custom-reset-date"
+                                                                value={selectedDate ? moment(selectedDate).format('yyyy-MM') : moment().format('yyyy-MM')}
+                                                            />
+                                                        </div>
+                                                    </>
                                                 }
-                                            </>
-                                        ) : (
-                                            <option value={''}>{'No Data'}</option>
-                                        )
-                                    }
-                                </Input>
-                                <Dropdown
-                                    isOpen={filterColumn}
-                                    toggle={() => setFilterColumn(!filterColumn)}
-                                    className="`d`-inline-block"
-                                >
-                                    <DropdownToggle
-                                        className="btn header-item "
-                                        id="page-header-user-dropdown"
-                                        tag="button"
+                                            />
+                                        </div>
+                                        <Button onClick={(e) => {
+                                            if (!isButtonClicked) {
+                                                setShowDatePicker(!showDatePicker);
+                                                setIsButtonClicked(true)
+                                            }
+                                        }}>
+                                            <span className="mdi mdi-calendar" />
+                                        </Button>
+                                    </InputGroup>
+                                    <Input
+                                        type="select"
+                                        style={{ width: 'auto' }}
+                                        value={selectedGroupId}
+                                        onChange={(e) => {
+                                            setLoadingSpinner(true)
+                                            setSelectedCorporationId('')
+                                            setSelectedColumnList([])
+                                            setSelectedGroupId(e.target.value)
+                                        }}
                                     >
-                                        <Button
-                                            style={{
-                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                            }}
-                                            className="mdi mdi-filter"
-                                        />
-                                    </DropdownToggle>
-                                    <DropdownMenu className="dropdown-menu-end">
-                                        {Array.isArray(appColumnListData?.data?.list) && appColumnListData?.data?.list.length > 0 ? (
-                                            appColumnListData?.data?.list.map((columnName, index) => (
-                                                <div
-                                                    key={index}
-                                                    style={{
-                                                        display: 'flex',
-                                                        justifyContent: 'center',
-                                                        flexDirection: 'column'
-                                                    }}
-                                                >
-                                                    <a
-                                                        className="dropdown-item"
+                                        <option value={''}>{'Select Group'}</option>
+                                        {
+                                            appGroupListData?.data?.list.map((item, index) => {
+                                                let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
+                                                return (
+                                                    <option key={index} value={item.num}>
+                                                        {nameLang}
+                                                    </option>
+                                                )
+                                            })
+                                        }
+                                    </Input>
+                                    <Input
+                                        type="select"
+                                        style={{ width: 'auto' }}
+                                        value={selectedCorporationId}
+                                        onChange={(e) => {
+                                            setLoadingSpinner(true)
+                                            setSelectedCorporationId(e.target.value)
+                                            setSelectedColumnList([])
+                                        }}
+                                    >
+                                        {
+                                            appCorporationListData?.data?.list?.length > 0 ? (
+                                                <>
+                                                    <option value={''}>{'Select Corporation'}</option>
+                                                    {
+                                                        appCorporationListData?.data?.list.map((item, index) => {
+                                                            return (
+                                                                <option key={index} value={item.corporationId}>
+                                                                    {item.corporationName}
+                                                                </option>
+                                                            )
+                                                        })
+                                                    }
+                                                </>
+                                            ) : (
+                                                <option value={''}>{'No Data'}</option>
+                                            )
+                                        }
+                                    </Input>
+                                    <Dropdown
+                                        isOpen={filterColumn}
+                                        toggle={() => setFilterColumn(!filterColumn)}
+                                        className="`d`-inline-block"
+                                    >
+                                        <DropdownToggle
+                                            className="btn header-item "
+                                            id="page-header-user-dropdown"
+                                            tag="button"
+                                        >
+                                            <Button
+                                                style={{
+                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                                }}
+                                                className="mdi mdi-filter"
+                                            />
+                                        </DropdownToggle>
+                                        <DropdownMenu className="dropdown-menu-end">
+                                            {Array.isArray(appColumnListData?.data?.list) && appColumnListData?.data?.list.length > 0 ? (
+                                                appColumnListData?.data?.list.map((columnName, index) => (
+                                                    <div
+                                                        key={index}
                                                         style={{
                                                             display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'left',
+                                                            justifyContent: 'center',
+                                                            flexDirection: 'column'
                                                         }}
-                                                        onClick={() => handleCheckboxChange(index)}
                                                     >
-                                                        <Input
-                                                            type="checkbox"
-                                                            id={`checkbox${index + 1}`}
-                                                            checked={selectedColumnList[index]?.[columnName] || false}
+                                                        <a
+                                                            className="dropdown-item"
+                                                            style={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'left',
+                                                            }}
                                                             onClick={() => handleCheckboxChange(index)}
-                                                        />
-                                                        <a onClick={() => handleCheckboxChange(index)} style={{ marginBottom: '0' }}>
-                                                            &nbsp;{columnName}
+                                                        >
+                                                            <Input
+                                                                type="checkbox"
+                                                                id={`checkbox${index + 1}`}
+                                                                checked={selectedColumnList[index]?.[columnName] || false}
+                                                                onClick={() => handleCheckboxChange(index)}
+                                                            />
+                                                            <a onClick={() => handleCheckboxChange(index)} style={{ marginBottom: '0' }}>
+                                                                &nbsp;{columnName}
+                                                            </a>
                                                         </a>
-                                                    </a>
-                                                    {index < appColumnListData.data.list.length - 1 && <div className="dropdown-divider" />}
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <DropdownItem>{'No Data'}</DropdownItem>
-                                        )}
-                                    </DropdownMenu>
-                                </Dropdown>
+                                                        {index < appColumnListData.data.list.length - 1 && <div className="dropdown-divider" />}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <DropdownItem>{'No Data'}</DropdownItem>
+                                            )}
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                    </div>
                             </div>
                             {
                                 appDashboardListData?.data?.resultList.map((item, index, array) => {

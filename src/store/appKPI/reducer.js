@@ -6,7 +6,7 @@ import {
     GET_ITEM_LIST,
     GET_KPI_MASTER,
     GET_UNIT_LIST,
-    DOWNLOAD_MASTER_TEMPLATE,
+    DOWNLOAD_KPI_TEMPLATE,
     RESET_MESSAGE,
     RESP_GET_COLUMN_LIST,
     RESP_GET_CORPORATION_LIST,
@@ -15,7 +15,7 @@ import {
     RESP_GET_ITEM_LIST,
     RESP_GET_KPI_MASTER,
     RESP_GET_UNIT_LIST,
-    UPLOAD_MASTER_KPI,
+    UPLOAD_KPI,
     MSG_UPLOAD,
     GET_ACTUAL_INPUT_DATA,
     RESP_GET_ACTUAL_INPUT_DATA,
@@ -25,7 +25,9 @@ import {
     RESP_GET_DASHBOARD_DETAIL_KPI,
     DOWNLOAD_DASHBOARD_DETAIL,
     GET_GROUP_LIST_KPI_INPUT,
-    RESP_GET_GROUP_LIST_KPI_INPUT
+    RESP_GET_GROUP_LIST_KPI_INPUT,
+    GET_KPI_FILE,
+    RESP_GET_KPI_FILE
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -128,7 +130,7 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetDashboardDetailKPI: action.payload,
             }
-        case DOWNLOAD_MASTER_TEMPLATE:
+        case DOWNLOAD_KPI_TEMPLATE:
             return {
                 ...state,
             }
@@ -145,11 +147,20 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetActualInputData: action.payload,
             }
+        case GET_KPI_FILE:
+            return {
+                ...state,
+            }
+        case RESP_GET_KPI_FILE:
+            return {
+                ...state,
+                respGetKPIFile: action.payload,
+            }
         case SET_ACTUAL_INPUT_DATA:
             return {
                 ...state,
             }
-        case UPLOAD_MASTER_KPI:
+        case UPLOAD_KPI:
             return {
                 ...state,
             }

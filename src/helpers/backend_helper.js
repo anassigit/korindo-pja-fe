@@ -217,11 +217,13 @@ export const getDashboardDetailKPIBE = req => postWithParam("rest/KpiManagementR
 
 export const getActualInputDataBE = req => postWithParam("rest/KpiManagementRest/getData", req)
 
-export const getDownloadMasterTemplateBE = req => getWithXls("rest/KpiManagementRest/downloadMasterTemplate", req)
+export const getDownloadKPITemplateBE = req => getWithXls("rest/KpiManagementRest/downloadTemplate", req)
 
 export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagementRest/downloadDashboardDetail", req)
 
-export const uploadMasterKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
+export const getKPIFileBE = req => postWithParam("rest/KpiManagementRest/searchFile", req)
+
+export const uploadKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
 
 export const setActualInputDataBE = req => post("rest/KpiManagementRest/setData", req)
 

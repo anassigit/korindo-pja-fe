@@ -16,8 +16,8 @@ import {
     RESP_GET_DASHBOARD_DETAIL_KPI,
     GET_KPI_MASTER,
     RESP_GET_KPI_MASTER,
-    DOWNLOAD_MASTER_TEMPLATE,
-    UPLOAD_MASTER_KPI,
+    DOWNLOAD_KPI_TEMPLATE,
+    UPLOAD_KPI,
     MSG_UPLOAD,
     MSG_EDIT,
     GET_ACTUAL_INPUT_DATA,
@@ -25,7 +25,9 @@ import {
     SET_ACTUAL_INPUT_DATA,
     DOWNLOAD_DASHBOARD_DETAIL,
     GET_GROUP_LIST_KPI_INPUT,
-    RESP_GET_GROUP_LIST_KPI_INPUT
+    RESP_GET_GROUP_LIST_KPI_INPUT,
+    GET_KPI_FILE,
+    RESP_GET_KPI_FILE
 } from "./actionTypes"
 
 export const getGroupListKPI = (req) => ({
@@ -128,6 +130,16 @@ export const respGetActualInputData = resp => ({
     payload: resp,
 })
 
+export const getKPIFile = (req) => ({
+    type: GET_KPI_FILE,
+    payload: req,
+})
+
+export const respGetKPIFile = resp => ({
+    type: RESP_GET_KPI_FILE,
+    payload: resp,
+})
+
 export const setActualInputData = (req) => ({
     type: SET_ACTUAL_INPUT_DATA,
     payload: req,
@@ -138,13 +150,13 @@ export const getDownloadDashboardDetail = (req) => ({
     payload: req,
 })
 
-export const getDownloadMasterTemplate = (req) => ({
-    type: DOWNLOAD_MASTER_TEMPLATE,
+export const getDownloadKPITemplate = (req) => ({
+    type: DOWNLOAD_KPI_TEMPLATE,
     payload: req,
 })
 
-export const uploadMasterKPI = (req) => ({
-    type: UPLOAD_MASTER_KPI,
+export const uploadKPI = (req) => ({
+    type: UPLOAD_KPI,
     payload: req,
 })
 
