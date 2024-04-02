@@ -50,6 +50,7 @@ const KPIInputResult = (props) => {
     const [appKPIMsg, setAppKPIMsg] = useState("")
     const [selectedGroupNum, setSelectedGroupNum] = useState("")
     const [selectedCorporationId, setSelectedCorporationId] = useState("")
+    const [selectedKpiId, setSelectedKpiId] = useState("")
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [selectedDate, setSelectedDate] = useState(moment().format('yyyy-MM'))
     const [isButtonClicked, setIsButtonClicked] = useState(false)
@@ -110,6 +111,7 @@ const KPIInputResult = (props) => {
                         toggle={toggleAddKPIResultModal}
                         groupNum={selectedGroupNum}
                         date={selectedDate}
+                        kpiId={selectedKpiId}
                     />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
@@ -216,7 +218,7 @@ const KPIInputResult = (props) => {
                                                     }
                                                 </>
                                             ) : (
-                                                    <option value={''}>{props.t("No Data")}</option>
+                                                <option value={''}>{props.t("No Data")}</option>
                                             )
                                         }
                                     </Input>
@@ -262,7 +264,10 @@ const KPIInputResult = (props) => {
                                                         <td colSpan={1} style={{ textAlign: "right" }}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td colSpan={1} style={{ textAlign: "right" }}>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td style={{ textAlign: "center" }}>
-                                                            <Button onClick={toggleAddKPIResultModal}><i className="mdi mdi-plus fs-5 align-middle" />{" "}Add</Button>
+                                                            <Button onClick={() => {
+                                                            setSelectedKpiId(item.kpiId.toString())
+                                                                toggleAddKPIResultModal()
+                                                            }}><i className="mdi mdi-plus fs-5 align-middle" />{" "}Add</Button>
                                                         </td>
                                                     </tr>
                                                 </React.Fragment>

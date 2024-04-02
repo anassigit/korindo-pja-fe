@@ -19,7 +19,7 @@ import {
     MSG_UPLOAD,
     GET_ACTUAL_INPUT_DATA,
     RESP_GET_ACTUAL_INPUT_DATA,
-    SET_ACTUAL_INPUT_DATA,
+    SET_KPI_NOTE,
     MSG_EDIT,
     GET_DASHBOARD_DETAIL_KPI,
     RESP_GET_DASHBOARD_DETAIL_KPI,
@@ -156,7 +156,7 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetKPIFile: action.payload,
             }
-        case SET_ACTUAL_INPUT_DATA:
+        case SET_KPI_NOTE:
             return {
                 ...state,
             }

@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_ACTUAL_INPUT_DATA, SET_ACTUAL_INPUT_DATA, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE } from "./actionTypes"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_ACTUAL_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE } from "./actionTypes"
 import { msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile } from "./actions"
-import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPIBE, getItemBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getActualInputDataBE, setActualInputDataBE, getDashboardDetailKPIBE, getDownloadDashboardDetailBE, getKPIFileBE } from "helpers/backend_helper"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPIBE, getItemBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getActualInputDataBE, setKPINoteBE, getDashboardDetailKPIBE, getDownloadDashboardDetailBE, getKPIFileBE } from "helpers/backend_helper"
 
 function* fetchGetGroupListKPI({ payload: req }) {
     try {
@@ -188,9 +188,9 @@ function* fetchUploadKPI({ payload: req }) {
     }
 }
 
-function* fetchSetActualInputData({ payload: req }) {
+function* fetchSetKPINote({ payload: req }) {
     try {
-        const response = yield call(setActualInputDataBE, req)
+        const response = yield call(setKPINoteBE, req)
         yield put(msgEdit(response))
     } catch (error) {
         console.log(error);
@@ -213,7 +213,7 @@ function* kpiSaga() {
     yield takeEvery(DOWNLOAD_DASHBOARD_DETAIL, fetchGetDownloadDashboardDetail)
     yield takeEvery(DOWNLOAD_KPI_TEMPLATE, fetchGetDownloadKPITemplate)
     yield takeEvery(UPLOAD_KPI, fetchUploadKPI)
-    yield takeEvery(SET_ACTUAL_INPUT_DATA, fetchSetActualInputData)
+    yield takeEvery(SET_KPI_NOTE, fetchSetKPINote)
 }
 
 export default kpiSaga

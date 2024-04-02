@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Col, Row, InputGroup, UncontrolledTooltip } from 'reactstrap'
-import { useFormik } from 'formik'
-import * as Yup from "yup"
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Col, Row, InputGroup, UncontrolledTooltip, Spinner } from 'reactstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { getKPIFile } from 'store/actions'
-import { resetMessage, saveGroupMapping } from 'store/appSetting/actions'
+import { getKPIFile, setKPINote } from 'store/actions'
+import { resetMessage } from 'store/appSetting/actions'
 import MsgModal2 from 'components/Common/MsgModal2'
 import { withTranslation } from 'react-i18next'
 import doc from '../../assets/images/file_management/doc.png'
@@ -19,16 +17,19 @@ import moment from 'moment'
 
 const AddKPIResult = (props) => {
     const dispatch = useDispatch()
+    const [addKPIResultSpinner, setAddKPIResultSpinner] = useState(false)
     const [successClose, setSuccessClose] = useState(false)
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [selectedDate, setSelectedDate] = useState("")
-
+    const [pageNum, setPageNum] = useState("0")
+    const [isButtonClicked, setIsButtonClicked] = useState(false)
     const [isClosed, setIsClosed] = useState(false)
-
+    const [addKPIResultMsgModal, setAddKPIResultMsgModal] = useState(false)
+    const [addKPIResultContentModal, setAddKPIResultContentModal] = useState("")
     const [addKPIResultMsg, setAddKPIResultMsg] = useState(false)
 
-    const addKPIResultMessage = useSelector(state => {
-        return state.settingReducer.msgAdd
+    const setKPINoteMessage = useSelector(state => {
+        return state.settingReducer.msgEdit
     })
 
     const appFileListData = useSelector(state => {
@@ -38,18 +39,6 @@ const AddKPIResult = (props) => {
     useEffect(() => {
         dispatch(resetMessage())
     }, [dispatch])
-
-    const [addKPIResultMsgModal, setAddKPIResultMsgModal] = useState(false)
-    const [addgroupmappingContentModal, setAddGroupMappingContentModal] = useState("")
-
-    const toggleMsgModal = () => {
-        setAddKPIResultMsgModal(!addKPIResultMsgModal)
-        if (addKPIResultMsg.status === "1") {
-            props.toggle()
-            setAddKPIResultMsg('')
-            window.location.reload()
-        }
-    }
 
     useEffect(() => {
         if (props.modal === true) {
@@ -62,14 +51,41 @@ const AddKPIResult = (props) => {
     }, [props.toggle])
 
     useEffect(() => {
-        if (addKPIResultMessage.status == "1") {
+        if (selectedDate) {
+            dispatch(getKPIFile({
+                groupNum: props.groupNum,
+                date: selectedDate.replace(/-/g, "")
+            }))
+        }
+    }, [selectedDate])
+
+    useEffect(() => {
+        if (setKPINoteMessage.status == "1") {
             setSuccessClose(true)
-            setAddKPIResultMsg(addKPIResultMessage)
+            setAddKPIResultMsg(setKPINoteMessage)
         } else {
             setSuccessClose(false)
         }
-        setAddGroupMappingContentModal(addKPIResultMessage.message)
-    }, [addKPIResultMessage])
+        setAddKPIResultContentModal(setKPINoteMessage.message)
+        setAddKPIResultSpinner(false)
+    }, [setKPINoteMessage])
+
+    const toggleMsgModal = () => {
+        setAddKPIResultMsgModal(!addKPIResultMsgModal)
+        if (addKPIResultMsg.status === "1") {
+            props.toggle()
+            setAddKPIResultMsg('')
+            window.location.reload()
+        }
+    }
+
+    const handleClick = () => {
+        setAddKPIResultSpinner(true)
+        dispatch(setKPINote({
+            kpiId: props.kpiId,
+            pageNum: pageNum
+        }))
+    }
 
     const getFileIconClass = (fileName) => {
         const fileExtensions = {
@@ -105,14 +121,14 @@ const AddKPIResult = (props) => {
             <MsgModal2
                 modal={addKPIResultMsgModal}
                 toggle={toggleMsgModal}
-                message={addgroupmappingContentModal}
+                message={addKPIResultContentModal}
                 setIsClosed={setIsClosed}
                 successClose={successClose}
             />
             <ModalHeader toggle={props.toggle} className='add-kpi-result-header-modal'>
                 <div className='wrapper-class'>
-                    <span style={{ width: 'inherit' }}>Add KPI Result</span>
-                    <InputGroup style={{ flexWrap: 'unset', display: 'flex', justifyContent: "right" }}>
+                    <span style={{ width: 'inherit' }}>{props.t("Add KPI Result")}</span>
+                    <InputGroup style={{ flexWrap: 'unset', display: 'flex', justifyContent: "right", width: "85%" }}>
                         <div style={{ width: '150px' }}>
                             <DatePicker
                                 onClickOutside={() => {
@@ -129,6 +145,8 @@ const AddKPIResult = (props) => {
                                 dateFormat="yyyy-MM"
                                 selected={selectedDate ? moment(selectedDate, 'yyyy-MM').toDate() : new Date()}
                                 onChange={(date) => {
+                                    setShowDatePicker(false)
+                                    setIsButtonClicked(false)
                                     setSelectedDate(date ? moment(date).format('yyyy-MM') : new Date())
                                 }}
                                 onKeyDown={(e) => {
@@ -296,7 +314,7 @@ const AddKPIResult = (props) => {
                             <span
                                 style={{
                                     fontSize: "50px",
-                                        color: appFileListData?.data?.list?.open ? "#f46a6a" : "#BBBCBE",
+                                    color: appFileListData?.data?.list?.open ? "#f46a6a" : "#BBBCBE",
                                     opacity: "0.75",
                                 }}
                                 className="mdi mdi-file-cancel-outline"
@@ -356,11 +374,18 @@ const AddKPIResult = (props) => {
                         gap: ".75vw",
                     }}
                     >
-                        <span style={{ marginTop: "8px" }}>Page</span>
+                        <span style={{ marginTop: "8px" }}>{props.t("Page")}</span>
                         <Input
                             type="number"
                             className="form-control"
-                            onChange={e => setSearchVal(e.target.value)}
+                            value={pageNum}
+                            onChange={e => {
+                                try {
+                                    setPageNum(e.target.value)
+                                } catch (error) {
+                                    setPageNum("0")
+                                }
+                            }}
                             onKeyDown={e =>
                                 e.key === "Enter" ? handleEnterKeyPress(e) : null
                             }
@@ -377,8 +402,15 @@ const AddKPIResult = (props) => {
                         <Button
                             className="btn btn-primary btn-block"
                             onClick={() => handleClick()}
+                            color={addKPIResultSpinner ? "primary disabled" : "primary"}
                         >
-                            Submit
+                            {props.t("Submit")}
+                            <Spinner style={{
+                                display: addKPIResultSpinner ? "block" : "none",
+                                marginTop: '-27px',
+                                zIndex: 2,
+                                position: "absolute"
+                            }} className="ms-4" color="danger" />
                         </Button>
                         <Button color="danger" onClick={props.toggle}>
                             {props.t("Close")}
@@ -395,6 +427,7 @@ AddKPIResult.propTypes = {
     toggle: PropTypes.any,
     groupNum: PropTypes.any,
     date: PropTypes.any,
+    kpiId: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 }

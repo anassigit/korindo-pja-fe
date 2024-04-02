@@ -22,7 +22,7 @@ import {
     MSG_EDIT,
     GET_ACTUAL_INPUT_DATA,
     RESP_GET_ACTUAL_INPUT_DATA,
-    SET_ACTUAL_INPUT_DATA,
+    SET_KPI_NOTE,
     DOWNLOAD_DASHBOARD_DETAIL,
     GET_GROUP_LIST_KPI_INPUT,
     RESP_GET_GROUP_LIST_KPI_INPUT,
@@ -140,8 +140,8 @@ export const respGetKPIFile = resp => ({
     payload: resp,
 })
 
-export const setActualInputData = (req) => ({
-    type: SET_ACTUAL_INPUT_DATA,
+export const setKPINote = (req) => ({
+    type: SET_KPI_NOTE,
     payload: req,
 })
 

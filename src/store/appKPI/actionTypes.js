@@ -39,5 +39,5 @@ export const RESET_MESSAGE = "RESET_MESSAGE"
 export const UPLOAD_KPI = "UPLOAD_KPI"
 export const MSG_UPLOAD = "MSG_UPLOAD"
 
-export const SET_ACTUAL_INPUT_DATA = "SET_ACTUAL_INPUT_DATA"
+export const SET_KPI_NOTE = "SET_KPI_NOTE"
 export const MSG_EDIT = "MSG_EDIT"
