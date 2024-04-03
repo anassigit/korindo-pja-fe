@@ -91,7 +91,7 @@ const AddKPIResult = (props) => {
         dispatch(setKPINote({
             kpiId: selectedKpiId,
             num: selectedFileNum,
-            pageNum: pageNum
+            page: pageNum
         }))
     }
 

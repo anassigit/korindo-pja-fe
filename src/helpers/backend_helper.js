@@ -225,7 +225,7 @@ export const getKPIFileBE = req => postWithParam("rest/KpiManagementRest/searchF
 
 export const uploadKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
 
-export const setKPINoteBE = req => post("rest/KpiManagementRest/setNote", req)
+export const setKPINoteBE = req => postWithParam("rest/KpiManagementRest/setNote", req)
 
 //MOVING PLAN
 
