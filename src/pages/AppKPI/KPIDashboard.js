@@ -30,10 +30,6 @@ const KPIDashboard = (props) => {
 
     const dispatch = useDispatch()
 
-    const appGroupListData = useSelector((state) => {
-        return state.kpiReducer.respGetGroupListKpi
-    })
-
     const appCorporationListData = useSelector((state) => {
         return state.kpiReducer.respGetCorporationList
     })
@@ -48,10 +44,11 @@ const KPIDashboard = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState('')
-    const [selectedGroupId, setSelectedGroupId] = useState("")
     const [selectedCorporationId, setSelectedCorporationId] = useState("")
     const [selectedColumnList, setSelectedColumnList] = useState([])
+    const [selectedCorporationList, setSelectedCorporationList] = useState([])
     const [filterColumn, setFilterColumn] = useState(false)
+    const [filterCorporations, setFilterCorporations] = useState(false)
     const [initialWidths, setInitialWidths] = useState([])
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [isButtonClicked, setIsButtonClicked] = useState(false)
@@ -59,9 +56,7 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(true)
-        dispatch(getGroupListKPI({
-            viewType: 1
-        }))
+        dispatch(getCorporationList({}))
     }, [])
 
     useEffect(() => {
@@ -71,24 +66,12 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appGroupListData, appCorporationListData, appColumnListData, appDashboardListData])
-
-    useEffect(() => {
-        if (selectedGroupId) {
-            dispatch(getCorporationList({
-                groupNum: selectedGroupId
-            }))
-        } else {
-            dispatch(getCorporationList({
-                groupNum: ''
-            }))
-        }
-    }, [selectedGroupId])
+    }, [appCorporationListData, appColumnListData, appDashboardListData])
 
     useEffect(() => {
         if (appDashboardListData.status === '1') {
             if (appDashboardListData && appDashboardListData.data && appDashboardListData.data.resultList) {
-                setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0));
+                setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0))
             }
             if (Array.isArray(initialWidths) && initialWidths?.length > 0) {
                 const timeoutId = setTimeout(() => {
@@ -107,44 +90,44 @@ const KPIDashboard = (props) => {
     }, [appDashboardListData])
 
     useEffect(() => {
-        if (selectedDate && selectedCorporationId && selectedGroupId) {
+        if (selectedDate && selectedCorporationId) {
             dispatch(getColumnList({
-                groupNum: selectedGroupId,
+                // groupNum: selectedGroupId,
                 corporationId: selectedCorporationId,
                 year: selectedDate.substring(0, 4),
             }))
         } else {
             dispatch(getColumnList({
-                groupNum: '',
+                // groupNum: '',
                 corporationId: '',
                 year: '',
             }))
         }
 
-    }, [selectedCorporationId, selectedGroupId, selectedDate])
+    }, [selectedCorporationId, selectedDate])
 
     useEffect(() => {
-        if (selectedDate && selectedGroupId) {
-            dispatch(getDashboardKPI({
-                year: selectedDate.substring(0, 4),
-                month: selectedDate.substring(5),
-                groupNum: selectedGroupId,
-                corporationId: selectedCorporationId,
-                column: selectedColumnList
-                    .filter(columnObj => Object.values(columnObj)[0])
-                    .map(columnObj => Object.keys(columnObj)[0])
-                    .join(',')
-            }))
-        } else {
-            dispatch(getDashboardKPI({
-                groupNum: '',
-                corporationId: '',
-                year: '',
-                month: ''
-            }))
-        }
-        setLoadingSpinner(true)
-    }, [selectedCorporationId, selectedGroupId, selectedDate, selectedColumnList])
+        // if (selectedDate) {
+        //     dispatch(getDashboardKPI({
+        //         year: selectedDate.substring(0, 4),
+        //         month: selectedDate.substring(5),
+        //         // groupNum: selectedGroupId,
+        //         corporationId: selectedCorporationId,
+        //         column: selectedColumnList
+        //             .filter(columnObj => Object.values(columnObj)[0])
+        //             .map(columnObj => Object.keys(columnObj)[0])
+        //             .join(',')
+        //     }))
+        // } else {
+        //     dispatch(getDashboardKPI({
+        //         // groupNum: '',
+        //         corporationId: '',
+        //         year: '',
+        //         month: ''
+        //     }))
+        // }
+        // setLoadingSpinner(true)
+    }, [selectedCorporationId, selectedDate, selectedColumnList])
 
     useEffect(() => {
         if (appColumnListData.status === '1') {
@@ -161,9 +144,19 @@ const KPIDashboard = (props) => {
 
     }, [appColumnListData])
 
-    const years = [];
+    useEffect(() => {
+        if (appCorporationListData.status === '1') {
+            setSelectedCorporationList(appCorporationListData?.data?.list.reduce((accumulator, group) => {
+                return accumulator.concat(group.coporationList.map(corporation => ({ isChecked: false, ...corporation })))
+            }, []))
+        } else {
+            setSelectedCorporationList([])
+        }
+    }, [appCorporationListData])
+
+    const years = []
     for (let year = 2017; year <= new Date().getFullYear(); year++) {
-        years.push(year);
+        years.push(year)
     }
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -172,7 +165,7 @@ const KPIDashboard = (props) => {
         maximumFractionDigits: 2,
     })
 
-    const handleCheckboxChange = (index) => {
+    const handleColumnCheckboxChange = (index) => {
         const newCheckboxes = [...selectedColumnList]
         const columnName = appColumnListData?.data?.list[index]
 
@@ -182,6 +175,15 @@ const KPIDashboard = (props) => {
         }
 
         setSelectedColumnList(newCheckboxes)
+    }
+
+    const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
+        const newCheckboxes = [...selectedCorporationList]
+        const foundIndex = newCheckboxes.findIndex(corporation => corporation.corporationId === corporationId)
+        if (foundIndex !== -1) {
+            newCheckboxes[foundIndex].isChecked = toogleCheck
+        }
+        setSelectedCorporationList(newCheckboxes)
     }
 
     return (
@@ -245,74 +247,88 @@ const KPIDashboard = (props) => {
                                         </div>
                                         <Button onClick={(e) => {
                                             if (!isButtonClicked) {
-                                                setShowDatePicker(!showDatePicker);
+                                                setShowDatePicker(!showDatePicker)
                                                 setIsButtonClicked(true)
                                             }
                                         }}>
                                             <span className="mdi mdi-calendar" />
                                         </Button>
                                     </InputGroup>
-                                    <Input
-                                        type="select"
-                                        style={{ width: 'auto' }}
-                                        value={selectedGroupId}
-                                        onChange={(e) => {
-                                            setLoadingSpinner(true)
-                                            setSelectedCorporationId('')
-                                            setSelectedColumnList([])
-                                            setSelectedGroupId(e.target.value)
-                                        }}
-                                    >
-                                        <option value={''}>{'Select Group'}</option>
-                                        {
-                                            appGroupListData?.data?.list.map((item, index) => {
-                                                let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
-                                                return (
-                                                    <option key={index} value={item.num}>
-                                                        {nameLang}
-                                                    </option>
-                                                )
-                                            })
-                                        }
-                                    </Input>
-                                    <Input
-                                        type="select"
-                                        style={{ width: 'auto' }}
-                                        value={selectedCorporationId}
-                                        onChange={(e) => {
-                                            setLoadingSpinner(true)
-                                            setSelectedCorporationId(e.target.value)
-                                            setSelectedColumnList([])
-                                        }}
-                                    >
-                                        {
-                                            appCorporationListData?.data?.list?.length > 0 ? (
-                                                <>
-                                                    <option value={''}>{'Select Corporation'}</option>
-                                                    {
-                                                        appCorporationListData?.data?.list.map((item, index) => {
-                                                            return (
-                                                                <option key={index} value={item.corporationId}>
-                                                                    {item.corporationName}
-                                                                </option>
-                                                            )
-                                                        })
-                                                    }
-                                                </>
+                                    <Dropdown style={{ height: "30px" }} isOpen={filterCorporations} toggle={() => setFilterCorporations(!filterCorporations)} className="d-inline-block">
+                                        <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }} className="mdi mdi-filter" />
+                                        </DropdownToggle>
+                                        <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                                            {Array.isArray(appCorporationListData?.data?.list) && appCorporationListData?.data?.list.length > 0 ? (
+                                                <React.Fragment>
+                                                    {appCorporationListData?.data?.list.map((group, groupIndex) => (
+                                                        <div
+                                                            key={groupIndex}
+                                                            style={{
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                flexDirection: 'column',
+                                                            }}
+                                                        >
+                                                            <span
+                                                                className="dropdown-item"
+                                                                style={{
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'left',
+                                                                }}
+                                                            >
+                                                                <a style={{ marginBottom: '0' }}>{group.name}</a>
+                                                            </span>
+                                                            {group.coporationList?.map((corp, corpIndex) => (
+                                                                <div
+                                                                    key={corpIndex}
+                                                                    style={{
+                                                                        display: 'flex',
+                                                                        justifyContent: 'center',
+                                                                        flexDirection: 'column',
+                                                                    }}
+                                                                >
+                                                                    <a
+                                                                        className="dropdown-item"
+                                                                        style={{
+                                                                            display: 'flex',
+                                                                            alignItems: 'center',
+                                                                            justifyContent: 'left',
+                                                                        }}
+                                                                    >
+                                                                        <Input
+                                                                            type="checkbox"
+                                                                            id={`checkbox${corp.corporationId + 1}`}
+                                                                            checked={(selectedCorporationList.find(corporation => corporation.corporationId === corp.corporationId))?.isChecked || false}
+                                                                            onClick={(e) => handleCorporationCheckboxChange(corp.corporationId, e.target.checked)}
+                                                                        />
+                                                                        <a style={{ marginBottom: '0' }}>
+                                                                            &nbsp;{corp.corporationName}
+                                                                        </a>
+                                                                    </a>
+                                                                </div>
+                                                            ))}
+                                                            {groupIndex < (appCorporationListData?.data?.list?.length || 0) - 1 && <div className="dropdown-divider" />}
+                                                        </div>
+                                                    ))}
+                                                </React.Fragment>
                                             ) : (
-                                                <option value={''}>{'No Data'}</option>
-                                            )
-                                        }
-                                    </Input>
+                                                <DropdownItem>{'No Data'}</DropdownItem>
+                                            )}
+                                        </DropdownMenu>
+                                    </Dropdown>
                                     <Dropdown
                                         isOpen={filterColumn}
                                         toggle={() => setFilterColumn(!filterColumn)}
                                         className="`d`-inline-block"
+                                        style={{ height: "30px" }}
                                     >
                                         <DropdownToggle
                                             className="btn header-item "
                                             id="page-header-user-dropdown"
                                             tag="button"
+                                            style={{ paddingTop: "0" }}
                                         >
                                             <Button
                                                 style={{
@@ -339,16 +355,16 @@ const KPIDashboard = (props) => {
                                                                 alignItems: 'center',
                                                                 justifyContent: 'left',
                                                             }}
-                                                            onClick={() => handleCheckboxChange(index)}
+                                                            onClick={() => handleColumnCheckboxChange(index)}
                                                         >
                                                             <Input
                                                                 type="checkbox"
                                                                 id={`checkbox${index + 1}`}
                                                                 checked={selectedColumnList[index]?.[columnName] || false}
-                                                                onClick={() => handleCheckboxChange(index)}
+                                                                onClick={() => handleColumnCheckboxChange(index)}
                                                             />
-                                                            <a onClick={() => handleCheckboxChange(index)} style={{ marginBottom: '0' }}>
-                                                                &nbsp;{columnName}
+                                                            <a onClick={() => handleColumnCheckboxChange(index)} style={{ marginBottom: '0' }}>
+                                                                &nbsp{columnName}
                                                             </a>
                                                         </a>
                                                         {index < appColumnListData.data.list.length - 1 && <div className="dropdown-divider" />}
@@ -359,7 +375,10 @@ const KPIDashboard = (props) => {
                                             )}
                                         </DropdownMenu>
                                     </Dropdown>
-                                    </div>
+                                    <Button className="btn btn-primary">
+                                        {props.t("Search")}
+                                    </Button>
+                                </div>
                             </div>
                             {
                                 appDashboardListData?.data?.resultList.map((item, index, array) => {
@@ -378,7 +397,7 @@ const KPIDashboard = (props) => {
                                                     {formatter.format(item.plan)} /
                                                 </span>
                                                 <span style={{ color: '#7F7EF7' }}>
-                                                    &nbsp;{formatter.format(item.result)}
+                                                    &nbsp{formatter.format(item.result)}
                                                 </span>
                                                 <div className="text-primary" style={{ fontSize: "16px" }}>
                                                     {item.rate}
@@ -492,7 +511,7 @@ const KPIDashboard = (props) => {
                                                             {formatter.format(item.totalResult)} /
                                                         </span>
                                                         <span style={{ color: '#D4D4FD' }}>
-                                                            &nbsp;
+                                                            &nbsp
                                                             {formatter.format(item.totalPlan)}
                                                         </span>
                                                     </div>
