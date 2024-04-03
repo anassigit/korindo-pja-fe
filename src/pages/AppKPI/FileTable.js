@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
     Modal,
@@ -20,6 +20,8 @@ import unknown from '../../assets/images/file_management/unknown.png'
 
 const FileTable = (props) => {
 
+    const [selectedFileNum, setSelectedFileNum] = useState("")
+
     const closeButton = () => {
         props.toggle()
     }
@@ -30,8 +32,10 @@ const FileTable = (props) => {
     }
 
     useEffect(() => {
-        console.log(props.appFileListData)
-    }, [props.modal])
+        if (props.modal === true) {
+            setSelectedFileNum(props.currentSelectedFileNum)
+        }
+    }, [props.toggle])
 
     return (
 
@@ -79,7 +83,7 @@ const FileTable = (props) => {
                                     }
 
                                     return (
-                                        <tr key={key} onClick={() => props.setSelectedFileNum(file.num.toString())} style={{ backgroundColor: props.selectedFileNum === file.num.toString() ? "silver" : ""}}>
+                                        <tr key={key} onClick={() => setSelectedFileNum(file.num.toString())} style={{ backgroundColor: selectedFileNum === file.num.toString() ? "silver" : "" }}>
                                             <td scope="row" style={{ textAlign: 'center' }}>{key + 1}</td>
                                             <td scope="row" style={{
                                                 width: '1%'
@@ -118,7 +122,17 @@ const FileTable = (props) => {
                 </Row>
             </ModalBody>
             <ModalFooter>
-                <Button color="danger" onClick={() => { closeButton() }} className='align-middle me-2'>
+                <Button onClick={selectedFileNum !== "" ? () => {
+                    props.setCurrentSelectedFileNum(selectedFileNum)
+                    closeButton()
+                } : null}
+                    color={selectedFileNum === "" ? "primary disabled" : "primary"}
+                    className='align-middle me-2'>
+                    {props.t("Select")}
+                </Button>
+                <Button color="danger" onClick={() => { 
+                    closeButton() 
+                    }} className='align-middle me-2'>
                     {props.t("Close")}
                 </Button>
             </ModalFooter>
@@ -130,8 +144,8 @@ FileTable.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     appFileListData: PropTypes.any,
-    selectedFileNum: PropTypes.any,
-    setSelectedFileNum: PropTypes.any,
+    currentSelectedFileNum: PropTypes.any,
+    setCurrentSelectedFileNum: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 }

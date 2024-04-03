@@ -90,6 +90,7 @@ const AddKPIResult = (props) => {
         setAddKPIResultSpinner(true)
         dispatch(setKPINote({
             kpiId: selectedKpiId,
+            num: selectedFileNum,
             pageNum: pageNum
         }))
     }
@@ -140,8 +141,8 @@ const AddKPIResult = (props) => {
                 modal={detailModalMonthly}
                 toggle={toggleDetailModalMonthly}
                 appFileListData={appFileListData}
-                selectedFileNum={selectedFileNum}
-                setSelectedFileNum={setSelectedFileNum}
+                currentSelectedFileNum={selectedFileNum}
+                setCurrentSelectedFileNum={setSelectedFileNum}
             />
             <ModalHeader toggle={props.toggle} className='add-kpi-result-header-modal'>
                 <div className='wrapper-class'>
@@ -167,6 +168,7 @@ const AddKPIResult = (props) => {
                                     setIsButtonClicked(false)
                                     setSelectedDate(date ? moment(date).format('yyyy-MM') : new Date())
                                     setSelectedFileNum("")
+                                    setPageNum("")
                                 }}
                                 onKeyDown={(e) => {
                                     e.preventDefault()
@@ -411,6 +413,7 @@ const AddKPIResult = (props) => {
                         <Button color="danger" onClick={() => {
                             props.toggle()
                             setSelectedFileNum("")
+                            setPageNum("")
                         }}>
                             Close
                         </Button>
