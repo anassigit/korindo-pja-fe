@@ -116,11 +116,6 @@ const KPIInputResult = (props) => {
     }, [selectedGroupNum, selectedCorporationId, selectedDate])
 
     useEffect(() => {
-        debugger
-        console.log(isYes)
-    }, [isYes])
-
-    useEffect(() => {
         if (isYes && selectedKpiIdToBeDeleted && selectedPageToBeDeleted != null) {
             setLoadingSpinner(true);
             dispatch(setKPINote({
