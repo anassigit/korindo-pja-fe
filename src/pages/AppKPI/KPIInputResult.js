@@ -116,6 +116,11 @@ const KPIInputResult = (props) => {
     }, [selectedGroupNum, selectedCorporationId, selectedDate])
 
     useEffect(() => {
+        debugger
+        console.log(isYes)
+    }, [isYes])
+
+    useEffect(() => {
         if (isYes && selectedKpiIdToBeDeleted && selectedPageToBeDeleted != null) {
             setLoadingSpinner(true);
             dispatch(setKPINote({
@@ -130,18 +135,20 @@ const KPIInputResult = (props) => {
 
     useEffect(() => {
         if (setKPINoteMessage?.status == "1") {
+            debugger
             setSelectedKpiIdToBeDeleted(null)
             setSelectedPageToBeDeleted(null)
-            setIsYes(!isYes)
+            setIsYes(false)
             setLoadingSpinner(true)
             dispatch(getActualInputData({
                 groupNum: selectedGroupNum,
                 corporationId: selectedCorporationId,
                 date: selectedDate.replace(/-/g, "")
             }))
+        } else {
+            setLoadingSpinner(false)
         }
         setAppKPIMsg(setKPINoteMessage)
-        setLoadingSpinner(false)
     }, [setKPINoteMessage])
 
     const confirmToggleDelete = (e) => {

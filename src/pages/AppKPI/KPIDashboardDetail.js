@@ -52,7 +52,7 @@ const KPIDashboardDetail = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appYearListData, appGroupListData, appCorporationListData, appDashboardDetailListData])
+    }, [appGroupListData, appCorporationListData, appDashboardDetailListData])
 
     useEffect(() => {
         if (selectedGroupList) {
@@ -144,7 +144,7 @@ const KPIDashboardDetail = (props) => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Input
+                                    {/* <Input
                                         type="select"
                                         style={{ width: 'auto' }}
                                         value={selectedYear}
@@ -161,7 +161,7 @@ const KPIDashboardDetail = (props) => {
                                                 )
                                             })
                                         }
-                                    </Input>
+                                    </Input> */}
                                     <Input
                                         type="select"
                                         style={{ width: 'auto' }}
