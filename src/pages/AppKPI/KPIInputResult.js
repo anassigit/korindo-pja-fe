@@ -130,7 +130,6 @@ const KPIInputResult = (props) => {
 
     useEffect(() => {
         if (setKPINoteMessage?.status == "1") {
-            debugger
             setSelectedKpiIdToBeDeleted(null)
             setSelectedPageToBeDeleted(null)
             setIsYes(false)
