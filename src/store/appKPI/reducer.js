@@ -17,8 +17,8 @@ import {
     RESP_GET_UNIT_LIST,
     UPLOAD_KPI,
     MSG_UPLOAD,
-    GET_ACTUAL_INPUT_DATA,
-    RESP_GET_ACTUAL_INPUT_DATA,
+    GET_KPI_INPUT_DATA,
+    RESP_GET_KPI_INPUT_DATA,
     SET_KPI_NOTE,
     MSG_EDIT,
     GET_DASHBOARD_DETAIL_KPI,
@@ -41,7 +41,7 @@ const INIT_STATE = {
     respGetUnitList: {},
     respGetDashboardKPI: {},
     respGetDashboardDetailKPI: {},
-    respGetActualInputData: {},
+    respGetKPIInputData: {},
     msgEdit: "",
     msgUpload: ""
 }
@@ -138,14 +138,14 @@ const kpiReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
             }
-        case GET_ACTUAL_INPUT_DATA:
+        case GET_KPI_INPUT_DATA:
             return {
                 ...state,
             }
-        case RESP_GET_ACTUAL_INPUT_DATA:
+        case RESP_GET_KPI_INPUT_DATA:
             return {
                 ...state,
-                respGetActualInputData: action.payload,
+                respGetKPIInputData: action.payload,
             }
         case GET_KPI_FILE:
             return {

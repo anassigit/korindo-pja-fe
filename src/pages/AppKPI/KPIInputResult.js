@@ -13,7 +13,7 @@ import {
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
-import { getActualInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote } from "store/actions"
+import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -104,13 +104,13 @@ const KPIInputResult = (props) => {
     useEffect(() => {
         if (selectedCorporationId || (selectedGroupNum && selectedDate)) {
             setLoadingSpinner(true)
-            dispatch(getActualInputData({
+            dispatch(getKPIInputData({
                 groupNum: selectedGroupNum,
                 corporationId: selectedCorporationId,
                 date: selectedDate.replace(/-/g, "")
             }))
         } else {
-            dispatch(getActualInputData({
+            dispatch(getKPIInputData({
                 groupNum: '',
                 corporationId: '',
                 date: selectedDate.replace(/-/g, "")
@@ -137,7 +137,7 @@ const KPIInputResult = (props) => {
             setSelectedPageToBeDeleted(null)
             setIsYes(false)
             setLoadingSpinner(true)
-            dispatch(getActualInputData({
+            dispatch(getKPIInputData({
                 groupNum: selectedGroupNum,
                 corporationId: selectedCorporationId,
                 date: selectedDate.replace(/-/g, "")

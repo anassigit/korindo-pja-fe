@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_ACTUAL_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE } from "./actionTypes"
-import { msgUpload, respGetActualInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile } from "./actions"
-import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPIBE, getItemBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getActualInputDataBE, setKPINoteBE, getDashboardDetailKPIBE, getDownloadDashboardDetailBE, getKPIFileBE } from "helpers/backend_helper"
+import { GET_COLUMN_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_KPI_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE } from "./actionTypes"
+import { msgUpload, respGetKPIInputData, respGetColumnList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile } from "./actions"
+import { getColumnListKPI, getCorporationListKPI, getDashboardKPIBE, getGroupListKPIBE, getItemBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getKPIInputDataBE, setKPINoteBE, getDashboardDetailKPIBE, getDownloadDashboardDetailBE, getKPIFileBE } from "helpers/backend_helper"
 
 function* fetchGetGroupListKPI({ payload: req }) {
     try {
@@ -129,17 +129,17 @@ function* fetchGetDashboardDetailKPI({ payload: req }) {
     }
 }
 
-function* fetchGetActualInputData({ payload: req }) {
+function* fetchGetKPIInputData({ payload: req }) {
     try {
-        const response = yield call(getActualInputDataBE, req)
+        const response = yield call(getKPIInputDataBE, req)
         if (response.status == 1) {
-            yield put(respGetActualInputData(response))
+            yield put(respGetKPIInputData(response))
         } else {
-            yield put(respGetActualInputData(response))
+            yield put(respGetKPIInputData(response))
         }
     } catch (error) {
         console.log(error);
-        yield put(respGetActualInputData({ "status": 0, "message": "Error Get Data" }))
+        yield put(respGetKPIInputData({ "status": 0, "message": "Error Get Data" }))
     }
 }
 
@@ -208,7 +208,7 @@ function* kpiSaga() {
     yield takeEvery(GET_UNIT_LIST, fetchGetUnit)
     yield takeEvery(GET_DASHBOARD_KPI, fetchGetDashboardKPI)
     yield takeEvery(GET_DASHBOARD_DETAIL_KPI, fetchGetDashboardDetailKPI)
-    yield takeEvery(GET_ACTUAL_INPUT_DATA, fetchGetActualInputData)
+    yield takeEvery(GET_KPI_INPUT_DATA, fetchGetKPIInputData)
     yield takeEvery(GET_KPI_FILE, fetchGetKPIFile)
     yield takeEvery(DOWNLOAD_DASHBOARD_DETAIL, fetchGetDownloadDashboardDetail)
     yield takeEvery(DOWNLOAD_KPI_TEMPLATE, fetchGetDownloadKPITemplate)

@@ -20,8 +20,8 @@ import {
     UPLOAD_KPI,
     MSG_UPLOAD,
     MSG_EDIT,
-    GET_ACTUAL_INPUT_DATA,
-    RESP_GET_ACTUAL_INPUT_DATA,
+    GET_KPI_INPUT_DATA,
+    RESP_GET_KPI_INPUT_DATA,
     SET_KPI_NOTE,
     DOWNLOAD_DASHBOARD_DETAIL,
     GET_GROUP_LIST_KPI_INPUT,
@@ -120,13 +120,13 @@ export const respGetDashboardDetailKPI = resp => ({
     payload: resp,
 })
 
-export const getActualInputData = (req) => ({
-    type: GET_ACTUAL_INPUT_DATA,
+export const getKPIInputData = (req) => ({
+    type: GET_KPI_INPUT_DATA,
     payload: req,
 })
 
-export const respGetActualInputData = resp => ({
-    type: RESP_GET_ACTUAL_INPUT_DATA,
+export const respGetKPIInputData = resp => ({
+    type: RESP_GET_KPI_INPUT_DATA,
     payload: resp,
 })
 
