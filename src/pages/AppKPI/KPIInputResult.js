@@ -7,11 +7,13 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Col,
     Input,
     InputGroup,
-    Spinner
+    Spinner,
+    UncontrolledTooltip
 } from "reactstrap"
-import { getActualInputData, getCorporationList, getGroupListKPI, resetMessage } from "store/actions"
+import { getActualInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -19,6 +21,13 @@ import '../../config'
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import AddKPIResult from "./AddKPIResult"
+import doc from '../../assets/images/file_management/doc.png'
+import xls from '../../assets/images/file_management/xls.png'
+import ppt from '../../assets/images/file_management/ppt.png'
+import pdf from '../../assets/images/file_management/pdf.png'
+import txt from '../../assets/images/file_management/txt.png'
+import media from '../../assets/images/file_management/media.png'
+import ConfirmModal from "components/Common/ConfirmModal"
 
 const KPIInputResult = (props) => {
 
@@ -38,7 +47,7 @@ const KPIInputResult = (props) => {
         return state.kpiReducer.respGetCorporationList
     })
 
-    const appEditActualInputMessage = useSelector(state => {
+    const setKPINoteMessage = useSelector(state => {
         return state.kpiReducer.msgEdit
     })
 
@@ -55,6 +64,10 @@ const KPIInputResult = (props) => {
     const [selectedDate, setSelectedDate] = useState(moment().format('yyyy-MM'))
     const [isButtonClicked, setIsButtonClicked] = useState(false)
     const [addKPIResultModal, setAddKPIResultModal] = useState(false)
+    const [confirmModalDelete, setConfirmModalDelete] = useState(false)
+    const [isYes, setIsYes] = useState(false)
+    const [selectedKpiIdToBeDeleted, setSelectedKpiIdToBeDeleted] = useState()
+    const [selectedPageToBeDeleted, setSelectedPageToBeDeleted] = useState()
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -102,10 +115,84 @@ const KPIInputResult = (props) => {
         }
     }, [selectedGroupNum, selectedCorporationId, selectedDate])
 
+    useEffect(() => {
+        if (isYes && selectedKpiIdToBeDeleted && selectedPageToBeDeleted != null) {
+            setLoadingSpinner(true);
+            dispatch(setKPINote({
+                kpiId: selectedKpiIdToBeDeleted,
+                num: -1,
+                page: selectedPageToBeDeleted
+            }))
+            setAppKPIMsg('')
+            setIsYes(false)
+        }
+    }, [isYes])
+
+    useEffect(() => {
+        if (setKPINoteMessage?.status == "1") {
+            setSelectedKpiIdToBeDeleted(null)
+            setSelectedPageToBeDeleted(null)
+            setIsYes(!isYes)
+            setLoadingSpinner(true)
+            dispatch(getActualInputData({
+                groupNum: selectedGroupNum,
+                corporationId: selectedCorporationId,
+                date: selectedDate.replace(/-/g, "")
+            }))
+        }
+        setAppKPIMsg(setKPINoteMessage)
+        setLoadingSpinner(false)
+    }, [setKPINoteMessage])
+
+    const confirmToggleDelete = (e) => {
+        if (e?.kpiId) {
+            setSelectedKpiIdToBeDeleted(e.kpiId)
+        }
+        if (e?.page != null) {
+            setSelectedPageToBeDeleted(e.page)
+        }
+        setConfirmModalDelete(!confirmModalDelete)
+    }
+
+    const getFileIconClass = (fileName) => {
+        const fileExtensions = {
+            media: [".jpg", ".png", ".img", ".gif", ".mp4", ".3gp", ".mov", ".mkv", ".webm", ".avi", ".MOV", ".ogg", ".wmv"],
+            pdf: [".pdf"],
+            documents: [".doc", ".docx", ".txt", ".rtf", ".odt", ".html", ".xml", ".csv", ".xls", ".xlsx", ".odp"],
+            excel: [".xls", ".xlsx"],
+            powerpoint: [".ppt", ".pptx"],
+            txt: [".txt"],
+        };
+
+        const extension = fileName.toLowerCase().substring(fileName.lastIndexOf('.'))
+
+        if (fileExtensions.pdf.includes(extension)) {
+            return pdf
+        } else if (fileExtensions.excel.includes(extension)) {
+            return xls
+        } else if (fileExtensions.powerpoint.includes(extension)) {
+            return ppt
+        } else if (fileExtensions.txt.includes(extension)) {
+            return txt
+        } else if (fileExtensions.media.includes(extension)) {
+            return media
+        } else if (fileExtensions.documents.some(ext => extension === ext)) {
+            return doc
+        } else {
+            return doc
+        }
+    };
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
+                    <ConfirmModal
+                        modal={confirmModalDelete}
+                        toggle={confirmToggleDelete}
+                        message={props.t("Are you sure to delete this?")}
+                        setIsYes={setIsYes}
+                    />
                     <AddKPIResult
                         modal={addKPIResultModal}
                         toggle={toggleAddKPIResultModal}
@@ -263,11 +350,63 @@ const KPIInputResult = (props) => {
                                                         <td colSpan={1}>{item.item}</td>
                                                         <td colSpan={1} style={{ textAlign: "right" }}>{item.plan.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
                                                         <td colSpan={1} style={{ textAlign: "right" }}>{item.result.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
-                                                        <td style={{ textAlign: "center" }}>
-                                                            <Button onClick={() => {
-                                                            setSelectedKpiId(item.kpiId.toString())
-                                                                toggleAddKPIResultModal()
-                                                            }}><i className="mdi mdi-plus fs-5 align-middle" />{" "}Add</Button>
+                                                        <td colSpan={1} style={{ textAlign: "center" }}>
+                                                            {item.url ? (
+                                                                <Col className="files" style={{ height: "12vh" }} key={index}>
+                                                                    <div style={{ position: "relative", textAlign: "center" }}>
+                                                                        <img
+                                                                            style={{
+                                                                                height: '50px',
+                                                                                marginTop: '24px',
+                                                                                cursor: "pointer"
+                                                                            }}
+                                                                            src={getFileIconClass(decodeURIComponent(item.url.split('/')[item.url.split('/').length - 1]))}
+                                                                            onClick={() => window.open(new URL(item.url + "#page=" + item.page))}
+                                                                        />
+                                                                        <span
+                                                                            style={{
+                                                                                fontSize: "18px",
+                                                                                position: "absolute",
+                                                                                top: "4px",
+                                                                                left: "2.5em",
+                                                                                right: "0",
+                                                                                textAlign: "center",
+                                                                                color: "#B4B4B8",
+                                                                                cursor: "pointer"
+                                                                            }}
+                                                                            className="mdi mdi-delete"
+                                                                            onClick={() => confirmToggleDelete(item)}
+                                                                        ></span>
+                                                                    </div>
+                                                                    <div
+                                                                        id={`fileName_${index}_${index}`}
+                                                                        style={{
+                                                                            width: '100%',
+                                                                            fontSize: "12px",
+                                                                            whiteSpace: "nowrap",
+                                                                            textOverflow: "ellipsis",
+                                                                            overflow: "hidden",
+                                                                            textAlign: "center",
+                                                                            marginLeft: "50%",
+                                                                            transform: "translateX(-50%)",
+                                                                            cursor: "pointer"
+                                                                        }}
+                                                                        onClick={() => window.open(new URL(item.url + "#page=" + item.page))}
+                                                                    >
+                                                                        {decodeURIComponent(item.url.split('/')[item.url.split('/').length - 1])}
+                                                                    </div>
+                                                                    <UncontrolledTooltip placement="top" target={`fileName_${index}_${index}`}>
+                                                                        {decodeURIComponent(item.url.split('/')[item.url.split('/').length - 1])}
+                                                                    </UncontrolledTooltip>
+                                                                </Col>
+                                                            ) : (
+                                                                <Button onClick={() => {
+                                                                    setSelectedKpiId(item.kpiId.toString())
+                                                                    toggleAddKPIResultModal()
+                                                                }}>
+                                                                    <i className="mdi mdi-plus fs-5 align-middle" />{" "}Add
+                                                                </Button>
+                                                            )}
                                                         </td>
                                                     </tr>
                                                 </React.Fragment>

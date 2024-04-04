@@ -82,7 +82,8 @@ const AddKPIResult = (props) => {
         if (addKPIResultMsg.status === "1") {
             props.toggle()
             setAddKPIResultMsg('')
-            window.location.reload()
+            setSelectedFileNum("")
+            setPageNum("")
         }
     }
 
@@ -91,7 +92,7 @@ const AddKPIResult = (props) => {
         dispatch(setKPINote({
             kpiId: selectedKpiId,
             num: selectedFileNum,
-            page: pageNum
+            page: pageNum === "" ? 0 : pageNum
         }))
     }
 
