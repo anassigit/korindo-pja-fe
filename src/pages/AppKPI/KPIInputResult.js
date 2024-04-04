@@ -69,6 +69,9 @@ const KPIInputResult = (props) => {
     const [selectedKpiIdToBeDeleted, setSelectedKpiIdToBeDeleted] = useState()
     const [selectedPageToBeDeleted, setSelectedPageToBeDeleted] = useState()
 
+    // FOR MODAL STATE
+    const [addKPIResultMsgModal, setAddKPIResultMsgModal] = useState(false)
+
     useEffect(() => {
         setLoadingSpinner(true)
         dispatch(getGroupListKPI({
@@ -195,6 +198,8 @@ const KPIInputResult = (props) => {
                         setIsYes={setIsYes}
                     />
                     <AddKPIResult
+                        addKPIResultMsgModal={addKPIResultMsgModal}
+                        setAddKPIResultMsgModal={setAddKPIResultMsgModal}
                         modal={addKPIResultModal}
                         toggle={toggleAddKPIResultModal}
                         groupNum={selectedGroupNum}

@@ -29,7 +29,6 @@ const AddKPIResult = (props) => {
     const [pageNum, setPageNum] = useState("0")
     const [isButtonClicked, setIsButtonClicked] = useState(false)
     const [isClosed, setIsClosed] = useState(false)
-    const [addKPIResultMsgModal, setAddKPIResultMsgModal] = useState(false)
     const [addKPIResultContentModal, setAddKPIResultContentModal] = useState("")
     const [addKPIResultMsg, setAddKPIResultMsg] = useState(false)
     const [detailModalMonthly, setDetailModalMonthly] = useState(false)
@@ -78,7 +77,7 @@ const AddKPIResult = (props) => {
     }, [setKPINoteMessage])
 
     const toggleMsgModal = () => {
-        setAddKPIResultMsgModal(!addKPIResultMsgModal)
+        props.setAddKPIResultMsgModal(!props.addKPIResultMsgModal)
         if (addKPIResultMsg.status === "1") {
             props.toggle()
             setAddKPIResultMsg('')
@@ -132,7 +131,7 @@ const AddKPIResult = (props) => {
     return (
         <Modal size={appFileListData?.data?.list?.count > 2 ? 'lg' : 'md'} style={{ width: appFileListData?.data?.list?.count > 2 ? '650px' : '50vw' }} isOpen={props.modal} toggle={props.toggle} backdrop="static">
             <MsgModal2
-                modal={addKPIResultMsgModal}
+                modal={props.addKPIResultMsgModal}
                 toggle={toggleMsgModal}
                 message={addKPIResultContentModal}
                 setIsClosed={setIsClosed}
@@ -426,6 +425,8 @@ const AddKPIResult = (props) => {
 }
 
 AddKPIResult.propTypes = {
+    addKPIResultMsgModal: PropTypes.any,
+    setAddKPIResultMsgModal: PropTypes.any,
     modal: PropTypes.any,
     toggle: PropTypes.any,
     groupNum: PropTypes.any,
