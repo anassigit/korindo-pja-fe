@@ -49,10 +49,12 @@ const KPIDashboard = (props) => {
     const [selectedCorporationList, setSelectedCorporationList] = useState([])
     const [filterColumn, setFilterColumn] = useState(false)
     const [filterCorporations, setFilterCorporations] = useState(false)
-    const [initialWidths, setInitialWidths] = useState([])
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const [isButtonClicked, setIsButtonClicked] = useState(false)
-    const [selectedDate, setSelectedDate] = useState(moment().format('yyyy-MM'))
+    const [showFromDatePicker, setShowFromDatePicker] = useState(false)
+    const [isFromDateButtonClicked, setIsFromDateButtonClicked] = useState(false)
+    const [selectedFromDate, setSelectedFromDate] = useState(moment().format('yyyy-MM'))
+    const [showToDatePicker, setShowToDatePicker] = useState(false)
+    const [isToDateButtonClicked, setIsToDateButtonClicked] = useState(false)
+    const [selectedToDate, setSelectedToDate] = useState(moment().format('yyyy-MM'))
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -68,81 +70,69 @@ const KPIDashboard = (props) => {
         setLoadingSpinner(false)
     }, [appCorporationListData, appColumnListData, appDashboardListData])
 
-    useEffect(() => {
-        if (appDashboardListData.status === '1') {
-            if (appDashboardListData && appDashboardListData.data && appDashboardListData.data.resultList) {
-                setInitialWidths(new Array(appDashboardListData.data.resultList.length).fill(0))
-            }
-            if (Array.isArray(initialWidths) && initialWidths?.length > 0) {
-                const timeoutId = setTimeout(() => {
-                    setInitialWidths(
-                        appDashboardListData.data.resultList.map((item) => {
-                            const cappedTotalRate = Math.min(100, parseFloat(item.totalRate.replace('%', '')))
-                            return cappedTotalRate
-                        })
-                    )
-                }, 100)
-                return () => clearTimeout(timeoutId)
-            }
-        } else if (appDashboardListData.status === '0') {
-            setInitialWidths([])
-        }
-    }, [appDashboardListData])
+    // useEffect(() => {
+    //     if (selectedFromDate && selectedCorporationId) {
+    //         dispatch(getColumnList({
+    //             // groupNum: selectedGroupId,
+    //             corporationId: selectedCorporationId,
+    //             year: selectedFromDate.substring(0, 4),
+    //         }))
+    //     } else {
+    //         dispatch(getColumnList({
+    //             // groupNum: '',
+    //             corporationId: '',
+    //             year: '',
+    //         }))
+    //     }
 
-    useEffect(() => {
-        if (selectedDate && selectedCorporationId) {
-            dispatch(getColumnList({
-                // groupNum: selectedGroupId,
-                corporationId: selectedCorporationId,
-                year: selectedDate.substring(0, 4),
-            }))
-        } else {
-            dispatch(getColumnList({
-                // groupNum: '',
-                corporationId: '',
-                year: '',
-            }))
-        }
+    // }, [selectedCorporationId, selectedFromDate])
 
-    }, [selectedCorporationId, selectedDate])
+    // useEffect(() => {
+    //     if (selectedDate) {
+    //         dispatch(getDashboardKPI({
+    //             year: selectedDate.substring(0, 4),
+    //             month: selectedDate.substring(5),
+    //             // groupNum: selectedGroupId,
+    //             corporationId: selectedCorporationId,
+    //             column: selectedColumnList
+    //                 .filter(columnObj => Object.values(columnObj)[0])
+    //                 .map(columnObj => Object.keys(columnObj)[0])
+    //                 .join(',')
+    //         }))
+    //     } else {
+    //         dispatch(getDashboardKPI({
+    //             // groupNum: '',
+    //             corporationId: '',
+    //             year: '',
+    //             month: ''
+    //         }))
+    //     }
+    //     setLoadingSpinner(true)
+    // }, [selectedCorporationId, selectedFromDate, selectedColumnList])
 
-    useEffect(() => {
-        // if (selectedDate) {
-        //     dispatch(getDashboardKPI({
-        //         year: selectedDate.substring(0, 4),
-        //         month: selectedDate.substring(5),
-        //         // groupNum: selectedGroupId,
-        //         corporationId: selectedCorporationId,
-        //         column: selectedColumnList
-        //             .filter(columnObj => Object.values(columnObj)[0])
-        //             .map(columnObj => Object.keys(columnObj)[0])
-        //             .join(',')
-        //     }))
-        // } else {
-        //     dispatch(getDashboardKPI({
-        //         // groupNum: '',
-        //         corporationId: '',
-        //         year: '',
-        //         month: ''
-        //     }))
-        // }
-        // setLoadingSpinner(true)
-    }, [selectedCorporationId, selectedDate, selectedColumnList])
+    // useEffect(() => {
+    //     dispatch(getDashboardKPI({
+    //             year: 2023,
+    //             month: "06",
+    //             groupNum: 2,
+    //             corporationId: 1
+    //         }))
+    // }, [])
 
-    useEffect(() => {
-        if (appColumnListData.status === '1') {
-            const initialCheckboxesState = appColumnListData?.data?.list.map((e) => {
-                return (
-                    { [e]: false }
-                )
-            }) || []
+    // useEffect(() => {
+    //     if (appColumnListData.status === '1') {
+    //         const initialCheckboxesState = appColumnListData?.data?.list.map((e) => {
+    //             return (
+    //                 { [e]: false }
+    //             )
+    //         }) || []
 
-            setSelectedColumnList(initialCheckboxesState)
-        } else {
-            setSelectedColumnList([])
-        }
+    //         setSelectedColumnList(initialCheckboxesState)
+    //     } else {
+    //         setSelectedColumnList([])
+    //     }
 
-    }, [appColumnListData])
+    // }, [appColumnListData])
 
     useEffect(() => {
         if (appCorporationListData.status === '1') {
@@ -175,6 +165,23 @@ const KPIDashboard = (props) => {
         }
 
         setSelectedColumnList(newCheckboxes)
+    }
+
+    const getKPIDashboard = () => {
+        var bodyForm = new FormData();
+        bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
+        bodyForm.append('to', selectedToDate.replace(/-/g, ""))
+        selectedCorporationList
+            .filter(corporation => corporation.isChecked)
+            .forEach(corporation => {
+                bodyForm.append('corporationId', corporation.corporationId);
+            });
+        dispatch(getDashboardKPI(bodyForm, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }))
+        console.log(selectedCorporationList)
     }
 
     const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
@@ -212,22 +219,22 @@ const KPIDashboard = (props) => {
                                         <div style={{ width: '150px' }}>
                                             <DatePicker
                                                 onClickOutside={() => {
-                                                    setShowDatePicker(false)
-                                                    setIsButtonClicked(false)
+                                                    setShowFromDatePicker(false)
+                                                    setIsFromDateButtonClicked(false)
                                                 }}
                                                 onInputClick={() => {
-                                                    setShowDatePicker(!showDatePicker)
-                                                    setIsButtonClicked(false)
+                                                    setShowFromDatePicker(!showFromDatePicker)
+                                                    setIsFromDateButtonClicked(false)
                                                 }}
-                                                open={showDatePicker}
+                                                open={showFromDatePicker}
                                                 className="form-control custom-reset-date"
                                                 showMonthYearPicker
                                                 dateFormat="yyyy-MM"
-                                                selected={selectedDate ? moment(selectedDate, 'yyyy-MM').toDate() : new Date()}
+                                                selected={selectedFromDate ? moment(selectedFromDate, 'yyyy-MM').toDate() : new Date()}
                                                 onChange={(date) => {
-                                                    setShowDatePicker(false)
-                                                    setIsButtonClicked(false)
-                                                    setSelectedDate(date ? moment(date).format('yyyy-MM') : new Date())
+                                                    setShowFromDatePicker(false)
+                                                    setIsFromDateButtonClicked(false)
+                                                    setSelectedFromDate(date ? moment(date).format('yyyy-MM') : new Date())
                                                 }}
                                                 onKeyDown={(e) => {
                                                     e.preventDefault()
@@ -238,7 +245,7 @@ const KPIDashboard = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control custom-reset-date"
-                                                                value={selectedDate ? moment(selectedDate).format('yyyy-MM') : moment().format('yyyy-MM')}
+                                                                value={selectedFromDate ? moment(selectedFromDate).format('yyyy-MM') : moment().format('yyyy-MM')}
                                                             />
                                                         </div>
                                                     </>
@@ -246,9 +253,55 @@ const KPIDashboard = (props) => {
                                             />
                                         </div>
                                         <Button onClick={(e) => {
-                                            if (!isButtonClicked) {
-                                                setShowDatePicker(!showDatePicker)
-                                                setIsButtonClicked(true)
+                                            if (!isFromDateButtonClicked) {
+                                                setShowFromDatePicker(!showFromDatePicker)
+                                                setIsFromDateButtonClicked(true)
+                                            }
+                                        }}>
+                                            <span className="mdi mdi-calendar" />
+                                        </Button>
+                                    </InputGroup>
+                                    <InputGroup style={{ flexWrap: 'unset' }}>
+                                        <div style={{ width: '150px' }}>
+                                            <DatePicker
+                                                onClickOutside={() => {
+                                                    setShowToDatePicker(false)
+                                                    setIsToDateButtonClicked(false)
+                                                }}
+                                                onInputClick={() => {
+                                                    setShowToDatePicker(!showToDatePicker)
+                                                    setIsToDateButtonClicked(false)
+                                                }}
+                                                open={showToDatePicker}
+                                                className="form-control custom-reset-date"
+                                                showMonthYearPicker
+                                                dateFormat="yyyy-MM"
+                                                selected={selectedToDate ? moment(selectedToDate, 'yyyy-MM').toDate() : new Date()}
+                                                onChange={(date) => {
+                                                    setShowToDatePicker(false)
+                                                    setIsToDateButtonClicked(false)
+                                                    setSelectedToDate(date ? moment(date).format('yyyy-MM') : new Date())
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    e.preventDefault()
+                                                }}
+                                                customInput={
+                                                    <>
+                                                        <div className="react-datepicker__input-container">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control custom-reset-date"
+                                                                value={selectedToDate ? moment(selectedToDate).format('yyyy-MM') : moment().format('yyyy-MM')}
+                                                            />
+                                                        </div>
+                                                    </>
+                                                }
+                                            />
+                                        </div>
+                                        <Button onClick={(e) => {
+                                            if (!isToDateButtonClicked) {
+                                                setShowToDatePicker(!showToDatePicker)
+                                                setIsToDateButtonClicked(true)
                                             }
                                         }}>
                                             <span className="mdi mdi-calendar" />
@@ -318,7 +371,7 @@ const KPIDashboard = (props) => {
                                             )}
                                         </DropdownMenu>
                                     </Dropdown>
-                                    <Dropdown
+                                    {/* <Dropdown
                                         isOpen={filterColumn}
                                         toggle={() => setFilterColumn(!filterColumn)}
                                         className="`d`-inline-block"
@@ -364,7 +417,7 @@ const KPIDashboard = (props) => {
                                                                 onClick={() => handleColumnCheckboxChange(index)}
                                                             />
                                                             <a onClick={() => handleColumnCheckboxChange(index)} style={{ marginBottom: '0' }}>
-                                                                &nbsp{columnName}
+                                                                &nbsp;{columnName}
                                                             </a>
                                                         </a>
                                                         {index < appColumnListData.data.list.length - 1 && <div className="dropdown-divider" />}
@@ -374,9 +427,9 @@ const KPIDashboard = (props) => {
                                                 <DropdownItem>{'No Data'}</DropdownItem>
                                             )}
                                         </DropdownMenu>
-                                    </Dropdown>
-                                    <Button className="btn btn-primary">
-                                        {props.t("Search")}
+                                    </Dropdown> */}
+                                    <Button onClick={() => getKPIDashboard()} className="btn btn-primary">
+                                        Search
                                     </Button>
                                 </div>
                             </div>
@@ -393,15 +446,6 @@ const KPIDashboard = (props) => {
                                                 <h5 style={{ marginTop: '1.25vh' }}>
                                                     {item.item || "{'No Data'}"}
                                                 </h5>
-                                                <span style={{ color: '#D4D4FD' }}>
-                                                    {formatter.format(item.plan)} /
-                                                </span>
-                                                <span style={{ color: '#7F7EF7' }}>
-                                                    &nbsp{formatter.format(item.result)}
-                                                </span>
-                                                <div className="text-primary" style={{ fontSize: "16px" }}>
-                                                    {item.rate}
-                                                </div>
                                             </div>
                                             <div style={{
                                                 display: 'flex',
@@ -440,19 +484,19 @@ const KPIDashboard = (props) => {
                                                         xAxis: {
 
                                                             type: 'category',
-                                                            data: item?.details.map(item => item.month) || []
+                                                            data: item?.details.map(item => item.date) || []
                                                         },
                                                         yAxis: {},
                                                         series: [
                                                             {
                                                                 name: 'Plan',
                                                                 type: 'bar',
-                                                                color: '#BEE7BF',
+                                                                color: '#D4D4FD',
                                                                 data: item?.details.map(e => {
                                                                     return ({
                                                                         value: e.plan,
                                                                         itemStyle: {
-                                                                            color: e.chose ? '#BEE7BF' : '#D4D4FD',
+                                                                            color: '#D4D4FD'
                                                                         },
                                                                     })
                                                                 }) || [],
@@ -462,93 +506,18 @@ const KPIDashboard = (props) => {
                                                                 type: 'line',
                                                                 data: item?.details.map(e => e.result) || [],
                                                                 color: '#7F7EF7'
-                                                            },
-                                                            {
-                                                                name: 'Note',
-                                                                type: 'scatter',
-                                                                data: item?.details.map(e => ({
-                                                                    name: e.month,
-                                                                    value: e.note,
-                                                                })) || []
                                                             }
                                                         ]
                                                     }
                                                     }
                                                     style={{
-                                                        width: "49.5%",
+                                                        width: "100%",
                                                         height: "400px",
                                                         marginTop: "10px",
                                                         backgroundColor: '#F7F7FF',
                                                         padding: '1vw'
                                                     }}
                                                 />
-                                                <div
-                                                    style={{
-                                                        position: 'relative',
-                                                        width: "49.5%",
-                                                        height: "400px",
-                                                        marginTop: "10px",
-                                                        backgroundColor: '#F7F7FF',
-                                                        padding: '1vw',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        fontSize: '20px'
-                                                    }}
-                                                >
-                                                    <span style={{
-                                                        position: 'absolute',
-                                                        top: '10%',
-                                                        fontWeight: 'bold',
-                                                    }}>
-                                                        {item.item}
-                                                    </span>
-                                                    <div style={{
-                                                        position: 'absolute',
-                                                        top: '30%'
-                                                    }}>
-                                                        <span className="text-primary">
-                                                            {formatter.format(item.totalResult)} /
-                                                        </span>
-                                                        <span style={{ color: '#D4D4FD' }}>
-                                                            &nbsp
-                                                            {formatter.format(item.totalPlan)}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        style={{
-                                                            padding: '12px 42px 12px 42px',
-                                                            position: 'absolute',
-                                                            top: '40%',
-                                                            color: '#0EAB3D',
-                                                            backgroundColor: '#BEE7BF',
-                                                        }}>
-                                                        {item.totalRate}
-                                                    </div>
-                                                    <div
-                                                        style={{
-                                                            padding: '12px 42px 12px 42px',
-                                                            position: 'relative',
-                                                            top: '25%',
-                                                            width: '75%',
-                                                            height: '70px',
-                                                            color: '#fff',
-                                                            backgroundColor: '#D4D4FD',
-                                                        }}>
-                                                        <div
-                                                            style={{
-                                                                position: 'absolute',
-                                                                left: '0',
-                                                                top: '0',
-                                                                height: '100%',
-                                                                width: `${initialWidths[index]}%`,
-                                                                backgroundColor: '#7F7EF7',
-                                                                transition: 'width 0.5s ease-in-out',
-                                                            }}
-                                                        >
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </React.Fragment>
                                     )

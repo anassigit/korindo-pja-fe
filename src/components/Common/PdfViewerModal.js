@@ -11,12 +11,12 @@ const PdfViewerModal = (props) => {
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" style={{ maxWidth: '80vw' }}>
-            <ModalHeader toggle={props.toggle}>PDF</ModalHeader>
+            <ModalHeader toggle={props.toggle}>PDF Viewer</ModalHeader>
             <ModalBody>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     {
                         props?.url ? (
-                            <embed src={`${encodeURI(props.url)}#page=8`} type="application/pdf" style={{ width: "100%", minHeight: "70vh" }} />
+                            <embed src={`${encodeURI(props.url)}#page=${props.pageNum}`} type="application/pdf" style={{ width: "100%", minHeight: "70vh" }} />
                         ) :
                             (
                                 <span className="text-danger">
@@ -39,6 +39,7 @@ PdfViewerModal.propTypes = {
     modal: PropTypes.bool,
     toggle: PropTypes.func,
     url: PropTypes.string,
+    pageNum: PropTypes.any
 };
 
 export default PdfViewerModal;

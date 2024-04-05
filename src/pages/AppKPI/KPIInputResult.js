@@ -28,6 +28,7 @@ import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
 import media from '../../assets/images/file_management/media.png'
 import ConfirmModal from "components/Common/ConfirmModal"
+import PdfViewerModal from "components/Common/PdfViewerModal"
 
 const KPIInputResult = (props) => {
 
@@ -36,7 +37,7 @@ const KPIInputResult = (props) => {
     const dispatch = useDispatch()
 
     const appListData = useSelector((state) => {
-        return state.kpiReducer.respGetActualInputData
+        return state.kpiReducer.respGetKPIInputData
     })
 
     const appGroupListData = useSelector((state) => {
@@ -68,8 +69,9 @@ const KPIInputResult = (props) => {
     const [isYes, setIsYes] = useState(false)
     const [selectedKpiIdToBeDeleted, setSelectedKpiIdToBeDeleted] = useState()
     const [selectedPageToBeDeleted, setSelectedPageToBeDeleted] = useState()
-
-    // FOR MODAL STATE
+    const [modalPdfViewer, setModalPdfViewer] = useState(false)
+    const [pdfUrl, setPdfUrl] = useState("")
+    const [pdfPageNum, setPdfPageNum] = useState("")
     const [addKPIResultMsgModal, setAddKPIResultMsgModal] = useState(false)
 
     useEffect(() => {
@@ -166,7 +168,7 @@ const KPIInputResult = (props) => {
             excel: [".xls", ".xlsx"],
             powerpoint: [".ppt", ".pptx"],
             txt: [".txt"],
-        };
+        }
 
         const extension = fileName.toLowerCase().substring(fileName.lastIndexOf('.'))
 
@@ -185,12 +187,28 @@ const KPIInputResult = (props) => {
         } else {
             return doc
         }
-    };
+    }
+
+    const toggleModalPdf = (url, pageNum) => {
+        if (url) {
+            setPdfUrl(url)
+        }
+        if (pageNum) {
+            setPdfPageNum(pageNum)
+        }
+        setModalPdfViewer(!modalPdfViewer)
+    }
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
+                    <PdfViewerModal
+                        modal={modalPdfViewer}
+                        toggle={toggleModalPdf}
+                        url={pdfUrl}
+                        pageNum={pdfPageNum}
+                    />
                     <ConfirmModal
                         modal={confirmModalDelete}
                         toggle={confirmToggleDelete}
@@ -367,7 +385,7 @@ const KPIInputResult = (props) => {
                                                                                 cursor: "pointer"
                                                                             }}
                                                                             src={getFileIconClass(decodeURIComponent(item.url.split('/')[item.url.split('/').length - 1]))}
-                                                                            onClick={() => window.open(new URL(item.url + "#page=" + item.page))}
+                                                                            onClick={item.url.endsWith(".pdf") ? () => toggleModalPdf(item.url, item.page) : () => window.open(new URL(item.url))}
                                                                         />
                                                                         <span
                                                                             style={{
@@ -397,7 +415,7 @@ const KPIInputResult = (props) => {
                                                                             transform: "translateX(-50%)",
                                                                             cursor: "pointer"
                                                                         }}
-                                                                        onClick={() => window.open(new URL(item.url + "#page=" + item.page))}
+                                                                        onClick={item.url.endsWith(".pdf") ? () => toggleModalPdf(item.url, item.page) : () => window.open(new URL(item.url))}
                                                                     >
                                                                         {decodeURIComponent(item.url.split('/')[item.url.split('/').length - 1])}
                                                                     </div>
