@@ -16,6 +16,7 @@ import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
 import { getCorporationList, getDashboardDetailKPI, getDownloadDashboardDetail, getGroupListKPI, resetMessage } from "store/actions"
+import e from "cors"
 
 const KPIDashboardDetail = (props) => {
 
@@ -40,6 +41,12 @@ const KPIDashboardDetail = (props) => {
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedGroupList, setSelectedGroupList] = useState("")
     const [selectedCorporationList, setSelectedCorporationList] = useState("")
+
+    const tempArray = [];
+
+    const startDate = new Date('2022-03')
+    const endDate = new Date('2023-05')
+
 
     useEffect(() => {
         dispatch(getGroupListKPI())
@@ -67,37 +74,49 @@ const KPIDashboardDetail = (props) => {
     }, [selectedGroupList, selectedYear])
 
     useEffect(() => {
-        if (selectedYear && selectedGroupList) {
+        if (startDate && endDate) {
+            let tempCoorporationId = [1, 2]
             dispatch(getDashboardDetailKPI({
-                year: selectedYear,
+                to: `${startDate.getFullYear()}${startDate.getMonth() + 1}`,
+                from: `${endDate.getFullYear()}${endDate.getMonth() + 1}`,
                 groupNum: selectedGroupList,
-                corporationId: selectedCorporationList
+                corporationId: tempCoorporationId.map(e => e)
+                // selectedCorporationList
             }))
         } else {
             dispatch(getDashboardDetailKPI({
-                groupNum: '',
-                corporationId: '',
-                year: '',
+                // groupNum: '',
+                // corporationId: '',
+                // year: '',
+                // from: endDate,
+                to: `${startDate.getFullYear()}${startDate.getMonth() + 1}`,
+                from: `${endDate.getFullYear()}${endDate.getMonth() + 1}`,
+                groupNum: selectedGroupList,
+                corporationId: [1, 2]
             }))
         }
         setLoadingSpinner(true)
-    }, [selectedCorporationList, selectedGroupList, selectedYear])
+    // }, [selectedCorporationList, selectedGroupList, startDate, endDate])
+    }, [])
+
+    for (let currentDate = new Date(startDate); currentDate <= endDate; currentDate.setMonth(currentDate.getMonth() + 1)) {
+        const data = {
+            date: new Date(currentDate),
+            plan: getRandomNumber(1, 20),
+            result: getRandomNumber(0, 10)
+        };
+        
+        tempArray.push(data);
+    }
+
+    function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     const getMonthAbbreviation = (monthIndex) => {
-        const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
-        ]
+        const months = tempArray.map(data => {
+            return `${data.date.getFullYear()}-${data.date.getMonth() + 1}`
+        })
         return months[monthIndex - 1]
     }
 
