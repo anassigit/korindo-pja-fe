@@ -246,8 +246,9 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                 <div
                   style={{
                     display: "flex",
-                    gap: "16px",
-                    alignItems: "center",
+                    flexDirection: "row",
+                    width: "40%",
+                    gap: ".75vw",
                   }}
                 >
                   <InputGroup style={{ flexWrap: "unset", width: "300px" }}>
@@ -544,6 +545,7 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                   >
                     Search
                   </Button>
+
                 </div>
                 <div
                   style={{
