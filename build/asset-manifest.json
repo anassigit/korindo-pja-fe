@@ -1,22 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.ab8fece8.chunk.css",
-    "main.js": "/static/js/main.fa184e0f.chunk.js",
-    "main.js.map": "/static/js/main.fa184e0f.chunk.js.map",
+    "main.css": "/static/css/main.21b8296b.chunk.css",
+    "main.js": "/static/js/main.378dc946.chunk.js",
+    "main.js.map": "/static/js/main.378dc946.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.f5bbfd41.js",
     "runtime-main.js.map": "/static/js/runtime-main.f5bbfd41.js.map",
     "static/css/2.45f996fa.chunk.css": "/static/css/2.45f996fa.chunk.css",
-    "static/js/2.f65673f0.chunk.js": "/static/js/2.f65673f0.chunk.js",
-    "static/js/2.f65673f0.chunk.js.map": "/static/js/2.f65673f0.chunk.js.map",
+    "static/js/2.afbf4c9f.chunk.js": "/static/js/2.afbf4c9f.chunk.js",
+    "static/js/2.afbf4c9f.chunk.js.map": "/static/js/2.afbf4c9f.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.45f996fa.chunk.css.map": "/static/css/2.45f996fa.chunk.css.map",
-    "static/css/main.ab8fece8.chunk.css.map": "/static/css/main.ab8fece8.chunk.css.map",
-    "static/js/2.f65673f0.chunk.js.LICENSE.txt": "/static/js/2.f65673f0.chunk.js.LICENSE.txt",
+    "static/css/main.21b8296b.chunk.css.map": "/static/css/main.21b8296b.chunk.css.map",
+    "static/js/2.afbf4c9f.chunk.js.LICENSE.txt": "/static/js/2.afbf4c9f.chunk.js.LICENSE.txt",
     "static/media/Korindo.de66e7b4.png": "/static/media/Korindo.de66e7b4.png",
     "static/media/theme.scss": "/static/media/materialdesignicons-webfont.d06df622.woff",
     "static/media/doc.249dfeeb.png": "/static/media/doc.249dfeeb.png",
     "static/media/folder2.73678a2b.png": "/static/media/folder2.73678a2b.png",
     "static/media/logotitle.39e2f3ac.png": "/static/media/logotitle.39e2f3ac.png",
+    "static/media/media.701f355b.png": "/static/media/media.701f355b.png",
     "static/media/picture.9496397e.png": "/static/media/picture.9496397e.png",
     "static/media/profile-img.43b59e59.png": "/static/media/profile-img.43b59e59.png",
     "static/media/unknown.b0a965c4.png": "/static/media/unknown.b0a965c4.png"
@@ -24,8 +25,8 @@
   "entrypoints": [
     "static/js/runtime-main.f5bbfd41.js",
     "static/css/2.45f996fa.chunk.css",
-    "static/js/2.f65673f0.chunk.js",
-    "static/css/main.ab8fece8.chunk.css",
-    "static/js/main.fa184e0f.chunk.js"
+    "static/js/2.afbf4c9f.chunk.js",
+    "static/css/main.21b8296b.chunk.css",
+    "static/js/main.378dc946.chunk.js"
   ]
 }
