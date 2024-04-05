@@ -223,6 +223,8 @@ export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagemen
 
 export const getKPIFileBE = req => postWithParam("rest/KpiManagementRest/searchFile", req)
 
+export const uploadKPIResultBE = req => postUpload("rest/KpiManagementRest/setResult", req)
+
 export const uploadKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
 
 export const setKPINoteBE = req => postWithParam("rest/KpiManagementRest/setNote", req)

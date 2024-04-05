@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { withTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -92,26 +92,16 @@ const KPIDashboard = (props) => {
                 isChecked: false
             })))
             setAppKPIMsg(null)
-        } else if (appCorporationListData.status === '0') {
-            setSelectedCorporationList([])
-            setAppKPIMsg(appCorporationListData)
+        } else if (appKPIItemListData.status === '0') {
+            setSelectedKPIItemList([])
+            setAppKPIMsg(appKPIItemListData)
         } else {
             setAppKPIMsg(null)
         }
     }, [appKPIItemListData])
 
     useEffect(() => {
-        if (appDashboardListData.status === '1') {
-            setAppKPIMsg(null)
-        } else if (appDashboardListData.status === '0') {
-            setAppKPIMsg(appDashboardListData)
-        } else {
-            setAppKPIMsg(null)
-        }
-    }, [appDashboardListData])
-
-    useEffect(() => {
-        if(appCorporationListData) {
+        if (selectedCorporationList.some(corporation => corporation.isChecked)) {
             var bodyForm = new FormData()
             bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
             bodyForm.append('to', selectedToDate.replace(/-/g, ""))
@@ -126,6 +116,18 @@ const KPIDashboard = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }))
+        } else {
+            setSelectedKPIItemList(null)
+        }
+    }, [selectedCorporationList]);
+
+    useEffect(() => {
+        if (appDashboardListData.status === '1') {
+            setAppKPIMsg(null)
+        } else if (appDashboardListData.status === '0') {
+            setAppKPIMsg(appDashboardListData)
+        } else {
+            setAppKPIMsg(null)
         }
     }, [appDashboardListData])
 
@@ -214,6 +216,10 @@ const KPIDashboard = (props) => {
             file.url.endsWith(".pdf") ? toggleModalPdf(file.url, file.page) : window.open(new URL(file.url))
         }
     }
+
+    const handleChartClick = useCallback((params, item) => {
+        onChartClick(params, item)
+    }, [onChartClick])
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -426,7 +432,7 @@ const KPIDashboard = (props) => {
                                                                 <Input
                                                                     type="checkbox"
                                                                     id={`checkbox${item.kpiItemId + 1}`}
-                                                                    checked={(selectedKPIItemList.find(kpiItem => kpiItem.kpiItemId === item.kpiItemId))?.isChecked || false}
+                                                                    checked={(selectedKPIItemList?.find(kpiItem => kpiItem.kpiItemId === item.kpiItemId))?.isChecked || false}
                                                                     onClick={(e) => handleKPIItemCheckboxChange(item.kpiItemId, e.target.checked)}
                                                                 />
                                                                 <a style={{ marginBottom: '0' }}>
@@ -534,7 +540,7 @@ const KPIDashboard = (props) => {
                                                     }
                                                     }
                                                     onEvents={{
-                                                        'click': (params) => onChartClick(params, item) // Assuming `item` is your data object
+                                                        'click': (params) => handleChartClick(params, item)
                                                     }}
                                                     style={{
                                                         width: "100%",

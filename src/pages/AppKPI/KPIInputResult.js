@@ -29,6 +29,7 @@ import txt from '../../assets/images/file_management/txt.png'
 import media from '../../assets/images/file_management/media.png'
 import ConfirmModal from "components/Common/ConfirmModal"
 import PdfViewerModal from "components/Common/PdfViewerModal"
+import UploadKPIResult from "./UploadKPIResult"
 
 const KPIInputResult = (props) => {
 
@@ -73,6 +74,7 @@ const KPIInputResult = (props) => {
     const [pdfUrl, setPdfUrl] = useState("")
     const [pdfPageNum, setPdfPageNum] = useState("")
     const [addKPIResultMsgModal, setAddKPIResultMsgModal] = useState(false)
+    const [uploadModal, setUploadModal] = useState(false)
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -160,6 +162,10 @@ const KPIInputResult = (props) => {
         setConfirmModalDelete(!confirmModalDelete)
     }
 
+    const toggleUploadModal = () => {
+        setUploadModal(!uploadModal)
+    }
+
     const getFileIconClass = (fileName) => {
         const fileExtensions = {
             media: [".jpg", ".png", ".img", ".gif", ".mp4", ".3gp", ".mov", ".mkv", ".webm", ".avi", ".MOV", ".ogg", ".wmv"],
@@ -203,6 +209,27 @@ const KPIInputResult = (props) => {
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
+                    <UploadKPIResult
+                        modal={uploadModal}
+                        toggle={toggleUploadModal}
+                        onSuccess={() => {
+                            setLoadingSpinner(true)
+                            if (selectedCorporationId || (selectedGroupNum && selectedDate)) {
+                                setLoadingSpinner(true)
+                                dispatch(getKPIInputData({
+                                    groupNum: selectedGroupNum,
+                                    corporationId: selectedCorporationId,
+                                    date: selectedDate.replace(/-/g, "")
+                                }))
+                            } else {
+                                dispatch(getKPIInputData({
+                                    groupNum: '',
+                                    corporationId: '',
+                                    date: selectedDate.replace(/-/g, "")
+                                }))
+                            }
+                        }}
+                    />
                     <PdfViewerModal
                         modal={modalPdfViewer}
                         toggle={toggleModalPdf}
