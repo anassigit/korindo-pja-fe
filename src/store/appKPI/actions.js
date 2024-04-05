@@ -8,8 +8,8 @@ import {
     RESP_GET_UNIT_LIST,
     GET_ITEM_LIST,
     RESP_GET_ITEM_LIST,
-    GET_COLUMN_LIST,
-    RESP_GET_COLUMN_LIST,
+    GET_KPI_ITEM_LIST,
+    RESP_GET_KPI_ITEM_LIST,
     GET_DASHBOARD_KPI,
     RESP_GET_DASHBOARD_KPI,
     GET_DASHBOARD_DETAIL_KPI,
@@ -60,13 +60,13 @@ export const respGetCorporationList = resp => ({
     payload: resp,
 })
 
-export const getColumnList = (req) => ({
-    type: GET_COLUMN_LIST,
+export const getKPIItemList = (req) => ({
+    type: GET_KPI_ITEM_LIST,
     payload: req,
 })
 
-export const respGetColumnList = resp => ({
-    type: RESP_GET_COLUMN_LIST,
+export const respGetKPIItemList = resp => ({
+    type: RESP_GET_KPI_ITEM_LIST,
     payload: resp,
 })
 

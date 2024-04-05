@@ -203,7 +203,7 @@ export const getGroupListKPIBE = req => postWithParam("rest/KpiManagementRest/ge
 
 export const getCorporationListKPI = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
 
-export const getColumnListKPI = req => postWithParam("rest/KpiManagementRest/getColumList", req)
+export const getKPIItemListBE = req => postUpload("rest/KpiManagementRest/getItemList", req)
 
 export const getKPIMasterBE = req => postWithParam("rest/KpiManagementRest/getMaster", req)
 

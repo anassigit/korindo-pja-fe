@@ -19,14 +19,13 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getColumnList, getCorporationList, getDashboardKPI, getGroupListKPI, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardKPI, getKPIItemList, resetMessage } from "store/actions"
 import ReactEcharts from "echarts-for-react"
 import DatePicker from "react-datepicker"
 import moment from "moment"
+import PdfViewerModal from "components/Common/PdfViewerModal"
 
 const KPIDashboard = (props) => {
-
-    let langType = localStorage.getItem("I18N_LANGUAGE")
 
     const dispatch = useDispatch()
 
@@ -34,8 +33,8 @@ const KPIDashboard = (props) => {
         return state.kpiReducer.respGetCorporationList
     })
 
-    const appColumnListData = useSelector((state) => {
-        return state.kpiReducer.respGetColumnList
+    const appKPIItemListData = useSelector((state) => {
+        return state.kpiReducer.respGetKPIItemList
     })
 
     const appDashboardListData = useSelector((state) => {
@@ -44,17 +43,19 @@ const KPIDashboard = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState('')
-    const [selectedCorporationId, setSelectedCorporationId] = useState("")
-    const [selectedColumnList, setSelectedColumnList] = useState([])
     const [selectedCorporationList, setSelectedCorporationList] = useState([])
-    const [filterColumn, setFilterColumn] = useState(false)
     const [filterCorporations, setFilterCorporations] = useState(false)
+    const [selectedKPIItemList, setSelectedKPIItemList] = useState([])
+    const [filterKPIItems, setFilterKPIItems] = useState(false)
     const [showFromDatePicker, setShowFromDatePicker] = useState(false)
     const [isFromDateButtonClicked, setIsFromDateButtonClicked] = useState(false)
     const [selectedFromDate, setSelectedFromDate] = useState(moment().format('yyyy-MM'))
     const [showToDatePicker, setShowToDatePicker] = useState(false)
     const [isToDateButtonClicked, setIsToDateButtonClicked] = useState(false)
     const [selectedToDate, setSelectedToDate] = useState(moment().format('yyyy-MM'))
+    const [modalPdfViewer, setModalPdfViewer] = useState(false)
+    const [pdfUrl, setPdfUrl] = useState("")
+    const [pdfPageNum, setPdfPageNum] = useState("")
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -68,81 +69,65 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appCorporationListData, appColumnListData, appDashboardListData])
-
-    // useEffect(() => {
-    //     if (selectedFromDate && selectedCorporationId) {
-    //         dispatch(getColumnList({
-    //             // groupNum: selectedGroupId,
-    //             corporationId: selectedCorporationId,
-    //             year: selectedFromDate.substring(0, 4),
-    //         }))
-    //     } else {
-    //         dispatch(getColumnList({
-    //             // groupNum: '',
-    //             corporationId: '',
-    //             year: '',
-    //         }))
-    //     }
-
-    // }, [selectedCorporationId, selectedFromDate])
-
-    // useEffect(() => {
-    //     if (selectedDate) {
-    //         dispatch(getDashboardKPI({
-    //             year: selectedDate.substring(0, 4),
-    //             month: selectedDate.substring(5),
-    //             // groupNum: selectedGroupId,
-    //             corporationId: selectedCorporationId,
-    //             column: selectedColumnList
-    //                 .filter(columnObj => Object.values(columnObj)[0])
-    //                 .map(columnObj => Object.keys(columnObj)[0])
-    //                 .join(',')
-    //         }))
-    //     } else {
-    //         dispatch(getDashboardKPI({
-    //             // groupNum: '',
-    //             corporationId: '',
-    //             year: '',
-    //             month: ''
-    //         }))
-    //     }
-    //     setLoadingSpinner(true)
-    // }, [selectedCorporationId, selectedFromDate, selectedColumnList])
-
-    // useEffect(() => {
-    //     dispatch(getDashboardKPI({
-    //             year: 2023,
-    //             month: "06",
-    //             groupNum: 2,
-    //             corporationId: 1
-    //         }))
-    // }, [])
-
-    // useEffect(() => {
-    //     if (appColumnListData.status === '1') {
-    //         const initialCheckboxesState = appColumnListData?.data?.list.map((e) => {
-    //             return (
-    //                 { [e]: false }
-    //             )
-    //         }) || []
-
-    //         setSelectedColumnList(initialCheckboxesState)
-    //     } else {
-    //         setSelectedColumnList([])
-    //     }
-
-    // }, [appColumnListData])
+    }, [appCorporationListData, appKPIItemListData, appDashboardListData])
 
     useEffect(() => {
         if (appCorporationListData.status === '1') {
             setSelectedCorporationList(appCorporationListData?.data?.list.reduce((accumulator, group) => {
                 return accumulator.concat(group.coporationList.map(corporation => ({ isChecked: false, ...corporation })))
             }, []))
-        } else {
+            setAppKPIMsg(null)
+        } else if (appCorporationListData.status === '0') {
             setSelectedCorporationList([])
+            setAppKPIMsg(appCorporationListData)
+        } else {
+            setAppKPIMsg(null)
         }
     }, [appCorporationListData])
+
+    useEffect(() => {
+        if (appKPIItemListData.status === '1') {
+            setSelectedKPIItemList(appKPIItemListData?.data?.list.map(item => ({
+                ...item,
+                isChecked: false
+            })))
+            setAppKPIMsg(null)
+        } else if (appCorporationListData.status === '0') {
+            setSelectedCorporationList([])
+            setAppKPIMsg(appCorporationListData)
+        } else {
+            setAppKPIMsg(null)
+        }
+    }, [appKPIItemListData])
+
+    useEffect(() => {
+        if (appDashboardListData.status === '1') {
+            setAppKPIMsg(null)
+        } else if (appDashboardListData.status === '0') {
+            setAppKPIMsg(appDashboardListData)
+        } else {
+            setAppKPIMsg(null)
+        }
+    }, [appDashboardListData])
+
+    useEffect(() => {
+        if(appCorporationListData) {
+            var bodyForm = new FormData()
+            bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
+            bodyForm.append('to', selectedToDate.replace(/-/g, ""))
+            selectedCorporationList
+                .filter(corporation => corporation.isChecked)
+                .forEach(corporation => {
+                    bodyForm.append('corporationId', corporation.corporationId)
+                })
+            setAppKPIMsg(null)
+            dispatch(getKPIItemList(bodyForm, {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }))
+        }
+    }, [appDashboardListData])
 
     const years = []
     for (let year = 2017; year <= new Date().getFullYear(); year++) {
@@ -155,33 +140,47 @@ const KPIDashboard = (props) => {
         maximumFractionDigits: 2,
     })
 
-    const handleColumnCheckboxChange = (index) => {
-        const newCheckboxes = [...selectedColumnList]
-        const columnName = appColumnListData?.data?.list[index]
-
-        newCheckboxes[index] = {
-            ...newCheckboxes[index],
-            [columnName]: !newCheckboxes[index]?.[columnName]
-        }
-
-        setSelectedColumnList(newCheckboxes)
+    function parseDateString(dateString) {
+        if (!/^\d{4}-\d{2}$/.test(dateString)) return null
+        const [year, month] = dateString.split('-').map(Number)
+        return new Date(year, month - 1)
     }
 
     const getKPIDashboard = () => {
-        var bodyForm = new FormData();
+
+        if (!selectedCorporationList.some(corporation => corporation.isChecked)) {
+            setAppKPIMsg({
+                message: 'At least one corporation must be checked.'
+            })
+            return
+        }
+
+        if (parseDateString(selectedFromDate) > parseDateString(selectedToDate)) {
+            setAppKPIMsg({
+                message: 'From date cannot be after to date.'
+            })
+            return
+        }
+
+        var bodyForm = new FormData()
         bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
         bodyForm.append('to', selectedToDate.replace(/-/g, ""))
         selectedCorporationList
             .filter(corporation => corporation.isChecked)
             .forEach(corporation => {
-                bodyForm.append('corporationId', corporation.corporationId);
-            });
+                bodyForm.append('corporationId', corporation.corporationId)
+            })
+        selectedKPIItemList
+            .filter(kpiItem => kpiItem.isChecked)
+            .forEach(kpiItem => {
+                bodyForm.append('kpiItemId', kpiItem.kpiItemId)
+            })
+        setAppKPIMsg(null)
         dispatch(getDashboardKPI(bodyForm, {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }))
-        console.log(selectedCorporationList)
     }
 
     const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
@@ -193,10 +192,39 @@ const KPIDashboard = (props) => {
         setSelectedCorporationList(newCheckboxes)
     }
 
+    const handleKPIItemCheckboxChange = (kpiId, toogleCheck) => {
+        const newCheckboxes = [...selectedKPIItemList]
+        const foundIndex = newCheckboxes.findIndex(kpiItem => kpiItem.kpiItemId === kpiId)
+        if (foundIndex !== -1) {
+            newCheckboxes[foundIndex].isChecked = toogleCheck
+        }
+        setSelectedKPIItemList(newCheckboxes)
+    }
+
+    const toggleModalPdf = (url, pageNum) => {
+        if (url) setPdfUrl(url)
+        if (pageNum) setPdfPageNum(pageNum)
+        setModalPdfViewer(!modalPdfViewer)
+    }
+
+    const onChartClick = (params, item) => {
+        const file = item?.details[params.dataIndex]
+        if (file && file.url) {
+            console.log(file.url.endsWith(".pdf"))
+            file.url.endsWith(".pdf") ? toggleModalPdf(file.url, file.page) : window.open(new URL(file.url))
+        }
+    }
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
+                    <PdfViewerModal
+                        modal={modalPdfViewer}
+                        toggle={toggleModalPdf}
+                        url={pdfUrl}
+                        pageNum={pdfPageNum}
+                    />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                             {props.t("KPI Dashboard")}
@@ -215,7 +243,7 @@ const KPIDashboard = (props) => {
                                         width: '40%',
                                         gap: '.75vw'
                                     }}>
-                                    <InputGroup style={{ flexWrap: 'unset' }}>
+                                    <InputGroup style={{ flexWrap: 'unset', width: "300px" }}>
                                         <div style={{ width: '150px' }}>
                                             <DatePicker
                                                 onClickOutside={() => {
@@ -261,7 +289,7 @@ const KPIDashboard = (props) => {
                                             <span className="mdi mdi-calendar" />
                                         </Button>
                                     </InputGroup>
-                                    <InputGroup style={{ flexWrap: 'unset' }}>
+                                    <InputGroup style={{ flexWrap: 'unset', width: "300px" }}>
                                         <div style={{ width: '150px' }}>
                                             <DatePicker
                                                 onClickOutside={() => {
@@ -371,63 +399,48 @@ const KPIDashboard = (props) => {
                                             )}
                                         </DropdownMenu>
                                     </Dropdown>
-                                    {/* <Dropdown
-                                        isOpen={filterColumn}
-                                        toggle={() => setFilterColumn(!filterColumn)}
-                                        className="`d`-inline-block"
-                                        style={{ height: "30px" }}
-                                    >
-                                        <DropdownToggle
-                                            className="btn header-item "
-                                            id="page-header-user-dropdown"
-                                            tag="button"
-                                            style={{ paddingTop: "0" }}
-                                        >
-                                            <Button
-                                                style={{
-                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                                }}
-                                                className="mdi mdi-filter"
-                                            />
+                                    <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
+                                        <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }} className="mdi mdi-filter" />
                                         </DropdownToggle>
-                                        <DropdownMenu className="dropdown-menu-end">
-                                            {Array.isArray(appColumnListData?.data?.list) && appColumnListData?.data?.list.length > 0 ? (
-                                                appColumnListData?.data?.list.map((columnName, index) => (
-                                                    <div
-                                                        key={index}
-                                                        style={{
-                                                            display: 'flex',
-                                                            justifyContent: 'center',
-                                                            flexDirection: 'column'
-                                                        }}
-                                                    >
-                                                        <a
-                                                            className="dropdown-item"
+                                        <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                                            {Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0 ? (
+                                                <React.Fragment>
+                                                    {appKPIItemListData?.data?.list.map((item, index) => (
+                                                        <div
+                                                            key={index}
                                                             style={{
                                                                 display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'left',
+                                                                justifyContent: 'center',
+                                                                flexDirection: 'column',
                                                             }}
-                                                            onClick={() => handleColumnCheckboxChange(index)}
                                                         >
-                                                            <Input
-                                                                type="checkbox"
-                                                                id={`checkbox${index + 1}`}
-                                                                checked={selectedColumnList[index]?.[columnName] || false}
-                                                                onClick={() => handleColumnCheckboxChange(index)}
-                                                            />
-                                                            <a onClick={() => handleColumnCheckboxChange(index)} style={{ marginBottom: '0' }}>
-                                                                &nbsp;{columnName}
+                                                            <a
+                                                                className="dropdown-item"
+                                                                style={{
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'left',
+                                                                }}
+                                                            >
+                                                                <Input
+                                                                    type="checkbox"
+                                                                    id={`checkbox${item.kpiItemId + 1}`}
+                                                                    checked={(selectedKPIItemList.find(kpiItem => kpiItem.kpiItemId === item.kpiItemId))?.isChecked || false}
+                                                                    onClick={(e) => handleKPIItemCheckboxChange(item.kpiItemId, e.target.checked)}
+                                                                />
+                                                                <a style={{ marginBottom: '0' }}>
+                                                                    &nbsp;{item.itemName}
+                                                                </a>
                                                             </a>
-                                                        </a>
-                                                        {index < appColumnListData.data.list.length - 1 && <div className="dropdown-divider" />}
-                                                    </div>
-                                                ))
+                                                        </div>
+                                                    ))}
+                                                </React.Fragment>
                                             ) : (
                                                 <DropdownItem>{'No Data'}</DropdownItem>
                                             )}
                                         </DropdownMenu>
-                                    </Dropdown> */}
+                                    </Dropdown>
                                     <Button onClick={() => getKPIDashboard()} className="btn btn-primary">
                                         Search
                                     </Button>
@@ -465,10 +478,11 @@ const KPIDashboard = (props) => {
                                                             formatter: function (params) {
                                                                 var content = params[0].name + '<br>'
                                                                 params.forEach(function (item) {
-                                                                    if (item.seriesName !== 'Note') {
-                                                                        content += item.marker + ' ' + item.seriesName + ': ' + formatter.format(item.value) + '<br>'
-                                                                    } else if (item.value) {
-                                                                        content += 'Note: \n' + item.value + '<br>'
+                                                                    content += item.marker + ' ' + item.seriesName + ': ' + formatter.format(item.value) + '<br>'
+                                                                    if(item.seriesName === "File") {
+                                                                        if(item.value != null) {
+                                                                            content += 'Click the bar to open the file'
+                                                                        }
                                                                     }
                                                                 })
                                                                 return content
@@ -496,20 +510,32 @@ const KPIDashboard = (props) => {
                                                                     return ({
                                                                         value: e.plan,
                                                                         itemStyle: {
-                                                                            color: '#D4D4FD'
+                                                                            color: e.url ? '#BEE7BF' : '#D4D4FD'
                                                                         },
                                                                     })
-                                                                }) || [],
+                                                                }) || []
                                                             },
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
                                                                 data: item?.details.map(e => e.result) || [],
                                                                 color: '#7F7EF7'
+                                                            },
+                                                            {
+                                                                name: 'File',
+                                                                data: item?.details.map(e => e.url) || [],
+                                                                color: '#BEE7BF'
+                                                            },
+                                                            {
+                                                                name: 'Page',
+                                                                data: item?.details.map(e => e.page) || []
                                                             }
                                                         ]
                                                     }
                                                     }
+                                                    onEvents={{
+                                                        'click': (params) => onChartClick(params, item) // Assuming `item` is your data object
+                                                    }}
                                                     style={{
                                                         width: "100%",
                                                         height: "400px",

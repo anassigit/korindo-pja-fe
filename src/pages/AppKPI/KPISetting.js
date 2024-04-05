@@ -125,18 +125,18 @@ const KPISetting = (props) => {
 
     const getMonthAbbreviation = (monthIndex) => {
         const months = [
-            props.t("Jan"),
-            props.t("Feb"),
-            props.t("Mar"),
-            props.t("Apr"),
-            props.t("May"),
-            props.t("Jun"),
-            props.t("Jul"),
-            props.t("Aug"),
-            props.t("Sep"),
-            props.t("Oct"),
-            props.t("Nov"),
-            props.t("Dec"),
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
         ]
         return months[monthIndex - 1]
     }
@@ -152,7 +152,7 @@ const KPISetting = (props) => {
                 <>
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("KPI Setting")}
+                            KPI Setting
                         </CardHeader>
                         <CardBody>
                             <div
@@ -229,7 +229,7 @@ const KPISetting = (props) => {
                                     >
                                         {Array.isArray(appGroupListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{props.t("Select Group")}</option>
+                                                <option value={''}>Select Group</option>
                                                 {appGroupListData?.data?.list.map((item, index) => {
                                                     let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
                                                     return (
@@ -241,7 +241,7 @@ const KPISetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                    {props.t("No Data")}
+                                                    No Data
                                             </option>
                                         )}
                                     </Input>
@@ -262,7 +262,7 @@ const KPISetting = (props) => {
                                     >
                                         {Array.isArray(appCorporationListData?.data?.list) ? (
                                             <>
-                                                <option value={''}>{props.t("Select Corporation")}</option>
+                                                <option value={''}>Select Corporation</option>
                                                 {appCorporationListData?.data?.list.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item.corporationId}>
@@ -273,7 +273,7 @@ const KPISetting = (props) => {
                                             </>
                                         ) : (
                                             <option>
-                                                    {props.t("No Data")}
+                                                    No Data
                                             </option>
                                         )}
                                     </Input>
@@ -289,25 +289,25 @@ const KPISetting = (props) => {
                                         className={appPlanState.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadKPI() }}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t("Download Excel")}
+                                        Download Excel
                                     </Button>
                                     <Button onClick={() =>
                                         downloadKPITemplate()
                                     }>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t("Download Template")}
+                                        Download Template
                                     </Button>
                                     <Button onClick={() => toggleUploadModal()}>
-                                        {props.t("Upload")}
+                                        Upload
                                     </Button>
                                 </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Corporation")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Year")}</th>
-                                        <th style={{ textAlign: 'center', width: 'auto' }} colSpan={1} scope="col">{props.t("KPI Category")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Corporation</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Year</th>
+                                        <th style={{ textAlign: 'center', width: 'auto' }} colSpan={1} scope="col">KPI Category</th>
                                         {
                                             (() => {
                                                 const thElements = []
@@ -339,7 +339,7 @@ const KPISetting = (props) => {
                                                                     )
                                                                 } else {
                                                                     return (
-                                                                        <td key={monthIndex}>{props.t("No Data")}</td>
+                                                                        <td key={monthIndex}>No Data</td>
                                                                     )
                                                                 }
                                                             })

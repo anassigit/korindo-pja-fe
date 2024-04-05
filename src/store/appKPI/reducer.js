@@ -1,5 +1,5 @@
 import {
-    GET_COLUMN_LIST,
+    GET_KPI_ITEM_LIST,
     GET_CORPORATION_LIST,
     GET_DASHBOARD_KPI,
     GET_GROUP_LIST_KPI,
@@ -8,7 +8,7 @@ import {
     GET_UNIT_LIST,
     DOWNLOAD_KPI_TEMPLATE,
     RESET_MESSAGE,
-    RESP_GET_COLUMN_LIST,
+    RESP_GET_KPI_ITEM_LIST,
     RESP_GET_CORPORATION_LIST,
     RESP_GET_DASHBOARD_KPI,
     RESP_GET_GROUP_LIST_KPI,
@@ -34,7 +34,7 @@ const INIT_STATE = {
     respGetGroupListKpi: {},
     respGetGroupListKpiInput: {},
     respGetCorporationList: {},
-    respGetColumnList: {},
+    respGetKPIItemList: {},
     respGetKPIMaster: {},
     respGetPlan: {},
     respGetItemList: {},
@@ -76,14 +76,14 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
                 respGetCorporationList: action.payload,
             }
-        case GET_COLUMN_LIST:
+        case GET_KPI_ITEM_LIST:
             return {
                 ...state,
             }
-        case RESP_GET_COLUMN_LIST:
+        case RESP_GET_KPI_ITEM_LIST:
             return {
                 ...state,
-                respGetColumnList: action.payload,
+                respGetKPIItemList: action.payload,
             }
         case GET_KPI_MASTER:
             return {
