@@ -13,6 +13,7 @@ import {
   DropdownToggle,
   Input,
   InputGroup,
+  Label,
   Spinner,
   UncontrolledTooltip,
 } from "reactstrap"
@@ -25,6 +26,7 @@ import {
   getDashboardDetailKPI,
   getDownloadDashboardDetail,
   getGroupListKPI,
+  getKPIItemList,
   resetMessage,
 } from "store/actions"
 import e from "cors"
@@ -57,10 +59,15 @@ const KPIDashboardDetail = props => {
   const [selectedYear, setSelectedYear] = useState("")
   const [selectedGroupList, setSelectedGroupList] = useState("")
   const [selectedCorporationList, setSelectedCorporationList] = useState([])
+  const [selectedKPIItemList, setSelectedKPIItemList] = useState([])
   const [showFromDatePicker, setShowFromDatePicker] = useState(false)
-  const [selectedFromDate, setSelectedFromDate] = useState(moment().format('yyyy-MM'))
+  const [selectedFromDate, setSelectedFromDate] = useState(
+    moment().format("yyyy-MM")
+  )
   const [isFromDateButtonClicked, setIsFromDateButtonClicked] = useState(false)
-  const [selectedToDate, setSelectedToDate] = useState(moment().format('yyyy-MM'))
+  const [selectedToDate, setSelectedToDate] = useState(
+    moment().format("yyyy-MM")
+  )
   const [isToDateButtonClicked, setIsToDateButtonClicked] = useState(false)
   const [showToDatePicker, setShowToDatePicker] = useState(false)
   const [filterCorporations, setFilterCorporations] = useState(false)
@@ -72,8 +79,8 @@ const KPIDashboardDetail = props => {
   const endDate = new Date("2023-05")
 
   useEffect(() => {
-    dispatch(getGroupListKPI())
     setLoadingSpinner(true)
+    dispatch(getCorporationList({}))
   }, [])
 
   useEffect(() => {
@@ -89,21 +96,21 @@ const KPIDashboardDetail = props => {
     appKPIItemListData,
   ])
 
-  useEffect(() => {
-    if (selectedGroupList) {
-      dispatch(
-        getCorporationList({
-          groupNum: selectedGroupList,
-        })
-      )
-    } else {
-      dispatch(
-        getCorporationList({
-          groupNum: "",
-        })
-      )
-    }
-  }, [selectedGroupList, selectedYear])
+  //   useEffect(() => {
+  //     if (selectedGroupList) {
+  //       dispatch(
+  //         getCorporationList({
+  //           groupNum: selectedGroupList,
+  //         })
+  //       )
+  //     } else {
+  //       dispatch(
+  //         getCorporationList({
+  //           groupNum: "",
+  //         })
+  //       )
+  //     }
+  //   }, [selectedGroupList, selectedYear])
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -135,23 +142,94 @@ const KPIDashboardDetail = props => {
     // }, [selectedCorporationList, selectedGroupList, startDate, endDate])
   }, [])
 
-  for (
-    let currentDate = new Date(startDate);
-    currentDate <= endDate;
-    currentDate.setMonth(currentDate.getMonth() + 1)
-  ) {
-    const data = {
-      date: new Date(currentDate),
-      plan: getRandomNumber(1, 20),
-      result: getRandomNumber(0, 10),
+  //   for (
+  //     let currentDate = new Date(startDate);
+  //     currentDate <= endDate;
+  //     currentDate.setMonth(currentDate.getMonth() + 1)
+  //   ) {
+  //     const data = {
+  //       date: new Date(currentDate),
+  //       plan: getRandomNumber(1, 20),
+  //       result: getRandomNumber(0, 10),
+  //     }
+
+  //     tempArray.push(data)
+  //   }
+
+  //   function getRandomNumber(min, max) {
+  //     return Math.floor(Math.random() * (max - min + 1)) + min
+  //   }
+
+  useEffect(() => {
+    if (appCorporationListData.status === "1") {
+      setSelectedCorporationList(
+        appCorporationListData?.data?.list.reduce((accumulator, group) => {
+          return accumulator.concat(
+            group.coporationList.map(corporation => ({
+              isChecked: false,
+              ...corporation,
+            }))
+          )
+        }, [])
+      )
+      setAppKPIMsg(null)
+    } else if (appCorporationListData.status === "0") {
+      setSelectedCorporationList([])
+      setAppKPIMsg(appCorporationListData)
+    } else {
+      setAppKPIMsg(null)
     }
+  }, [appCorporationListData])
 
-    tempArray.push(data)
-  }
+  useEffect(() => {
+    if (appKPIItemListData.status === "1") {
+      setSelectedKPIItemList(
+        appKPIItemListData?.data?.list.map(item => ({
+          ...item,
+          isChecked: false,
+        }))
+      )
+      setAppKPIMsg(null)
+    } else if (appKPIItemListData.status === "0") {
+      setSelectedKPIItemList([])
+      setAppKPIMsg(appKPIItemListData)
+    } else {
+      setAppKPIMsg(null)
+    }
+  }, [appKPIItemListData])
 
-  function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min
-  }
+  useEffect(() => {
+    if (selectedCorporationList.some(corporation => corporation.isChecked)) {
+      var bodyForm = new FormData()
+      bodyForm.append("from", selectedFromDate.replace(/-/g, ""))
+      bodyForm.append("to", selectedToDate.replace(/-/g, ""))
+      selectedCorporationList
+        .filter(corporation => corporation.isChecked)
+        .forEach(corporation => {
+          bodyForm.append("corporationId", corporation.corporationId)
+        })
+      setAppKPIMsg(null)
+      dispatch(
+        getKPIItemList(bodyForm, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+      )
+    } else {
+      setSelectedKPIItemList(null)
+    }
+  }, [selectedCorporationList])
+
+  useEffect(() => {
+    if (appDashboardDetailListData.status === "1") {
+      setAppKPIMsg(null)
+    } else if (appDashboardDetailListData.status === "0") {
+      setAppKPIMsg(appDashboardDetailListData)
+    } else {
+      setAppKPIMsg(null)
+    }
+  }, [appDashboardDetailListData])
 
   const getMonthAbbreviation = monthIndex => {
     const months = tempArray.map(data => {
@@ -180,51 +258,71 @@ const KPIDashboardDetail = props => {
     }
   }
 
-  const getKPIDashboardDetail = () => {
+  function parseDateString(dateString) {
+    if (!/^\d{4}-\d{2}$/.test(dateString)) return null
+    const [year, month] = dateString.split("-").map(Number)
+    return new Date(year, month - 1)
+  }
 
+  const getKPIDashboardDetail = () => {
     if (!selectedCorporationList.some(corporation => corporation.isChecked)) {
-        setAppKPIMsg({
-            message: 'At least one corporation must be checked.'
-        })
-        return
+      setAppKPIMsg({
+        message: "At least one corporation must be checked.",
+      })
+      return
     }
 
     if (parseDateString(selectedFromDate) > parseDateString(selectedToDate)) {
-        setAppKPIMsg({
-            message: 'From date cannot be after to date.'
-        })
-        return
+      setAppKPIMsg({
+        message: "From date cannot be after to date.",
+      })
+      return
     }
 
     var bodyForm = new FormData()
-    bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
-    bodyForm.append('to', selectedToDate.replace(/-/g, ""))
+    bodyForm.append("from", selectedFromDate.replace(/-/g, ""))
+    bodyForm.append("to", selectedToDate.replace(/-/g, ""))
     selectedCorporationList
-        .filter(corporation => corporation.isChecked)
-        .forEach(corporation => {
-            bodyForm.append('corporationId', corporation.corporationId)
-        })
+      .filter(corporation => corporation.isChecked)
+      .forEach(corporation => {
+        bodyForm.append("corporationId", corporation.corporationId)
+      })
     selectedKPIItemList
-        .filter(kpiItem => kpiItem.isChecked)
-        .forEach(kpiItem => {
-            bodyForm.append('kpiItemId', kpiItem.kpiItemId)
-        })
+      .filter(kpiItem => kpiItem.isChecked)
+      .forEach(kpiItem => {
+        bodyForm.append("kpiItemId", kpiItem.kpiItemId)
+      })
     setAppKPIMsg(null)
-    dispatch(getDashboardKPI(bodyForm, {
+    dispatch(
+      getDashboardDetailKPI(bodyForm, {
         headers: {
-            'content-type': 'multipart/form-data'
-        }
-    }))
-}
+          "content-type": "multipart/form-data",
+        },
+      })
+    )
+  }
 
-const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
+  const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
     const newCheckboxes = [...selectedCorporationList]
-    const foundIndex = newCheckboxes.findIndex(corporation => corporation.corporationId === corporationId)
+    const foundIndex = newCheckboxes.findIndex(
+      corporation => corporation.corporationId === corporationId
+    )
     if (foundIndex !== -1) {
-        newCheckboxes[foundIndex].isChecked = toogleCheck
+      newCheckboxes[foundIndex].isChecked = toogleCheck
     }
     setSelectedCorporationList(newCheckboxes)
-}
+  }
+
+  const handleKPIItemCheckboxChange = (kpiId, toogleCheck) => {
+    const newCheckboxes = [...selectedKPIItemList]
+    const foundIndex = newCheckboxes.findIndex(
+      kpiItem => kpiItem.kpiItemId === kpiId
+    )
+    if (foundIndex !== -1) {
+      newCheckboxes[foundIndex].isChecked = toogleCheck
+    }
+    setSelectedKPIItemList(newCheckboxes)
+  }
 
   return (
     <RootPageCustom
@@ -380,9 +478,16 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                       tag="button"
                     >
                       <Button
-                        style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
-                        className="mdi mdi-filter"
-                      />
+                        style={{
+                          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                          whiteSpace: "nowrap",
+                          display: "flex",
+                        }}
+                      >
+                        {" "}
+                        Filter Corporation &nbsp;
+                        <span className="mdi mdi-filter" />
+                      </Button>
                     </DropdownToggle>
                     <DropdownMenu
                       className="dropdown-menu-end"
@@ -414,48 +519,65 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                                   </a>
                                 </span>
                                 {group.coporationList?.map(
-                                  (corp, corpIndex) => (
-                                    <div
-                                      key={corpIndex}
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        flexDirection: "column",
-                                      }}
-                                    >
-                                      <a
-                                        className="dropdown-item"
+                                  (corp, corpIndex) => {
+                                    return (
+                                      <div
+                                        key={corpIndex}
                                         style={{
                                           display: "flex",
-                                          alignItems: "center",
-                                          justifyContent: "left",
+                                          justifyContent: "center",
+                                          flexDirection: "column",
                                         }}
-                                      >
-                                        <Input
-                                          type="checkbox"
-                                          id={`checkbox${
-                                            corp.corporationId + 1
-                                          }`}
-                                          checked={
-                                            selectedCorporationList.find(
+                                        onClick={e =>
+                                          handleCorporationCheckboxChange(
+                                            corp.corporationId,
+                                            !selectedCorporationList.find(
                                               corporation =>
                                                 corporation.corporationId ===
                                                 corp.corporationId
-                                            )?.isChecked || false
-                                          }
-                                          onClick={e =>
-                                            handleCorporationCheckboxChange(
-                                              corp.corporationId,
-                                              e.target.checked
-                                            )
-                                          }
-                                        />
-                                        <a style={{ marginBottom: "0" }}>
-                                          &nbsp;{corp.corporationName}
+                                            )?.isChecked
+                                          )
+                                        }
+                                      >
+                                        <a
+                                          className="dropdown-item"
+                                          style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "left",
+                                          }}
+                                        >
+                                          <Input
+                                            type="checkbox"
+                                            id={`checkbox${
+                                              corp.corporationId + 1
+                                            }`}
+                                            checked={
+                                              selectedCorporationList.find(
+                                                corporation =>
+                                                  corporation.corporationId ===
+                                                  corp.corporationId
+                                              )?.isChecked || false
+                                            }
+                                            onClick={e =>
+                                              handleCorporationCheckboxChange(
+                                                corp.corporationId,
+                                                e.target.checked
+                                              )
+                                            }
+                                          />
+                                          <Label
+                                            htmlFor={`checkbox${
+                                              corp.corporationId + 1
+                                            }`}
+                                            style={{ marginBottom: "0" }}
+                                          >
+                                            &nbsp;{corp.corporationName}
+                                          </Label>
                                         </a>
-                                      </a>
-                                    </div>
-                                  )
+                                      </div>
+                                    )
+                                  }
                                 )}
                                 {groupIndex <
                                   (appCorporationListData?.data?.list?.length ||
@@ -483,9 +605,16 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                       tag="button"
                     >
                       <Button
-                        style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
-                        className="mdi mdi-filter"
-                      />
+                        style={{
+                          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                          whiteSpace: "nowrap",
+                          display: "flex",
+                        }}
+                      >
+                        {" "}
+                        Filter Category &nbsp;{" "}
+                        <span className="mdi mdi-filter" />
+                      </Button>
                     </DropdownToggle>
                     <DropdownMenu
                       className="dropdown-menu-end"
@@ -502,6 +631,14 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                                 justifyContent: "center",
                                 flexDirection: "column",
                               }}
+                              onClick={e =>
+                                handleKPIItemCheckboxChange(
+                                    item.kpiItemId,
+                                    selectedKPIItemList?.find(
+                                        kpiItem =>
+                                          kpiItem.kpiItemId === item.kpiItemId
+                                      )?.isChecked
+                                )}
                             >
                               <a
                                 className="dropdown-item"
@@ -515,7 +652,7 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                                   type="checkbox"
                                   id={`checkbox${item.kpiItemId + 1}`}
                                   checked={
-                                    selectedKPIItemList.find(
+                                    selectedKPIItemList?.find(
                                       kpiItem =>
                                         kpiItem.kpiItemId === item.kpiItemId
                                     )?.isChecked || false
@@ -527,9 +664,9 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                                     )
                                   }
                                 />
-                                <a style={{ marginBottom: "0" }}>
+                                <Label htmlFor={`checkbox${item.kpiItemId + 1}`} style={{ marginBottom: "0" }}>
                                   &nbsp;{item.itemName}
-                                </a>
+                                </Label>
                               </a>
                             </div>
                           ))}
@@ -545,7 +682,6 @@ const handleCorporationCheckboxChange = (corporationId, toogleCheck) => {
                   >
                     Search
                   </Button>
-
                 </div>
                 <div
                   style={{
