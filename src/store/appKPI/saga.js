@@ -117,7 +117,7 @@ function* fetchGetDashboardKPI({ payload: req }) {
 
 function* fetchGetDashboardDetailKPI({ payload: req }) {
     try {
-        const response = yield call(getDashboardDetailKPIBE, req)
+        const response = yield call(getDashboardKPIBE, req)
         if (response.status == 1) {
             yield put(respGetDashboardDetailKPI(response))
         } else {
