@@ -203,7 +203,7 @@ const AddReply = (props) => {
                     var getFileNm = selectedfile[0].filename;
 
                     getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
-                    debugger
+                    
                     if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i)) {
 
 

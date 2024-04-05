@@ -343,7 +343,7 @@ const KPIDashboard = (props) => {
                                     </InputGroup>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterCorporations} toggle={() => setFilterCorporations(!filterCorporations)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }} className="mdi mdi-filter" />
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}> Filter Corporation &nbsp;<span className="mdi mdi-filter"/></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appCorporationListData?.data?.list) && appCorporationListData?.data?.list.length > 0 ? (
@@ -407,7 +407,7 @@ const KPIDashboard = (props) => {
                                     </Dropdown>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }} className="mdi mdi-filter" />
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}> Filter Category &nbsp; <span className="mdi mdi-filter"/></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0 ? (
@@ -484,6 +484,7 @@ const KPIDashboard = (props) => {
                                                             formatter: function (params) {
                                                                 var content = params[0].name + '<br>'
                                                                 params.forEach(function (item) {
+                                                                    debugger
                                                                     content += item.marker + ' ' + item.seriesName + ': ' + formatter.format(item.value) + '<br>'
                                                                     if(item.seriesName === "File") {
                                                                         if(item.value != null) {
@@ -502,7 +503,6 @@ const KPIDashboard = (props) => {
                                                             containLabel: true
                                                         },
                                                         xAxis: {
-
                                                             type: 'category',
                                                             data: item?.details.map(item => item.date) || []
                                                         },
@@ -529,8 +529,9 @@ const KPIDashboard = (props) => {
                                                             },
                                                             {
                                                                 name: 'File',
+                                                                type: 'scatter',
                                                                 data: item?.details.map(e => e.url) || [],
-                                                                color: '#BEE7BF'
+                                                                color: '#BEE7BF',
                                                             },
                                                             {
                                                                 name: 'Page',

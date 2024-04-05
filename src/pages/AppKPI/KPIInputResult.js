@@ -13,7 +13,7 @@ import {
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
-import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote } from "store/actions"
+import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote, getDownloadKPITemplate } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -164,6 +164,16 @@ const KPIInputResult = (props) => {
 
     const toggleUploadModal = () => {
         setUploadModal(!uploadModal)
+    }
+
+    const downloadKPITemplate = async () => {
+        try {
+            dispatch(getDownloadKPITemplate({
+                file_nm: 'KPI TEMPLATE.xlsx'
+            }))
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const getFileIconClass = (fileName) => {
@@ -374,7 +384,9 @@ const KPIInputResult = (props) => {
                                         <i className="mdi mdi-download" />{" "}
                                         Download Excel
                                     </Button>
-                                    <Button>
+                                    <Button onClick={() =>
+                                        downloadKPITemplate()
+                                    }>
                                         <i className="mdi mdi-download" />{" "}
                                         Download Template
                                     </Button>

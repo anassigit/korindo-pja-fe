@@ -166,7 +166,6 @@ function* fetchGetDownloadDashboardDetail({ payload: req }) {
 }
 
 function* fetchGetDownloadKPITemplate({ payload: req }) {
-    debugger
     try {
         yield call(getDownloadKPITemplateBE, req)
     } catch (error) {
