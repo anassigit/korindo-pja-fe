@@ -213,7 +213,7 @@ export const getUnitBE = req => postWithParam("rest/KpiManagementRest/getUnitLis
 
 export const getDashboardKPIBE = req => postUpload("rest/KpiManagementRest/getDashboard", req)
 
-export const getDashboardDetailKPIBE = req => postWithParam("rest/KpiManagementRest/getDashboardDetail", req)
+export const getDashboardDetailKPIBE = req => postUpload("rest/KpiManagementRest/getDashboard", req)
 
 export const getKPIInputDataBE = req => postWithParam("rest/KpiManagementRest/getData", req)
 

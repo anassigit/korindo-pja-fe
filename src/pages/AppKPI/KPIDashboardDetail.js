@@ -34,7 +34,7 @@ const KPIDashboardDetail = (props) => {
     const appDashboardDetailListData = useSelector((state) => {
         return state.kpiReducer.respGetDashboardDetailKPI
     })
-
+    
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState('')
     const [selectedYear, setSelectedYear] = useState("")
