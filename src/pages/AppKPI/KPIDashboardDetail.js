@@ -559,7 +559,7 @@ const KPIDashboardDetail = props => {
                                                   corp.corporationId
                                               )?.isChecked || false
                                             }
-                                            onClick={e =>
+                                            onChange={e =>
                                               handleCorporationCheckboxChange(
                                                 corp.corporationId,
                                                 e.target.checked
@@ -623,53 +623,59 @@ const KPIDashboardDetail = props => {
                       {Array.isArray(appKPIItemListData?.data?.list) &&
                       appKPIItemListData?.data?.list.length > 0 ? (
                         <React.Fragment>
-                          {appKPIItemListData?.data?.list.map((item, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                flexDirection: "column",
-                              }}
-                              onClick={e =>
-                                handleKPIItemCheckboxChange(
+                          {appKPIItemListData?.data?.list.map((item, index) => {
+                            return (
+                              <div
+                                key={index}
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  flexDirection: "column",
+                                }}
+                                onClick={e =>
+                                  handleKPIItemCheckboxChange(
                                     item.kpiItemId,
-                                    selectedKPIItemList?.find(
+                                    !selectedKPIItemList?.find(
+                                      kpiItem =>
+                                        kpiItem.kpiItemId === item.kpiItemId
+                                    )?.isChecked
+                                  )
+                                }
+                              >
+                                <a
+                                  className="dropdown-item"
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "left",
+                                  }}
+                                >
+                                  <Input
+                                    type="checkbox"
+                                    id={`checkbox${item.kpiItemId + 1}`}
+                                    checked={
+                                      selectedKPIItemList?.find(
                                         kpiItem =>
                                           kpiItem.kpiItemId === item.kpiItemId
                                       )?.isChecked
-                                )}
-                            >
-                              <a
-                                className="dropdown-item"
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "left",
-                                }}
-                              >
-                                <Input
-                                  type="checkbox"
-                                  id={`checkbox${item.kpiItemId + 1}`}
-                                  checked={
-                                    selectedKPIItemList?.find(
-                                      kpiItem =>
-                                        kpiItem.kpiItemId === item.kpiItemId
-                                    )?.isChecked || false
-                                  }
-                                  onClick={e =>
-                                    handleKPIItemCheckboxChange(
-                                      item.kpiItemId,
-                                      e.target.checked
-                                    )
-                                  }
-                                />
-                                <Label htmlFor={`checkbox${item.kpiItemId + 1}`} style={{ marginBottom: "0" }}>
-                                  &nbsp;{item.itemName}
-                                </Label>
-                              </a>
-                            </div>
-                          ))}
+                                    }
+                                    onChange={e =>
+                                      handleKPIItemCheckboxChange(
+                                        item.kpiItemId,
+                                        e.target.checked
+                                      )?.isChecked
+                                    }
+                                  />
+                                  <a
+                                    htmlFor={`checkbox${item.kpiItemId + 1}`}
+                                    style={{ marginBottom: "0" }}
+                                  >
+                                    &nbsp;{item.itemName}
+                                  </a>
+                                </a>
+                              </div>
+                            )
+                          })}
                         </React.Fragment>
                       ) : (
                         <DropdownItem>{"No Data"}</DropdownItem>
