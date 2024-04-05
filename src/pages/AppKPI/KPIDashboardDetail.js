@@ -28,7 +28,7 @@ import {
   resetMessage,
 } from "store/actions"
 import e from "cors"
-import DatePicker from "react-flatpickr"
+import DatePicker from "react-datepicker"
 import moment from "moment"
 
 const KPIDashboardDetail = props => {
