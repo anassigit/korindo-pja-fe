@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { withTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -212,7 +212,6 @@ const KPIDashboard = (props) => {
     const onChartClick = (params, item) => {
         const file = item?.details[params.dataIndex]
         if (file && file.url) {
-            console.log(file.url.endsWith(".pdf"))
             file.url.endsWith(".pdf") ? toggleModalPdf(file.url, file.page) : window.open(new URL(file.url))
         }
     }
@@ -220,6 +219,20 @@ const KPIDashboard = (props) => {
     const handleChartClick = useCallback((params, item) => {
         onChartClick(params, item)
     }, [onChartClick])
+
+    const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
+
+    const handleKeyDown = (event) => {
+        if (event.ctrlKey) {
+            setCtrlKeyPressed(true);
+        }
+    };
+
+    const handleKeyUp = (event) => {
+        if (!event.ctrlKey) {
+            setCtrlKeyPressed(false);
+        }
+    };
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -343,7 +356,7 @@ const KPIDashboard = (props) => {
                                     </InputGroup>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterCorporations} toggle={() => setFilterCorporations(!filterCorporations)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation &nbsp;<span className="mdi mdi-filter"/></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation &nbsp;<span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appCorporationListData?.data?.list) && appCorporationListData?.data?.list.length > 0 ? (
@@ -407,7 +420,7 @@ const KPIDashboard = (props) => {
                                     </Dropdown>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp; <span className="mdi mdi-filter"/></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp; <span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0 ? (
@@ -451,6 +464,9 @@ const KPIDashboard = (props) => {
                                         Search
                                     </Button>
                                 </div>
+                                <span style={{ color: 'red' }}>
+                                    * You can zoom with slider
+                                </span>
                             </div>
                             {
                                 appDashboardListData?.data?.resultList.map((item, index, array) => {
@@ -470,7 +486,11 @@ const KPIDashboard = (props) => {
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center'
-                                            }}>
+                                            }}
+                                                onKeyDown={handleKeyDown}
+                                                onKeyUp={handleKeyUp}
+                                                tabIndex={0} // Needed for keyboard events to work
+                                            >
                                                 <ReactEcharts
                                                     className="custom-chart"
                                                     option={{
@@ -484,8 +504,8 @@ const KPIDashboard = (props) => {
                                                             formatter: function (params) {
                                                                 var content = params[0].name + '<br>'
                                                                 params.forEach(function (item) {
-                                                                    if(item.seriesName === "File") {
-                                                                        if(item.value != null) {
+                                                                    if (item.seriesName === "File") {
+                                                                        if (item.value != null) {
                                                                             content += 'Click the bar to open the file'
                                                                         }
                                                                     } else {
@@ -496,6 +516,16 @@ const KPIDashboard = (props) => {
                                                             },
                                                         },
                                                         legend: {},
+                                                        dataZoom: [
+                                                            {
+                                                                type: "slider",
+                                                                orient: "vertical",
+                                                                filterMode: "none",
+                                                                // show: false,
+                                                                // zoomLock: ctrlKeyPressed ? false : true
+                                                            }
+                                                        ],
+                                                        animation: false,
                                                         grid: {
                                                             left: '3%',
                                                             right: '4%',
@@ -550,6 +580,7 @@ const KPIDashboard = (props) => {
                                                         backgroundColor: '#F7F7FF',
                                                         padding: '1vw'
                                                     }}
+                                                    opts={{ renderer: 'svg' }}
                                                 />
                                             </div>
                                         </React.Fragment>
