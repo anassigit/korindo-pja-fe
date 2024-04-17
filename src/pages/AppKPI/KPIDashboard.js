@@ -220,20 +220,6 @@ const KPIDashboard = (props) => {
         onChartClick(params, item)
     }, [onChartClick])
 
-    const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
-
-    const handleKeyDown = (event) => {
-        if (event.ctrlKey) {
-            setCtrlKeyPressed(true);
-        }
-    };
-
-    const handleKeyUp = (event) => {
-        if (!event.ctrlKey) {
-            setCtrlKeyPressed(false);
-        }
-    };
-
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
@@ -465,7 +451,7 @@ const KPIDashboard = (props) => {
                                     </Button>
                                 </div>
                                 <span style={{ color: 'red' }}>
-                                    * You can zoom with slider
+                                    * Holding ctrl and mouse wheel triggers zoom.
                                 </span>
                             </div>
                             {
@@ -486,11 +472,7 @@ const KPIDashboard = (props) => {
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center'
-                                            }}
-                                                onKeyDown={handleKeyDown}
-                                                onKeyUp={handleKeyUp}
-                                                tabIndex={0} // Needed for keyboard events to work
-                                            >
+                                            }}>
                                                 <ReactEcharts
                                                     className="custom-chart"
                                                     option={{
@@ -518,11 +500,10 @@ const KPIDashboard = (props) => {
                                                         legend: {},
                                                         dataZoom: [
                                                             {
-                                                                type: "slider",
+                                                                type: "inside",
                                                                 orient: "vertical",
                                                                 filterMode: "none",
-                                                                // show: false,
-                                                                // zoomLock: ctrlKeyPressed ? false : true
+                                                                zoomOnMouseWheel: "ctrl"
                                                             }
                                                         ],
                                                         animation: false,
