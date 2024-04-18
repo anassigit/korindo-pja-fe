@@ -220,6 +220,57 @@ const KPIDashboard = (props) => {
         onChartClick(params, item)
     }, [onChartClick])
 
+    const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
+
+    const handleKeyDown = (event) => {
+        if (event.ctrlKey) {
+            setCtrlKeyPressed(true);
+        }
+    };
+
+    const handleKeyUp = (event) => {
+        if (!event.ctrlKey) {
+            setCtrlKeyPressed(false);
+        }
+    };
+
+    const [zoomStates, setZoomStates] = useState([])
+
+    useEffect(() => {
+        if (appDashboardListData?.data?.resultList) {
+            const resultListSize = appDashboardListData.data.resultList.length;
+            const newZoomStates = Array(resultListSize).fill({ start: 0, end: 100 });
+            setZoomStates(newZoomStates);
+        }
+    }, [appDashboardListData?.data?.resultList]);
+
+    const handleDataZoom = (params, index) => {
+        const { batch } = params;
+        if (batch && batch.length > 0) {
+            const { start, end } = batch[0];
+            const currentRangeSize = end - start;
+            console.log("Data zoom event triggered. Start:", start, "End:", end, "Range size:", currentRangeSize);
+
+            // Get the current range size from the zoomStates
+            const prevStart = zoomStates[index]?.start;
+            const prevEnd = zoomStates[index]?.end;
+            const prevRangeSize = prevEnd - prevStart;
+
+            // Check if the range size has changed
+            if (prevRangeSize !== undefined && currentRangeSize.toFixed(2) === prevRangeSize.toFixed(2)) {
+                console.log("Range size has not changed. Skipping state update.");
+                return; // No need to update the state
+            } else {
+                console.log("Range size changed. state update.");
+            }
+
+            // Update the zoomStates state with the new start and end values
+            const updatedZoomStates = [...zoomStates];
+            updatedZoomStates[index] = { start, end };
+            setZoomStates(updatedZoomStates);
+        }
+    };
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
@@ -472,7 +523,7 @@ const KPIDashboard = (props) => {
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center'
-                                            }}>
+                                            }} tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                                                 <ReactEcharts
                                                     className="custom-chart"
                                                     option={{
@@ -503,7 +554,11 @@ const KPIDashboard = (props) => {
                                                                 type: "inside",
                                                                 orient: "vertical",
                                                                 filterMode: "none",
-                                                                zoomOnMouseWheel: "ctrl"
+                                                                zoomOnMouseWheel: "ctrl",
+                                                                // throttle: 100,
+                                                                zoomLock: ctrlKeyPressed ? false : true,
+                                                                start: zoomStates[index]?.start,
+                                                                end: zoomStates[index]?.end,
                                                             }
                                                         ],
                                                         animation: false,
@@ -552,7 +607,8 @@ const KPIDashboard = (props) => {
                                                     }
                                                     }
                                                     onEvents={{
-                                                        'click': (params) => handleChartClick(params, item)
+                                                        'click': (params) => handleChartClick(params, item),
+                                                        'dataZoom': (params) => handleDataZoom(params, index)
                                                     }}
                                                     style={{
                                                         width: "100%",
