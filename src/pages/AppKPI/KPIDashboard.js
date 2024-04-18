@@ -11,8 +11,10 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
+    FormGroup,
     Input,
     InputGroup,
+    Label,
     Spinner
 } from "reactstrap"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
@@ -24,7 +26,6 @@ import ReactEcharts from "echarts-for-react"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import PdfViewerModal from "components/Common/PdfViewerModal"
-import { throttle } from "lodash"
 
 const KPIDashboard = (props) => {
 
@@ -44,10 +45,10 @@ const KPIDashboard = (props) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState('')
+    const [isFilterByCorporation, setIsFilterByCorporation] = useState(false)
     const [selectedCorporationList, setSelectedCorporationList] = useState([])
-    const [filterCorporations, setFilterCorporations] = useState(false)
+    const [filterByCorporationOrGroup, setFilterByCorporationOrGroup] = useState(false)
     const [selectedGroupList, setSelectedGroupList] = useState([])
-    const [filterGroups, setFilterGroups] = useState(false)
     const [selectedKPIItemList, setSelectedKPIItemList] = useState([])
     const [filterKPIItems, setFilterKPIItems] = useState(false)
     const [showFromDatePicker, setShowFromDatePicker] = useState(false)
@@ -88,6 +89,7 @@ const KPIDashboard = (props) => {
             setAppKPIMsg(null)
         } else if (appCorporationAndGroupListData.status === '0') {
             setSelectedCorporationList([])
+            setSelectedGroupList([])
             setAppKPIMsg(appCorporationAndGroupListData)
         } else {
             setAppKPIMsg(null)
@@ -131,6 +133,27 @@ const KPIDashboard = (props) => {
     }, [selectedCorporationList])
 
     useEffect(() => {
+        if (selectedGroupList.some(group => group.isChecked)) {
+            var bodyForm = new FormData()
+            bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
+            bodyForm.append('to', selectedToDate.replace(/-/g, ""))
+            selectedGroupList
+                .filter(group => group.isChecked)
+                .forEach(group => {
+                    bodyForm.append('groupNum', group.groupNum)
+                })
+            setAppKPIMsg(null)
+            dispatch(getKPIItemList(bodyForm, {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }))
+        } else {
+            setSelectedKPIItemList(null)
+        }
+    }, [selectedGroupList])
+
+    useEffect(() => {
         if (appDashboardListData.status === '1') {
             setAppKPIMsg(null)
         } else if (appDashboardListData.status === '0') {
@@ -159,11 +182,20 @@ const KPIDashboard = (props) => {
 
     const getKPIDashboard = () => {
 
-        if (!selectedCorporationList.some(corporation => corporation.isChecked)) {
-            setAppKPIMsg({
-                message: 'At least one corporation must be checked.'
-            })
-            return
+        if(!isFilterByCorporation) {
+            if (!selectedGroupList.some(group => group.isChecked)) {
+                setAppKPIMsg({
+                    message: 'At least one group must be checked.'
+                })
+                return
+            }
+        } else {
+            if (!selectedCorporationList.some(corporation => corporation.isChecked)) {
+                setAppKPIMsg({
+                    message: 'At least one corporation must be checked.'
+                })
+                return
+            }
         }
 
         if (parseDateString(selectedFromDate) > parseDateString(selectedToDate)) {
@@ -176,11 +208,19 @@ const KPIDashboard = (props) => {
         var bodyForm = new FormData()
         bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
         bodyForm.append('to', selectedToDate.replace(/-/g, ""))
-        selectedCorporationList
-            .filter(corporation => corporation.isChecked)
-            .forEach(corporation => {
-                bodyForm.append('corporationId', corporation.corporationId)
-            })
+        if (!isFilterByCorporation) {
+            selectedGroupList
+                .filter(group => group.isChecked)
+                .forEach(group => {
+                    bodyForm.append('groupNum', group.groupNum)
+                })
+        } else {
+            selectedCorporationList
+                .filter(corporation => corporation.isChecked)
+                .forEach(corporation => {
+                    bodyForm.append('corporationId', corporation.corporationId)
+                })
+        }
         selectedKPIItemList
             .filter(kpiItem => kpiItem.isChecked)
             .forEach(kpiItem => {
@@ -201,6 +241,15 @@ const KPIDashboard = (props) => {
             newCheckboxes[foundIndex].isChecked = toogleCheck
         }
         setSelectedCorporationList(newCheckboxes)
+    }
+
+    const handleGroupCheckboxChange = (groupNum, toogleCheck) => {
+        const newCheckboxes = [...selectedGroupList]
+        const foundIndex = newCheckboxes.findIndex(group => group.groupNum === groupNum)
+        if (foundIndex !== -1) {
+            newCheckboxes[foundIndex].isChecked = toogleCheck
+        }
+        setSelectedGroupList(newCheckboxes)
     }
 
     const handleKPIItemCheckboxChange = (kpiId, toogleCheck) => {
@@ -399,14 +448,86 @@ const KPIDashboard = (props) => {
                                             <span className="mdi mdi-calendar" />
                                         </Button>
                                     </InputGroup>
-                                    <Dropdown style={{ height: "30px" }} isOpen={filterCorporations} toggle={() => setFilterCorporations(!filterCorporations)} className="d-inline-block">
+                                    <Dropdown style={{ height: "30px" }} isOpen={filterByCorporationOrGroup} toggle={() => setFilterByCorporationOrGroup(!filterByCorporationOrGroup)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
                                             <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation & Group &nbsp;<span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appCorporationAndGroupListData?.data?.corporationList) && appCorporationAndGroupListData?.data?.corporationList.length > 0 ? (
                                                 <React.Fragment>
-                                                    {appCorporationAndGroupListData?.data?.corporationList.map((group, groupIndex) => (
+                                                    <div
+                                                        style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            flexDirection: 'column',
+                                                        }}
+                                                    >
+                                                        <a
+                                                            className="dropdown-item"
+                                                            style={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'left',
+                                                            }}
+                                                        >
+                                                            <FormGroup switch>
+                                                                <Input
+                                                                    type="switch"
+                                                                    role="switch"
+                                                                    checked={isFilterByCorporation}
+                                                                    onClick={() => {
+                                                                        if (!isFilterByCorporation) {
+                                                                            const updatedItems = selectedGroupList.map(group => ({
+                                                                                ...group,
+                                                                                isChecked: false
+                                                                            }));
+                                                                            setSelectedGroupList(updatedItems);
+                                                                        } else {
+                                                                            const updatedItems = selectedCorporationList.map(corporation => ({
+                                                                                ...corporation,
+                                                                                isChecked: false
+                                                                            }));
+                                                                            setSelectedCorporationList(updatedItems);
+                                                                        }
+                                                                        setIsFilterByCorporation(!isFilterByCorporation)
+                                                                    }}
+                                                                />
+                                                            </FormGroup>
+                                                            <a style={{ marginBottom: '0' }}>
+                                                                &nbsp;{!isFilterByCorporation ? "Group" : "Corporation"}
+                                                            </a>
+                                                        </a>
+                                                    </div>
+                                                    {!isFilterByCorporation ? appCorporationAndGroupListData?.data?.groupList.map((grp, grpIndex) => (
+                                                        <div
+                                                            key={grpIndex}
+                                                            style={{
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                flexDirection: 'column',
+                                                            }}
+                                                        >
+                                                            <a
+                                                                className="dropdown-item"
+                                                                style={{
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'left',
+                                                                }}
+                                                            >
+                                                                <Input
+                                                                    type="checkbox"
+                                                                    id={`checkbox${grp.groupNum + 1}`}
+                                                                    checked={(selectedGroupList.find(group => group.groupNum === grp.groupNum))?.isChecked || false}
+                                                                    onClick={(e) => handleGroupCheckboxChange(grp.groupNum, e.target.checked)}
+                                                                />
+                                                                <a style={{ marginBottom: '0' }}>
+                                                                    &nbsp;{grp.groupName}
+                                                                </a>
+                                                            </a>
+                                                        </div>
+                                                    )) 
+                                                    : appCorporationAndGroupListData?.data?.corporationList.map((group, groupIndex) => (
                                                         <div
                                                             key={groupIndex}
                                                             style={{
@@ -517,9 +638,9 @@ const KPIDashboard = (props) => {
                                 appDashboardListData?.data?.resultList.map((item, index, array) => {
                                     return (
                                         <React.Fragment key={index}>
-                                            {(index === 0 || index !== 0 && item.corporationName !== array[index - 1]?.corporationName) && (
+                                            {(index === 0 || index !== 0 && item.name !== array[index - 1]?.name) && (
                                                 <h3 className="my-2">
-                                                    {item.corporationName}
+                                                    {item.name}
                                                 </h3>
                                             )}
                                             <div className="mx-2">
@@ -587,7 +708,7 @@ const KPIDashboard = (props) => {
                                                         },
                                                         xAxis: {
                                                             type: 'category',
-                                                            data: item?.details.map(item => item.date) || []
+                                                            data: item?.details?.map(item => item.date) || []
                                                         },
                                                         yAxis: {},
                                                         series: [
@@ -595,7 +716,7 @@ const KPIDashboard = (props) => {
                                                                 name: 'Plan',
                                                                 type: 'bar',
                                                                 color: '#D4D4FD',
-                                                                data: item?.details.map(e => {
+                                                                data: item?.details?.map(e => {
                                                                     return ({
                                                                         value: e.plan,
                                                                         itemStyle: {
@@ -607,18 +728,18 @@ const KPIDashboard = (props) => {
                                                             {
                                                                 name: 'Result',
                                                                 type: 'line',
-                                                                data: item?.details.map(e => e.result) || [],
+                                                                data: item?.details?.map(e => e.result) || [],
                                                                 color: '#7F7EF7'
                                                             },
                                                             {
                                                                 name: 'File',
                                                                 type: 'scatter',
-                                                                data: item?.details.map(e => e.url) || [],
+                                                                data: item?.details?.map(e => e.url) || [],
                                                                 color: '#BEE7BF',
                                                             },
                                                             {
                                                                 name: 'Page',
-                                                                data: item?.details.map(e => e.page) || []
+                                                                data: item?.details?.map(e => e.page) || []
                                                             }
                                                         ]
                                                     }
