@@ -24,6 +24,7 @@ import ReactEcharts from "echarts-for-react"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import PdfViewerModal from "components/Common/PdfViewerModal"
+import { throttle } from "lodash"
 
 const KPIDashboard = (props) => {
 
@@ -119,7 +120,7 @@ const KPIDashboard = (props) => {
         } else {
             setSelectedKPIItemList(null)
         }
-    }, [selectedCorporationList]);
+    }, [selectedCorporationList])
 
     useEffect(() => {
         if (appDashboardListData.status === '1') {
@@ -220,56 +221,53 @@ const KPIDashboard = (props) => {
         onChartClick(params, item)
     }, [onChartClick])
 
-    const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
+    const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false)
 
     const handleKeyDown = (event) => {
         if (event.ctrlKey) {
-            setCtrlKeyPressed(true);
+            setCtrlKeyPressed(true)
         }
-    };
+    }
 
     const handleKeyUp = (event) => {
         if (!event.ctrlKey) {
-            setCtrlKeyPressed(false);
+            setCtrlKeyPressed(false)
         }
-    };
+    }
 
     const [zoomStates, setZoomStates] = useState([])
 
     useEffect(() => {
         if (appDashboardListData?.data?.resultList) {
-            const resultListSize = appDashboardListData.data.resultList.length;
-            const newZoomStates = Array(resultListSize).fill({ start: 0, end: 100 });
-            setZoomStates(newZoomStates);
+            const resultListSize = appDashboardListData.data.resultList.length
+            const newZoomStates = Array(resultListSize).fill({ start: 0, end: 100 })
+            setZoomStates(newZoomStates)
         }
-    }, [appDashboardListData?.data?.resultList]);
+    }, [appDashboardListData?.data?.resultList])
 
     const handleDataZoom = (params, index) => {
-        const { batch } = params;
+        const { batch } = params
         if (batch && batch.length > 0) {
-            const { start, end } = batch[0];
-            const currentRangeSize = end - start;
-            console.log("Data zoom event triggered. Start:", start, "End:", end, "Range size:", currentRangeSize);
-
-            // Get the current range size from the zoomStates
-            const prevStart = zoomStates[index]?.start;
-            const prevEnd = zoomStates[index]?.end;
-            const prevRangeSize = prevEnd - prevStart;
-
-            // Check if the range size has changed
-            if (prevRangeSize !== undefined && currentRangeSize.toFixed(2) === prevRangeSize.toFixed(2)) {
-                console.log("Range size has not changed. Skipping state update.");
-                return; // No need to update the state
-            } else {
-                console.log("Range size changed. state update.");
-            }
-
-            // Update the zoomStates state with the new start and end values
-            const updatedZoomStates = [...zoomStates];
-            updatedZoomStates[index] = { start, end };
-            setZoomStates(updatedZoomStates);
+            const { start, end } = batch[0]
+            setZoomStates(prevZoomStates => {
+                const updatedZoomStates = [...prevZoomStates]
+                updatedZoomStates[index] = { start, end }
+                return updatedZoomStates
+            })
         }
-    };
+    }
+
+    const debounce = (func, delay) => {
+        let timeoutId
+        return function (...args) {
+            clearTimeout(timeoutId)
+            timeoutId = setTimeout(() => {
+                func.apply(this, args)
+            }, delay)
+        }
+    }
+
+    const debouncedHandleDataZoom = debounce(handleDataZoom, 100)
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -393,7 +391,7 @@ const KPIDashboard = (props) => {
                                     </InputGroup>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterCorporations} toggle={() => setFilterCorporations(!filterCorporations)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation &nbsp;<span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation &nbsp<span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appCorporationListData?.data?.list) && appCorporationListData?.data?.list.length > 0 ? (
@@ -441,7 +439,7 @@ const KPIDashboard = (props) => {
                                                                             onClick={(e) => handleCorporationCheckboxChange(corp.corporationId, e.target.checked)}
                                                                         />
                                                                         <a style={{ marginBottom: '0' }}>
-                                                                            &nbsp;{corp.corporationName}
+                                                                            &nbsp{corp.corporationName}
                                                                         </a>
                                                                     </a>
                                                                 </div>
@@ -457,7 +455,7 @@ const KPIDashboard = (props) => {
                                     </Dropdown>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp; <span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp <span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0 ? (
@@ -486,7 +484,7 @@ const KPIDashboard = (props) => {
                                                                     onClick={(e) => handleKPIItemCheckboxChange(item.kpiItemId, e.target.checked)}
                                                                 />
                                                                 <a style={{ marginBottom: '0' }}>
-                                                                    &nbsp;{item.itemName}
+                                                                    &nbsp{item.itemName}
                                                                 </a>
                                                             </a>
                                                         </div>
@@ -555,7 +553,6 @@ const KPIDashboard = (props) => {
                                                                 orient: "vertical",
                                                                 filterMode: "none",
                                                                 zoomOnMouseWheel: "ctrl",
-                                                                // throttle: 100,
                                                                 zoomLock: ctrlKeyPressed ? false : true,
                                                                 start: zoomStates[index]?.start,
                                                                 end: zoomStates[index]?.end,
@@ -608,7 +605,7 @@ const KPIDashboard = (props) => {
                                                     }
                                                     onEvents={{
                                                         'click': (params) => handleChartClick(params, item),
-                                                        'dataZoom': (params) => handleDataZoom(params, index)
+                                                        'dataZoom': (params) => debouncedHandleDataZoom(params, index)
                                                     }}
                                                     style={{
                                                         width: "100%",
