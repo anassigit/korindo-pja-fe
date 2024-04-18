@@ -30,7 +30,7 @@ const KPIDashboard = (props) => {
 
     const dispatch = useDispatch()
 
-    const appCorporationListData = useSelector((state) => {
+    const appCorporationAndGroupListData = useSelector((state) => {
         return state.kpiReducer.respGetCorporationList
     })
 
@@ -46,6 +46,8 @@ const KPIDashboard = (props) => {
     const [appKPIMsg, setAppKPIMsg] = useState('')
     const [selectedCorporationList, setSelectedCorporationList] = useState([])
     const [filterCorporations, setFilterCorporations] = useState(false)
+    const [selectedGroupList, setSelectedGroupList] = useState([])
+    const [filterGroups, setFilterGroups] = useState(false)
     const [selectedKPIItemList, setSelectedKPIItemList] = useState([])
     const [filterKPIItems, setFilterKPIItems] = useState(false)
     const [showFromDatePicker, setShowFromDatePicker] = useState(false)
@@ -70,21 +72,27 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appCorporationListData, appKPIItemListData, appDashboardListData])
+    }, [appCorporationAndGroupListData, appKPIItemListData, appDashboardListData])
 
     useEffect(() => {
-        if (appCorporationListData.status === '1') {
-            setSelectedCorporationList(appCorporationListData?.data?.list.reduce((accumulator, group) => {
+        if (appCorporationAndGroupListData.status === '1') {
+            setSelectedCorporationList(appCorporationAndGroupListData?.data?.corporationList.reduce((accumulator, group) => {
                 return accumulator.concat(group.coporationList.map(corporation => ({ isChecked: false, ...corporation })))
             }, []))
+            setSelectedGroupList(
+                appCorporationAndGroupListData?.data?.groupList.map(group => ({
+                    ...group,
+                    isChecked: false
+                }))
+            )
             setAppKPIMsg(null)
-        } else if (appCorporationListData.status === '0') {
+        } else if (appCorporationAndGroupListData.status === '0') {
             setSelectedCorporationList([])
-            setAppKPIMsg(appCorporationListData)
+            setAppKPIMsg(appCorporationAndGroupListData)
         } else {
             setAppKPIMsg(null)
         }
-    }, [appCorporationListData])
+    }, [appCorporationAndGroupListData])
 
     useEffect(() => {
         if (appKPIItemListData.status === '1') {
@@ -269,6 +277,8 @@ const KPIDashboard = (props) => {
 
     const debouncedHandleDataZoom = debounce(handleDataZoom, 100)
 
+    const chartRef = useRef(null);
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
@@ -391,12 +401,12 @@ const KPIDashboard = (props) => {
                                     </InputGroup>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterCorporations} toggle={() => setFilterCorporations(!filterCorporations)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation &nbsp<span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation & Group &nbsp;<span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                            {Array.isArray(appCorporationListData?.data?.list) && appCorporationListData?.data?.list.length > 0 ? (
+                                            {Array.isArray(appCorporationAndGroupListData?.data?.corporationList) && appCorporationAndGroupListData?.data?.corporationList.length > 0 ? (
                                                 <React.Fragment>
-                                                    {appCorporationListData?.data?.list.map((group, groupIndex) => (
+                                                    {appCorporationAndGroupListData?.data?.corporationList.map((group, groupIndex) => (
                                                         <div
                                                             key={groupIndex}
                                                             style={{
@@ -439,12 +449,12 @@ const KPIDashboard = (props) => {
                                                                             onClick={(e) => handleCorporationCheckboxChange(corp.corporationId, e.target.checked)}
                                                                         />
                                                                         <a style={{ marginBottom: '0' }}>
-                                                                            &nbsp{corp.corporationName}
+                                                                            &nbsp;{corp.corporationName}
                                                                         </a>
                                                                     </a>
                                                                 </div>
                                                             ))}
-                                                            {groupIndex < (appCorporationListData?.data?.list?.length || 0) - 1 && <div className="dropdown-divider" />}
+                                                            {groupIndex < (appCorporationAndGroupListData?.data?.corporationList?.length || 0) - 1 && <div className="dropdown-divider" />}
                                                         </div>
                                                     ))}
                                                 </React.Fragment>
@@ -455,7 +465,7 @@ const KPIDashboard = (props) => {
                                     </Dropdown>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp <span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp; <span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0 ? (
@@ -484,7 +494,7 @@ const KPIDashboard = (props) => {
                                                                     onClick={(e) => handleKPIItemCheckboxChange(item.kpiItemId, e.target.checked)}
                                                                 />
                                                                 <a style={{ marginBottom: '0' }}>
-                                                                    &nbsp{item.itemName}
+                                                                    &nbsp;{item.itemName}
                                                                 </a>
                                                             </a>
                                                         </div>
@@ -523,6 +533,8 @@ const KPIDashboard = (props) => {
                                                 alignItems: 'center'
                                             }} tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                                                 <ReactEcharts
+                                                    ref={chartRef}
+                                                    onClick={() => console.log("WERWER")}
                                                     className="custom-chart"
                                                     option={{
                                                         tooltip: {
@@ -533,6 +545,14 @@ const KPIDashboard = (props) => {
                                                             confine: true,
                                                             width: '2px',
                                                             formatter: function (params) {
+                                                                if (chartRef && chartRef.current) {
+                                                                    const echartsInstance = chartRef.current.getEchartsInstance();
+                                                                    echartsInstance.getZr().handler.dispatch('click', {
+                                                                        zrX: echartsInstance.getWidth() / 2, // X coordinate at the center of the chart
+                                                                        zrY: echartsInstance.getHeight() / 2, // Y coordinate at the center of the chart
+                                                                        event: { target: echartsInstance.getZr().storage.getDisplayList()[0] } // Target the first element in the display list (the chart itself)
+                                                                    });
+                                                                }
                                                                 var content = params[0].name + '<br>'
                                                                 params.forEach(function (item) {
                                                                     if (item.seriesName === "File") {
