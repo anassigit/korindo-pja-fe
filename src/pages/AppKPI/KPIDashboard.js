@@ -449,7 +449,7 @@ const KPIDashboard = (props) => {
                                         </Button>
                                     </InputGroup>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterByCorporationOrGroup} toggle={() => setFilterByCorporationOrGroup(!filterByCorporationOrGroup)} className="d-inline-block">
-                                        <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
+                                        <DropdownToggle style={{ paddingTop: "0", marginTop: "-3px" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
                                             <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Corporation & Group &nbsp;<span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
@@ -585,11 +585,11 @@ const KPIDashboard = (props) => {
                                         </DropdownMenu>
                                     </Dropdown>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
-                                        <DropdownToggle style={{ paddingTop: "0" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
+                                        <DropdownToggle style={{ paddingTop: "0", marginTop: "-3px" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
                                             <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp; <span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                            {Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0 ? (
+                                            {(Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0) && selectedKPIItemList ? (
                                                 <React.Fragment>
                                                     {appKPIItemListData?.data?.list.map((item, index) => (
                                                         <div
@@ -669,9 +669,9 @@ const KPIDashboard = (props) => {
                                                                 if (chartRef && chartRef.current) {
                                                                     const echartsInstance = chartRef.current.getEchartsInstance();
                                                                     echartsInstance.getZr().handler.dispatch('click', {
-                                                                        zrX: echartsInstance.getWidth() / 2, // X coordinate at the center of the chart
-                                                                        zrY: echartsInstance.getHeight() / 2, // Y coordinate at the center of the chart
-                                                                        event: { target: echartsInstance.getZr().storage.getDisplayList()[0] } // Target the first element in the display list (the chart itself)
+                                                                        zrX: echartsInstance.getWidth() / 2, 
+                                                                        zrY: echartsInstance.getHeight() / 2, 
+                                                                        event: { target: echartsInstance.getZr().storage.getDisplayList()[0] }
                                                                     });
                                                                 }
                                                                 var content = params[0].name + '<br>'
