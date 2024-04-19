@@ -28,7 +28,8 @@ import {
     RESP_GET_GROUP_LIST_KPI_INPUT,
     GET_KPI_FILE,
     RESP_GET_KPI_FILE,
-    UPLOAD_KPI_RESULT
+    UPLOAD_KPI_RESULT,
+    DOWNLOAD_KPI_EXCEL
 } from "./actionTypes"
 
 export const getGroupListKPI = (req) => ({
@@ -153,6 +154,11 @@ export const getDownloadDashboardDetail = (req) => ({
 
 export const getDownloadKPITemplate = (req) => ({
     type: DOWNLOAD_KPI_TEMPLATE,
+    payload: req,
+})
+
+export const getDownloadKPIExcel = (req) => ({
+    type: DOWNLOAD_KPI_EXCEL,
     payload: req,
 })
 

@@ -13,7 +13,7 @@ import {
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
-import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote, getDownloadKPITemplate } from "store/actions"
+import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote, getDownloadKPITemplate, getDownloadKPIExcel } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -170,6 +170,18 @@ const KPIInputResult = (props) => {
         try {
             dispatch(getDownloadKPITemplate({
                 file_nm: 'KPI TEMPLATE.xlsx'
+            }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const downloadExcel = async () => {
+        try {
+            dispatch(getDownloadKPIExcel({
+                file_nm: 'KPI EXCEL.xlsx',
+                year: selectedDate.substring(0, 4),
+                corporationId: selectedCorporationId,
             }))
         } catch (error) {
             console.log(error)
@@ -380,7 +392,7 @@ const KPIInputResult = (props) => {
                                     <Button
                                         disabled={appListData?.data?.list.length > 0 ? false : true}
                                         className={appListData?.data?.list.length > 0 ? "" : "btn btn-dark opacity-25"}
-                                        onClick={() => { downloadPlan() }}>
+                                        onClick={() => { downloadExcel() }}>
                                         <i className="mdi mdi-download" />{" "}
                                         Download Excel
                                     </Button>

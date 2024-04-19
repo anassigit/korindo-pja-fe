@@ -11,7 +11,7 @@ import {
     InputGroup,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getDownloadKPITemplate, getGroupListKPI, getKPIMaster, resetMessage } from "store/actions"
+import { getCorporationList, getDownloadKPIExcel, getDownloadKPITemplate, getGroupListKPI, getKPIMaster, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -111,13 +111,13 @@ const KPISetting = (props) => {
         }
     }
 
-    const downloadKPI = async () => {
+    const downloadExcel = async () => {
         try {
-            // dispatch(getDownload({
-            //     file_nm: 'KPI PLAN.xlsx',
-            //     groupNum: selectedGroupList,
-            //     corporationId: selectedCorporationId,
-            // }))
+            dispatch(getDownloadKPIExcel({
+                file_nm: 'KPI EXCEL.xlsx',
+                year: selectedYear,
+                corporationId: selectedCorporationId,
+            }))
         } catch (error) {
             console.log(error)
         }
@@ -287,7 +287,7 @@ const KPISetting = (props) => {
                                     <Button
                                         disabled={appPlanState.length > 0 ? false : true}
                                         className={appPlanState.length > 0 ? "" : "btn btn-dark opacity-25"}
-                                        onClick={() => { downloadKPI() }}>
+                                        onClick={() => { downloadExcel() }}>
                                         <i className="mdi mdi-download" />{" "}
                                         Download Excel
                                     </Button>

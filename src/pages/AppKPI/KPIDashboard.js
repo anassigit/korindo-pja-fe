@@ -14,7 +14,6 @@ import {
     FormGroup,
     Input,
     InputGroup,
-    Label,
     Spinner
 } from "reactstrap"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
@@ -26,6 +25,7 @@ import ReactEcharts from "echarts-for-react"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import PdfViewerModal from "components/Common/PdfViewerModal"
+import Swal from 'sweetalert2'
 
 const KPIDashboard = (props) => {
 
@@ -60,6 +60,10 @@ const KPIDashboard = (props) => {
     const [modalPdfViewer, setModalPdfViewer] = useState(false)
     const [pdfUrl, setPdfUrl] = useState("")
     const [pdfPageNum, setPdfPageNum] = useState("")
+    const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false)
+    const [zoomStates, setZoomStates] = useState([])
+
+    const chartRef = useRef(null);
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -155,6 +159,14 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         if (appDashboardListData.status === '1') {
+            if (appDashboardListData?.data?.resultList?.length === 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "No data",
+                    text: "There is no data!",
+                    confirmButtonColor: "#7BAE40"
+                })
+            }
             setAppKPIMsg(null)
         } else if (appDashboardListData.status === '0') {
             setAppKPIMsg(appDashboardListData)
@@ -163,7 +175,16 @@ const KPIDashboard = (props) => {
         }
     }, [appDashboardListData])
 
+    useEffect(() => {
+        if (appDashboardListData?.data?.resultList) {
+            const resultListSize = appDashboardListData.data.resultList.length
+            const newZoomStates = Array(resultListSize).fill({ start: 0, end: 100 })
+            setZoomStates(newZoomStates)
+        }
+    }, [appDashboardListData?.data?.resultList])
+
     const years = []
+
     for (let year = 2017; year <= new Date().getFullYear(); year++) {
         years.push(year)
     }
@@ -174,7 +195,7 @@ const KPIDashboard = (props) => {
         maximumFractionDigits: 2,
     })
 
-    function parseDateString(dateString) {
+    const parseDateString = (dateString) => {
         if (!/^\d{4}-\d{2}$/.test(dateString)) return null
         const [year, month] = dateString.split('-').map(Number)
         return new Date(year, month - 1)
@@ -227,6 +248,7 @@ const KPIDashboard = (props) => {
                 bodyForm.append('kpiItemId', kpiItem.kpiItemId)
             })
         setAppKPIMsg(null)
+        setLoadingSpinner(true)
         dispatch(getDashboardKPI(bodyForm, {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -278,8 +300,6 @@ const KPIDashboard = (props) => {
         onChartClick(params, item)
     }, [onChartClick])
 
-    const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false)
-
     const handleKeyDown = (event) => {
         if (event.ctrlKey) {
             setCtrlKeyPressed(true)
@@ -291,16 +311,6 @@ const KPIDashboard = (props) => {
             setCtrlKeyPressed(false)
         }
     }
-
-    const [zoomStates, setZoomStates] = useState([])
-
-    useEffect(() => {
-        if (appDashboardListData?.data?.resultList) {
-            const resultListSize = appDashboardListData.data.resultList.length
-            const newZoomStates = Array(resultListSize).fill({ start: 0, end: 100 })
-            setZoomStates(newZoomStates)
-        }
-    }, [appDashboardListData?.data?.resultList])
 
     const handleDataZoom = (params, index) => {
         const { batch } = params
@@ -325,8 +335,6 @@ const KPIDashboard = (props) => {
     }
 
     const debouncedHandleDataZoom = debounce(handleDataZoom, 100)
-
-    const chartRef = useRef(null);
 
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
@@ -655,7 +663,6 @@ const KPIDashboard = (props) => {
                                             }} tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                                                 <ReactEcharts
                                                     ref={chartRef}
-                                                    onClick={() => console.log("WERWER")}
                                                     className="custom-chart"
                                                     option={{
                                                         tooltip: {
@@ -666,14 +673,6 @@ const KPIDashboard = (props) => {
                                                             confine: true,
                                                             width: '2px',
                                                             formatter: function (params) {
-                                                                if (chartRef && chartRef.current) {
-                                                                    const echartsInstance = chartRef.current.getEchartsInstance();
-                                                                    echartsInstance.getZr().handler.dispatch('click', {
-                                                                        zrX: echartsInstance.getWidth() / 2, 
-                                                                        zrY: echartsInstance.getHeight() / 2, 
-                                                                        event: { target: echartsInstance.getZr().storage.getDisplayList()[0] }
-                                                                    });
-                                                                }
                                                                 var content = params[0].name + '<br>'
                                                                 params.forEach(function (item) {
                                                                     if (item.seriesName === "File") {

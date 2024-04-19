@@ -28,7 +28,8 @@ import {
     RESP_GET_GROUP_LIST_KPI_INPUT,
     GET_KPI_FILE,
     RESP_GET_KPI_FILE,
-    UPLOAD_KPI_RESULT
+    UPLOAD_KPI_RESULT,
+    DOWNLOAD_KPI_EXCEL
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -136,6 +137,10 @@ const kpiReducer = (state = INIT_STATE, action) => {
                 ...state,
             }
         case DOWNLOAD_DASHBOARD_DETAIL:
+            return {
+                ...state,
+            }
+        case DOWNLOAD_KPI_EXCEL:
             return {
                 ...state,
             }

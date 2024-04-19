@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_KPI_ITEM_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_KPI_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE, UPLOAD_KPI_RESULT } from "./actionTypes"
+import { GET_KPI_ITEM_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_KPI_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE, UPLOAD_KPI_RESULT, DOWNLOAD_KPI_EXCEL } from "./actionTypes"
 import { msgUpload, respGetKPIInputData, respGetKPIItemList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile } from "./actions"
-import { getKPIItemListBE, getCorporationListKPI, getDashboardKPIBE, getGroupListKPIBE, getItemBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getKPIInputDataBE, setKPINoteBE, getDashboardDetailKPIBE, getDownloadDashboardDetailBE, getKPIFileBE, uploadKPIResultBE } from "helpers/backend_helper"
+import { getKPIItemListBE, getCorporationListKPI, getDashboardKPIBE, getGroupListKPIBE, getItemBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getKPIInputDataBE, setKPINoteBE, getDashboardDetailKPIBE, getDownloadDashboardDetailBE, getKPIFileBE, uploadKPIResultBE, getDownloadKPIExcelBE } from "helpers/backend_helper"
 
 function* fetchGetGroupListKPI({ payload: req }) {
     try {
@@ -173,6 +173,14 @@ function* fetchGetDownloadKPITemplate({ payload: req }) {
     }
 }
 
+function* fetchGetDownloadKPIExcel({ payload: req }) {
+    try {
+        yield call(getDownloadKPIExcelBE, req)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 function* fetchUploadKPI({ payload: req }) {
     try {
         const response = yield call(uploadKPIBE, req)
@@ -225,6 +233,7 @@ function* kpiSaga() {
     yield takeEvery(GET_KPI_FILE, fetchGetKPIFile)
     yield takeEvery(DOWNLOAD_DASHBOARD_DETAIL, fetchGetDownloadDashboardDetail)
     yield takeEvery(DOWNLOAD_KPI_TEMPLATE, fetchGetDownloadKPITemplate)
+    yield takeEvery(DOWNLOAD_KPI_EXCEL, fetchGetDownloadKPIExcel)
     yield takeEvery(UPLOAD_KPI, fetchUploadKPI)
     yield takeEvery(UPLOAD_KPI_RESULT, fetchUploadKPIResult)
     yield takeEvery(SET_KPI_NOTE, fetchSetKPINote)
