@@ -60,7 +60,10 @@ const KPIDashboardDetail = (props) => {
     const [modalPdfViewer, setModalPdfViewer] = useState(false)
     const [pdfUrl, setPdfUrl] = useState("")
     const [pdfPageNum, setPdfPageNum] = useState("")
-    const tempArray = []
+    const [dates, setDates] = useState([])
+    const [fromDate, setFromDate] = useState("")
+    const [toDate, setToDate] = useState("")
+    const [groupOrCorporation, setGroupOrCorporation] = useState("Group")
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -156,6 +159,10 @@ const KPIDashboardDetail = (props) => {
 
     useEffect(() => {
         if (appDashboardListData.status === '1') {
+            setDates(datesBetweenDates(selectedFromDate, selectedToDate))
+            setFromDate(selectedFromDate)
+            setToDate(selectedToDate)
+            setGroupOrCorporation(!isFilterByCorporation ? "Group" : "Corporation")
             if (appDashboardListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
@@ -171,6 +178,17 @@ const KPIDashboardDetail = (props) => {
             setAppKPIMsg(null)
         }
     }, [appDashboardListData])
+
+    const datesBetweenDates = (fromDate, toDate) => {
+        const dates = [];
+        let currentDate = new Date(fromDate);
+        const endDate = new Date(toDate);
+        while (currentDate <= endDate) {
+            dates.push(`${currentDate.getFullYear()}-${('0' + (currentDate.getMonth() + 1)).slice(-2) }`);
+            currentDate.setMonth(currentDate.getMonth() + 1); // Move to the next month
+        }
+        return dates;
+    };
 
     const years = []
 
@@ -272,16 +290,25 @@ const KPIDashboardDetail = (props) => {
         setModalPdfViewer(!modalPdfViewer)
     }
 
-    const getMonthAbbreviation = monthIndex => {
-        const months = tempArray.map(data => {
-            return `${data.date.getFullYear()}-${data.date.getMonth() + 1}`
-        })
-        return months[monthIndex - 1]
-    }
-
     const getColumnHeader = index => {
         const baseHeaders = ["Plan", "Result"]
         return `${baseHeaders[index % baseHeaders.length]}`
+    }
+
+    function countMonthsBetweenDates(startDate, endDate) {
+        if (startDate === "" || endDate === "") return 0
+        const startYear = parseInt(startDate.substring(0, 4));
+        const startMonth = parseInt(startDate.substring(5));
+        const endYear = parseInt(endDate.substring(0, 4));
+        const endMonth = parseInt(endDate.substring(5));
+
+        const startDateObject = new Date(startYear, startMonth - 1); // Month is zero-based
+        const endDateObject = new Date(endYear, endMonth - 1); // Month is zero-based
+
+        const diffInMonths = (endDateObject.getFullYear() - startDateObject.getFullYear()) * 12 +
+            endDateObject.getMonth() - startDateObject.getMonth();
+
+        return diffInMonths + 1; // Adding 1 to the result
     }
 
     return (
@@ -593,8 +620,8 @@ const KPIDashboardDetail = (props) => {
                                     }}
                                 >
                                     <Button
-                                        disabled={appDashboardListData?.data?.list.length > 0 ? false : true}
-                                        className={appDashboardListData?.data?.list.length > 0 ? "" : "btn btn-dark opacity-25"}
+                                        disabled={appDashboardListData?.data?.resultList.length > 0 ? false : true}
+                                        className={appDashboardListData?.data?.resultList.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadExcel() }}>
                                         <i className="mdi mdi-download" />{" "}
                                         Download Excel
@@ -630,7 +657,7 @@ const KPIDashboardDetail = (props) => {
                                                     minWidth: "225px",
                                                 }}
                                             >
-                                                <div>{"Corporation Name"}</div>
+                                                <div>{groupOrCorporation}</div>
                                             </th>
                                             <th
                                                 rowSpan={2}
@@ -647,7 +674,7 @@ const KPIDashboardDetail = (props) => {
                                             >
                                                 <div>{"ITEMS"}</div>
                                             </th>
-                                            {Array.from({ length: 12 }, (_, monthIndex) => (
+                                            {Array.from({ length: countMonthsBetweenDates(fromDate, toDate) }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>
                                                     <th
                                                         colSpan={2}
@@ -656,13 +683,13 @@ const KPIDashboardDetail = (props) => {
                                                             verticalAlign: "center",
                                                         }}
                                                     >
-                                                        {getMonthAbbreviation(monthIndex + 1)}
+                                                        {dates[monthIndex]}
                                                     </th>
                                                 </React.Fragment>
                                             ))}
                                         </tr>
                                         <tr>
-                                            {Array.from({ length: 24 }, (_, index) => (
+                                            {Array.from({ length: countMonthsBetweenDates(fromDate, toDate) * 2 }, (_, index) => (
                                                 <th
                                                     key={index}
                                                     style={{ textAlign: "center", minWidth: "auto" }}
@@ -687,7 +714,7 @@ const KPIDashboardDetail = (props) => {
                                                                 zIndex: "2",
                                                             }}
                                                         >
-                                                            <div>{data.corporationName}</div>
+                                                            <div>{data.name}</div>
                                                         </td>
                                                         <td
                                                             align="center"
@@ -721,30 +748,11 @@ const KPIDashboardDetail = (props) => {
                                                                     }}
                                                                     id={"detailTooltip" + data.item + index}
                                                                 >
-                                                                    {detail.note.trim() !== "" ? (
-                                                                        <div
-                                                                            style={{
-                                                                                position: "absolute",
-                                                                                top: 0,
-                                                                                right: 0,
-                                                                            }}
-                                                                        >
-                                                                            <i className="mdi mdi-comment-alert" />
-                                                                        </div>
-                                                                    ) : null}
                                                                     {detail.result.toLocaleString(undefined, {
                                                                         minimumFractionDigits: 0,
                                                                         maximumFractionDigits: 2,
                                                                     })}
                                                                 </td>
-                                                                {detail.note.trim() !== "" ? (
-                                                                    <UncontrolledTooltip
-                                                                        placement="top"
-                                                                        target={"detailTooltip" + data.item + index}
-                                                                    >
-                                                                        {detail.note}
-                                                                    </UncontrolledTooltip>
-                                                                ) : null}
                                                             </React.Fragment>
                                                         ))}
                                                     </tr>
@@ -754,7 +762,6 @@ const KPIDashboardDetail = (props) => {
                                     </tbody>
                                 </table>
                             </div>
-
                         </CardBody>
                     </Card>
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
