@@ -64,6 +64,7 @@ const KPIDashboard = (props) => {
     const [zoomStates, setZoomStates] = useState([])
 
     const chartRef = useRef(null);
+    const divRef = useRef(null);
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -203,7 +204,7 @@ const KPIDashboard = (props) => {
 
     const getKPIDashboard = () => {
 
-        if(!isFilterByCorporation) {
+        if (!isFilterByCorporation) {
             if (!selectedGroupList.some(group => group.isChecked)) {
                 setAppKPIMsg({
                     message: 'At least one group must be checked.'
@@ -242,8 +243,7 @@ const KPIDashboard = (props) => {
                     bodyForm.append('corporationId', corporation.corporationId)
                 })
         }
-        selectedKPIItemList
-            .filter(kpiItem => kpiItem.isChecked)
+        selectedKPIItemList?.filter(kpiItem => kpiItem.isChecked)
             .forEach(kpiItem => {
                 bodyForm.append('kpiItemId', kpiItem.kpiItemId)
             })
@@ -346,7 +346,7 @@ const KPIDashboard = (props) => {
                         url={pdfUrl}
                         pageNum={pdfPageNum}
                     />
-                    <Card fluid="true" >
+                    <Card tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                             {props.t("KPI Dashboard")}
                         </CardHeader>
@@ -534,58 +534,58 @@ const KPIDashboard = (props) => {
                                                                 </a>
                                                             </a>
                                                         </div>
-                                                    )) 
-                                                    : appCorporationAndGroupListData?.data?.corporationList.map((group, groupIndex) => (
-                                                        <div
-                                                            key={groupIndex}
-                                                            style={{
-                                                                display: 'flex',
-                                                                justifyContent: 'center',
-                                                                flexDirection: 'column',
-                                                            }}
-                                                        >
-                                                            <span
-                                                                className="dropdown-item"
+                                                    ))
+                                                        : appCorporationAndGroupListData?.data?.corporationList.map((group, groupIndex) => (
+                                                            <div
+                                                                key={groupIndex}
                                                                 style={{
                                                                     display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    justifyContent: 'left',
+                                                                    justifyContent: 'center',
+                                                                    flexDirection: 'column',
                                                                 }}
                                                             >
-                                                                <a style={{ marginBottom: '0' }}>{group.name}</a>
-                                                            </span>
-                                                            {group.coporationList?.map((corp, corpIndex) => (
-                                                                <div
-                                                                    key={corpIndex}
+                                                                <span
+                                                                    className="dropdown-item"
                                                                     style={{
                                                                         display: 'flex',
-                                                                        justifyContent: 'center',
-                                                                        flexDirection: 'column',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'left',
                                                                     }}
                                                                 >
-                                                                    <a
-                                                                        className="dropdown-item"
+                                                                    <a style={{ marginBottom: '0' }}>{group.name}</a>
+                                                                </span>
+                                                                {group.coporationList?.map((corp, corpIndex) => (
+                                                                    <div
+                                                                        key={corpIndex}
                                                                         style={{
                                                                             display: 'flex',
-                                                                            alignItems: 'center',
-                                                                            justifyContent: 'left',
+                                                                            justifyContent: 'center',
+                                                                            flexDirection: 'column',
                                                                         }}
                                                                     >
-                                                                        <Input
-                                                                            type="checkbox"
-                                                                            id={`checkbox${corp.corporationId + 1}`}
-                                                                            checked={(selectedCorporationList.find(corporation => corporation.corporationId === corp.corporationId))?.isChecked || false}
-                                                                            onClick={(e) => handleCorporationCheckboxChange(corp.corporationId, e.target.checked)}
-                                                                        />
-                                                                        <a style={{ marginBottom: '0' }}>
-                                                                            &nbsp;{corp.corporationName}
+                                                                        <a
+                                                                            className="dropdown-item"
+                                                                            style={{
+                                                                                display: 'flex',
+                                                                                alignItems: 'center',
+                                                                                justifyContent: 'left',
+                                                                            }}
+                                                                        >
+                                                                            <Input
+                                                                                type="checkbox"
+                                                                                id={`checkbox${corp.corporationId + 1}`}
+                                                                                checked={(selectedCorporationList.find(corporation => corporation.corporationId === corp.corporationId))?.isChecked || false}
+                                                                                onClick={(e) => handleCorporationCheckboxChange(corp.corporationId, e.target.checked)}
+                                                                            />
+                                                                            <a style={{ marginBottom: '0' }}>
+                                                                                &nbsp;{corp.corporationName}
+                                                                            </a>
                                                                         </a>
-                                                                    </a>
-                                                                </div>
-                                                            ))}
-                                                            {groupIndex < (appCorporationAndGroupListData?.data?.corporationList?.length || 0) - 1 && <div className="dropdown-divider" />}
-                                                        </div>
-                                                    ))}
+                                                                    </div>
+                                                                ))}
+                                                                {groupIndex < (appCorporationAndGroupListData?.data?.corporationList?.length || 0) - 1 && <div className="dropdown-divider" />}
+                                                            </div>
+                                                        ))}
                                                 </React.Fragment>
                                             ) : (
                                                 <DropdownItem>{'No Data'}</DropdownItem>
@@ -660,9 +660,8 @@ const KPIDashboard = (props) => {
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center'
-                                            }} tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                                            }} >
                                                 <ReactEcharts
-                                                    ref={chartRef}
                                                     className="custom-chart"
                                                     option={{
                                                         tooltip: {
@@ -696,6 +695,7 @@ const KPIDashboard = (props) => {
                                                                 zoomLock: ctrlKeyPressed ? false : true,
                                                                 start: zoomStates[index]?.start,
                                                                 end: zoomStates[index]?.end,
+                                                                preventDefaultMouseMove: false
                                                             }
                                                         ],
                                                         animation: false,
