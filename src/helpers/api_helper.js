@@ -5,239 +5,243 @@ import { ReactSession } from 'react-client-session';
 //apply base url for axios
 var API_URL = "http://localhost:9010/pja";
 if (process.env.REACT_APP_APIKEY === "development") {
-  API_URL = "http://192.168.0.29:9010/pja";
+    API_URL = "http://192.168.0.29:9010/pja";
 } else if (process.env.REACT_APP_APIKEY === "production") {
-  API_URL = "http://10.12.1.10:9010/pja";
+    API_URL = "http://10.12.1.10:9010/pja";
 }
 
 const axiosApi = axios.create({
-  baseURL: API_URL,
+    baseURL: API_URL,
 });
 
 axiosApi.interceptors.response.use(
-  response => response,
-  error => Promise.reject(error)
+    response => response,
+    error => Promise.reject(error)
 );
 
 export async function postLogin(url, data, config = {}) {
 
-  axiosApi.defaults.headers.common["Authorization"] = 'Basic ' + btoa(data.id + ':' + data.pw);
-  return axiosApi
-    .post(url + "?" + $.param(data), { ...config })
-    .then(response => response.data);
+    axiosApi.defaults.headers.common["Authorization"] = 'Basic ' + btoa(data.id + ':' + data.pw);
+    return axiosApi
+        .post(url + "?" + $.param(data), { ...config })
+        .then(response => response.data);
 }
 
 export async function get(url, data, config = {}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-  return await axiosApi.get(url, data, { ...config })
-    .then(function (response) {
-      return responseError(response);
-    })
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    return await axiosApi.get(url, data, { ...config })
+        .then(function (response) {
+            return responseError(response);
+        })
 }
 
 export async function getWithParam(url, data, config = { responseType: 'blob' }) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-  return await axiosApi.get(url + "?" + $.param(data), { ...config })
-    .then(function (response) {
-      return responseError(response);
-    })
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    return await axiosApi.get(url + "?" + $.param(data), { ...config })
+        .then(function (response) {
+            return responseError(response);
+        })
 }
 
 export async function postWithParam(url, data, config = {}
 ) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-  const params = new URLSearchParams();
-  Object.keys(data).forEach(key => {
-    if (Array.isArray(data[key])) {
-      data[key].forEach(value => {
-        params.append(key, value);
-      });
-    } else {
-      // For roleAccessId, replace '+' with ' ' (space)
-      if (key === 'roleAccessId') {
-        params.append(key, data[key].replace(/\+/g, ' '));
-      } else {
-        params.append(key, data[key]);
-      }
-    }
-  });
-
-  return await axiosApi.post(url + "?" + params.toString(), { ...config })
-    .then(function (response) {
-      return responseError(response);
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    const params = new URLSearchParams();
+    Object.keys(data).forEach(key => {
+        if (Array.isArray(data[key])) {
+            data[key].forEach(value => {
+                params.append(key, value);
+            });
+        } else {
+            // For roleAccessId, replace '+' with ' ' (space)
+            if (key === 'roleAccessId') {
+                params.append(key, data[key].replace(/\+/g, ' '));
+            } else {
+                params.append(key, data[key]);
+            }
+        }
     });
+
+    return await axiosApi.post(url + "?" + params.toString(), { ...config })
+        .then(function (response) {
+            return responseError(response);
+        });
 }
 
 export async function post(url, data, config = {}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-  return axiosApi
-    .post(url, { ...data }, { ...config },)
-    .then(function (response) {
-      return responseError(response);
-    })
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    return axiosApi
+        .post(url, { ...data }, { ...config },)
+        .then(function (response) {
+            return responseError(response);
+        })
 }
 
 function responseError(response) {
-  if (response.data.status != "1") {
-    if (response.data.data != null) {
-      return response.data;
-    } else {
-      if (response.data.message != null) {
-
-        if (response.data.message == "Invalid Token") {
-          localStorage.removeItem("authUser")
-          localStorage.removeItem("user")
-          //localStorage.removeItem("menu")
-          document.getElementById("reloginForm").style.display = "block";
-          //response.data.listmessage = []
-          response.data.status = "1"
-          //console.log(response.data)
-          return response.data;
+    if (response.data.status != "1") {
+        if (response.data.data != null) {
+            return response.data;
         } else {
-          return response.data;
+            if (response.data.message != null) {
+
+                if (response.data.message == "Invalid Token") {
+                    localStorage.removeItem("authUser")
+                    localStorage.removeItem("user")
+                    //localStorage.removeItem("menu")
+                    document.getElementById("reloginForm").style.display = "block";
+                    //response.data.listmessage = []
+                    response.data.status = "1"
+                    //console.log(response.data)
+                    return response.data;
+                } else {
+                    return response.data;
+                }
+            }
         }
-      }
+    } else {
+        return response.data;
     }
-  } else {
-    return response.data;
-  }
 }
 
 export async function getWithXls(url, data, config = { responseType: 'blob' }) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-  let token = localStorage.getItem("authUser");
-  return await axiosApi.get(url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data), { ...config })
-    .then(
-      response => {
-        if (response.status == 200) {
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    let token = localStorage.getItem("authUser");
 
-          // let filename = response.headers['content-disposition']
-          // .split(';')
-          // .find(n => n.includes('filename='))
-          // .replace('filename=', '')
-          // .trim();
-          // console.log(filename)
-          // let url = window.URL.createObjectURL(new Blob([response.data]));   
-          // saveAs(url, filename);
-          let url = window.URL.createObjectURL(new Blob([response.data]));
-          saveAs(url, data.file_nm);
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(data)) {
+        if (Array.isArray(value)) {
+            value.forEach((item,index) => {
+                params.append(`${key}`, item);
+            });
         } else {
-          return responseError(response);
+            params.append(key, value);
         }
+    }
 
-      })
+    // return await axiosApi.get(url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data), { ...config })
+    return await axiosApi.get(url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + params.toString(), { ...config })
+        .then(
+            response => {
+                if (response.status == 200) {
+                    let url = window.URL.createObjectURL(new Blob([response.data]));
+                    saveAs(url, data.file_nm);
+                } else {
+                    return responseError(response);
+                }
+
+            })
 }
 
 export async function getWithPdf(url, data, config = { responseType: 'blob' }) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-  let token = localStorage.getItem("authUser");
-  return await axiosApi.post(url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data), { ...config })
-    .then(
-      response => {
-        if (response.status == 200) {
-          console.log(response.headers)
-          // let filename = response.headers['content-disposition']
-          // console.log(filename)
-          let url = window.URL.createObjectURL(new Blob([response.data]));
-          saveAs(url, data.file_name);
-        } else {
-          return responseError(response);
-        }
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    let token = localStorage.getItem("authUser");
+    return await axiosApi.post(url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data), { ...config })
+        .then(
+            response => {
+                if (response.status == 200) {
+                    console.log(response.headers)
+                    // let filename = response.headers['content-disposition']
+                    // console.log(filename)
+                    let url = window.URL.createObjectURL(new Blob([response.data]));
+                    saveAs(url, data.file_name);
+                } else {
+                    return responseError(response);
+                }
 
-      })
+            })
 }
 
 export async function postUpload(url, data, config = {}) {
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
 
-  return axiosApi
-    .post(url, data, { ...config },)
-    .then(function (response) {
-      return responseError(response);
-    })
+    return axiosApi
+        .post(url, data, { ...config },)
+        .then(function (response) {
+            return responseError(response);
+        })
 }
 
 
 export async function postDownload(url, data, config = { responseType: 'blob' }) {
 
-  console.log(data)
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
-  let token = localStorage.getItem("authUser");
-  return await axiosApi.post(url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data), { ...config })
-    //return await axiosApi.post(url, { ...data }, { ...config },)
-    .then(
-      response => {
+    console.log(data)
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser");
+    let token = localStorage.getItem("authUser");
+    return await axiosApi.post(url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data), { ...config })
+        //return await axiosApi.post(url, { ...data }, { ...config },)
+        .then(
+            response => {
 
-        if (response.status == 200) {
+                if (response.status == 200) {
 
-          console.log(response.headers)
-          let filename = response.headers['content-disposition'].split("filename=")[1];
-          // let abcd = filename.
-          console.log(filename)
-          let url = window.URL.createObjectURL(new Blob([response.data]));
-          console.log(url)
-          saveAs(url, filename);
-        } else {
-          return responseError(response);
-        }
+                    console.log(response.headers)
+                    let filename = response.headers['content-disposition'].split("filename=")[1];
+                    // let abcd = filename.
+                    console.log(filename)
+                    let url = window.URL.createObjectURL(new Blob([response.data]));
+                    console.log(url)
+                    saveAs(url, filename);
+                } else {
+                    return responseError(response);
+                }
 
-      })
+            })
 }
 
 
 export async function postDownloadXlsx(
-  url,
-  data,
-  config = {
-    responseType: "blob",
-  }
+    url,
+    data,
+    config = {
+        responseType: "blob",
+    }
 ) {
-  console.log(data)
-  axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser")
-  let token = localStorage.getItem("authUser")
+    console.log(data)
+    axiosApi.defaults.headers.common["KOR_TOKEN"] = localStorage.getItem("authUser")
+    let token = localStorage.getItem("authUser")
 
-  return await axiosApi
-    .post(
-      url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data),
-      { ...config }
-    )
-    .then(response => {
+    return await axiosApi
+        .post(
+            url + "?KOR_TOKEN=" + encodeURIComponent(token) + "&" + $.param(data),
+            { ...config }
+        )
+        .then(response => {
 
-      if (response.status == 200) {
+            if (response.status == 200) {
 
-        let res = response.data.data.download
-        console.log(res)
-        const contentType =
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"
-        const blob = String64toBlob(res, contentType)
-        const url = URL.createObjectURL(blob)
+                let res = response.data.data.download
+                console.log(res)
+                const contentType =
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"
+                const blob = String64toBlob(res, contentType)
+                const url = URL.createObjectURL(blob)
 
-        saveAs(url, data.filename)
-      } else {
-        return responseError(response)
-      }
-    })
+                saveAs(url, data.filename)
+            } else {
+                return responseError(response)
+            }
+        })
 }
 
 
 
 const String64toBlob = (data, contentType = "", sliceSize = 512) => {
 
-  const byteCharacters = atob(data)
-  const byteArrays = []
+    const byteCharacters = atob(data)
+    const byteArrays = []
 
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize)
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize)
 
-    const byteNumbers = new Array(slice.length)
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i)
+        const byteNumbers = new Array(slice.length)
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i)
+        }
+
+        const byteArray = new Uint8Array(byteNumbers)
+        byteArrays.push(byteArray)
     }
 
-    const byteArray = new Uint8Array(byteNumbers)
-    byteArrays.push(byteArray)
-  }
-
-  const blob = new Blob(byteArrays, { type: contentType })
-  return blob
+    const blob = new Blob(byteArrays, { type: contentType })
+    return blob
 }

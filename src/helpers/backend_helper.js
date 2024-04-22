@@ -219,7 +219,7 @@ export const getKPIInputDataBE = req => postWithParam("rest/KpiManagementRest/ge
 
 export const getDownloadKPITemplateBE = req => getWithXls("rest/KpiManagementRest/downloadTemplate", req)
 
-export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagementRest/downloadDashboardDetail", req)
+export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagementRest/downloadDashboard", req)
 
 export const getDownloadKPIExcelBE = req => getWithXls("rest/KpiManagementRest/downloadExcel", req)
 

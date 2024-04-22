@@ -21,7 +21,7 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getCorporationList, getDashboardKPI, getKPIItemList, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardKPI, getDownloadDashboardDetail, getDownloadKPIExcel, getKPIItemList, resetMessage } from "store/actions"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import PdfViewerModal from "components/Common/PdfViewerModal"
@@ -46,10 +46,14 @@ const KPIDashboardDetail = (props) => {
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState('')
     const [isFilterByCorporation, setIsFilterByCorporation] = useState(false)
+    const [isFilterByCorporationForDownload, setIsFilterByCorporationForDownload] = useState(false)
     const [selectedCorporationList, setSelectedCorporationList] = useState([])
+    const [selectedCorporationListForDownload, setSelectedCorporationListForDownload] = useState([])
     const [filterByCorporationOrGroup, setFilterByCorporationOrGroup] = useState(false)
     const [selectedGroupList, setSelectedGroupList] = useState([])
+    const [selectedGroupListForDownload, setSelectedGroupListForDownload] = useState([])
     const [selectedKPIItemList, setSelectedKPIItemList] = useState([])
+    const [selectedKPIItemListForDownload, setSelectedKPIItemListForDownload] = useState([])
     const [filterKPIItems, setFilterKPIItems] = useState(false)
     const [showFromDatePicker, setShowFromDatePicker] = useState(false)
     const [isFromDateButtonClicked, setIsFromDateButtonClicked] = useState(false)
@@ -77,7 +81,7 @@ const KPIDashboardDetail = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appCorporationAndGroupListData, appKPIItemListData, appDashboardListData])
+    }, [appCorporationAndGroupListData, appKPIItemListData])
 
     useEffect(() => {
         if (appCorporationAndGroupListData.status === '1') {
@@ -132,7 +136,7 @@ const KPIDashboardDetail = (props) => {
                 }
             }))
         } else {
-            setSelectedKPIItemList(null)
+            setSelectedKPIItemList([])
         }
     }, [selectedCorporationList])
 
@@ -153,7 +157,7 @@ const KPIDashboardDetail = (props) => {
                 }
             }))
         } else {
-            setSelectedKPIItemList(null)
+            setSelectedKPIItemList([])
         }
     }, [selectedGroupList])
 
@@ -163,6 +167,13 @@ const KPIDashboardDetail = (props) => {
             setFromDate(selectedFromDate)
             setToDate(selectedToDate)
             setGroupOrCorporation(!isFilterByCorporation ? "Group" : "Corporation")
+            setIsFilterByCorporationForDownload(isFilterByCorporation)
+            const tempArr = [...selectedGroupList]
+            const tempArr2 = [...selectedCorporationList]
+            const tempArr3 = [...selectedKPIItemList]
+            setSelectedGroupListForDownload(tempArr)
+            setSelectedCorporationListForDownload(tempArr2)
+            setSelectedKPIItemListForDownload(tempArr3)
             if (appDashboardListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
@@ -177,18 +188,19 @@ const KPIDashboardDetail = (props) => {
         } else {
             setAppKPIMsg(null)
         }
+        setLoadingSpinner(false)
     }, [appDashboardListData])
 
     const datesBetweenDates = (fromDate, toDate) => {
-        const dates = [];
-        let currentDate = new Date(fromDate);
-        const endDate = new Date(toDate);
+        const dates = []
+        let currentDate = new Date(fromDate)
+        const endDate = new Date(toDate)
         while (currentDate <= endDate) {
-            dates.push(`${currentDate.getFullYear()}-${('0' + (currentDate.getMonth() + 1)).slice(-2) }`);
-            currentDate.setMonth(currentDate.getMonth() + 1); // Move to the next month
+            dates.push(`${currentDate.getFullYear()}-${('0' + (currentDate.getMonth() + 1)).slice(-2)}`)
+            currentDate.setMonth(currentDate.getMonth() + 1) // Move to the next month
         }
-        return dates;
-    };
+        return dates
+    }
 
     const years = []
 
@@ -204,6 +216,13 @@ const KPIDashboardDetail = (props) => {
 
     const getKPIDashboard = () => {
 
+        if (parseDateString(selectedFromDate) > parseDateString(selectedToDate)) {
+            setAppKPIMsg({
+                message: 'From date cannot be after to date.'
+            })
+            return
+        }
+
         if (!isFilterByCorporation) {
             if (!selectedGroupList.some(group => group.isChecked)) {
                 setAppKPIMsg({
@@ -218,13 +237,6 @@ const KPIDashboardDetail = (props) => {
                 })
                 return
             }
-        }
-
-        if (parseDateString(selectedFromDate) > parseDateString(selectedToDate)) {
-            setAppKPIMsg({
-                message: 'From date cannot be after to date.'
-            })
-            return
         }
 
         var bodyForm = new FormData()
@@ -243,8 +255,7 @@ const KPIDashboardDetail = (props) => {
                     bodyForm.append('corporationId', corporation.corporationId)
                 })
         }
-        selectedKPIItemList
-            .filter(kpiItem => kpiItem.isChecked)
+        selectedKPIItemList?.filter(kpiItem => kpiItem.isChecked)
             .forEach(kpiItem => {
                 bodyForm.append('kpiItemId', kpiItem.kpiItemId)
             })
@@ -297,18 +308,61 @@ const KPIDashboardDetail = (props) => {
 
     function countMonthsBetweenDates(startDate, endDate) {
         if (startDate === "" || endDate === "") return 0
-        const startYear = parseInt(startDate.substring(0, 4));
-        const startMonth = parseInt(startDate.substring(5));
-        const endYear = parseInt(endDate.substring(0, 4));
-        const endMonth = parseInt(endDate.substring(5));
+        const startYear = parseInt(startDate.substring(0, 4))
+        const startMonth = parseInt(startDate.substring(5))
+        const endYear = parseInt(endDate.substring(0, 4))
+        const endMonth = parseInt(endDate.substring(5))
 
-        const startDateObject = new Date(startYear, startMonth - 1); // Month is zero-based
-        const endDateObject = new Date(endYear, endMonth - 1); // Month is zero-based
+        const startDateObject = new Date(startYear, startMonth - 1)
+        const endDateObject = new Date(endYear, endMonth - 1)
 
         const diffInMonths = (endDateObject.getFullYear() - startDateObject.getFullYear()) * 12 +
-            endDateObject.getMonth() - startDateObject.getMonth();
+            endDateObject.getMonth() - startDateObject.getMonth()
 
-        return diffInMonths + 1; // Adding 1 to the result
+        return diffInMonths + 1
+    }
+
+    const downloadExcel = async () => {
+        try {
+            const groupList = !isFilterByCorporationForDownload ?
+                selectedGroupListForDownload?.filter(group => group.isChecked)
+                    .map(group => {
+                        return group.groupNum
+                    })
+                : ''
+
+            const corporationList = isFilterByCorporationForDownload ?
+                selectedCorporationListForDownload?.filter(corporation => corporation.isChecked)
+                    .map(corporation => {
+                        return corporation.corporationId
+                    })
+                : ''
+
+            const KPIItemList = selectedKPIItemListForDownload?.filter(kpiItem => kpiItem.isChecked)
+                .map(kpiItem => {
+                    return kpiItem.kpiItemId
+                })
+
+            if (!isFilterByCorporationForDownload) {
+                dispatch(getDownloadDashboardDetail({
+                    from: fromDate.replace(/-/g, ""),
+                    to: toDate.replace(/-/g, ""),
+                    groupNum: groupList,
+                    kpiItemId: KPIItemList,
+                    file_nm: "KPI EXCEL.xlsx"
+                }))
+            } else {
+                dispatch(getDownloadDashboardDetail({
+                    from: fromDate.replace(/-/g, ""),
+                    to: toDate.replace(/-/g, ""),
+                    corporationId: corporationList,
+                    kpiItemId: KPIItemList,
+                    file_nm: "KPI EXCEL.xlsx"
+                }))
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -323,7 +377,7 @@ const KPIDashboardDetail = (props) => {
                     />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("KPI Dashboard")}
+                            KPI Dashboard Detail
                         </CardHeader>
                         <CardBody>
                             <div
@@ -463,14 +517,14 @@ const KPIDashboardDetail = (props) => {
                                                                             const updatedItems = selectedGroupList.map(group => ({
                                                                                 ...group,
                                                                                 isChecked: false
-                                                                            }));
-                                                                            setSelectedGroupList(updatedItems);
+                                                                            }))
+                                                                            setSelectedGroupList(updatedItems)
                                                                         } else {
                                                                             const updatedItems = selectedCorporationList.map(corporation => ({
                                                                                 ...corporation,
                                                                                 isChecked: false
-                                                                            }));
-                                                                            setSelectedCorporationList(updatedItems);
+                                                                            }))
+                                                                            setSelectedCorporationList(updatedItems)
                                                                         }
                                                                         setIsFilterByCorporation(!isFilterByCorporation)
                                                                     }}
@@ -635,7 +689,11 @@ const KPIDashboardDetail = (props) => {
                                     marginTop: "10px",
                                 }}
                             >
-                                <table className="table table-bordered my-3">
+                                <table className="table table-borderless my-3" style={{
+                                    display: appDashboardListData?.data?.resultList?.length > 0 ? "table" : "none",
+                                    borderCollapse: "separate",
+                                    borderSpacing: "0"
+                                }}>
                                     <thead
                                         style={{
                                             color: "white",
@@ -654,7 +712,7 @@ const KPIDashboardDetail = (props) => {
                                                     left: "0",
                                                     backgroundColor: "#81B642",
                                                     zIndex: "2",
-                                                    minWidth: "225px",
+                                                    minWidth: "225px"
                                                 }}
                                             >
                                                 <div>{groupOrCorporation}</div>
@@ -669,7 +727,7 @@ const KPIDashboardDetail = (props) => {
                                                     left: "225px",
                                                     backgroundColor: "#81B642",
                                                     zIndex: "2",
-                                                    minWidth: "225px",
+                                                    minWidth: "225px"
                                                 }}
                                             >
                                                 <div>{"ITEMS"}</div>
@@ -680,7 +738,7 @@ const KPIDashboardDetail = (props) => {
                                                         colSpan={2}
                                                         style={{
                                                             textAlign: "center",
-                                                            verticalAlign: "center",
+                                                            width: "auto",
                                                         }}
                                                     >
                                                         {dates[monthIndex]}
@@ -692,7 +750,10 @@ const KPIDashboardDetail = (props) => {
                                             {Array.from({ length: countMonthsBetweenDates(fromDate, toDate) * 2 }, (_, index) => (
                                                 <th
                                                     key={index}
-                                                    style={{ textAlign: "center", minWidth: "auto" }}
+                                                    style={{
+                                                        textAlign: "center",
+                                                        width: "50%"
+                                                    }}
                                                 >
                                                     {getColumnHeader(index)}
                                                 </th>
@@ -711,7 +772,7 @@ const KPIDashboardDetail = (props) => {
                                                                 position: "sticky",
                                                                 backgroundColor: "white",
                                                                 left: "0",
-                                                                zIndex: "2",
+                                                                zIndex: "2"
                                                             }}
                                                         >
                                                             <div>{data.name}</div>
@@ -723,13 +784,13 @@ const KPIDashboardDetail = (props) => {
                                                                 position: "sticky",
                                                                 backgroundColor: "white",
                                                                 left: "225px",
-                                                                zIndex: "2",
+                                                                zIndex: "2"
                                                             }}
                                                         >
                                                             <div style={{ width: "175px" }}>{data.item}</div>
                                                         </td>
-                                                        {Array.from(data.details, (detail, index) => (
-                                                            <React.Fragment key={index}>
+                                                        {Array.from(data.details, (detail, dtlIndex) => (
+                                                            <React.Fragment key={dtlIndex}>
                                                                 <td style={{ textAlign: "right" }}>
                                                                     {detail.plan.toLocaleString(undefined, {
                                                                         minimumFractionDigits: 0,
@@ -746,8 +807,26 @@ const KPIDashboardDetail = (props) => {
                                                                         width: "100%",
                                                                         position: "relative",
                                                                     }}
-                                                                    id={"detailTooltip" + data.item + index}
+                                                                    id={"detailTooltip" + index + dtlIndex}
                                                                 >
+                                                                    {detail.url ? (
+                                                                        <div
+                                                                            style={{
+                                                                                position: "absolute",
+                                                                                top: 0,
+                                                                                right: 0,
+                                                                            }}
+                                                                            onClick={detail.url.endsWith(".pdf") ? () => toggleModalPdf(detail.url, detail.page) : () => window.open(new URL(detail.url))}
+                                                                        >
+                                                                            <i className="mdi mdi-comment-alert" />
+                                                                            <UncontrolledTooltip
+                                                                                placement="top"
+                                                                                target={"detailTooltip" + index + dtlIndex}
+                                                                            >
+                                                                                {decodeURIComponent(detail.url.split('/')[detail.url.split('/').length - 1])}
+                                                                            </UncontrolledTooltip>
+                                                                        </div>
+                                                                    ) : null}
                                                                     {detail.result.toLocaleString(undefined, {
                                                                         minimumFractionDigits: 0,
                                                                         maximumFractionDigits: 2,
