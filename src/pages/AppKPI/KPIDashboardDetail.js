@@ -712,7 +712,8 @@ const KPIDashboardDetail = (props) => {
                                                     left: "0",
                                                     backgroundColor: "#81B642",
                                                     zIndex: "2",
-                                                    minWidth: "225px"
+                                                    minWidth: "225px",
+                                                    border: "1px solid #f8f8fb"
                                                 }}
                                             >
                                                 <div>{groupOrCorporation}</div>
@@ -727,7 +728,8 @@ const KPIDashboardDetail = (props) => {
                                                     left: "225px",
                                                     backgroundColor: "#81B642",
                                                     zIndex: "2",
-                                                    minWidth: "225px"
+                                                    minWidth: "225px",
+                                                    border: "1px solid #f8f8fb"
                                                 }}
                                             >
                                                 <div>{"ITEMS"}</div>
@@ -739,6 +741,7 @@ const KPIDashboardDetail = (props) => {
                                                         style={{
                                                             textAlign: "center",
                                                             width: "auto",
+                                                            border: "1px solid #f8f8fb"
                                                         }}
                                                     >
                                                         {dates[monthIndex]}
@@ -752,7 +755,8 @@ const KPIDashboardDetail = (props) => {
                                                     key={index}
                                                     style={{
                                                         textAlign: "center",
-                                                        width: "50%"
+                                                        width: "50%",
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                 >
                                                     {getColumnHeader(index)}
@@ -772,7 +776,8 @@ const KPIDashboardDetail = (props) => {
                                                                 position: "sticky",
                                                                 backgroundColor: "white",
                                                                 left: "0",
-                                                                zIndex: "2"
+                                                                zIndex: "2",
+                                                                border: "1px solid #f8f8fb"
                                                             }}
                                                         >
                                                             <div>{data.name}</div>
@@ -784,17 +789,21 @@ const KPIDashboardDetail = (props) => {
                                                                 position: "sticky",
                                                                 backgroundColor: "white",
                                                                 left: "225px",
-                                                                zIndex: "2"
+                                                                zIndex: "2",
+                                                                border: "1px solid #f8f8fb"
                                                             }}
                                                         >
                                                             <div style={{ width: "175px" }}>{data.item}</div>
                                                         </td>
                                                         {Array.from(data.details, (detail, dtlIndex) => (
                                                             <React.Fragment key={dtlIndex}>
-                                                                <td style={{ textAlign: "right" }}>
+                                                                <td style={{
+                                                                    textAlign: "right",
+                                                                    border: "1px solid #f8f8fb"
+                                                                }}>
                                                                     {detail.plan.toLocaleString(undefined, {
                                                                         minimumFractionDigits: 0,
-                                                                        maximumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2
                                                                     })}
                                                                 </td>
                                                                 <td
@@ -806,6 +815,7 @@ const KPIDashboardDetail = (props) => {
                                                                                 : "black",
                                                                         width: "100%",
                                                                         position: "relative",
+                                                                        border: "1px solid #f8f8fb"
                                                                     }}
                                                                     id={"detailTooltip" + index + dtlIndex}
                                                                 >
