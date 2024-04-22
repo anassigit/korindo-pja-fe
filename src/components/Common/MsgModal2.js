@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import '../../assets/scss/custom/modal/modal.css'
 
 const MsgModal2 = (props) => {
 
     const toggleClose = () => {
-        props.setIsClosed(true);
-        props.toggle();
-    };
+        props.setIsClosed(true)
+        props.toggle()
+    }
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
@@ -27,8 +27,8 @@ const MsgModal2 = (props) => {
                 }
             </ModalFooter>
         </Modal>
-    );
-};
+    )
+}
 
 MsgModal2.propTypes = {
     modal: PropTypes.bool,
@@ -36,6 +36,6 @@ MsgModal2.propTypes = {
     message: PropTypes.string,
     setIsClosed: PropTypes.func,
     successClose: PropTypes.any,
-};
+}
 
-export default MsgModal2;
+export default MsgModal2

@@ -21,6 +21,7 @@ import {
     RESP_GET_KPI_INPUT_DATA,
     SET_KPI_NOTE,
     MSG_EDIT,
+    MSG_DELETE,
     GET_DASHBOARD_DETAIL_KPI,
     RESP_GET_DASHBOARD_DETAIL_KPI,
     DOWNLOAD_DASHBOARD_DETAIL,
@@ -29,7 +30,8 @@ import {
     GET_KPI_FILE,
     RESP_GET_KPI_FILE,
     UPLOAD_KPI_RESULT,
-    DOWNLOAD_KPI_EXCEL
+    DOWNLOAD_KPI_EXCEL,
+    SET_KPI_NOTE_TO_DELETE
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -45,6 +47,7 @@ const INIT_STATE = {
     respGetDashboardDetailKPI: {},
     respGetKPIInputData: {},
     msgEdit: "",
+    msgDelete: "",
     msgUpload: ""
 }
 
@@ -166,6 +169,10 @@ const kpiReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
             }
+        case SET_KPI_NOTE_TO_DELETE:
+            return {
+                ...state,
+            }
         case UPLOAD_KPI:
             return {
                 ...state,
@@ -183,6 +190,11 @@ const kpiReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 msgEdit: action.payload,
+            }
+        case MSG_DELETE:
+            return {
+                ...state,
+                msgDelete: action.payload,
             }
         case RESET_MESSAGE:
             return {

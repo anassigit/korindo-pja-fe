@@ -15,7 +15,6 @@ import media from '../../assets/images/file_management/media.png'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import '../../assets/scss/custom/components/custom-datepicker.scss'
-import FileTables from 'pages/AppFileManagement/FileTables'
 import FileTable from './FileTable'
 
 const AddKPIResult = (props) => {
@@ -47,12 +46,14 @@ const AddKPIResult = (props) => {
 
     useEffect(() => {
         if (props.modal === true) {
-            setSelectedDate(props.date)
             setSelectedKpiId(props.kpiId)
-            dispatch(getKPIFile({
-                groupNum: props.groupNum,
-                date: props.date.replace(/-/g, "")
-            }))
+            if(selectedDate === "") {
+                dispatch(getKPIFile({
+                    groupNum: props.groupNum,
+                    date: props.date.replace(/-/g, "")
+                }))
+                setSelectedDate(props.date)
+            }
         }
     }, [props.toggle])
 
@@ -83,6 +84,9 @@ const AddKPIResult = (props) => {
             setAddKPIResultMsg('')
             setSelectedFileNum("")
             setPageNum("")
+            props.onMsgModalClosed()
+            setIsClosed(false)
+            setSelectedDate("")
         }
     }
 
@@ -432,6 +436,7 @@ AddKPIResult.propTypes = {
     groupNum: PropTypes.any,
     date: PropTypes.any,
     kpiId: PropTypes.any,
+    onMsgModalClosed: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
 }

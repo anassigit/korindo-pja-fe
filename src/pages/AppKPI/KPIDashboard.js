@@ -285,7 +285,7 @@ const KPIDashboard = (props) => {
 
     const toggleModalPdf = (url, pageNum) => {
         if (url) setPdfUrl(url)
-        if (pageNum) setPdfPageNum(pageNum)
+        setPdfPageNum(pageNum)
         setModalPdfViewer(!modalPdfViewer)
     }
 

@@ -13,7 +13,7 @@ import {
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
-import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, setKPINote, getDownloadKPITemplate, getDownloadKPIExcel } from "store/actions"
+import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, getDownloadKPITemplate, getDownloadKPIExcel, setKPINoteToDelete } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -50,7 +50,7 @@ const KPIInputResult = (props) => {
     })
 
     const setKPINoteMessage = useSelector(state => {
-        return state.kpiReducer.msgEdit
+        return state.kpiReducer.msgDelete
     })
 
     const toggleAddKPIResultModal = () => {
@@ -125,7 +125,7 @@ const KPIInputResult = (props) => {
     useEffect(() => {
         if (isYes && selectedKpiIdToBeDeleted && selectedPageToBeDeleted != null) {
             setLoadingSpinner(true);
-            dispatch(setKPINote({
+            dispatch(setKPINoteToDelete({
                 kpiId: selectedKpiIdToBeDeleted,
                 num: -1,
                 page: selectedPageToBeDeleted
@@ -151,6 +151,15 @@ const KPIInputResult = (props) => {
         }
         setAppKPIMsg(setKPINoteMessage)
     }, [setKPINoteMessage])
+
+    const onMsgModalClosed = () => {
+        setLoadingSpinner(true)
+        dispatch(getKPIInputData({
+            groupNum: selectedGroupNum,
+            corporationId: selectedCorporationId,
+            date: selectedDate.replace(/-/g, "")
+        }))
+    }
 
     const confirmToggleDelete = (e) => {
         if (e?.kpiId) {
@@ -218,12 +227,8 @@ const KPIInputResult = (props) => {
     }
 
     const toggleModalPdf = (url, pageNum) => {
-        if (url) {
-            setPdfUrl(url)
-        }
-        if (pageNum) {
-            setPdfPageNum(pageNum)
-        }
+        if (url) setPdfUrl(url)
+        setPdfPageNum(pageNum)
         setModalPdfViewer(!modalPdfViewer)
     }
 
@@ -272,6 +277,7 @@ const KPIInputResult = (props) => {
                         groupNum={selectedGroupNum}
                         date={selectedDate}
                         kpiId={selectedKpiId}
+                        onMsgModalClosed={onMsgModalClosed}
                     />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>

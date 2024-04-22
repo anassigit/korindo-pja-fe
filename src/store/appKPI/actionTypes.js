@@ -42,4 +42,7 @@ export const UPLOAD_KPI_RESULT = "UPLOAD_KPI_RESULT"
 export const MSG_UPLOAD = "MSG_UPLOAD"
 
 export const SET_KPI_NOTE = "SET_KPI_NOTE"
+export const SET_KPI_NOTE_TO_DELETE = "SET_KPI_NOTE_TO_DELETE"
+
 export const MSG_EDIT = "MSG_EDIT"
+export const MSG_DELETE = "MSG_DELETE"

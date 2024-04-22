@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_KPI_ITEM_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_KPI_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE, UPLOAD_KPI_RESULT, DOWNLOAD_KPI_EXCEL } from "./actionTypes"
-import { msgUpload, respGetKPIInputData, respGetKPIItemList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile } from "./actions"
+import { GET_KPI_ITEM_LIST, GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_KPI_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE, UPLOAD_KPI_RESULT, DOWNLOAD_KPI_EXCEL, SET_KPI_NOTE_TO_DELETE } from "./actionTypes"
+import { msgUpload, respGetKPIInputData, respGetKPIItemList, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile, msgDelete } from "./actions"
 import { getKPIItemListBE, getCorporationListKPI, getDashboardKPIBE, getGroupListKPIBE, getItemBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getKPIInputDataBE, setKPINoteBE, getDashboardDetailKPIBE, getDownloadDashboardDetailBE, getKPIFileBE, uploadKPIResultBE, getDownloadKPIExcelBE } from "helpers/backend_helper"
 
 function* fetchGetGroupListKPI({ payload: req }) {
@@ -219,6 +219,16 @@ function* fetchSetKPINote({ payload: req }) {
     }
 }
 
+function* fetchSetKPINoteToDelete({ payload: req }) {
+    try {
+        const response = yield call(setKPINoteBE, req)
+        yield put(msgDelete(response))
+    } catch (error) {
+        console.log(error);
+        yield put(msgDelete({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
 function* kpiSaga() {
     yield takeEvery(GET_GROUP_LIST_KPI, fetchGetGroupListKPI)
     yield takeEvery(GET_GROUP_LIST_KPI_INPUT, fetchGetGroupListKPIInput)
@@ -237,6 +247,7 @@ function* kpiSaga() {
     yield takeEvery(UPLOAD_KPI, fetchUploadKPI)
     yield takeEvery(UPLOAD_KPI_RESULT, fetchUploadKPIResult)
     yield takeEvery(SET_KPI_NOTE, fetchSetKPINote)
+    yield takeEvery(SET_KPI_NOTE_TO_DELETE, fetchSetKPINoteToDelete)
 }
 
 export default kpiSaga

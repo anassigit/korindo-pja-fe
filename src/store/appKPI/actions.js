@@ -29,7 +29,9 @@ import {
     GET_KPI_FILE,
     RESP_GET_KPI_FILE,
     UPLOAD_KPI_RESULT,
-    DOWNLOAD_KPI_EXCEL
+    DOWNLOAD_KPI_EXCEL,
+    SET_KPI_NOTE_TO_DELETE,
+    MSG_DELETE
 } from "./actionTypes"
 
 export const getGroupListKPI = (req) => ({
@@ -147,6 +149,11 @@ export const setKPINote = (req) => ({
     payload: req,
 })
 
+export const setKPINoteToDelete = (req) => ({
+    type: SET_KPI_NOTE_TO_DELETE,
+    payload: req,
+})
+
 export const getDownloadDashboardDetail = (req) => ({
     type: DOWNLOAD_DASHBOARD_DETAIL,
     payload: req,
@@ -179,6 +186,11 @@ export const msgUpload = resp => ({
 
 export const msgEdit = resp => ({
     type: MSG_EDIT,
+    payload: resp,
+})
+
+export const msgDelete = resp => ({
+    type: MSG_DELETE,
     payload: resp,
 })
 
