@@ -1,8 +1,7 @@
 import {
     call,
     put,
-    takeEvery,
-    all
+    takeEvery
 } from "redux-saga/effects"
 
 import {
@@ -26,7 +25,6 @@ import {
     SAVE_MENU,
     EDIT_MENU,
     DELETE_MENU,
-    GET_LIST_ROLE,
     GET_ROLE,
     SAVE_ROLE,
     EDIT_ROLE,
@@ -39,6 +37,21 @@ import {
     DELETE_ACCESS_ROLE,
     GET_GROUP_LIST_ROLE_ACCESS,
     GET_LANGUAGE_LIST,
+    GET_KPI_CATEGORY_LIST,
+    GET_KPI_UNIT_LIST,
+    GET_KPI_ITEM_LIST,
+    SAVE_KPI_CATEGORY,
+    EDIT_KPI_CATEGORY,
+    DELETE_KPI_CATEGORY,
+    SAVE_KPI_UNIT,
+    EDIT_KPI_UNIT,
+    DELETE_KPI_UNIT,
+    SAVE_KPI_ITEM,
+    EDIT_KPI_ITEM,
+    DELETE_KPI_ITEM,
+    GET_KPI_CATEGORY,
+    GET_KPI_UNIT,
+    GET_KPI_ITEM
 } from "./actionTypes"
 
 import {
@@ -58,11 +71,15 @@ import {
     respGetRoleList,
     respGetRole,
     respGetRoleAccess,
-    getRoleAccess,
     respGetRoleAccessList,
     respGetGroupListRoleAccess,
-    getGroupListRoleAccess,
     respGetLanguageList,
+    respGetKPICategoryList,
+    respGetKPIUnitList,
+    respGetKPIItemList,
+    respGetKPICategory,
+    respGetKPIUnit,
+    respGetKPIItem
 } from "./actions"
 
 import {
@@ -90,7 +107,6 @@ import {
     saveRoleBE,
     editRoleBE,
     deleteRoleBE,
-    getRoleAccessList,
     getRoleAccessBE,
     getRoleAccessListBE,
     saveRoleAccessBE,
@@ -98,6 +114,21 @@ import {
     deleteRoleAccessBE,
     getGroupListRoleAccessBE,
     getLanguageListBE,
+    getKPICategoryListBE,
+    addKPICategoryBE,
+    editKPICategoryBE,
+    deleteKPICategoryBE,
+    getKPIUnitListBE,
+    addKPIUnitBE,
+    editKPIUnitBE,
+    deleteKPIUnitBE,
+    getKPIItemListBE,
+    addKPIItemBE,
+    editKPIItemBE,
+    deleteKPIItemBE,
+    getKPICategoryBE,
+    getKPIUnitBE,
+    getKPIItemBE
 } from "helpers/backend_helper"
 
 function* fetchGetGeneralSetting({ payload: req }) {
@@ -540,6 +571,218 @@ function* fetchGetLanguageList({ payload: req }) {
     }
 }
 
+//KPI MASTER SETTING
+
+function* fetchGetKPICategoryList({ payload: req }) {
+    try {
+        const response = yield call(getKPICategoryListBE, req)
+        if (response.status == 1) {
+            yield put(respGetKPICategoryList(response))
+        } else {
+            yield put(respGetKPICategoryList(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(respGetKPICategoryList({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
+function* fetchGetKPICategory({ payload: req }) {
+    try {
+        const response = yield call(getKPICategoryBE, req)
+        if (response.status == 1) {
+            yield put(respGetKPICategory(response))
+        } else {
+            yield put(respGetKPICategory(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(respGetKPICategory({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
+function* fetchAddKPICategory({ payload: req }) {
+    try {
+        const response = yield call(addKPICategoryBE, req)
+        if (response.status == 1) {
+            yield put(msgAdd(response))
+        } else {
+            yield put(msgAdd(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgAdd({ "status": 0, "message": "Error Save Data" }))
+    }
+}
+
+function* fetchEditKPICategory({ payload: req }) {
+    try {
+        const response = yield call(editKPICategoryBE, req)
+        if (response.status == 1) {
+            yield put(msgEdit(response))
+        } else {
+            yield put(msgEdit(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgEdit({ "status": 0, "message": "Error Edit Data" }))
+    }
+}
+
+function* fetchDeleteKPICategory({ payload: req }) {
+    try {
+        const response = yield call(deleteKPICategoryBE, req)
+        if (response.status == 1) {
+            yield put(msgDelete(response))
+        } else {
+            yield put(msgDelete(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgDelete({ "status": 0, "message": "Error Delete Data" }))
+    }
+}
+
+function* fetchGetKPIUnitList({ payload: req }) {
+    try {
+        const response = yield call(getKPIUnitListBE, req)
+        if (response.status == 1) {
+            yield put(respGetKPIUnitList(response))
+        } else {
+            yield put(respGetKPIUnitList(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(respGetKPIUnitList({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
+function* fetchGetKPIUnit({ payload: req }) {
+    try {
+        const response = yield call(getKPIUnitBE, req)
+        if (response.status == 1) {
+            yield put(respGetKPIUnit(response))
+        } else {
+            yield put(respGetKPIUnit(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(respGetKPIUnit({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
+function* fetchAddKPIUnit({ payload: req }) {
+    try {
+        const response = yield call(addKPIUnitBE, req)
+        if (response.status == 1) {
+            yield put(msgAdd(response))
+        } else {
+            yield put(msgAdd(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgAdd({ "status": 0, "message": "Error Save Data" }))
+    }
+}
+
+function* fetchEditKPIUnit({ payload: req }) {
+    try {
+        const response = yield call(editKPIUnitBE, req)
+        if (response.status == 1) {
+            yield put(msgEdit(response))
+        } else {
+            yield put(msgEdit(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgEdit({ "status": 0, "message": "Error Edit Data" }))
+    }
+}
+
+function* fetchDeleteKPIUnit({ payload: req }) {
+    try {
+        const response = yield call(deleteKPIUnitBE, req)
+        if (response.status == 1) {
+            yield put(msgDelete(response))
+        } else {
+            yield put(msgDelete(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgDelete({ "status": 0, "message": "Error Delete Data" }))
+    }
+}
+
+function* fetchGetKPIItemList({ payload: req }) {
+    try {
+        const response = yield call(getKPIItemListBE, req)
+        if (response.status == 1) {
+            yield put(respGetKPIItemList(response))
+        } else {
+            yield put(respGetKPIItemList(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(respGetKPIItemList({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
+function* fetchGetKPIItem({ payload: req }) {
+    try {
+        const response = yield call(getKPIItemBE, req)
+        if (response.status == 1) {
+            yield put(respGetKPIItem(response))
+        } else {
+            yield put(respGetKPIItem(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(respGetKPIItem({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
+function* fetchAddKPIItem({ payload: req }) {
+    try {
+        const response = yield call(addKPIItemBE, req)
+        if (response.status == 1) {
+            yield put(msgAdd(response))
+        } else {
+            yield put(msgAdd(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgAdd({ "status": 0, "message": "Error Save Data" }))
+    }
+}
+
+function* fetchEditKPIItem({ payload: req }) {
+    try {
+        const response = yield call(editKPIItemBE, req)
+        if (response.status == 1) {
+            yield put(msgEdit(response))
+        } else {
+            yield put(msgEdit(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgEdit({ "status": 0, "message": "Error Edit Data" }))
+    }
+}
+
+function* fetchDeleteKPIItem({ payload: req }) {
+    try {
+        const response = yield call(deleteKPIItemBE, req)
+        if (response.status == 1) {
+            yield put(msgDelete(response))
+        } else {
+            yield put(msgDelete(response))
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(msgDelete({ "status": 0, "message": "Error Delete Data" }))
+    }
+}
+
 function* settingSaga() {
     yield takeEvery(GET_SETTING, fetchGetGeneralSetting)
     yield takeEvery(SAVE_MEMBERS, fetchSaveMembers)
@@ -573,6 +816,21 @@ function* settingSaga() {
     yield takeEvery(DELETE_ACCESS_ROLE, fetchDeleteRoleAccess)
     yield takeEvery(GET_GROUP_LIST_ROLE_ACCESS, fetchgetGroupListRoleAccess)
     yield takeEvery(GET_LANGUAGE_LIST, fetchGetLanguageList)
+    yield takeEvery(GET_KPI_CATEGORY_LIST, fetchGetKPICategoryList)
+    yield takeEvery(GET_KPI_CATEGORY, fetchGetKPICategory)
+    yield takeEvery(SAVE_KPI_CATEGORY, fetchAddKPICategory)
+    yield takeEvery(EDIT_KPI_CATEGORY, fetchEditKPICategory)
+    yield takeEvery(DELETE_KPI_CATEGORY, fetchDeleteKPICategory)
+    yield takeEvery(GET_KPI_UNIT_LIST, fetchGetKPIUnitList)
+    yield takeEvery(GET_KPI_UNIT, fetchGetKPIUnit)
+    yield takeEvery(SAVE_KPI_UNIT, fetchAddKPIUnit)
+    yield takeEvery(EDIT_KPI_UNIT, fetchEditKPIUnit)
+    yield takeEvery(DELETE_KPI_UNIT, fetchDeleteKPIUnit)
+    yield takeEvery(GET_KPI_ITEM_LIST, fetchGetKPIItemList)
+    yield takeEvery(GET_KPI_ITEM, fetchGetKPIItem)
+    yield takeEvery(SAVE_KPI_ITEM, fetchAddKPIItem)
+    yield takeEvery(EDIT_KPI_ITEM, fetchEditKPIItem)
+    yield takeEvery(DELETE_KPI_ITEM, fetchDeleteKPIItem)
 }
 
 export default settingSaga

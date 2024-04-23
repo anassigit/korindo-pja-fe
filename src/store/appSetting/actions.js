@@ -50,7 +50,28 @@ import {
     GET_GROUP_LIST_ROLE_ACCESS,
     RESP_GET_GROUP_LIST_ROLE_ACCESS,
     GET_LANGUAGE_LIST,
-    RESP_GET_LANGUAGE_LIST
+    RESP_GET_LANGUAGE_LIST,
+    GET_KPI_CATEGORY_LIST,
+    RESP_GET_KPI_CATEGORY_LIST,
+    SAVE_KPI_CATEGORY,
+    EDIT_KPI_CATEGORY,
+    DELETE_KPI_CATEGORY,
+    GET_KPI_UNIT_LIST,
+    RESP_GET_KPI_UNIT_LIST,
+    SAVE_KPI_UNIT,
+    EDIT_KPI_UNIT,
+    DELETE_KPI_UNIT,
+    GET_KPI_ITEM_LIST,
+    RESP_GET_KPI_ITEM_LIST,
+    SAVE_KPI_ITEM,
+    EDIT_KPI_ITEM,
+    DELETE_KPI_ITEM,
+    GET_KPI_CATEGORY,
+    RESP_GET_KPI_CATEGORY,
+    GET_KPI_UNIT,
+    RESP_GET_KPI_UNIT,
+    GET_KPI_ITEM,
+    RESP_GET_KPI_ITEM
 } from "./actionTypes"
 
 /* GET ALL SETTING */
@@ -334,4 +355,115 @@ export const getLanguageList = (req) => ({
 export const respGetLanguageList = resp => ({
     type: RESP_GET_LANGUAGE_LIST,
     payload: resp,
+})
+
+//KPI CATEGORY
+
+export const getKPICategoryList = (req) => ({
+    type: GET_KPI_CATEGORY_LIST,
+    payload: req,
+})
+
+export const respGetKPICategoryList = resp => ({
+    type: RESP_GET_KPI_CATEGORY_LIST,
+    payload: resp,
+})
+
+export const getKPICategory = (req) => ({
+    type: GET_KPI_CATEGORY,
+    payload: req,
+})
+
+export const respGetKPICategory = resp => ({
+    type: RESP_GET_KPI_CATEGORY,
+    payload: resp,
+})
+
+export const addKPICategory = (req) => ({
+    type: SAVE_KPI_CATEGORY,
+    payload: req,
+})
+
+export const editKPICategory = (req) => ({
+    type: EDIT_KPI_CATEGORY,
+    payload: req,
+})
+
+export const deleteKPICategory = (req) => ({
+    type: DELETE_KPI_CATEGORY,
+    payload: req,
+})
+
+//KPI UNIT
+
+export const getKPIUnitList = (req) => ({
+    type: GET_KPI_UNIT_LIST,
+    payload: req,
+})
+
+export const respGetKPIUnitList = resp => ({
+    type: RESP_GET_KPI_UNIT_LIST,
+    payload: resp,
+})
+
+export const getKPIUnit = (req) => ({
+    type: GET_KPI_UNIT,
+    payload: req,
+})
+
+export const respGetKPIUnit = resp => ({
+    type: RESP_GET_KPI_UNIT,
+    payload: resp,
+})
+
+export const addKPIUnit = (req) => ({
+    type: SAVE_KPI_UNIT,
+    payload: req,
+})
+
+export const editKPIUnit = (req) => ({
+    type: EDIT_KPI_UNIT,
+    payload: req,
+})
+
+export const deleteKPIUnit = (req) => ({
+    type: DELETE_KPI_UNIT,
+    payload: req,
+})
+
+//KPI ITEM
+
+export const getKPIItemList = (req) => ({
+    type: GET_KPI_ITEM_LIST,
+    payload: req,
+})
+
+export const respGetKPIItemList = resp => ({
+    type: RESP_GET_KPI_ITEM_LIST,
+    payload: resp,
+})
+
+export const getKPIItem = (req) => ({
+    type: GET_KPI_ITEM,
+    payload: req,
+})
+
+export const respGetKPIItem = resp => ({
+    type: RESP_GET_KPI_ITEM,
+    payload: resp,
+})
+
+export const addKPIItem = (req) => ({
+    type: SAVE_KPI_ITEM,
+    payload: req,
+})
+
+export const editKPIItem = (req) => ({
+    type: EDIT_KPI_ITEM,
+    payload: req,
+})
+
+export const deleteKPIItem = (req) => ({
+    type: DELETE_KPI_ITEM,
+    payload: req,
 })

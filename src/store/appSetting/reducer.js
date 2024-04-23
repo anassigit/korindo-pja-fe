@@ -51,6 +51,27 @@ import {
     RESP_GET_GROUP_LIST_ROLE_ACCESS,
     GET_LANGUAGE_LIST,
     RESP_GET_LANGUAGE_LIST,
+    GET_KPI_CATEGORY_LIST,
+    RESP_GET_KPI_CATEGORY_LIST,
+    SAVE_KPI_CATEGORY,
+    EDIT_KPI_CATEGORY,
+    DELETE_KPI_CATEGORY,
+    GET_KPI_UNIT_LIST,
+    RESP_GET_KPI_UNIT_LIST,
+    SAVE_KPI_UNIT,
+    EDIT_KPI_UNIT,
+    DELETE_KPI_UNIT,
+    GET_KPI_ITEM_LIST,
+    RESP_GET_KPI_ITEM_LIST,
+    SAVE_KPI_ITEM,
+    EDIT_KPI_ITEM,
+    DELETE_KPI_ITEM,
+    GET_KPI_CATEGORY,
+    RESP_GET_KPI_CATEGORY,
+    GET_KPI_UNIT,
+    RESP_GET_KPI_UNIT,
+    GET_KPI_ITEM,
+    RESP_GET_KPI_ITEM,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -70,10 +91,16 @@ const INIT_STATE = {
     respGetRoleAccess: {},
     respGetGroupListRoleAccess: {},
     respGetLanguageList: {},
+    respGetKPICategoryList: {},
+    respGetKPICategory: {},
+    respGetKPIUnitList: {},
+    respGetKPIUnit: {},
+    respGetKPIItemList: {},
+    respGetKPIItem: {},
     msgAdd: "",
     msgEdit: "",
     msgDelete: "",
-    msgDownload: "",
+    msgDownload: ""
 }
 
 const settingReducer = (state = INIT_STATE, action) => {
@@ -102,13 +129,6 @@ const settingReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 msgDelete: action.payload,
-            }
-        case RESET_MESSAGE:
-            return {
-                ...state,
-                msgAdd: "",
-                msgEdit: "",
-                msgDelete: "",
             }
         case SAVE_MEMBERS:
             return {
@@ -309,6 +329,103 @@ const settingReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 respGetLanguageList: action.payload,
+            }
+        case GET_KPI_CATEGORY_LIST:
+            return {
+                ...state
+            }
+        case RESP_GET_KPI_CATEGORY_LIST:
+            return {
+                ...state,
+                respGetKPICategoryList: action.payload
+            }
+        case GET_KPI_CATEGORY:
+            return {
+                ...state
+            }
+        case RESP_GET_KPI_CATEGORY:
+            return {
+                ...state,
+                respGetKPICategory: action.payload
+            }
+        case SAVE_KPI_CATEGORY:
+            return {
+                ...state
+            }
+        case EDIT_KPI_CATEGORY:
+            return {
+                ...state
+            }
+        case DELETE_KPI_CATEGORY:
+            return {
+                ...state
+            }
+        case GET_KPI_UNIT_LIST:
+            return {
+                ...state
+            }
+        case RESP_GET_KPI_UNIT_LIST:
+            return {
+                ...state,
+                respGetKPIUnitList: action.payload
+            }
+        case GET_KPI_UNIT:
+            return {
+                ...state
+            }
+        case RESP_GET_KPI_UNIT:
+            return {
+                ...state,
+                respGetKPIUnit: action.payload
+            }
+        case SAVE_KPI_UNIT:
+            return {
+                ...state
+            }
+        case EDIT_KPI_UNIT:
+            return {
+                ...state
+            }
+        case DELETE_KPI_UNIT:
+            return {
+                ...state
+            }
+        case GET_KPI_ITEM_LIST:
+            return {
+                ...state
+            }
+        case RESP_GET_KPI_ITEM_LIST:
+            return {
+                ...state,
+                respGetKPIItemList: action.payload
+            }
+        case GET_KPI_ITEM:
+            return {
+                ...state
+            }
+        case RESP_GET_KPI_ITEM:
+            return {
+                ...state,
+                respGetKPIItem: action.payload
+            }
+        case SAVE_KPI_ITEM:
+            return {
+                ...state
+            }
+        case EDIT_KPI_ITEM:
+            return {
+                ...state
+            }
+        case DELETE_KPI_ITEM:
+            return {
+                ...state
+            }
+        case RESET_MESSAGE:
+            return {
+                ...state,
+                msgAdd: "",
+                msgEdit: "",
+                msgDelete: "",
             }
         default:
             return state

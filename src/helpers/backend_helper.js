@@ -144,7 +144,6 @@ export const saveRoleBE = req => postWithParam("/rest/RoleMasterRest/insert", re
 
 export const editRoleBE = req => postWithParam("/rest/RoleMasterRest/update", req)
 
-
 export const deleteRoleBE = req => postWithParam("/rest/RoleMasterRest/delete", req)
 
 export const getRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/select", req)
@@ -203,7 +202,7 @@ export const getGroupListKPIBE = req => postWithParam("rest/KpiManagementRest/ge
 
 export const getCorporationListKPI = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
 
-export const getKPIItemListBE = req => postUpload("rest/KpiManagementRest/getItemList", req)
+export const getItemListBE = req => postUpload("rest/KpiManagementRest/getItemList", req)
 
 export const getKPIMasterBE = req => postWithParam("rest/KpiManagementRest/getMaster", req)
 
@@ -238,3 +237,35 @@ export const getCompanyCodeList = req => post("rest/MovingPlanRest/getCompanyCod
 export const getMovingPlanList = req => postWithParam("rest/MovingPlanRest/getList", req)
 
 export const downloadExcelMovingPlanBE = req => getWithXls("rest/MovingPlanRest/downloadExcel", req)
+
+//KPI SETTING MASTER
+
+export const getKPICategoryListBE = req => post("/rest/KpiCategoryMasterRest/getList", req)
+
+export const getKPICategoryBE = req => postWithParam("/rest/KpiCategoryMasterRest/select", req)
+
+export const addKPICategoryBE = req => postWithParam("/rest/KpiCategoryMasterRest/insert", req)
+
+export const editKPICategoryBE = req => postWithParam("/rest/KpiCategoryMasterRest/update", req)
+
+export const deleteKPICategoryBE = req => postWithParam("/rest/KpiCategoryMasterRest/delete", req)
+
+export const getKPIUnitListBE = req => post("/rest/KpiUnitMasterRest/getList", req)
+
+export const getKPIUnitBE = req => postWithParam("/rest/KpiUnitMasterRest/select", req)
+
+export const addKPIUnitBE = req => postWithParam("/rest/KpiUnitMasterRest/insert", req)
+
+export const editKPIUnitBE = req => postWithParam("/rest/KpiUnitMasterRest/update", req)
+
+export const deleteKPIUnitBE = req => postWithParam("/rest/KpiUnitMasterRest/delete", req)
+
+export const getKPIItemListBE = req => post("/rest/KpiItemMasterRest/getList", req)
+
+export const getKPIItemBE = req => postWithParam("/rest/KpiItemMasterRest/select", req)
+
+export const addKPIItemBE = req => postWithParam("/rest/KpiItemMasterRest/insert", req)
+
+export const editKPIItemBE = req => postWithParam("/rest/KpiItemMasterRest/update", req)
+
+export const deleteKPIItemBE = req => postWithParam("/rest/KpiItemMasterRest/delete", req)
