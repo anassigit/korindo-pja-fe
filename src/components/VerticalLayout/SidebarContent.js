@@ -173,7 +173,7 @@ const SidebarContent = props => {
                     href={item.menuPath ? `/${item.menuPath}` : null}
                     className={item.childList || item.menuId === 5 ? "has-arrow" : null}
                 >
-                    {item.menuIcon && <i className={props.t("fas " + item.menuIcon)}></i>}
+                    {item.menuIcon && item.menuIcon !== 'null' && <i className={props.t("fas " + item.menuIcon)}></i>}
                     {/* <span>{props.t(item.menuName)}</span> */}
                     <span>{item.menuName}</span>
                 </a>
