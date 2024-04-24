@@ -108,14 +108,14 @@ const GeneralSetting = (props) => {
                         <Col>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                                    <strong>{props.t("General Settings")}</strong>
+                                    <strong>General Setting</strong>
                                 </CardHeader>
                                 <CardBody>
                                     <React.Fragment>
                                         <Row className="mb-2">
                                             <Col md="12" lg="4">
                                                 <Row className="mb-2">
-                                                    <b>{props.t("Notification Settings")}</b>
+                                                    <b>Notification Setting</b>
                                                 </Row>
                                                 <Row>
                                                     <label>
