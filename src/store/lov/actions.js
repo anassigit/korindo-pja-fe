@@ -1,50 +1,62 @@
 import {
-  LOV_MENU_PARENT,
-  LOV_USER,
-  LOV_DIV,
-  LOV_MENU,
-  LOV_COMPANY,
-  MSG_LOV,
-  LOV_MENU_PARENT_LIST,
-  LOV_MENU_ROLE_LIST
+    LOV_MENU_PARENT,
+    LOV_USER,
+    LOV_DIV,
+    LOV_MENU,
+    LOV_COMPANY,
+    MSG_LOV,
+    LOV_MENU_PARENT_LIST,
+    LOV_MENU_ROLE_LIST,
+    LOV_GET_KPI_CATEGORY_LIST,
+    LOV_GET_KPI_UNIT_LIST
 } from "./actionTypes"
 
 export const getMenuParent = req => ({
-  type: LOV_MENU_PARENT,
-  payload: req,
+    type: LOV_MENU_PARENT,
+    payload: req,
 })
 
 export const getUser = req => ({
-  type: LOV_USER,
-  payload: req,
+    type: LOV_USER,
+    payload: req,
 })
 
 export const getMenu = req => ({
-  type: LOV_MENU,
-  payload: req,
+    type: LOV_MENU,
+    payload: req,
 })
 
 export const getDiv = req => ({
-  type: LOV_DIV,
-  payload: req,
+    type: LOV_DIV,
+    payload: req,
 })
 
 export const getCompany = req => ({
-  type: LOV_COMPANY,
-  payload: req,
+    type: LOV_COMPANY,
+    payload: req,
 })
 
 export const getMenuParentListLov = (req) => ({
-  type: LOV_MENU_PARENT_LIST,
-  payload: req,
-})
-
-export const msgLov = (resp) => ({
-  type: MSG_LOV,
-  payload: resp,
+    type: LOV_MENU_PARENT_LIST,
+    payload: req,
 })
 
 export const getRoleParentListLov = (req) => ({
-  type: LOV_MENU_ROLE_LIST,
-  payload: req,
+    type: LOV_MENU_ROLE_LIST,
+    payload: req,
+})
+
+export const getKPICategoryListLov = (req) => ({
+    type: LOV_GET_KPI_CATEGORY_LIST,
+    payload: req,
+})
+
+export const getKPIUnitListLov = (req) => ({
+    type: LOV_GET_KPI_UNIT_LIST,
+    payload: req,
+})
+
+export const msgLov = (resp) => ({
+    type: MSG_LOV,
+    payload: resp,
 })

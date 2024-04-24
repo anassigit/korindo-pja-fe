@@ -64,16 +64,6 @@ export const respGetCorporationList = resp => ({
     payload: resp,
 })
 
-export const getKPIItemList = (req) => ({
-    type: GET_KPI_ITEM_LIST,
-    payload: req,
-})
-
-export const respGetKPIItemList = resp => ({
-    type: RESP_GET_KPI_ITEM_LIST,
-    payload: resp,
-})
-
 export const getKPIMaster = (req) => ({
     type: GET_KPI_MASTER,
     payload: req,

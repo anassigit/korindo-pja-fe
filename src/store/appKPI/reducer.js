@@ -38,7 +38,6 @@ const INIT_STATE = {
     respGetGroupListKpi: {},
     respGetGroupListKpiInput: {},
     respGetCorporationList: {},
-    respGetKPIItemList: {},
     respGetKPIMaster: {},
     respGetPlan: {},
     respGetItemList: {},
@@ -84,11 +83,6 @@ const kpiReducer = (state = INIT_STATE, action) => {
         case GET_KPI_ITEM_LIST:
             return {
                 ...state,
-            }
-        case RESP_GET_KPI_ITEM_LIST:
-            return {
-                ...state,
-                respGetKPIItemList: action.payload,
             }
         case GET_KPI_MASTER:
             return {

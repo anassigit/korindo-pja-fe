@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
-    Card,
-    CardBody,
-    CardHeader,
-    Col,
+    Button,
     Container,
-    Row,
     UncontrolledTooltip
 } from "reactstrap"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { deleteMembers, getGroupListData, getMembersData, getSettingData, resetMessage } from "store/appSetting/actions"
-import TableCustom2 from "common/TableCustom2"
+import { deleteMembers, getGroupListData, getMembersData, resetMessage } from "store/appSetting/actions"
 import MsgModal from "components/Common/MsgModal"
 import AddMember from "./AddMember"
 import EditMember from "./EditMember"
 import ConfirmModal from "components/Common/ConfirmModal"
 import PropTypes from "prop-types"
 import { withTranslation } from "react-i18next"
+import TableCustom3 from "common/TableCustom3"
 
 const MemberSetting = (props) => {
 
@@ -86,7 +82,7 @@ const MemberSetting = (props) => {
             dataField: "name",
             text: props.t("Name"),
             sort: true,
-            align: "left",
+            align: "center",
             headerStyle: { textAlign: 'center' },
         },
         {
@@ -247,40 +243,30 @@ const MemberSetting = (props) => {
                         appMembersTabelSearch={appMembersTabelSearch}
                     />
                     <Container fluid="true">
-                        <Row>
-                            <Col>
-                                <Row className="my-3">
-                                    <Col className="d-flex justify-content-end">
-                                        <div className="col-12 col-lg-2">
-                                            <button className="btn btn-primary w-100" onClick={toggleAddMemberModal}>
-                                                <i className="fas fa-plus font-size-14  me-2"></i> {props.t("Add Member")}
-                                            </button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Card>
-                                    <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                                        <strong>{props.t("Members")}</strong>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <React.Fragment>
-                                            <Row className="mb-2">
-                                                <TableCustom2
-                                                    keyField={"id"}
-                                                    columns={appMembersp01Tabel}
-                                                    redukResponse={appMembersData}
-                                                    appdata={appMembersData?.data?.memberList != null ? appMembersData?.data?.memberList : []}
-                                                    appdataTotal={appMembersData?.data?.count != null ? appMembersData?.data?.count : 0}
-                                                    searchSet={setAppMembersTabelSearch}
-                                                    searchGet={appMembersTabelSearch}
-                                                    redukCall={getMembersData}
-                                                />
-                                            </Row>
-                                        </React.Fragment>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </Row>
+                        <div
+                            className="col-12 pb-2"
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: "12px",
+                                justifyContent: "right",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Button onClick={toggleAddMemberModal}>
+                                <span className="mdi mdi-plus" /> {'Add New Member'}
+                            </Button>
+                        </div>
+                        <TableCustom3
+                            keyField={"id"}
+                            columns={appMembersp01Tabel}
+                            redukResponse={appMembersData}
+                            appdata={appMembersData?.data?.memberList != null ? appMembersData?.data?.memberList : []}
+                            appdataTotal={appMembersData?.data?.count != null ? appMembersData?.data?.count : 0}
+                            searchSet={setAppMembersTabelSearch}
+                            searchGet={appMembersTabelSearch}
+                            redukCall={getMembersData}
+                        />
                     </Container>
                 </>
             }

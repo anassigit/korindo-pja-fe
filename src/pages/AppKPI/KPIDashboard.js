@@ -36,7 +36,7 @@ const KPIDashboard = (props) => {
     })
 
     const appKPIItemListData = useSelector((state) => {
-        return state.kpiReducer.respGetKPIItemList
+        return state.kpiReducer.respGetItemList
     })
 
     const appDashboardListData = useSelector((state) => {

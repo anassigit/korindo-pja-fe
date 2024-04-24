@@ -262,6 +262,10 @@ export const deleteKPIUnitBE = req => postWithParam("/rest/KpiUnitMasterRest/del
 
 export const getKPIItemListBE = req => post("/rest/KpiItemMasterRest/getList", req)
 
+export const getKPICategoryListForKPIItemBE = req => post("/rest/KpiItemMasterRest/getCategoryList", req)
+
+export const getKPIUnitListForKPIItemBE = req => post("/rest/KpiItemMasterRest/getUnitList", req)
+
 export const getKPIItemBE = req => postWithParam("/rest/KpiItemMasterRest/select", req)
 
 export const addKPIItemBE = req => postWithParam("/rest/KpiItemMasterRest/insert", req)

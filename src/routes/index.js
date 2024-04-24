@@ -24,6 +24,9 @@ import MenuSetting from "pages/AppSetting/MenuSetting"
 import RoleSetting from "pages/AppSetting/RoleSetting"
 import LanguageSetting from "pages/AppSetting/LanguageSetting"
 import KPISetting from "pages/AppKPI/KPISetting"
+import KPICategorySetting from "pages/AppSetting/KPICategorySetting"
+import KPIUnitSetting from "pages/AppSetting/KPIUnitSetting"
+import KPIItemSetting from "pages/AppSetting/KPIItemSetting"
 
 const authProtectedRoutes = [
     { path: "/dashboard", component: Dashboard },
@@ -46,6 +49,9 @@ const authProtectedRoutes = [
     { path: "/AppMovingPlan", component: MovingPlan },
     { path: "/AppRoleSetting", component: RoleSetting },
     { path: "/AppLanguageSetting", component: LanguageSetting },
+    { path: "/AppKPICategorySetting", component: KPICategorySetting },
+    { path: "/AppKPIUnitSetting", component: KPIUnitSetting },
+    { path: "/AppKPIItemSetting", component: KPIItemSetting },
     { path: "/", exact: true, component: () => <Redirect to="/AppInstructions" /> }
 ]
 
