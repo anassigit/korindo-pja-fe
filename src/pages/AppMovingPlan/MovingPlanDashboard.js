@@ -8,37 +8,32 @@ import {
     CardBody,
     CardHeader,
     Input,
-    InputGroup,
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
-import { downloadExcelMovingPlan, getCompanyCodeList, getMovingPlantList, resetMessage } from "store/actions"
+import { downloadMovingPlanDashboardExcel, getCompanyList, getMovingPlanDashboardList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
 import ReactDatePicker from "react-datepicker"
+import Swal from "sweetalert2"
 
-const MovingPlan = (props) => {
+const MovingPlanDashboard = (props) => {
 
     const dispatch = useDispatch()
 
     const appCompanyCodeListData = useSelector((state) => {
-        return state.movingPlanReducer.respGetCompanyCodeList
+        return state.movingPlanReducer.respGetCompanyList
     })
 
     const appListData = useSelector((state) => {
-        return state.movingPlanReducer.respGetMovingPlanList
+        return state.movingPlanReducer.respGetMovingPlanDashboardList
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [firstSearch, setFirstSearch] = useState(false)
-
-    const [highestLevel, setHighestLevel] = useState(null)
-
-    const [appMovingPlanMsg, setappMovingPlanMsg] = useState("")
-
-    const [isOpen, setIsOpen] = useState(false)
+    const [appMsg, setAppMsg] = useState("")
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedCompanyCode, setselectedCompanyCode] = useState("")
 
@@ -46,7 +41,7 @@ const MovingPlan = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(true)
-        dispatch(getCompanyCodeList())
+        dispatch(getCompanyList({ viewType: 1 }))
     }, [])
 
     useEffect(() => {
@@ -55,7 +50,7 @@ const MovingPlan = (props) => {
 
     useEffect(() => {
         if (appCompanyCodeListData?.status === '0') {
-            setappMovingPlanMsg(appCompanyCodeListData)
+            setAppMsg(appCompanyCodeListData)
         }
         setLoadingSpinner(false)
     }, [appCompanyCodeListData])
@@ -63,27 +58,44 @@ const MovingPlan = (props) => {
     useEffect(() => {
         if (appListData?.status === '0') {
             if (firstSearch) {
-                setappMovingPlanMsg(appListData)
+                setAppMsg(appListData)
             }
             setLoadingSpinner(false)
         } else if (appListData?.status === '1') {
             setLoadingSpinner(false)
+            if (appListData?.data?.resultList?.length === 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "No data",
+                    text: "There is no data!",
+                    confirmButtonColor: "#7BAE40"
+                })
+            }
         }
     }, [appListData])
 
     const handleSearch = () => {
-        setappMovingPlanMsg('')
+        if (selectedYear === "") {
+            setAppMsg({
+                message: 'Year must be selected.'
+            })
+            return
+        }
+        setAppMsg('')
         setFirstSearch(true)
-        setHighestLevel(null)
-        // if (selectedYear) {
         setLoadingSpinner(true)
-        dispatch(getMovingPlantList(
+        dispatch(getMovingPlanDashboardList(
             {
                 year: selectedYear ? selectedYear.getFullYear() : '',
                 companyCode: selectedCompanyCode,
             }
         ))
-        // }
+    }
+
+    const years = []
+
+    for (let year = 2017; year <= new Date().getFullYear(); year++) {
+        years.push(year);
     }
 
     const getMonthAbbreviation = (monthIndex) => {
@@ -117,6 +129,7 @@ const MovingPlan = (props) => {
         const columnHeader = `${baseHeaders[index % baseHeaders.length]}`
         return columnHeader
     }
+
     const getToolTipHeader = (index) => {
         const baseHeaders = [
             "작년 실적",
@@ -136,7 +149,7 @@ const MovingPlan = (props) => {
             <React.Fragment>
                 {
                     Array.isArray(data) && data.every(item => item.level !== 0) ? (
-                        data.map((item, index, array) => {
+                        data.map((item, index) => {
                             const backgroundColor = item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
                             return (
                                 <React.Fragment key={index}>
@@ -149,6 +162,7 @@ const MovingPlan = (props) => {
                                                         position: 'sticky',
                                                         left: 0,
                                                         fontWeight: 'bold',
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={item.level < 3 ? item.level : 3}
                                                     rowSpan={1}></td>
@@ -164,6 +178,7 @@ const MovingPlan = (props) => {
                                                 left: item.level === 0 ? '0' : '1.55rem',
                                                 backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white',
                                                 fontWeight: 'bold',
+                                                border: "1px solid #f8f8fb"
                                             }}>
                                             <div
                                                 style={{ width: '154px', fontWeight: 'bold' }}
@@ -176,19 +191,20 @@ const MovingPlan = (props) => {
                                             left: '12.7rem',
                                             backgroundColor: 'white',
                                             whiteSpace: 'nowrap',
+                                            border: "1px solid #f8f8fb"
                                         }}>
                                             Revenue (ITEM)
                                         </td>
                                         {
                                             item.revenueList.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -203,6 +219,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={1} rowSpan={1}></td>
                                             ) : item.level === 2 ? (
@@ -211,6 +228,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={2} rowSpan={1}></td>
                                             ) : item.level === 3 ? (
@@ -219,6 +237,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={3} rowSpan={1}></td>
                                             ) : (
@@ -227,6 +246,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={3} rowSpan={1}></td>
                                             )
@@ -236,19 +256,20 @@ const MovingPlan = (props) => {
                                             left: '12.7rem',
                                             backgroundColor: 'white',
                                             whiteSpace: 'nowrap',
+                                            border: "1px solid #f8f8fb"
                                         }}>
                                             O.I (ITEM)
                                         </td>
                                         {
                                             item.oiLIst.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -263,6 +284,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={1} rowSpan={1}></td>
                                             ) : item.level === 2 ? (
@@ -271,6 +293,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={2} rowSpan={1}></td>
                                             ) : item.level === 3 ? (
@@ -279,6 +302,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={3} rowSpan={1}></td>
                                             ) : (
@@ -287,6 +311,7 @@ const MovingPlan = (props) => {
                                                         backgroundColor: backgroundColor,
                                                         position: 'sticky',
                                                         left: 0,
+                                                        border: "1px solid #f8f8fb"
                                                     }}
                                                     colSpan={4} rowSpan={1}></td>
                                             )
@@ -294,20 +319,21 @@ const MovingPlan = (props) => {
                                         <td colSpan={1} rowSpan={1} style={{
                                             position: 'sticky',
                                             left: '12.7rem',
-                                            backgroundColor: 'white'
+                                            backgroundColor: 'white',
+                                            border: "1px solid #f8f8fb"
                                         }}>
                                             O.I (%) (ITEM)
                                         </td>
                                         {
                                             item.oiPersenteList.map((row, i) => (
                                                 <React.Fragment key={i}>
-                                                    <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                    <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                    <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                 </React.Fragment>
                                             ))
                                         }
@@ -323,38 +349,15 @@ const MovingPlan = (props) => {
                                 </React.Fragment>
                             )
                         })) : Array.isArray(data) ? (
-                            data.map((item, index, array) => {
-                                if (Array.isArray(item.childList)) {
-                                    setHighestLevel(getMaxLevel(item.childList))
-                                }
-                                function getMaxLevel(data) {
-                                    let maxLevel = 0
-                                    function traverse(node) {
-                                        if (!node || !node.level) {
-                                            return
-                                        }
-                                        maxLevel = Math.max(maxLevel, node.level)
-                                        if (Array.isArray(node.childList)) {
-                                            for (const child of node.childList) {
-                                                traverse(child)
-                                            }
-                                        }
-                                    }
-                                    if (data) {
-                                        for (const item of data) {
-                                            traverse(item)
-                                        }
-                                    }
-
-                                    return maxLevel
-                                }
+                            data.map((item, index) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <tr>
                                             <td colSpan={4} rowSpan={3} align="center" valign="middle" style={{
                                                 position: 'sticky',
                                                 left: '0',
-                                                backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white'
+                                                backgroundColor: item?.level === 0 ? '#CCE295' : item?.level === 1 ? '#E6F0D8' : item?.level === 2 ? '#F2F2F2' : item?.level === 3 ? 'white' : item?.level === 4 ? '#EEECE1' : 'white',
+                                                border: "1px solid #f8f8fb"
                                             }}>
                                                 <div
                                                     style={{ width: '175px', fontWeight: 'bold' }}
@@ -366,6 +369,7 @@ const MovingPlan = (props) => {
                                                 position: 'sticky',
                                                 left: '12.7rem',
                                                 backgroundColor: 'white',
+                                                border: "1px solid #f8f8fb"
                                             }}>
                                                 {
                                                     item.interestExpenseList ? "Interest Expense" : "Revenue (ITEM)"
@@ -374,23 +378,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.revenueList) ? item?.revenueList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.interestExpenseList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -399,7 +403,8 @@ const MovingPlan = (props) => {
                                             <td colSpan={1} rowSpan={1} style={{
                                                 position: 'sticky',
                                                 left: '12.7rem',
-                                                backgroundColor: 'white'
+                                                backgroundColor: 'white',
+                                                border: "1px solid #f8f8fb"
                                             }}>
                                                 {
                                                     item.netIncomeList ? "Net Income" : "O.I (ITEM)"
@@ -408,23 +413,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.oiLIst) ? item?.oiLIst.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.netIncomeList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -433,7 +438,8 @@ const MovingPlan = (props) => {
                                             <td colSpan={1} rowSpan={1} style={{
                                                 position: 'sticky',
                                                 left: '12.7rem',
-                                                backgroundColor: 'white'
+                                                backgroundColor: 'white',
+                                                border: "1px solid #f8f8fb"
                                             }}>
                                                 {
                                                     item.netIncomeList ? "Net Income (%)" : "O.I (%) (ITEM)"
@@ -442,23 +448,23 @@ const MovingPlan = (props) => {
                                             {
                                                 Array.isArray(item.oiPersenteList) ? item?.oiPersenteList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 )) : item?.netIncomePersenteList.map((row, i) => (
                                                     <React.Fragment key={i}>
-                                                        <td style={{ textAlign: 'right' }}>{row.pyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.bp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.mp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.cyac}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.grw}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.abp}</td>
-                                                        <td style={{ textAlign: 'right' }}>{row.amp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.pyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.bp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.mp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.cyac}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.grw}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.abp}</td>
+                                                        <td style={{ textAlign: 'right', border: "1px solid #f8f8fb" }}>{row.amp}</td>
                                                     </React.Fragment>
                                                 ))
                                             }
@@ -485,31 +491,13 @@ const MovingPlan = (props) => {
         depth: PropTypes.any,
     }
 
-    const years = [];
-    for (let year = 2017; year <= new Date().getFullYear(); year++) {
-        years.push(year);
-    }
-
-    const renderCustomHeader = ({ date }) => (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '10px' }}>
-            <div style={{
-                marginTop: 0,
-                color: "#000",
-                fontWeight: "bold",
-                fontSize: "0.944rem"
-            }}
-            >{date.getFullYear()}
-            </div>
-        </div >
-    );
-
     return (
-        <RootPageCustom msgStateGet={appMovingPlanMsg} msgStateSet={setappMovingPlanMsg}
+        <RootPageCustom msgStateGet={appMsg} msgStateSet={setAppMsg}
             componentJsx={
                 <>
                     <Card fluid="true" style={{ paddingBottom: '32px' }}>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {'Moving Plan'}
+                            Dashboard
                         </CardHeader>
                         <CardBody>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -586,57 +574,89 @@ const MovingPlan = (props) => {
                                         {"Search"}
                                     </Button>
                                 </div>
-                                {
-                                    selectedYear ? (
-                                        <Button onClick={() => {
-                                            dispatch(downloadExcelMovingPlan({
-                                                year: selectedYear ? selectedYear.getFullYear() : '',
-                                                companyCode: selectedCompanyCode,
-                                                file_nm: 'Moving Plan.xlsx',
-                                            }))
-                                        }}>
-                                            {props.t('Download Excel')}
-                                        </Button>
-                                    ) : (
-                                        <button
-                                            disabled
-                                            type="button"
-                                            className="btn btn-dark opacity-25"
-                                        >
-                                            {props.t("Download Excel")}
-                                        </button>
-                                    )
-
-                                }
+                                <Button
+                                    disabled={appListData?.data?.resultList.length > 0 ? false : true}
+                                    className={appListData?.data?.resultList.length > 0 ? "" : "btn btn-dark opacity-25"}
+                                    onClick={() => {
+                                        dispatch(downloadMovingPlanDashboardExcel({
+                                            year: selectedYear ? selectedYear.getFullYear() : '',
+                                            companyCode: selectedCompanyCode,
+                                            file_nm: 'MOVING PLAN.xlsx',
+                                        }))
+                                    }}>
+                                    <i className="mdi mdi-download" />{" "}
+                                    Download Excel
+                                </Button>
                             </div>
-                            <div style={{ color: 'red', display: 'flex', justifyContent: 'right', marginTop: '10px', marginRight: '8px' }}>
+                            <div style={{
+                                color: 'red',
+                                display: 'flex',
+                                justifyContent: 'right',
+                                marginTop: '10px',
+                                marginRight: '8px'
+                            }}>
                                 * Pre.Y, BP, MP, Actual is In Million (Juta)
                             </div>
-                            <div style={{ overflow: 'auto', maxHeight: '80vh' }}>
-                                <table className="table table-bordered my-3" style={{ borderColor: 'black' }}>
-                                    <thead style={{ color: 'white', backgroundColor: '#81B642', zIndex: 3 }}>
+                            <div style={{
+                                overflow: 'auto',
+                                maxHeight: '80vh'
+                            }}>
+                                <table className="table table-borderless my-3" style={{
+                                    borderCollapse: "separate",
+                                    borderSpacing: "0"
+                                }}>
+                                    <thead style={{
+                                        color: 'white',
+                                        backgroundColor: '#81B642',
+                                        zIndex: 3
+                                    }}>
                                         <tr>
-                                            <th colSpan={5} rowSpan={2} style={{ color: 'black', textAlign: 'center', verticalAlign: 'center', position: 'sticky', left: 0, backgroundColor: '#81B642', zIndex: '2', minWidth: '300px' }}>
+                                            <th colSpan={5} rowSpan={2} style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                position: 'sticky',
+                                                left: 0,
+                                                backgroundColor: '#81B642',
+                                                zIndex: '2',
+                                                minWidth: '300px',
+                                                border: "1px solid #f8f8fb"
+                                            }}>
                                                 {"ITEMS"}
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>
-                                                    <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center', color: 'black' }}>
+                                                    <th colSpan={7} style={{
+                                                        textAlign: 'center',
+                                                        verticalAlign: 'center',
+                                                        border: "1px solid #f8f8fb"
+                                                    }}>
                                                         {getMonthAbbreviation(monthIndex + 1)}
                                                     </th>
                                                 </React.Fragment>
                                             ))}
-                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center', }}>
+                                            <th colSpan={7} style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb"
+                                            }}>
                                                 {"Year to Date"}
                                             </th>
-                                            <th colSpan={7} style={{ textAlign: 'center', verticalAlign: 'center', }}>
+                                            <th colSpan={7} style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb"
+                                            }}>
                                                 {"Total"}
                                             </th>
                                         </tr>
                                         <tr>
                                             {Array.from({ length: 14 * 7 }, (_, index) => (
                                                 <React.Fragment key={index}>
-                                                    <th id={`tooltip-${index}`} style={{ textAlign: 'center', minWidth: 'auto', color: 'black' }}>
+                                                    <th id={`tooltip-${index}`} style={{
+                                                        textAlign: 'center',
+                                                        minWidth: 'auto',
+                                                        border: "1px solid #f8f8fb"
+                                                    }}>
                                                         {getColumnHeader(index)}
                                                     </th>
                                                     <UncontrolledTooltip target={`tooltip-${index}`} placement="bottom">
@@ -666,9 +686,9 @@ const MovingPlan = (props) => {
     )
 }
 
-MovingPlan.propTypes = {
+MovingPlanDashboard.propTypes = {
     location: PropTypes.object,
     t: PropTypes.any
 }
 
-export default withTranslation()(MovingPlan)
+export default withTranslation()(MovingPlanDashboard)

@@ -348,7 +348,7 @@ const KPIDashboard = (props) => {
                     />
                     <Card tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("KPI Dashboard")}
+                            Dashboard
                         </CardHeader>
                         <CardBody>
                             <div

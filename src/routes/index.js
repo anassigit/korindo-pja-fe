@@ -10,13 +10,13 @@ import UserProfile from "../pages/AppUserProfile/UserProfile"
 import ChangePassword from "../pages/AppUserProfile/ChangePassword"
 import GeneralSetting from "pages/AppSetting/GeneralSetting"
 import EditInstructions from "pages/AppInstructions/EditInstructions"
-import FileManagement from "pages/AppFileManagement/FileManagement"
+import DataInquiry from "pages/AppFileManagement/DataInquiry"
 import FirstLogin from "pages/Authentication/FirstLogin"
 import EnterMonthlyData from "pages/AppFileManagement/EnterMonthlyData"
 import Rule from "pages/AppRule/Rule"
 import KPIDashboard from "pages/AppKPI/KPIDashboard"
 import KPIDashboardDetail from "pages/AppKPI/KPIDashboardDetail"
-import MovingPlan from "pages/AppMovingPlan/MovingPlan"
+import MovingPlanDashboard from "pages/AppMovingPlan/MovingPlanDashboard"
 import KPIInputResult from "pages/AppKPI/KPIInputResult"
 import MemberSetting from "pages/AppSetting/MemberSetting"
 import OrganizationSetting from "pages/AppSetting/OrganizationSetting"
@@ -27,6 +27,7 @@ import KPISetting from "pages/AppKPI/KPISetting"
 import KPICategorySetting from "pages/AppSetting/KPICategorySetting"
 import KPIUnitSetting from "pages/AppSetting/KPIUnitSetting"
 import KPIItemSetting from "pages/AppSetting/KPIItemSetting"
+import MovingPlanInputResult from "pages/AppMovingPlan/MovingPlanInputResult"
 
 const authProtectedRoutes = [
     { path: "/dashboard", component: Dashboard },
@@ -38,7 +39,7 @@ const authProtectedRoutes = [
     { path: "/AppMenuSetting", component: MenuSetting },
     { path: "/AppUserProfile", component: UserProfile },
     { path: "/changePassword", component: ChangePassword },
-    { path: "/AppFileManagement", component: FileManagement },
+    { path: "/AppDataInquiry", component: DataInquiry },
     { path: "/FirstLogin", component: FirstLogin },
     { path: "/EnterMonthlyData", component: EnterMonthlyData },
     { path: "/AppRule", component: Rule },
@@ -46,7 +47,8 @@ const authProtectedRoutes = [
     { path: "/AppKPIDashboard", component: KPIDashboard },
     { path: "/AppKPIDashboardDetail", component: KPIDashboardDetail },
     { path: "/AppKPIInputResult", component: KPIInputResult },
-    { path: "/AppMovingPlan", component: MovingPlan },
+    { path: "/AppMovingPlanDashboard", component: MovingPlanDashboard },
+    { path: "/AppMovingPlanInputResult", component: MovingPlanInputResult },
     { path: "/AppRoleSetting", component: RoleSetting },
     { path: "/AppLanguageSetting", component: LanguageSetting },
     { path: "/AppKPICategorySetting", component: KPICategorySetting },

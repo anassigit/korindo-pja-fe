@@ -232,9 +232,13 @@ export const setKPINoteBE = req => postWithParam("rest/KpiManagementRest/setNote
 
 //MOVING PLAN
 
-export const getCompanyCodeList = req => post("rest/MovingPlanRest/getCompanyCodeList", req)
+export const getGroupListBE = req => post("rest/MovingPlanRest/getGroupList", req)
 
-export const getMovingPlanList = req => postWithParam("rest/MovingPlanRest/getList", req)
+export const getCompanyListBE = req => postWithParam("rest/MovingPlanRest/getCompanyList", req)
+
+export const getMovingPlanDashboardListBE = req => postWithParam("rest/MovingPlanRest/getList", req)
+
+export const getMovingPlanInputResultListBE = req => postWithParam("rest/MovingPlanRest/getList2", req)
 
 export const downloadExcelMovingPlanBE = req => getWithXls("rest/MovingPlanRest/downloadExcel", req)
 

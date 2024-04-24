@@ -168,12 +168,9 @@ const KPIDashboardDetail = (props) => {
             setToDate(selectedToDate)
             setGroupOrCorporation(!isFilterByCorporation ? "Group" : "Corporation")
             setIsFilterByCorporationForDownload(isFilterByCorporation)
-            const tempArr = [...selectedGroupList]
-            const tempArr2 = [...selectedCorporationList]
-            const tempArr3 = [...selectedKPIItemList]
-            setSelectedGroupListForDownload(tempArr)
-            setSelectedCorporationListForDownload(tempArr2)
-            setSelectedKPIItemListForDownload(tempArr3)
+            setSelectedGroupListForDownload([...selectedGroupList])
+            setSelectedCorporationListForDownload([...selectedCorporationList])
+            setSelectedKPIItemListForDownload([...selectedKPIItemList])
             if (appDashboardListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
@@ -197,7 +194,7 @@ const KPIDashboardDetail = (props) => {
         const endDate = new Date(toDate)
         while (currentDate <= endDate) {
             dates.push(`${currentDate.getFullYear()}-${('0' + (currentDate.getMonth() + 1)).slice(-2)}`)
-            currentDate.setMonth(currentDate.getMonth() + 1) // Move to the next month
+            currentDate.setMonth(currentDate.getMonth() + 1)
         }
         return dates
     }
@@ -377,7 +374,7 @@ const KPIDashboardDetail = (props) => {
                     />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            KPI Dashboard Detail
+                            Dashboard Detail
                         </CardHeader>
                         <CardBody>
                             <div

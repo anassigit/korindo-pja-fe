@@ -219,6 +219,7 @@ const EditKPIUnit = props => {
                                             }}
                                         >
                                             {"Category ID"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -251,6 +252,7 @@ const EditKPIUnit = props => {
                                             }}
                                         >
                                             {"Category Name"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -284,6 +286,7 @@ const EditKPIUnit = props => {
                                             }}
                                         >
                                             {"Unit ID"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -316,6 +319,7 @@ const EditKPIUnit = props => {
                                             }}
                                         >
                                             {"Unit Name"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>

@@ -148,6 +148,7 @@ const AddKPIItem = props => {
                                             }}
                                         >
                                             {"Category ID"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -180,6 +181,7 @@ const AddKPIItem = props => {
                                             }}
                                         >
                                             {"Category Name"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -213,6 +215,7 @@ const AddKPIItem = props => {
                                             }}
                                         >
                                             {"Unit ID"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -245,6 +248,7 @@ const AddKPIItem = props => {
                                             }}
                                         >
                                             {"Unit Name"}
+                                            <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
