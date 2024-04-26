@@ -13,7 +13,7 @@ import {
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
-import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, getDownloadKPITemplate, getDownloadKPIExcel, setKPINoteToDelete } from "store/actions"
+import { getKPIInputData, getCorporationList, getGroupListKPI, resetMessage, getDownloadKPITemplate, getDownloadKPIExcel, setKPINoteToDelete, uploadKPIResult } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -29,7 +29,7 @@ import txt from '../../assets/images/file_management/txt.png'
 import media from '../../assets/images/file_management/media.png'
 import ConfirmModal from "components/Common/ConfirmModal"
 import PdfViewerModal from "components/Common/PdfViewerModal"
-import UploadKPIResult from "./UploadKPIResult"
+import UploadKPI from "./UploadKPI"
 
 const KPIInputResult = (props) => {
 
@@ -37,7 +37,7 @@ const KPIInputResult = (props) => {
 
     const dispatch = useDispatch()
 
-    const appListData = useSelector((state) => {
+    const appKPIListData = useSelector((state) => {
         return state.kpiReducer.respGetKPIInputData
     })
 
@@ -57,6 +57,7 @@ const KPIInputResult = (props) => {
         setAddKPIResultModal(!addKPIResultModal)
     }
 
+    const [appState, setAppState] = useState([])
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [appKPIMsg, setAppKPIMsg] = useState("")
     const [selectedGroupNum, setSelectedGroupNum] = useState("")
@@ -90,10 +91,11 @@ const KPIInputResult = (props) => {
 
     useEffect(() => {
         setLoadingSpinner(false)
-    }, [appGroupListData, appCorporationListData, appListData])
+    }, [appGroupListData, appCorporationListData, appKPIListData])
 
     useEffect(() => {
-        setLoadingSpinner(true)
+        setSelectedCorporationId("")
+        setAppState([])
         if (selectedGroupNum) {
             dispatch(getCorporationList({
                 groupNum: selectedGroupNum
@@ -120,7 +122,15 @@ const KPIInputResult = (props) => {
                 date: selectedDate.replace(/-/g, "")
             }))
         }
-    }, [selectedGroupNum, selectedCorporationId, selectedDate])
+    }, [selectedCorporationId, selectedDate])
+
+    useEffect(() => {
+        if (appKPIListData.status === '1') {
+            setAppState(appKPIListData.data.list)
+        } else {
+            setAppState([])
+        }
+    }, [appKPIListData])
 
     useEffect(() => {
         if (isYes && selectedKpiIdToBeDeleted && selectedPageToBeDeleted != null) {
@@ -236,7 +246,7 @@ const KPIInputResult = (props) => {
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
                 <>
-                    <UploadKPIResult
+                    <UploadKPI
                         modal={uploadModal}
                         toggle={toggleUploadModal}
                         onSuccess={() => {
@@ -256,6 +266,7 @@ const KPIInputResult = (props) => {
                                 }))
                             }
                         }}
+                        apiCall={uploadKPIResult}
                     />
                     <PdfViewerModal
                         modal={modalPdfViewer}
@@ -396,8 +407,8 @@ const KPIInputResult = (props) => {
                                     }}
                                 >
                                     <Button
-                                        disabled={appListData?.data?.list.length > 0 ? false : true}
-                                        className={appListData?.data?.list.length > 0 ? "" : "btn btn-dark opacity-25"}
+                                        disabled={appState.length > 0 ? false : true}
+                                        className={appState.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadExcel() }}>
                                         <i className="mdi mdi-download" />{" "}
                                         Download Excel
@@ -424,7 +435,7 @@ const KPIInputResult = (props) => {
                                 </thead>
                                 <tbody>
                                     {
-                                        appListData?.data?.list.map((item, index) => {
+                                        appState.map((item, index) => {
                                             return (
                                                 <React.Fragment key={index}>
                                                     <tr>

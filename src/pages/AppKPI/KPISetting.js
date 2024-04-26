@@ -11,7 +11,7 @@ import {
     InputGroup,
     Spinner
 } from "reactstrap"
-import { getCorporationList, getDownloadKPIExcel, getDownloadKPITemplate, getGroupListKPI, getKPIMaster, resetMessage } from "store/actions"
+import { getCorporationList, getDownloadKPIExcel, getDownloadKPITemplate, getGroupListKPI, getKPIMaster, resetMessage, uploadKPI } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -375,6 +375,7 @@ const KPISetting = (props) => {
                                 }))
                             }
                         }}
+                        apiCall={uploadKPI}
                     />
                 </>
             }

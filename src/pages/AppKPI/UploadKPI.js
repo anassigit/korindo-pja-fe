@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import MsgModal from 'components/Common/MsgModal'
 import shortid from "shortid"
 import { withTranslation } from "react-i18next"
-import { resetMessage, uploadKPI } from 'store/appKPI/actions'
+import { resetMessage } from 'store/appKPI/actions'
 
 const UploadKPI = (props) => {
 
@@ -24,7 +24,7 @@ const UploadKPI = (props) => {
     }, [dispatch])
 
     const insertUpload = async (value) => {
-        await dispatch(uploadKPI(value))
+        await dispatch(props.apiCall(value))
     }
 
     const [uploadMsgModal, setUploadMsgModal] = useState(false)
@@ -56,7 +56,6 @@ const UploadKPI = (props) => {
         const selectedFiles = Array.from(e.target.files)
         const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
         const invalidFiles = selectedFiles.filter((file) => !allowedFileExtensions.test(file.name))
-
         if (invalidFiles.length === 0 && validFiles.length > 0) {
             const processedFiles = []
             validFiles.forEach((file) => {
@@ -80,9 +79,7 @@ const UploadKPI = (props) => {
             if (refCleanser.current) {
                 refCleanser.current.value = ""
             }
-            if (e.target) {
-                e.target.value = ""
-            }
+            e.target.value = ""
         }
     }
 
@@ -91,6 +88,9 @@ const UploadKPI = (props) => {
         if (window.confirm("Are you sure you want to delete this file?")) {
             const result = selectedfile.filter((data) => data.id !== id)
             SetSelectedFile(result)
+        }
+        if (refCleanser.current) {
+            refCleanser.current.value = ""
         }
     }
 
@@ -117,7 +117,8 @@ const UploadKPI = (props) => {
                                 <input
                                     type="file"
                                     accept=".xlsx, .xls"
-                                    id="fileupload2" className="form-control" onChange={InputChange} name="removeFile"/>
+                                    ref={refCleanser}
+                                    id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" />
                             </div>
                         </div>
                         &nbsp;
@@ -151,8 +152,6 @@ const UploadKPI = (props) => {
                         bodyForm.append('file', selectedfile[0].fileori)
                     }
                     setUploadSpinner(true)
-
-
                     const config = {
                         headers: {
                             'content-type': 'multipart/form-data'
@@ -179,6 +178,7 @@ UploadKPI.propTypes = {
     idToggleUpload: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any,
-    onSuccess: PropTypes.any
+    onSuccess: PropTypes.any,
+    apiCall: PropTypes.any
 }
 export default withTranslation()(UploadKPI)
