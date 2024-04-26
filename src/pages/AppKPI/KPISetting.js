@@ -40,7 +40,7 @@ const KPISetting = (props) => {
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
-    const [appPlanState, setAppPlanState] = useState([])
+    const [appState, setAppState] = useState([])
     const [appKPIMsg, setAppKPIMsg] = useState("")
     const [selectedYear, setSelectedYear] = useState(moment().format('yyyy'))
     const [selectedGroupId, setSelectedGroupId] = useState("")
@@ -67,7 +67,9 @@ const KPISetting = (props) => {
     }, [appGroupListData, appCorporationListData, appKPIListData])
 
     useEffect(() => {
-        setLoadingSpinner(true)
+        setSelectedCorporationId("")
+        setSelectedCorporationName("")
+        setAppState([])
         if (selectedGroupId) {
             dispatch(getCorporationList({
                 groupNum: selectedGroupId
@@ -87,13 +89,13 @@ const KPISetting = (props) => {
                 year: selectedYear
             }))
         }
-    }, [selectedCorporationId, selectedYear, selectedGroupId])
+    }, [selectedCorporationId, selectedYear])
 
     useEffect(() => {
         if (appKPIListData.status === '1') {
-            setAppPlanState(appKPIListData.data.list)
+            setAppState(appKPIListData.data.list)
         } else {
-            setAppPlanState([])
+            setAppState([])
         }
     }, [appKPIListData])
 
@@ -285,8 +287,8 @@ const KPISetting = (props) => {
                                     }}
                                 >
                                     <Button
-                                        disabled={appPlanState.length > 0 ? false : true}
-                                        className={appPlanState.length > 0 ? "" : "btn btn-dark opacity-25"}
+                                        disabled={appState.length > 0 ? false : true}
+                                        className={appState.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadExcel() }}>
                                         <i className="mdi mdi-download" />{" "}
                                         Download Excel
@@ -324,7 +326,7 @@ const KPISetting = (props) => {
                                 </thead>
                                 <tbody>
                                     {
-                                        appPlanState.map((item, index) => {
+                                        appState.map((item, index) => {
                                             return (
                                                 <React.Fragment key={index}>
                                                     <tr>
@@ -363,13 +365,13 @@ const KPISetting = (props) => {
                             setLoadingSpinner(true)
                             if (selectedYear && selectedCorporationId && selectedGroupId) {
                                 dispatch(getKPIMaster({
-                                    groupNum: selectedGroupId,
                                     corporationId: selectedCorporationId,
+                                    year: selectedYear
                                 }))
                             } else {
                                 dispatch(getKPIMaster({
-                                    groupNum: '',
-                                    corporationId: '',
+                                    corporationId: selectedCorporationId,
+                                    year: selectedYear
                                 }))
                             }
                         }}
