@@ -193,6 +193,7 @@ const MovingPlanInputResult = () => {
                                         value={selectedGroupNum}
                                         onChange={(e) => {
                                             setSelectedGroupNum(e.target.value)
+                                            setSelectedCompanyCode("")
                                         }}
                                     >
                                         <option value={''}>Select Group</option>

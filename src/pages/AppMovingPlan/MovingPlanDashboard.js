@@ -18,6 +18,7 @@ import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
 import ReactDatePicker from "react-datepicker"
 import Swal from "sweetalert2"
+import moment from "moment"
 
 const MovingPlanDashboard = () => {
 
@@ -34,7 +35,7 @@ const MovingPlanDashboard = () => {
     const [loadingSpinner, setLoadingSpinner] = useState(false)
     const [firstSearch, setFirstSearch] = useState(false)
     const [appMsg, setAppMsg] = useState("")
-    const [selectedYear, setSelectedYear] = useState("")
+    const [selectedYear, setSelectedYear] = useState(moment().format('yyyy'))
     const [selectedCompanyCode, setselectedCompanyCode] = useState("")
 
     const datePickerRef = useRef(null);
@@ -75,21 +76,23 @@ const MovingPlanDashboard = () => {
     }, [appListData])
 
     const handleSearch = () => {
-        if (selectedYear === "") {
-            setAppMsg({
-                message: 'Year must be selected.'
-            })
-            return
-        }
         setAppMsg('')
         setFirstSearch(true)
         setLoadingSpinner(true)
-        dispatch(getMovingPlanDashboardList(
-            {
-                year: selectedYear ? selectedYear.getFullYear() : '',
-                companyCode: selectedCompanyCode,
-            }
-        ))
+        if(!selectedCompanyCode) {
+            dispatch(getMovingPlanDashboardList(
+                {
+                    year: selectedYear
+                }
+            ))
+        } else {
+            dispatch(getMovingPlanDashboardList(
+                {
+                    year: selectedYear,
+                    companyCode: selectedCompanyCode
+                }
+            ))
+        }
     }
 
     const years = []
