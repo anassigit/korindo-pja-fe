@@ -19,7 +19,7 @@ import '../../config'
 import ReactDatePicker from "react-datepicker"
 import Swal from "sweetalert2"
 
-const MovingPlanDashboard = (props) => {
+const MovingPlanDashboard = () => {
 
     const dispatch = useDispatch()
 
@@ -520,7 +520,7 @@ const MovingPlanDashboard = (props) => {
                                                 {appCompanyCodeListData?.data?.resultList.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item?.companyCode}>
-                                                            {item?.companyName}
+                                                            {item?.companyInitial}
                                                         </option>
                                                     )
                                                 })}

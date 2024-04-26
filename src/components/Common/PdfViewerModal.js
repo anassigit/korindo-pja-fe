@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import '../../assets/scss/custom/modal/modal.css'
 
 const PdfViewerModal = (props) => {
 
     const toggleClose = () => {
-        props.toggle();
+        props.toggle()
     }
 
     return (
@@ -20,7 +20,7 @@ const PdfViewerModal = (props) => {
                         ) :
                             (
                                 <span className="text-danger">
-                                    File Doesn&#39;t Exist
+                                    File Doesn&#39t Exist
                                 </span>
                             )
                     }
@@ -32,14 +32,14 @@ const PdfViewerModal = (props) => {
                 </Button>
             </ModalFooter>
         </Modal>
-    );
-};
+    )
+}
 
 PdfViewerModal.propTypes = {
     modal: PropTypes.bool,
     toggle: PropTypes.func,
     url: PropTypes.string,
     pageNum: PropTypes.any
-};
+}
 
-export default PdfViewerModal;
+export default PdfViewerModal

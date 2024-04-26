@@ -5,20 +5,20 @@ import {
     GET_MOVING_PLAN_DASHBOARD_LIST,
     RESP_GET_MOVING_PLAN_DASHBOARD_LIST,
     DOWNLOAD_MOVING_PLAN_DASHBOARD_EXCEL,
-    GET_GROUP_LIST,
-    RESP_GET_GROUP_LIST,
+    GET_GROUP_LIST_MOVING_PLAN,
+    RESP_GET_GROUP_LIST_MOVING_PLAN,
     GET_MOVING_PLAN_INPUT_RESULT_LIST,
     RESP_GET_MOVING_PLAN_INPUT_RESULT_LIST
 
 } from "./actionTypes"
 
-export const getGroupList = (req) => ({
-    type: GET_GROUP_LIST,
+export const getGroupListMovingPlan = (req) => ({
+    type: GET_GROUP_LIST_MOVING_PLAN,
     payload: req,
 })
 
-export const respGetGroupList = resp => ({
-    type: RESP_GET_GROUP_LIST,
+export const respGetGroupListMovingPlan = resp => ({
+    type: RESP_GET_GROUP_LIST_MOVING_PLAN,
     payload: resp,
 })
 

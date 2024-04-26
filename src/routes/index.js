@@ -39,7 +39,7 @@ const authProtectedRoutes = [
     { path: "/AppMenuSetting", component: MenuSetting },
     { path: "/AppUserProfile", component: UserProfile },
     { path: "/changePassword", component: ChangePassword },
-    { path: "/AppDataInquiry", component: DataInquiry },
+    { path: "/AppFileManagement", component: DataInquiry },
     { path: "/FirstLogin", component: FirstLogin },
     { path: "/EnterMonthlyData", component: EnterMonthlyData },
     { path: "/AppRule", component: Rule },

@@ -11,7 +11,7 @@ import {
     InputGroup,
     Spinner
 } from "reactstrap"
-import { getCompanyList, getGroupList, getMovingPlanInputResultList, resetMessage } from "store/actions"
+import { getCompanyList, getGroupListMovingPlan, getMovingPlanInputResultList, resetMessage } from "store/actions"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
@@ -25,7 +25,7 @@ const MovingPlanInputResult = () => {
     const dispatch = useDispatch()
 
     const appGroupListData = useSelector((state) => {
-        return state.movingPlanReducer.respGetGroupList
+        return state.movingPlanReducer.respGetGroupListMovingPlan
     })
 
     const appCompanyListData = useSelector((state) => {
@@ -47,7 +47,7 @@ const MovingPlanInputResult = () => {
 
     useEffect(() => {
         setLoadingSpinner(true)
-        dispatch(getGroupList())
+        dispatch(getGroupListMovingPlan())
     }, [])
 
     useEffect(() => {
@@ -197,10 +197,10 @@ const MovingPlanInputResult = () => {
                                     >
                                         <option value={''}>Select Group</option>
                                         {
-                                            appGroupListData?.data?.groupList.map((item, index) => {
+                                            appGroupListData?.data?.resultList.map((item, index) => {
                                                 return (
-                                                    <option key={index} value={item.num}>
-                                                        {item.name}
+                                                    <option key={index} value={item.groupNum}>
+                                                        {item.groupName}
                                                     </option>
                                                 )
                                             })
@@ -220,7 +220,7 @@ const MovingPlanInputResult = () => {
                                                         appCompanyListData?.data?.resultList.map((item, index) => {
                                                             return (
                                                                 <option key={index} value={item.companyCode}>
-                                                                    {item.companyName}
+                                                                    {item.companyInitial}
                                                                 </option>
                                                             )
                                                         })
@@ -320,35 +320,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[1]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[1]?.amount ? appListData?.data?.resultList[1]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[1]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[1]?.amount1 ? appListData?.data?.resultList[1]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[1]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[1]?.amount2 ? appListData?.data?.resultList[1]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[1]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[1]?.amount3 ? appListData?.data?.resultList[1]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[1]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[1]?.amtttl ? appListData?.data?.resultList[1]?.amtttl : "0"}
                                             </td>
@@ -364,35 +369,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[2]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[2]?.amount ? appListData?.data?.resultList[2]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[2]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[2]?.amount1 ? appListData?.data?.resultList[2]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[2]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[2]?.amount2 ? appListData?.data?.resultList[2]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[2]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[2]?.amount3 ? appListData?.data?.resultList[2]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[2]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[2]?.amtttl ? appListData?.data?.resultList[2]?.amtttl : "0"}
                                             </td>
@@ -408,35 +418,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[3]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[3]?.amount ? appListData?.data?.resultList[3]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[3]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[3]?.amount1 ? appListData?.data?.resultList[3]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[3]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[3]?.amount2 ? appListData?.data?.resultList[3]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[3]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[3]?.amount3 ? appListData?.data?.resultList[3]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[3]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[3]?.amtttl ? appListData?.data?.resultList[3]?.amtttl : "0"}
                                             </td>
@@ -452,35 +467,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[4]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[4]?.amount ? appListData?.data?.resultList[4]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[4]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[4]?.amount1 ? appListData?.data?.resultList[4]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[4]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[4]?.amount2 ? appListData?.data?.resultList[4]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[4]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[4]?.amount3 ? appListData?.data?.resultList[4]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[4]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[4]?.amtttl ? appListData?.data?.resultList[4]?.amtttl : "0"}
                                             </td>
@@ -496,7 +516,8 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[5]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[5]?.amount ? appListData?.data?.resultList[5]?.amount : "0"}
                                             </td>
@@ -528,35 +549,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[6]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[6]?.amount ? appListData?.data?.resultList[6]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[6]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[6]?.amount1 ? appListData?.data?.resultList[6]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[6]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[6]?.amount2 ? appListData?.data?.resultList[6]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[6]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[6]?.amount3 ? appListData?.data?.resultList[6]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[6]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[6]?.amtttl ? appListData?.data?.resultList[6]?.amtttl : "0"}
                                             </td>
@@ -572,35 +598,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[7]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[7]?.amount ? appListData?.data?.resultList[7]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[7]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[7]?.amount1 ? appListData?.data?.resultList[7]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[7]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[7]?.amount2 ? appListData?.data?.resultList[7]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[7]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[7]?.amount3 ? appListData?.data?.resultList[7]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[7]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[7]?.amtttl ? appListData?.data?.resultList[7]?.amtttl : "0"}
                                             </td>
@@ -616,35 +647,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[8]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[8]?.amount ? appListData?.data?.resultList[8]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[8]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[8]?.amount1 ? appListData?.data?.resultList[8]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[8]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[8]?.amount2 ? appListData?.data?.resultList[8]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[8]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[8]?.amount3 ? appListData?.data?.resultList[8]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[8]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[8]?.amtttl ? appListData?.data?.resultList[8]?.amtttl : "0"}
                                             </td>
@@ -660,35 +696,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[9]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[9]?.amount ? appListData?.data?.resultList[9]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[9]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[9]?.amount1 ? appListData?.data?.resultList[9]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[9]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[9]?.amount2 ? appListData?.data?.resultList[9]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[9]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[9]?.amount3 ? appListData?.data?.resultList[9]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[9]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[9]?.amtttl ? appListData?.data?.resultList[9]?.amtttl : "0"}
                                             </td>
@@ -704,7 +745,8 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[10]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[10]?.amount ? appListData?.data?.resultList[10]?.amount : "0"}
                                             </td>
@@ -736,35 +778,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[11]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[11]?.amount ? appListData?.data?.resultList[11]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[11]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[11]?.amount1 ? appListData?.data?.resultList[11]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[11]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[11]?.amount2 ? appListData?.data?.resultList[11]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[11]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[11]?.amount3 ? appListData?.data?.resultList[11]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[11]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[11]?.amtttl ? appListData?.data?.resultList[11]?.amtttl : "0"}
                                             </td>
@@ -780,35 +827,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[12]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[12]?.amount ? appListData?.data?.resultList[12]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[12]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[12]?.amount1 ? appListData?.data?.resultList[12]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[12]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[12]?.amount2 ? appListData?.data?.resultList[12]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[12]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[12]?.amount3 ? appListData?.data?.resultList[12]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[12]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[12]?.amtttl ? appListData?.data?.resultList[12]?.amtttl : "0"}
                                             </td>
@@ -826,35 +878,40 @@ const MovingPlanInputResult = () => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[13]?.amount.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[13]?.amount ? appListData?.data?.resultList[13]?.amount : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[13]?.amount1.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[13]?.amount1 ? appListData?.data?.resultList[13]?.amount1 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[13]?.amount2.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[13]?.amount2 ? appListData?.data?.resultList[13]?.amount2 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[13]?.amount3.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[13]?.amount3 ? appListData?.data?.resultList[13]?.amount3 : "0"}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                color: appListData?.data?.resultList[13]?.amtttl.startsWith("-") ? "red" : "black"
                                             }}>
                                                 {appListData?.data?.resultList[13]?.amtttl ? appListData?.data?.resultList[13]?.amtttl : "0"}
                                             </td>

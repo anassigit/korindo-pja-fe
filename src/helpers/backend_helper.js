@@ -232,7 +232,7 @@ export const setKPINoteBE = req => postWithParam("rest/KpiManagementRest/setNote
 
 //MOVING PLAN
 
-export const getGroupListBE = req => post("rest/MovingPlanRest/getGroupList", req)
+export const getGroupListMovingPlanBE = req => post("rest/MovingPlanRest/getGroupList", req)
 
 export const getCompanyListBE = req => postWithParam("rest/MovingPlanRest/getCompanyList", req)
 

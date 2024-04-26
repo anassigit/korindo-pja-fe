@@ -20,14 +20,14 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getCorporationList, getDashboardKPI, getKPIItemList, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardKPI, getItemList, resetMessage } from "store/actions"
 import ReactEcharts from "echarts-for-react"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import PdfViewerModal from "components/Common/PdfViewerModal"
 import Swal from 'sweetalert2'
 
-const KPIDashboard = (props) => {
+const KPIDashboard = () => {
 
     const dispatch = useDispatch()
 
@@ -127,7 +127,7 @@ const KPIDashboard = (props) => {
                     bodyForm.append('corporationId', corporation.corporationId)
                 })
             setAppKPIMsg(null)
-            dispatch(getKPIItemList(bodyForm, {
+            dispatch(getItemList(bodyForm, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -148,7 +148,7 @@ const KPIDashboard = (props) => {
                     bodyForm.append('groupNum', group.groupNum)
                 })
             setAppKPIMsg(null)
-            dispatch(getKPIItemList(bodyForm, {
+            dispatch(getItemList(bodyForm, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }

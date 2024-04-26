@@ -5,14 +5,14 @@ import {
     GET_MOVING_PLAN_DASHBOARD_LIST,
     RESP_GET_MOVING_PLAN_DASHBOARD_LIST,
     DOWNLOAD_MOVING_PLAN_DASHBOARD_EXCEL,
-    GET_GROUP_LIST,
-    RESP_GET_GROUP_LIST,
+    GET_GROUP_LIST_MOVING_PLAN,
+    RESP_GET_GROUP_LIST_MOVING_PLAN,
     GET_MOVING_PLAN_INPUT_RESULT_LIST,
     RESP_GET_MOVING_PLAN_INPUT_RESULT_LIST
 } from "./actionTypes"
 
 const INIT_STATE = {
-    respGetGroupList: {},
+    respGetGroupListMovingPlan: {},
     respGetCompanyList: {},
     respGetMovingPlanDashboardList: {},
     respGetMovingPlanInputResultList: {}
@@ -20,14 +20,14 @@ const INIT_STATE = {
 
 const movingPlanReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case GET_GROUP_LIST:
+        case GET_GROUP_LIST_MOVING_PLAN:
             return {
                 ...state,
             }
-        case RESP_GET_GROUP_LIST:
+        case RESP_GET_GROUP_LIST_MOVING_PLAN:
             return {
                 ...state,
-                respGetGroupList: action.payload,
+                respGetGroupListMovingPlan: action.payload,
             }
         case GET_COMPANY_LIST:
             return {

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { withTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -21,13 +21,13 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getCorporationList, getDashboardKPI, getDownloadDashboardDetail, getDownloadKPIExcel, getKPIItemList, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardKPI, getDownloadDashboardDetail, getItemList, resetMessage } from "store/actions"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import PdfViewerModal from "components/Common/PdfViewerModal"
 import Swal from 'sweetalert2'
 
-const KPIDashboardDetail = (props) => {
+const KPIDashboardDetail = () => {
 
     const dispatch = useDispatch()
 
@@ -130,7 +130,7 @@ const KPIDashboardDetail = (props) => {
                     bodyForm.append('corporationId', corporation.corporationId)
                 })
             setAppKPIMsg(null)
-            dispatch(getKPIItemList(bodyForm, {
+            dispatch(getItemList(bodyForm, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -151,7 +151,7 @@ const KPIDashboardDetail = (props) => {
                     bodyForm.append('groupNum', group.groupNum)
                 })
             setAppKPIMsg(null)
-            dispatch(getKPIItemList(bodyForm, {
+            dispatch(getItemList(bodyForm, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
