@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { withTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -63,16 +63,12 @@ const KPIDashboard = () => {
     const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false)
     const [zoomStates, setZoomStates] = useState([])
 
-    const chartRef = useRef(null);
-    const divRef = useRef(null);
-
     useEffect(() => {
         setLoadingSpinner(true)
         dispatch(getCorporationList({}))
     }, [])
 
     useEffect(() => {
-        setLoadingSpinner(false)
         dispatch(resetMessage())
     }, [dispatch])
 
@@ -178,8 +174,11 @@ const KPIDashboard = () => {
 
     useEffect(() => {
         if (appDashboardListData?.data?.resultList) {
-            const resultListSize = appDashboardListData.data.resultList.length
-            const newZoomStates = Array(resultListSize).fill({ start: 0, end: 100 })
+            const newZoomStates = appDashboardListData.data.resultList.map(item => ({
+                start: 0,
+                end: 100,
+                startValue: item.startFrom
+            }));
             setZoomStates(newZoomStates)
         }
     }, [appDashboardListData?.data?.resultList])
@@ -709,7 +708,10 @@ const KPIDashboard = () => {
                                                             type: 'category',
                                                             data: item?.details?.map(item => item.date) || []
                                                         },
-                                                        yAxis: {},
+                                                        yAxis: {
+                                                            type: 'value',
+                                                            min: zoomStates[index]?.startValue,
+                                                        },
                                                         series: [
                                                             {
                                                                 name: 'Plan',
