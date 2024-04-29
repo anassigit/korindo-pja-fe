@@ -25,7 +25,7 @@ import ppt from '../../assets/images/file_management/ppt.png'
 import pdf from '../../assets/images/file_management/pdf.png'
 import txt from '../../assets/images/file_management/txt.png'
 import media from '../../assets/images/file_management/media.png'
-import UploadMonthly from "./UploadMonthly"
+import UploadMonthlyData from "./UploadMonthlyData"
 import FileTables from "./FileTables"
 import DatePicker from "react-datepicker"
 import moment from "moment"
@@ -193,7 +193,7 @@ const EnterMonthlyData = (props) => {
                         message={props.t("Are you sure to delete this?")}
                         setIsYes={setIsYes}
                     />
-                    <UploadMonthly
+                    <UploadMonthlyData
                         modal={uploadModalMonthly}
                         toggle={toggleUploadModalMonthly}
                         idFolderUpload={idFolderUpload}

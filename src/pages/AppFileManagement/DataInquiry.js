@@ -20,7 +20,7 @@ import {
 import { getSelectFile, deleteFileFolder, resetMessage, getSearch } from "../../store/appFileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import Rename from "./Rename"
-import Upload from "./Upload"
+import UploadDataInquiry from "./UploadDataInquiry"
 import Create from "./Create"
 import Move from "./Move"
 import ImagePreview from "./ImagePreview"
@@ -417,7 +417,7 @@ const DataInquiry = (props) => {
                         typeRename={typeRename}
                         idNowLoc={idNowLoc}
                     />
-                    <Upload
+                    <UploadDataInquiry
                         modal={uploadModal}
                         toggle={toggleUploadModal}
                         idToggleUpload={idToggleUpload}

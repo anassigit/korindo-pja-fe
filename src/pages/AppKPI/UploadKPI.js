@@ -51,7 +51,7 @@ const UploadKPI = (props) => {
 
     const refCleanser = useRef(null)
 
-    const InputChange = (e) => {
+    const inputChange = (e) => {
         const allowedFileExtensions = /(xls|xlsx)$/i
         const selectedFiles = Array.from(e.target.files)
         const validFiles = selectedFiles.filter((file) => allowedFileExtensions.test(file.name))
@@ -84,7 +84,7 @@ const UploadKPI = (props) => {
     }
 
 
-    const DeleteSelectFile = (id) => {
+    const deleteSelectFile = (id) => {
         if (window.confirm("Are you sure you want to delete this file?")) {
             const result = selectedfile.filter((data) => data.id !== id)
             SetSelectedFile(result)
@@ -118,7 +118,7 @@ const UploadKPI = (props) => {
                                     type="file"
                                     accept=".xlsx, .xls"
                                     ref={refCleanser}
-                                    id="fileupload2" className="form-control" onChange={InputChange} name="removeFile" />
+                                    id="fileupload2" className="form-control" onChange={inputChange} name="removeFile" />
                             </div>
                         </div>
                         &nbsp;
@@ -133,9 +133,7 @@ const UploadKPI = (props) => {
                                             <div className="file-detail text-wrap">
                                                 <span><i className="mdi mdi-paperclip" style={{ fontSize: "20px", verticalAlign: "middle" }} />&nbsp;{filename}</span>
                                                 &nbsp;&nbsp;&nbsp;
-
-                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => DeleteSelectFile(id)} />
-
+                                                <i className="mdi mdi-close" style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }} onClick={() => deleteSelectFile(id)} />
                                             </div>
                                         </div>
                                     )
