@@ -169,12 +169,12 @@ const EditMember = (props) => {
                 editMemberValidInput.handleSubmit();
                 return false
             }}>
-                <ModalHeader toggle={props.toggle}>Edit Member</ModalHeader>
+                <ModalHeader toggle={props.toggle}>{props.t("Edit Member")}</ModalHeader>
                 <ModalBody>
                     <FormGroup className="mb-0">
 
                         <div className="mb-3 mx-3">
-                            <Label>Name <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Name")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 type="text"
                                 name="name"
@@ -201,7 +201,7 @@ const EditMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>Email <span style={{ color: "red" }}>*</span></Label>
+                            <Label>{props.t("Email")} <span style={{ color: "red" }}>*</span></Label>
                             <Input
                                 type="email"
                                 name="email"
@@ -214,7 +214,7 @@ const EditMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>HP</Label>
+                            <Label>{props.t("HP")}</Label>
                             <Input
                                 type="text"
                                 name="hp"
@@ -226,7 +226,7 @@ const EditMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3">
-                            <Label>Rank</Label>
+                            <Label>{props.t("Rank")}</Label>
                             <Input
                                 type="select"
                                 name="rank"
@@ -244,7 +244,7 @@ const EditMember = (props) => {
                             </Input>
                         </div>
                         <div className="mb-3 mx-3">
-                            <Label>Role</Label>
+                            <Label>{props.t("Role")}</Label>
                             <Input
                                 type="select"
                                 name="role"
@@ -262,7 +262,7 @@ const EditMember = (props) => {
                         </div>
 
                         <div className="mb-3 mx-3" hidden={editMemberValidInput?.values?.role !== 2 && editMemberValidInput?.values?.role !== '2'}>
-                            <Label>Background Color</Label>
+                            <Label>{props.t("Background Color")}</Label>
                             <Input
                                 type="color"
                                 name="bgColor"

@@ -252,7 +252,7 @@ const MemberSetting = (props) => {
                             }}
                         >
                             <Button onClick={toggleAddMemberModal}>
-                                <span className="mdi mdi-plus" /> {'Add New Member'}
+                                <span className="mdi mdi-plus" /> {props.t("Add New Member")}
                             </Button>
                         </div>
                         {isGetLangType && <TableCustom3

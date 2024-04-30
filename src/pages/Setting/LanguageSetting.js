@@ -294,7 +294,7 @@ const LanguageSetting = (props) => {
                 <ConfirmModal
                     modal={modal}
                     toggle={toggleDeleteModal}
-                    message={"Are you sure to delete this?"}
+                    message={props.t("Are you sure to delete this?")}
                     setIsYes={setIsYes}
                 />
             </>

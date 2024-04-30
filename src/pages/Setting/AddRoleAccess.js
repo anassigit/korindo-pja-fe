@@ -136,18 +136,18 @@ const AddRoleAccess = props => {
     const appLovMenuListColumns = [
         {
             dataField: "menuId",
-            text: "Menu ID",
+            text: props.t("Menu ID"),
             sort: true,
             style: { textAlign: "center" },
-            headerStyle: { textAlign: "center" },
+            headerStyle: { textAlign: "center" }
         },
         {
             dataField: "menuName",
-            text: "Menu Name",
+            text: props.t("Menu Name"),
             sort: true,
             style: { textAlign: "center" },
-            headerStyle: { textAlign: "center" },
-        },
+            headerStyle: { textAlign: "center" }
+        }
     ]
 
     const appCallBackMenuAccess = row => {
@@ -266,7 +266,7 @@ const AddRoleAccess = props => {
             <Card style={{ marginBottom: 0 }}>
                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                     <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-                    {"Add New Role Access"}
+                    {props.t("Add New Role Access")}
                 </CardHeader>
                 <CardBody>
                     <Form
@@ -285,7 +285,7 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Role ID"}
+                                            {props.t("Role ID")}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -319,14 +319,14 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Menu ID"}
+                                            {props.t("Menu ID")}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         {props.appAddDetailRole ? (
                                             <Lovv2
-                                                title={"Menu"}
+                                                title={props.t("Menu")}
                                                 keyFieldData="menuId"
                                                 columns={appLovMenuListColumns}
                                                 getData={getMenuParentListLov}
@@ -353,7 +353,7 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Create"}
+                                            {props.t("Create")}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -383,7 +383,7 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Read"}
+                                            {props.t("Read")}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -413,7 +413,7 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Update"}
+                                            {props.t("Update")}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -443,7 +443,7 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Print"}
+                                            {props.t("Print")}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -473,7 +473,7 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Delete"}
+                                            {props.t("Delete")}
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
@@ -503,7 +503,7 @@ const AddRoleAccess = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Group ID"}
+                                            {props.t("Group ID")}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -546,7 +546,7 @@ const AddRoleAccess = props => {
                                         ></Label>
                                     </div>
                                     <div className="col-8">
-                                        <Button type="submit">{"Submit"}</Button>
+                                        <Button type="submit">{props.t("Submit")}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -563,7 +563,7 @@ const AddRoleAccess = props => {
                 }}
             >
                 <span className="mdi mdi-arrow-left" />
-                &nbsp;{"Back"}
+                &nbsp;{props.t("Back")}
             </Button>
         </Container>
     )

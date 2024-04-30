@@ -75,21 +75,21 @@ const RoleSetting = props => {
     const appRoleColumn = [
         {
             dataField: "roleId",
-            text: "Role ID",
+            text: props.t("Role ID"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
         },
         {
             dataField: "roleName",
-            text: "Role Name",
+            text: props.t("Role Name"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
         },
         {
             dataField: "parent",
-            text: "Parent Name",
+            text: props.t("Parent Name"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
@@ -98,10 +98,10 @@ const RoleSetting = props => {
             }
         },
         {
-            text: "Detail",
+            text: props.t("Detail"),
             style: { textAlign: "center", fontSize: "18px" },
             headerStyle: { textAlign: "center" },
-            formatter: (cellContent, cellData) => {
+            formatter: (cellData) => {
                 return (
                     <span
                         onClick={() => preDetailApp(cellData)}
@@ -111,7 +111,7 @@ const RoleSetting = props => {
             },
         },
         {
-            text: "Actions",
+            text: props.t("Actions"),
             headerStyle: { textAlign: "center" },
             style: { textAlign: "center", fontSize: "16px" },
             formatter: (_cellContent, cellData, index) => {
@@ -283,7 +283,7 @@ const RoleSetting = props => {
                                 }}
                             >
                                 <label className="col-sm-3" style={{ marginTop: "8px" }}>
-                                    {"Search"}
+                                    {props.t("Search")}
                                 </label>
                                 <div className="col-sm-5">
                                     <input
@@ -300,7 +300,7 @@ const RoleSetting = props => {
                                         className="btn btn-primary btn-block"
                                         onClick={() => handleClick()}
                                     >
-                                        {"Search"}
+                                        {props.t("Search")}
                                     </button>
                                 </div>
                             </div>
@@ -316,7 +316,7 @@ const RoleSetting = props => {
                             }}
                         >
                             <Button onClick={() => preAddApp()}>
-                                <span className="mdi mdi-plus" /> {"Add New Role"}
+                                <span className="mdi mdi-plus" /> {props.t("Add New Role")}
                             </Button>
                         </div>
                         <TableCustom3
@@ -399,7 +399,7 @@ const RoleSetting = props => {
                     <ConfirmModal
                         modal={modal}
                         toggle={toggleDeleteModal}
-                        message={"Are you sure to delete this?"}
+                        message={props.t("Are you sure to delete this?")}
                         setIsYes={setIsYes}
                     />
                 </>

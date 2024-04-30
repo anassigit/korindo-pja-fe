@@ -59,21 +59,21 @@ const MenuSetting = (props) => {
     const appMenuColumn = [
         {
             dataField: "menuId",
-            text: 'Menu ID',
+            text: props.t("Menu ID"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "menuName",
-            text: 'Menu Name',
+            text: props.t("Menu Name"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "parent",
-            text: 'Parent Menu',
+            text: props.t("Parent Menu"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
@@ -83,14 +83,14 @@ const MenuSetting = (props) => {
         },
         {
             dataField: "menuPath",
-            text: 'Menu Path',
+            text: props.t("Menu Path"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "menuIcon",
-            text: 'Icon',
+            text: props.t("Icon"),
             sort: true,
             style: { textAlign: 'center', fontSize: '18px' },
             headerStyle: { textAlign: 'center' },
@@ -100,7 +100,7 @@ const MenuSetting = (props) => {
         },
         {
             dataField: "groupStatus",
-            text: 'Group Separate Permission',
+            text: props.t("Group Separate Permission"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
@@ -110,13 +110,13 @@ const MenuSetting = (props) => {
         },
         {
             dataField: "pos",
-            text: 'Order',
+            text: props.t("Order"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
-            text: 'Actions',
+            text: props.t("Actions"),
             headerStyle: { textAlign: 'center' },
             style: { textAlign: 'center', fontSize: '16px' },
             formatter: (_cellContent, cellData, index) => {
@@ -253,7 +253,7 @@ const MenuSetting = (props) => {
                             width: '30%',
                             gap: '.75vw'
                         }}>
-                            <label className="col-sm-3" style={{ marginTop: "8px" }}>{"Search"}</label>
+                            <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
                             <div className="col-sm-5">
                                 <input
                                     type="search"
@@ -267,7 +267,7 @@ const MenuSetting = (props) => {
                                     className="btn btn-primary btn-block"
                                     onClick={() => handleClick()}
                                 >
-                                    {"Search"}
+                                    {props.t("Search")}
                                 </button>
                             </div>
                         </div>
@@ -285,7 +285,7 @@ const MenuSetting = (props) => {
                         <Button
                             onClick={() => preAddApp()}
                         >
-                            <span className="mdi mdi-plus" /> {'Add New Menu'}
+                            <span className="mdi mdi-plus" /> {props.t("Add New Menu")}
                         </Button>
                     </div>
                     <TableCustom3
@@ -318,7 +318,7 @@ const MenuSetting = (props) => {
                 <ConfirmModal
                     modal={modal}
                     toggle={toggleDeleteModal}
-                    message={"Are you sure to delete this?"}
+                    message={props.t("Are you sure to delete this?")}
                     setIsYes={setIsYes}
                 />
             </>

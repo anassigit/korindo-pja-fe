@@ -190,7 +190,7 @@ const Instructions = (props) => {
     const appInstructionsp01Tabel = [
         {
             dataField: "num",
-            text: "No.",
+            text: props.t("No."),
             sort: true,
             align: "center",
             headerStyle: { textAlign: 'center' },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import RootPageCustom from '../../common/RootPageCustom'
 import { useFormik, } from "formik"
 import * as Yup from "yup"
@@ -17,16 +17,15 @@ import {
     Spinner,
     FormGroup,
     CardHeader,
-    UncontrolledAlert,
+    UncontrolledAlert
 } from "reactstrap"
 
-import { editUserProfile, resetMessage, getProfile } from "../../store/Profile/actions"
+import { editUserProfile, resetMessage } from "../../store/Profile/actions"
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session'
 import ChangePassword from "./ChangePassword"
 import { withTranslation } from "react-i18next"
 import PropTypes from "prop-types"
-
 
 const UserProfile = (props) => {
 

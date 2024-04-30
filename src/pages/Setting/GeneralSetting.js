@@ -105,14 +105,14 @@ const GeneralSetting = (props) => {
                         <Col>
                             <Card>
                                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                                    <strong>General Setting</strong>
+                                    <strong>{props.t("General Setting")}</strong>
                                 </CardHeader>
                                 <CardBody>
                                     <React.Fragment>
                                         <Row className="mb-2">
                                             <Col md="12" lg="4">
                                                 <Row className="mb-2">
-                                                    <b>Notification Setting</b>
+                                                    <b>{props.t("Notification Setting")}</b>
                                                 </Row>
                                                 <Row>
                                                     <label>
@@ -150,7 +150,7 @@ const GeneralSetting = (props) => {
                                                             checked={radioValue3 === "0"}
                                                             onChange={handleRadioChange3}
                                                         />
-                                                        &nbsp;WhatsApp
+                                                        &nbsp;{props.t("WhatsApp")}
                                                     </label>
                                                     <label>
                                                         <Input

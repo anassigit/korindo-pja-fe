@@ -89,7 +89,7 @@ const RoleAccessSetting = props => {
         },
         {
             dataField: "roleName",
-            text: "Role Name",
+            text: props.t("Role Name"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
@@ -104,14 +104,14 @@ const RoleAccessSetting = props => {
         },
         {
             dataField: "menuName",
-            text: "Menu Name",
+            text: props.t("Menu Name"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
         },
         {
             dataField: "groupName",
-            text: "Group Name",
+            text: props.t("Group Name"),
             sort: true,
             style: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '20vw' },
             headerStyle: { textAlign: "center" },
@@ -129,7 +129,7 @@ const RoleAccessSetting = props => {
         },
         {
             dataField: "bcreate",
-            text: "Create",
+            text: props.t("Create"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
@@ -139,7 +139,7 @@ const RoleAccessSetting = props => {
         },
         {
             dataField: "bread",
-            text: "Read",
+            text: props.t("Read"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
@@ -149,7 +149,7 @@ const RoleAccessSetting = props => {
         },
         {
             dataField: "bupdate",
-            text: "Update",
+            text: props.t("Update"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
@@ -159,7 +159,7 @@ const RoleAccessSetting = props => {
         },
         {
             dataField: "bprint",
-            text: "Print",
+            text: props.t("Print"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
@@ -169,7 +169,7 @@ const RoleAccessSetting = props => {
         },
         {
             dataField: "bdelete",
-            text: "Delete",
+            text: props.t("Delete"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" },
@@ -178,7 +178,7 @@ const RoleAccessSetting = props => {
             },
         },
         {
-            text: "Actions",
+            text: props.t("Actions"),
             headerStyle: { textAlign: "center" },
             style: { textAlign: "center", fontSize: "16px" },
             formatter: (_cellContent, cellData, index) => {
@@ -253,7 +253,7 @@ const RoleAccessSetting = props => {
                                 }}
                             >
                                 <label className="col-sm-3" style={{ marginTop: "8px" }}>
-                                    {"Search"}
+                                    {props.t("Search")}
                                 </label>
                                 <div className="col-sm-5">
                                     <input
@@ -270,7 +270,7 @@ const RoleAccessSetting = props => {
                                         className="btn btn-primary btn-block"
                                         onClick={() => handleClick()}
                                     >
-                                        {"Search"}
+                                        {props.t("Search")}
                                     </button>
                                 </div>
                             </div>
@@ -286,7 +286,7 @@ const RoleAccessSetting = props => {
                             }}
                         >
                             <Button onClick={() => preAddApp()}>
-                                <span className="mdi mdi-plus" /> {"Add New Role Access"}
+                                <span className="mdi mdi-plus" /> {props.t("Add New Role Access")}
                             </Button>
                         </div>
 
@@ -319,7 +319,7 @@ const RoleAccessSetting = props => {
                             }}
                         >
                             <span className="mdi mdi-arrow-left" />
-                            &nbsp;{"Back"}
+                            &nbsp;{props.t("Back")}
                         </Button>
                     </Container>
                 )
@@ -327,7 +327,7 @@ const RoleAccessSetting = props => {
             <ConfirmModal
                 modal={modal}
                 toggle={toggleDeleteModal}
-                message={"Are you sure to delete this?"}
+                message={props.t("Are you sure to delete this?")}
                 setIsYes={setIsYes}
             />
         </>
