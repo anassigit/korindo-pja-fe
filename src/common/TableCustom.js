@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from "react-bootstrap-table2-paginator"
@@ -12,35 +12,35 @@ const TableCustom = (props) => {
     const history = useHistory()
     const location = useLocation()
     const currentPageFromURL = parseInt(new URLSearchParams(location.search).get("page"))
+    const [isFirstRender, setIsFirstRender] = useState(true)
 
     const customHandleTableChange = (type, { page, sortField, sortOrder, sizePerPage }) => {
-        if (type === "sort") props.searchSet({ 
-            page: 1, 
-            limit: 
-            sizePerPage, 
-            offset: 0, 
-            sort: sortField, 
-            order: sortOrder, 
-            search: props.searchGet.search 
+        if (type === "sort") props.searchSet({
+            page: 1,
+            limit: sizePerPage,
+            offset: 0,
+            sort: sortField,
+            order: sortOrder,
+            search: props.searchGet.search
         })
         if (type === "pagination") {
-            props.searchSet({ 
-                page, 
-                limit: sizePerPage, 
-                offset: ((page - 1) * sizePerPage), 
-                sort: props.searchGet.sort, 
-                order: props.searchGet.order, 
-                search: props.searchGet.search 
+            props.searchSet({
+                page,
+                limit: sizePerPage,
+                offset: ((page - 1) * sizePerPage),
+                sort: props.searchGet.sort,
+                order: props.searchGet.order,
+                search: props.searchGet.search
             })
             history.push(`?page=${page}`)
         }
-        if (type === "link") props.searchSet({ 
-            page, 
-            limit: sizePerPage, 
-            offset: ((page - 1) * sizePerPage), 
-            sort: props.searchGet.sort, 
-            order: props.searchGet.order, 
-            search: props.searchGet.search 
+        if (type === "link") props.searchSet({
+            page,
+            limit: sizePerPage,
+            offset: ((page - 1) * sizePerPage),
+            sort: props.searchGet.sort,
+            order: props.searchGet.order,
+            search: props.searchGet.search
         })
     }
 
@@ -55,10 +55,11 @@ const TableCustom = (props) => {
                     sortOrder: props.searchGet.order,
                     sizePerPage: props.searchGet.limit,
                 })
-            } else {
+            } else if (!isFirstRender) {
                 dispatch(props.redukCall(props.searchGet))
             }
         }
+        setIsFirstRender(false)
     }, [location.pathname, location.search, props.searchGet, currentPageFromURL])
 
     return (
