@@ -21,7 +21,7 @@ import {
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useSelector, useDispatch } from "react-redux"
 import { ReactSession } from 'react-client-session';
-import { updateUserPassword, editUserProfile } from "../../store/appUserProfile/actions"
+import { updateUserPassword, editUserProfile } from "../../store/Profile/actions"
 import { useHistory } from "react-router-dom";
 
 

@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { updateForgotPassword } from "../../store/appUserProfile/actions"
+import { updateForgotPassword } from "../../store/Profile/actions"
 
 import { useHistory } from "react-router-dom";
 import { ReactSession } from 'react-client-session';

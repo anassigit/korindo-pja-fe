@@ -18,6 +18,7 @@ const TableCustom = (props) => {
 
     const [currentPage, setCurrentPage] = useState(0);
     const [tempDispatch, setTempDispatch] = useState(0);
+    const [isFirstRender, setIsFirstRender] = useState(true)
 
     // Custom handler for table change (pagination and sorting)
     const customHandleTableChange = (type, { page, sortField, sortOrder, sizePerPage }) => {
@@ -37,29 +38,27 @@ const TableCustom = (props) => {
     }
 
     useEffect(() => {
-
-        if (props.searchGet.page !== currentPageFromURL) {
-            customHandleTableChange("link", {
-                page: currentPageFromURL,
-                sortField: props.searchGet.sort,
-                sortOrder: props.searchGet.order,
-                sizePerPage: props.searchGet.limit,
-            });
-            setCurrentPage(currentPageFromURL)
-        }
-    }, [currentPageFromURL]);
-
-    useEffect(() => {
-        // Check if the current route is /AppInstructions
+        console.log(location.pathname)
+        console.log(location.search)
+        console.log(props.searchGet)
+        console.log(currentPageFromURL)
         if (location.pathname === "/AppInstructions" && !location.search) {
             history.replace("/AppInstructions?page=1");
+        } else if (location.pathname === "/AppInstructions") {
+            if (props.searchGet.page !== currentPageFromURL) {
+                customHandleTableChange("link", {
+                    page: currentPageFromURL,
+                    sortField: props.searchGet.sort,
+                    sortOrder: props.searchGet.order,
+                    sizePerPage: props.searchGet.limit,
+                });
+                setCurrentPage(currentPageFromURL)
+            } else if (!isFirstRender) {
+                dispatch(props.redukCall(props.searchGet));
+            }
         }
-
-        // Conditionally dispatch based on the page
-        if (location.pathname === "/AppInstructions") {
-            dispatch(props.redukCall(props.searchGet));
-        }
-    }, [location.pathname, location.search, props.searchGet]);
+        setIsFirstRender(false)
+    }, [location.pathname, location.search, props.searchGet, currentPageFromURL]);
 
     return (
         <Card className="m-0 p-0">

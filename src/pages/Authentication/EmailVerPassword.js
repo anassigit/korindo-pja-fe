@@ -15,7 +15,7 @@ import { useFormik } from "formik";
 
 import { ReactSession } from 'react-client-session';
 // actions
-import { emailForgotPassword, msgEmailForgotPassword } from "../../store/appUserProfile/actions"
+import { emailForgotPassword, msgEmailForgotPassword } from "../../store/Profile/actions"
 
 import { useHistory } from "react-router-dom";
 
