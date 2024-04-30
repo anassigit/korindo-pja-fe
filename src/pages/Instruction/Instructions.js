@@ -158,10 +158,9 @@ const Instructions = (props) => {
                 group: appInstructionsTabelSearch.search.group,
             }
         })
-
         dispatch(getGroupListData({ search: { langType: langType } }))
         dispatch(getAllStatusData({ search: { langType: langType } }))
-    }, [props.t, langType])
+    }, [langType])
 
     const appInstructionsData = useSelector(state => {
         return state.instructionsReducer.respGetInstructions
@@ -175,8 +174,6 @@ const Instructions = (props) => {
             setAppInstructionsMsg(ReactSession.get('appEditInstructionsMsg'))
             ReactSession.set('appEditInstructionsMsg', null)
         }
-
-        dispatch(getGroupListData({ search: { langType: langType } }))
         setLoadingSpinner(false)
     }, [appInstructionsData])
 

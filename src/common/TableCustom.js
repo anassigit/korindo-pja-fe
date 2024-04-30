@@ -45,7 +45,6 @@ const TableCustom = (props) => {
     }
 
     useEffect(() => {
-        debugger
         if (location.pathname === "/AppInstructions" && !location.search) {
             history.replace("/AppInstructions?page=1")
         } else if (location.pathname === "/AppInstructions") {
