@@ -2,7 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects"
 import { LOGIN_USER, LOGOUT_USER, RELOGIN_USER } from "./actionTypes"
 import { apiError, loginSuccess, reloginSuccess } from "./actions"
 import { ReactSession } from 'react-client-session'
-import { login, getMenuBE, getSelectMenu } from "helpers/backend_helper"
+import { loginBE, getMenuListBE, getGroupRuleMenuListBE } from "helpers/backend_helper"
 
 window.onpopstate = function (event) {
   if (event?.currentTarget?.location?.pathname === '/login' && localStorage.getItem("authUser") !== null) {
@@ -12,10 +12,10 @@ window.onpopstate = function (event) {
 
 function* loginUser({ payload: { user, history } }) {
   try {
-    const response = yield call(login, user)
+    const response = yield call(loginBE, user)
     if (response.status == 1) {
       localStorage.setItem("authUser", response.data.KOR_TOKEN)
-      const menu = yield call(getMenuBE, '')
+      const menu = yield call(getMenuListBE, '')
       if (menu.status == '1') {
         const menuData = {
           menu: menu.data.result,
@@ -23,7 +23,7 @@ function* loginUser({ payload: { user, history } }) {
         }
 
         localStorage.setItem("menu", JSON.stringify(menuData))
-        const menuRule = yield call(getSelectMenu, '')
+        const menuRule = yield call(getGroupRuleMenuListBE, '')
         if (menuRule.status == '1') {
           const menuString2 = JSON.stringify(menuRule)
           localStorage.setItem('menuRule', menuString2)
@@ -53,10 +53,10 @@ function* loginUser({ payload: { user, history } }) {
 
 function* reloginUser({ payload: { user, history } }) {
   try {
-    const response = yield call(login, user)
+    const response = yield call(loginBE, user)
     if (response.status == 1) {
       localStorage.setItem("authUser", response.data.KOR_TOKEN)
-      const menu = yield call(getMenuBE, '')
+      const menu = yield call(getMenuListBE, '')
       if (menu.status == '1') {
 
         const menuData = {
@@ -66,7 +66,7 @@ function* reloginUser({ payload: { user, history } }) {
 
         localStorage.setItem("menu", JSON.stringify(menuData))
 
-        const menuRule = yield call(getSelectMenu, '')
+        const menuRule = yield call(getGroupRuleMenuListBE, '')
         if (menuRule.status == '1') {
           const menuString2 = JSON.stringify(menuRule)
           localStorage.setItem('menuRule', menuString2)

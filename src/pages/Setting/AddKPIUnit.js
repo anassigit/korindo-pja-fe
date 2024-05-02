@@ -62,7 +62,7 @@ const AddKPIUnit = props => {
             <Card style={{ marginBottom: 0 }}>
                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                     <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-                    Add New KPI Unit
+                    {props.t('Add New KPI Unit')}
                 </CardHeader>
                 <CardBody>
                     <Form
@@ -81,7 +81,7 @@ const AddKPIUnit = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Unit Name"}{" "}
+                                            {props.t("Unit Name")}{" "}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -114,7 +114,7 @@ const AddKPIUnit = props => {
                                         ></Label>
                                     </div>
                                     <div className="col-8">
-                                        <Button type="submit">{"Submit"}</Button>
+                                        <Button type="submit">{props.t("Submit")}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@ const AddKPIUnit = props => {
                 }}
             >
                 <span className="mdi mdi-arrow-left" />
-                &nbsp;{"Back"}
+                &nbsp;{props.t("Back")}
             </Button>
         </Container>
     )

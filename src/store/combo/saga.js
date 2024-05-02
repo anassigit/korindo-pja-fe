@@ -3,12 +3,12 @@ import { call, put, takeEvery } from "redux-saga/effects"
 import { GET_COMBO } from "./actionTypes"
 import { msgComboGysAreaType, msgComboRoleAksesType, msgComboSatuan, msgComboSatMaterial, msgComboType, msgComboJenisApproval } from "./actions"
 
-import { getCombo } from "helpers/backend_helper"
+import { getComboBE } from "helpers/backend_helper"
 
 
 function* fetchGetComboData({ payload: req }) {
   try {
-    const response = yield call(getCombo, req)
+    const response = yield call(getComboBE, req)
     if (req.name == "combo-gis-area-type") {
       yield put(msgComboGysAreaType(response))
     } else if (req.name == "combo-akse-apps") {

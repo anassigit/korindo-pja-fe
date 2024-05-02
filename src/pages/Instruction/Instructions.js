@@ -35,30 +35,17 @@ const Instructions = (props) => {
     const [appAddInstructions, setAppAddInstructions] = useState(false)
     const [appEditInstructions, setEditInstructions] = useState(false)
     const [appInstructionsMsg, setAppInstructionsMsg] = useState("")
-    const [appInstructionsMsg2, setAppInstructionsMsg2] = useState("")
     const [instructionsData, setInstructionsData] = useState()
-
     const [selected, setSelected] = useState()
-    const [selectedStatusId, setSelectedStatusId] = useState([])
     const [selectedArray, setSelectedArray] = useState([])
-
     const [selected2, setSelected2] = useState(localSelected2 ? localSelected2 : null)
-    const [getData, setGetData] = useState([])
-    const [getData2, setGetData2] = useState([])
     const [isClosed, setIsClosed] = useState(false)
-
     const [dateFrom, setDateFrom] = useState(ReactSession.get('dateFrom') ? ReactSession.get('dateFrom') : "")
     const [dateTo, setDateTo] = useState(ReactSession.get('dateTo') ? ReactSession.get('dateTo') : "")
-
     const [searchValue, setSearchValue] = useState(ReactSession.get('searchValue') ? ReactSession.get('searchValue') : '')
-
     const [loadingSpinner, setLoadingSpinner] = useState(false)
-
-    const [modal, setModal] = useState(false)
-
-    const [sessionAppInstructionsTabelSearch, setSessionAppInstructionsTabelSearch] = useState(
-        ReactSession.get("appInstructionsTabelSearch") || null
-    )
+    const [replyModal, setReplyModal] = useState(false)
+    const [sessionAppInstructionsTabelSearch, setSessionAppInstructionsTabelSearch] = useState(ReactSession.get("appInstructionsTabelSearch") || null)
 
     const defaultAppInstructionsTabelSearch = {
         page: 1,
@@ -332,14 +319,6 @@ const Instructions = (props) => {
             ),
             events: {
                 onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
-                    dispatch(getReply({
-                        offset: 0,
-                        limit: 5,
-                        search: {
-                            num: appInstructionsData.num.toString(),
-                            langType: langType,
-                        }
-                    }))
                     setInstructionsData(appInstructionsData.num.toString())
                     toggle()
                 },
@@ -481,7 +460,7 @@ const Instructions = (props) => {
     }
 
     const toggle = () => {
-        setModal(!modal)
+        setReplyModal(!replyModal)
     }
 
     return (
@@ -667,8 +646,8 @@ const Instructions = (props) => {
                         />
                     }
                     {
-                        modal && <ReplyModal
-                            modal={modal}
+                        replyModal && <ReplyModal
+                            modal={replyModal}
                             toggle={toggle}
                             data={instructionsData}
                             setLoadingSpinner={setLoadingSpinner}

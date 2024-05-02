@@ -1,5 +1,4 @@
 import {
-    GET_KPI_ITEM_LIST,
     GET_CORPORATION_LIST,
     GET_DASHBOARD_KPI,
     GET_GROUP_LIST_KPI,
@@ -8,7 +7,6 @@ import {
     GET_UNIT_LIST,
     DOWNLOAD_KPI_TEMPLATE,
     RESET_MESSAGE,
-    RESP_GET_KPI_ITEM_LIST,
     RESP_GET_CORPORATION_LIST,
     RESP_GET_DASHBOARD_KPI,
     RESP_GET_GROUP_LIST_KPI,
@@ -79,10 +77,6 @@ const kpiReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 respGetCorporationList: action.payload,
-            }
-        case GET_KPI_ITEM_LIST:
-            return {
-                ...state,
             }
         case GET_KPI_MASTER:
             return {

@@ -26,7 +26,7 @@ import Create from "./Create"
 import MoveFile from "./MoveFile"
 import ImagePreview from "./ImagePreview"
 import ConfirmModal from "components/Common/ConfirmModal"
-import { downloadFileFolder } from "helpers/backend_helper"
+import { downloadFileFolderBE } from "helpers/backend_helper"
 import { withTranslation } from "react-i18next"
 import MsgModal from 'components/Common/MsgModal'
 import "../../assets/scss/contextmenu.scss"
@@ -85,7 +85,7 @@ const DataInquiry = (props) => {
     const [fNem, setFnem] = useState("")
     const [fName, setFName] = useState("")
     const [tempIdDel, setTempIdDel] = useState()
-    const [currFolder, setCurrFolder] = useState()
+    const [currentFolder, setCurrentFolder] = useState()
     const [idNowLoc, setIdNowLoc] = useState(0)
     const [typeRename, setTypeRename] = useState("")
     const [downloadMsg, setDownloadMsg] = useState(false)
@@ -122,7 +122,7 @@ const DataInquiry = (props) => {
     const folderNum = new URLSearchParams(window.location.search).get("folder_num")
 
     const toggleRenameModal = (idT, nmT, tpT) => {
-        setIdNowLoc(currFolder)
+        setIdNowLoc(currentFolder)
         setToggleId(idT)
         if (tpT === "FILE") {
             var realNm = nmT.split('.').slice(0, -1).join('.')
@@ -169,13 +169,13 @@ const DataInquiry = (props) => {
     }
 
     const toggleUploadModal = () => {
-        setIdNowLoc(currFolder)
+        setIdNowLoc(currentFolder)
         setUploadModal(!uploadModal)
         setIdToggleUpload(childId)
     }
 
     const toggleCreateModal = () => {
-        setIdNowLoc(currFolder)
+        setIdNowLoc(currentFolder)
         setCreateModal(!createModal)
         setIdToggleCreate(childId)
         setTimeout(() => {
@@ -190,7 +190,7 @@ const DataInquiry = (props) => {
         setFnum(Fid)
         setPnum(Pid)
         setFName(fNem)
-        setIdNowLoc(currFolder)
+        setIdNowLoc(currentFolder)
         setMoveModal(!moveModal)
     }
 
@@ -228,10 +228,10 @@ const DataInquiry = (props) => {
     }
 
     const getInsideFolder = (e, f, n) => {
-        setCurrFolder(e)
+        setCurrentFolder(e)
         history.push(`?folder_num=${e}`)
         setEnterMonthlyDataSpinner(true)
-        if (currFolder?.toString() === e?.toString()) {
+        if (currentFolder?.toString() === e?.toString()) {
             setEnterMonthlyDataSpinner(false)
         }
         setChildId(e)
@@ -250,7 +250,7 @@ const DataInquiry = (props) => {
                 }
             ))
             if (deleteFileMsg?.status == "1") {
-                dispatch(getSelectFile({ 'folder_num': currFolder }))
+                dispatch(getSelectFile({ 'folder_num': currentFolder }))
                 setIsYes(!isYes)
             }
         }
@@ -287,7 +287,7 @@ const DataInquiry = (props) => {
 
     const downloadFolderFile = async () => {
         try {
-            dispatch(downloadFileFolder({
+            dispatch(downloadFileFolderBE({
                 file_num: tempNum,
                 file_nm: tempFileName
             }))
@@ -377,7 +377,7 @@ const DataInquiry = (props) => {
 
     useEffect(() => {
         if (folderNum) {
-            setCurrFolder(folderNum)
+            setCurrentFolder(folderNum)
             dispatch(getSelectFile({ 'folder_num': folderNum }))
         } else {
             dispatch(getSelectFile({}))

@@ -54,27 +54,27 @@ const KPIItemSetting = (props) => {
     const appColumn = [
         {
             dataField: "kpiItemId",
-            text: 'KPI Item ID',
+            text: props.t('KPI Item ID'),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "itemName",
-            text: 'KPI Item Name',
+            text: props.t('KPI Item Name'),
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "category.categoryName",
-            text: 'Category Name',
+            text: props.t("Category Name"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "unit.unitName",
-            text: 'Unit Name',
+            text: props.t('Unit Name'),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
@@ -249,7 +249,7 @@ const KPIItemSetting = (props) => {
                         <Button
                             onClick={() => preAddApp()}
                         >
-                            <span className="mdi mdi-plus" /> {'Add New KPI Item'}
+                            <span className="mdi mdi-plus" /> {props.t('Add New KPI Item')}
                         </Button>
                     </div>
                     <TableCustom3

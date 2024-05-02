@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 import { LOV_MENU_PARENT, LOV_USER, LOV_DIV, LOV_COMPANY, LOV_MENU, LOV_MENU_PARENT_LIST, LOV_MENU_ROLE_LIST, LOV_GET_KPI_CATEGORY_LIST, LOV_GET_KPI_UNIT_LIST } from "./actionTypes"
 import { msgLov } from "./actions"
-import { getMenuParent, getUser, getDiv, getLovMenu, getLovParentMenuListBE, getRoleUser, getLovParentRoleListBE, getKPICategoryListForKPIItemBE, getKPIUnitListForKPIItemBE } from "helpers/backend_helper"
+import { getMenuParent, getUserBE, getDiv, getLovMenu, getLovParentMenuListBE, getRoleUser, getLovParentRoleListBE, getKPICategoryListForKPIItemBE, getKPIUnitListForKPIItemBE } from "helpers/backend_helper"
 
 function* fetchGetMenuParent({ payload: req }) {
     try {
@@ -19,7 +19,7 @@ function* fetchGetMenuParent({ payload: req }) {
 
 function* fetchGetUser({ payload: req }) {
     try {
-        const response = yield call(getUser, req)
+        const response = yield call(getUserBE, req)
         if (response.status == 1) {
             yield put(msgLov(response))
         } else {

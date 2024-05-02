@@ -73,20 +73,20 @@ const AddKPIItem = props => {
     const appLovCategoryListColumns = [
         {
             dataField: "categoryId",
-            text: "Category ID",
+            text: props.t("Category ID"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" }
         },
         {
             dataField: "categoryName",
-            text: "Category Name",
+            text: props.t("Category Name"),
             sort: true,
             headerStyle: { textAlign: "center" }
         },
         {
             dataField: "increase",
-            text: "Increase",
+            text: props.t("Increase"),
             sort: true,
             headerStyle: { textAlign: "center" }
         }
@@ -95,14 +95,14 @@ const AddKPIItem = props => {
     const appLovUnitListColumns = [
         {
             dataField: "unitId",
-            text: "Unit ID",
+            text: props.t("Unit ID"),
             sort: true,
             style: { textAlign: "center" },
             headerStyle: { textAlign: "center" }
         },
         {
             dataField: "unitName",
-            text: "Unit Name",
+            text: props.t("Unit Name"),
             sort: true,
             headerStyle: { textAlign: "center" }
         }
@@ -128,7 +128,7 @@ const AddKPIItem = props => {
             <Card style={{ marginBottom: 0 }}>
                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                     <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-                    Add New KPI Item
+                    {props.t('Add New KPI Item')}
                 </CardHeader>
                 <CardBody>
                     <Form
@@ -147,13 +147,13 @@ const AddKPIItem = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Category ID"}
+                                            {props.t("Category ID")}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Lovv2
-                                            title={"Category"}
+                                            title={props.t("Category")}
                                             keyFieldData="categoryId"
                                             columns={appLovCategoryListColumns}
                                             getData={getKPICategoryListLov}
@@ -180,7 +180,7 @@ const AddKPIItem = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Category Name"}
+                                            {props.t("Category Name")}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -214,13 +214,13 @@ const AddKPIItem = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Unit ID"}
+                                            {props.t("Unit ID")}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
                                     <div className="col-8" style={{ marginTop: "-8px" }}>
                                         <Lovv2
-                                            title={"Unit"}
+                                            title={props.t("Unit")}
                                             keyFieldData="unitId"
                                             columns={appLovUnitListColumns}
                                             getData={getKPIUnitListLov}
@@ -247,7 +247,7 @@ const AddKPIItem = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Unit Name"}
+                                            {props.t("Unit Name")}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -284,7 +284,7 @@ const AddKPIItem = props => {
                                         ></Label>
                                     </div>
                                     <div className="col-8">
-                                        <Button type="submit">{"Submit"}</Button>
+                                        <Button type="submit">{props.t("Submit")}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -300,7 +300,7 @@ const AddKPIItem = props => {
                 }}
             >
                 <span className="mdi mdi-arrow-left" />
-                &nbsp;{"Back"}
+                &nbsp;{props.t("Back")}
             </Button>
         </Container>
     )

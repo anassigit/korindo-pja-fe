@@ -25,7 +25,7 @@ import "../../assets/scss/custom.scss"
 import "../../config"
 import { withTranslation } from "react-i18next"
 
-const EditKPICategory = props => {
+const EditKPICategory = (props) => {
 
     const dispatch = useDispatch()
 
@@ -96,7 +96,7 @@ const EditKPICategory = props => {
             <Card style={{ marginBottom: 0 }}>
                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                     <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-                    Edit KPI Category
+                    {props.t("Edit KPI Category")}
                 </CardHeader>
                 <CardBody>
                     <Form
@@ -115,7 +115,7 @@ const EditKPICategory = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Category ID"}{" "}
+                                            {props.t("Category ID")}{" "}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -146,7 +146,7 @@ const EditKPICategory = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Category Name"}{" "}
+                                            {props.t("Category Name")}{" "}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -176,7 +176,7 @@ const EditKPICategory = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Increase"}{" "}
+                                            {props.t("Increase")}{" "}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -216,7 +216,7 @@ const EditKPICategory = props => {
                                         ></Label>
                                     </div>
                                     <div className="col-8">
-                                        <Button type="submit">{"Submit"}</Button>
+                                        <Button type="submit">{props.t("Submit")}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@ const EditKPICategory = props => {
                 }}
             >
                 <span className="mdi mdi-arrow-left" />
-                &nbsp;{"Back"}
+                &nbsp;{props.t("Back")}
             </Button>
         </Container>
     )

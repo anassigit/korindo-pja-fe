@@ -46,7 +46,7 @@ import moment from "moment"
 import { ReactSession } from "react-client-session"
 import Select, { components } from "react-select"
 import shortid from "shortid"
-import { downloadFiles } from "helpers/backend_helper"
+import { downloadFileBE } from "helpers/backend_helper"
 import { useHistory } from "react-router-dom/cjs/react-router-dom"
 import RootPageCustom from "common/RootPageCustom"
 import ConfirmModal from "components/Common/ConfirmModal"
@@ -1411,7 +1411,7 @@ const EditInstruction = props => {
                 file_num: numTemp,
                 file_nm: fileNmTemp,
             }
-            await dispatch(downloadFiles(indexed_array))
+            await dispatch(downloadFileBE(indexed_array))
         } catch (error) {
             console.log(error)
         }

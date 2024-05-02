@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import '../../assets/scss/custom/modal/modal.css'
+import { withTranslation } from 'react-i18next'
 
 const PdfViewerModal = (props) => {
 
@@ -11,7 +12,7 @@ const PdfViewerModal = (props) => {
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static" style={{ maxWidth: '80vw' }}>
-            <ModalHeader toggle={props.toggle}>PDF Viewer</ModalHeader>
+            <ModalHeader toggle={props.toggle}>{props.t("PDF Viewer")}</ModalHeader>
             <ModalBody>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     {
@@ -20,7 +21,7 @@ const PdfViewerModal = (props) => {
                         ) :
                             (
                                 <span className="text-danger">
-                                    File Doesn&#39t Exist
+                                    {props.t("File doesn't exist")}
                                 </span>
                             )
                     }
@@ -28,7 +29,7 @@ const PdfViewerModal = (props) => {
             </ModalBody>
             <ModalFooter>
                 <Button color="danger" onClick={toggleClose}>
-                    Close
+                    {props.t("Close")}
                 </Button>
             </ModalFooter>
         </Modal>
@@ -39,7 +40,8 @@ PdfViewerModal.propTypes = {
     modal: PropTypes.bool,
     toggle: PropTypes.func,
     url: PropTypes.string,
-    pageNum: PropTypes.any
+    pageNum: PropTypes.any,
+    t: PropTypes.any
 }
 
-export default PdfViewerModal
+export default withTranslation()(PdfViewerModal)

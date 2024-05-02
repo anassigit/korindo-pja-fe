@@ -34,23 +34,23 @@ import {
 } from "./actions"
 import {
 
-    selectFolder,
-    deleteFileFolder,
-    renameFileFolder,
-    downloadFileFolder,
-    downloadCheck,
-    uploadFileFolder,
-    moveFileFolder,
-    createFolder,
-    searchFile,
-    getMonthlyData,
-    getYear,
-    getMonth
+    selectFolderBE,
+    deleteFileFolderBE,
+    renameFileFolderBE,
+    downloadFileFolderBE,
+    downloadCheckBE,
+    uploadFileFolderBE,
+    moveFileFolderBE,
+    createFolderBE,
+    searchFileBE,
+    getMonthlyDataBE,
+    getYearBE,
+    getMonthBE
 } from "helpers/backend_helper"
 
 function* fetchGetSelectFolder({ payload: req }) {
     try {
-        const response = yield call(selectFolder, req)
+        const response = yield call(selectFolderBE, req)
         if (response.status == 1) {
             yield put(respGetSelect(response))
         } else {
@@ -64,7 +64,7 @@ function* fetchGetSelectFolder({ payload: req }) {
 
 function* fetchGetSelectFolder2({ payload: req }) {
     try {
-        const response = yield call(selectFolder, req)
+        const response = yield call(selectFolderBE, req)
         if (response.status == 1) {
             yield put(respGetSelect2(response))
         } else {
@@ -78,7 +78,7 @@ function* fetchGetSelectFolder2({ payload: req }) {
 
 function* fetchGetSearchFile({ payload: req }) {
     try {
-        const response = yield call(searchFile, req)
+        const response = yield call(searchFileBE, req)
         if (response.status == 1) {
             yield put(respSearchFile(response))
         } else {
@@ -92,7 +92,7 @@ function* fetchGetSearchFile({ payload: req }) {
 
 function* fetchGetDownloadCheckFile({ payload: req }) {
     try {
-        const response = yield call(downloadCheck, req)
+        const response = yield call(downloadCheckBE, req)
         if (response.status == 1) {
             yield put(respGetDownloadCheckFile(response))
         } else {
@@ -107,7 +107,7 @@ function* fetchGetDownloadCheckFile({ payload: req }) {
 function* fetchDeleteFileFolder({ payload: req }) {
     try {
 
-        const response = yield call(deleteFileFolder, req)
+        const response = yield call(deleteFileFolderBE, req)
         yield put(msgDelete(response))
     } catch (error) {
         console.log(error);
@@ -118,7 +118,7 @@ function* fetchDeleteFileFolder({ payload: req }) {
 function* fetchRenameFileFolder({ payload: req }) {
     try {
 
-        const response = yield call(renameFileFolder, req)
+        const response = yield call(renameFileFolderBE, req)
         yield put(msgRename(response))
     } catch (error) {
         console.log(error);
@@ -129,7 +129,7 @@ function* fetchRenameFileFolder({ payload: req }) {
 function* fetchDownloadfiles({ payload: req }) {
     try {
 
-        yield call(downloadFileFolder, req)
+        yield call(downloadFileFolderBE, req)
     } catch (error) {
         yield put(msgDownload({ "status": 0, "message": "Error Download Data" }))
     }
@@ -137,7 +137,7 @@ function* fetchDownloadfiles({ payload: req }) {
 
 function* fetchUploadfiles({ payload: req }) {
     try {
-        const response = yield call(uploadFileFolder, req)
+        const response = yield call(uploadFileFolderBE, req)
         if (response.status == 1) {
             yield put(msgUpload(response))
         } else {
@@ -150,7 +150,7 @@ function* fetchUploadfiles({ payload: req }) {
 
 function* fetchMovefiles({ payload: req }) {
     try {
-        const response = yield call(moveFileFolder, req)
+        const response = yield call(moveFileFolderBE, req)
         if (response.status == 1) {
             yield put(msgMove(response))
         } else {
@@ -164,7 +164,7 @@ function* fetchMovefiles({ payload: req }) {
 function* fetchCretaeFolder({ payload: req }) {
     try {
 
-        const response = yield call(createFolder, req)
+        const response = yield call(createFolderBE, req)
         yield put(msgCreate(response))
     } catch (error) {
         console.log(error);
@@ -174,7 +174,7 @@ function* fetchCretaeFolder({ payload: req }) {
 
 function* fetchGetMonthlyData({ payload: req }) {
     try {
-        const response = yield call(getMonthlyData, req)
+        const response = yield call(getMonthlyDataBE, req)
         if (response.status == 1) {
             yield put(respGetMonthlyData(response))
         } else {
@@ -188,7 +188,7 @@ function* fetchGetMonthlyData({ payload: req }) {
 
 function* fetchGetMonth({ payload: req }) {
     try {
-        const response = yield call(getMonth, req)
+        const response = yield call(getMonthBE, req)
         if (response.status == 1) {
             yield put(respGetMonth(response))
         } else {
@@ -202,7 +202,7 @@ function* fetchGetMonth({ payload: req }) {
 
 function* fetchGetYear({ payload: req }) {
     try {
-        const response = yield call(getYear, req)
+        const response = yield call(getYearBE, req)
         if (response.status == 1) {
             yield put(respGetYear(response))
         } else {

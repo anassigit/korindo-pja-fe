@@ -51,32 +51,32 @@ import {
 } from "./actions";
 
 import {
-  getInstructions,
-  getManagerList,
-  getOwnerList,
-  getSelectedManager,
-  getInstructions2,
-  saveInstructions,
-  editInstructions,
-  deleteInstructions,
-  getDetailInstruction,
-  saveDescriptions,
-  saveReply,
-  downloadFiles,
-  deleteReply,
-  getReply,
-  getAttachment,
-  editReply,
-  getStatusList,
-  getLogsList,
-  checkFileDownload,
-  getGroupListInstructions,
-  getAllStatus, // Added this import
+  getInstructionsListBE,
+  getManagerListBE,
+  getOwnerListBE,
+  getSelectedManagerBE,
+  getInstructionsList2BE,
+  saveInstructionBE,
+  editInstructionBE,
+  deleteInstructionBE,
+  getDetailInstructionBE,
+  saveDescriptionBE,
+  saveReplyBE,
+  downloadFileBE,
+  deleteReplyBE,
+  getReplyBE,
+  getAttachmentBE,
+  editReplyBE,
+  getStatusListBE,
+  getLogsListBE,
+  checkFileDownloadBE,
+  getGroupListInstructionsBE,
+  getAllStatusBE, // Added this import
 } from "helpers/backend_helper";
 
 function* fetchGetInstructions({ payload: req }) {
   try {
-    const response = yield call(getInstructions, req)
+    const response = yield call(getInstructionsListBE, req)
     if (response.status == 1) {
       yield put(respGetInstructions(response))
     } else {
@@ -90,7 +90,7 @@ function* fetchGetInstructions({ payload: req }) {
 
 function* fetchGetGroupList({ payload: req }) {
   try {
-    const response = yield call(getGroupListInstructions, req)
+    const response = yield call(getGroupListInstructionsBE, req)
     if (response.status == 1) {
       yield put(
         respGetGroupList(response))
@@ -105,7 +105,7 @@ function* fetchGetGroupList({ payload: req }) {
 
 function* fetchGetManager({ payload: req }) {
   try {
-    const response = yield call(getManagerList, req)
+    const response = yield call(getManagerListBE, req)
     if (response.status == 1) {
       yield put(respGetManager(response))
     } else {
@@ -119,7 +119,7 @@ function* fetchGetManager({ payload: req }) {
 
 function* fetchGetOwner({ payload: req }) {
   try {
-    const response = yield call(getOwnerList, req)
+    const response = yield call(getOwnerListBE, req)
     if (response.status == 1) {
       yield put(respGetOwner(response))
     } else {
@@ -133,7 +133,7 @@ function* fetchGetOwner({ payload: req }) {
 
 function* fetchGetSelectedManager({ payload: req }) {
   try {
-    const response = yield call(getSelectedManager, req)
+    const response = yield call(getSelectedManagerBE, req)
     if (response.status == 1) {
       yield put(respGetSelectedManager(response))
     } else {
@@ -147,7 +147,7 @@ function* fetchGetSelectedManager({ payload: req }) {
 
 function* fetchGetInstructions2({ payload: req }) {
   try {
-    const response = yield call(getInstructions2, req)
+    const response = yield call(getInstructionsList2BE, req)
     if (response.status == 1) {
       yield put(respGetInstructions2(response))
     } else {
@@ -162,7 +162,7 @@ function* fetchGetInstructions2({ payload: req }) {
 
 function* fetchSaveInstructions({ payload: req }) {
   try {
-    const response = yield call(saveInstructions, req)
+    const response = yield call(saveInstructionBE, req)
     yield put(msgAdd(response))
   } catch (error) {
     console.log(error);
@@ -172,7 +172,7 @@ function* fetchSaveInstructions({ payload: req }) {
 
 function* fetchEditInstructions({ payload: req }) {
   try {
-    const response = yield call(editInstructions, req)
+    const response = yield call(editInstructionBE, req)
     yield put(msgEdit(response))
   } catch (error) {
     console.log(error);
@@ -182,7 +182,7 @@ function* fetchEditInstructions({ payload: req }) {
 
 function* fetchDeleteInstructions({ payload: req }) {
   try {
-    const response = yield call(deleteInstructions, req)
+    const response = yield call(deleteInstructionBE, req)
     yield put(msgDelete(response))
   } catch (error) {
     console.log(error);
@@ -206,7 +206,7 @@ function* fetchDeleteInstructions({ payload: req }) {
 
 function* fetchGetDetailInstruction({ payload: req }) {
   try {
-    const response = yield call(getDetailInstruction, req)
+    const response = yield call(getDetailInstructionBE, req)
     if (response.status == 1) {
       yield put(respGetDetailInstruction(response))
     } else {
@@ -220,7 +220,7 @@ function* fetchGetDetailInstruction({ payload: req }) {
 
 function* fetchSaveDescriptions({ payload: req }) {
   try {
-    const response = yield call(saveDescriptions, req)
+    const response = yield call(saveDescriptionBE, req)
     yield put(msgAdd(response))
   } catch (error) {
     console.log(error);
@@ -230,7 +230,7 @@ function* fetchSaveDescriptions({ payload: req }) {
 
 function* fetchGetAllStatus({ payload: req }) {
   try {
-    const response = yield call(getAllStatus, req)
+    const response = yield call(getAllStatusBE, req)
     if (response.status == 1) {
       yield put(respGetAllStatus(response))
     } else {
@@ -244,7 +244,7 @@ function* fetchGetAllStatus({ payload: req }) {
 
 function* fetchGetStatus({ payload: req }) {
   try {
-    const response = yield call(getStatusList, req)
+    const response = yield call(getStatusListBE, req)
     if (response.status == 1) {
       yield put(respGetStatus(response))
     } else {
@@ -258,7 +258,7 @@ function* fetchGetStatus({ payload: req }) {
 
 function* fetchGetCheckDownload({ payload: req }) {
   try {
-    const response = yield call(checkFileDownload, req)
+    const response = yield call(checkFileDownloadBE, req)
     if (response.status == 1) {
       yield put(respGetCheckDownload(response))
     } else {
@@ -273,7 +273,7 @@ function* fetchGetCheckDownload({ payload: req }) {
 
 function* fetchGetReply({ payload: req }) {
   try {
-    const response = yield call(getReply, req)
+    const response = yield call(getReplyBE, req)
     if (response.status == 1) {
       yield put(respGetReply(response))
     } else {
@@ -301,7 +301,7 @@ function* fetchGetSelectedReply({ payload: req }) {
 
 function* fetchSaveReply({ payload: req }) {
   try {
-    const response = yield call(saveReply, req)
+    const response = yield call(saveReplyBE, req)
     yield put(msgAddReply(response))
   } catch (error) {
     console.log(error);
@@ -311,7 +311,7 @@ function* fetchSaveReply({ payload: req }) {
 
 function* fetchEditReply({ payload: req }) {
   try {
-    const response = yield call(editReply, req)
+    const response = yield call(editReplyBE, req)
     yield put(msgEditReply(response))
   } catch (error) {
     console.log(error);
@@ -321,7 +321,7 @@ function* fetchEditReply({ payload: req }) {
 
 function* fetchDownloadfiles({ payload: req }) {
   try {
-    yield call(downloadFiles, req)
+    yield call(downloadFileBE, req)
   } catch (error) {
     yield put(msgDownload({ "status": 0, "message": "Error Download Data" }))
   }
@@ -329,7 +329,7 @@ function* fetchDownloadfiles({ payload: req }) {
 
 function* fetchDeleteReply({ payload: req }) {
   try {
-    const response = yield call(deleteReply, req)
+    const response = yield call(deleteReplyBE, req)
     yield put(msgDeleteReply(response))
   } catch (error) {
     console.log(error);
@@ -339,7 +339,7 @@ function* fetchDeleteReply({ payload: req }) {
 
 function* fetchGetAttachment({ payload: req }) {
   try {
-    const response = yield call(getAttachment, req)
+    const response = yield call(getAttachmentBE, req)
     if (response.status == 1) {
       yield put(respGetAttachment(response))
     } else {
@@ -354,7 +354,7 @@ function* fetchGetAttachment({ payload: req }) {
 
 function* fetchGetLogs({ payload: req }) {
   try {
-    const response = yield call(getLogsList, req)
+    const response = yield call(getLogsListBE, req)
     if (response.status == 1) {
       yield put(respGetLogs(response))
     } else {

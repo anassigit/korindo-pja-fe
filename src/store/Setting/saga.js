@@ -83,20 +83,20 @@ import {
 } from "./actions"
 
 import {
-    deleteGroupMapping,
-    deleteMembers,
-    getGroupList,
-    getMembers,
-    getMembersForMapping,
-    getPermissionList,
-    getRankList,
-    getRelationList,
-    getGeneralSetting,
-    saveGroupMapping,
-    saveMembers,
-    updateGeneralSetting,
-    updateGroupMapping,
-    updateMembers,
+    deleteRelationBE,
+    deleteMemberBE,
+    getGroupListBE,
+    getMembersListBE,
+    getMembersListForMappingBE,
+    getPermissionListBE,
+    getRankListBE,
+    getRelationListBE,
+    getGeneralSettingBE,
+    saveRelationBE,
+    saveMemberBE,
+    updateGeneralSettingBE,
+    updateRelationBE,
+    updateMemberBE,
     getMaintainMenuListBE,
     getMaintainMenuBE,
     saveMenuBE,
@@ -133,7 +133,7 @@ import {
 
 function* fetchGetGeneralSetting({ payload: req }) {
     try {
-        const response = yield call(getGeneralSetting, req)
+        const response = yield call(getGeneralSettingBE, req)
         if (response.status == 1) {
             yield put(respGetSetting(response))
         } else {
@@ -147,7 +147,7 @@ function* fetchGetGeneralSetting({ payload: req }) {
 
 function* fetchSaveMembers({ payload: req }) {
     try {
-        const response = yield call(saveMembers, req)
+        const response = yield call(saveMemberBE, req)
         yield put(msgAdd(response))
     } catch (error) {
         console.log(error);
@@ -157,7 +157,7 @@ function* fetchSaveMembers({ payload: req }) {
 
 function* fetchEditMembers({ payload: req }) {
     try {
-        const response = yield call(updateMembers, req)
+        const response = yield call(updateMemberBE, req)
         yield put(msgEdit(response))
     } catch (error) {
         console.log(error);
@@ -167,7 +167,7 @@ function* fetchEditMembers({ payload: req }) {
 
 function* fetchDeleteMembers({ payload: req }) {
     try {
-        const response = yield call(deleteMembers, req)
+        const response = yield call(deleteMemberBE, req)
         yield put(msgDelete(response))
     } catch (error) {
         console.log(error);
@@ -179,7 +179,7 @@ function* fetchDeleteMembers({ payload: req }) {
 
 function* fetchEditGeneralSetting({ payload: req }) {
     try {
-        const response = yield call(updateGeneralSetting, req)
+        const response = yield call(updateGeneralSettingBE, req)
         yield put(msgEdit(response))
     } catch (error) {
         console.log(error);
@@ -191,7 +191,7 @@ function* fetchEditGeneralSetting({ payload: req }) {
 
 function* fetchGetAllMembers({ payload: req }) {
     try {
-        const response = yield call(getMembers, req)
+        const response = yield call(getMembersListBE, req)
         if (response.status == 1) {
             yield put(respGetMembers(response))
         } else {
@@ -205,7 +205,7 @@ function* fetchGetAllMembers({ payload: req }) {
 
 function* fetchGetAllMembers2({ payload: req }) {
     try {
-        const response = yield call(getMembers, req)
+        const response = yield call(getMembersListBE, req)
         if (response.status == 1) {
             yield put(respGetMembers2(response))
         } else {
@@ -221,7 +221,7 @@ function* fetchGetAllMembers2({ payload: req }) {
 
 function* fetchGetAllRankList({ payload: req }) {
     try {
-        const response = yield call(getRankList, req)
+        const response = yield call(getRankListBE, req)
         if (response.status == 1) {
             yield put(respGetRankList(response))
         } else {
@@ -237,7 +237,7 @@ function* fetchGetAllRankList({ payload: req }) {
 
 function* fetchGetAllPermissionList({ payload: req }) {
     try {
-        const response = yield call(getPermissionList, req)
+        const response = yield call(getPermissionListBE, req)
         if (response.status == 1) {
             yield put(respGetPermissionList(response))
         } else {
@@ -253,7 +253,7 @@ function* fetchGetAllPermissionList({ payload: req }) {
 
 function* fetchGetAllGroupList({ payload: req }) {
     try {
-        const response = yield call(getGroupList, req)
+        const response = yield call(getGroupListBE, req)
         if (response.status == 1) {
             yield put(respGetGroupList(response))
         } else {
@@ -269,7 +269,7 @@ function* fetchGetAllGroupList({ payload: req }) {
 
 function* fetchGetAllRelationList({ payload: req }) {
     try {
-        const response = yield call(getRelationList, req)
+        const response = yield call(getRelationListBE, req)
         if (response.status == 1) {
             yield put(respGetRelationList(response))
         } else {
@@ -285,7 +285,7 @@ function* fetchGetAllRelationList({ payload: req }) {
 
 function* fetchSaveGroupMapping({ payload: req }) {
     try {
-        const response = yield call(saveGroupMapping, req)
+        const response = yield call(saveRelationBE, req)
         yield put(msgAdd(response))
     } catch (error) {
         console.log(error);
@@ -295,7 +295,7 @@ function* fetchSaveGroupMapping({ payload: req }) {
 
 function* fetchEditGroupMapping({ payload: req }) {
     try {
-        const response = yield call(updateGroupMapping, req)
+        const response = yield call(updateRelationBE, req)
         yield put(msgEdit(response))
     } catch (error) {
         console.log(error);
@@ -305,7 +305,7 @@ function* fetchEditGroupMapping({ payload: req }) {
 
 function* fetchDeleteGroupMapping({ payload: req }) {
     try {
-        const response = yield call(deleteGroupMapping, req)
+        const response = yield call(deleteRelationBE, req)
         yield put(msgDelete(response))
     } catch (error) {
         console.log(error);
@@ -316,7 +316,7 @@ function* fetchDeleteGroupMapping({ payload: req }) {
 
 function* fetchGetAllMembersMapping({ payload: req }) {
     try {
-        const response = yield call(getMembersForMapping, req)
+        const response = yield call(getMembersListForMappingBE, req)
         if (response.status == 1) {
             yield put(respGetMembersMapping(response))
         } else {

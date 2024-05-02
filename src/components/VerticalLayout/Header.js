@@ -34,8 +34,8 @@ const Header = props => {
             pw: "" || '',
         },
         validationSchema: Yup.object({
-            id: Yup.string().required("아이디를 입력해주세요"),
-            pw: Yup.string().required("비밀번호를 입력해주세요"),
+            id: Yup.string().required(props.t("Please enter your ID")),
+            pw: Yup.string().required(props.t("Please enter your Password"))
         }),
         onSubmit: (values) => {
             dispatch(reloginUser(values, props.history))
@@ -70,17 +70,17 @@ const Header = props => {
                             <div style={{ backgroundColor: '#fefefe', border: '2px solid rgb(0 0 0 / 22%)', margin: 'auto', padding: '50px', width: '450px', height: '480px' }}>
                                 <div className="modal-header">
                                     <h5 className="modal-title mt-0">
-                                        재로그인
+                                        {props.t("Re-login")}
                                     </h5>
                                 </div>
                                 <div className="modal-body">
                                     {error ? <Alert color="danger">{error}</Alert> : null}
                                     <div className="mb-3">
-                                        <Label className="form-label">아이디</Label>
+                                        <Label className="form-label">{props.t("ID")}</Label>
                                         <Input
                                             name="id"
                                             className="form-control"
-                                            placeholder="아이디를 입력해주세요"
+                                            placeholder={props.t("Please enter your ID")}
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
@@ -94,12 +94,12 @@ const Header = props => {
                                         ) : null}
                                     </div>
                                     <div className="mb-3">
-                                        <Label className="form-label">비밀번호</Label>
+                                        <Label className="form-label">{props.t("Password")}</Label>
                                         <Input
                                             name="pw"
                                             value={validation.values.pw || ""}
                                             type="password"
-                                            placeholder="비밀번호를 입력해주세요"
+                                            placeholder={props.t("Please enter your Password")}
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
                                             invalid={
@@ -116,7 +116,7 @@ const Header = props => {
                                             className="btn btn-primary btn-block"
                                             type="submit"
                                         >
-                                            로그인하기
+                                            {props.t("Submit")}
                                         </button>
                                     </div>
                                 </div>

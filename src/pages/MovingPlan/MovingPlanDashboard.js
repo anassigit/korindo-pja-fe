@@ -67,8 +67,8 @@ const MovingPlanDashboard = (props) => {
             if (appListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
-                    title: "No data",
-                    text: "There is no data!",
+                    title: props.t("No Data"),
+                    text: props.t("There is no data!"),
                     confirmButtonColor: "#7BAE40"
                 })
             }
@@ -103,18 +103,18 @@ const MovingPlanDashboard = (props) => {
 
     const getMonthAbbreviation = (monthIndex) => {
         const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
+            props.t("Jan"),
+            props.t("Feb"),
+            props.t("Mar"),
+            props.t("Apr"),
+            props.t("May"),
+            props.t("Jun"),
+            props.t("Jul"),
+            props.t("Aug"),
+            props.t("Sep"),
+            props.t("Oct"),
+            props.t("Nov"),
+            props.t("Dec"),
         ]
         return months[monthIndex - 1]
     }
@@ -500,7 +500,7 @@ const MovingPlanDashboard = (props) => {
                 <>
                     <Card fluid="true" style={{ paddingBottom: '32px' }}>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            Dashboard
+                            {props.t("Dashboard")}
                         </CardHeader>
                         <CardBody>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -519,7 +519,7 @@ const MovingPlanDashboard = (props) => {
                                     >
                                         {Array.isArray(appCompanyCodeListData?.data?.resultList) ? (
                                             <>
-                                                <option value={''}>{"All Company"}</option>
+                                                <option value={''}>{props.t("All Company")}</option>
                                                 {appCompanyCodeListData?.data?.resultList.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item?.companyCode}>
@@ -573,7 +573,9 @@ const MovingPlanDashboard = (props) => {
                                         </label>
                                     </div>
                                     <Button
-                                        className="btn btn-primary" onClick={() => handleSearch()}>
+                                        className="btn btn-primary"
+                                        onClick={() => handleSearch()}
+                                    >
                                         {props.t("Search")}
                                     </Button>
                                 </div>
@@ -588,7 +590,7 @@ const MovingPlanDashboard = (props) => {
                                         }))
                                     }}>
                                     <i className="mdi mdi-download" />{" "}
-                                    Download Excel
+                                    {props.t("Download Excel")}
                                 </Button>
                             </div>
                             <div style={{
@@ -598,7 +600,7 @@ const MovingPlanDashboard = (props) => {
                                 marginTop: '10px',
                                 marginRight: '8px'
                             }}>
-                                * Pre.Y, BP, MP, Actual is In Million (Juta)
+                                {props.t("* Pre.Y, BP, MP, Actual is In Million (Juta)")}
                             </div>
                             <div style={{
                                 overflow: 'auto',
@@ -624,7 +626,7 @@ const MovingPlanDashboard = (props) => {
                                                 minWidth: '300px',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                {"ITEMS"}
+                                                {props.t("ITEMS")}
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>

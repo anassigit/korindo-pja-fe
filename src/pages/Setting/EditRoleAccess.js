@@ -30,7 +30,7 @@ import "../../assets/scss/custom.scss"
 import "../../config"
 import Lovv2 from "common/Lovv2"
 import { withTranslation } from "react-i18next"
-import { getGroupList } from "helpers/backend_helper"
+import { getGroupListBE } from "helpers/backend_helper"
 
 const EditRoleAccess = props => {
     const dispatch = useDispatch()

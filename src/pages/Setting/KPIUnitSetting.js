@@ -54,14 +54,14 @@ const KPIUnitSetting = (props) => {
     const appColumn = [
         {
             dataField: "unitId",
-            text: 'Unit ID',
+            text: props.t("Unit ID"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "unitName",
-            text: 'Unit Name',
+            text: props.t("Unit Name"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
@@ -236,7 +236,7 @@ const KPIUnitSetting = (props) => {
                         <Button
                             onClick={() => preAddApp()}
                         >
-                            <span className="mdi mdi-plus" /> {'Add New KPI Unit'}
+                            <span className="mdi mdi-plus" /> {props.t('Add New KPI Unit')}
                         </Button>
                     </div>
                     <TableCustom3

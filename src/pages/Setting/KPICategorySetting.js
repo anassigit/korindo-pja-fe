@@ -54,21 +54,21 @@ const KPICategorySetting = (props) => {
     const appColumn = [
         {
             dataField: "categoryId",
-            text: 'Category ID',
+            text: props.t("Category ID"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "categoryName",
-            text: 'Category Name',
+            text: props.t("Category Name"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' },
         },
         {
             dataField: "increase",
-            text: 'Increase',
+            text: props.t("Increase"),
             sort: true,
             style: { textAlign: 'center' },
             headerStyle: { textAlign: 'center' }
@@ -243,7 +243,7 @@ const KPICategorySetting = (props) => {
                         <Button
                             onClick={() => preAddApp()}
                         >
-                            <span className="mdi mdi-plus" /> {'Add New KPI Category'}
+                            <span className="mdi mdi-plus" /> {props.t("Add New KPI Category")}
                         </Button>
                     </div>
                     <TableCustom3

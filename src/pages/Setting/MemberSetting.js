@@ -72,7 +72,6 @@ const MemberSetting = (props) => {
                 any: appMembersTabelSearch.search, langType: langType
             }
         })
-        dispatch(getGroupListData({ search: { langType: langType } }))
     }, [langType])
 
     const appMembersp01Tabel = [

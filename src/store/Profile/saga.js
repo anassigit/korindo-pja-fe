@@ -5,11 +5,11 @@ import { GET_PROFILE, EDIT_USER_PROFILE, UPDATE_USER_PASSWORD, EMAIL_FORGOT_PASS
 import { respGetProfile, msgEdit, msgUpdatePassword, msgEmailForgotPassword, respGetMenuList } from "./actions"
 
 import { ReactSession } from 'react-client-session';
-import { getProfile, editUserProfile, updateUserPassword, emailForgotPassword, updateForgotPassword, getMenuBE, getSelectMenu } from "helpers/backend_helper"
+import { getProfileBE, editUserProfileBE, updateUserPasswordBE, emailForgotPasswordBE, updateForgotPasswordBE, getMenuListBE, getGroupRuleMenuListBE } from "helpers/backend_helper"
 
 function* fetchGetProfile({ payload: req }) {
   try {
-    const response = yield call(getProfile, req)
+    const response = yield call(getProfileBE, req)
     if (response.status == 1) {
       yield put(respGetProfile(response))
     } else {
@@ -23,7 +23,7 @@ function* fetchGetProfile({ payload: req }) {
 
 function* fetchEditUserProfile({ payload: req }) {
   try {
-    const response = yield call(editUserProfile, req)
+    const response = yield call(editUserProfileBE, req)
     yield put(msgEdit(response))
   } catch (error) {
     console.log(error);
@@ -33,7 +33,7 @@ function* fetchEditUserProfile({ payload: req }) {
 
 function* fetchUpdateUserPassword({ payload: req }) {
   try {
-    const response = yield call(updateUserPassword, req)
+    const response = yield call(updateUserPasswordBE, req)
     yield put(msgUpdatePassword(response))
   } catch (error) {
     console.log(error);
@@ -43,7 +43,7 @@ function* fetchUpdateUserPassword({ payload: req }) {
 
 function* fetchEmailForgetPassword({ payload: req }) {
   try {
-    const response = yield call(emailForgotPassword, req)
+    const response = yield call(emailForgotPasswordBE, req)
     yield put(msgEmailForgotPassword(response))
   } catch (error) {
     console.log(error);
@@ -53,7 +53,7 @@ function* fetchEmailForgetPassword({ payload: req }) {
 
 function* fetchUpdateForgotPassword({ payload: req }) {
   try {
-    const response = yield call(updateForgotPassword, req)
+    const response = yield call(updateForgotPasswordBE, req)
     yield put(msgUpdatePassword(response))
   } catch (error) {
     console.log(error);
@@ -63,7 +63,7 @@ function* fetchUpdateForgotPassword({ payload: req }) {
 
 function* fetchGetMenu({ payload: req }) {
   try {
-    const response = yield call(getMenuBE, req)
+    const response = yield call(getMenuListBE, req)
     if (response.status == 1) {
       if (response.status == '1') {
         const menuData = {
@@ -71,7 +71,7 @@ function* fetchGetMenu({ payload: req }) {
           menuType: 'pja'
         }
         localStorage.setItem("menu", JSON.stringify(menuData))
-        const menuRule = yield call(getSelectMenu, '')
+        const menuRule = yield call(getGroupRuleMenuListBE, '')
         if (menuRule.status == '1') {
           const menuString2 = JSON.stringify(menuRule)
           localStorage.setItem('menuRule', menuString2)

@@ -4,11 +4,11 @@ import { GET_MENU_RULE, GET_RULE } from "./actionTypes"
 
 import { respGetMenuRule, respGetRule } from "./actions"
 
-import { getSelectMenu, getSelectRule } from "helpers/backend_helper"
+import { getGroupRuleMenuListBE, getGroupRuleBE } from "helpers/backend_helper"
 
 function* fetchGetRule({ payload: req }) {
   try {
-    const response = yield call(getSelectRule, req)
+    const response = yield call(getGroupRuleBE, req)
     if (response.status == 1) {
       yield put(respGetRule(response))
     } else {
@@ -22,7 +22,7 @@ function* fetchGetRule({ payload: req }) {
 
 function* fetchGetMenu({ payload: req }) {
   try {
-    const response = yield call(getSelectMenu, req)
+    const response = yield call(getGroupRuleMenuListBE, req)
     if (response.status == 1) {
       yield put(respGetMenuRule(response))
     } else {

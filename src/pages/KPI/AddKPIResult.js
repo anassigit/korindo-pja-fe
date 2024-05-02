@@ -150,7 +150,7 @@ const AddKPIResult = (props) => {
             />
             <ModalHeader toggle={props.toggle} className='add-kpi-result-header-modal'>
                 <div className='wrapper-class'>
-                    <span style={{ width: 'inherit' }}>Add KPI Result</span>
+                    <span style={{ width: 'inherit' }}>{props.t("Add KPI Result")}</span>
                     <InputGroup style={{ flexWrap: 'unset', display: 'flex', justifyContent: "right", width: "50%" }}>
                         <div style={{ width: '100px' }}>
                             <DatePicker
@@ -372,7 +372,7 @@ const AddKPIResult = (props) => {
                         gap: ".75vw",
                     }}
                     >
-                        <span style={{ marginTop: "8px" }}>Page</span>
+                        <span style={{ marginTop: "8px" }}>{props.t("Page")}</span>
                         <Input
                             type="number"
                             className="form-control"
@@ -406,7 +406,7 @@ const AddKPIResult = (props) => {
                             } : null}
                             color={(addKPIResultSpinner || selectedFileNum === "") ? "primary disabled" : "primary"}
                         >
-                            Submit
+                            {props.t("Submit")}
                             <Spinner style={{
                                 display: addKPIResultSpinner ? "block" : "none",
                                 marginTop: '-27px',
@@ -419,7 +419,7 @@ const AddKPIResult = (props) => {
                             setSelectedFileNum("")
                             setPageNum("")
                         }}>
-                            Close
+                            {props.t("Close")}
                         </Button>
                     </Col>
                 </div>

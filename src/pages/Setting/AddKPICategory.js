@@ -65,7 +65,7 @@ const AddKPICategory = props => {
             <Card style={{ marginBottom: 0 }}>
                 <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
                     <i className="mdi mdi-lead-pencil fs-5 align-middle me-2"></i>
-                    Add New KPI Category
+                    {props.t("Add New KPI Category")}
                 </CardHeader>
                 <CardBody>
                     <Form
@@ -84,7 +84,7 @@ const AddKPICategory = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Category Name"}{" "}
+                                            {props.t("Category Name")}{" "}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -114,7 +114,7 @@ const AddKPICategory = props => {
                                                 marginTop: "2px",
                                             }}
                                         >
-                                            {"Increase"}{" "}
+                                            {props.t("Increase")}{" "}
                                             <span className="text-danger"> *</span>
                                         </Label>
                                     </div>
@@ -154,7 +154,7 @@ const AddKPICategory = props => {
                                         ></Label>
                                     </div>
                                     <div className="col-8">
-                                        <Button type="submit">{"Submit"}</Button>
+                                        <Button type="submit">{props.t("Submit")}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@ const AddKPICategory = props => {
                 }}
             >
                 <span className="mdi mdi-arrow-left" />
-                &nbsp;{"Back"}
+                &nbsp;{props.t("Back")}
             </Button>
         </Container>
     )

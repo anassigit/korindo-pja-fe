@@ -81,8 +81,8 @@ const MovingPlanInputResult = (props) => {
             if (appListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
-                    title: "No data",
-                    text: "There is no data!",
+                    title: props.t("No Data"),
+                    text: props.t("There is no data!"),
                     confirmButtonColor: "#7BAE40"
                 })
             }
@@ -93,13 +93,13 @@ const MovingPlanInputResult = (props) => {
         setAppMsg('')
         if (!selectedGroupNum) {
             setAppMsg({
-                message: 'Group must be selected.'
+                message: props.t("Group must be selected.")
             })
             return
         }
         setFirstSearch(true)
         setLoadingSpinner(true)
-        if(!selectedCompanyCode) {
+        if (!selectedCompanyCode) {
             dispatch(getMovingPlanInputResultList(
                 {
                     date: selectedDate.replace(/-/g, ""),
@@ -128,7 +128,7 @@ const MovingPlanInputResult = (props) => {
                 <>
                     <Card fluid="true" style={{ paddingBottom: '32px' }}>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            Input Result
+                            {props.t("Input Result")}
                         </CardHeader>
                         <CardBody>
                             <div style={{
@@ -196,7 +196,7 @@ const MovingPlanInputResult = (props) => {
                                             setSelectedCompanyCode("")
                                         }}
                                     >
-                                        <option value={''}>Select Group</option>
+                                        <option value={''}>{props.t("Select Group")}</option>
                                         {
                                             appGroupListData?.data?.resultList.map((item, index) => {
                                                 return (
@@ -216,7 +216,7 @@ const MovingPlanInputResult = (props) => {
                                         {
                                             appCompanyListData?.data?.resultList?.length > 0 ? (
                                                 <>
-                                                    <option value={''}>All</option>
+                                                    <option value={''}>{props.t("All")}</option>
                                                     {
                                                         appCompanyListData?.data?.resultList.map((item, index) => {
                                                             return (
@@ -228,12 +228,15 @@ const MovingPlanInputResult = (props) => {
                                                     }
                                                 </>
                                             ) : (
-                                                <option value={''}>No Data</option>
+                                                <option value={''}>{props.t("No Data")}</option>
                                             )
                                         }
                                     </Input>
                                     <Button
-                                        className="btn btn-primary" onClick={() => handleSearch()}>
+                                        className="btn btn-primary"
+                                        onClick={() => handleSearch()}
+                                        style={{width: "100%"}}
+                                    >
                                         {props.t("Search")}
                                     </Button>
                                 </div>
@@ -527,7 +530,7 @@ const MovingPlanInputResult = (props) => {
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
-                                            }}/>
+                                            }} />
                                         </tr>
                                         <tr>
                                             <td valign="middle" rowSpan={5} style={{
@@ -756,7 +759,7 @@ const MovingPlanInputResult = (props) => {
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
-                                            }}/>
+                                            }} />
                                         </tr>
                                         <tr>
                                             <td valign="middle" rowSpan={2} style={{
