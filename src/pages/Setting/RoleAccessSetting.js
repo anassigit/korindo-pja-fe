@@ -197,10 +197,10 @@ const RoleAccessSetting = props => {
                             onClick={() => toggleDeleteModal(cellData)}
                         />
                         <UncontrolledTooltip target={`edit-${index}`}>
-                            {"Edit"}
+                            {props.t("Edit")}
                         </UncontrolledTooltip>
                         <UncontrolledTooltip target={`delete-${index}`}>
-                            {"Delete"}
+                            {props.t("Delete")}
                         </UncontrolledTooltip>
                     </div>
                 )

@@ -74,7 +74,7 @@ const KPICategorySetting = (props) => {
             headerStyle: { textAlign: 'center' }
         },
         {
-            text: 'Actions',
+            text: props.t("Actions"),
             headerStyle: { textAlign: 'center' },
             style: { textAlign: 'center', fontSize: '16px' },
             formatter: (_cellContent, cellData, index) => {
@@ -82,8 +82,8 @@ const KPICategorySetting = (props) => {
                     <div style={{ display: 'flex', gap: '1vw', justifyContent: 'center' }}>
                         <a id={`edit-${index}`} className="mdi mdi-pencil text-primary" onClick={() => preEditApp(cellData)} />
                         <a id={`delete-${index}`} className="mdi mdi-delete text-danger" onClick={() => toggleDeleteModal(cellData)} />
-                        <UncontrolledTooltip target={`edit-${index}`}>{'Edit'}</UncontrolledTooltip>
-                        <UncontrolledTooltip target={`delete-${index}`}>{'Delete'}</UncontrolledTooltip>
+                        <UncontrolledTooltip target={`edit-${index}`}>{props.t("Edit")}</UncontrolledTooltip>
+                        <UncontrolledTooltip target={`delete-${index}`}>{props.t("Delete")}</UncontrolledTooltip>
                     </div>
                 )
             }
@@ -211,7 +211,7 @@ const KPICategorySetting = (props) => {
                             width: '30%',
                             gap: '.75vw'
                         }}>
-                            <label className="col-sm-3" style={{ marginTop: "8px" }}>{"Search"}</label>
+                            <label className="col-sm-3" style={{ marginTop: "8px" }}>{props.t("Search")}</label>
                             <div className="col-sm-5">
                                 <input
                                     type="search"
@@ -225,7 +225,7 @@ const KPICategorySetting = (props) => {
                                     className="btn btn-primary btn-block"
                                     onClick={() => handleClick()}
                                 >
-                                    {"Search"}
+                                    {props.t("Search")}
                                 </button>
                             </div>
                         </div>

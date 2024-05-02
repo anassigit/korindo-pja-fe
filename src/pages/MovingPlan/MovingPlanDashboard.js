@@ -20,7 +20,7 @@ import ReactDatePicker from "react-datepicker"
 import Swal from "sweetalert2"
 import moment from "moment"
 
-const MovingPlanDashboard = () => {
+const MovingPlanDashboard = (props) => {
 
     const dispatch = useDispatch()
 
@@ -574,7 +574,7 @@ const MovingPlanDashboard = () => {
                                     </div>
                                     <Button
                                         className="btn btn-primary" onClick={() => handleSearch()}>
-                                        {"Search"}
+                                        {props.t("Search")}
                                     </Button>
                                 </div>
                                 <Button

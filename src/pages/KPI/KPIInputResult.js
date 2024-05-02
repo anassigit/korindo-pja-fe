@@ -100,10 +100,6 @@ const KPIInputResult = (props) => {
             dispatch(getCorporationList({
                 groupNum: selectedGroupNum
             }))
-        } else {
-            dispatch(getCorporationList({
-                groupNum: ''
-            }))
         }
     }, [selectedGroupNum])
 
@@ -113,12 +109,6 @@ const KPIInputResult = (props) => {
             dispatch(getKPIInputData({
                 groupNum: selectedGroupNum,
                 corporationId: selectedCorporationId,
-                date: selectedDate.replace(/-/g, "")
-            }))
-        } else {
-            dispatch(getKPIInputData({
-                groupNum: '',
-                corporationId: '',
                 date: selectedDate.replace(/-/g, "")
             }))
         }
@@ -381,7 +371,7 @@ const KPIInputResult = (props) => {
                                         onChange={(e) => setSelectedCorporationId(e.target.value)}
                                     >
                                         {
-                                            appCorporationListData?.data?.list?.length > 0 ? (
+                                            appCorporationListData?.data?.list?.length > 0 && selectedGroupNum ? (
                                                 <>
                                                     <option value={''}>Select Corporation</option>
                                                     {

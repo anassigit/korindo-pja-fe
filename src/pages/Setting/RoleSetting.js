@@ -46,7 +46,6 @@ const RoleSetting = props => {
     })
     const appMessageDelete = useSelector(state => state.settingReducer.msgDelete)
     const appMessageAdd = useSelector(state => state.settingReducer.msgAdd)
-
     const appMessageEdit = useSelector(state => state.settingReducer.msgEdit)
 
     const [appRoleAccessTabelSearch, setAppRoleAccessTabelSearch] = useState({
@@ -101,7 +100,7 @@ const RoleSetting = props => {
             text: props.t("Detail"),
             style: { textAlign: "center", fontSize: "18px" },
             headerStyle: { textAlign: "center" },
-            formatter: (cellData) => {
+            formatter: (_cellContent, cellData, _index) => {
                 return (
                     <span
                         onClick={() => preDetailApp(cellData)}
@@ -130,10 +129,10 @@ const RoleSetting = props => {
                             onClick={() => toggleDeleteModal(cellData)}
                         />
                         <UncontrolledTooltip target={`edit-${index}`}>
-                            {"Edit"}
+                            {props.t("Edit")}
                         </UncontrolledTooltip>
                         <UncontrolledTooltip target={`delete-${index}`}>
-                            {"Delete"}
+                            {props.t("Delete")}
                         </UncontrolledTooltip>
                     </div>
                 )

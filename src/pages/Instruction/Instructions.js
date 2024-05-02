@@ -196,7 +196,7 @@ const Instructions = (props) => {
             headerStyle: { textAlign: 'center' },
             classes: "custom-num-column",
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     appInstructionsPreEdit(appInstructionsData)
                 },
             },
@@ -211,7 +211,7 @@ const Instructions = (props) => {
             classes: "custom-title-column",
             style: { maxWidth: "100px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     appInstructionsPreEdit(appInstructionsData)
                 },
             },
@@ -222,7 +222,7 @@ const Instructions = (props) => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             style: { width: "150px" },
-            formatter: (cellContent) => {
+            formatter: (cellContent, _appInstructionsData) => {
                 if (!cellContent || !cellContent.name || !cellContent.bgColor) {
                     return null
                 }
@@ -234,7 +234,7 @@ const Instructions = (props) => {
                 )
             },
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     appInstructionsPreEdit(appInstructionsData)
                 },
             },
@@ -252,7 +252,7 @@ const Instructions = (props) => {
                 overflow: "hidden",
                 textOverflow: "ellipsis"
             },
-            formatter: (cellContent) => (
+            formatter: (cellContent, _appInstructionsData) => (
                 <a>
                     {cellContent.map((data, index) => (
                         <span key={index}>
@@ -265,7 +265,7 @@ const Instructions = (props) => {
                 </a>
             ),
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     appInstructionsPreEdit(appInstructionsData)
                 },
             },
@@ -278,7 +278,7 @@ const Instructions = (props) => {
             headerStyle: { textAlign: 'center' },
             classes: "custom-insdate-column",
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     appInstructionsPreEdit(appInstructionsData)
                 },
             },
@@ -292,7 +292,7 @@ const Instructions = (props) => {
             style: { minWidth: "180px" },
             classes: "custom-status-column",
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     appInstructionsPreEdit(appInstructionsData)
                 },
             },
@@ -312,7 +312,7 @@ const Instructions = (props) => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-replies-column",
-            formatter: (appInstructionsData) => (
+            formatter: (_cellContent, appInstructionsData) => (
                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                     <span>
                         <div>
@@ -331,7 +331,7 @@ const Instructions = (props) => {
                 </div>
             ),
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     dispatch(getReply({
                         offset: 0,
                         limit: 5,
@@ -352,7 +352,7 @@ const Instructions = (props) => {
             align: "center",
             headerStyle: { textAlign: 'center' },
             classes: "custom-notices-column",
-            formatter: (appInstructionsData) => (
+            formatter: (_cellContent, appInstructionsData) => (
                 <div style={{ justifyContent: 'center' }} className="d-flex gap-3">
                     <span>
                         <div>
@@ -372,7 +372,7 @@ const Instructions = (props) => {
                 </div>
             ),
             events: {
-                onClick: (appInstructionsData) => {
+                onClick: (_e, _column, _columnIndex, appInstructionsData, _rowIndex) => {
                     appInstructionsPreEdit(appInstructionsData)
                 },
             },

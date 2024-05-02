@@ -404,20 +404,6 @@ const AddInstruction = props => {
     const datepickerRef = useRef(null)
 
     useEffect(() => {
-        dispatch(
-            getManager({
-                search: {
-                    langType: langType,
-                },
-            })
-        )
-        dispatch(
-            getOwner({
-                search: {
-                    langType: langType,
-                },
-            })
-        )
         const inputElement = datepickerRef.current.input
         inputElement.addEventListener("keydown", handleDateInputKeydown)
         inputElement.addEventListener("paste", handleDateInputPaste)

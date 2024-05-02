@@ -43,7 +43,7 @@ const KPISetting = (props) => {
     const [appState, setAppState] = useState([])
     const [appKPIMsg, setAppKPIMsg] = useState("")
     const [selectedYear, setSelectedYear] = useState(moment().format('yyyy'))
-    const [selectedGroupId, setSelectedGroupId] = useState("")
+    const [selectedGroupNum, setSelectedGroupNum] = useState("")
     const [selectedCorporationId, setSelectedCorporationId] = useState("")
     const [selectedCorporationName, setSelectedCorporationName] = useState("")
     const [uploadModal, setUploadModal] = useState(false)
@@ -70,19 +70,15 @@ const KPISetting = (props) => {
         setSelectedCorporationId("")
         setSelectedCorporationName("")
         setAppState([])
-        if (selectedGroupId) {
+        if (selectedGroupNum) {
             dispatch(getCorporationList({
-                groupNum: selectedGroupId
-            }))
-        } else {
-            dispatch(getCorporationList({
-                groupNum: ''
+                groupNum: selectedGroupNum
             }))
         }
-    }, [selectedGroupId])
+    }, [selectedGroupNum])
 
     useEffect(() => {
-        if (selectedCorporationId || (selectedGroupId && selectedYear)) {
+        if (selectedCorporationId || (selectedGroupNum && selectedYear)) {
             setLoadingSpinner(true)
             dispatch(getKPIMaster({
                 corporationId: selectedCorporationId,
@@ -226,7 +222,7 @@ const KPISetting = (props) => {
                                         type="select"
                                         style={{ width: 'auto' }}
                                         onChange={(e) => {
-                                            setSelectedGroupId(e.target.value)
+                                            setSelectedGroupNum(e.target.value)
                                         }}
                                     >
                                         {Array.isArray(appGroupListData?.data?.list) ? (
@@ -262,7 +258,7 @@ const KPISetting = (props) => {
                                             }
                                         }}
                                     >
-                                        {Array.isArray(appCorporationListData?.data?.list) ? (
+                                        {Array.isArray(appCorporationListData?.data?.list) && selectedGroupNum ? (
                                             <>
                                                 <option value={''}>Select Corporation</option>
                                                 {appCorporationListData?.data?.list.map((item, index) => {
@@ -363,7 +359,7 @@ const KPISetting = (props) => {
                         toggle={toggleUploadModal}
                         onSuccess={() => {
                             setLoadingSpinner(true)
-                            if (selectedYear && selectedCorporationId && selectedGroupId) {
+                            if (selectedYear && selectedCorporationId && selectedGroupNum) {
                                 dispatch(getKPIMaster({
                                     corporationId: selectedCorporationId,
                                     year: selectedYear

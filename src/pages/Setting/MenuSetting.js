@@ -124,8 +124,8 @@ const MenuSetting = (props) => {
                     <div style={{ display: 'flex', gap: '1vw', justifyContent: 'center' }}>
                         <a id={`edit-${index}`} className="mdi mdi-pencil text-primary" onClick={() => preEditApp(cellData)} />
                         <a id={`delete-${index}`} className="mdi mdi-delete text-danger" onClick={() => toggleDeleteModal(cellData)} />
-                        <UncontrolledTooltip target={`edit-${index}`}>{'Edit'}</UncontrolledTooltip>
-                        <UncontrolledTooltip target={`delete-${index}`}>{'Delete'}</UncontrolledTooltip>
+                        <UncontrolledTooltip target={`edit-${index}`}>{props.t("Edit")}</UncontrolledTooltip>
+                        <UncontrolledTooltip target={`delete-${index}`}>{props.t("Delete")}</UncontrolledTooltip>
                     </div>
                 )
             }
