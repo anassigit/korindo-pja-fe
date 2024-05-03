@@ -40,7 +40,7 @@ const FileTable = (props) => {
     return (
 
         <Modal isOpen={props.modal} toggle={props.toggle} className="modal-dialog" backdrop="static">
-            <ModalHeader toggle={props.toggle}>{props.t("List files")}</ModalHeader>
+            <ModalHeader toggle={props.toggle}>List files</ModalHeader>
             <ModalBody>
                 <Row>
                     <div >
@@ -49,7 +49,7 @@ const FileTable = (props) => {
                                 <tr>
                                     <th scope="col">No.</th>
                                     <th scope="col" style={{}}></th>
-                                    <th scope="col">{props.t("Files name")}</th>
+                                    <th scope="col">Files name</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,12 +128,12 @@ const FileTable = (props) => {
                 } : null}
                     color={selectedFileNum === "" ? "primary disabled" : "primary"}
                     className='align-middle me-2'>
-                    {props.t("Select")}
+                    Select
                 </Button>
                 <Button color="danger" onClick={() => { 
                     closeButton() 
                     }} className='align-middle me-2'>
-                    {props.t("Close")}
+                    Close
                 </Button>
             </ModalFooter>
         </Modal>

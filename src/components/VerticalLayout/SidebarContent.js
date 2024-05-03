@@ -15,7 +15,7 @@ const SidebarContent = props => {
     let menuData = localStorage.getItem("menu")
     let menu = null
 
-    let count = 0
+    const ref = useRef()
 
     const getMenuData = useSelector((state) => {
         return state.userProfileReducer.respGetMenuList
@@ -33,8 +33,6 @@ const SidebarContent = props => {
 
     let menuRule = localStorage.getItem('menuRule') ? JSON.parse(localStorage.getItem('menuRule')) : []
     const firstTimeLogin = localStorage.getItem("firstTime_Login")
-
-    const ref = useRef()
 
     useEffect(() => {
         dispatch(getMenuList())
@@ -58,7 +56,6 @@ const SidebarContent = props => {
         const ul = document.getElementById("side-menu")
         const items = ul.getElementsByTagName("a")
         let activateFileManagementUrl = null
-
         for (let i = 0; i < items.length; ++i) {
             if (pathName === items[i].pathname) {
                 matchingMenuItem = items[i]
@@ -71,10 +68,7 @@ const SidebarContent = props => {
         if (activateFileManagementUrl) {
             activateParentDropdown(activateFileManagementUrl)
         }
-
-
     }, [props.location.pathname])
-
 
     useEffect(() => {
         ref.current.recalculate()
@@ -92,24 +86,19 @@ const SidebarContent = props => {
     function activateParentDropdown(item) {
         const parent = item.parentElement
         const parent2El = parent.childNodes[1]
-
         if (parent2El && parent2El.id !== "side-menu") {
             parent2El.classList.add("mm-show")
         }
         if (parent) {
             parent.classList.add("mm-active")
             const parent2 = parent.parentElement
-
             if (parent2) {
                 parent2.classList.add("mm-show")
                 const parent3 = parent2.parentElement
-
                 if (parent3) {
                     parent3.classList.add("mm-active")
                     parent3.childNodes[0].classList.add("mm-active")
-
                     const parent4 = parent3.parentElement
-
                     if (parent4) {
                         parent4.classList.add("mm-show")
                         const parent5 = parent4.parentElement
@@ -127,30 +116,6 @@ const SidebarContent = props => {
         return false
     }
 
-    // function activateParentDropdown(item) {
-    //     const ul = document.getElementById("side-menu")
-    //     const activeItems = ul.querySelectorAll(".mm-active")
-
-    //     activeItems.forEach(activeItems => {
-    //         if ( activeItems !== item.parentElement) {
-    //             activeItems.classList.remove("mm-active")
-    //         }
-    //     })
-
-    //     let parent = item.parentElement
-    //     while(parent) {
-    //         parent.classList.add("mm-active")
-
-    //         if (parent.nodeName === "UL") {
-    //             parent.previousElementSibling.classList.add("mm-active")
-    //         }
-    //         parent = parent.parentElement.closest("ul")
-    //     }
-
-    //     scrollElement(item)
-    //     return false
-    // }
-
     function renderMenuItem(item) {
         return (
             <li key={item.menuId}>
@@ -163,18 +128,13 @@ const SidebarContent = props => {
                         ReactSession.remove('collapser')
                         ReactSession.remove('offset')
                         ReactSession.remove('limit')
-                        const today = new Date();
-                        const year = today.getFullYear();
-                        const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                        const selectedMonth = `${year}-${month}`;
-
-                        localStorage.setItem("selectedMonth", selectedMonth);
+                        const date = new Date()
+                        localStorage.setItem("selectedMonth", `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`)
                     }}
                     href={item.menuPath ? `/${item.menuPath}` : null}
                     className={item.childList || item.menuId === 5 ? "has-arrow" : null}
                 >
                     {item.menuIcon && item.menuIcon !== 'null' && <i className={props.t("fas " + item.menuIcon)}></i>}
-                    {/* <span>{props.t(item.menuName)}</span> */}
                     <span>{item.menuName}</span>
                 </a>
                 {item.childList && item.childList.length > 0 && item.menuId !== 5 ? (
@@ -182,7 +142,6 @@ const SidebarContent = props => {
                         {item.childList.map((childItem) => renderMenuItem(childItem))}
                     </ul>
                 ) : null}
-
                 {item.menuId === 5 && menuRule?.data?.list.length > 0 ? (
                     <ul className="sub-menu">
                         {menuRule.data.list.map((childItem) => renderMenuRuleItem(childItem))}
@@ -193,14 +152,12 @@ const SidebarContent = props => {
     }
 
     function renderMenuRuleItem(item) {
-
         const searchString = props.location.search
         const underscoreIndexLast = searchString.lastIndexOf('_')
-        const beforeUnderscore = searchString.substring(searchString.indexOf('=') + 1, underscoreIndexLast)
         const parentId = searchString.substring(underscoreIndexLast + 1)
 
         return (
-            <li key={item.id} className={parseInt(parentId) === item.id || parseInt(beforeUnderscore) === item.id ? '' : null}>
+            <li key={item.id} className={parseInt(parentId) === item.id || parseInt(searchString.substring(searchString.indexOf('=') + 1, underscoreIndexLast)) === item.id ? '' : null}>
                 <a
                     onClick={() => {
                         ReactSession.remove("currentPage")
@@ -210,19 +167,13 @@ const SidebarContent = props => {
                         ReactSession.remove('collapser')
                         ReactSession.remove('offset')
                         ReactSession.remove('limit')
-                        
-                        const today = new Date();
-                        const year = today.getFullYear();
-                        const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                        const selectedMonth = `${year}-${month}`;
-
-                        localStorage.setItem("selectedMonth", selectedMonth);
+                        const date = new Date()
+                        localStorage.setItem("selectedMonth", `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`)
                     }}
                     href={item.parent_id === null ? `/AppRule?v=${item.id}` : `/AppRule?v=${item.id}_${item.parent_id}`}
                     className={item.subList.length > 0 ? "has-arrow" : null}
                 >
                     {item.menuIcon && <i className={props.t("fas " + item.menuIcon)}></i>}
-                    {/* <span>{props.t(item.name)}</span> */}
                     <span>{item.name}</span>
                 </a>
                 {item.subList.length > 0 ? (
@@ -260,7 +211,7 @@ const SidebarContent = props => {
 
 SidebarContent.propTypes = {
     location: PropTypes.object,
-    t: PropTypes.any,
+    t: PropTypes.any
 }
 
 export default withRouter(withTranslation()(SidebarContent))

@@ -282,7 +282,7 @@ const KPIInputResult = (props) => {
                     />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("Input Result")}
+                            Input Result
                         </CardHeader>
                         <CardBody>
                             <div
@@ -352,7 +352,7 @@ const KPIInputResult = (props) => {
                                             setSelectedGroupNum(e.target.value)
                                         }}
                                     >
-                                        <option value={''}>{props.t("Select Group")}</option>
+                                        <option value={''}>Select Group</option>
                                         {
                                             appGroupListData?.data?.list.map((item, index) => {
                                                 let nameLang = langType === 'eng' ? item.name_eng : langType === 'kor' ? item.name_kor : item.name_idr
@@ -373,7 +373,7 @@ const KPIInputResult = (props) => {
                                         {
                                             appCorporationListData?.data?.list?.length > 0 && selectedGroupNum ? (
                                                 <>
-                                                    <option value={''}>{props.t("Select Corporation")}</option>
+                                                    <option value={''}>Select Corporation</option>
                                                     {
                                                         appCorporationListData?.data?.list.map((item, index) => {
                                                             return (
@@ -385,7 +385,7 @@ const KPIInputResult = (props) => {
                                                     }
                                                 </>
                                             ) : (
-                                                    <option value={''}>{props.t("No Data")}</option>
+                                                    <option value={''}>No Data</option>
                                             )
                                         }
                                     </Input>
@@ -401,26 +401,26 @@ const KPIInputResult = (props) => {
                                         className={appState.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadExcel() }}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t("Download Excel")}
+                                        Download Excel
                                     </Button>
                                     <Button onClick={() =>
                                         downloadKPITemplate()
                                     }>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t("Download Template")}
+                                        Download Template
                                     </Button>
                                     <Button onClick={() => toggleUploadModal()}>
-                                        {props.t("Upload")}
+                                        Upload
                                     </Button>
                                 </div>
                             </div>
                             <table className="table table-bordered cust-border my-3">
                                 <thead style={{ backgroundColor: 'transparent', }}>
                                     <tr style={{ color: '#495057' }}>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("KPI Category")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Plan")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Result")}</th>
-                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">{props.t("Catch Up")}</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">KPI Category</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Plan</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Result</th>
+                                        <th style={{ textAlign: 'center' }} colSpan={1} scope="col">Catch Up</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -486,7 +486,7 @@ const KPIInputResult = (props) => {
                                                                     setSelectedKpiId(item.kpiId.toString())
                                                                     toggleAddKPIResultModal()
                                                                 }}>
-                                                                    <i className="mdi mdi-plus fs-5 align-middle" /> {props.t("Add")}
+                                                                    <i className="mdi mdi-plus fs-5 align-middle" /> Add
                                                                 </Button>
                                                             )}
                                                         </td>

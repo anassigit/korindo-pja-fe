@@ -4,7 +4,6 @@ import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
 import EmailVerPassword from "../pages/Authentication/EmailVerPassword"
 import UpdatePassword from "../pages/Authentication/UpdatePassword"
-import Dashboard from "../pages/Dashboard/index"
 import Instructions from "../pages/Instruction/Instructions"
 import UserProfile from "../pages/Profile/UserProfile"
 import ChangePassword from "../pages/Profile/ChangePassword"
@@ -30,7 +29,6 @@ import KPIItemSetting from "pages/Setting/KPIItemSetting"
 import MovingPlanInputResult from "pages/MovingPlan/MovingPlanInputResult"
 
 const authProtectedRoutes = [
-    { path: "/dashboard", component: Dashboard },
     { path: "/AppInstructions", component: Instructions },
     { path: "/AppEditInstruction", component: EditInstruction },
     { path: "/AppGeneralSetting", component: GeneralSetting },

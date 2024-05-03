@@ -2790,7 +2790,7 @@ const EditInstruction = props => {
                                         >
                                             <span style={{ flex: "1", textAlign: "left" }}>
                                                 <i className="mdi mdi-timer-sand font-size-8 align-middle me-2"></i>
-                                                Log
+                                                {props.t("Log")}
                                             </span>
                                             {isHiddenLogs ? (
                                                 <i className="bx bxs-down-arrow font-size-8 align-middle me-2"></i>

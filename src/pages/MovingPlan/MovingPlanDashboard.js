@@ -8,6 +8,7 @@ import {
     CardBody,
     CardHeader,
     Input,
+    InputGroup,
     Spinner,
     UncontrolledTooltip
 } from "reactstrap"
@@ -19,6 +20,7 @@ import '../../config'
 import ReactDatePicker from "react-datepicker"
 import Swal from "sweetalert2"
 import moment from "moment"
+import DatePicker from "react-datepicker"
 
 const MovingPlanDashboard = (props) => {
 
@@ -37,6 +39,8 @@ const MovingPlanDashboard = (props) => {
     const [appMsg, setAppMsg] = useState("")
     const [selectedYear, setSelectedYear] = useState(moment().format('yyyy'))
     const [selectedCompanyCode, setselectedCompanyCode] = useState("")
+    const [showDatePicker, setShowDatePicker] = useState(false)
+    const [isButtonClicked, setIsButtonClicked] = useState(false)
 
     const datePickerRef = useRef(null);
 
@@ -67,8 +71,8 @@ const MovingPlanDashboard = (props) => {
             if (appListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
-                    title: props.t("No Data"),
-                    text: props.t("There is no data!"),
+                    title: "No Data",
+                    text: "There is no data!",
                     confirmButtonColor: "#7BAE40"
                 })
             }
@@ -103,18 +107,18 @@ const MovingPlanDashboard = (props) => {
 
     const getMonthAbbreviation = (monthIndex) => {
         const months = [
-            props.t("Jan"),
-            props.t("Feb"),
-            props.t("Mar"),
-            props.t("Apr"),
-            props.t("May"),
-            props.t("Jun"),
-            props.t("Jul"),
-            props.t("Aug"),
-            props.t("Sep"),
-            props.t("Oct"),
-            props.t("Nov"),
-            props.t("Dec"),
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
         ]
         return months[monthIndex - 1]
     }
@@ -500,7 +504,7 @@ const MovingPlanDashboard = (props) => {
                 <>
                     <Card fluid="true" style={{ paddingBottom: '32px' }}>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("Dashboard")}
+                            Dashboard
                         </CardHeader>
                         <CardBody>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -519,7 +523,7 @@ const MovingPlanDashboard = (props) => {
                                     >
                                         {Array.isArray(appCompanyCodeListData?.data?.resultList) ? (
                                             <>
-                                                <option value={''}>{props.t("All Company")}</option>
+                                                <option value={''}>All Company</option>
                                                 {appCompanyCodeListData?.data?.resultList.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item?.companyCode}>
@@ -534,49 +538,64 @@ const MovingPlanDashboard = (props) => {
                                             </option>
                                         )}
                                     </Input>
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            width: '8vw',
-                                            position: 'relative'
-                                        }}
-                                        className="custom-yearpicker"
-                                    >
-                                        <ReactDatePicker
-                                            ref={datePickerRef}
-                                            className={`form-control`}
-                                            selected={selectedYear ? new Date(selectedYear) : ''}
-                                            onChange={(selectedDate) => {
-                                                setSelectedYear(selectedDate)
-                                            }}
-                                            maxDate={new Date()}
-                                            dateFormat="yyyy"
-                                            showYearPicker
-                                            yearItemNumber={years.length}
-                                            yearDropdownItem={years.map(year => (
-                                                <option key={year} value={year}>
-                                                    {year}
-                                                </option>
-                                            ))}
-                                        />
-                                        <label
-                                            style={{ position: 'absolute', right: '10px', top: '1px' }}
-                                            onClick={() => {
-                                                if (datePickerRef.current) {
-                                                    datePickerRef.current.setOpen(true);
+                                    <InputGroup style={{ flexWrap: 'unset' }}>
+                                        <div style={{ width: '150px' }}>
+                                            <DatePicker
+                                                onClickOutside={() => {
+                                                    setShowDatePicker(false)
+                                                    setIsButtonClicked(false)
+                                                }}
+                                                onInputClick={() => {
+                                                    setShowDatePicker(!showDatePicker)
+                                                    setIsButtonClicked(false)
+                                                }}
+                                                open={showDatePicker}
+                                                className="form-control custom-reset-date"
+                                                showYearPicker
+                                                dateFormat="yyyy"
+                                                yearItemNumber={years.length}
+                                                yearDropdownItem={years.map(year => (
+                                                    <option key={year} value={year}>
+                                                        {year}
+                                                    </option>
+                                                ))}
+                                                selected={selectedYear ? moment(selectedYear, 'yyyy').toDate() : new Date()}
+                                                onChange={(date) => {
+                                                    setShowDatePicker(false)
+                                                    setIsButtonClicked(false)
+                                                    setSelectedYear(date ? moment(date).format('yyyy') : new Date())
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    e.preventDefault()
+                                                }}
+                                                customInput={
+                                                    <>
+                                                        <div className="react-datepicker__input-container">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control custom-reset-date"
+                                                                value={selectedYear ? moment(selectedYear).format('yyyy') : moment().format('yyyy')}
+                                                            />
+                                                        </div>
+                                                    </>
                                                 }
-                                            }}
-                                        >
-                                            <span className="mdi mdi-calendar" style={{ fontSize: '24px' }} />
-                                        </label>
-                                    </div>
+                                            />
+                                        </div>
+                                        <Button onClick={(e) => {
+                                            if (!isButtonClicked) {
+                                                setShowDatePicker(!showDatePicker);
+                                                setIsButtonClicked(true)
+                                            }
+                                        }}>
+                                            <span className="mdi mdi-calendar" />
+                                        </Button>
+                                    </InputGroup>
                                     <Button
                                         className="btn btn-primary"
                                         onClick={() => handleSearch()}
+                                        style={{ whiteSpace: "nowrap" }}
                                     >
-                                        {props.t("Search")}
+                                        Search
                                     </Button>
                                 </div>
                                 <Button
@@ -590,7 +609,7 @@ const MovingPlanDashboard = (props) => {
                                         }))
                                     }}>
                                     <i className="mdi mdi-download" />{" "}
-                                    {props.t("Download Excel")}
+                                    Download Excel
                                 </Button>
                             </div>
                             <div style={{
@@ -600,7 +619,7 @@ const MovingPlanDashboard = (props) => {
                                 marginTop: '10px',
                                 marginRight: '8px'
                             }}>
-                                {props.t("* Pre.Y, BP, MP, Actual is In Million (Juta)")}
+                                * Pre.Y, BP, MP, Actual is In Million (Juta)
                             </div>
                             <div style={{
                                 overflow: 'auto',
@@ -626,7 +645,7 @@ const MovingPlanDashboard = (props) => {
                                                 minWidth: '300px',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                {props.t("ITEMS")}
+                                                ITEMS
                                             </th>
                                             {Array.from({ length: 12 }, (_, monthIndex) => (
                                                 <React.Fragment key={monthIndex}>

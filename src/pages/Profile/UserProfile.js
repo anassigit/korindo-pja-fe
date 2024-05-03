@@ -116,7 +116,7 @@ const UserProfile = (props) => {
                         <Row>
                             <Col lg={12}>
                                 <Card>
-                                    <CardHeader><i className="mdi mdi-account fs-5 align-middle me-2"></i>{props.t("Change profile")}</CardHeader>
+                                    <CardHeader style={{ borderRadius: "15px 15px 0 0" }}><i className="mdi mdi-account fs-5 align-middle me-2"></i>{props.t("Change profile")}</CardHeader>
                                     <CardBody>
                                         <Form
                                             onSubmit={(e) => {

@@ -31,18 +31,6 @@ export const saveMenu = req => post("/rest/app002/save", req)
 
 export const getMenuParent = req => post("/rest/app002/get-menu-parent", req)
 
-/* PROFILE */
-
-export const getProfileBE = req => post("MemberRest/SelectMyInfo", req)
-
-export const editUserProfileBE = req => postWithParam("MemberRest/UpdateMyInfo", req)
-
-export const updateUserPasswordBE = req => postWithParam("MemberRest/UpdatePassword", req)
-
-export const updateForgetPasswordBE = req => postWithParam("MemberRest/ForgotPassword", req)
-
-export const getMenuListBE = req => post("MemberRest/getMenuList", req)
-
 /* INSTRUCTIONS */
 
 export const getInstructionsListBE = req => post("rest/InstructionRest/SelectInstructionList", req)
@@ -88,6 +76,94 @@ export const deleteReplyBE = req => postWithParam("rest/InstructionRest/DeleteRe
 export const getAttachmentBE = req => post("rest/InstructionRest/SelectAttachFileList", req)
 
 export const getLogsListBE = req => post("rest/InstructionRest/SelectLogList", req)
+
+/* PROFILE */
+
+export const getProfileBE = req => post("MemberRest/SelectMyInfo", req)
+
+export const editUserProfileBE = req => postWithParam("MemberRest/UpdateMyInfo", req)
+
+export const updateUserPasswordBE = req => postWithParam("MemberRest/UpdatePassword", req)
+
+export const updateForgetPasswordBE = req => postWithParam("MemberRest/ForgotPassword", req)
+
+export const getMenuListBE = req => post("MemberRest/getMenuList", req)
+
+/* FILE MANAGEMENT */
+
+export const selectFolderBE = req => postWithParam("/rest/FileManagementRest/SelectFolder", req)
+
+export const deleteFileFolderBE = req => postWithParam("/rest/FileManagementRest/Delete", req)
+
+export const renameFileFolderBE = req => postWithParam("/rest/FileManagementRest/Rename", req)
+
+export const downloadFileFolderBE = req => getWithXls("/rest/FileManagementRest/FileDownload", req)
+
+export const downloadCheckBE = req => postWithParam("/rest/FileManagementRest/CheckFileDownload", req)
+
+export const uploadFileFolderBE = req => postUpload("/rest/FileManagementRest/FileUpload", req)
+
+export const moveFileFolderBE = req => postWithParam("/rest/FileManagementRest/Move", req)
+
+export const createFolderBE = req => postWithParam("/rest/FileManagementRest/CreateNewFolder", req)
+
+export const searchFileBE = req => postWithParam("/rest/FileManagementRest/Search", req)
+
+export const getYearBE = req => postWithParam("/rest/FileManagementRest/SelectYear", req)
+
+export const getMonthBE = req => postWithParam("/rest/FileManagementRest/SelectMonth", req)
+
+export const getMonthlyDataBE = req => postWithParam("/rest/FileManagementRest/SelectDashboard", req)
+
+/* KPI TREND */
+
+export const getGroupListKPIBE = req => postWithParam("rest/KpiManagementRest/getGroupList", req)
+
+export const getCorporationListKPIBE = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
+
+export const getItemListBE = req => postUpload("rest/KpiManagementRest/getItemList", req)
+
+export const getKPIMasterBE = req => postWithParam("rest/KpiManagementRest/getMaster", req)
+
+export const getUnitBE = req => postWithParam("rest/KpiManagementRest/getUnitList", req)
+
+export const getDashboardKPIBE = req => postUpload("rest/KpiManagementRest/getDashboard", req)
+
+export const getDashboardDetailKPIBE = req => postUpload("rest/KpiManagementRest/getDashboard", req)
+
+export const getKPIInputDataBE = req => postWithParam("rest/KpiManagementRest/getData", req)
+
+export const getDownloadKPITemplateBE = req => getWithXls("rest/KpiManagementRest/downloadTemplate", req)
+
+export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagementRest/downloadDashboard", req)
+
+export const getDownloadKPIExcelBE = req => getWithXls("rest/KpiManagementRest/downloadExcel", req)
+
+export const getKPIFileBE = req => postWithParam("rest/KpiManagementRest/searchFile", req)
+
+export const uploadKPIResultBE = req => postUpload("rest/KpiManagementRest/setResult", req)
+
+export const uploadKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
+
+export const setKPINoteBE = req => postWithParam("rest/KpiManagementRest/setNote", req)
+
+//MOVING PLAN
+
+export const getGroupListMovingPlanBE = req => post("rest/MovingPlanRest/getGroupList", req)
+
+export const getCompanyListBE = req => postWithParam("rest/MovingPlanRest/getCompanyList", req)
+
+export const getMovingPlanDashboardListBE = req => postWithParam("rest/MovingPlanRest/getList", req)
+
+export const getMovingPlanInputResultListBE = req => postWithParam("rest/MovingPlanRest/getList2", req)
+
+export const downloadExcelMovingPlanBE = req => getWithXls("rest/MovingPlanRest/downloadExcel", req)
+
+/* GROUP RULE */
+
+export const getGroupRuleMenuListBE = req => post("/rest/RuleRest/SelectMenu", req)
+
+export const getGroupRuleBE = req => postWithParam("/rest/RuleRest/SelectRule", req)
 
 /* SETTING */
 
@@ -190,79 +266,3 @@ export const saveRoleAccessBE = req => postWithParam("/rest/RoleAccessMasterRest
 export const editRoleAccessBE = req => postWithParam("rest/RoleAccessMasterRest/update", req)
 
 export const deleteRoleAccessBE = req => postWithParam("/rest/RoleAccessMasterRest/delete", req)
-
-/* GROUP RULE */
-
-export const getGroupRuleMenuListBE = req => post("/rest/RuleRest/SelectMenu", req)
-
-export const getGroupRuleBE = req => postWithParam("/rest/RuleRest/SelectRule", req)
-
-/* FILE MANAGEMENT */
-
-export const selectFolderBE = req => postWithParam("/rest/FileManagementRest/SelectFolder", req)
-
-export const deleteFileFolderBE = req => postWithParam("/rest/FileManagementRest/Delete", req)
-
-export const renameFileFolderBE = req => postWithParam("/rest/FileManagementRest/Rename", req)
-
-export const downloadFileFolderBE = req => getWithXls("/rest/FileManagementRest/FileDownload", req)
-
-export const downloadCheckBE = req => postWithParam("/rest/FileManagementRest/CheckFileDownload", req)
-
-export const uploadFileFolderBE = req => postUpload("/rest/FileManagementRest/FileUpload", req)
-
-export const moveFileFolderBE = req => postWithParam("/rest/FileManagementRest/Move", req)
-
-export const createFolderBE = req => postWithParam("/rest/FileManagementRest/CreateNewFolder", req)
-
-export const searchFileBE = req => postWithParam("/rest/FileManagementRest/Search", req)
-
-export const getYearBE = req => postWithParam("/rest/FileManagementRest/SelectYear", req)
-
-export const getMonthBE = req => postWithParam("/rest/FileManagementRest/SelectMonth", req)
-
-export const getMonthlyDataBE = req => postWithParam("/rest/FileManagementRest/SelectDashboard", req)
-
-/* KPI TREND */
-
-export const getGroupListKPIBE = req => postWithParam("rest/KpiManagementRest/getGroupList", req)
-
-export const getCorporationListKPIBE = req => postWithParam("rest/KpiManagementRest/getCorporationList", req)
-
-export const getItemListBE = req => postUpload("rest/KpiManagementRest/getItemList", req)
-
-export const getKPIMasterBE = req => postWithParam("rest/KpiManagementRest/getMaster", req)
-
-export const getUnitBE = req => postWithParam("rest/KpiManagementRest/getUnitList", req)
-
-export const getDashboardKPIBE = req => postUpload("rest/KpiManagementRest/getDashboard", req)
-
-export const getDashboardDetailKPIBE = req => postUpload("rest/KpiManagementRest/getDashboard", req)
-
-export const getKPIInputDataBE = req => postWithParam("rest/KpiManagementRest/getData", req)
-
-export const getDownloadKPITemplateBE = req => getWithXls("rest/KpiManagementRest/downloadTemplate", req)
-
-export const getDownloadDashboardDetailBE = req => getWithXls("rest/KpiManagementRest/downloadDashboard", req)
-
-export const getDownloadKPIExcelBE = req => getWithXls("rest/KpiManagementRest/downloadExcel", req)
-
-export const getKPIFileBE = req => postWithParam("rest/KpiManagementRest/searchFile", req)
-
-export const uploadKPIResultBE = req => postUpload("rest/KpiManagementRest/setResult", req)
-
-export const uploadKPIBE = req => postUpload("rest/KpiManagementRest/setMaster", req)
-
-export const setKPINoteBE = req => postWithParam("rest/KpiManagementRest/setNote", req)
-
-//MOVING PLAN
-
-export const getGroupListMovingPlanBE = req => post("rest/MovingPlanRest/getGroupList", req)
-
-export const getCompanyListBE = req => postWithParam("rest/MovingPlanRest/getCompanyList", req)
-
-export const getMovingPlanDashboardListBE = req => postWithParam("rest/MovingPlanRest/getList", req)
-
-export const getMovingPlanInputResultListBE = req => postWithParam("rest/MovingPlanRest/getList2", req)
-
-export const downloadExcelMovingPlanBE = req => getWithXls("rest/MovingPlanRest/downloadExcel", req)

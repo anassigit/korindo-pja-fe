@@ -81,8 +81,8 @@ const MovingPlanInputResult = (props) => {
             if (appListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
-                    title: props.t("No Data"),
-                    text: props.t("There is no data!"),
+                    title: "No Data",
+                    text: "There is no data!",
                     confirmButtonColor: "#7BAE40"
                 })
             }
@@ -93,7 +93,7 @@ const MovingPlanInputResult = (props) => {
         setAppMsg('')
         if (!selectedGroupNum) {
             setAppMsg({
-                message: props.t("Group must be selected.")
+                message: "Group must be selected."
             })
             return
         }
@@ -128,7 +128,7 @@ const MovingPlanInputResult = (props) => {
                 <>
                     <Card fluid="true" style={{ paddingBottom: '32px' }}>
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("Input Result")}
+                            Input Result
                         </CardHeader>
                         <CardBody>
                             <div style={{
@@ -196,7 +196,7 @@ const MovingPlanInputResult = (props) => {
                                             setSelectedCompanyCode("")
                                         }}
                                     >
-                                        <option value={''}>{props.t("Select Group")}</option>
+                                        <option value={''}>Select Group</option>
                                         {
                                             appGroupListData?.data?.resultList.map((item, index) => {
                                                 return (
@@ -216,7 +216,7 @@ const MovingPlanInputResult = (props) => {
                                         {
                                             appCompanyListData?.data?.resultList?.length > 0 ? (
                                                 <>
-                                                    <option value={''}>{props.t("All")}</option>
+                                                    <option value={''}>All</option>
                                                     {
                                                         appCompanyListData?.data?.resultList.map((item, index) => {
                                                             return (
@@ -228,7 +228,7 @@ const MovingPlanInputResult = (props) => {
                                                     }
                                                 </>
                                             ) : (
-                                                <option value={''}>{props.t("No Data")}</option>
+                                                <option value={''}>No Data</option>
                                             )
                                         }
                                     </Input>
@@ -237,7 +237,7 @@ const MovingPlanInputResult = (props) => {
                                         onClick={() => handleSearch()}
                                         style={{ width: "100%" }}
                                     >
-                                        {props.t("Search")}
+                                        Search
                                     </Button>
                                 </div>
                                 <div style={{
@@ -247,7 +247,7 @@ const MovingPlanInputResult = (props) => {
                                     marginTop: '10px',
                                     marginRight: '8px'
                                 }}>
-                                    (Unit: Juta-Rp)
+                                    * (Unit: Juta-Rp)
                                 </div>
                             </div>
                             <div>
@@ -261,12 +261,13 @@ const MovingPlanInputResult = (props) => {
                                         color: 'white',
                                         backgroundColor: '#81B642',
                                     }}>
-                                        <tr >
+                                        <tr>
                                             <th colSpan={2} style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 backgroundColor: '#81B642',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: "20px"
                                             }}>
                                                 {appListData?.data?.name ? appListData?.data?.name : ""}
                                             </th>
@@ -327,7 +328,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Business plan(BP)")}
                                             </td>
@@ -376,7 +378,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Current Month Moving Plan(MP)")}
                                             </td>
@@ -425,7 +428,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Previous Month Moving Plan(MP)")}
                                             </td>
@@ -474,7 +478,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Moving Plan Difference")}
                                             </td>
@@ -556,7 +561,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Business plan(BP)")}
                                             </td>
@@ -605,7 +611,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Current Month Moving Plan(MP)")}
                                             </td>
@@ -654,7 +661,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Previous Month Moving Plan(MP)")}
                                             </td>
@@ -703,7 +711,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Moving Plan Difference")}
                                             </td>
@@ -752,7 +761,9 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px',
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Performance")}
                                             </td>
@@ -785,7 +796,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Non-Operating Income")}
                                             </td>
@@ -834,7 +846,8 @@ const MovingPlanInputResult = (props) => {
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: '10px'
                                             }}>
                                                 {props.t("Non-Operating Expenses")}
                                             </td>
@@ -885,7 +898,8 @@ const MovingPlanInputResult = (props) => {
                                                 backgroundColor: '#EEECE1',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
-                                                border: "1px solid #f8f8fb"
+                                                border: "1px solid #f8f8fb",
+                                                maxWidth: "20px"
                                             }}>
                                                 {props.t("Income(Loss) Before Income Tax")}
                                             </td>

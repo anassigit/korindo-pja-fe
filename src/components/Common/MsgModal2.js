@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import '../../assets/scss/custom/modal/modal.css'
+import { withTranslation } from 'react-i18next'
 
 const MsgModal2 = (props) => {
 
@@ -12,17 +13,17 @@ const MsgModal2 = (props) => {
 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle} backdrop="static">
-            <ModalHeader toggle={props.toggle}>Message</ModalHeader>
+            <ModalHeader toggle={props.toggle}>{props.t("Message")}</ModalHeader>
             <ModalBody>{props.message}</ModalBody>
             <ModalFooter>
                 {
                     props.successClose === true ?
                         <Button color="primary" onClick={toggleClose}>
-                            Ok
+                            {props.t("Ok")}
                         </Button>
                         :
                         <Button color="danger" onClick={toggleClose}>
-                            Close
+                            {props.t("Close")}
                         </Button>
                 }
             </ModalFooter>
@@ -36,6 +37,7 @@ MsgModal2.propTypes = {
     message: PropTypes.string,
     setIsClosed: PropTypes.func,
     successClose: PropTypes.any,
+    t: PropTypes.any
 }
 
-export default MsgModal2
+export default withTranslation()(MsgModal2)

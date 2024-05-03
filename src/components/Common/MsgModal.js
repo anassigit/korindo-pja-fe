@@ -1,12 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Spinner } from 'reactstrap';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Spinner } from 'reactstrap'
 import '../../assets/scss/custom/modal/modal.css'
-const MsgModal = ({ modal, toggle, message, successClose }) => {
-    
+import { withTranslation } from 'react-i18next'
+
+const MsgModal = ({ modal, toggle, message, successClose, t }) => {
+
     return (
         <Modal isOpen={modal} toggle={toggle} backdrop="static">
-            <ModalHeader toggle={toggle}>Message</ModalHeader>
+            <ModalHeader toggle={toggle}>{t("Message")}</ModalHeader>
             <ModalBody>
                 {message == null ? (
                     <div className='d-flex justify-content-center'>
@@ -27,27 +29,27 @@ const MsgModal = ({ modal, toggle, message, successClose }) => {
                 )}
             </ModalBody>
             <ModalFooter>
-                
                 {
                     successClose === true ?
-                    <Button color="primary" onClick={toggle}>
-                    Ok
-                </Button>
-                :
-                <Button color="danger" onClick={toggle}>
-                    Close
-                </Button>
+                        <Button color="primary" onClick={toggle}>
+                            {t("Ok")}
+                        </Button>
+                        :
+                        <Button color="danger" onClick={toggle}>
+                            {t("Close")}
+                        </Button>
                 }
             </ModalFooter>
         </Modal>
-    );
-};
+    )
+}
 
 MsgModal.propTypes = {
     modal: PropTypes.any,
     toggle: PropTypes.any,
     message: PropTypes.any,
     successClose: PropTypes.any,
-};
+    t: PropTypes.any
+}
 
-export default MsgModal;
+export default withTranslation()(MsgModal)

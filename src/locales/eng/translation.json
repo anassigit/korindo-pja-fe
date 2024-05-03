@@ -287,5 +287,9 @@
     "Performance": "Performance",
     "Non-Operating Income": "Non-Operating Income",
     "Non-Operating Expenses": "Non-Operating Expenses",
-    "Unit is in Million (Juta)": "Unit is in Million (Juta)"
+    "Unit is in Million (Juta)": "Unit is in Million (Juta)",
+    "Confirmation Message": "Confirmation Message",
+    "Message": "Message",
+    "Ok": "Ok",
+    "Log": "Log"
 }

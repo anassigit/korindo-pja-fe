@@ -621,7 +621,7 @@ const Instructions = (props) => {
                                         </div>
                                     </Col>
                                 </Row>
-                                <Row className="mb-5">
+                                <Row className="mb-5" style={{ marginRight: "0px", marginLeft: "0px" }}>
                                     <TableCustom
                                         keyField={"insId"}
                                         columns={appInstructionsp01Tabel}

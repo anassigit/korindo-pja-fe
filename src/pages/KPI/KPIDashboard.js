@@ -159,8 +159,8 @@ const KPIDashboard = (props) => {
             if (appDashboardListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
-                    title: props.t("No Data"),
-                    text: props.t("There is no data!"),
+                    title: "No Data",
+                    text: "There is no data!",
                     confirmButtonColor: "#7BAE40"
                 })
             }
@@ -206,14 +206,14 @@ const KPIDashboard = (props) => {
         if (!isFilterByCorporation) {
             if (!selectedGroupList.some(group => group.isChecked)) {
                 setAppKPIMsg({
-                    message: props.t('At least one group must be checked.')
+                    message: "At least one group must be checked."
                 })
                 return
             }
         } else {
             if (!selectedCorporationList.some(corporation => corporation.isChecked)) {
                 setAppKPIMsg({
-                    message: props.t('At least one corporation must be checked.')
+                    message: "At least one corporation must be checked."
                 })
                 return
             }
@@ -221,7 +221,7 @@ const KPIDashboard = (props) => {
 
         if (parseDateString(selectedFromDate) > parseDateString(selectedToDate)) {
             setAppKPIMsg({
-                message: props.t('From date cannot be after to date.')
+                message: "From date cannot be after to date."
             })
             return
         }
@@ -347,7 +347,7 @@ const KPIDashboard = (props) => {
                     />
                     <Card tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("Dashboard")}
+                            Dashboard
                         </CardHeader>
                         <CardBody>
                             <div
@@ -457,7 +457,7 @@ const KPIDashboard = (props) => {
                                     </InputGroup>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterByCorporationOrGroup} toggle={() => setFilterByCorporationOrGroup(!filterByCorporationOrGroup)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0", marginTop: "-3px" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>{props.t("Filter Group & Corporation")} &nbsp;<span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Group & Corporation &nbsp;<span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appCorporationAndGroupListData?.data?.corporationList) && appCorporationAndGroupListData?.data?.corporationList.length > 0 ? (
@@ -501,7 +501,7 @@ const KPIDashboard = (props) => {
                                                                 />
                                                             </FormGroup>
                                                             <a style={{ marginBottom: '0' }}>
-                                                                &nbsp;{!isFilterByCorporation ? props.t("Group") : props.t("Corporation")}
+                                                                &nbsp;{!isFilterByCorporation ? "Group" : "Corporation"}
                                                             </a>
                                                         </a>
                                                     </div>
@@ -587,13 +587,13 @@ const KPIDashboard = (props) => {
                                                         ))}
                                                 </React.Fragment>
                                             ) : (
-                                                <DropdownItem>{props.t("No Data")}</DropdownItem>
+                                                <DropdownItem>No Data</DropdownItem>
                                             )}
                                         </DropdownMenu>
                                     </Dropdown>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0", marginTop: "-3px" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>{props.t("Filter Category")} &nbsp; <span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp; <span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {(Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0) && selectedKPIItemList ? (
@@ -629,7 +629,7 @@ const KPIDashboard = (props) => {
                                                     ))}
                                                 </React.Fragment>
                                             ) : (
-                                                <DropdownItem>{props.t("No Data")}</DropdownItem>
+                                                <DropdownItem>No Data</DropdownItem>
                                             )}
                                         </DropdownMenu>
                                     </Dropdown>
@@ -638,11 +638,11 @@ const KPIDashboard = (props) => {
                                         className="btn btn-primary"
                                         style={{ whiteSpace: "nowrap" }}
                                     >
-                                        {props.t("Search")}
+                                        Search
                                     </Button>
                                 </div>
                                 <span style={{ color: 'red' }}>
-                                    {props.t("* Holding ctrl and mouse wheel triggers zoom.")}
+                                    * Holding ctrl and mouse wheel triggers zoom.
                                 </span>
                             </div>
                             {
@@ -656,7 +656,7 @@ const KPIDashboard = (props) => {
                                             )}
                                             <div className="mx-2">
                                                 <h5 style={{ marginTop: '1.25vh' }}>
-                                                    {item.item || props.t("No Data")}
+                                                    {item.item || "No Data"}
                                                 </h5>
                                             </div>
                                             <div style={{
@@ -718,7 +718,7 @@ const KPIDashboard = (props) => {
                                                         },
                                                         series: [
                                                             {
-                                                                name: props.t('Plan'),
+                                                                name: "Plan",
                                                                 type: 'bar',
                                                                 color: '#D4D4FD',
                                                                 data: item?.details?.map(e => {
@@ -731,19 +731,19 @@ const KPIDashboard = (props) => {
                                                                 }) || []
                                                             },
                                                             {
-                                                                name: props.t('Result'),
+                                                                name: "Result",
                                                                 type: 'line',
                                                                 data: item?.details?.map(e => e.result) || [],
                                                                 color: '#7F7EF7'
                                                             },
                                                             {
-                                                                name: props.t('File'),
+                                                                name: "File",
                                                                 type: 'scatter',
                                                                 data: item?.details?.map(e => e.url) || [],
                                                                 color: '#BEE7BF',
                                                             },
                                                             {
-                                                                name: props.t('Page'),
+                                                                name: "Page",
                                                                 data: item?.details?.map(e => e.page) || []
                                                             }
                                                         ]

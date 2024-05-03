@@ -174,8 +174,8 @@ const KPIDashboardDetail = (props) => {
             if (appDashboardListData?.data?.resultList?.length === 0) {
                 Swal.fire({
                     icon: "error",
-                    title: props.t("No Data"),
-                    text: props.t("There is no data!"),
+                    title: "No Data",
+                    text: "There is no data!",
                     confirmButtonColor: "#7BAE40"
                 })
             }
@@ -215,7 +215,7 @@ const KPIDashboardDetail = (props) => {
 
         if (parseDateString(selectedFromDate) > parseDateString(selectedToDate)) {
             setAppKPIMsg({
-                message: props.t('From date cannot be after to date.')
+                message: "From date cannot be after to date."
             })
             return
         }
@@ -223,14 +223,14 @@ const KPIDashboardDetail = (props) => {
         if (!isFilterByCorporation) {
             if (!selectedGroupList.some(group => group.isChecked)) {
                 setAppKPIMsg({
-                    message: props.t('At least one group must be checked.')
+                    message: "At least one group must be checked."
                 })
                 return
             }
         } else {
             if (!selectedCorporationList.some(corporation => corporation.isChecked)) {
                 setAppKPIMsg({
-                    message: props.t('At least one corporation must be checked.')
+                    message: "At least one corporation must be checked."
                 })
                 return
             }
@@ -374,7 +374,7 @@ const KPIDashboardDetail = (props) => {
                     />
                     <Card fluid="true" >
                         <CardHeader style={{ borderRadius: "15px 15px 0 0" }}>
-                            {props.t("Dashboard Detail")}
+                            Dashboard Detail
                         </CardHeader>
                         <CardBody>
                             <div
@@ -484,7 +484,7 @@ const KPIDashboardDetail = (props) => {
                                     </InputGroup>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterByCorporationOrGroup} toggle={() => setFilterByCorporationOrGroup(!filterByCorporationOrGroup)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0", marginTop: "-3px" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>{props.t("Filter Group & Corporation")} &nbsp;<span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Group & Corporation &nbsp;<span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {Array.isArray(appCorporationAndGroupListData?.data?.corporationList) && appCorporationAndGroupListData?.data?.corporationList.length > 0 ? (
@@ -528,7 +528,7 @@ const KPIDashboardDetail = (props) => {
                                                                 />
                                                             </FormGroup>
                                                             <a style={{ marginBottom: '0' }}>
-                                                                &nbsp;{!isFilterByCorporation ? props.t("Group") : props.t("Corporation")}
+                                                                &nbsp;{!isFilterByCorporation ? "Group" : "Corporation"}
                                                             </a>
                                                         </a>
                                                     </div>
@@ -620,7 +620,7 @@ const KPIDashboardDetail = (props) => {
                                     </Dropdown>
                                     <Dropdown style={{ height: "30px" }} isOpen={filterKPIItems} toggle={() => setFilterKPIItems(!filterKPIItems)} className="d-inline-block">
                                         <DropdownToggle style={{ paddingTop: "0", marginTop: "-3px" }} className="btn header-item" id="page-header-user-dropdown" tag="button">
-                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>{props.t("Filter Category")} &nbsp; <span className="mdi mdi-filter" /></Button>
+                                            <Button style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', whiteSpace: "nowrap", display: "flex" }}>Filter Category &nbsp; <span className="mdi mdi-filter" /></Button>
                                         </DropdownToggle>
                                         <DropdownMenu className="dropdown-menu-end" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                             {(Array.isArray(appKPIItemListData?.data?.list) && appKPIItemListData?.data?.list.length > 0) && selectedKPIItemList ? (
@@ -665,7 +665,7 @@ const KPIDashboardDetail = (props) => {
                                         className="btn btn-primary"
                                         style={{ whiteSpace: "nowrap" }}
                                     >
-                                        {props.t("Search")}
+                                        Search
                                     </Button>
                                 </div>
                                 <div
@@ -679,7 +679,7 @@ const KPIDashboardDetail = (props) => {
                                         className={appDashboardListData?.data?.resultList.length > 0 ? "" : "btn btn-dark opacity-25"}
                                         onClick={() => { downloadExcel() }}>
                                         <i className="mdi mdi-download" />{" "}
-                                        {props.t("Download Excel")}
+                                        Download Excel
                                     </Button>
                                 </div>
                             </div>
