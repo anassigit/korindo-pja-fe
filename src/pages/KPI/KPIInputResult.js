@@ -327,6 +327,8 @@ const KPIInputResult = (props) => {
                                                         <div className="react-datepicker__input-container">
                                                             <input
                                                                 type="text"
+                                                                readOnly
+                                                                style={{ backgroundColor: "white", cursor: "default", userSelect: "none" }}
                                                                 className="form-control custom-reset-date"
                                                                 value={selectedDate ? moment(selectedDate).format('yyyy-MM') : moment().format('yyyy-MM')}
                                                             />

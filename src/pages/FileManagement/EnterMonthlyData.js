@@ -13,7 +13,7 @@ import {
     Button,
     InputGroup
 } from "reactstrap"
-import { deleteFileFolder, getSearch, getMonthlyData } from "../../store/FileManagement/actions"
+import { deleteFileFolder, getMonthlyData } from "../../store/FileManagement/actions"
 import { useSelector, useDispatch } from "react-redux"
 import ConfirmModal from "components/Common/ConfirmModal"
 import { withTranslation } from "react-i18next"
@@ -242,6 +242,8 @@ const EnterMonthlyData = (props) => {
                                                                 <div className="react-datepicker__input-container">
                                                                     <input
                                                                         type="text"
+                                                                        readOnly
+                                                                        style={{ backgroundColor: "white", cursor: "default", userSelect: "none" }}
                                                                         className="form-control custom-reset-date"
                                                                         value={dateState ? moment(dateState).format('YYYY-MM') : moment().format('YYYY-MM')}
                                                                     />

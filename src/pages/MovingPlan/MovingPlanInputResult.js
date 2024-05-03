@@ -170,6 +170,8 @@ const MovingPlanInputResult = (props) => {
                                                         <div className="react-datepicker__input-container">
                                                             <input
                                                                 type="text"
+                                                                readOnly
+                                                                style={{ backgroundColor: "white", cursor: "default", userSelect: "none" }}
                                                                 className="form-control custom-reset-date"
                                                                 value={selectedDate ? moment(selectedDate).format('yyyy-MM') : moment().format('yyyy-MM')}
                                                             />
@@ -255,7 +257,7 @@ const MovingPlanInputResult = (props) => {
                                     display: appListData?.data ? "table" : "none",
                                     borderCollapse: "separate",
                                     borderSpacing: "0",
-                                    width: "60%",
+                                    width: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "60%" : "75%",
                                 }}>
                                     <thead style={{
                                         color: 'white',
