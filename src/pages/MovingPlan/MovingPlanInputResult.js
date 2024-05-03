@@ -255,7 +255,7 @@ const MovingPlanInputResult = (props) => {
                                     display: appListData?.data ? "table" : "none",
                                     borderCollapse: "separate",
                                     borderSpacing: "0",
-                                    width: "75%",
+                                    width: "60%",
                                 }}>
                                     <thead style={{
                                         color: 'white',
@@ -268,7 +268,7 @@ const MovingPlanInputResult = (props) => {
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
                                                 padding: " 0.25rem !important",
-                                                maxWidth: "20px"
+                                                maxWidth: "10px"
                                             }}>
                                                 {appListData?.data?.name ? appListData?.data?.name : ""}
                                             </th>
@@ -323,7 +323,7 @@ const MovingPlanInputResult = (props) => {
                                         <tr className="mpst-tr" style={{ height: "100%" }}>
                                             <td className="mpst-td" valign="middle" rowSpan={5} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '60px',
+                                                maxWidth: '40px',
                                                 backgroundColor: '#CCE295',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
@@ -584,7 +584,7 @@ const MovingPlanInputResult = (props) => {
                                         <tr className="mpst-tr" style={{ height: "100%" }}>
                                             <td className="mpst-td" valign="middle" rowSpan={5} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '60px',
+                                                maxWidth: '40px',
                                                 backgroundColor: '#E6F0D8',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
@@ -847,7 +847,7 @@ const MovingPlanInputResult = (props) => {
                                         <tr className="mpst-tr" style={{ height: "100%" }}>
                                             <td className="mpst-td" valign="middle" rowSpan={2} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '60px',
+                                                maxWidth: '40px',
                                                 backgroundColor: '#F2F2F2',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
@@ -975,7 +975,7 @@ const MovingPlanInputResult = (props) => {
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb",
                                                 padding: " 0.25rem !important",
-                                                maxWidth: "20px"
+                                                maxWidth: "10px"
                                             }}>
                                                 {props.t("Income(Loss) Before Income Tax")}
                                             </td>
