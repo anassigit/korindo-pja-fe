@@ -1,82 +1,75 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner, UncontrolledAlert, FormFeedback } from 'reactstrap';
-import { useFormik } from 'formik';
-import * as Yup from "yup";
-import { useDispatch, useSelector } from 'react-redux';
-import { editInstructions, getDetailInstruction, saveReply, saveReplys } from 'store/actions';
-import MsgModal from 'components/Common/MsgModal';
-import { getPermissionListData, getRankListData, resetMessage } from 'store/Setting/actions';
-import { format } from 'date-fns';
+import React, { useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input, Spinner, UncontrolledAlert, FormFeedback } from 'reactstrap'
+import { useFormik } from 'formik'
+import * as Yup from "yup"
+import { useDispatch, useSelector } from 'react-redux'
+import { editInstructions, getDetailInstruction, saveReply } from 'store/actions'
+import { resetMessage } from 'store/Setting/actions'
+import { format } from 'date-fns'
 import { withTranslation } from "react-i18next"
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from 'react-client-session'
 
 const AddReply = (props) => {
 
     const refCleanser = useRef(null)
     let langType = localStorage.getItem("I18N_LANGUAGE")
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     const [addReplySpinner, setAddReplySpinner] = useState(false)
-    const [preservedFiles, setPreservedFiles] = useState([]);
-
-
-    const history = useHistory()
+    const [preservedFiles, setPreservedFiles] = useState([])
 
     const [addReplyMsg, setAddReplyMsg] = useState(false)
 
     const msgSaveReply = useSelector(state => {
-        return state.instructionsReducer.msgAddReply;
+        return state.instructionsReducer.msgAddReply
     })
 
-
     useEffect(() => {
-        dispatch(resetMessage());
+        dispatch(resetMessage())
     }, [dispatch])
 
     const insert3 = async (values) => {
-        await dispatch(saveReply(values));
-
+        await dispatch(saveReply(values))
         setAddReplySpinner(true)
-    };
+    }
 
     const initialValues = {
         status: '',
         content: '',
         files: [],
-    };
+    }
 
     const validationSchemaReply = Yup.object().shape({
         content: Yup.string().required('Content is required'),
-    });
+    })
 
     const onSubmit = (values) => {
 
         props.setLoadingSpinner(true)
         if (values.content !== '') {
-            var bodyForm = new FormData();
+            var bodyForm = new FormData()
 
-            bodyForm.append('instruction_num', props.idInstruction);
-            bodyForm.append('content', values.content);
+            bodyForm.append('instruction_num', props.idInstruction)
+            bodyForm.append('content', values.content)
 
             // if (values.files.length > 0) {
 
-            //     for (let index = 0; index < values.files.length; index++) {
+            //     for (let index = 0 index < values.files.length index++) {
 
-            //         const file = values.files[index];
-            //         bodyForm.append('file' + index, file);
+            //         const file = values.files[index]
+            //         bodyForm.append('file' + index, file)
             //     }
             // }
 
             if (values.files.length > 0 || preservedFiles.length > 0) {
                 for (let index = 0; index < values.files.length; index++) {
-                    const file = values.files[index];
-                    bodyForm.append('file' + index, file);
+                    const file = values.files[index]
+                    bodyForm.append('file' + index, file)
                 }
 
                 for (let index = 0; index < preservedFiles.length; index++) {
-                    const file = preservedFiles[index];
-                    bodyForm.append('file' + (index + values.files.length), file);
+                    const file = preservedFiles[index]
+                    bodyForm.append('file' + (index + values.files.length), file)
                 }
             }
 
@@ -88,41 +81,41 @@ const AddReply = (props) => {
 
             insert3(bodyForm, config)
 
-            const currentStatus = props.getDetailInstructionData?.data?.instruction?.status;
-            const prevStatus = props.statusData?.data?.statusList.find(value => value.name === currentStatus);
-            const selectedStatus = props.statusData?.data?.statusList.find(value => value.name === values.status);
-            const selectedStatusWhenValuesBlank = props.statusData?.data?.statusList.find(value => value.name === props.statusInstruction);
+            const currentStatus = props.getDetailInstructionData?.data?.instruction?.status
+            const prevStatus = props.statusData?.data?.statusList.find(value => value.name === currentStatus)
+            const selectedStatus = props.statusData?.data?.statusList.find(value => value.name === values.status)
+            const selectedStatusWhenValuesBlank = props.statusData?.data?.statusList.find(value => value.name === props.statusInstruction)
 
             if (selectedStatus && selectedStatus.no !== prevStatus?.no) {
-                const bodyForm2 = new FormData();
+                const bodyForm2 = new FormData()
 
-                bodyForm2.append('num', props.idInstruction);
-                bodyForm2.append('status', selectedStatus.no);
+                bodyForm2.append('num', props.idInstruction)
+                bodyForm2.append('status', selectedStatus.no)
 
-                insert(bodyForm2, config);
+                insert(bodyForm2, config)
             } else if (prevStatus?.no !== selectedStatusWhenValuesBlank?.no) {
-                const bodyForm2 = new FormData();
+                const bodyForm2 = new FormData()
 
-                bodyForm2.append('num', props.idInstruction);
-                bodyForm2.append('status', selectedStatusWhenValuesBlank.no);
+                bodyForm2.append('num', props.idInstruction)
+                bodyForm2.append('status', selectedStatusWhenValuesBlank.no)
 
-                insert(bodyForm2, config);
+                insert(bodyForm2, config)
             }
             if (refCleanser.current) {
-                refCleanser.current.value = "";
+                refCleanser.current.value = ""
             }
         } else {
-            replyValidInput.setFieldError('content', props.t('Please enter content'));
+            replyValidInput.setFieldError('content', props.t('Please enter content'))
         }
 
-        props.setLoadingSpinner(false);
-    };
+        props.setLoadingSpinner(false)
+    }
 
     const replyValidInput = useFormik({
         initialValues,
         validationSchemaReply,
         onSubmit,
-    });
+    })
 
     useEffect(() => {
         if (!props.modal) {
@@ -131,7 +124,7 @@ const AddReply = (props) => {
             setPreservedFiles([])
             replyValidInput.setFieldValue('content', '')
         }
-    }, [props.toggle]);
+    }, [props.toggle])
 
 
     const [addReplyMsgModal, setAddReplyMsgModal] = useState(false)
@@ -142,12 +135,9 @@ const AddReply = (props) => {
     }
 
     useEffect(() => {
-
         if (msgSaveReply.status == "1") {
-
             const queryParameters = new URLSearchParams(window.location.search)
             const queryNum = queryParameters.get("num")
-
             let num = queryNum?.toString()
             dispatch(getDetailInstruction({
                 search: {
@@ -156,126 +146,88 @@ const AddReply = (props) => {
                 }
             }))
             props.toggle()
-            replyValidInput.resetForm();
+            replyValidInput.resetForm()
             if (props.getDetailInstructionData?.data?.instruction?.comment && props.onlyReply === false) {
-                var bodyForm = new FormData();
-
-                bodyForm.append('num', props.idInstruction);
-                bodyForm.append('title', props.titleInstruction);
-
-                bodyForm.append('insDate', format(props.dateInstruction, "yyyy-MM-dd"));
-                bodyForm.append('description', props.descriptionInstruction);
-
-
-                //remove/add - Owner & Manager//
-
-                const uniqueAddUser = new Set(props.addUser);
-                const uniqueRemoveUser = new Set(props.removeUser);
-
-                const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user));
-                const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user));
-
+                var bodyForm = new FormData()
+                bodyForm.append('num', props.idInstruction)
+                bodyForm.append('title', props.titleInstruction)
+                bodyForm.append('insDate', format(props.dateInstruction, "yyyy-MM-dd"))
+                bodyForm.append('description', props.descriptionInstruction)
+                const uniqueAddUser = new Set(props.addUser)
+                const uniqueRemoveUser = new Set(props.removeUser)
+                const filteredAddUser = Array.from(uniqueAddUser).filter(user => !uniqueRemoveUser.has(user))
+                const filteredRemoveUser = Array.from(uniqueRemoveUser).filter(user => !uniqueAddUser.has(user))
                 filteredAddUser.forEach(user => {
-                    bodyForm.append('addUser', user);
-                });
-
+                    bodyForm.append('addUser', user)
+                })
                 filteredRemoveUser.forEach(user => {
-                    bodyForm.append('removeUser', user);
-                });
-
-                //end//
-
-                //status//
-
+                    bodyForm.append('removeUser', user)
+                })
                 let statusId = null
                 statusId = props.statusData?.data?.statusList.map((item, index) => {
                     if (item.name == props.statusInstruction) {
                         bodyForm.append('status', item.no)
                     }
                 })
-
-                //end status//
-
-                //attach files//
-
                 if (props.selectedfile.length > 0) {
-
-                    var getFileNm = selectedfile[0].filename;
-
-                    getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1);
-                    
+                    var getFileNm = selectedfile[0].filename
+                    getFileNm = getFileNm.substring(getFileNm.lastIndexOf('.') + 1)
                     if (getFileNm.match(/(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i)) {
-
-
                         for (let index = 0; index < props.selectedfile?.length; index++) {
-                            let a = selectedfile[index];
-
-                            bodyForm.append('file' + index, selectedfile[index].fileori);
-
-                            console.log(a);
-                            SetSelectedFile([]);
-                            SetFiles([...Files, a]);
+                            bodyForm.append('file' + index, selectedfile[index].fileori)
+                            SetSelectedFile([])
+                            SetFiles([...Files, selectedfile[index]])
 
                         }
-
-
                     } else {
-
-                        alert("Files type are not allowed to upload or not supported.");
+                        alert("Files type are not allowed to upload or not supported.")
                     }
                 }
-
                 if (props.removeFile.length > 0) {
                     props.removeFile.forEach(files => {
-                        bodyForm.append('removeFile', files);
-                    });
+                        bodyForm.append('removeFile', files)
+                    })
                 }
-
-                //end//
-
-                const config = {
+                props.setUpdateNoReply(true)
+                insert(bodyForm, {
                     headers: {
                         'content-type': 'multipart/form-data'
                     }
-                }
-                props.setUpdateNoReply(true)
-                insert(bodyForm, config)
+                })
                 ReactSession.set('appEditInstructionsMsg', props.appEditInstructionsMsg)
             }
         } else {
-            setAddReplyMsg(msgSaveReply);
+            setAddReplyMsg(msgSaveReply)
         }
-        setAddReplyContentModal(msgSaveReply.message);
+        setAddReplyContentModal(msgSaveReply.message)
         setAddReplySpinner(false)
         props.setLoadingSpinner(false)
     }, [msgSaveReply])
 
     const insert = async (values) => {
-
         await dispatch(editInstructions(values))
         props.setLoadingSpinner(true)
-
-    };
+    }
 
     const handleFileChange = (e) => {
-        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i;
+        const allowedFileExtensions = /(jpg|jpeg|png|gif|svg|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|avi|mov|mp4|mkv|flv)$/i
         if (e.target.files.length !== 0) {
-            const file = e.target.files[0];
-            const fileName = file.name;
-            const fileExtension = fileName.slice(fileName.lastIndexOf(".") + 1).toLowerCase();
+            const file = e.target.files[0]
+            const fileName = file.name
+            const fileExtension = fileName.slice(fileName.lastIndexOf(".") + 1).toLowerCase()
 
             if (!allowedFileExtensions.test(fileExtension)) {
-                alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv");
+                alert("No valid files selected. Allowed file types: jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")
                 if (refCleanser.current) {
-                    refCleanser.current.value = "";
+                    refCleanser.current.value = ""
                 }
                 if (e.target) {
-                    e.target.value = "";
+                    e.target.value = ""
                 }
-                return; // Exit function early if file extension is not allowed
+                return // Exit function early if file extension is not allowed
             }
-            const newFiles = Array.from(e.currentTarget.files);
-            setPreservedFiles([...preservedFiles, ...newFiles]);
+            const newFiles = Array.from(e.currentTarget.files)
+            setPreservedFiles([...preservedFiles, ...newFiles])
         }
     }
 
@@ -287,8 +239,8 @@ const AddReply = (props) => {
             </div>
 
             <Form onSubmit={(e) => {
-                e.preventDefault();
-                replyValidInput.handleSubmit();
+                e.preventDefault()
+                replyValidInput.handleSubmit()
                 return false
             }}>
                 <ModalHeader toggle={props.toggle}>{props.t("Add New Reply")}</ModalHeader>
@@ -317,7 +269,7 @@ const AddReply = (props) => {
                                             <option key={key} value={value.name}>
                                                 {value.name}
                                             </option>
-                                        );
+                                        )
                                     }
                                     return (
                                         <option style={{ backgroundColor: "#DDDDDD" }} disabled key={key} value={value.name}>
@@ -345,7 +297,7 @@ const AddReply = (props) => {
                                 id="cntnt"
                                 type="textarea"
                                 onChange={(event) => {
-                                    replyValidInput.handleChange(event);
+                                    replyValidInput.handleChange(event)
                                 }}
                                 value={replyValidInput.values.content || ""}
                                 invalid={
@@ -368,9 +320,6 @@ const AddReply = (props) => {
                                         ref={refCleanser}
                                         multiple
                                         accept=".jpg, .jpeg, .png, .gif, .svg, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .avi, .mov, .mp4, .mkv, .flv"
-                                        // onChange={(event) => {
-                                        //     replyValidInput.setFieldValue('files', event.currentTarget.files);
-                                        // }}
                                         onChange={(event) => { handleFileChange(event) }}
                                     />
                                 </div>
@@ -379,7 +328,6 @@ const AddReply = (props) => {
                             <div className="kb-attach-box mb-3">
                                 {preservedFiles.map((file, index) => (
                                     <div className="file-atc-box" key={index}>
-                                        {/* Display file details here */}
                                         <div className="file-detail">
                                             <span>
                                                 <i className="fas fa-paperclip" />
@@ -390,15 +338,14 @@ const AddReply = (props) => {
                                                 className="mdi mdi-close"
                                                 style={{ fontSize: "20px", verticalAlign: "middle", cursor: "pointer" }}
                                                 onClick={() => {
-                                                    const newPreservedFiles = [...preservedFiles];
-                                                    newPreservedFiles.splice(index, 1);
-                                                    setPreservedFiles(newPreservedFiles);
+                                                    const newPreservedFiles = [...preservedFiles]
+                                                    newPreservedFiles.splice(index, 1)
+                                                    setPreservedFiles(newPreservedFiles)
                                                 }}
                                             />
                                         </div>
                                     </div>
                                 ))}
-
                                 <span style={{ fontSize: "12px", color: "blue" }}>{props.t("Allowed File Types Are jpg, jpeg, png, gif, svg, doc, docx, xls, xlsx, ppt, pptx, pdf, txt, avi, mov, mp4, mkv, flv")}</span>
                             </div>
                         </div>
@@ -407,8 +354,7 @@ const AddReply = (props) => {
                 <ModalFooter>
                     <Button type="submit" color={addReplySpinner ? "primary disabled" : "primary"}>
                         <i className="bx bxs-save align-middle me-2"></i>{" "}
-                        {props.t("Add")}
-                        {/* <Spinner style={{ display: addReplySpinner ? "block" : "none", marginTop: '-27px', zIndex: 2, position: "absolute" }} className="ms-4" color="danger" /> */}
+                        {props.t("Add2")}
                     </Button>
                     <Button color="danger" onClick={() => {
                         props.setUpdateNoReply(true)
@@ -420,8 +366,8 @@ const AddReply = (props) => {
                 </ModalFooter>
             </Form>
         </Modal>
-    );
-};
+    )
+}
 
 AddReply.propTypes = {
     modal: PropTypes.any,
@@ -449,6 +395,6 @@ AddReply.propTypes = {
     setUpdateNoReply: PropTypes.any,
     location: PropTypes.object,
     t: PropTypes.any
-};
+}
 
-export default withTranslation()(AddReply);
+export default withTranslation()(AddReply)
