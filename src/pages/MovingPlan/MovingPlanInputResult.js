@@ -243,23 +243,24 @@ const MovingPlanInputResult = (props) => {
                                     </Button>
                                     
                                 </div>
-                                <div style={{
-                                    color: 'red',
-                                    display: 'flex',
-                                    justifyContent: 'right',
-                                    marginTop: '10px',
-                                    marginRight: "40%",
-                                    whiteSpace: "nowrap"
-                                }}>
-                                    * (Unit: Juta-Rp)
-                                </div>
+                            </div>
+                            <div style={{
+                                color: 'red',
+                                display: 'flex',
+                                justifyContent: 'right',
+                                marginTop: '50px',
+                                marginBottom: "-15px",
+                                marginRight: "40%",
+                                whiteSpace: "nowrap"
+                            }}>
+                                * (Unit: Juta-Rp)
                             </div>
                             <div className="moving-plan-summary-table">
                                 <table className="table table-borderless my-3" style={{
                                     display: appListData?.data ? "table" : "none",
                                     borderCollapse: "separate",
                                     borderSpacing: "0",
-                                    width: "60%",
+                                    width: "60%"
                                 }}>
                                     <thead style={{
                                         color: 'white',
