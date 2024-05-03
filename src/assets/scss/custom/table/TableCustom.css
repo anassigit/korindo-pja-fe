@@ -67,10 +67,10 @@
     white-space: pre-line !important;
 }
 
-.moving-plan-summary-table tr {
+.moving-plan-summary-table .mpst-tr {
     height: 100%;
 }
 
-.moving-plan-summary-table th, td {
+.moving-plan-summary-table .mpst-th, .mpst-td {
     padding: 0.25rem !important;
 }

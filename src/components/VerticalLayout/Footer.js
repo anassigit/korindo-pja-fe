@@ -10,9 +10,9 @@ const Footer = (props) => {
                 <Container fluid="true">
                     <Row>
                         <Col md={7}>
-                            <span className="mdi mdi-phone"></span> {props.t("DMLS Help Contact")} &nbsp;
+                            <span className="mdi mdi-phone"></span> DMLS Help Contact &nbsp;
                             <b>
-                                {props.t("Wonjoon Choi (IT Division, ext. 579)")}
+                                최원준 (IT Division, ext. 579)
                             </b>
                         </Col>
                         <Col md={5}>

@@ -17,7 +17,6 @@ import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import ReactDatePicker from "react-datepicker"
 import Swal from "sweetalert2"
 import moment from "moment"
 import DatePicker from "react-datepicker"
@@ -83,7 +82,7 @@ const MovingPlanDashboard = (props) => {
         setAppMsg('')
         setFirstSearch(true)
         setLoadingSpinner(true)
-        if(!selectedCompanyCode) {
+        if (!selectedCompanyCode) {
             dispatch(getMovingPlanDashboardList(
                 {
                     year: selectedYear
