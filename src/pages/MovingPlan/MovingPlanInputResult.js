@@ -235,23 +235,33 @@ const MovingPlanInputResult = (props) => {
                                     <Button
                                         className="btn btn-primary"
                                         onClick={() => handleSearch()}
-                                        style={{width: "100%"}}
+                                        style={{ width: "100%" }}
                                     >
                                         {props.t("Search")}
                                     </Button>
                                 </div>
+                                <div style={{
+                                    color: 'red',
+                                    display: 'flex',
+                                    justifyContent: 'right',
+                                    marginTop: '10px',
+                                    marginRight: '8px'
+                                }}>
+                                    (Unit: Juta-Rp)
+                                </div>
                             </div>
                             <div>
-                                <table className="table table-borderless my-3" style={{
+                                <table className="table table-borderless my-3 moving-plan-summary-table" style={{
                                     display: appListData?.data ? "table" : "none",
                                     borderCollapse: "separate",
-                                    borderSpacing: "0"
+                                    borderSpacing: "0",
+                                    width: "75%"
                                 }}>
                                     <thead style={{
                                         color: 'white',
                                         backgroundColor: '#81B642',
                                     }}>
-                                        <tr>
+                                        <tr >
                                             <th colSpan={2} style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
@@ -303,29 +313,29 @@ const MovingPlanInputResult = (props) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr >
                                             <td valign="middle" rowSpan={5} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '100px',
+                                                maxWidth: '75px',
                                                 backgroundColor: '#CCE295',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                매출액
+                                                {props.t("Sales Revenue")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                사업계획
+                                                {props.t("Business plan(BP)")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb",
-                                                color: appListData?.data?.resultList[1]?.amount.startsWith("-") ? "red" : "black"
+                                                color: appListData?.data?.resultList[1]?.amount.startsWith("-") ? "red" : "black",
                                             }}>
                                                 {appListData?.data?.resultList[1]?.amount ? appListData?.data?.resultList[1]?.amount : "0"}
                                             </td>
@@ -362,13 +372,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[1]?.amtttl ? appListData?.data?.resultList[1]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                당월 MP
+                                                {props.t("Current Month Moving Plan(MP)")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -411,13 +421,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[2]?.amtttl ? appListData?.data?.resultList[2]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                전월 MP
+                                                {props.t("Previous Month Moving Plan(MP)")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -460,13 +470,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[3]?.amtttl ? appListData?.data?.resultList[3]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                MP 차이
+                                                {props.t("Moving Plan Difference")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -509,13 +519,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[4]?.amtttl ? appListData?.data?.resultList[4]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                실적
+                                                {props.t("Performance")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -532,23 +542,23 @@ const MovingPlanInputResult = (props) => {
                                                 border: "1px solid #f8f8fb"
                                             }} />
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td valign="middle" rowSpan={5} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '100px',
+                                                maxWidth: '75px',
                                                 backgroundColor: '#E6F0D8',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                영업이익
+                                                {props.t("Operating Income")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                사업계획
+                                                {props.t("Business plan(BP)")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -591,13 +601,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[6]?.amtttl ? appListData?.data?.resultList[6]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                당월 MP
+                                                {props.t("Current Month Moving Plan(MP)")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -640,13 +650,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[7]?.amtttl ? appListData?.data?.resultList[7]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                전월 MP
+                                                {props.t("Previous Month Moving Plan(MP)")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -689,13 +699,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[8]?.amtttl ? appListData?.data?.resultList[8]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                MP 차이
+                                                {props.t("Moving Plan Difference")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -738,13 +748,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[9]?.amtttl ? appListData?.data?.resultList[9]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                실적
+                                                {props.t("Performance")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -761,23 +771,23 @@ const MovingPlanInputResult = (props) => {
                                                 border: "1px solid #f8f8fb"
                                             }} />
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td valign="middle" rowSpan={2} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '100px',
+                                                maxWidth: '75px',
                                                 backgroundColor: '#F2F2F2',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                영업 외 수익, 비용
+                                                {props.t("Non-Operating Income, Expenses")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                영업 외 수익
+                                                {props.t("Non-Operating Income")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -820,13 +830,13 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[11]?.amtttl ? appListData?.data?.resultList[11]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td style={{
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                영업 외 비용
+                                                {props.t("Non-Operating Expenses")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',
@@ -869,7 +879,7 @@ const MovingPlanInputResult = (props) => {
                                                 {appListData?.data?.resultList[12]?.amtttl ? appListData?.data?.resultList[12]?.amtttl : "0"}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr >
                                             <td colSpan={2} valign="middle" style={{
                                                 fontWeight: 'bold',
                                                 backgroundColor: '#EEECE1',
@@ -877,7 +887,7 @@ const MovingPlanInputResult = (props) => {
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb"
                                             }}>
-                                                법인세 차감전순이익
+                                                {props.t("Income(Loss) Before Income Tax")}
                                             </td>
                                             <td style={{
                                                 textAlign: 'center',

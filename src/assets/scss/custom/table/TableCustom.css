@@ -66,3 +66,11 @@
 .custom-chart div {
     white-space: pre-line !important;
 }
+
+.moving-plan-summary-table tr {
+    height: 100%;
+}
+
+.moving-plan-summary-table th, td {
+    padding: 0.25rem !important;
+}

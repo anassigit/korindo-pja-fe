@@ -283,5 +283,17 @@
     "DMLS Help Contact": "DMLS 도움말 연락처:",
     "Wonjoon Choi (IT Division, ext. 579)": "최원준 (전산실 ext. 579)",
     "Re-login": "재로그인",
-    "of": "/"
+    "of": "/",
+    "Sales Revenue": "매출액",
+    "Operating Income": "영업이익",
+    "Non-Operating Income, Expenses": "영업 외 수익, 비용",
+    "Income(Loss) Before Income Tax": "법인세 차감전순이익",
+    "Business plan(BP)": "사업계획",
+    "Current Month Moving Plan(MP)": "당월 MP",
+    "Previous Month Moving Plan(MP)": "전월 MP",
+    "Moving Plan Difference": "MP 차이",
+    "Performance": "실적",
+    "Non-Operating Income": "영업 외 수익",
+    "Non-Operating Expenses": "영업 외 비용",
+    "Unit is in Million (Juta)": "단위는 백만(Juta)입니다."
 }
