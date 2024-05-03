@@ -241,16 +241,17 @@ const MovingPlanInputResult = (props) => {
                                     >
                                         Search
                                     </Button>
-                                    <div style={{
-                                        color: 'red',
-                                        display: 'flex',
-                                        justifyContent: 'right',
-                                        marginTop: '10px',
-                                        marginRight: '8px',
-                                        whiteSpace: "nowrap"
-                                    }}>
-                                        * (Unit: Juta-Rp)
-                                    </div>
+                                    
+                                </div>
+                                <div style={{
+                                    color: 'red',
+                                    display: 'flex',
+                                    justifyContent: 'right',
+                                    marginTop: '10px',
+                                    marginRight: "40%",
+                                    whiteSpace: "nowrap"
+                                }}>
+                                    * (Unit: Juta-Rp)
                                 </div>
                             </div>
                             <div className="moving-plan-summary-table">
