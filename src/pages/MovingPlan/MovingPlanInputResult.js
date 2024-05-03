@@ -241,15 +241,16 @@ const MovingPlanInputResult = (props) => {
                                     >
                                         Search
                                     </Button>
-                                </div>
-                                <div style={{
-                                    color: 'red',
-                                    display: 'flex',
-                                    justifyContent: 'right',
-                                    marginTop: '10px',
-                                    marginRight: '8px'
-                                }}>
-                                    * (Unit: Juta-Rp)
+                                    <div style={{
+                                        color: 'red',
+                                        display: 'flex',
+                                        justifyContent: 'right',
+                                        marginTop: '10px',
+                                        marginRight: '8px',
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                        * (Unit: Juta-Rp)
+                                    </div>
                                 </div>
                             </div>
                             <div className="moving-plan-summary-table">
@@ -257,7 +258,7 @@ const MovingPlanInputResult = (props) => {
                                     display: appListData?.data ? "table" : "none",
                                     borderCollapse: "separate",
                                     borderSpacing: "0",
-                                    width: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "60%" : "75%",
+                                    width: "60%",
                                 }}>
                                     <thead style={{
                                         color: 'white',
@@ -269,8 +270,7 @@ const MovingPlanInputResult = (props) => {
                                                 verticalAlign: 'center',
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
-                                                padding: " 0.25rem !important",
-                                                maxWidth: "10px"
+                                                padding: " 0.25rem !important"
                                             }}>
                                                 {appListData?.data?.name ? appListData?.data?.name : ""}
                                             </th>
@@ -325,7 +325,7 @@ const MovingPlanInputResult = (props) => {
                                         <tr className="mpst-tr" style={{ height: "100%" }}>
                                             <td className="mpst-td" valign="middle" rowSpan={5} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '40px',
+                                                maxWidth: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "35px" : "40px",
                                                 backgroundColor: '#CCE295',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
@@ -586,7 +586,7 @@ const MovingPlanInputResult = (props) => {
                                         <tr className="mpst-tr" style={{ height: "100%" }}>
                                             <td className="mpst-td" valign="middle" rowSpan={5} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '40px',
+                                                maxWidth: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "35px" : "40px",
                                                 backgroundColor: '#E6F0D8',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
@@ -849,7 +849,7 @@ const MovingPlanInputResult = (props) => {
                                         <tr className="mpst-tr" style={{ height: "100%" }}>
                                             <td className="mpst-td" valign="middle" rowSpan={2} style={{
                                                 fontWeight: 'bold',
-                                                maxWidth: '40px',
+                                                maxWidth: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "35px" : "40px",
                                                 backgroundColor: '#F2F2F2',
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
@@ -976,8 +976,7 @@ const MovingPlanInputResult = (props) => {
                                                 textAlign: 'center',
                                                 verticalAlign: 'center',
                                                 border: "1px solid #f8f8fb",
-                                                padding: " 0.25rem !important",
-                                                maxWidth: "10px"
+                                                padding: " 0.25rem !important"
                                             }}>
                                                 {props.t("Income(Loss) Before Income Tax")}
                                             </td>
