@@ -253,7 +253,7 @@ const MovingPlanInputResult = (props) => {
                                 marginRight: "40%",
                                 whiteSpace: "nowrap"
                             }}>
-                                * (Unit: Juta-Rp)
+                                <span style={{ display: appListData?.data ? "table" : "none" }}>* (Unit: Juta-Rp)</span>
                             </div>
                             <div className="moving-plan-summary-table">
                                 <table className="table table-borderless my-3" style={{
@@ -272,7 +272,8 @@ const MovingPlanInputResult = (props) => {
                                                 verticalAlign: 'center',
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
-                                                padding: " 0.25rem !important"
+                                                padding: " 0.25rem !important",
+                                                color: "black"
                                             }}>
                                                 {appListData?.data?.name ? appListData?.data?.name : ""}
                                             </th>
@@ -282,6 +283,7 @@ const MovingPlanInputResult = (props) => {
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
                                                 padding: " 0.25rem !important",
+                                                color: "black"
                                             }}>
                                                 {appListData?.data?.resultList[0]?.amount ? appListData?.data?.resultList[0]?.amount : ""}
                                             </th>
@@ -291,6 +293,7 @@ const MovingPlanInputResult = (props) => {
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
                                                 padding: " 0.25rem !important",
+                                                color: "black"
                                             }}>
                                                 {appListData?.data?.resultList[0]?.amount1 ? appListData?.data?.resultList[0]?.amount1 : ""}
                                             </th>
@@ -300,6 +303,7 @@ const MovingPlanInputResult = (props) => {
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
                                                 padding: " 0.25rem !important",
+                                                color: "black"
                                             }}>
                                                 {appListData?.data?.resultList[0]?.amount2 ? appListData?.data?.resultList[0]?.amount2 : ""}
                                             </th>
@@ -309,6 +313,7 @@ const MovingPlanInputResult = (props) => {
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
                                                 padding: " 0.25rem !important",
+                                                color: "black"
                                             }}>
                                                 {appListData?.data?.resultList[0]?.amount3 ? appListData?.data?.resultList[0]?.amount3 : ""}
                                             </th>
@@ -318,6 +323,7 @@ const MovingPlanInputResult = (props) => {
                                                 backgroundColor: '#81B642',
                                                 border: "1px solid #f8f8fb",
                                                 padding: " 0.25rem !important",
+                                                color: "black"
                                             }}>
                                                 {appListData?.data?.resultList[0]?.amtttl ? appListData?.data?.resultList[0]?.amtttl : ""}
                                             </th>
