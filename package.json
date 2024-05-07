@@ -11,6 +11,7 @@
     "@fullcalendar/daygrid": "^5.11.0",
     "@fullcalendar/interaction": "^5.11.0",
     "@fullcalendar/react": "^5.11.1",
+    "@google/generative-ai": "^0.10.0",
     "@lourenci/react-kanban": "^2.1.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",

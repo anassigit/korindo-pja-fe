@@ -14,18 +14,20 @@ import {
     FormGroup,
     Input,
     InputGroup,
+    Row,
     Spinner
 } from "reactstrap"
 import '../../assets/scss/custom/components/custom-datepicker.scss'
 import "../../assets/scss/custom/table/TableCustom.css"
 import RootPageCustom from '../../common/RootPageCustom'
 import '../../config'
-import { getCorporationList, getDashboardKPI, getItemList, resetMessage } from "store/actions"
+import { getCorporationList, getDashboardKPI, getItemList, getPromptAnswer, resetMessage } from "store/actions"
 import ReactEcharts from "echarts-for-react"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import PdfViewerModal from "components/Common/PdfViewerModal"
 import Swal from 'sweetalert2'
+import "../../assets/scss/custom.scss"
 
 const KPIDashboard = (props) => {
 
@@ -41,6 +43,10 @@ const KPIDashboard = (props) => {
 
     const appDashboardListData = useSelector((state) => {
         return state.kpiReducer.respGetDashboardKPI
+    })
+
+    const appPromptAnswerData = useSelector((state) => {
+        return state.kpiReducer.respGetPromptAnswer
     })
 
     const [loadingSpinner, setLoadingSpinner] = useState(false)
@@ -62,6 +68,8 @@ const KPIDashboard = (props) => {
     const [pdfPageNum, setPdfPageNum] = useState("")
     const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false)
     const [zoomStates, setZoomStates] = useState([])
+    const [promptStates, setPromptStates] = useState([])
+    const [promptIndex, setPromptIndex] = useState(0)
 
     useEffect(() => {
         setLoadingSpinner(true)
@@ -75,6 +83,18 @@ const KPIDashboard = (props) => {
     useEffect(() => {
         setLoadingSpinner(false)
     }, [appCorporationAndGroupListData, appKPIItemListData, appDashboardListData])
+
+    useEffect(() => {
+        if (appPromptAnswerData) {
+            const promptStatesCopy = [...promptStates]
+            promptStatesCopy[promptIndex] = appPromptAnswerData
+            setPromptStates(promptStatesCopy)
+            if (promptIndex < appDashboardListData?.data?.resultList?.length - 1) {
+                setPromptIndex(promptIndex + 1)
+                generatePromptQuestion({...appDashboardListData?.data?.resultList[promptIndex]})
+            }
+        }
+    }, [appPromptAnswerData])
 
     useEffect(() => {
         if (appCorporationAndGroupListData.status === '1') {
@@ -174,12 +194,14 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         if (appDashboardListData?.data?.resultList) {
-            const newZoomStates = appDashboardListData.data.resultList.map(item => ({
+            setZoomStates(appDashboardListData.data.resultList.map(item => ({
                 start: 0,
                 end: 100,
                 startValue: item.startFrom
-            }));
-            setZoomStates(newZoomStates)
+            })))
+            setPromptStates(new Array(appDashboardListData?.data?.resultList?.length).fill(""))
+            setPromptIndex(0)
+            generatePromptQuestion({...appDashboardListData?.data?.resultList[0]})
         }
     }, [appDashboardListData?.data?.resultList])
 
@@ -202,7 +224,6 @@ const KPIDashboard = (props) => {
     }
 
     const getKPIDashboard = () => {
-
         if (!isFilterByCorporation) {
             if (!selectedGroupList.some(group => group.isChecked)) {
                 setAppKPIMsg({
@@ -225,7 +246,6 @@ const KPIDashboard = (props) => {
             })
             return
         }
-
         var bodyForm = new FormData()
         bodyForm.append('from', selectedFromDate.replace(/-/g, ""))
         bodyForm.append('to', selectedToDate.replace(/-/g, ""))
@@ -335,6 +355,16 @@ const KPIDashboard = (props) => {
 
     const debouncedHandleDataZoom = debounce(handleDataZoom, 100)
 
+    const generatePromptQuestion = (data) => {
+        delete data.name
+        delete data.startFrom
+        data.details.map((item, _index) => {
+            delete item.page
+            delete item.url
+        })
+        dispatch(getPromptAnswer("Analyze the following data and provide a summary in (Include overall sales trends (increasing, decreasing, etc.) if exist, Compare planned sales figures to actual results, Highlight any months where sales significantly exceeded or fell short of the plan if exist.). Keep analyze it no matter the month count \n" + JSON.stringify(data)))
+    }
+
     return (
         <RootPageCustom msgStateGet={appKPIMsg} msgStateSet={setAppKPIMsg}
             componentJsx={
@@ -350,6 +380,7 @@ const KPIDashboard = (props) => {
                             Dashboard
                         </CardHeader>
                         <CardBody>
+
                             <div
                                 style={{
                                     display: 'flex',
@@ -767,6 +798,22 @@ const KPIDashboard = (props) => {
                                                     opts={{ renderer: 'svg' }}
                                                 />
                                             </div>
+                                            <Row style={{ marginTop: "20px" }}>
+                                                <div className="mb-3 col-sm-8">
+                                                    <Input
+                                                        name="description"
+                                                        type="textarea"
+                                                        rows="12"
+                                                        value={promptStates[index]}
+                                                        disabled={true}
+                                                    />
+                                                </div>
+                                                <div className="mb-3 col-sm-2">
+                                                    <Spinner style={{
+                                                        display: promptStates[index] === "" ? "block" : "none",
+                                                    }} className="ms-4" color="danger" />
+                                                </div>
+                                            </Row>
                                         </React.Fragment>
                                     )
                                 })

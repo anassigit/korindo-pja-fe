@@ -29,7 +29,9 @@ import {
     RESP_GET_KPI_FILE,
     UPLOAD_KPI_RESULT,
     DOWNLOAD_KPI_EXCEL,
-    SET_KPI_NOTE_TO_DELETE
+    SET_KPI_NOTE_TO_DELETE,
+    GET_PROMPT_ANSWER,
+    RESP_GET_PROMPT_ANSWER
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -43,6 +45,7 @@ const INIT_STATE = {
     respGetDashboardKPI: {},
     respGetDashboardDetailKPI: {},
     respGetKPIInputData: {},
+    respGetPromptAnswer: {},
     msgEdit: "",
     msgDelete: "",
     msgUpload: ""
@@ -122,6 +125,15 @@ const kpiReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 respGetDashboardDetailKPI: action.payload,
+            }
+        case GET_PROMPT_ANSWER:
+            return {
+                ...state,
+            }
+        case RESP_GET_PROMPT_ANSWER:
+            return {
+                ...state,
+                respGetPromptAnswer: action.payload,
             }
         case DOWNLOAD_KPI_TEMPLATE:
             return {

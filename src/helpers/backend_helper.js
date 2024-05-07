@@ -1,5 +1,5 @@
 
-import { post, postLogin, getWithXls, postUpload, getWithPdf, postWithParam } from "./api_helper"
+import { post, postLogin, getWithXls, postUpload, getWithPdf, postWithParam, generatePromptAnswer } from "./api_helper"
 
 /* COMMON AND AUTHENTICATION */
 
@@ -30,6 +30,10 @@ export const deleteMenu = req => post("/rest/app002/delete", req)
 export const saveMenu = req => post("/rest/app002/save", req)
 
 export const getMenuParent = req => post("/rest/app002/get-menu-parent", req)
+
+/* GEMINI */
+
+export const getPromptAnswerBE = req => generatePromptAnswer(req)
 
 /* INSTRUCTIONS */
 

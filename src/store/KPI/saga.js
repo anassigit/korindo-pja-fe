@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
-import { GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_KPI_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE, UPLOAD_KPI_RESULT, DOWNLOAD_KPI_EXCEL, SET_KPI_NOTE_TO_DELETE } from "./actionTypes"
-import { msgUpload, respGetKPIInputData, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile, msgDelete } from "./actions"
-import { getItemListBE, getCorporationListKPIBE, getDashboardKPIBE, getGroupListKPIBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getKPIInputDataBE, setKPINoteBE, getDownloadDashboardDetailBE, getKPIFileBE, uploadKPIResultBE, getDownloadKPIExcelBE } from "helpers/backend_helper"
+import { GET_CORPORATION_LIST, GET_DASHBOARD_KPI, DOWNLOAD_KPI_TEMPLATE, GET_GROUP_LIST_KPI, GET_ITEM_LIST, GET_KPI_MASTER, GET_UNIT_LIST, UPLOAD_KPI, GET_KPI_INPUT_DATA, SET_KPI_NOTE, GET_DASHBOARD_DETAIL_KPI, DOWNLOAD_DASHBOARD_DETAIL, GET_GROUP_LIST_KPI_INPUT, GET_KPI_FILE, UPLOAD_KPI_RESULT, DOWNLOAD_KPI_EXCEL, SET_KPI_NOTE_TO_DELETE, GET_TEST_RUN, GET_PROMPT_ANSWER } from "./actionTypes"
+import { msgUpload, respGetKPIInputData, respGetCorporationList, respGetDashboardKPI, respGetGroupListKpi, respGetItemList, respGetKPIMaster, respGetUnitList, msgEdit, respGetDashboardDetailKPI, respGetGroupListKpiInput, respGetKPIFile, msgDelete, respGetPromptAnswer } from "./actions"
+import { getItemListBE, getCorporationListKPIBE, getDashboardKPIBE, getGroupListKPIBE, getKPIMasterBE, getUnitBE, getDownloadKPITemplateBE, uploadKPIBE, getKPIInputDataBE, setKPINoteBE, getDownloadDashboardDetailBE, getKPIFileBE, uploadKPIResultBE, getDownloadKPIExcelBE, testRunBE, getPromptAnswerBE } from "helpers/backend_helper"
 
 function* fetchGetGroupListKPI({ payload: req }) {
     try {
@@ -215,6 +215,16 @@ function* fetchSetKPINoteToDelete({ payload: req }) {
     }
 }
 
+function* fetchGetPromptAnswer({ payload: req }) {
+    try {
+        const response = yield call(getPromptAnswerBE, req)
+        yield put(respGetPromptAnswer(response))
+    } catch (error) {
+        console.log(error);
+        yield put(respGetPromptAnswer({ "status": 0, "message": "Error Get Data" }))
+    }
+}
+
 function* kpiSaga() {
     yield takeEvery(GET_GROUP_LIST_KPI, fetchGetGroupListKPI)
     yield takeEvery(GET_GROUP_LIST_KPI_INPUT, fetchGetGroupListKPIInput)
@@ -233,6 +243,7 @@ function* kpiSaga() {
     yield takeEvery(UPLOAD_KPI_RESULT, fetchUploadKPIResult)
     yield takeEvery(SET_KPI_NOTE, fetchSetKPINote)
     yield takeEvery(SET_KPI_NOTE_TO_DELETE, fetchSetKPINoteToDelete)
+    yield takeEvery(GET_PROMPT_ANSWER, fetchGetPromptAnswer)
 }
 
 export default kpiSaga

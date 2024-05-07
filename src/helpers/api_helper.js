@@ -1,5 +1,6 @@
 import axios from "axios"
 import { saveAs } from 'file-saver'
+import { GoogleGenerativeAI  } from "@google/generative-ai"
 
 var API_URL = "http://localhost:9010/pja"
 if (process.env.REACT_APP_APIKEY === "development") {
@@ -11,6 +12,9 @@ if (process.env.REACT_APP_APIKEY === "development") {
 const axiosApi = axios.create({
     baseURL: API_URL,
 })
+
+const googleGenerativeAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_APIKEY)
+const generativeModel = googleGenerativeAI.getGenerativeModel({ model: "gemini-pro" })
 
 axiosApi.interceptors.response.use(
     response => response,
@@ -195,4 +199,9 @@ const String64toBlob = (data, contentType = "", sliceSize = 512) => {
         byteArrays.push(byteArray)
     }
     return new Blob(byteArrays, { type: contentType })
+}
+
+export async function generatePromptAnswer(data) {
+    const result = await generativeModel.generateContent(data)
+    return result.response.text()
 }
