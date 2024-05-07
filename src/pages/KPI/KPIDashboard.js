@@ -356,14 +356,13 @@ const KPIDashboard = (props) => {
     const debouncedHandleDataZoom = debounce(handleDataZoom, 100)
 
     const generatePromptQuestion = (data) => {
-        const dataName = data.name
         delete data.name
         delete data.startFrom
         data.details.map((item, _index) => {
             delete item.page
             delete item.url
         })
-        dispatch(getPromptAnswer("Analyze the following " + dataName + " data and provide a summary in only one single paragraph (Include overall sales trends (increasing, decreasing, etc.) if exist, Compare planned sales figures to actual results, Highlight any months where sales significantly exceeded or fell short of the plan if exist.). Keep analyze it no matter the month count \n" + JSON.stringify(data)))
+        dispatch(getPromptAnswer("Analyze the following data and provide a summary in only one single paragraph, Compare planned to results, Highlight any months where significantly exceeded or fell short of the plan if exist. Keep analyze it no matter the month count \n" + JSON.stringify(data)))
     }
 
     return (
@@ -385,7 +384,8 @@ const KPIDashboard = (props) => {
                             <div
                                 style={{
                                     display: 'flex',
-                                    justifyContent: 'space-between'
+                                    justifyContent: 'space-between',
+                                    marginBottom: "25px",
                                 }}
                             >
                                 <div
