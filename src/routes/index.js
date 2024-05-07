@@ -7,7 +7,7 @@ import UpdatePassword from "../pages/Authentication/UpdatePassword"
 import Instructions from "../pages/Instruction/Instructions"
 import UserProfile from "../pages/Profile/UserProfile"
 import ChangePassword from "../pages/Profile/ChangePassword"
-import GeneralSetting from "pages/Setting/GeneralSetting"
+import GeneralSetting from "pages/Setting/GeneralSetting/GeneralSetting"
 import EditInstruction from "pages/Instruction/EditInstruction"
 import DataInquiry from "pages/FileManagement/DataInquiry"
 import FirstLogin from "pages/Authentication/FirstLogin"
@@ -17,15 +17,14 @@ import KPIDashboard from "pages/KPI/KPIDashboard"
 import KPIDashboardDetail from "pages/KPI/KPIDashboardDetail"
 import MovingPlanDashboard from "pages/MovingPlan/MovingPlanDashboard"
 import KPIInputResult from "pages/KPI/KPIInputResult"
-import MemberSetting from "pages/Setting/MemberSetting"
-import OrganizationSetting from "pages/Setting/OrganizationSetting"
-import MenuSetting from "pages/Setting/MenuSetting"
-import RoleSetting from "pages/Setting/RoleSetting"
-import LanguageSetting from "pages/Setting/LanguageSetting"
+import MemberSetting from "pages/Setting/MemberSetting/MemberSetting"
+import OrganizationSetting from "pages/Setting/OrganizationSetting/OrganizationSetting"
+import MenuSetting from "pages/Setting/MenuSetting/MenuSetting"
+import RoleSetting from "pages/Setting/RoleSetting/RoleSetting"
 import KPISetting from "pages/KPI/KPISetting"
-import KPICategorySetting from "pages/Setting/KPICategorySetting"
-import KPIUnitSetting from "pages/Setting/KPIUnitSetting"
-import KPIItemSetting from "pages/Setting/KPIItemSetting"
+import KPICategorySetting from "pages/Setting/KPISetting/KPICategorySetting"
+import KPIUnitSetting from "pages/Setting/KPISetting/KPIUnitSetting"
+import KPIItemSetting from "pages/Setting/KPISetting/KPIItemSetting"
 import MovingPlanInputResult from "pages/MovingPlan/MovingPlanInputResult"
 
 const authProtectedRoutes = [
@@ -48,7 +47,6 @@ const authProtectedRoutes = [
     { path: "/AppMovingPlanDashboard", component: MovingPlanDashboard },
     { path: "/AppMovingPlanInputResult", component: MovingPlanInputResult },
     { path: "/AppRoleSetting", component: RoleSetting },
-    { path: "/AppLanguageSetting", component: LanguageSetting },
     { path: "/AppKPICategorySetting", component: KPICategorySetting },
     { path: "/AppKPIUnitSetting", component: KPIUnitSetting },
     { path: "/AppKPIItemSetting", component: KPIItemSetting },
