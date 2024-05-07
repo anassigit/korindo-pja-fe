@@ -91,7 +91,7 @@ const KPIDashboard = (props) => {
             setPromptStates(promptStatesCopy)
             if (promptIndex < appDashboardListData?.data?.resultList?.length - 1) {
                 setPromptIndex(promptIndex + 1)
-                generatePromptQuestion({...appDashboardListData?.data?.resultList[promptIndex]})
+                generatePromptQuestion({ ...appDashboardListData?.data?.resultList[promptIndex] })
             }
         }
     }, [appPromptAnswerData])
@@ -201,7 +201,7 @@ const KPIDashboard = (props) => {
             })))
             setPromptStates(new Array(appDashboardListData?.data?.resultList?.length).fill(""))
             setPromptIndex(0)
-            generatePromptQuestion({...appDashboardListData?.data?.resultList[0]})
+            generatePromptQuestion({ ...appDashboardListData?.data?.resultList[0] })
         }
     }, [appDashboardListData?.data?.resultList])
 
@@ -356,13 +356,14 @@ const KPIDashboard = (props) => {
     const debouncedHandleDataZoom = debounce(handleDataZoom, 100)
 
     const generatePromptQuestion = (data) => {
+        const dataName = data.name
         delete data.name
         delete data.startFrom
         data.details.map((item, _index) => {
             delete item.page
             delete item.url
         })
-        dispatch(getPromptAnswer("Analyze the following data and provide a summary in (Include overall sales trends (increasing, decreasing, etc.) if exist, Compare planned sales figures to actual results, Highlight any months where sales significantly exceeded or fell short of the plan if exist.). Keep analyze it no matter the month count \n" + JSON.stringify(data)))
+        dispatch(getPromptAnswer("Analyze the following " + dataName + " data and provide a summary in only one single paragraph (Include overall sales trends (increasing, decreasing, etc.) if exist, Compare planned sales figures to actual results, Highlight any months where sales significantly exceeded or fell short of the plan if exist.). Keep analyze it no matter the month count \n" + JSON.stringify(data)))
     }
 
     return (
@@ -803,7 +804,7 @@ const KPIDashboard = (props) => {
                                                     <Input
                                                         name="description"
                                                         type="textarea"
-                                                        rows="12"
+                                                        rows="5"
                                                         value={promptStates[index]}
                                                         disabled={true}
                                                     />
