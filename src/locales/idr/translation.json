@@ -300,5 +300,6 @@
     "Confirmation Message": "Pesan Konfirmasi",
     "Message": "Pesan",
     "Ok": "Ok",
-    "Log": "Catatan"
+    "Log": "Catatan",
+    "KPIDashboardPromptQuestion": "Analisislah data berikut dan rangkumlah secara singkat. Jika kinerjanya 0, kecualikan tanggal tersebut dari ringkasan."
 }

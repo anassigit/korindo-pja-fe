@@ -91,7 +91,7 @@ const KPIDashboard = (props) => {
             setPromptStates(promptStatesCopy)
             if (promptIndex < appDashboardListData?.data?.resultList?.length - 1) {
                 setPromptIndex(promptIndex + 1)
-                generatePromptQuestion({ ...appDashboardListData?.data?.resultList[promptIndex] })
+                generatePromptQuestion({ ...appDashboardListData?.data?.resultList[promptIndex + 1] })
             }
         }
     }, [appPromptAnswerData])
@@ -362,7 +362,7 @@ const KPIDashboard = (props) => {
             delete item.page
             delete item.url
         })
-        dispatch(getPromptAnswer("Analyze the following data and provide a summary in only one single paragraph, Compare planned to results, Highlight any months where significantly exceeded or fell short of the plan if exist. Keep analyze it no matter the month count \n" + JSON.stringify(data)))
+        dispatch(getPromptAnswer(props.t("KPIDashboardPromptQuestion") +"\n" + JSON.stringify(data)))
     }
 
     return (
@@ -804,7 +804,7 @@ const KPIDashboard = (props) => {
                                                     <Input
                                                         name="description"
                                                         type="textarea"
-                                                        rows="5"
+                                                        rows="8"
                                                         value={promptStates[index]}
                                                         disabled={true}
                                                     />

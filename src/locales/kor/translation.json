@@ -301,5 +301,6 @@
     "Confirmation Message": "확인 메시지",
     "Message": "메시지",
     "Ok": "좋아요",
-    "Log": "로그"
+    "Log": "로그",
+    "KPIDashboardPromptQuestion": "다음 데이터를 분석하여 간단하게 요약해줘, 만약 실적이 0이면 해당 날짜는 요약에서 제외할것"
 }

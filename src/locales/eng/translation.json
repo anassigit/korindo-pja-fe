@@ -295,5 +295,6 @@
     "Confirmation Message": "Confirmation Message",
     "Message": "Message",
     "Ok": "Ok",
-    "Log": "Log"
+    "Log": "Log",
+    "KPIDashboardPromptQuestion": "Analyze the following data and briefly summarize it. If the performance is 0, exclude that date from the summary."
 }
