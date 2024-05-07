@@ -194,7 +194,7 @@ const KPIDashboard = (props) => {
 
     useEffect(() => {
         if (appDashboardListData?.data?.resultList) {
-            setZoomStates(appDashboardListData.data.resultList.map(item => ({
+            setZoomStates(appDashboardListData.data.resultList?.map(item => ({
                 start: 0,
                 end: 100,
                 startValue: item.startFrom
@@ -356,9 +356,9 @@ const KPIDashboard = (props) => {
     const debouncedHandleDataZoom = debounce(handleDataZoom, 100)
 
     const generatePromptQuestion = (data) => {
-        delete data.name
-        delete data.startFrom
-        data.details.map((item, _index) => {
+        delete data?.name
+        delete data?.startFrom
+        data?.details?.map((item, _index) => {
             delete item.page
             delete item.url
         })
