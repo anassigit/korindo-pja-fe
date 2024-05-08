@@ -362,7 +362,7 @@ const KPIDashboard = (props) => {
             delete item.page
             delete item.url
         })
-        dispatch(getPromptAnswer(props.t("KPIDashboardPromptQuestion") +"\n" + JSON.stringify(data)))
+        dispatch(getPromptAnswer(props.t("KPIDashboardPromptQuestion") + "\n" + JSON.stringify(data)))
     }
 
     return (
@@ -808,11 +808,12 @@ const KPIDashboard = (props) => {
                                                         value={promptStates[index]}
                                                         disabled={true}
                                                     />
-                                                </div>
-                                                <div className="mb-3 col-sm-2">
-                                                    <Spinner style={{
+                                                    <Spinner color="primary" style={{
                                                         display: promptStates[index] === "" ? "block" : "none",
-                                                    }} className="ms-4" color="danger" />
+                                                        position: 'absolute',
+                                                        left: '48%',
+                                                        top: '65px',
+                                                    }}/>
                                                 </div>
                                             </Row>
                                         </React.Fragment>
@@ -822,7 +823,7 @@ const KPIDashboard = (props) => {
                         </CardBody>
                     </Card>
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
-                        <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+                        <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="primary" />
                     </div>
                 </>
             }

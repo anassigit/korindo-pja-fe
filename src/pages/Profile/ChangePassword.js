@@ -284,7 +284,7 @@ const ChangePassword = (props) => {
         </Row>
 
         <div className="spinner-wrapper" style={{ display: changePasswordSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)" }}>
-          <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="danger" />
+          <Spinner style={{ padding: "24px", display: "block", position: "fixed", top: "42.5%", right: "50%" }} color="primary" />
         </div>
 
       </Container>
