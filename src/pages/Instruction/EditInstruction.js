@@ -2355,7 +2355,7 @@ const EditInstruction = props => {
                                                 color="primary"
                                             >
                                                 <i className="mdi mdi-reply fs-5 align-middle me-2"></i>
-                                                {props.t("Reply")}
+                                                {props.t("Reply2")}
                                             </Button>
                                             &nbsp;
                                             <Button
