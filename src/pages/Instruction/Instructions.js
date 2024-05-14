@@ -127,8 +127,6 @@ const Instructions = (props) => {
         dispatch(resetMessage())
     }, [dispatch])
 
-
-
     const appGroupListData = useSelector(state => {
         return state.instructionsReducer.respGetGroupList
     })
@@ -430,12 +428,8 @@ const Instructions = (props) => {
     }
 
     useEffect(() => {
-        if (dateFrom === null) {
-            setDateFrom('')
-        }
-        if (dateTo === null) {
-            setDateTo('')
-        }
+        if (dateFrom === null) setDateFrom('')
+        if (dateTo === null) setDateTo('')
         setLoadingSpinner(true)
         setAppInstructionsTabelSearch((prevSearch) => ({
             ...prevSearch,
@@ -445,11 +439,11 @@ const Instructions = (props) => {
                 to: dateTo,
             },
         }))
-
     }, [dateFrom, dateTo])
 
     const handleSearch = () => {
         setLoadingSpinner(true)
+        history.replace("/AppInstructions?page=1")
         setAppInstructionsTabelSearch({
             page: 1, limit: 10, offset: 0,
             sort: appInstructionsTabelSearch.sort, order: appInstructionsTabelSearch.order, search: {
@@ -459,9 +453,7 @@ const Instructions = (props) => {
         })
     }
 
-    const toggle = () => {
-        setReplyModal(!replyModal)
-    }
+    const toggle = () => setReplyModal(!replyModal)
 
     return (
         <RootPageCustom msgStateGet={null} msgStateSet={null}
