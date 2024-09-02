@@ -1037,6 +1037,1210 @@ const MovingPlanInputResult = (props) => {
                                     </tbody>
                                 </table>
                             </div>
+                            <div className="moving-plan-summary-table" style={{marginTop: "50px"}}>
+                                <table className="table table-borderless my-3" style={{
+                                    display: appListData?.data ? "table" : "none",
+                                    borderCollapse: "separate",
+                                    borderSpacing: "0",
+                                    width: "60%"
+                                }}>
+                                    <thead style={{
+                                        color: 'white',
+                                        backgroundColor: '#81B642',
+                                    }}>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <th className="mpst-th" colSpan={2} style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.name2 ? appListData?.data?.name2 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[0]?.amount ? appListData?.data?.resultList2[0]?.amount : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[0]?.amount1 ? appListData?.data?.resultList2[0]?.amount1 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[0]?.amount2 ? appListData?.data?.resultList2[0]?.amount2 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[0]?.amount3 ? appListData?.data?.resultList2[0]?.amount3 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[0]?.amtttl ? appListData?.data?.resultList2[0]?.amtttl : ""}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" valign="middle" rowSpan={5} style={{
+                                                fontWeight: 'bold',
+                                                maxWidth: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "35px" : "40px",
+                                                backgroundColor: '#CCE295',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }}>
+                                                {props.t("Sales Revenue")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Business plan(BP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[1]?.amount.startsWith("-") ? "red" : "black",
+                                            }}>
+                                                {appListData?.data?.resultList2[1]?.amount ? appListData?.data?.resultList2[1]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[1]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[1]?.amount1 ? appListData?.data?.resultList2[1]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[1]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[1]?.amount2 ? appListData?.data?.resultList2[1]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[1]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[1]?.amount3 ? appListData?.data?.resultList2[1]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[1]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[1]?.amtttl ? appListData?.data?.resultList2[1]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Current Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[2]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[2]?.amount ? appListData?.data?.resultList2[2]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[2]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[2]?.amount1 ? appListData?.data?.resultList2[2]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[2]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[2]?.amount2 ? appListData?.data?.resultList2[2]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[2]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[2]?.amount3 ? appListData?.data?.resultList2[2]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[2]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[2]?.amtttl ? appListData?.data?.resultList2[2]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Previous Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[3]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[3]?.amount ? appListData?.data?.resultList2[3]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[3]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[3]?.amount1 ? appListData?.data?.resultList2[3]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[3]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[3]?.amount2 ? appListData?.data?.resultList2[3]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[3]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[3]?.amount3 ? appListData?.data?.resultList2[3]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[3]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[3]?.amtttl ? appListData?.data?.resultList2[3]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Moving Plan Difference")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[4]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[4]?.amount ? appListData?.data?.resultList2[4]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[4]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[4]?.amount1 ? appListData?.data?.resultList2[4]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[4]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[4]?.amount2 ? appListData?.data?.resultList2[4]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[4]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[4]?.amount3 ? appListData?.data?.resultList2[4]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[4]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[4]?.amtttl ? appListData?.data?.resultList2[4]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }}>
+                                                {props.t("Performance")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[5]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[5]?.amount ? appListData?.data?.resultList2[5]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" colSpan={4} style={{
+                                                backgroundColor: '#f8f8fb',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }} />
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" valign="middle" rowSpan={5} style={{
+                                                fontWeight: 'bold',
+                                                maxWidth: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "35px" : "40px",
+                                                backgroundColor: '#E6F0D8',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }}>
+                                                {props.t("Operating Income")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Business plan(BP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[6]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[6]?.amount ? appListData?.data?.resultList2[6]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[6]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[6]?.amount1 ? appListData?.data?.resultList2[6]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[6]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[6]?.amount2 ? appListData?.data?.resultList2[6]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[6]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[6]?.amount3 ? appListData?.data?.resultList2[6]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[6]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[6]?.amtttl ? appListData?.data?.resultList2[6]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Current Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[7]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[7]?.amount ? appListData?.data?.resultList2[7]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[7]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[7]?.amount1 ? appListData?.data?.resultList2[7]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[7]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[7]?.amount2 ? appListData?.data?.resultList2[7]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[7]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[7]?.amount3 ? appListData?.data?.resultList2[7]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[7]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[7]?.amtttl ? appListData?.data?.resultList2[7]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Previous Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[8]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[8]?.amount ? appListData?.data?.resultList2[8]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[8]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[8]?.amount1 ? appListData?.data?.resultList2[8]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[8]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[8]?.amount2 ? appListData?.data?.resultList2[8]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[8]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[8]?.amount3 ? appListData?.data?.resultList2[8]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[8]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[8]?.amtttl ? appListData?.data?.resultList2[8]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Moving Plan Difference")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[9]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[9]?.amount ? appListData?.data?.resultList2[9]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[9]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[9]?.amount1 ? appListData?.data?.resultList2[9]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[9]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[9]?.amount2 ? appListData?.data?.resultList2[9]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[9]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[9]?.amount3 ? appListData?.data?.resultList2[9]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[9]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[9]?.amtttl ? appListData?.data?.resultList2[9]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px',
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Performance")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList2[10]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList2[10]?.amount ? appListData?.data?.resultList2[10]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" colSpan={4} style={{
+                                                backgroundColor: '#f8f8fb',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }} />
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="moving-plan-summary-table" style={{ marginTop: "50px" }}>
+                                <table className="table table-borderless my-3" style={{
+                                    display: appListData?.data ? "table" : "none",
+                                    borderCollapse: "separate",
+                                    borderSpacing: "0",
+                                    width: "60%"
+                                }}>
+                                    <thead style={{
+                                        color: 'white',
+                                        backgroundColor: '#81B642',
+                                    }}>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <th className="mpst-th" colSpan={2} style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.name3 ? appListData?.data?.name3 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[0]?.amount ? appListData?.data?.resultList3[0]?.amount : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[0]?.amount1 ? appListData?.data?.resultList3[0]?.amount1 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[0]?.amount2 ? appListData?.data?.resultList3[0]?.amount2 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[0]?.amount3 ? appListData?.data?.resultList3[0]?.amount3 : ""}
+                                            </th>
+                                            <th className="mpst-th" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                backgroundColor: '#81B642',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[0]?.amtttl ? appListData?.data?.resultList3[0]?.amtttl : ""}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" valign="middle" rowSpan={5} style={{
+                                                fontWeight: 'bold',
+                                                maxWidth: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "35px" : "40px",
+                                                backgroundColor: '#CCE295',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }}>
+                                                {props.t("Sales Revenue")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Business plan(BP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[1]?.amount.startsWith("-") ? "red" : "black",
+                                            }}>
+                                                {appListData?.data?.resultList3[1]?.amount ? appListData?.data?.resultList3[1]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[1]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[1]?.amount1 ? appListData?.data?.resultList3[1]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[1]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[1]?.amount2 ? appListData?.data?.resultList3[1]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[1]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[1]?.amount3 ? appListData?.data?.resultList3[1]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[1]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[1]?.amtttl ? appListData?.data?.resultList3[1]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Current Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[2]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[2]?.amount ? appListData?.data?.resultList3[2]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[2]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[2]?.amount1 ? appListData?.data?.resultList3[2]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[2]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[2]?.amount2 ? appListData?.data?.resultList3[2]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[2]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[2]?.amount3 ? appListData?.data?.resultList3[2]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[2]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[2]?.amtttl ? appListData?.data?.resultList3[2]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Previous Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[3]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[3]?.amount ? appListData?.data?.resultList3[3]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[3]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[3]?.amount1 ? appListData?.data?.resultList3[3]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[3]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[3]?.amount2 ? appListData?.data?.resultList3[3]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[3]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[3]?.amount3 ? appListData?.data?.resultList3[3]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[3]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[3]?.amtttl ? appListData?.data?.resultList3[3]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Moving Plan Difference")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[4]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[4]?.amount ? appListData?.data?.resultList3[4]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[4]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[4]?.amount1 ? appListData?.data?.resultList3[4]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[4]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[4]?.amount2 ? appListData?.data?.resultList3[4]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[4]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[4]?.amount3 ? appListData?.data?.resultList3[4]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[4]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[4]?.amtttl ? appListData?.data?.resultList3[4]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }}>
+                                                {props.t("Performance")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[5]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[5]?.amount ? appListData?.data?.resultList3[5]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" colSpan={4} style={{
+                                                backgroundColor: '#f8f8fb',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }} />
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" valign="middle" rowSpan={5} style={{
+                                                fontWeight: 'bold',
+                                                maxWidth: localStorage.getItem("I18N_LANGUAGE") === "kor" ? "35px" : "40px",
+                                                backgroundColor: '#E6F0D8',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }}>
+                                                {props.t("Operating Income")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Business plan(BP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[6]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[6]?.amount ? appListData?.data?.resultList3[6]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[6]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[6]?.amount1 ? appListData?.data?.resultList3[6]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[6]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[6]?.amount2 ? appListData?.data?.resultList3[6]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[6]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[6]?.amount3 ? appListData?.data?.resultList3[6]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[6]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[6]?.amtttl ? appListData?.data?.resultList3[6]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Current Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[7]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[7]?.amount ? appListData?.data?.resultList3[7]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[7]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[7]?.amount1 ? appListData?.data?.resultList3[7]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[7]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[7]?.amount2 ? appListData?.data?.resultList3[7]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[7]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[7]?.amount3 ? appListData?.data?.resultList3[7]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[7]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[7]?.amtttl ? appListData?.data?.resultList3[7]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Previous Month Moving Plan(MP)")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[8]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[8]?.amount ? appListData?.data?.resultList3[8]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[8]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[8]?.amount1 ? appListData?.data?.resultList3[8]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[8]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[8]?.amount2 ? appListData?.data?.resultList3[8]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[8]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[8]?.amount3 ? appListData?.data?.resultList3[8]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[8]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[8]?.amtttl ? appListData?.data?.resultList3[8]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Moving Plan Difference")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[9]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[9]?.amount ? appListData?.data?.resultList3[9]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[9]?.amount1.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[9]?.amount1 ? appListData?.data?.resultList3[9]?.amount1 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[9]?.amount2.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[9]?.amount2 ? appListData?.data?.resultList3[9]?.amount2 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[9]?.amount3.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[9]?.amount3 ? appListData?.data?.resultList3[9]?.amount3 : "0"}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[9]?.amtttl.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[9]?.amtttl ? appListData?.data?.resultList3[9]?.amtttl : "0"}
+                                            </td>
+                                        </tr>
+                                        <tr className="mpst-tr" style={{ height: "100%" }}>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                maxWidth: '10px',
+                                                maxWidth: '10px'
+                                            }}>
+                                                {props.t("Performance")}
+                                            </td>
+                                            <td className="mpst-td" style={{
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                                color: appListData?.data?.resultList3[10]?.amount.startsWith("-") ? "red" : "black"
+                                            }}>
+                                                {appListData?.data?.resultList3[10]?.amount ? appListData?.data?.resultList3[10]?.amount : "0"}
+                                            </td>
+                                            <td className="mpst-td" colSpan={4} style={{
+                                                backgroundColor: '#f8f8fb',
+                                                textAlign: 'center',
+                                                verticalAlign: 'center',
+                                                border: "1px solid #f8f8fb",
+                                                padding: " 0.25rem !important",
+                                            }} />
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </CardBody>
                     </Card>
                     <div className="spinner-wrapper" style={{ display: loadingSpinner ? "block" : "none", zIndex: "9999", position: "fixed", top: "0", right: "0", width: "100%", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.5)", opacity: "1" }}>
