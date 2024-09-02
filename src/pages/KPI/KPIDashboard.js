@@ -199,9 +199,9 @@ const KPIDashboard = (props) => {
                 end: 100,
                 startValue: item.startFrom
             })))
-            setPromptStates(new Array(appDashboardListData?.data?.resultList?.length).fill(""))
-            setPromptIndex(0)
-            generatePromptQuestion({ ...appDashboardListData?.data?.resultList[0] })
+            // setPromptStates(new Array(appDashboardListData?.data?.resultList?.length).fill(""))
+            // setPromptIndex(0)
+            // generatePromptQuestion({ ...appDashboardListData?.data?.resultList[0] })
         }
     }, [appDashboardListData?.data?.resultList])
 
@@ -799,7 +799,7 @@ const KPIDashboard = (props) => {
                                                     opts={{ renderer: 'svg' }}
                                                 />
                                             </div>
-                                            <Row style={{ marginTop: "20px" }}>
+                                            {/* <Row style={{ marginTop: "20px" }}>
                                                 <div className="mb-3 col-sm-8">
                                                     <Input
                                                         name="description"
@@ -815,7 +815,7 @@ const KPIDashboard = (props) => {
                                                         top: '65px',
                                                     }}/>
                                                 </div>
-                                            </Row>
+                                            </Row> */}
                                         </React.Fragment>
                                     )
                                 })
